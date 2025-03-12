@@ -70,12 +70,32 @@ module OpenAI
       | ::Array[(String | Integer)?])?] headers
     ) -> ::Hash[String, String]
 
+    class ReadIOAdapter
+      private def read_enum: (Integer? max_len) -> String
+
+      def read: (?Integer? max_len, ?String? out_string) -> String?
+
+      def initialize: (
+        String | IO | StringIO | Enumerable[String] stream
+      ) {
+        (String arg0) -> void
+      } -> void
+    end
+
+    def self?.string_io: {
+      (Enumerator::Yielder y) -> void
+    } -> Enumerable[String]
+
     def self?.encode_multipart_formdata: (
-      StringIO io,
+      Enumerator::Yielder y,
       boundary: String,
       key: Symbol | String,
       val: top
     ) -> void
+
+    def self?.encode_multipart_streaming: (
+      top body
+    ) -> [String, Enumerable[String]]
 
     def self?.encode_content: (::Hash[String, String] headers, top body) -> top
 
