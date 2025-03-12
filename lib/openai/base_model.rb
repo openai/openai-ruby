@@ -55,11 +55,11 @@ module OpenAI
           type_info(spec.slice(:const, :enum, :union).first&.last)
         in Proc
           spec
-        in OpenAI::Converter | Class
+        in OpenAI::Converter | Class | Symbol
           -> { spec }
         in true | false
           -> { OpenAI::BooleanModel }
-        in NilClass | true | false | Symbol | Integer | Float
+        in NilClass | Integer | Float
           -> { spec.class }
         end
       end
@@ -82,6 +82,13 @@ module OpenAI
         case target
         in OpenAI::Converter
           target.coerce(value)
+        in Symbol
+          case value
+          in Symbol | String if (val = value.to_sym) == target
+            val
+          else
+            value
+          end
         in Class
           case target
           in -> { _1 <= NilClass }
@@ -140,6 +147,13 @@ module OpenAI
         case target
         in OpenAI::Converter
           target.try_strict_coerce(value)
+        in Symbol
+          case value
+          in Symbol | String if (val = value.to_sym) == target
+            [true, val, 1]
+          else
+            [false, false, 0]
+          end
         in Class
           case [target, value]
           in [-> { _1 <= NilClass }, _]
@@ -367,7 +381,14 @@ module OpenAI
       #
       # @return [Symbol, Object]
       #
-      def coerce(value) = (value.is_a?(String) ? value.to_sym : value)
+      def coerce(value)
+        case value
+        in Symbol | String if values.include?(val = value.to_sym)
+          val
+        else
+          value
+        end
+      end
 
       # @!parse
       #   # @private
@@ -388,7 +409,7 @@ module OpenAI
         return [true, value, 1] if values.include?(value)
 
         case value
-        in String if values.include?(val = value.to_sym)
+        in Symbol | String if values.include?(val = value.to_sym)
           [true, val, 1]
         else
           case [value, values.first]
