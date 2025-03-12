@@ -130,9 +130,41 @@ module OpenAI
       end
     end
 
+    class ReadIOAdapter
+      sig { params(max_len: T.nilable(Integer)).returns(String) }
+      private def read_enum(max_len)
+      end
+
+      sig { params(max_len: T.nilable(Integer), out_string: T.nilable(String)).returns(T.nilable(String)) }
+      def read(max_len = nil, out_string = nil)
+      end
+
+      sig do
+        params(
+          stream: T.any(String, IO, StringIO, T::Enumerable[String]),
+          blk: T.proc.params(arg0: String).void
+        )
+          .returns(T.attached_class)
+      end
+      def self.new(stream, &blk)
+      end
+    end
+
     class << self
-      sig { params(io: StringIO, boundary: String, key: T.any(Symbol, String), val: T.anything).void }
-      private def encode_multipart_formdata(io, boundary:, key:, val:)
+      sig { params(blk: T.proc.params(y: Enumerator::Yielder).void).returns(T::Enumerable[String]) }
+      def string_io(&blk)
+      end
+    end
+
+    class << self
+      sig do
+        params(y: Enumerator::Yielder, boundary: String, key: T.any(Symbol, String), val: T.anything).void
+      end
+      private def encode_multipart_formdata(y, boundary:, key:, val:)
+      end
+
+      sig { params(body: T.anything).returns([String, T::Enumerable[String]]) }
+      private def encode_multipart_streaming(body)
       end
 
       sig { params(headers: T::Hash[String, String], body: T.anything).returns(T.anything) }
