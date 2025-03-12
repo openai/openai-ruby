@@ -85,20 +85,8 @@ module OpenAI
     # @param url [URI::Generic]
     # @param blk [Proc]
     #
-    private def with_pool(url, &blk)
+    private def with_pool(url, &)
       origin = OpenAI::Util.uri_origin(url)
-      th = Thread.current
-      key = :"#{object_id}-#{self.class.name}-connection_in_use_for_#{origin}"
-
-      if th[key]
-        tap do
-          conn = self.class.connect(url)
-          return blk.call(conn)
-        ensure
-          conn.finish if conn&.started?
-        end
-      end
-
       pool =
         @mutex.synchronize do
           @pools[origin] ||= ConnectionPool.new(size: @size) do
@@ -106,12 +94,7 @@ module OpenAI
           end
         end
 
-      pool.with do |conn|
-        th[key] = true
-        blk.call(conn)
-      ensure
-        th[key] = nil
-      end
+      pool.with(&)
     end
 
     # @private
