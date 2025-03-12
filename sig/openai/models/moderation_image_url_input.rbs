@@ -1,0 +1,41 @@
+module OpenAI
+  module Models
+    type moderation_image_url_input =
+      {
+        image_url: OpenAI::Models::ModerationImageURLInput::ImageURL,
+        type: :image_url
+      }
+
+    class ModerationImageURLInput < OpenAI::BaseModel
+      attr_accessor image_url: OpenAI::Models::ModerationImageURLInput::ImageURL
+
+      attr_accessor type: :image_url
+
+      def initialize:
+        (
+          image_url: OpenAI::Models::ModerationImageURLInput::ImageURL,
+          type: :image_url
+        ) -> void
+        | (
+          ?OpenAI::Models::moderation_image_url_input | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::moderation_image_url_input
+
+      type image_url = { url: String }
+
+      class ImageURL < OpenAI::BaseModel
+        attr_accessor url: String
+
+        def initialize:
+          (url: String) -> void
+          | (
+            ?OpenAI::Models::ModerationImageURLInput::image_url
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::ModerationImageURLInput::image_url
+      end
+    end
+  end
+end

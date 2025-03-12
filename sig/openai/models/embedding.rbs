@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    type embedding =
+      { embedding: ::Array[Float], index: Integer, object: :embedding }
+
+    class Embedding < OpenAI::BaseModel
+      attr_accessor embedding: ::Array[Float]
+
+      attr_accessor index: Integer
+
+      attr_accessor object: :embedding
+
+      def initialize:
+        (embedding: ::Array[Float], index: Integer, object: :embedding) -> void
+        | (?OpenAI::Models::embedding | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::embedding
+    end
+  end
+end

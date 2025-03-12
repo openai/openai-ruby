@@ -1,0 +1,60 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionAudioParam = Chat::ChatCompletionAudioParam
+
+    module Chat
+      type chat_completion_audio_param =
+        {
+          format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
+          voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+        }
+
+      class ChatCompletionAudioParam < OpenAI::BaseModel
+        attr_accessor format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_
+
+        attr_accessor voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+
+        def initialize:
+          (
+            format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
+            voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+          ) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_audio_param
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_audio_param
+
+        type format_ = :wav | :mp3 | :flac | :opus | :pcm16
+
+        class Format < OpenAI::Enum
+          WAV: :wav
+          MP3: :mp3
+          FLAC: :flac
+          OPUS: :opus
+          PCM16: :pcm16
+
+          def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::format_]
+        end
+
+        type voice =
+          :alloy | :ash | :ballad | :coral | :echo | :sage | :shimmer | :verse
+
+        class Voice < OpenAI::Enum
+          ALLOY: :alloy
+          ASH: :ash
+          BALLAD: :ballad
+          CORAL: :coral
+          ECHO: :echo
+          SAGE: :sage
+          SHIMMER: :shimmer
+          VERSE: :verse
+
+          def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::voice]
+        end
+      end
+    end
+  end
+end

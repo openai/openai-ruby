@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    type response_format_json_schema =
+      {
+        json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema,
+        type: :json_schema
+      }
+
+    class ResponseFormatJSONSchema < OpenAI::BaseModel
+      attr_accessor json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema
+
+      attr_accessor type: :json_schema
+
+      def initialize:
+        (
+          json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema,
+          type: :json_schema
+        ) -> void
+        | (
+          ?OpenAI::Models::response_format_json_schema | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::response_format_json_schema
+
+      type json_schema =
+        {
+          name: String,
+          description: String,
+          schema: ::Hash[Symbol, top],
+          strict: bool?
+        }
+
+      class JSONSchema < OpenAI::BaseModel
+        attr_accessor name: String
+
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        attr_reader schema: ::Hash[Symbol, top]?
+
+        def schema=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
+
+        attr_accessor strict: bool?
+
+        def initialize:
+          (
+            name: String,
+            description: String,
+            schema: ::Hash[Symbol, top],
+            strict: bool?
+          ) -> void
+          | (
+            ?OpenAI::Models::ResponseFormatJSONSchema::json_schema
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::ResponseFormatJSONSchema::json_schema
+      end
+    end
+  end
+end

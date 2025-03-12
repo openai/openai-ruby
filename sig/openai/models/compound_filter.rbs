@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    type compound_filter =
+      {
+        filters: ::Array[OpenAI::Models::CompoundFilter::filter],
+        type: OpenAI::Models::CompoundFilter::type_
+      }
+
+    class CompoundFilter < OpenAI::BaseModel
+      attr_accessor filters: ::Array[OpenAI::Models::CompoundFilter::filter]
+
+      attr_accessor type: OpenAI::Models::CompoundFilter::type_
+
+      def initialize:
+        (
+          filters: ::Array[OpenAI::Models::CompoundFilter::filter],
+          type: OpenAI::Models::CompoundFilter::type_
+        ) -> void
+        | (?OpenAI::Models::compound_filter | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::compound_filter
+
+      type filter = OpenAI::Models::ComparisonFilter | top
+
+      class Filter < OpenAI::Union
+        private def self.variants: -> [[nil, OpenAI::Models::ComparisonFilter], [nil, top]]
+      end
+
+      type type_ = :and | :or
+
+      class Type < OpenAI::Enum
+        AND: :and
+        OR: :or
+
+        def self.values: -> ::Array[OpenAI::Models::CompoundFilter::type_]
+      end
+    end
+  end
+end

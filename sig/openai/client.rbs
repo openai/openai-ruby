@@ -1,0 +1,58 @@
+module OpenAI
+  class Client < OpenAI::BaseClient
+    DEFAULT_MAX_RETRIES: 2
+
+    DEFAULT_TIMEOUT_IN_SECONDS: Float
+
+    DEFAULT_INITIAL_RETRY_DELAY: Float
+
+    DEFAULT_MAX_RETRY_DELAY: Float
+
+    attr_reader api_key: String
+
+    attr_reader organization: String?
+
+    attr_reader project: String?
+
+    attr_reader completions: OpenAI::Resources::Completions
+
+    attr_reader chat: OpenAI::Resources::Chat
+
+    attr_reader embeddings: OpenAI::Resources::Embeddings
+
+    attr_reader files: OpenAI::Resources::Files
+
+    attr_reader images: OpenAI::Resources::Images
+
+    attr_reader audio: OpenAI::Resources::Audio
+
+    attr_reader moderations: OpenAI::Resources::Moderations
+
+    attr_reader models: OpenAI::Resources::Models
+
+    attr_reader fine_tuning: OpenAI::Resources::FineTuning
+
+    attr_reader vector_stores: OpenAI::Resources::VectorStores
+
+    attr_reader beta: OpenAI::Resources::Beta
+
+    attr_reader batches: OpenAI::Resources::Batches
+
+    attr_reader uploads: OpenAI::Resources::Uploads
+
+    attr_reader responses: OpenAI::Resources::Responses
+
+    private def auth_headers: -> ::Hash[String, String]
+
+    def initialize: (
+      base_url: String?,
+      api_key: String?,
+      organization: String?,
+      project: String?,
+      max_retries: Integer,
+      timeout: Float,
+      initial_retry_delay: Float,
+      max_retry_delay: Float
+    ) -> void
+  end
+end

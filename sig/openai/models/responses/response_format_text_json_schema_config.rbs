@@ -1,0 +1,45 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_format_text_json_schema_config =
+        {
+          schema: ::Hash[Symbol, top],
+          type: :json_schema,
+          description: String,
+          name: String,
+          strict: bool?
+        }
+
+      class ResponseFormatTextJSONSchemaConfig < OpenAI::BaseModel
+        attr_accessor schema: ::Hash[Symbol, top]
+
+        attr_accessor type: :json_schema
+
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        attr_accessor strict: bool?
+
+        def initialize:
+          (
+            schema: ::Hash[Symbol, top],
+            description: String,
+            name: String,
+            strict: bool?,
+            type: :json_schema
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_format_text_json_schema_config
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_format_text_json_schema_config
+      end
+    end
+  end
+end

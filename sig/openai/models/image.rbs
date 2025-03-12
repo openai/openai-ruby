@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    type image = { :b64_json => String, revised_prompt: String, url: String }
+
+    class Image < OpenAI::BaseModel
+      attr_reader b64_json: String?
+
+      def b64_json=: (String) -> String
+
+      attr_reader revised_prompt: String?
+
+      def revised_prompt=: (String) -> String
+
+      attr_reader url: String?
+
+      def url=: (String) -> String
+
+      def initialize:
+        (b64_json: String, revised_prompt: String, url: String) -> void
+        | (?OpenAI::Models::image | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::image
+    end
+  end
+end

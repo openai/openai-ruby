@@ -1,0 +1,61 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_segment =
+        {
+          id: Integer,
+          avg_logprob: Float,
+          compression_ratio: Float,
+          end_: Float,
+          no_speech_prob: Float,
+          seek: Integer,
+          start: Float,
+          temperature: Float,
+          text: String,
+          tokens: ::Array[Integer]
+        }
+
+      class TranscriptionSegment < OpenAI::BaseModel
+        attr_accessor id: Integer
+
+        attr_accessor avg_logprob: Float
+
+        attr_accessor compression_ratio: Float
+
+        attr_accessor end_: Float
+
+        attr_accessor no_speech_prob: Float
+
+        attr_accessor seek: Integer
+
+        attr_accessor start: Float
+
+        attr_accessor temperature: Float
+
+        attr_accessor text: String
+
+        attr_accessor tokens: ::Array[Integer]
+
+        def initialize:
+          (
+            id: Integer,
+            avg_logprob: Float,
+            compression_ratio: Float,
+            end_: Float,
+            no_speech_prob: Float,
+            seek: Integer,
+            start: Float,
+            temperature: Float,
+            text: String,
+            tokens: ::Array[Integer]
+          ) -> void
+          | (
+            ?OpenAI::Models::Audio::transcription_segment
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Audio::transcription_segment
+      end
+    end
+  end
+end

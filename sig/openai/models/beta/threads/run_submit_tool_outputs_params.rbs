@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type run_submit_tool_outputs_params =
+          {
+            thread_id: String,
+            tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
+          }
+          & OpenAI::request_parameters
+
+        class RunSubmitToolOutputsParams < OpenAI::BaseModel
+          extend OpenAI::RequestParameters::Converter
+          include OpenAI::RequestParameters
+
+          attr_accessor thread_id: String
+
+          attr_accessor tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
+
+          def initialize:
+            (
+              thread_id: String,
+              tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+              request_options: OpenAI::request_opts
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::run_submit_tool_outputs_params
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::run_submit_tool_outputs_params
+
+          type tool_output = { output: String, tool_call_id: String }
+
+          class ToolOutput < OpenAI::BaseModel
+            attr_reader output: String?
+
+            def output=: (String) -> String
+
+            attr_reader tool_call_id: String?
+
+            def tool_call_id=: (String) -> String
+
+            def initialize:
+              (output: String, tool_call_id: String) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::tool_output
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::tool_output
+          end
+        end
+      end
+    end
+  end
+end

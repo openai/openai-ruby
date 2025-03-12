@@ -1,0 +1,60 @@
+module OpenAI
+  module Models
+    module Audio
+      type translation_create_params =
+        {
+          file: (IO | StringIO),
+          model: OpenAI::Models::Audio::TranslationCreateParams::model,
+          prompt: String,
+          response_format: OpenAI::Models::audio_response_format,
+          temperature: Float
+        }
+        & OpenAI::request_parameters
+
+      class TranslationCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor file: IO | StringIO
+
+        attr_accessor model: OpenAI::Models::Audio::TranslationCreateParams::model
+
+        attr_reader prompt: String?
+
+        def prompt=: (String) -> String
+
+        attr_reader response_format: OpenAI::Models::audio_response_format?
+
+        def response_format=: (
+          OpenAI::Models::audio_response_format
+        ) -> OpenAI::Models::audio_response_format
+
+        attr_reader temperature: Float?
+
+        def temperature=: (Float) -> Float
+
+        def initialize:
+          (
+            file: IO | StringIO,
+            model: OpenAI::Models::Audio::TranslationCreateParams::model,
+            prompt: String,
+            response_format: OpenAI::Models::audio_response_format,
+            temperature: Float,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Audio::translation_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Audio::translation_create_params
+
+        type model = String | OpenAI::Models::audio_model
+
+        class Model < OpenAI::Union
+          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::audio_model]]
+        end
+      end
+    end
+  end
+end

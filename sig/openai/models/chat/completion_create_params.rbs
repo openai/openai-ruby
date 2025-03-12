@@ -1,0 +1,370 @@
+module OpenAI
+  module Models
+    module Chat
+      type completion_create_params =
+        {
+          messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
+          model: OpenAI::Models::Chat::CompletionCreateParams::model,
+          audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
+          frequency_penalty: Float?,
+          function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+          functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
+          logit_bias: ::Hash[Symbol, Integer]?,
+          logprobs: bool?,
+          max_completion_tokens: Integer?,
+          max_tokens: Integer?,
+          metadata: OpenAI::Models::metadata?,
+          modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          n: Integer?,
+          parallel_tool_calls: bool,
+          prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
+          presence_penalty: Float?,
+          reasoning_effort: OpenAI::Models::reasoning_effort?,
+          response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+          seed: Integer?,
+          service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+          stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+          store: bool?,
+          stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+          temperature: Float?,
+          tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+          tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
+          top_logprobs: Integer?,
+          top_p: Float?,
+          user: String,
+          web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions
+        }
+        & OpenAI::request_parameters
+
+      class CompletionCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param]
+
+        attr_accessor model: OpenAI::Models::Chat::CompletionCreateParams::model
+
+        attr_accessor audio: OpenAI::Models::Chat::ChatCompletionAudioParam?
+
+        attr_accessor frequency_penalty: Float?
+
+        attr_reader function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call?
+
+        def function_call=: (
+          OpenAI::Models::Chat::CompletionCreateParams::function_call
+        ) -> OpenAI::Models::Chat::CompletionCreateParams::function_call
+
+        attr_reader functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function]?
+
+        def functions=: (
+          ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function]
+        ) -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function]
+
+        attr_accessor logit_bias: ::Hash[Symbol, Integer]?
+
+        attr_accessor logprobs: bool?
+
+        attr_accessor max_completion_tokens: Integer?
+
+        attr_accessor max_tokens: Integer?
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_accessor modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?
+
+        attr_accessor n: Integer?
+
+        attr_reader parallel_tool_calls: bool?
+
+        def parallel_tool_calls=: (bool) -> bool
+
+        attr_accessor prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?
+
+        attr_accessor presence_penalty: Float?
+
+        attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
+
+        attr_reader response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format?
+
+        def response_format=: (
+          OpenAI::Models::Chat::CompletionCreateParams::response_format
+        ) -> OpenAI::Models::Chat::CompletionCreateParams::response_format
+
+        attr_accessor seed: Integer?
+
+        attr_accessor service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?
+
+        attr_accessor stop: OpenAI::Models::Chat::CompletionCreateParams::stop?
+
+        attr_accessor store: bool?
+
+        attr_accessor stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?
+
+        attr_accessor temperature: Float?
+
+        attr_reader tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option?
+
+        def tool_choice=: (
+          OpenAI::Models::Chat::chat_completion_tool_choice_option
+        ) -> OpenAI::Models::Chat::chat_completion_tool_choice_option
+
+        attr_reader tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool]?
+
+        def tools=: (
+          ::Array[OpenAI::Models::Chat::ChatCompletionTool]
+        ) -> ::Array[OpenAI::Models::Chat::ChatCompletionTool]
+
+        attr_accessor top_logprobs: Integer?
+
+        attr_accessor top_p: Float?
+
+        attr_reader user: String?
+
+        def user=: (String) -> String
+
+        attr_reader web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions?
+
+        def web_search_options=: (
+          OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions
+        ) -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions
+
+        def initialize:
+          (
+            messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
+            model: OpenAI::Models::Chat::CompletionCreateParams::model,
+            audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
+            frequency_penalty: Float?,
+            function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+            functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
+            logit_bias: ::Hash[Symbol, Integer]?,
+            logprobs: bool?,
+            max_completion_tokens: Integer?,
+            max_tokens: Integer?,
+            metadata: OpenAI::Models::metadata?,
+            modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+            n: Integer?,
+            parallel_tool_calls: bool,
+            prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
+            presence_penalty: Float?,
+            reasoning_effort: OpenAI::Models::reasoning_effort?,
+            response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+            seed: Integer?,
+            service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+            stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+            store: bool?,
+            stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+            temperature: Float?,
+            tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+            tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
+            top_logprobs: Integer?,
+            top_p: Float?,
+            user: String,
+            web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Chat::completion_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::completion_create_params
+
+        type model = String | OpenAI::Models::chat_model
+
+        class Model < OpenAI::Union
+          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::chat_model]]
+        end
+
+        type function_call =
+          OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode
+          | OpenAI::Models::Chat::ChatCompletionFunctionCallOption
+
+        class FunctionCall < OpenAI::Union
+          type function_call_mode = :none | :auto
+
+          class FunctionCallMode < OpenAI::Enum
+            NONE: :none
+            AUTO: :auto
+
+            def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode]
+          end
+
+          private def self.variants: -> [[nil, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode], [nil, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]]
+        end
+
+        type function =
+          {
+            name: String,
+            description: String,
+            parameters: OpenAI::Models::function_parameters
+          }
+
+        class Function < OpenAI::BaseModel
+          attr_accessor name: String
+
+          attr_reader description: String?
+
+          def description=: (String) -> String
+
+          attr_reader parameters: OpenAI::Models::function_parameters?
+
+          def parameters=: (
+            OpenAI::Models::function_parameters
+          ) -> OpenAI::Models::function_parameters
+
+          def initialize:
+            (
+              name: String,
+              description: String,
+              parameters: OpenAI::Models::function_parameters
+            ) -> void
+            | (
+              ?OpenAI::Models::Chat::CompletionCreateParams::function
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::function
+        end
+
+        type modality = :text | :audio
+
+        class Modality < OpenAI::Enum
+          TEXT: :text
+          AUDIO: :audio
+
+          def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]
+        end
+
+        type response_format =
+          OpenAI::Models::ResponseFormatText
+          | OpenAI::Models::ResponseFormatJSONSchema
+          | OpenAI::Models::ResponseFormatJSONObject
+
+        class ResponseFormat < OpenAI::Union
+          private def self.variants: -> [[nil, OpenAI::Models::ResponseFormatText], [nil, OpenAI::Models::ResponseFormatJSONSchema], [nil, OpenAI::Models::ResponseFormatJSONObject]]
+        end
+
+        type service_tier = :auto | :default
+
+        class ServiceTier < OpenAI::Enum
+          AUTO: :auto
+          DEFAULT: :default
+
+          def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::service_tier]
+        end
+
+        type stop = (String | ::Array[String])?
+
+        class Stop < OpenAI::Union
+          type string_array = ::Array[String]
+
+          StringArray: string_array
+
+          private def self.variants: -> [[nil, String], [nil, ::Array[String]]]
+        end
+
+        type web_search_options =
+          {
+            search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
+            user_location: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
+          }
+
+        class WebSearchOptions < OpenAI::BaseModel
+          attr_reader search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size?
+
+          def search_context_size=: (
+            OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size
+          ) -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size
+
+          attr_accessor user_location: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
+
+          def initialize:
+            (
+              search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
+              user_location: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
+            ) -> void
+            | (
+              ?OpenAI::Models::Chat::CompletionCreateParams::web_search_options
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::web_search_options
+
+          type search_context_size = :low | :medium | :high
+
+          class SearchContextSize < OpenAI::Enum
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size]
+          end
+
+          type user_location =
+            {
+              approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+              type: :approximate
+            }
+
+          class UserLocation < OpenAI::BaseModel
+            attr_accessor approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate
+
+            attr_accessor type: :approximate
+
+            def initialize:
+              (
+                approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+                type: :approximate
+              ) -> void
+              | (
+                ?OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::user_location
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::user_location
+
+            type approximate =
+              {
+                city: String,
+                country: String,
+                region: String,
+                timezone: String
+              }
+
+            class Approximate < OpenAI::BaseModel
+              attr_reader city: String?
+
+              def city=: (String) -> String
+
+              attr_reader country: String?
+
+              def country=: (String) -> String
+
+              attr_reader region: String?
+
+              def region=: (String) -> String
+
+              attr_reader timezone: String?
+
+              def timezone=: (String) -> String
+
+              def initialize:
+                (
+                  city: String,
+                  country: String,
+                  region: String,
+                  timezone: String
+                ) -> void
+                | (
+                  ?OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::approximate
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::approximate
+            end
+          end
+        end
+      end
+    end
+  end
+end

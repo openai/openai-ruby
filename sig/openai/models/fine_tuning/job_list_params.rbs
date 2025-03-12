@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    module FineTuning
+      type job_list_params =
+        { after: String, limit: Integer, metadata: ::Hash[Symbol, String]? }
+        & OpenAI::request_parameters
+
+      class JobListParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_reader after: String?
+
+        def after=: (String) -> String
+
+        attr_reader limit: Integer?
+
+        def limit=: (Integer) -> Integer
+
+        attr_accessor metadata: ::Hash[Symbol, String]?
+
+        def initialize:
+          (
+            after: String,
+            limit: Integer,
+            metadata: ::Hash[Symbol, String]?,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::FineTuning::job_list_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::FineTuning::job_list_params
+      end
+    end
+  end
+end

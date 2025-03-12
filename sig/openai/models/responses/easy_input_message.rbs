@@ -1,0 +1,64 @@
+module OpenAI
+  module Models
+    module Responses
+      type easy_input_message =
+        {
+          content: OpenAI::Models::Responses::EasyInputMessage::content,
+          role: OpenAI::Models::Responses::EasyInputMessage::role,
+          type: OpenAI::Models::Responses::EasyInputMessage::type_
+        }
+
+      class EasyInputMessage < OpenAI::BaseModel
+        attr_accessor content: OpenAI::Models::Responses::EasyInputMessage::content
+
+        attr_accessor role: OpenAI::Models::Responses::EasyInputMessage::role
+
+        attr_reader type: OpenAI::Models::Responses::EasyInputMessage::type_?
+
+        def type=: (
+          OpenAI::Models::Responses::EasyInputMessage::type_
+        ) -> OpenAI::Models::Responses::EasyInputMessage::type_
+
+        def initialize:
+          (
+            content: OpenAI::Models::Responses::EasyInputMessage::content,
+            role: OpenAI::Models::Responses::EasyInputMessage::role,
+            type: OpenAI::Models::Responses::EasyInputMessage::type_
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::easy_input_message
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::easy_input_message
+
+        type content =
+          String
+          | OpenAI::Models::Responses::response_input_message_content_list
+
+        class Content < OpenAI::Union
+          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::Responses::response_input_message_content_list]]
+        end
+
+        type role = :user | :assistant | :system | :developer
+
+        class Role < OpenAI::Enum
+          USER: :user
+          ASSISTANT: :assistant
+          SYSTEM: :system
+          DEVELOPER: :developer
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::role]
+        end
+
+        type type_ = :message
+
+        class Type < OpenAI::Enum
+          MESSAGE: :message
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::type_]
+        end
+      end
+    end
+  end
+end

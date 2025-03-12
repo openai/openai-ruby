@@ -1,0 +1,31 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type code_interpreter_logs =
+            { index: Integer, type: :logs, logs: String }
+
+          class CodeInterpreterLogs < OpenAI::BaseModel
+            attr_accessor index: Integer
+
+            attr_accessor type: :logs
+
+            attr_reader logs: String?
+
+            def logs=: (String) -> String
+
+            def initialize:
+              (index: Integer, logs: String, type: :logs) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_logs
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_logs
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type refusal_content_block = { refusal: String, type: :refusal }
+
+        class RefusalContentBlock < OpenAI::BaseModel
+          attr_accessor refusal: String
+
+          attr_accessor type: :refusal
+
+          def initialize:
+            (refusal: String, type: :refusal) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::refusal_content_block
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::refusal_content_block
+        end
+      end
+    end
+  end
+end

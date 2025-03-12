@@ -1,0 +1,183 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        
+        class RunStep = Runs::RunStep
+
+        module Runs
+          type run_step =
+            {
+              id: String,
+              assistant_id: String,
+              cancelled_at: Integer?,
+              completed_at: Integer?,
+              created_at: Integer,
+              expired_at: Integer?,
+              failed_at: Integer?,
+              last_error: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError?,
+              metadata: OpenAI::Models::metadata?,
+              object: :"thread.run.step",
+              run_id: String,
+              status: OpenAI::Models::Beta::Threads::Runs::RunStep::status,
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details,
+              thread_id: String,
+              type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
+              usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?
+            }
+
+          class RunStep < OpenAI::BaseModel
+            attr_accessor id: String
+
+            attr_accessor assistant_id: String
+
+            attr_accessor cancelled_at: Integer?
+
+            attr_accessor completed_at: Integer?
+
+            attr_accessor created_at: Integer
+
+            attr_accessor expired_at: Integer?
+
+            attr_accessor failed_at: Integer?
+
+            attr_accessor last_error: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError?
+
+            attr_accessor metadata: OpenAI::Models::metadata?
+
+            attr_accessor object: :"thread.run.step"
+
+            attr_accessor run_id: String
+
+            attr_accessor status: OpenAI::Models::Beta::Threads::Runs::RunStep::status
+
+            attr_accessor step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details
+
+            attr_accessor thread_id: String
+
+            attr_accessor type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_
+
+            attr_accessor usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?
+
+            def initialize:
+              (
+                id: String,
+                assistant_id: String,
+                cancelled_at: Integer?,
+                completed_at: Integer?,
+                created_at: Integer,
+                expired_at: Integer?,
+                failed_at: Integer?,
+                last_error: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError?,
+                metadata: OpenAI::Models::metadata?,
+                run_id: String,
+                status: OpenAI::Models::Beta::Threads::Runs::RunStep::status,
+                step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details,
+                thread_id: String,
+                type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
+                usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?,
+                object: :"thread.run.step"
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::run_step
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step
+
+            type last_error =
+              {
+                code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
+                message: String
+              }
+
+            class LastError < OpenAI::BaseModel
+              attr_accessor code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code
+
+              attr_accessor message: String
+
+              def initialize:
+                (
+                  code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
+                  message: String
+                ) -> void
+                | (
+                  ?OpenAI::Models::Beta::Threads::Runs::RunStep::last_error
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::RunStep::last_error
+
+              type code = :server_error | :rate_limit_exceeded
+
+              class Code < OpenAI::Enum
+                SERVER_ERROR: :server_error
+                RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
+
+                def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code]
+              end
+            end
+
+            type status =
+              :in_progress | :cancelled | :failed | :completed | :expired
+
+            class Status < OpenAI::Enum
+              IN_PROGRESS: :in_progress
+              CANCELLED: :cancelled
+              FAILED: :failed
+              COMPLETED: :completed
+              EXPIRED: :expired
+
+              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::status]
+            end
+
+            type step_details =
+              OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails
+              | OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
+
+            class StepDetails < OpenAI::Union
+              private def self.variants: -> [[:message_creation, OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails], [:tool_calls, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]]
+            end
+
+            type type_ = :message_creation | :tool_calls
+
+            class Type < OpenAI::Enum
+              MESSAGE_CREATION: :message_creation
+              TOOL_CALLS: :tool_calls
+
+              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::type_]
+            end
+
+            type usage =
+              {
+                completion_tokens: Integer,
+                prompt_tokens: Integer,
+                total_tokens: Integer
+              }
+
+            class Usage < OpenAI::BaseModel
+              attr_accessor completion_tokens: Integer
+
+              attr_accessor prompt_tokens: Integer
+
+              attr_accessor total_tokens: Integer
+
+              def initialize:
+                (
+                  completion_tokens: Integer,
+                  prompt_tokens: Integer,
+                  total_tokens: Integer
+                ) -> void
+                | (
+                  ?OpenAI::Models::Beta::Threads::Runs::RunStep::usage
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::RunStep::usage
+            end
+          end
+        end
+      end
+    end
+  end
+end

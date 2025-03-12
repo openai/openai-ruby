@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Audio
+      type speech_model = :"tts-1" | :"tts-1-hd"
+
+      class SpeechModel < OpenAI::Enum
+        TTS_1: :"tts-1"
+        TTS_1_HD: :"tts-1-hd"
+
+        def self.values: -> ::Array[OpenAI::Models::Audio::speech_model]
+      end
+    end
+  end
+end

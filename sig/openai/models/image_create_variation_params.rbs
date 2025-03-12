@@ -1,0 +1,75 @@
+module OpenAI
+  module Models
+    type image_create_variation_params =
+      {
+        image: (IO | StringIO),
+        model: OpenAI::Models::ImageCreateVariationParams::model?,
+        n: Integer?,
+        response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
+        size: OpenAI::Models::ImageCreateVariationParams::size?,
+        user: String
+      }
+      & OpenAI::request_parameters
+
+    class ImageCreateVariationParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor image: IO | StringIO
+
+      attr_accessor model: OpenAI::Models::ImageCreateVariationParams::model?
+
+      attr_accessor n: Integer?
+
+      attr_accessor response_format: OpenAI::Models::ImageCreateVariationParams::response_format?
+
+      attr_accessor size: OpenAI::Models::ImageCreateVariationParams::size?
+
+      attr_reader user: String?
+
+      def user=: (String) -> String
+
+      def initialize:
+        (
+          image: IO | StringIO,
+          model: OpenAI::Models::ImageCreateVariationParams::model?,
+          n: Integer?,
+          response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
+          size: OpenAI::Models::ImageCreateVariationParams::size?,
+          user: String,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (
+          ?OpenAI::Models::image_create_variation_params
+          | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::image_create_variation_params
+
+      type model = String | OpenAI::Models::image_model
+
+      class Model < OpenAI::Union
+        private def self.variants: -> [[nil, String], [nil, OpenAI::Models::image_model]]
+      end
+
+      type response_format = :url | :b64_json
+
+      class ResponseFormat < OpenAI::Enum
+        URL: :url
+        B64_JSON: :b64_json
+
+        def self.values: -> ::Array[OpenAI::Models::ImageCreateVariationParams::response_format]
+      end
+
+      type size = :"256x256" | :"512x512" | :"1024x1024"
+
+      class Size < OpenAI::Enum
+        NUMBER_256X256: :"256x256"
+        NUMBER_512X512: :"512x512"
+        NUMBER_1024X1024: :"1024x1024"
+
+        def self.values: -> ::Array[OpenAI::Models::ImageCreateVariationParams::size]
+      end
+    end
+  end
+end

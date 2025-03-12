@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Responses
+      type tool =
+        OpenAI::Models::Responses::FileSearchTool
+        | OpenAI::Models::Responses::FunctionTool
+        | OpenAI::Models::Responses::ComputerTool
+        | OpenAI::Models::Responses::WebSearchTool
+
+      class Tool < OpenAI::Union
+        private def self.variants: -> [[:file_search, OpenAI::Models::Responses::FileSearchTool], [:function, OpenAI::Models::Responses::FunctionTool], [:computer_use_preview, OpenAI::Models::Responses::ComputerTool], [nil, OpenAI::Models::Responses::WebSearchTool]]
+      end
+    end
+  end
+end

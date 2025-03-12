@@ -1,0 +1,31 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type image_file_content_block =
+          {
+            image_file: OpenAI::Models::Beta::Threads::ImageFile,
+            type: :image_file
+          }
+
+        class ImageFileContentBlock < OpenAI::BaseModel
+          attr_accessor image_file: OpenAI::Models::Beta::Threads::ImageFile
+
+          attr_accessor type: :image_file
+
+          def initialize:
+            (
+              image_file: OpenAI::Models::Beta::Threads::ImageFile,
+              type: :image_file
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::image_file_content_block
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::image_file_content_block
+        end
+      end
+    end
+  end
+end

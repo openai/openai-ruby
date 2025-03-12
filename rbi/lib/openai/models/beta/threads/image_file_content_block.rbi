@@ -1,0 +1,35 @@
+# typed: strong
+
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        class ImageFileContentBlock < OpenAI::BaseModel
+          sig { returns(OpenAI::Models::Beta::Threads::ImageFile) }
+          def image_file
+          end
+
+          sig { params(_: OpenAI::Models::Beta::Threads::ImageFile).returns(OpenAI::Models::Beta::Threads::ImageFile) }
+          def image_file=(_)
+          end
+
+          sig { returns(Symbol) }
+          def type
+          end
+
+          sig { params(_: Symbol).returns(Symbol) }
+          def type=(_)
+          end
+
+          sig { params(image_file: OpenAI::Models::Beta::Threads::ImageFile, type: Symbol).returns(T.attached_class) }
+          def self.new(image_file:, type: :image_file)
+          end
+
+          sig { override.returns({image_file: OpenAI::Models::Beta::Threads::ImageFile, type: Symbol}) }
+          def to_hash
+          end
+        end
+      end
+    end
+  end
+end

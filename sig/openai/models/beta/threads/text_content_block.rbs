@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type text_content_block =
+          { text: OpenAI::Models::Beta::Threads::Text, type: :text }
+
+        class TextContentBlock < OpenAI::BaseModel
+          attr_accessor text: OpenAI::Models::Beta::Threads::Text
+
+          attr_accessor type: :text
+
+          def initialize:
+            (text: OpenAI::Models::Beta::Threads::Text, type: :text) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::text_content_block
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::text_content_block
+        end
+      end
+    end
+  end
+end

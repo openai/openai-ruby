@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+cd -- "$(dirname -- "$0")/.."
+
+bundle
+find . -maxdepth 1 -type f -name "*.gem" -delete
+rake release

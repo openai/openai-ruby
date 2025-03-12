@@ -1,0 +1,22 @@
+module OpenAI
+  module Models
+    type model =
+      { id: String, created: Integer, object: :model, owned_by: String }
+
+    class Model < OpenAI::BaseModel
+      attr_accessor id: String
+
+      attr_accessor created: Integer
+
+      attr_accessor object: :model
+
+      attr_accessor owned_by: String
+
+      def initialize:
+        (id: String, created: Integer, owned_by: String, object: :model) -> void
+        | (?OpenAI::Models::model | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::model
+    end
+  end
+end

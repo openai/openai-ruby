@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        
+        class RunStepDelta = Runs::RunStepDelta
+
+        module Runs
+          type run_step_delta =
+            {
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+            }
+
+          class RunStepDelta < OpenAI::BaseModel
+            attr_reader step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details?
+
+            def step_details=: (
+              OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+            ) -> OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+
+            def initialize:
+              (
+                step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::run_step_delta
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step_delta
+
+            type step_details =
+              OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta
+              | OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
+
+            class StepDetails < OpenAI::Union
+              private def self.variants: -> [[:message_creation, OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta], [:tool_calls, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]]
+            end
+          end
+        end
+      end
+    end
+  end
+end

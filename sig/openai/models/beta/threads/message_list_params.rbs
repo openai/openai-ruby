@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type message_list_params =
+          {
+            after: String,
+            before: String,
+            limit: Integer,
+            order: OpenAI::Models::Beta::Threads::MessageListParams::order,
+            run_id: String
+          }
+          & OpenAI::request_parameters
+
+        class MessageListParams < OpenAI::BaseModel
+          extend OpenAI::RequestParameters::Converter
+          include OpenAI::RequestParameters
+
+          attr_reader after: String?
+
+          def after=: (String) -> String
+
+          attr_reader before: String?
+
+          def before=: (String) -> String
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader order: OpenAI::Models::Beta::Threads::MessageListParams::order?
+
+          def order=: (
+            OpenAI::Models::Beta::Threads::MessageListParams::order
+          ) -> OpenAI::Models::Beta::Threads::MessageListParams::order
+
+          attr_reader run_id: String?
+
+          def run_id=: (String) -> String
+
+          def initialize:
+            (
+              after: String,
+              before: String,
+              limit: Integer,
+              order: OpenAI::Models::Beta::Threads::MessageListParams::order,
+              run_id: String,
+              request_options: OpenAI::request_opts
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::message_list_params
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::message_list_params
+
+          type order = :asc | :desc
+
+          class Order < OpenAI::Enum
+            ASC: :asc
+            DESC: :desc
+
+            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::MessageListParams::order]
+          end
+        end
+      end
+    end
+  end
+end

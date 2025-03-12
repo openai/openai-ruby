@@ -1,0 +1,85 @@
+module OpenAI
+  module Models
+    type embedding_create_params =
+      {
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        dimensions: Integer,
+        encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        user: String
+      }
+      & OpenAI::request_parameters
+
+    class EmbeddingCreateParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor input: OpenAI::Models::EmbeddingCreateParams::input
+
+      attr_accessor model: OpenAI::Models::EmbeddingCreateParams::model
+
+      attr_reader dimensions: Integer?
+
+      def dimensions=: (Integer) -> Integer
+
+      attr_reader encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format?
+
+      def encoding_format=: (
+        OpenAI::Models::EmbeddingCreateParams::encoding_format
+      ) -> OpenAI::Models::EmbeddingCreateParams::encoding_format
+
+      attr_reader user: String?
+
+      def user=: (String) -> String
+
+      def initialize:
+        (
+          input: OpenAI::Models::EmbeddingCreateParams::input,
+          model: OpenAI::Models::EmbeddingCreateParams::model,
+          dimensions: Integer,
+          encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+          user: String,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (
+          ?OpenAI::Models::embedding_create_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::embedding_create_params
+
+      type input =
+        String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
+
+      class Input < OpenAI::Union
+        type string_array = ::Array[String]
+
+        StringArray: string_array
+
+        type integer_array = ::Array[Integer]
+
+        IntegerArray: integer_array
+
+        type array_of_token2_d_array = ::Array[::Array[Integer]]
+
+        ArrayOfToken2DArray: array_of_token2_d_array
+
+        private def self.variants: -> [[nil, String], [nil, ::Array[String]], [nil, ::Array[Integer]], [nil, ::Array[::Array[Integer]]]]
+      end
+
+      type model = String | OpenAI::Models::embedding_model
+
+      class Model < OpenAI::Union
+        private def self.variants: -> [[nil, String], [nil, OpenAI::Models::embedding_model]]
+      end
+
+      type encoding_format = :float | :base64
+
+      class EncodingFormat < OpenAI::Enum
+        FLOAT: :float
+        BASE64: :base64
+
+        def self.values: -> ::Array[OpenAI::Models::EmbeddingCreateParams::encoding_format]
+      end
+    end
+  end
+end

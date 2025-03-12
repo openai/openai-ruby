@@ -1,0 +1,11 @@
+module OpenAI
+  module Models
+    type audio_model = :"whisper-1"
+
+    class AudioModel < OpenAI::Enum
+      WHISPER_1: :"whisper-1"
+
+      def self.values: -> ::Array[OpenAI::Models::audio_model]
+    end
+  end
+end

@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_created_event =
+        {
+          response: OpenAI::Models::Responses::Response,
+          type: :"response.created"
+        }
+
+      class ResponseCreatedEvent < OpenAI::BaseModel
+        attr_accessor response: OpenAI::Models::Responses::Response
+
+        attr_accessor type: :"response.created"
+
+        def initialize:
+          (
+            response: OpenAI::Models::Responses::Response,
+            type: :"response.created"
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_created_event
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_created_event
+      end
+    end
+  end
+end

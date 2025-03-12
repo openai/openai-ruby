@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type text_delta =
+          {
+            annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
+            value: String
+          }
+
+        class TextDelta < OpenAI::BaseModel
+          attr_reader annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta]?
+
+          def annotations=: (
+            ::Array[OpenAI::Models::Beta::Threads::annotation_delta]
+          ) -> ::Array[OpenAI::Models::Beta::Threads::annotation_delta]
+
+          attr_reader value: String?
+
+          def value=: (String) -> String
+
+          def initialize:
+            (
+              annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
+              value: String
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::text_delta
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::text_delta
+        end
+      end
+    end
+  end
+end

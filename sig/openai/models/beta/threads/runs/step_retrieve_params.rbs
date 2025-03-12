@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type step_retrieve_params =
+            {
+              thread_id: String,
+              run_id: String,
+              include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
+            }
+            & OpenAI::request_parameters
+
+          class StepRetrieveParams < OpenAI::BaseModel
+            extend OpenAI::RequestParameters::Converter
+            include OpenAI::RequestParameters
+
+            attr_accessor thread_id: String
+
+            attr_accessor run_id: String
+
+            attr_reader include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]?
+
+            def include=: (
+              ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
+            ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
+
+            def initialize:
+              (
+                thread_id: String,
+                run_id: String,
+                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                request_options: OpenAI::request_opts
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::step_retrieve_params
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::step_retrieve_params
+          end
+        end
+      end
+    end
+  end
+end

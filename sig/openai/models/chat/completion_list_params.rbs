@@ -1,0 +1,65 @@
+module OpenAI
+  module Models
+    module Chat
+      type completion_list_params =
+        {
+          after: String,
+          limit: Integer,
+          metadata: OpenAI::Models::metadata?,
+          model: String,
+          order: OpenAI::Models::Chat::CompletionListParams::order
+        }
+        & OpenAI::request_parameters
+
+      class CompletionListParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_reader after: String?
+
+        def after=: (String) -> String
+
+        attr_reader limit: Integer?
+
+        def limit=: (Integer) -> Integer
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_reader model: String?
+
+        def model=: (String) -> String
+
+        attr_reader order: OpenAI::Models::Chat::CompletionListParams::order?
+
+        def order=: (
+          OpenAI::Models::Chat::CompletionListParams::order
+        ) -> OpenAI::Models::Chat::CompletionListParams::order
+
+        def initialize:
+          (
+            after: String,
+            limit: Integer,
+            metadata: OpenAI::Models::metadata?,
+            model: String,
+            order: OpenAI::Models::Chat::CompletionListParams::order,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Chat::completion_list_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::completion_list_params
+
+        type order = :asc | :desc
+
+        class Order < OpenAI::Enum
+          ASC: :asc
+          DESC: :desc
+
+          def self.values: -> ::Array[OpenAI::Models::Chat::CompletionListParams::order]
+        end
+      end
+    end
+  end
+end

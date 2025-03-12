@@ -1,0 +1,60 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionTokenLogprob = Chat::ChatCompletionTokenLogprob
+
+    module Chat
+      type chat_completion_token_logprob =
+        {
+          token: String,
+          bytes: ::Array[Integer]?,
+          logprob: Float,
+          top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
+        }
+
+      class ChatCompletionTokenLogprob < OpenAI::BaseModel
+        attr_accessor token: String
+
+        attr_accessor bytes: ::Array[Integer]?
+
+        attr_accessor logprob: Float
+
+        attr_accessor top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
+
+        def initialize:
+          (
+            token: String,
+            bytes: ::Array[Integer]?,
+            logprob: Float,
+            top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
+          ) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_token_logprob
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_token_logprob
+
+        type top_logprob =
+          { token: String, bytes: ::Array[Integer]?, logprob: Float }
+
+        class TopLogprob < OpenAI::BaseModel
+          attr_accessor token: String
+
+          attr_accessor bytes: ::Array[Integer]?
+
+          attr_accessor logprob: Float
+
+          def initialize:
+            (token: String, bytes: ::Array[Integer]?, logprob: Float) -> void
+            | (
+              ?OpenAI::Models::Chat::ChatCompletionTokenLogprob::top_logprob
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Chat::ChatCompletionTokenLogprob::top_logprob
+        end
+      end
+    end
+  end
+end

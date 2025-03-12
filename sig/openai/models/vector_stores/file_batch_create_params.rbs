@@ -1,0 +1,48 @@
+module OpenAI
+  module Models
+    module VectorStores
+      type file_batch_create_params =
+        {
+          file_ids: ::Array[String],
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
+          chunking_strategy: OpenAI::Models::file_chunking_strategy_param
+        }
+        & OpenAI::request_parameters
+
+      class FileBatchCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor file_ids: ::Array[String]
+
+        attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?
+
+        attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy_param?
+
+        def chunking_strategy=: (
+          OpenAI::Models::file_chunking_strategy_param
+        ) -> OpenAI::Models::file_chunking_strategy_param
+
+        def initialize:
+          (
+            file_ids: ::Array[String],
+            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
+            chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::VectorStores::file_batch_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::VectorStores::file_batch_create_params
+
+        type attribute = String | Float | bool
+
+        class Attribute < OpenAI::Union
+          private def self.variants: -> [[nil, String], [nil, Float], [nil, bool]]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,77 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type step_list_params =
+            {
+              thread_id: String,
+              after: String,
+              before: String,
+              include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+              limit: Integer,
+              order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order
+            }
+            & OpenAI::request_parameters
+
+          class StepListParams < OpenAI::BaseModel
+            extend OpenAI::RequestParameters::Converter
+            include OpenAI::RequestParameters
+
+            attr_accessor thread_id: String
+
+            attr_reader after: String?
+
+            def after=: (String) -> String
+
+            attr_reader before: String?
+
+            def before=: (String) -> String
+
+            attr_reader include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]?
+
+            def include=: (
+              ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
+            ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]
+
+            attr_reader limit: Integer?
+
+            def limit=: (Integer) -> Integer
+
+            attr_reader order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order?
+
+            def order=: (
+              OpenAI::Models::Beta::Threads::Runs::StepListParams::order
+            ) -> OpenAI::Models::Beta::Threads::Runs::StepListParams::order
+
+            def initialize:
+              (
+                thread_id: String,
+                after: String,
+                before: String,
+                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                limit: Integer,
+                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
+                request_options: OpenAI::request_opts
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::step_list_params
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::step_list_params
+
+            type order = :asc | :desc
+
+            class Order < OpenAI::Enum
+              ASC: :asc
+              DESC: :desc
+
+              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::StepListParams::order]
+            end
+          end
+        end
+      end
+    end
+  end
+end

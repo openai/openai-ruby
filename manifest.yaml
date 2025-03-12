@@ -1,0 +1,13 @@
+dependencies:
+  - cgi
+  - date
+  - erb
+  - etc
+  - json
+  - net/http
+  - rbconfig
+  - securerandom
+  - set
+  - stringio
+  - time
+  - uri

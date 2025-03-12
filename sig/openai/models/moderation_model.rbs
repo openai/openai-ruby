@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    type moderation_model =
+      :"omni-moderation-latest"
+      | :"omni-moderation-2024-09-26"
+      | :"text-moderation-latest"
+      | :"text-moderation-stable"
+
+    class ModerationModel < OpenAI::Enum
+      OMNI_MODERATION_LATEST: :"omni-moderation-latest"
+      OMNI_MODERATION_2024_09_26: :"omni-moderation-2024-09-26"
+      TEXT_MODERATION_LATEST: :"text-moderation-latest"
+      TEXT_MODERATION_STABLE: :"text-moderation-stable"
+
+      def self.values: -> ::Array[OpenAI::Models::moderation_model]
+    end
+  end
+end

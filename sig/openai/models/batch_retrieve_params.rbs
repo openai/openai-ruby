@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    type batch_retrieve_params = {  } & OpenAI::request_parameters
+
+    class BatchRetrieveParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      def initialize:
+        (request_options: OpenAI::request_opts) -> void
+        | (
+          ?OpenAI::Models::batch_retrieve_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::batch_retrieve_params
+    end
+  end
+end

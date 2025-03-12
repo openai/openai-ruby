@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        
+        class RunStepDeltaMessageDelta = Runs::RunStepDeltaMessageDelta
+
+        module Runs
+          type run_step_delta_message_delta =
+            {
+              type: :message_creation,
+              message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+            }
+
+          class RunStepDeltaMessageDelta < OpenAI::BaseModel
+            attr_accessor type: :message_creation
+
+            attr_reader message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation?
+
+            def message_creation=: (
+              OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+            ) -> OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+
+            def initialize:
+              (
+                message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
+                type: :message_creation
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::run_step_delta_message_delta
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step_delta_message_delta
+
+            type message_creation = { message_id: String }
+
+            class MessageCreation < OpenAI::BaseModel
+              attr_reader message_id: String?
+
+              def message_id=: (String) -> String
+
+              def initialize:
+                (message_id: String) -> void
+                | (
+                  ?OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::message_creation
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::message_creation
+            end
+          end
+        end
+      end
+    end
+  end
+end

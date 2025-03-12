@@ -1,0 +1,109 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Jobs
+        type fine_tuning_job_checkpoint =
+          {
+            id: String,
+            created_at: Integer,
+            fine_tuned_model_checkpoint: String,
+            fine_tuning_job_id: String,
+            metrics: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+            object: :"fine_tuning.job.checkpoint",
+            step_number: Integer
+          }
+
+        class FineTuningJobCheckpoint < OpenAI::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor fine_tuned_model_checkpoint: String
+
+          attr_accessor fine_tuning_job_id: String
+
+          attr_accessor metrics: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics
+
+          attr_accessor object: :"fine_tuning.job.checkpoint"
+
+          attr_accessor step_number: Integer
+
+          def initialize:
+            (
+              id: String,
+              created_at: Integer,
+              fine_tuned_model_checkpoint: String,
+              fine_tuning_job_id: String,
+              metrics: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+              step_number: Integer,
+              object: :"fine_tuning.job.checkpoint"
+            ) -> void
+            | (
+              ?OpenAI::Models::FineTuning::Jobs::fine_tuning_job_checkpoint
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::Jobs::fine_tuning_job_checkpoint
+
+          type metrics =
+            {
+              full_valid_loss: Float,
+              full_valid_mean_token_accuracy: Float,
+              step: Float,
+              train_loss: Float,
+              train_mean_token_accuracy: Float,
+              valid_loss: Float,
+              valid_mean_token_accuracy: Float
+            }
+
+          class Metrics < OpenAI::BaseModel
+            attr_reader full_valid_loss: Float?
+
+            def full_valid_loss=: (Float) -> Float
+
+            attr_reader full_valid_mean_token_accuracy: Float?
+
+            def full_valid_mean_token_accuracy=: (Float) -> Float
+
+            attr_reader step: Float?
+
+            def step=: (Float) -> Float
+
+            attr_reader train_loss: Float?
+
+            def train_loss=: (Float) -> Float
+
+            attr_reader train_mean_token_accuracy: Float?
+
+            def train_mean_token_accuracy=: (Float) -> Float
+
+            attr_reader valid_loss: Float?
+
+            def valid_loss=: (Float) -> Float
+
+            attr_reader valid_mean_token_accuracy: Float?
+
+            def valid_mean_token_accuracy=: (Float) -> Float
+
+            def initialize:
+              (
+                full_valid_loss: Float,
+                full_valid_mean_token_accuracy: Float,
+                step: Float,
+                train_loss: Float,
+                train_mean_token_accuracy: Float,
+                valid_loss: Float,
+                valid_mean_token_accuracy: Float
+              ) -> void
+              | (
+                ?OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::metrics
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::metrics
+          end
+        end
+      end
+    end
+  end
+end

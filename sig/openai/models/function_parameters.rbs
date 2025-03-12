@@ -1,0 +1,7 @@
+module OpenAI
+  module Models
+    type function_parameters = ::Hash[Symbol, top]
+
+    FunctionParameters: function_parameters
+  end
+end

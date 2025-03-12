@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionContentPartImage = Chat::ChatCompletionContentPartImage
+
+    module Chat
+      type chat_completion_content_part_image =
+        {
+          image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL,
+          type: :image_url
+        }
+
+      class ChatCompletionContentPartImage < OpenAI::BaseModel
+        attr_accessor image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL
+
+        attr_accessor type: :image_url
+
+        def initialize:
+          (
+            image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL,
+            type: :image_url
+          ) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_content_part_image
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_content_part_image
+
+        type image_url =
+          {
+            url: String,
+            detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
+          }
+
+        class ImageURL < OpenAI::BaseModel
+          attr_accessor url: String
+
+          attr_reader detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail?
+
+          def detail=: (
+            OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
+          ) -> OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
+
+          def initialize:
+            (
+              url: String,
+              detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
+            ) -> void
+            | (
+              ?OpenAI::Models::Chat::ChatCompletionContentPartImage::image_url
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Chat::ChatCompletionContentPartImage::image_url
+
+          type detail = :auto | :low | :high
+
+          class Detail < OpenAI::Enum
+            AUTO: :auto
+            LOW: :low
+            HIGH: :high
+
+            def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail]
+          end
+        end
+      end
+    end
+  end
+end

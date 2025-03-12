@@ -1,0 +1,50 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionUserMessageParam = Chat::ChatCompletionUserMessageParam
+
+    module Chat
+      type chat_completion_user_message_param =
+        {
+          content: OpenAI::Models::Chat::ChatCompletionUserMessageParam::content,
+          role: :user,
+          name: String
+        }
+
+      class ChatCompletionUserMessageParam < OpenAI::BaseModel
+        attr_accessor content: OpenAI::Models::Chat::ChatCompletionUserMessageParam::content
+
+        attr_accessor role: :user
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        def initialize:
+          (
+            content: OpenAI::Models::Chat::ChatCompletionUserMessageParam::content,
+            name: String,
+            role: :user
+          ) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_user_message_param
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_user_message_param
+
+        type content =
+          String | ::Array[OpenAI::Models::Chat::chat_completion_content_part]
+
+        class Content < OpenAI::Union
+          type chat_completion_content_part_array =
+            ::Array[OpenAI::Models::Chat::chat_completion_content_part]
+
+          ChatCompletionContentPartArray: chat_completion_content_part_array
+
+          private def self.variants: -> [[nil, String], [nil, ::Array[OpenAI::Models::Chat::chat_completion_content_part]]]
+        end
+      end
+    end
+  end
+end

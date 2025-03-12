@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type message_delete_params =
+          { thread_id: String } & OpenAI::request_parameters
+
+        class MessageDeleteParams < OpenAI::BaseModel
+          extend OpenAI::RequestParameters::Converter
+          include OpenAI::RequestParameters
+
+          attr_accessor thread_id: String
+
+          def initialize:
+            (thread_id: String, request_options: OpenAI::request_opts) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::message_delete_params
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::message_delete_params
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,43 @@
+module OpenAI
+  module Resources
+    class Uploads
+      attr_reader parts: OpenAI::Resources::Uploads::Parts
+
+      def create:
+        (
+          OpenAI::Models::UploadCreateParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::Upload
+        | (
+          bytes: Integer,
+          filename: String,
+          mime_type: String,
+          purpose: OpenAI::Models::file_purpose,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Upload
+
+      def cancel:
+        (
+          String upload_id,
+          ?OpenAI::Models::UploadCancelParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::Upload
+        | (
+          String upload_id,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Upload
+
+      def complete:
+        (
+          String upload_id,
+          OpenAI::Models::UploadCompleteParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::Upload
+        | (
+          String upload_id,
+          part_ids: ::Array[String],
+          md5: String,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Upload
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

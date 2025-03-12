@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    type batch_error =
+      { code: String, line: Integer?, message: String, param: String? }
+
+    class BatchError < OpenAI::BaseModel
+      attr_reader code: String?
+
+      def code=: (String) -> String
+
+      attr_accessor line: Integer?
+
+      attr_reader message: String?
+
+      def message=: (String) -> String
+
+      attr_accessor param: String?
+
+      def initialize:
+        (code: String, line: Integer?, message: String, param: String?) -> void
+        | (?OpenAI::Models::batch_error | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::batch_error
+    end
+  end
+end

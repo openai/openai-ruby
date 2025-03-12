@@ -1,0 +1,24 @@
+name: Release Doctor
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  release_doctor:
+    name: release doctor
+    runs-on: ubuntu-latest
+    environment: publish
+    if: github.repository == 'openai/openai-ruby' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'release-please') || github.head_ref == 'next')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check release environment
+        run: |
+          bash ./bin/check-release-environment
+        env:
+          STAINLESS_API_KEY: ${{ secrets.STAINLESS_API_KEY }}
+          RUBYGEMS_HOST: ${{ secrets.OPENAI_RUBYGEMS_HOST || secrets.RUBYGEMS_HOST }}
+          GEM_HOST_API_KEY: ${{ secrets.OPENAI_GEM_HOST_API_KEY || secrets.GEM_HOST_API_KEY }}

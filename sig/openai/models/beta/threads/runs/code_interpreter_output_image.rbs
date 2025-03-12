@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type code_interpreter_output_image =
+            {
+              index: Integer,
+              type: :image,
+              image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+            }
+
+          class CodeInterpreterOutputImage < OpenAI::BaseModel
+            attr_accessor index: Integer
+
+            attr_accessor type: :image
+
+            attr_reader image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image?
+
+            def image=: (
+              OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+            ) -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+
+            def initialize:
+              (
+                index: Integer,
+                image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
+                type: :image
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_output_image
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_output_image
+
+            type image = { file_id: String }
+
+            class Image < OpenAI::BaseModel
+              attr_reader file_id: String?
+
+              def file_id=: (String) -> String
+
+              def initialize:
+                (file_id: String) -> void
+                | (
+                  ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::image
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::image
+            end
+          end
+        end
+      end
+    end
+  end
+end

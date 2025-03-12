@@ -1,0 +1,106 @@
+module OpenAI
+  module Models
+    type completion_usage =
+      {
+        completion_tokens: Integer,
+        prompt_tokens: Integer,
+        total_tokens: Integer,
+        completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
+        prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
+      }
+
+    class CompletionUsage < OpenAI::BaseModel
+      attr_accessor completion_tokens: Integer
+
+      attr_accessor prompt_tokens: Integer
+
+      attr_accessor total_tokens: Integer
+
+      attr_reader completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails?
+
+      def completion_tokens_details=: (
+        OpenAI::Models::CompletionUsage::CompletionTokensDetails
+      ) -> OpenAI::Models::CompletionUsage::CompletionTokensDetails
+
+      attr_reader prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails?
+
+      def prompt_tokens_details=: (
+        OpenAI::Models::CompletionUsage::PromptTokensDetails
+      ) -> OpenAI::Models::CompletionUsage::PromptTokensDetails
+
+      def initialize:
+        (
+          completion_tokens: Integer,
+          prompt_tokens: Integer,
+          total_tokens: Integer,
+          completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
+          prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
+        ) -> void
+        | (?OpenAI::Models::completion_usage | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::completion_usage
+
+      type completion_tokens_details =
+        {
+          accepted_prediction_tokens: Integer,
+          audio_tokens: Integer,
+          reasoning_tokens: Integer,
+          rejected_prediction_tokens: Integer
+        }
+
+      class CompletionTokensDetails < OpenAI::BaseModel
+        attr_reader accepted_prediction_tokens: Integer?
+
+        def accepted_prediction_tokens=: (Integer) -> Integer
+
+        attr_reader audio_tokens: Integer?
+
+        def audio_tokens=: (Integer) -> Integer
+
+        attr_reader reasoning_tokens: Integer?
+
+        def reasoning_tokens=: (Integer) -> Integer
+
+        attr_reader rejected_prediction_tokens: Integer?
+
+        def rejected_prediction_tokens=: (Integer) -> Integer
+
+        def initialize:
+          (
+            accepted_prediction_tokens: Integer,
+            audio_tokens: Integer,
+            reasoning_tokens: Integer,
+            rejected_prediction_tokens: Integer
+          ) -> void
+          | (
+            ?OpenAI::Models::CompletionUsage::completion_tokens_details
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::CompletionUsage::completion_tokens_details
+      end
+
+      type prompt_tokens_details =
+        { audio_tokens: Integer, cached_tokens: Integer }
+
+      class PromptTokensDetails < OpenAI::BaseModel
+        attr_reader audio_tokens: Integer?
+
+        def audio_tokens=: (Integer) -> Integer
+
+        attr_reader cached_tokens: Integer?
+
+        def cached_tokens=: (Integer) -> Integer
+
+        def initialize:
+          (audio_tokens: Integer, cached_tokens: Integer) -> void
+          | (
+            ?OpenAI::Models::CompletionUsage::prompt_tokens_details
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::CompletionUsage::prompt_tokens_details
+      end
+    end
+  end
+end

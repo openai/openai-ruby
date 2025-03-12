@@ -1,0 +1,117 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_output_text =
+        {
+          annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
+          text: String,
+          type: :output_text
+        }
+
+      class ResponseOutputText < OpenAI::BaseModel
+        attr_accessor annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation]
+
+        attr_accessor text: String
+
+        attr_accessor type: :output_text
+
+        def initialize:
+          (
+            annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
+            text: String,
+            type: :output_text
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_output_text
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_output_text
+
+        type annotation =
+          OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation
+          | OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation
+          | OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
+
+        class Annotation < OpenAI::Union
+          type file_citation =
+            { file_id: String, index: Integer, type: :file_citation }
+
+          class FileCitation < OpenAI::BaseModel
+            attr_accessor file_id: String
+
+            attr_accessor index: Integer
+
+            attr_accessor type: :file_citation
+
+            def initialize:
+              (file_id: String, index: Integer, type: :file_citation) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseOutputText::Annotation::file_citation
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseOutputText::Annotation::file_citation
+          end
+
+          type url_citation =
+            {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              type: :url_citation,
+              url: String
+            }
+
+          class URLCitation < OpenAI::BaseModel
+            attr_accessor end_index: Integer
+
+            attr_accessor start_index: Integer
+
+            attr_accessor title: String
+
+            attr_accessor type: :url_citation
+
+            attr_accessor url: String
+
+            def initialize:
+              (
+                end_index: Integer,
+                start_index: Integer,
+                title: String,
+                url: String,
+                type: :url_citation
+              ) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseOutputText::Annotation::url_citation
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseOutputText::Annotation::url_citation
+          end
+
+          type file_path = { file_id: String, index: Integer, type: :file_path }
+
+          class FilePath < OpenAI::BaseModel
+            attr_accessor file_id: String
+
+            attr_accessor index: Integer
+
+            attr_accessor type: :file_path
+
+            def initialize:
+              (file_id: String, index: Integer, type: :file_path) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseOutputText::Annotation::file_path
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseOutputText::Annotation::file_path
+          end
+
+          private def self.variants: -> [[:file_citation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation], [:url_citation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation], [:file_path, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath]]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type message_content_delta =
+          OpenAI::Models::Beta::Threads::ImageFileDeltaBlock
+          | OpenAI::Models::Beta::Threads::TextDeltaBlock
+          | OpenAI::Models::Beta::Threads::RefusalDeltaBlock
+          | OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+
+        class MessageContentDelta < OpenAI::Union
+          private def self.variants: -> [[:image_file, OpenAI::Models::Beta::Threads::ImageFileDeltaBlock], [:text, OpenAI::Models::Beta::Threads::TextDeltaBlock], [:refusal, OpenAI::Models::Beta::Threads::RefusalDeltaBlock], [:image_url, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock]]
+        end
+      end
+    end
+  end
+end

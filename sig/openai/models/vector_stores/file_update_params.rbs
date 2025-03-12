@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    module VectorStores
+      type file_update_params =
+        {
+          vector_store_id: String,
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?
+        }
+        & OpenAI::request_parameters
+
+      class FileUpdateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor vector_store_id: String
+
+        attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?
+
+        def initialize:
+          (
+            vector_store_id: String,
+            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::VectorStores::file_update_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::VectorStores::file_update_params
+
+        type attribute = String | Float | bool
+
+        class Attribute < OpenAI::Union
+          private def self.variants: -> [[nil, String], [nil, Float], [nil, bool]]
+        end
+      end
+    end
+  end
+end

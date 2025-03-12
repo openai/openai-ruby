@@ -1,0 +1,56 @@
+module OpenAI
+  module Resources
+    class Files
+      def create:
+        (
+          OpenAI::Models::FileCreateParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::FileObject
+        | (
+          file: IO | StringIO,
+          purpose: OpenAI::Models::file_purpose,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::FileObject
+
+      def retrieve:
+        (
+          String file_id,
+          ?OpenAI::Models::FileRetrieveParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::FileObject
+        | (
+          String file_id,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::FileObject
+
+      def list:
+        (
+          ?OpenAI::Models::FileListParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::CursorPage[OpenAI::Models::FileObject]
+        | (
+          after: String,
+          limit: Integer,
+          order: OpenAI::Models::FileListParams::order,
+          purpose: String,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::CursorPage[OpenAI::Models::FileObject]
+
+      def delete:
+        (
+          String file_id,
+          ?OpenAI::Models::FileDeleteParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::FileDeleted
+        | (
+          String file_id,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::FileDeleted
+
+      def content:
+        (
+          String file_id,
+          ?OpenAI::Models::FileContentParams | ::Hash[Symbol, top] params
+        ) -> top
+        | (String file_id, request_options: OpenAI::request_opts) -> top
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

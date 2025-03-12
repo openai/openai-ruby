@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type text =
+          {
+            annotations: ::Array[OpenAI::Models::Beta::Threads::annotation],
+            value: String
+          }
+
+        class Text < OpenAI::BaseModel
+          attr_accessor annotations: ::Array[OpenAI::Models::Beta::Threads::annotation]
+
+          attr_accessor value: String
+
+          def initialize:
+            (
+              annotations: ::Array[OpenAI::Models::Beta::Threads::annotation],
+              value: String
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::text | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::text
+        end
+      end
+    end
+  end
+end

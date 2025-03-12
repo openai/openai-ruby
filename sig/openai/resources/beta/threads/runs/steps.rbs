@@ -1,0 +1,44 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Threads
+        class Runs
+          class Steps
+            def retrieve:
+              (
+                String step_id,
+                OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams
+                | ::Hash[Symbol, top] params
+              ) -> OpenAI::Models::Beta::Threads::Runs::RunStep
+              | (
+                String step_id,
+                thread_id: String,
+                run_id: String,
+                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                request_options: OpenAI::request_opts
+              ) -> OpenAI::Models::Beta::Threads::Runs::RunStep
+
+            def list:
+              (
+                String run_id,
+                OpenAI::Models::Beta::Threads::Runs::StepListParams
+                | ::Hash[Symbol, top] params
+              ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Runs::RunStep]
+              | (
+                String run_id,
+                thread_id: String,
+                after: String,
+                before: String,
+                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                limit: Integer,
+                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
+                request_options: OpenAI::request_opts
+              ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Runs::RunStep]
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

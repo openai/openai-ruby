@@ -1,0 +1,83 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_create_params =
+        {
+          file: (IO | StringIO),
+          model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          language: String,
+          prompt: String,
+          response_format: OpenAI::Models::audio_response_format,
+          temperature: Float,
+          timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
+        }
+        & OpenAI::request_parameters
+
+      class TranscriptionCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor file: IO | StringIO
+
+        attr_accessor model: OpenAI::Models::Audio::TranscriptionCreateParams::model
+
+        attr_reader language: String?
+
+        def language=: (String) -> String
+
+        attr_reader prompt: String?
+
+        def prompt=: (String) -> String
+
+        attr_reader response_format: OpenAI::Models::audio_response_format?
+
+        def response_format=: (
+          OpenAI::Models::audio_response_format
+        ) -> OpenAI::Models::audio_response_format
+
+        attr_reader temperature: Float?
+
+        def temperature=: (Float) -> Float
+
+        attr_reader timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]?
+
+        def timestamp_granularities=: (
+          ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
+        ) -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
+
+        def initialize:
+          (
+            file: IO | StringIO,
+            model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+            language: String,
+            prompt: String,
+            response_format: OpenAI::Models::audio_response_format,
+            temperature: Float,
+            timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Audio::transcription_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Audio::transcription_create_params
+
+        type model = String | OpenAI::Models::audio_model
+
+        class Model < OpenAI::Union
+          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::audio_model]]
+        end
+
+        type timestamp_granularity = :word | :segment
+
+        class TimestampGranularity < OpenAI::Enum
+          WORD: :word
+          SEGMENT: :segment
+
+          def self.values: -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
+        end
+      end
+    end
+  end
+end

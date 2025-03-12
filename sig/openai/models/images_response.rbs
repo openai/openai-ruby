@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    type images_response =
+      { created: Integer, data: ::Array[OpenAI::Models::Image] }
+
+    class ImagesResponse < OpenAI::BaseModel
+      attr_accessor created: Integer
+
+      attr_accessor data: ::Array[OpenAI::Models::Image]
+
+      def initialize:
+        (created: Integer, data: ::Array[OpenAI::Models::Image]) -> void
+        | (?OpenAI::Models::images_response | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::images_response
+    end
+  end
+end

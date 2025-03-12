@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Responses
+      type tool_choice_options = :none | :auto | :required
+
+      class ToolChoiceOptions < OpenAI::Enum
+        NONE: :none
+        AUTO: :auto
+        REQUIRED: :required
+
+        def self.values: -> ::Array[OpenAI::Models::Responses::tool_choice_options]
+      end
+    end
+  end
+end

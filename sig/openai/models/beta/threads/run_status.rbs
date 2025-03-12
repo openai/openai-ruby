@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type run_status =
+          :queued
+          | :in_progress
+          | :requires_action
+          | :cancelling
+          | :cancelled
+          | :failed
+          | :completed
+          | :incomplete
+          | :expired
+
+        class RunStatus < OpenAI::Enum
+          QUEUED: :queued
+          IN_PROGRESS: :in_progress
+          REQUIRES_ACTION: :requires_action
+          CANCELLING: :cancelling
+          CANCELLED: :cancelled
+          FAILED: :failed
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          EXPIRED: :expired
+
+          def self.values: -> ::Array[OpenAI::Models::Beta::Threads::run_status]
+        end
+      end
+    end
+  end
+end

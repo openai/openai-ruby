@@ -1,0 +1,11 @@
+module OpenAI
+  module Resources
+    class Beta
+      attr_reader assistants: OpenAI::Resources::Beta::Assistants
+
+      attr_reader threads: OpenAI::Resources::Beta::Threads
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

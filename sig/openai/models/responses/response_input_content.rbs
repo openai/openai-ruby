@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_input_content =
+        OpenAI::Models::Responses::ResponseInputText
+        | OpenAI::Models::Responses::ResponseInputImage
+        | OpenAI::Models::Responses::ResponseInputFile
+
+      class ResponseInputContent < OpenAI::Union
+        private def self.variants: -> [[:input_text, OpenAI::Models::Responses::ResponseInputText], [:input_image, OpenAI::Models::Responses::ResponseInputImage], [:input_file, OpenAI::Models::Responses::ResponseInputFile]]
+      end
+    end
+  end
+end

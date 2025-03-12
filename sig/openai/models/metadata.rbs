@@ -1,0 +1,7 @@
+module OpenAI
+  module Models
+    type metadata = ::Hash[Symbol, String]?
+
+    Metadata: metadata
+  end
+end

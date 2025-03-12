@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    type file_list_params =
+      {
+        after: String,
+        limit: Integer,
+        order: OpenAI::Models::FileListParams::order,
+        purpose: String
+      }
+      & OpenAI::request_parameters
+
+    class FileListParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_reader after: String?
+
+      def after=: (String) -> String
+
+      attr_reader limit: Integer?
+
+      def limit=: (Integer) -> Integer
+
+      attr_reader order: OpenAI::Models::FileListParams::order?
+
+      def order=: (
+        OpenAI::Models::FileListParams::order
+      ) -> OpenAI::Models::FileListParams::order
+
+      attr_reader purpose: String?
+
+      def purpose=: (String) -> String
+
+      def initialize:
+        (
+          after: String,
+          limit: Integer,
+          order: OpenAI::Models::FileListParams::order,
+          purpose: String,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (?OpenAI::Models::file_list_params | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::file_list_params
+
+      type order = :asc | :desc
+
+      class Order < OpenAI::Enum
+        ASC: :asc
+        DESC: :desc
+
+        def self.values: -> ::Array[OpenAI::Models::FileListParams::order]
+      end
+    end
+  end
+end

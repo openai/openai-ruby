@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type image_url =
+          {
+            url: String,
+            detail: OpenAI::Models::Beta::Threads::ImageURL::detail
+          }
+
+        class ImageURL < OpenAI::BaseModel
+          attr_accessor url: String
+
+          attr_reader detail: OpenAI::Models::Beta::Threads::ImageURL::detail?
+
+          def detail=: (
+            OpenAI::Models::Beta::Threads::ImageURL::detail
+          ) -> OpenAI::Models::Beta::Threads::ImageURL::detail
+
+          def initialize:
+            (
+              url: String,
+              detail: OpenAI::Models::Beta::Threads::ImageURL::detail
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::image_url | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::image_url
+
+          type detail = :auto | :low | :high
+
+          class Detail < OpenAI::Enum
+            AUTO: :auto
+            LOW: :low
+            HIGH: :high
+
+            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::ImageURL::detail]
+          end
+        end
+      end
+    end
+  end
+end

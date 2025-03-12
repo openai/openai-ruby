@@ -1,0 +1,432 @@
+module OpenAI
+  module Models
+    module FineTuning
+      type job_create_params =
+        {
+          model: OpenAI::Models::FineTuning::JobCreateParams::model,
+          training_file: String,
+          hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
+          integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?,
+          metadata: OpenAI::Models::metadata?,
+          method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
+          seed: Integer?,
+          suffix: String?,
+          validation_file: String?
+        }
+        & OpenAI::request_parameters
+
+      class JobCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor model: OpenAI::Models::FineTuning::JobCreateParams::model
+
+        attr_accessor training_file: String
+
+        attr_reader hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters?
+
+        def hyperparameters=: (
+          OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters
+        ) -> OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters
+
+        attr_accessor integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_reader method_: OpenAI::Models::FineTuning::JobCreateParams::Method?
+
+        def method_=: (
+          OpenAI::Models::FineTuning::JobCreateParams::Method
+        ) -> OpenAI::Models::FineTuning::JobCreateParams::Method
+
+        attr_accessor seed: Integer?
+
+        attr_accessor suffix: String?
+
+        attr_accessor validation_file: String?
+
+        def initialize:
+          (
+            model: OpenAI::Models::FineTuning::JobCreateParams::model,
+            training_file: String,
+            hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
+            integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?,
+            metadata: OpenAI::Models::metadata?,
+            method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
+            seed: Integer?,
+            suffix: String?,
+            validation_file: String?,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::FineTuning::job_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::FineTuning::job_create_params
+
+        type model =
+          String | OpenAI::Models::FineTuning::JobCreateParams::Model::preset
+
+        class Model < OpenAI::Union
+          type preset =
+            :"babbage-002" | :"davinci-002" | :"gpt-3.5-turbo" | :"gpt-4o-mini"
+
+          class Preset < OpenAI::Enum
+            BABBAGE_002: :"babbage-002"
+            DAVINCI_002: :"davinci-002"
+            GPT_3_5_TURBO: :"gpt-3.5-turbo"
+            GPT_4O_MINI: :"gpt-4o-mini"
+
+            def self.values: -> ::Array[OpenAI::Models::FineTuning::JobCreateParams::Model::preset]
+          end
+
+          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::FineTuning::JobCreateParams::Model::preset]]
+        end
+
+        type hyperparameters =
+          {
+            batch_size: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size,
+            learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier,
+            n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs
+          }
+
+        class Hyperparameters < OpenAI::BaseModel
+          attr_reader batch_size: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size?
+
+          def batch_size=: (
+            OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size
+          ) -> OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size
+
+          attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier?
+
+          def learning_rate_multiplier=: (
+            OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier
+          ) -> OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier
+
+          attr_reader n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs?
+
+          def n_epochs=: (
+            OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs
+          ) -> OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs
+
+          def initialize:
+            (
+              batch_size: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::batch_size,
+              learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::learning_rate_multiplier,
+              n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters::n_epochs
+            ) -> void
+            | (
+              ?OpenAI::Models::FineTuning::JobCreateParams::hyperparameters
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::hyperparameters
+
+          type batch_size = :auto | Integer
+
+          class BatchSize < OpenAI::Union
+            private def self.variants: -> [[nil, :auto], [nil, Integer]]
+          end
+
+          type learning_rate_multiplier = :auto | Float
+
+          class LearningRateMultiplier < OpenAI::Union
+            private def self.variants: -> [[nil, :auto], [nil, Float]]
+          end
+
+          type n_epochs = :auto | Integer
+
+          class NEpochs < OpenAI::Union
+            private def self.variants: -> [[nil, :auto], [nil, Integer]]
+          end
+        end
+
+        type integration =
+          {
+            type: :wandb,
+            wandb: OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb
+          }
+
+        class Integration < OpenAI::BaseModel
+          attr_accessor type: :wandb
+
+          attr_accessor wandb: OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb
+
+          def initialize:
+            (
+              wandb: OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb,
+              type: :wandb
+            ) -> void
+            | (
+              ?OpenAI::Models::FineTuning::JobCreateParams::integration
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::integration
+
+          type wandb =
+            {
+              project: String,
+              entity: String?,
+              name: String?,
+              tags: ::Array[String]
+            }
+
+          class Wandb < OpenAI::BaseModel
+            attr_accessor project: String
+
+            attr_accessor entity: String?
+
+            attr_accessor name: String?
+
+            attr_reader tags: ::Array[String]?
+
+            def tags=: (::Array[String]) -> ::Array[String]
+
+            def initialize:
+              (
+                project: String,
+                entity: String?,
+                name: String?,
+                tags: ::Array[String]
+              ) -> void
+              | (
+                ?OpenAI::Models::FineTuning::JobCreateParams::Integration::wandb
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::Integration::wandb
+          end
+        end
+
+        type method_ =
+          {
+            dpo: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo,
+            supervised: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised,
+            type: OpenAI::Models::FineTuning::JobCreateParams::Method::type_
+          }
+
+        class Method < OpenAI::BaseModel
+          attr_reader dpo: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo?
+
+          def dpo=: (
+            OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo
+          ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo
+
+          attr_reader supervised: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised?
+
+          def supervised=: (
+            OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised
+          ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised
+
+          attr_reader type: OpenAI::Models::FineTuning::JobCreateParams::Method::type_?
+
+          def type=: (
+            OpenAI::Models::FineTuning::JobCreateParams::Method::type_
+          ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::type_
+
+          def initialize:
+            (
+              dpo: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo,
+              supervised: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised,
+              type: OpenAI::Models::FineTuning::JobCreateParams::Method::type_
+            ) -> void
+            | (
+              ?OpenAI::Models::FineTuning::JobCreateParams::method_
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::method_
+
+          type dpo =
+            {
+              hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters
+            }
+
+          class Dpo < OpenAI::BaseModel
+            attr_reader hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters?
+
+            def hyperparameters=: (
+              OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters
+            ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters
+
+            def initialize:
+              (
+                hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters
+              ) -> void
+              | (
+                ?OpenAI::Models::FineTuning::JobCreateParams::Method::dpo
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::Method::dpo
+
+            type hyperparameters =
+              {
+                batch_size: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::batch_size,
+                beta: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::beta,
+                learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::learning_rate_multiplier,
+                n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::n_epochs
+              }
+
+            class Hyperparameters < OpenAI::BaseModel
+              attr_reader batch_size: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::batch_size?
+
+              def batch_size=: (
+                OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::batch_size
+              ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::batch_size
+
+              attr_reader beta: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::beta?
+
+              def beta=: (
+                OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::beta
+              ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::beta
+
+              attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::learning_rate_multiplier?
+
+              def learning_rate_multiplier=: (
+                OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::learning_rate_multiplier
+              ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::learning_rate_multiplier
+
+              attr_reader n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::n_epochs?
+
+              def n_epochs=: (
+                OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::n_epochs
+              ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::n_epochs
+
+              def initialize:
+                (
+                  batch_size: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::batch_size,
+                  beta: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::beta,
+                  learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::learning_rate_multiplier,
+                  n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters::n_epochs
+                ) -> void
+                | (
+                  ?OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::hyperparameters
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::hyperparameters
+
+              type batch_size = :auto | Integer
+
+              class BatchSize < OpenAI::Union
+                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+              end
+
+              type beta = :auto | Float
+
+              class Beta < OpenAI::Union
+                private def self.variants: -> [[nil, :auto], [nil, Float]]
+              end
+
+              type learning_rate_multiplier = :auto | Float
+
+              class LearningRateMultiplier < OpenAI::Union
+                private def self.variants: -> [[nil, :auto], [nil, Float]]
+              end
+
+              type n_epochs = :auto | Integer
+
+              class NEpochs < OpenAI::Union
+                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+              end
+            end
+          end
+
+          type supervised =
+            {
+              hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters
+            }
+
+          class Supervised < OpenAI::BaseModel
+            attr_reader hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters?
+
+            def hyperparameters=: (
+              OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters
+            ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters
+
+            def initialize:
+              (
+                hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters
+              ) -> void
+              | (
+                ?OpenAI::Models::FineTuning::JobCreateParams::Method::supervised
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::Method::supervised
+
+            type hyperparameters =
+              {
+                batch_size: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::batch_size,
+                learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::learning_rate_multiplier,
+                n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::n_epochs
+              }
+
+            class Hyperparameters < OpenAI::BaseModel
+              attr_reader batch_size: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::batch_size?
+
+              def batch_size=: (
+                OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::batch_size
+              ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::batch_size
+
+              attr_reader learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::learning_rate_multiplier?
+
+              def learning_rate_multiplier=: (
+                OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::learning_rate_multiplier
+              ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::learning_rate_multiplier
+
+              attr_reader n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::n_epochs?
+
+              def n_epochs=: (
+                OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::n_epochs
+              ) -> OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::n_epochs
+
+              def initialize:
+                (
+                  batch_size: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::batch_size,
+                  learning_rate_multiplier: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::learning_rate_multiplier,
+                  n_epochs: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters::n_epochs
+                ) -> void
+                | (
+                  ?OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::hyperparameters
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::hyperparameters
+
+              type batch_size = :auto | Integer
+
+              class BatchSize < OpenAI::Union
+                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+              end
+
+              type learning_rate_multiplier = :auto | Float
+
+              class LearningRateMultiplier < OpenAI::Union
+                private def self.variants: -> [[nil, :auto], [nil, Float]]
+              end
+
+              type n_epochs = :auto | Integer
+
+              class NEpochs < OpenAI::Union
+                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+              end
+            end
+          end
+
+          type type_ = :supervised | :dpo
+
+          class Type < OpenAI::Enum
+            SUPERVISED: :supervised
+            DPO: :dpo
+
+            def self.values: -> ::Array[OpenAI::Models::FineTuning::JobCreateParams::Method::type_]
+          end
+        end
+      end
+    end
+  end
+end

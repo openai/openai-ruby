@@ -1,0 +1,11 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionReasoningEffort = Chat::ChatCompletionReasoningEffort
+
+    module Chat
+      
+      class ChatCompletionReasoningEffort = OpenAI::Models::ReasoningEffort
+    end
+  end
+end

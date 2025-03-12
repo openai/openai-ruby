@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Beta
+      type thread_stream_event =
+        {
+          data: OpenAI::Models::Beta::Thread,
+          event: :"thread.created",
+          enabled: bool
+        }
+
+      class ThreadStreamEvent < OpenAI::BaseModel
+        attr_accessor data: OpenAI::Models::Beta::Thread
+
+        attr_accessor event: :"thread.created"
+
+        attr_reader enabled: bool?
+
+        def enabled=: (bool) -> bool
+
+        def initialize:
+          (
+            data: OpenAI::Models::Beta::Thread,
+            enabled: bool,
+            event: :"thread.created"
+          ) -> void
+          | (
+            ?OpenAI::Models::Beta::thread_stream_event | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Beta::thread_stream_event
+      end
+    end
+  end
+end

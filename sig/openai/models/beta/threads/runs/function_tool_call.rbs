@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type function_tool_call =
+            {
+              id: String,
+              function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function,
+              type: :function
+            }
+
+          class FunctionToolCall < OpenAI::BaseModel
+            attr_accessor id: String
+
+            attr_accessor function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function
+
+            attr_accessor type: :function
+
+            def initialize:
+              (
+                id: String,
+                function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function,
+                type: :function
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::function_tool_call
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::function_tool_call
+
+            type function = { arguments: String, name: String, output: String? }
+
+            class Function < OpenAI::BaseModel
+              attr_accessor arguments: String
+
+              attr_accessor name: String
+
+              attr_accessor output: String?
+
+              def initialize:
+                (arguments: String, name: String, output: String?) -> void
+                | (
+                  ?OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::function
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::function
+            end
+          end
+        end
+      end
+    end
+  end
+end

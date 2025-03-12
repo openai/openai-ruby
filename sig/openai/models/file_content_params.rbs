@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    type file_content_params = {  } & OpenAI::request_parameters
+
+    class FileContentParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      def initialize:
+        (request_options: OpenAI::request_opts) -> void
+        | (
+          ?OpenAI::Models::file_content_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::file_content_params
+    end
+  end
+end

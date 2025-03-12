@@ -1,0 +1,63 @@
+module OpenAI
+  module Models
+    type upload =
+      {
+        id: String,
+        bytes: Integer,
+        created_at: Integer,
+        expires_at: Integer,
+        filename: String,
+        object: :upload,
+        purpose: String,
+        status: OpenAI::Models::Upload::status,
+        file: OpenAI::Models::FileObject?
+      }
+
+    class Upload < OpenAI::BaseModel
+      attr_accessor id: String
+
+      attr_accessor bytes: Integer
+
+      attr_accessor created_at: Integer
+
+      attr_accessor expires_at: Integer
+
+      attr_accessor filename: String
+
+      attr_accessor object: :upload
+
+      attr_accessor purpose: String
+
+      attr_accessor status: OpenAI::Models::Upload::status
+
+      attr_accessor file: OpenAI::Models::FileObject?
+
+      def initialize:
+        (
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          expires_at: Integer,
+          filename: String,
+          purpose: String,
+          status: OpenAI::Models::Upload::status,
+          file: OpenAI::Models::FileObject?,
+          object: :upload
+        ) -> void
+        | (?OpenAI::Models::upload | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::upload
+
+      type status = :pending | :completed | :cancelled | :expired
+
+      class Status < OpenAI::Enum
+        PENDING: :pending
+        COMPLETED: :completed
+        CANCELLED: :cancelled
+        EXPIRED: :expired
+
+        def self.values: -> ::Array[OpenAI::Models::Upload::status]
+      end
+    end
+  end
+end

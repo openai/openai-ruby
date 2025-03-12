@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    
+    class FineTuningJobWandbIntegration = FineTuning::FineTuningJobWandbIntegration
+
+    module FineTuning
+      type fine_tuning_job_wandb_integration =
+        {
+          project: String,
+          entity: String?,
+          name: String?,
+          tags: ::Array[String]
+        }
+
+      class FineTuningJobWandbIntegration < OpenAI::BaseModel
+        attr_accessor project: String
+
+        attr_accessor entity: String?
+
+        attr_accessor name: String?
+
+        attr_reader tags: ::Array[String]?
+
+        def tags=: (::Array[String]) -> ::Array[String]
+
+        def initialize:
+          (
+            project: String,
+            entity: String?,
+            name: String?,
+            tags: ::Array[String]
+          ) -> void
+          | (
+            ?OpenAI::Models::FineTuning::fine_tuning_job_wandb_integration
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::FineTuning::fine_tuning_job_wandb_integration
+      end
+    end
+  end
+end

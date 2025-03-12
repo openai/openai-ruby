@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    type batch_create_params =
+      {
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        metadata: OpenAI::Models::metadata?
+      }
+      & OpenAI::request_parameters
+
+    class BatchCreateParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor completion_window: OpenAI::Models::BatchCreateParams::completion_window
+
+      attr_accessor endpoint: OpenAI::Models::BatchCreateParams::endpoint
+
+      attr_accessor input_file_id: String
+
+      attr_accessor metadata: OpenAI::Models::metadata?
+
+      def initialize:
+        (
+          completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+          endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+          input_file_id: String,
+          metadata: OpenAI::Models::metadata?,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (
+          ?OpenAI::Models::batch_create_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::batch_create_params
+
+      type completion_window = :"24h"
+
+      class CompletionWindow < OpenAI::Enum
+        NUMBER_24H: :"24h"
+
+        def self.values: -> ::Array[OpenAI::Models::BatchCreateParams::completion_window]
+      end
+
+      type endpoint =
+        :"/v1/chat/completions" | :"/v1/embeddings" | :"/v1/completions"
+
+      class Endpoint < OpenAI::Enum
+        V1_CHAT_COMPLETIONS: :"/v1/chat/completions"
+        V1_EMBEDDINGS: :"/v1/embeddings"
+        V1_COMPLETIONS: :"/v1/completions"
+
+        def self.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
+      end
+    end
+  end
+end

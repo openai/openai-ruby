@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    type upload_create_params =
+      {
+        bytes: Integer,
+        filename: String,
+        mime_type: String,
+        purpose: OpenAI::Models::file_purpose
+      }
+      & OpenAI::request_parameters
+
+    class UploadCreateParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor bytes: Integer
+
+      attr_accessor filename: String
+
+      attr_accessor mime_type: String
+
+      attr_accessor purpose: OpenAI::Models::file_purpose
+
+      def initialize:
+        (
+          bytes: Integer,
+          filename: String,
+          mime_type: String,
+          purpose: OpenAI::Models::file_purpose,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (
+          ?OpenAI::Models::upload_create_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::upload_create_params
+    end
+  end
+end

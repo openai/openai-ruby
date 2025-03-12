@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type tool_call_delta =
+            OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta
+            | OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta
+            | OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+
+          class ToolCallDelta < OpenAI::Union
+            private def self.variants: -> [[:code_interpreter, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta], [:file_search, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta], [:function, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]]
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type file_citation_annotation =
+          {
+            end_index: Integer,
+            file_citation: OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
+            start_index: Integer,
+            text: String,
+            type: :file_citation
+          }
+
+        class FileCitationAnnotation < OpenAI::BaseModel
+          attr_accessor end_index: Integer
+
+          attr_accessor file_citation: OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation
+
+          attr_accessor start_index: Integer
+
+          attr_accessor text: String
+
+          attr_accessor type: :file_citation
+
+          def initialize:
+            (
+              end_index: Integer,
+              file_citation: OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
+              start_index: Integer,
+              text: String,
+              type: :file_citation
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::file_citation_annotation
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::file_citation_annotation
+
+          type file_citation = { file_id: String }
+
+          class FileCitation < OpenAI::BaseModel
+            attr_accessor file_id: String
+
+            def initialize:
+              (file_id: String) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::FileCitationAnnotation::file_citation
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::FileCitationAnnotation::file_citation
+          end
+        end
+      end
+    end
+  end
+end

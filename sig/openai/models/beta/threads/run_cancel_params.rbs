@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type run_cancel_params =
+          { thread_id: String } & OpenAI::request_parameters
+
+        class RunCancelParams < OpenAI::BaseModel
+          extend OpenAI::RequestParameters::Converter
+          include OpenAI::RequestParameters
+
+          attr_accessor thread_id: String
+
+          def initialize:
+            (thread_id: String, request_options: OpenAI::request_opts) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::run_cancel_params
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::run_cancel_params
+        end
+      end
+    end
+  end
+end

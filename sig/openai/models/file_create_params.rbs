@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    type file_create_params =
+      { file: (IO | StringIO), purpose: OpenAI::Models::file_purpose }
+      & OpenAI::request_parameters
+
+    class FileCreateParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor file: IO | StringIO
+
+      attr_accessor purpose: OpenAI::Models::file_purpose
+
+      def initialize:
+        (
+          file: IO | StringIO,
+          purpose: OpenAI::Models::file_purpose,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (?OpenAI::Models::file_create_params | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::file_create_params
+    end
+  end
+end

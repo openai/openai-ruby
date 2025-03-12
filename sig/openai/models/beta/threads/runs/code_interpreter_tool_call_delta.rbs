@@ -1,0 +1,85 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type code_interpreter_tool_call_delta =
+            {
+              index: Integer,
+              type: :code_interpreter,
+              id: String,
+              code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+            }
+
+          class CodeInterpreterToolCallDelta < OpenAI::BaseModel
+            attr_accessor index: Integer
+
+            attr_accessor type: :code_interpreter
+
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            attr_reader code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter?
+
+            def code_interpreter=: (
+              OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+            ) -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+
+            def initialize:
+              (
+                index: Integer,
+                id: String,
+                code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                type: :code_interpreter
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call_delta
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call_delta
+
+            type code_interpreter =
+              {
+                input: String,
+                outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+              }
+
+            class CodeInterpreter < OpenAI::BaseModel
+              attr_reader input: String?
+
+              def input=: (String) -> String
+
+              attr_reader outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]?
+
+              def outputs=: (
+                ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+              ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+
+              def initialize:
+                (
+                  input: String,
+                  outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                ) -> void
+                | (
+                  ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::code_interpreter
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::code_interpreter
+
+              type output =
+                OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs
+                | OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
+
+              class Output < OpenAI::Union
+                private def self.variants: -> [[:logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs], [:image, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]]
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

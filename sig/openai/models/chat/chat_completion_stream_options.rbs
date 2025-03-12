@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionStreamOptions = Chat::ChatCompletionStreamOptions
+
+    module Chat
+      type chat_completion_stream_options = { include_usage: bool }
+
+      class ChatCompletionStreamOptions < OpenAI::BaseModel
+        attr_reader include_usage: bool?
+
+        def include_usage=: (bool) -> bool
+
+        def initialize:
+          (include_usage: bool) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_stream_options
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_stream_options
+      end
+    end
+  end
+end

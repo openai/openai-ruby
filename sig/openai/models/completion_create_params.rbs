@@ -1,0 +1,140 @@
+module OpenAI
+  module Models
+    type completion_create_params =
+      {
+        model: OpenAI::Models::CompletionCreateParams::model,
+        prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+        best_of: Integer?,
+        echo: bool?,
+        frequency_penalty: Float?,
+        logit_bias: ::Hash[Symbol, Integer]?,
+        logprobs: Integer?,
+        max_tokens: Integer?,
+        n: Integer?,
+        presence_penalty: Float?,
+        seed: Integer?,
+        stop: OpenAI::Models::CompletionCreateParams::stop?,
+        stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+        suffix: String?,
+        temperature: Float?,
+        top_p: Float?,
+        user: String
+      }
+      & OpenAI::request_parameters
+
+    class CompletionCreateParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor model: OpenAI::Models::CompletionCreateParams::model
+
+      attr_accessor prompt: OpenAI::Models::CompletionCreateParams::prompt?
+
+      attr_accessor best_of: Integer?
+
+      attr_accessor echo: bool?
+
+      attr_accessor frequency_penalty: Float?
+
+      attr_accessor logit_bias: ::Hash[Symbol, Integer]?
+
+      attr_accessor logprobs: Integer?
+
+      attr_accessor max_tokens: Integer?
+
+      attr_accessor n: Integer?
+
+      attr_accessor presence_penalty: Float?
+
+      attr_accessor seed: Integer?
+
+      attr_accessor stop: OpenAI::Models::CompletionCreateParams::stop?
+
+      attr_accessor stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?
+
+      attr_accessor suffix: String?
+
+      attr_accessor temperature: Float?
+
+      attr_accessor top_p: Float?
+
+      attr_reader user: String?
+
+      def user=: (String) -> String
+
+      def initialize:
+        (
+          model: OpenAI::Models::CompletionCreateParams::model,
+          prompt: OpenAI::Models::CompletionCreateParams::prompt?,
+          best_of: Integer?,
+          echo: bool?,
+          frequency_penalty: Float?,
+          logit_bias: ::Hash[Symbol, Integer]?,
+          logprobs: Integer?,
+          max_tokens: Integer?,
+          n: Integer?,
+          presence_penalty: Float?,
+          seed: Integer?,
+          stop: OpenAI::Models::CompletionCreateParams::stop?,
+          stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+          suffix: String?,
+          temperature: Float?,
+          top_p: Float?,
+          user: String,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (
+          ?OpenAI::Models::completion_create_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::completion_create_params
+
+      type model =
+        String | OpenAI::Models::CompletionCreateParams::Model::preset
+
+      class Model < OpenAI::Union
+        type preset =
+          :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
+
+        class Preset < OpenAI::Enum
+          GPT_3_5_TURBO_INSTRUCT: :"gpt-3.5-turbo-instruct"
+          DAVINCI_002: :"davinci-002"
+          BABBAGE_002: :"babbage-002"
+
+          def self.values: -> ::Array[OpenAI::Models::CompletionCreateParams::Model::preset]
+        end
+
+        private def self.variants: -> [[nil, String], [nil, OpenAI::Models::CompletionCreateParams::Model::preset]]
+      end
+
+      type prompt =
+        String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
+
+      class Prompt < OpenAI::Union
+        type string_array = ::Array[String]
+
+        StringArray: string_array
+
+        type integer_array = ::Array[Integer]
+
+        IntegerArray: integer_array
+
+        type array_of_token2_d_array = ::Array[::Array[Integer]]
+
+        ArrayOfToken2DArray: array_of_token2_d_array
+
+        private def self.variants: -> [[nil, String], [nil, ::Array[String]], [nil, ::Array[Integer]], [nil, ::Array[::Array[Integer]]]]
+      end
+
+      type stop = (String | ::Array[String])?
+
+      class Stop < OpenAI::Union
+        type string_array = ::Array[String]
+
+        StringArray: string_array
+
+        private def self.variants: -> [[nil, String], [nil, ::Array[String]]]
+      end
+    end
+  end
+end

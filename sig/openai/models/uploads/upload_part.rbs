@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    
+    class UploadPart = Uploads::UploadPart
+
+    module Uploads
+      type upload_part =
+        {
+          id: String,
+          created_at: Integer,
+          object: :"upload.part",
+          upload_id: String
+        }
+
+      class UploadPart < OpenAI::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor object: :"upload.part"
+
+        attr_accessor upload_id: String
+
+        def initialize:
+          (
+            id: String,
+            created_at: Integer,
+            upload_id: String,
+            object: :"upload.part"
+          ) -> void
+          | (
+            ?OpenAI::Models::Uploads::upload_part | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Uploads::upload_part
+      end
+    end
+  end
+end

@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_retrieve_params =
+        { include: ::Array[OpenAI::Models::Responses::response_includable] }
+        & OpenAI::request_parameters
+
+      class ResponseRetrieveParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Responses::response_includable]
+        ) -> ::Array[OpenAI::Models::Responses::response_includable]
+
+        def initialize:
+          (
+            include: ::Array[OpenAI::Models::Responses::response_includable],
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_retrieve_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_retrieve_params
+      end
+    end
+  end
+end

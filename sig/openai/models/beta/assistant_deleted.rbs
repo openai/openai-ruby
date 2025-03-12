@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Beta
+      type assistant_deleted =
+        { id: String, deleted: bool, object: :"assistant.deleted" }
+
+      class AssistantDeleted < OpenAI::BaseModel
+        attr_accessor id: String
+
+        attr_accessor deleted: bool
+
+        attr_accessor object: :"assistant.deleted"
+
+        def initialize:
+          (id: String, deleted: bool, object: :"assistant.deleted") -> void
+          | (
+            ?OpenAI::Models::Beta::assistant_deleted | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Beta::assistant_deleted
+      end
+    end
+  end
+end

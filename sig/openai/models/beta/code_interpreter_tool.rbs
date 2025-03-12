@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module Beta
+      type code_interpreter_tool = { type: :code_interpreter }
+
+      class CodeInterpreterTool < OpenAI::BaseModel
+        attr_accessor type: :code_interpreter
+
+        def initialize:
+          (type: :code_interpreter) -> void
+          | (
+            ?OpenAI::Models::Beta::code_interpreter_tool
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Beta::code_interpreter_tool
+      end
+    end
+  end
+end

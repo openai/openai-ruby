@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    type embedding_model =
+      :"text-embedding-ada-002"
+      | :"text-embedding-3-small"
+      | :"text-embedding-3-large"
+
+    class EmbeddingModel < OpenAI::Enum
+      TEXT_EMBEDDING_ADA_002: :"text-embedding-ada-002"
+      TEXT_EMBEDDING_3_SMALL: :"text-embedding-3-small"
+      TEXT_EMBEDDING_3_LARGE: :"text-embedding-3-large"
+
+      def self.values: -> ::Array[OpenAI::Models::embedding_model]
+    end
+  end
+end

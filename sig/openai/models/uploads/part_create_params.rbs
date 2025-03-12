@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Uploads
+      type part_create_params =
+        { data: (IO | StringIO) } & OpenAI::request_parameters
+
+      class PartCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor data: IO | StringIO
+
+        def initialize:
+          (data: IO | StringIO, request_options: OpenAI::request_opts) -> void
+          | (
+            ?OpenAI::Models::Uploads::part_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Uploads::part_create_params
+      end
+    end
+  end
+end

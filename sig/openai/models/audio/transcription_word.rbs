@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_word = { end_: Float, start: Float, word: String }
+
+      class TranscriptionWord < OpenAI::BaseModel
+        attr_accessor end_: Float
+
+        attr_accessor start: Float
+
+        attr_accessor word: String
+
+        def initialize:
+          (end_: Float, start: Float, word: String) -> void
+          | (
+            ?OpenAI::Models::Audio::transcription_word | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Audio::transcription_word
+      end
+    end
+  end
+end

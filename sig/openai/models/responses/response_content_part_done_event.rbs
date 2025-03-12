@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_content_part_done_event =
+        {
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          type: :"response.content_part.done"
+        }
+
+      class ResponseContentPartDoneEvent < OpenAI::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part
+
+        attr_accessor type: :"response.content_part.done"
+
+        def initialize:
+          (
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+            type: :"response.content_part.done"
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_content_part_done_event
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_content_part_done_event
+
+        type part =
+          OpenAI::Models::Responses::ResponseOutputText
+          | OpenAI::Models::Responses::ResponseOutputRefusal
+
+        class Part < OpenAI::Union
+          private def self.variants: -> [[:output_text, OpenAI::Models::Responses::ResponseOutputText], [:refusal, OpenAI::Models::Responses::ResponseOutputRefusal]]
+        end
+      end
+    end
+  end
+end

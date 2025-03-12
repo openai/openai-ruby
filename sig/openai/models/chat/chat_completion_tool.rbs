@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionTool = Chat::ChatCompletionTool
+
+    module Chat
+      type chat_completion_tool =
+        { function: OpenAI::Models::FunctionDefinition, type: :function }
+
+      class ChatCompletionTool < OpenAI::BaseModel
+        attr_accessor function: OpenAI::Models::FunctionDefinition
+
+        attr_accessor type: :function
+
+        def initialize:
+          (
+            function: OpenAI::Models::FunctionDefinition,
+            type: :function
+          ) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_tool | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_tool
+      end
+    end
+  end
+end

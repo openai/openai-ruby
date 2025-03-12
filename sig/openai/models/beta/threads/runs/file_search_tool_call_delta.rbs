@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type file_search_tool_call_delta =
+            { file_search: top, index: Integer, type: :file_search, id: String }
+
+          class FileSearchToolCallDelta < OpenAI::BaseModel
+            attr_accessor file_search: top
+
+            attr_accessor index: Integer
+
+            attr_accessor type: :file_search
+
+            attr_reader id: String?
+
+            def id=: (String) -> String
+
+            def initialize:
+              (
+                file_search: top,
+                index: Integer,
+                id: String,
+                type: :file_search
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::file_search_tool_call_delta
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::file_search_tool_call_delta
+          end
+        end
+      end
+    end
+  end
+end

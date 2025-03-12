@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type refusal_delta_block =
+          { index: Integer, type: :refusal, refusal: String }
+
+        class RefusalDeltaBlock < OpenAI::BaseModel
+          attr_accessor index: Integer
+
+          attr_accessor type: :refusal
+
+          attr_reader refusal: String?
+
+          def refusal=: (String) -> String
+
+          def initialize:
+            (index: Integer, refusal: String, type: :refusal) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::refusal_delta_block
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::refusal_delta_block
+        end
+      end
+    end
+  end
+end

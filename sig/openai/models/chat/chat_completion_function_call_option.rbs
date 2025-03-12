@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionFunctionCallOption = Chat::ChatCompletionFunctionCallOption
+
+    module Chat
+      type chat_completion_function_call_option = { name: String }
+
+      class ChatCompletionFunctionCallOption < OpenAI::BaseModel
+        attr_accessor name: String
+
+        def initialize:
+          (name: String) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_function_call_option
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_function_call_option
+      end
+    end
+  end
+end

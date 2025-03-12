@@ -1,0 +1,25 @@
+module OpenAI
+  module Resources
+    class Audio
+      class Transcriptions
+        def create:
+          (
+            OpenAI::Models::Audio::TranscriptionCreateParams
+            | ::Hash[Symbol, top] params
+          ) -> OpenAI::Models::Audio::transcription_create_response
+          | (
+            file: IO | StringIO,
+            model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+            language: String,
+            prompt: String,
+            response_format: OpenAI::Models::audio_response_format,
+            temperature: Float,
+            timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
+            request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Audio::transcription_create_response
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

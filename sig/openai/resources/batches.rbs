@@ -1,0 +1,49 @@
+module OpenAI
+  module Resources
+    class Batches
+      def create:
+        (
+          OpenAI::Models::BatchCreateParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::Batch
+        | (
+          completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+          endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+          input_file_id: String,
+          metadata: OpenAI::Models::metadata?,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Batch
+
+      def retrieve:
+        (
+          String batch_id,
+          ?OpenAI::Models::BatchRetrieveParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::Batch
+        | (
+          String batch_id,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Batch
+
+      def list:
+        (
+          ?OpenAI::Models::BatchListParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::CursorPage[OpenAI::Models::Batch]
+        | (
+          after: String,
+          limit: Integer,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::CursorPage[OpenAI::Models::Batch]
+
+      def cancel:
+        (
+          String batch_id,
+          ?OpenAI::Models::BatchCancelParams | ::Hash[Symbol, top] params
+        ) -> OpenAI::Models::Batch
+        | (
+          String batch_id,
+          request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Batch
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

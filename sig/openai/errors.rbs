@@ -1,0 +1,105 @@
+module OpenAI
+  class Error < StandardError
+    attr_reader cause: StandardError?
+  end
+
+  class ConversionError < OpenAI::Error
+  end
+
+  class APIError < OpenAI::Error
+    attr_reader url: URI::Generic
+
+    attr_reader status: Integer?
+
+    attr_reader body: top?
+
+    attr_reader code: String?
+
+    attr_reader param: String?
+
+    attr_reader type: String?
+
+    def initialize: (
+      url: URI::Generic,
+      status: Integer?,
+      body: Object?,
+      request: nil,
+      response: nil,
+      message: String?
+    ) -> void
+  end
+
+  class APIConnectionError < OpenAI::APIError
+    def initialize: (
+      url: URI::Generic,
+      status: nil,
+      body: nil,
+      request: nil,
+      response: nil,
+      message: String?
+    ) -> void
+  end
+
+  class APITimeoutError < OpenAI::APIConnectionError
+    def initialize: (
+      url: URI::Generic,
+      status: nil,
+      body: nil,
+      request: nil,
+      response: nil,
+      message: String?
+    ) -> void
+  end
+
+  class APIStatusError < OpenAI::APIError
+    def self.for: (
+      url: URI::Generic,
+      status: Integer,
+      body: Object?,
+      request: nil,
+      response: nil,
+      message: String?
+    ) -> instance
+
+    def initialize: (
+      url: URI::Generic,
+      status: Integer,
+      body: Object?,
+      request: nil,
+      response: nil,
+      message: String?
+    ) -> void
+  end
+
+  class BadRequestError < OpenAI::APIStatusError
+    HTTP_STATUS: 400
+  end
+
+  class AuthenticationError < OpenAI::APIStatusError
+    HTTP_STATUS: 401
+  end
+
+  class PermissionDeniedError < OpenAI::APIStatusError
+    HTTP_STATUS: 403
+  end
+
+  class NotFoundError < OpenAI::APIStatusError
+    HTTP_STATUS: 404
+  end
+
+  class ConflictError < OpenAI::APIStatusError
+    HTTP_STATUS: 409
+  end
+
+  class UnprocessableEntityError < OpenAI::APIStatusError
+    HTTP_STATUS: 422
+  end
+
+  class RateLimitError < OpenAI::APIStatusError
+    HTTP_STATUS: 429
+  end
+
+  class InternalServerError < OpenAI::APIStatusError
+    HTTP_STATUS: Range[Integer]
+  end
+end

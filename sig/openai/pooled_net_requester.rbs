@@ -1,0 +1,26 @@
+module OpenAI
+  class PooledNetRequester
+    type request =
+      {
+        method: Symbol,
+        url: URI::Generic,
+        headers: ::Hash[String, String],
+        body: top,
+        deadline: Float
+      }
+
+    def self.connect: (URI::Generic url) -> top
+
+    def self.calibrate_socket_timeout: (top conn, Float deadline) -> void
+
+    def self.build_request: (OpenAI::PooledNetRequester::request request) -> top
+
+    private def with_pool: (URI::Generic url) { (top arg0) -> void } -> void
+
+    def execute: (
+      OpenAI::PooledNetRequester::request request
+    ) -> [top, Enumerable[String]]
+
+    def initialize: -> void
+  end
+end

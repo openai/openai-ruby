@@ -1,0 +1,87 @@
+module OpenAI
+  module Models
+    type file_object =
+      {
+        id: String,
+        bytes: Integer,
+        created_at: Integer,
+        filename: String,
+        object: :file,
+        purpose: OpenAI::Models::FileObject::purpose,
+        status: OpenAI::Models::FileObject::status,
+        expires_at: Integer,
+        status_details: String
+      }
+
+    class FileObject < OpenAI::BaseModel
+      attr_accessor id: String
+
+      attr_accessor bytes: Integer
+
+      attr_accessor created_at: Integer
+
+      attr_accessor filename: String
+
+      attr_accessor object: :file
+
+      attr_accessor purpose: OpenAI::Models::FileObject::purpose
+
+      attr_accessor status: OpenAI::Models::FileObject::status
+
+      attr_reader expires_at: Integer?
+
+      def expires_at=: (Integer) -> Integer
+
+      attr_reader status_details: String?
+
+      def status_details=: (String) -> String
+
+      def initialize:
+        (
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          filename: String,
+          purpose: OpenAI::Models::FileObject::purpose,
+          status: OpenAI::Models::FileObject::status,
+          expires_at: Integer,
+          status_details: String,
+          object: :file
+        ) -> void
+        | (?OpenAI::Models::file_object | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::file_object
+
+      type purpose =
+        :assistants
+        | :assistants_output
+        | :batch
+        | :batch_output
+        | :"fine-tune"
+        | :"fine-tune-results"
+        | :vision
+
+      class Purpose < OpenAI::Enum
+        ASSISTANTS: :assistants
+        ASSISTANTS_OUTPUT: :assistants_output
+        BATCH: :batch
+        BATCH_OUTPUT: :batch_output
+        FINE_TUNE: :"fine-tune"
+        FINE_TUNE_RESULTS: :"fine-tune-results"
+        VISION: :vision
+
+        def self.values: -> ::Array[OpenAI::Models::FileObject::purpose]
+      end
+
+      type status = :uploaded | :processed | :error
+
+      class Status < OpenAI::Enum
+        UPLOADED: :uploaded
+        PROCESSED: :processed
+        ERROR: :error
+
+        def self.values: -> ::Array[OpenAI::Models::FileObject::status]
+      end
+    end
+  end
+end

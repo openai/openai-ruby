@@ -1,0 +1,61 @@
+module OpenAI
+  module Models
+    module Responses
+      type input_item_list_params =
+        {
+          after: String,
+          before: String,
+          limit: Integer,
+          order: OpenAI::Models::Responses::InputItemListParams::order
+        }
+        & OpenAI::request_parameters
+
+      class InputItemListParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_reader after: String?
+
+        def after=: (String) -> String
+
+        attr_reader before: String?
+
+        def before=: (String) -> String
+
+        attr_reader limit: Integer?
+
+        def limit=: (Integer) -> Integer
+
+        attr_reader order: OpenAI::Models::Responses::InputItemListParams::order?
+
+        def order=: (
+          OpenAI::Models::Responses::InputItemListParams::order
+        ) -> OpenAI::Models::Responses::InputItemListParams::order
+
+        def initialize:
+          (
+            after: String,
+            before: String,
+            limit: Integer,
+            order: OpenAI::Models::Responses::InputItemListParams::order,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::input_item_list_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::input_item_list_params
+
+        type order = :asc | :desc
+
+        class Order < OpenAI::Enum
+          ASC: :asc
+          DESC: :desc
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::InputItemListParams::order]
+        end
+      end
+    end
+  end
+end

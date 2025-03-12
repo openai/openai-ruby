@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    
+    class ChatCompletionFunctionMessageParam = Chat::ChatCompletionFunctionMessageParam
+
+    module Chat
+      type chat_completion_function_message_param =
+        { content: String?, name: String, role: :function }
+
+      class ChatCompletionFunctionMessageParam < OpenAI::BaseModel
+        attr_accessor content: String?
+
+        attr_accessor name: String
+
+        attr_accessor role: :function
+
+        def initialize:
+          (content: String?, name: String, role: :function) -> void
+          | (
+            ?OpenAI::Models::Chat::chat_completion_function_message_param
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Chat::chat_completion_function_message_param
+      end
+    end
+  end
+end

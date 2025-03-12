@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    type model_list_params = {  } & OpenAI::request_parameters
+
+    class ModelListParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      def initialize:
+        (request_options: OpenAI::request_opts) -> void
+        | (?OpenAI::Models::model_list_params | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::model_list_params
+    end
+  end
+end

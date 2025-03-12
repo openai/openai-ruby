@@ -1,0 +1,5 @@
+module OpenAI
+  class Stream[Elem] < OpenAI::BaseStream[Elem]
+    private def iterator: -> Enumerable[Elem]
+  end
+end

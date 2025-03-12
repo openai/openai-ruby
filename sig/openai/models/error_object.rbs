@@ -1,0 +1,22 @@
+module OpenAI
+  module Models
+    type error_object =
+      { code: String?, message: String, param: String?, type: String }
+
+    class ErrorObject < OpenAI::BaseModel
+      attr_accessor code: String?
+
+      attr_accessor message: String
+
+      attr_accessor param: String?
+
+      attr_accessor type: String
+
+      def initialize:
+        (code: String?, message: String, param: String?, type: String) -> void
+        | (?OpenAI::Models::error_object | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::error_object
+    end
+  end
+end

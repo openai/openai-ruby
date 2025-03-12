@@ -1,0 +1,99 @@
+module OpenAI
+  module Models
+    module Responses
+      type web_search_tool =
+        {
+          type: OpenAI::Models::Responses::WebSearchTool::type_,
+          search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
+          user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
+        }
+
+      class WebSearchTool < OpenAI::BaseModel
+        attr_accessor type: OpenAI::Models::Responses::WebSearchTool::type_
+
+        attr_reader search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size?
+
+        def search_context_size=: (
+          OpenAI::Models::Responses::WebSearchTool::search_context_size
+        ) -> OpenAI::Models::Responses::WebSearchTool::search_context_size
+
+        attr_accessor user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
+
+        def initialize:
+          (
+            type: OpenAI::Models::Responses::WebSearchTool::type_,
+            search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
+            user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::web_search_tool | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::web_search_tool
+
+        type type_ = :web_search_preview | :web_search_preview_2025_03_11
+
+        class Type < OpenAI::Enum
+          WEB_SEARCH_PREVIEW: :web_search_preview
+          WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::WebSearchTool::type_]
+        end
+
+        type search_context_size = :low | :medium | :high
+
+        class SearchContextSize < OpenAI::Enum
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::WebSearchTool::search_context_size]
+        end
+
+        type user_location =
+          {
+            type: :approximate,
+            city: String,
+            country: String,
+            region: String,
+            timezone: String
+          }
+
+        class UserLocation < OpenAI::BaseModel
+          attr_accessor type: :approximate
+
+          attr_reader city: String?
+
+          def city=: (String) -> String
+
+          attr_reader country: String?
+
+          def country=: (String) -> String
+
+          attr_reader region: String?
+
+          def region=: (String) -> String
+
+          attr_reader timezone: String?
+
+          def timezone=: (String) -> String
+
+          def initialize:
+            (
+              city: String,
+              country: String,
+              region: String,
+              timezone: String,
+              type: :approximate
+            ) -> void
+            | (
+              ?OpenAI::Models::Responses::WebSearchTool::user_location
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Responses::WebSearchTool::user_location
+        end
+      end
+    end
+  end
+end

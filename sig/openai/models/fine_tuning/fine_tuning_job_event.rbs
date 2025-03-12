@@ -1,0 +1,77 @@
+module OpenAI
+  module Models
+    
+    class FineTuningJobEvent = FineTuning::FineTuningJobEvent
+
+    module FineTuning
+      type fine_tuning_job_event =
+        {
+          id: String,
+          created_at: Integer,
+          level: OpenAI::Models::FineTuning::FineTuningJobEvent::level,
+          message: String,
+          object: :"fine_tuning.job.event",
+          data: top,
+          type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_
+        }
+
+      class FineTuningJobEvent < OpenAI::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor level: OpenAI::Models::FineTuning::FineTuningJobEvent::level
+
+        attr_accessor message: String
+
+        attr_accessor object: :"fine_tuning.job.event"
+
+        attr_reader data: top?
+
+        def data=: (top) -> top
+
+        attr_reader type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_?
+
+        def type=: (
+          OpenAI::Models::FineTuning::FineTuningJobEvent::type_
+        ) -> OpenAI::Models::FineTuning::FineTuningJobEvent::type_
+
+        def initialize:
+          (
+            id: String,
+            created_at: Integer,
+            level: OpenAI::Models::FineTuning::FineTuningJobEvent::level,
+            message: String,
+            data: top,
+            type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_,
+            object: :"fine_tuning.job.event"
+          ) -> void
+          | (
+            ?OpenAI::Models::FineTuning::fine_tuning_job_event
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::FineTuning::fine_tuning_job_event
+
+        type level = :info | :warn | :error
+
+        class Level < OpenAI::Enum
+          INFO: :info
+          WARN: :warn
+          ERROR: :error
+
+          def self.values: -> ::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::level]
+        end
+
+        type type_ = :message | :metrics
+
+        class Type < OpenAI::Enum
+          MESSAGE: :message
+          METRICS: :metrics
+
+          def self.values: -> ::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::type_]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,107 @@
+module OpenAI
+  module Models
+    type image_generate_params =
+      {
+        prompt: String,
+        model: OpenAI::Models::ImageGenerateParams::model?,
+        n: Integer?,
+        quality: OpenAI::Models::ImageGenerateParams::quality,
+        response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        size: OpenAI::Models::ImageGenerateParams::size?,
+        style: OpenAI::Models::ImageGenerateParams::style?,
+        user: String
+      }
+      & OpenAI::request_parameters
+
+    class ImageGenerateParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor prompt: String
+
+      attr_accessor model: OpenAI::Models::ImageGenerateParams::model?
+
+      attr_accessor n: Integer?
+
+      attr_reader quality: OpenAI::Models::ImageGenerateParams::quality?
+
+      def quality=: (
+        OpenAI::Models::ImageGenerateParams::quality
+      ) -> OpenAI::Models::ImageGenerateParams::quality
+
+      attr_accessor response_format: OpenAI::Models::ImageGenerateParams::response_format?
+
+      attr_accessor size: OpenAI::Models::ImageGenerateParams::size?
+
+      attr_accessor style: OpenAI::Models::ImageGenerateParams::style?
+
+      attr_reader user: String?
+
+      def user=: (String) -> String
+
+      def initialize:
+        (
+          prompt: String,
+          model: OpenAI::Models::ImageGenerateParams::model?,
+          n: Integer?,
+          quality: OpenAI::Models::ImageGenerateParams::quality,
+          response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+          size: OpenAI::Models::ImageGenerateParams::size?,
+          style: OpenAI::Models::ImageGenerateParams::style?,
+          user: String,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (
+          ?OpenAI::Models::image_generate_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::image_generate_params
+
+      type model = String | OpenAI::Models::image_model
+
+      class Model < OpenAI::Union
+        private def self.variants: -> [[nil, String], [nil, OpenAI::Models::image_model]]
+      end
+
+      type quality = :standard | :hd
+
+      class Quality < OpenAI::Enum
+        STANDARD: :standard
+        HD: :hd
+
+        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::quality]
+      end
+
+      type response_format = :url | :b64_json
+
+      class ResponseFormat < OpenAI::Enum
+        URL: :url
+        B64_JSON: :b64_json
+
+        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::response_format]
+      end
+
+      type size =
+        :"256x256" | :"512x512" | :"1024x1024" | :"1792x1024" | :"1024x1792"
+
+      class Size < OpenAI::Enum
+        NUMBER_256X256: :"256x256"
+        NUMBER_512X512: :"512x512"
+        NUMBER_1024X1024: :"1024x1024"
+        NUMBER_1792X1024: :"1792x1024"
+        NUMBER_1024X1792: :"1024x1792"
+
+        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::size]
+      end
+
+      type style = :vivid | :natural
+
+      class Style < OpenAI::Enum
+        VIVID: :vivid
+        NATURAL: :natural
+
+        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::style]
+      end
+    end
+  end
+end

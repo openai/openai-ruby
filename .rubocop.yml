@@ -1,0 +1,212 @@
+---
+# Explicitly disable pending cops for now. This is the default behaviour but
+# this avoids a large warning every time we run it.
+# Stop RuboCop nagging about rubocop-rake.
+# Ensure that RuboCop validates according to the lowest version of Ruby that we support.
+AllCops:
+  Exclude:
+    - "bin/*"
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 3.1.0
+
+# Don't require this extra line break, it can be excessive.
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+# Don't leave complex assignment values hanging off to the right.
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+Layout/FirstArrayElementLineBreak:
+  Enabled: true
+
+Layout/FirstHashElementLineBreak:
+  Enabled: true
+
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true
+
+Layout/FirstMethodParameterLineBreak:
+  Enabled: true
+
+# Set a reasonable line length; rely on other cops to correct long lines.
+Layout/LineLength:
+  AllowedPatterns:
+    - "^\\s*#.*$"
+    - ^require(_relative)?
+    - "OpenAI::(Models|Resources)::"
+  Max: 110
+
+Layout/MultilineArrayLineBreaks:
+  Enabled: true
+
+# Start the assignment on the same line variable is mentioned.
+Layout/MultilineAssignmentLayout:
+  EnforcedStyle: same_line
+
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: true
+
+Layout/MultilineMethodArgumentLineBreaks:
+  Enabled: true
+
+Layout/MultilineMethodParameterLineBreaks:
+  Enabled: true
+
+# Prefer compact hash literals.
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+# Fairly useful in tests for pattern assertions.
+Lint/EmptyInPattern:
+  Exclude:
+    - "test/**/*"
+
+Lint/MissingSuper:
+  Exclude:
+    - "**/*.rbi"
+
+# Disabled for safety reasons, this option changes code semantics.
+Lint/UnusedMethodArgument:
+  AutoCorrect: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/BlockForwarding:
+  Exclude:
+    - "**/*.rbi"
+
+Naming/MethodParameterName:
+  Exclude:
+    - "**/*.rbi"
+
+Naming/VariableNumber:
+  Enabled: false
+
+# Nothing wrong with inline private methods.
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+Style/AccessorGrouping:
+  Exclude:
+    - "**/*.rbi"
+
+# Behaviour of alias_method is more predictable.
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+# And/or have confusing precedence, avoid them.
+Style/AndOr:
+  EnforcedStyle: always
+
+Style/BisectedAttrAccessor:
+  Exclude:
+    - "**/*.rbi"
+
+# We prefer nested modules in lib/, but are currently using compact style for tests.
+Style/ClassAndModuleChildren:
+  Exclude:
+    - "test/**/*"
+
+# We should go back and add these docs, but ignore for now.
+Style/Documentation:
+  Enabled: false
+
+# Allow explicit empty elses, for clarity.
+Style/EmptyElse:
+  Enabled: false
+
+Style/EmptyMethod:
+  Exclude:
+    - "**/*.rbi"
+
+# We commonly use ENV['KEY'], it's OK.
+Style/FetchEnvVar:
+  Enabled: false
+
+# Just to be safe, ensure nobody is mutating our internal strings.
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always
+  Exclude:
+    - "**/*.rbi"
+
+# Nothing wrong with clear if statements.
+Style/IfUnlessModifier:
+  Enabled: false
+
+# Rubocop is pretty bad about mangling single line lambdas.
+Style/Lambda:
+  Enabled: false
+
+# Prefer consistency in method calling syntax.
+Style/MethodCallWithArgsParentheses:
+  AllowedMethods:
+    - raise
+  Enabled: true
+  Exclude:
+    - "**/*.gemspec"
+
+# Perfectly fine.
+Style/MultipleComparison:
+  Enabled: false
+
+Style/MutableConstant:
+  Exclude:
+    - "**/*.rbi"
+
+# Not all parameters should be named.
+Style/NumberedParameters:
+  Enabled: false
+
+Style/NumberedParametersLimit:
+  Max: 2
+
+# Reasonable to use brackets for errors with long messages.
+Style/RaiseArgs:
+  Enabled: false
+
+# Be explicit about `RuntimeError`s.
+Style/RedundantException:
+  Enabled: false
+
+Style/RedundantInitialize:
+  Exclude:
+    - "**/*.rbi"
+
+# Prefer slashes for regex literals.
+Style/RegexpLiteral:
+  EnforcedStyle: slashes
+
+# Allow explicit ifs, especially for imperative use.
+Style/SafeNavigation:
+  Enabled: false
+
+# We use these sparingly, where we anticipate future branches for the
+# inner conditional.
+Style/SoleNestedConditional:
+  Enabled: false
+
+# Prefer double quotes so that interpolation can be easily added.
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+# Prefer explicit symbols for clarity; you can search for `:the_symbol`.
+Style/SymbolArray:
+  EnforcedStyle: brackets

@@ -1,0 +1,125 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        module Runs
+          type code_interpreter_tool_call =
+            {
+              id: String,
+              code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+              type: :code_interpreter
+            }
+
+          class CodeInterpreterToolCall < OpenAI::BaseModel
+            attr_accessor id: String
+
+            attr_accessor code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter
+
+            attr_accessor type: :code_interpreter
+
+            def initialize:
+              (
+                id: String,
+                code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+                type: :code_interpreter
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call
+
+            type code_interpreter =
+              {
+                input: String,
+                outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
+              }
+
+            class CodeInterpreter < OpenAI::BaseModel
+              attr_accessor input: String
+
+              attr_accessor outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
+
+              def initialize:
+                (
+                  input: String,
+                  outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
+                ) -> void
+                | (
+                  ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::code_interpreter
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::code_interpreter
+
+              type output =
+                OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs
+                | OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
+
+              class Output < OpenAI::Union
+                type logs = { logs: String, type: :logs }
+
+                class Logs < OpenAI::BaseModel
+                  attr_accessor logs: String
+
+                  attr_accessor type: :logs
+
+                  def initialize:
+                    (logs: String, type: :logs) -> void
+                    | (
+                      ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::logs
+                      | OpenAI::BaseModel data
+                    ) -> void
+
+                  def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::logs
+                end
+
+                type image =
+                  {
+                    image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                    type: :image
+                  }
+
+                class Image < OpenAI::BaseModel
+                  attr_accessor image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
+
+                  attr_accessor type: :image
+
+                  def initialize:
+                    (
+                      image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                      type: :image
+                    ) -> void
+                    | (
+                      ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::image
+                      | OpenAI::BaseModel data
+                    ) -> void
+
+                  def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::image
+
+                  type image = { file_id: String }
+
+                  class Image < OpenAI::BaseModel
+                    attr_accessor file_id: String
+
+                    def initialize:
+                      (file_id: String) -> void
+                      | (
+                        ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::image
+                        | OpenAI::BaseModel data
+                      ) -> void
+
+                    def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::image
+                  end
+                end
+
+                private def self.variants: -> [[:logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs], [:image, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image]]
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end

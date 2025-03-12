@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    module Beta
+      type assistant_tool_choice_option =
+        OpenAI::Models::Beta::AssistantToolChoiceOption::auto
+        | OpenAI::Models::Beta::AssistantToolChoice
+
+      class AssistantToolChoiceOption < OpenAI::Union
+        type auto = :none | :auto | :required
+
+        class Auto < OpenAI::Enum
+          NONE: :none
+          AUTO: :auto
+          REQUIRED: :required
+
+          def self.values: -> ::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::auto]
+        end
+
+        private def self.variants: -> [[nil, OpenAI::Models::Beta::AssistantToolChoiceOption::auto], [nil, OpenAI::Models::Beta::AssistantToolChoice]]
+      end
+    end
+  end
+end

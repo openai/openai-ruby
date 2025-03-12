@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        
+        class RunStepDeltaEvent = Runs::RunStepDeltaEvent
+
+        module Runs
+          type run_step_delta_event =
+            {
+              id: String,
+              delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta,
+              object: :"thread.run.step.delta"
+            }
+
+          class RunStepDeltaEvent < OpenAI::BaseModel
+            attr_accessor id: String
+
+            attr_accessor delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta
+
+            attr_accessor object: :"thread.run.step.delta"
+
+            def initialize:
+              (
+                id: String,
+                delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta,
+                object: :"thread.run.step.delta"
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Runs::run_step_delta_event
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step_delta_event
+          end
+        end
+      end
+    end
+  end
+end

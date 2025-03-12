@@ -1,0 +1,188 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type message =
+          {
+            id: String,
+            assistant_id: String?,
+            attachments: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment]?,
+            completed_at: Integer?,
+            content: ::Array[OpenAI::Models::Beta::Threads::message_content],
+            created_at: Integer,
+            incomplete_at: Integer?,
+            incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails?,
+            metadata: OpenAI::Models::metadata?,
+            object: :"thread.message",
+            role: OpenAI::Models::Beta::Threads::Message::role,
+            run_id: String?,
+            status: OpenAI::Models::Beta::Threads::Message::status,
+            thread_id: String
+          }
+
+        class Message < OpenAI::BaseModel
+          attr_accessor id: String
+
+          attr_accessor assistant_id: String?
+
+          attr_accessor attachments: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment]?
+
+          attr_accessor completed_at: Integer?
+
+          attr_accessor content: ::Array[OpenAI::Models::Beta::Threads::message_content]
+
+          attr_accessor created_at: Integer
+
+          attr_accessor incomplete_at: Integer?
+
+          attr_accessor incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails?
+
+          attr_accessor metadata: OpenAI::Models::metadata?
+
+          attr_accessor object: :"thread.message"
+
+          attr_accessor role: OpenAI::Models::Beta::Threads::Message::role
+
+          attr_accessor run_id: String?
+
+          attr_accessor status: OpenAI::Models::Beta::Threads::Message::status
+
+          attr_accessor thread_id: String
+
+          def initialize:
+            (
+              id: String,
+              assistant_id: String?,
+              attachments: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment]?,
+              completed_at: Integer?,
+              content: ::Array[OpenAI::Models::Beta::Threads::message_content],
+              created_at: Integer,
+              incomplete_at: Integer?,
+              incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails?,
+              metadata: OpenAI::Models::metadata?,
+              role: OpenAI::Models::Beta::Threads::Message::role,
+              run_id: String?,
+              status: OpenAI::Models::Beta::Threads::Message::status,
+              thread_id: String,
+              object: :"thread.message"
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::message | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::message
+
+          type attachment =
+            {
+              file_id: String,
+              tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+            }
+
+          class Attachment < OpenAI::BaseModel
+            attr_reader file_id: String?
+
+            def file_id=: (String) -> String
+
+            attr_reader tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]?
+
+            def tools=: (
+              ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+            ) -> ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+
+            def initialize:
+              (
+                file_id: String,
+                tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Message::attachment
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Message::attachment
+
+            type tool =
+              OpenAI::Models::Beta::CodeInterpreterTool
+              | OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+
+            class Tool < OpenAI::Union
+              type assistant_tools_file_search_type_only =
+                { type: :file_search }
+
+              class AssistantToolsFileSearchTypeOnly < OpenAI::BaseModel
+                attr_accessor type: :file_search
+
+                def initialize:
+                  (type: :file_search) -> void
+                  | (
+                    ?OpenAI::Models::Beta::Threads::Message::Attachment::Tool::assistant_tools_file_search_type_only
+                    | OpenAI::BaseModel data
+                  ) -> void
+
+                def to_hash: -> OpenAI::Models::Beta::Threads::Message::Attachment::Tool::assistant_tools_file_search_type_only
+              end
+
+              private def self.variants: -> [[nil, OpenAI::Models::Beta::CodeInterpreterTool], [nil, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]]
+            end
+          end
+
+          type incomplete_details =
+            {
+              reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
+            }
+
+          class IncompleteDetails < OpenAI::BaseModel
+            attr_accessor reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
+
+            def initialize:
+              (
+                reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
+              ) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::Message::incomplete_details
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::Message::incomplete_details
+
+            type reason =
+              :content_filter
+              | :max_tokens
+              | :run_cancelled
+              | :run_expired
+              | :run_failed
+
+            class Reason < OpenAI::Enum
+              CONTENT_FILTER: :content_filter
+              MAX_TOKENS: :max_tokens
+              RUN_CANCELLED: :run_cancelled
+              RUN_EXPIRED: :run_expired
+              RUN_FAILED: :run_failed
+
+              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason]
+            end
+          end
+
+          type role = :user | :assistant
+
+          class Role < OpenAI::Enum
+            USER: :user
+            ASSISTANT: :assistant
+
+            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::role]
+          end
+
+          type status = :in_progress | :incomplete | :completed
+
+          class Status < OpenAI::Enum
+            IN_PROGRESS: :in_progress
+            INCOMPLETE: :incomplete
+            COMPLETED: :completed
+
+            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::status]
+          end
+        end
+      end
+    end
+  end
+end

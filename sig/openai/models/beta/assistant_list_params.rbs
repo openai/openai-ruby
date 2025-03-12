@@ -1,0 +1,61 @@
+module OpenAI
+  module Models
+    module Beta
+      type assistant_list_params =
+        {
+          after: String,
+          before: String,
+          limit: Integer,
+          order: OpenAI::Models::Beta::AssistantListParams::order
+        }
+        & OpenAI::request_parameters
+
+      class AssistantListParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_reader after: String?
+
+        def after=: (String) -> String
+
+        attr_reader before: String?
+
+        def before=: (String) -> String
+
+        attr_reader limit: Integer?
+
+        def limit=: (Integer) -> Integer
+
+        attr_reader order: OpenAI::Models::Beta::AssistantListParams::order?
+
+        def order=: (
+          OpenAI::Models::Beta::AssistantListParams::order
+        ) -> OpenAI::Models::Beta::AssistantListParams::order
+
+        def initialize:
+          (
+            after: String,
+            before: String,
+            limit: Integer,
+            order: OpenAI::Models::Beta::AssistantListParams::order,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Beta::assistant_list_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Beta::assistant_list_params
+
+        type order = :asc | :desc
+
+        class Order < OpenAI::Enum
+          ASC: :asc
+          DESC: :desc
+
+          def self.values: -> ::Array[OpenAI::Models::Beta::AssistantListParams::order]
+        end
+      end
+    end
+  end
+end

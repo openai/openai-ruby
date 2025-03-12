@@ -1,0 +1,13 @@
+module OpenAI
+  module Models
+    type reasoning_effort = :low | :medium | :high
+
+    class ReasoningEffort < OpenAI::Enum
+      LOW: :low
+      MEDIUM: :medium
+      HIGH: :high
+
+      def self.values: -> ::Array[OpenAI::Models::reasoning_effort]
+    end
+  end
+end

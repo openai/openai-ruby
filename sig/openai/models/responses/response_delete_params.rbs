@@ -1,0 +1,21 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_delete_params = {  } & OpenAI::request_parameters
+
+      class ResponseDeleteParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        def initialize:
+          (request_options: OpenAI::request_opts) -> void
+          | (
+            ?OpenAI::Models::Responses::response_delete_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_delete_params
+      end
+    end
+  end
+end

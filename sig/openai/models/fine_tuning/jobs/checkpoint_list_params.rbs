@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Jobs
+        type checkpoint_list_params =
+          { after: String, limit: Integer } & OpenAI::request_parameters
+
+        class CheckpointListParams < OpenAI::BaseModel
+          extend OpenAI::RequestParameters::Converter
+          include OpenAI::RequestParameters
+
+          attr_reader after: String?
+
+          def after=: (String) -> String
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          def initialize:
+            (
+              after: String,
+              limit: Integer,
+              request_options: OpenAI::request_opts
+            ) -> void
+            | (
+              ?OpenAI::Models::FineTuning::Jobs::checkpoint_list_params
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::Jobs::checkpoint_list_params
+        end
+      end
+    end
+  end
+end

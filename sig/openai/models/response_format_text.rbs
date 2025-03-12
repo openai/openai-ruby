@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    type response_format_text = { type: :text }
+
+    class ResponseFormatText < OpenAI::BaseModel
+      attr_accessor type: :text
+
+      def initialize:
+        (type: :text) -> void
+        | (
+          ?OpenAI::Models::response_format_text | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::response_format_text
+    end
+  end
+end

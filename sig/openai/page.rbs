@@ -1,0 +1,16 @@
+module OpenAI
+  class Page[Elem]
+    include OpenAI::BasePage[Elem]
+
+    attr_accessor data: ::Array[Elem]
+
+    attr_accessor object: String
+
+    def initialize: (
+      client: OpenAI::BaseClient,
+      req: OpenAI::BaseClient::request_components,
+      headers: ::Hash[String, String],
+      page_data: ::Array[top]
+    ) -> void
+  end
+end

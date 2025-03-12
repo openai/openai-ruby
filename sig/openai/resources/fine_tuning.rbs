@@ -1,0 +1,9 @@
+module OpenAI
+  module Resources
+    class FineTuning
+      attr_reader jobs: OpenAI::Resources::FineTuning::Jobs
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

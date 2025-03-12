@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    type model_deleted = { id: String, deleted: bool, object: String }
+
+    class ModelDeleted < OpenAI::BaseModel
+      attr_accessor id: String
+
+      attr_accessor deleted: bool
+
+      attr_accessor object: String
+
+      def initialize:
+        (id: String, deleted: bool, object: String) -> void
+        | (?OpenAI::Models::model_deleted | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::model_deleted
+    end
+  end
+end

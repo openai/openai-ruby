@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    type upload_complete_params =
+      { part_ids: ::Array[String], :md5 => String } & OpenAI::request_parameters
+
+    class UploadCompleteParams < OpenAI::BaseModel
+      extend OpenAI::RequestParameters::Converter
+      include OpenAI::RequestParameters
+
+      attr_accessor part_ids: ::Array[String]
+
+      attr_reader md5: String?
+
+      def md5=: (String) -> String
+
+      def initialize:
+        (
+          part_ids: ::Array[String],
+          md5: String,
+          request_options: OpenAI::request_opts
+        ) -> void
+        | (
+          ?OpenAI::Models::upload_complete_params | OpenAI::BaseModel data
+        ) -> void
+
+      def to_hash: -> OpenAI::Models::upload_complete_params
+    end
+  end
+end

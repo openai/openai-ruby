@@ -1,0 +1,78 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type file_citation_delta_annotation =
+          {
+            index: Integer,
+            type: :file_citation,
+            end_index: Integer,
+            file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+            start_index: Integer,
+            text: String
+          }
+
+        class FileCitationDeltaAnnotation < OpenAI::BaseModel
+          attr_accessor index: Integer
+
+          attr_accessor type: :file_citation
+
+          attr_reader end_index: Integer?
+
+          def end_index=: (Integer) -> Integer
+
+          attr_reader file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation?
+
+          def file_citation=: (
+            OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
+          ) -> OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
+
+          attr_reader start_index: Integer?
+
+          def start_index=: (Integer) -> Integer
+
+          attr_reader text: String?
+
+          def text=: (String) -> String
+
+          def initialize:
+            (
+              index: Integer,
+              end_index: Integer,
+              file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+              start_index: Integer,
+              text: String,
+              type: :file_citation
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::Threads::file_citation_delta_annotation
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::Threads::file_citation_delta_annotation
+
+          type file_citation = { file_id: String, quote: String }
+
+          class FileCitation < OpenAI::BaseModel
+            attr_reader file_id: String?
+
+            def file_id=: (String) -> String
+
+            attr_reader quote: String?
+
+            def quote=: (String) -> String
+
+            def initialize:
+              (file_id: String, quote: String) -> void
+              | (
+                ?OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::file_citation
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::file_citation
+          end
+        end
+      end
+    end
+  end
+end
