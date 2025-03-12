@@ -13,7 +13,11 @@ module OpenAI
 
     def self.calibrate_socket_timeout: (top conn, Float deadline) -> void
 
-    def self.build_request: (OpenAI::PooledNetRequester::request request) -> top
+    def self.build_request: (
+      OpenAI::PooledNetRequester::request request
+    ) {
+      (String arg0) -> void
+    } -> top
 
     private def with_pool: (URI::Generic url) { (top arg0) -> void } -> void
 
@@ -21,6 +25,6 @@ module OpenAI
       OpenAI::PooledNetRequester::request request
     ) -> [top, Enumerable[String]]
 
-    def initialize: -> void
+    def initialize: (size: Integer) -> void
   end
 end

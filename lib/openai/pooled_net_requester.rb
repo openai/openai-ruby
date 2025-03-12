@@ -48,9 +48,11 @@ module OpenAI
       #
       #   @option request [Hash{String=>String}] :headers
       #
+      # @param blk [Proc]
+      #
       # @return [Net::HTTPGenericRequest]
       #
-      def build_request(request)
+      def build_request(request, &)
         method, url, headers, body = request.fetch_values(:method, :url, :headers, :body)
         req = Net::HTTPGenericRequest.new(
           method.to_s.upcase,
@@ -64,12 +66,14 @@ module OpenAI
         case body
         in nil
         in String
-          req.body = body
+          req["content-length"] ||= body.bytesize.to_s unless req["transfer-encoding"]
+          req.body_stream = OpenAI::Util::ReadIOAdapter.new(body, &)
         in StringIO
-          req.body = body.string
-        in IO
-          body.rewind
-          req.body_stream = body
+          req["content-length"] ||= body.size.to_s unless req["transfer-encoding"]
+          req.body_stream = OpenAI::Util::ReadIOAdapter.new(body, &)
+        in IO | Enumerator
+          req["transfer-encoding"] ||= "chunked" unless req["content-length"]
+          req.body_stream = OpenAI::Util::ReadIOAdapter.new(body, &)
         end
 
         req
@@ -97,7 +101,7 @@ module OpenAI
 
       pool =
         @mutex.synchronize do
-          @pools[origin] ||= ConnectionPool.new(size: Etc.nprocessors) do
+          @pools[origin] ||= ConnectionPool.new(size: @size) do
             self.class.connect(url)
           end
         end
@@ -128,13 +132,16 @@ module OpenAI
     #
     def execute(request)
       url, deadline = request.fetch_values(:url, :deadline)
-      req = self.class.build_request(request)
 
       eof = false
       finished = false
       enum = Enumerator.new do |y|
         with_pool(url) do |conn|
           next if finished
+
+          req = self.class.build_request(request) do
+            self.class.calibrate_socket_timeout(conn, deadline)
+          end
 
           self.class.calibrate_socket_timeout(conn, deadline)
           conn.start unless conn.started?
@@ -168,8 +175,13 @@ module OpenAI
       [response, (response.body = body)]
     end
 
-    def initialize
+    # @private
+    #
+    # @param size [Integer]
+    #
+    def initialize(size: Etc.nprocessors)
       @mutex = Mutex.new
+      @size = size
       @pools = {}
     end
   end
