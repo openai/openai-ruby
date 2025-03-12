@@ -399,41 +399,152 @@ module OpenAI
       end
     end
 
+    # @private
+    #
+    # An adapter that satisfies the IO interface required by `::IO.copy_stream`
+    class ReadIOAdapter
+      # @private
+      #
+      # @param max_len [Integer, nil]
+      #
+      # @return [String]
+      #
+      private def read_enum(max_len)
+        case max_len
+        in nil
+          @stream.to_a.join
+        in Integer
+          @buf << @stream.next while @buf.length < max_len
+          @buf.slice!(..max_len)
+        end
+      rescue StopIteration
+        @stream = nil
+        @buf.slice!(0..)
+      end
+
+      # @private
+      #
+      # @param max_len [Integer, nil]
+      # @param out_string [String, nil]
+      #
+      # @return [String, nil]
+      #
+      def read(max_len = nil, out_string = nil)
+        case @stream
+        in nil
+          nil
+        in IO | StringIO
+          @stream.read(max_len, out_string)
+        in Enumerator
+          read = read_enum(max_len)
+          case out_string
+          in String
+            out_string.replace(read)
+          in nil
+            read
+          end
+        end
+          .tap(&@blk)
+      end
+
+      # @private
+      #
+      # @param stream [String, IO, StringIO, Enumerable]
+      # @param blk [Proc]
+      #
+      def initialize(stream, &blk)
+        @stream = stream.is_a?(String) ? StringIO.new(stream) : stream
+        @buf = String.new.b
+        @blk = blk
+      end
+    end
+
+    class << self
+      # @param blk [Proc]
+      #
+      # @return [Enumerable]
+      #
+      def string_io(&blk)
+        Enumerator.new do |y|
+          y.define_singleton_method(:write) do
+            self << _1.clone
+            _1.bytesize
+          end
+
+          blk.call(y)
+        end
+      end
+    end
+
     class << self
       # @private
       #
-      # @param io [StringIO]
+      # @param y [Enumerator::Yielder]
       # @param boundary [String]
       # @param key [Symbol, String]
       # @param val [Object]
       #
-      private def encode_multipart_formdata(io, boundary:, key:, val:)
-        io << "--#{boundary}\r\n"
-        io << "Content-Disposition: form-data"
+      private def encode_multipart_formdata(y, boundary:, key:, val:)
+        y << "--#{boundary}\r\n"
+        y << "Content-Disposition: form-data"
         unless key.nil?
           name = ERB::Util.url_encode(key.to_s)
-          io << "; name=\"#{name}\""
+          y << "; name=\"#{name}\""
         end
         if val.is_a?(IO)
           filename = ERB::Util.url_encode(File.basename(val.to_path))
-          io << "; filename=\"#{filename}\""
+          y << "; filename=\"#{filename}\""
         end
-        io << "\r\n"
+        y << "\r\n"
         case val
-        in IO | StringIO
-          io << "Content-Type: application/octet-stream\r\n\r\n"
-          IO.copy_stream(val, io)
+        in IO
+          y << "Content-Type: application/octet-stream\r\n\r\n"
+          IO.copy_stream(val, y)
+        in StringIO
+          y << "Content-Type: application/octet-stream\r\n\r\n"
+          y << val.string
         in String
-          io << "Content-Type: application/octet-stream\r\n\r\n"
-          io << val.to_s
+          y << "Content-Type: application/octet-stream\r\n\r\n"
+          y << val.to_s
         in true | false | Integer | Float | Symbol
-          io << "Content-Type: text/plain\r\n\r\n"
-          io << val.to_s
+          y << "Content-Type: text/plain\r\n\r\n"
+          y << val.to_s
         else
-          io << "Content-Type: application/json\r\n\r\n"
-          io << JSON.fast_generate(val)
+          y << "Content-Type: application/json\r\n\r\n"
+          y << JSON.fast_generate(val)
         end
-        io << "\r\n"
+        y << "\r\n"
+      end
+
+      # @private
+      #
+      # @param body [Object]
+      #
+      # @return [Array(String, Enumerable)]
+      #
+      private def encode_multipart_streaming(body)
+        boundary = SecureRandom.urlsafe_base64(60)
+
+        strio = string_io do |y|
+          case body
+          in Hash
+            body.each do |key, val|
+              case val
+              in Array if val.all? { primitive?(_1) }
+                val.each do |v|
+                  encode_multipart_formdata(y, boundary: boundary, key: key, val: v)
+                end
+              else
+                encode_multipart_formdata(y, boundary: boundary, key: key, val: val)
+              end
+            end
+          else
+            encode_multipart_formdata(y, boundary: boundary, key: nil, val: body)
+          end
+          y << "--#{boundary}--\r\n"
+        end
+
+        [boundary, strio]
       end
 
       # @private
@@ -449,37 +560,11 @@ module OpenAI
         in ["application/json", Hash | Array]
           [headers, JSON.fast_generate(body)]
         in [%r{^multipart/form-data}, Hash | IO | StringIO]
-          boundary = SecureRandom.urlsafe_base64(60)
-          strio = StringIO.new.tap do |io|
-            case body
-            in Hash
-              body.each do |key, val|
-                case val
-                in Array if val.all? { primitive?(_1) }
-                  val.each do |v|
-                    encode_multipart_formdata(io, boundary: boundary, key: key, val: v)
-                  end
-                else
-                  encode_multipart_formdata(io, boundary: boundary, key: key, val: val)
-                end
-              end
-            else
-              encode_multipart_formdata(io, boundary: boundary, key: nil, val: body)
-            end
-            io << "--#{boundary}--\r\n"
-            io.rewind
-          end
-          headers = {
-            **headers,
-            "content-type" => "#{content_type}; boundary=#{boundary}",
-            "transfer-encoding" => "chunked"
-          }
+          boundary, strio = encode_multipart_streaming(body)
+          headers = {**headers, "content-type" => "#{content_type}; boundary=#{boundary}"}
           [headers, strio]
         in [_, StringIO]
           [headers, body.string]
-        in [_, IO]
-          headers = {**headers, "transfer-encoding" => "chunked"}
-          [headers, body]
         else
           [headers, body]
         end
@@ -589,8 +674,9 @@ module OpenAI
 
         chain_fused(enum) do |y|
           enum.each do |row|
+            offset = buffer.bytesize
             buffer << row
-            while (match = re.match(buffer, cr_seen.to_i))
+            while (match = re.match(buffer, cr_seen&.to_i || offset))
               case [match.captures.first, cr_seen]
               in ["\r", nil]
                 cr_seen = match.end(1)
@@ -600,6 +686,7 @@ module OpenAI
               else
                 y << buffer.slice!(..(match.end(1).pred))
               end
+              offset = 0
               cr_seen = nil
             end
           end
@@ -637,7 +724,7 @@ module OpenAI
               in "event"
                 current.merge!(event: value)
               in "data"
-                (current[:data] ||= String.new.b) << value << "\n"
+                (current[:data] ||= String.new.b) << (value << "\n")
               in "id" unless value.include?("\0")
                 current.merge!(id: value)
               in "retry" if /^\d+$/ =~ value
