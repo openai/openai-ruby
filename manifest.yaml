@@ -5,6 +5,7 @@ dependencies:
   - etc
   - json
   - net/http
+  - pathname
   - rbconfig
   - securerandom
   - set
