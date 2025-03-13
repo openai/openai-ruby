@@ -17,32 +17,15 @@ module OpenAI
   # messages => Array
   # ```
   class BaseStream
-    # @private
+    # @return [void]
     #
-    # @param model [Class, OpenAI::Converter]
-    # @param url [URI::Generic]
-    # @param status [Integer]
-    # @param response [Net::HTTPResponse]
-    # @param messages [Enumerable]
-    #
-    def initialize(model:, url:, status:, response:, messages:)
-      @model = model
-      @url = url
-      @status = status
-      @response = response
-      @messages = messages
-      @iterator = iterator
-    end
+    def close = OpenAI::Util.close_fused!(@iterator)
 
     # @private
     #
     # @return [Enumerable]
     #
     private def iterator = (raise NotImplementedError)
-
-    # @return [void]
-    #
-    def close = OpenAI::Util.close_fused!(@iterator)
 
     # @param blk [Proc]
     #
@@ -60,5 +43,22 @@ module OpenAI
     def to_enum = @iterator
 
     alias_method :enum_for, :to_enum
+
+    # @private
+    #
+    # @param model [Class, OpenAI::Converter]
+    # @param url [URI::Generic]
+    # @param status [Integer]
+    # @param response [Net::HTTPResponse]
+    # @param messages [Enumerable]
+    #
+    def initialize(model:, url:, status:, response:, messages:)
+      @model = model
+      @url = url
+      @status = status
+      @response = response
+      @messages = messages
+      @iterator = iterator
+    end
   end
 end
