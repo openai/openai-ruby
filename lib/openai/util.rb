@@ -557,7 +557,7 @@ module OpenAI
       def encode_content(headers, body)
         content_type = headers["content-type"]
         case [content_type, body]
-        in ["application/json", Hash | Array]
+        in [%r{^application/(?:vnd\.api\+)?json}, Hash | Array]
           [headers, JSON.fast_generate(body)]
         in [%r{^multipart/form-data}, Hash | IO | StringIO]
           boundary, strio = encode_multipart_streaming(body)
@@ -593,7 +593,10 @@ module OpenAI
           lines = decode_lines(stream)
           decode_sse(lines)
         in %r{^application/(?:x-)?jsonl}
-          decode_lines(stream)
+          lines = decode_lines(stream)
+          chain_fused(lines) do |y|
+            lines.each { y << JSON.parse(_1, symbolize_names: true) }
+          end
         in %r{^text/}
           stream.to_a.join
         else
