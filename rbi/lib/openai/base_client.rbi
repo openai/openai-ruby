@@ -22,7 +22,7 @@ module OpenAI
         body: T.nilable(T.anything),
         unwrap: T.nilable(Symbol),
         page: T.nilable(T::Class[OpenAI::BasePage[OpenAI::BaseModel]]),
-        stream: T.nilable(T::Class[OpenAI::BaseStream[OpenAI::BaseModel]]),
+        stream: T.nilable(T::Class[OpenAI::BaseStream[T.anything, OpenAI::BaseModel]]),
         model: T.nilable(OpenAI::Converter::Input),
         options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
       }
@@ -148,7 +148,7 @@ module OpenAI
         body: T.nilable(T.anything),
         unwrap: T.nilable(Symbol),
         page: T.nilable(T::Class[OpenAI::BasePage[OpenAI::BaseModel]]),
-        stream: T.nilable(T::Class[OpenAI::BaseStream[OpenAI::BaseModel]]),
+        stream: T.nilable(T::Class[OpenAI::BaseStream[T.anything, OpenAI::BaseModel]]),
         model: T.nilable(OpenAI::Converter::Input),
         options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
       )
