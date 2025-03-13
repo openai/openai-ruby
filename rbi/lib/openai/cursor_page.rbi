@@ -21,17 +21,5 @@ module OpenAI
     sig { params(_: T::Boolean).returns(T::Boolean) }
     def has_more=(_)
     end
-
-    sig do
-      params(
-        client: OpenAI::BaseClient,
-        req: OpenAI::BaseClient::RequestComponentsShape,
-        headers: T.any(T::Hash[String, String], Net::HTTPHeader),
-        page_data: T::Hash[Symbol, T.anything]
-      )
-        .returns(T.attached_class)
-    end
-    def self.new(client:, req:, headers:, page_data:)
-    end
   end
 end
