@@ -1,5 +1,15 @@
 module OpenAI
   class BaseStream[Elem]
+    def close: -> void
+
+    private def iterator: -> Enumerable[Elem]
+
+    def for_each: { (Elem arg0) -> void } -> void
+
+    def to_enum: -> Enumerable[Elem]
+
+    alias enum_for to_enum
+
     def initialize: (
       model: Class | OpenAI::Converter,
       url: URI::Generic,
@@ -7,15 +17,5 @@ module OpenAI
       response: top,
       messages: Enumerable[OpenAI::Util::sse_message]
     ) -> void
-
-    private def iterator: -> Enumerable[Elem]
-
-    def close: -> void
-
-    def for_each: { (Elem arg0) -> void } -> void
-
-    def to_enum: -> Enumerable[Elem]
-
-    alias enum_for to_enum
   end
 end
