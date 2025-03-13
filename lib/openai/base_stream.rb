@@ -16,7 +16,7 @@ module OpenAI
   #
   # messages => Array
   # ```
-  class BaseStream
+  module BaseStream
     # @return [void]
     #
     def close = OpenAI::Util.close_fused!(@iterator)

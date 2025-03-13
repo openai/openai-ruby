@@ -1,5 +1,15 @@
 module OpenAI
-  class Stream[Elem] < OpenAI::BaseStream[Elem]
+  class Stream[Elem]
+    include OpenAI::BaseStream[OpenAI::Util::sse_message, Elem]
+
     private def iterator: -> Enumerable[Elem]
+
+    def initialize: (
+      model: Class | OpenAI::Converter,
+      url: URI::Generic,
+      status: Integer,
+      response: top,
+      messages: Enumerable[OpenAI::Util::sse_message]
+    ) -> void
   end
 end
