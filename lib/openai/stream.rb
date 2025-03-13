@@ -16,7 +16,9 @@ module OpenAI
   #
   # messages => Array
   # ```
-  class Stream < OpenAI::BaseStream
+  class Stream
+    include OpenAI::BaseStream
+
     # @private
     #
     # @return [Enumerable]
