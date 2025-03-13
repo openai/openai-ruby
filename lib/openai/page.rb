@@ -30,7 +30,6 @@ module OpenAI
     # @return [String]
     attr_accessor :object
 
-    # rubocop:disable Lint/UnusedMethodArgument
     # @private
     #
     # @param client [OpenAI::BaseClient]
@@ -39,8 +38,7 @@ module OpenAI
     # @param page_data [Array<Object>]
     #
     def initialize(client:, req:, headers:, page_data:)
-      @client = client
-      @req = req
+      super
       model = req.fetch(:model)
 
       case page_data
@@ -55,10 +53,8 @@ module OpenAI
       else
       end
     end
-    # rubocop:enable Lint/UnusedMethodArgument
 
     # @return [Boolean]
-    #
     def next_page?
       false
     end
