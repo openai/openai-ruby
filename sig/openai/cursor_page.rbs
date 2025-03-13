@@ -5,12 +5,5 @@ module OpenAI
     attr_accessor data: ::Array[Elem]
 
     attr_accessor has_more: bool
-
-    def initialize: (
-      client: OpenAI::BaseClient,
-      req: OpenAI::BaseClient::request_components,
-      headers: ::Hash[String, String],
-      page_data: ::Hash[Symbol, top]
-    ) -> void
   end
 end
