@@ -12,6 +12,12 @@ module OpenAI
         variant :file_search, -> { OpenAI::Models::Beta::FileSearchTool }
 
         variant :function, -> { OpenAI::Models::Beta::FunctionTool }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool)]
+        #     def variants; end
+        #   end
       end
     end
   end

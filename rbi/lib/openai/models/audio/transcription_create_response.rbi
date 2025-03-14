@@ -9,14 +9,8 @@ module OpenAI
         abstract!
 
         class << self
-          # @api private
-          sig do
-            override
-              .returns(
-                [[NilClass, OpenAI::Models::Audio::Transcription], [NilClass, OpenAI::Models::Audio::TranscriptionVerbose]]
-              )
-          end
-          private def variants
+          sig { override.returns([OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]) }
+          def variants
           end
         end
       end

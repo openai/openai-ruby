@@ -280,6 +280,12 @@ module OpenAI
             variant const: :auto
 
             variant Integer
+
+            # @!parse
+            #   class << self
+            #     # @return [Array(Symbol, :auto, Integer)]
+            #     def variants; end
+            #   end
           end
 
           # @abstract
@@ -290,6 +296,12 @@ module OpenAI
             variant const: :auto
 
             variant Float
+
+            # @!parse
+            #   class << self
+            #     # @return [Array(Symbol, :auto, Float)]
+            #     def variants; end
+            #   end
           end
 
           # @abstract
@@ -300,6 +312,12 @@ module OpenAI
             variant const: :auto
 
             variant Integer
+
+            # @!parse
+            #   class << self
+            #     # @return [Array(Symbol, :auto, Integer)]
+            #     def variants; end
+            #   end
           end
         end
 
@@ -449,6 +467,12 @@ module OpenAI
                 variant const: :auto
 
                 variant Integer
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(Symbol, :auto, Integer)]
+                #     def variants; end
+                #   end
               end
 
               # @abstract
@@ -459,6 +483,12 @@ module OpenAI
                 variant const: :auto
 
                 variant Float
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(Symbol, :auto, Float)]
+                #     def variants; end
+                #   end
               end
 
               # @abstract
@@ -469,6 +499,12 @@ module OpenAI
                 variant const: :auto
 
                 variant Float
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(Symbol, :auto, Float)]
+                #     def variants; end
+                #   end
               end
 
               # @abstract
@@ -479,6 +515,12 @@ module OpenAI
                 variant const: :auto
 
                 variant Integer
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(Symbol, :auto, Integer)]
+                #     def variants; end
+                #   end
               end
             end
           end
@@ -560,6 +602,12 @@ module OpenAI
                 variant const: :auto
 
                 variant Integer
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(Symbol, :auto, Integer)]
+                #     def variants; end
+                #   end
               end
 
               # @abstract
@@ -570,6 +618,12 @@ module OpenAI
                 variant const: :auto
 
                 variant Float
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(Symbol, :auto, Float)]
+                #     def variants; end
+                #   end
               end
 
               # @abstract
@@ -580,6 +634,12 @@ module OpenAI
                 variant const: :auto
 
                 variant Integer
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(Symbol, :auto, Integer)]
+                #     def variants; end
+                #   end
               end
             end
           end

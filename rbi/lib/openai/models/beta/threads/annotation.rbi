@@ -11,14 +11,13 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
             sig do
               override
                 .returns(
-                  [[Symbol, OpenAI::Models::Beta::Threads::FileCitationAnnotation], [Symbol, OpenAI::Models::Beta::Threads::FilePathAnnotation]]
+                  [OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation]
                 )
             end
-            private def variants
+            def variants
             end
           end
         end

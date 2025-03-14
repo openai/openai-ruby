@@ -52,7 +52,7 @@ module OpenAI
         type model = String | OpenAI::Models::audio_model
 
         class Model < OpenAI::Union
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::audio_model]]
+          def self.variants: -> [String, OpenAI::Models::audio_model]
         end
       end
     end

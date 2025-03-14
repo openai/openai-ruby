@@ -50,7 +50,7 @@ module OpenAI
           OpenAI::Models::ComparisonFilter | OpenAI::Models::CompoundFilter
 
         class Filters < OpenAI::Union
-          private def self.variants: -> [[nil, OpenAI::Models::ComparisonFilter], [nil, OpenAI::Models::CompoundFilter]]
+          def self.variants: -> [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
         end
 
         type ranking_options =

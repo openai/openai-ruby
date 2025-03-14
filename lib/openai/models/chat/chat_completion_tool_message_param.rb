@@ -42,6 +42,12 @@ module OpenAI
 
           # An array of content parts with a defined type. For tool messages, only type `text` is supported.
           variant OpenAI::Models::Chat::ChatCompletionToolMessageParam::Content::ChatCompletionContentPartTextArray
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
+          #     def variants; end
+          #   end
         end
       end
     end

@@ -12,14 +12,13 @@ module OpenAI
         abstract!
 
         class << self
-          # @api private
           sig do
             override
               .returns(
-                [[Symbol, OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam], [Symbol, OpenAI::Models::Chat::ChatCompletionSystemMessageParam], [Symbol, OpenAI::Models::Chat::ChatCompletionUserMessageParam], [Symbol, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam], [Symbol, OpenAI::Models::Chat::ChatCompletionToolMessageParam], [Symbol, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]]
+                [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
               )
           end
-          private def variants
+          def variants
           end
         end
       end

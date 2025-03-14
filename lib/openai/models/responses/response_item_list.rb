@@ -370,6 +370,12 @@ module OpenAI
               finalize!
             end
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::Responses::ResponseItemList::Data::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput)]
+          #     def variants; end
+          #   end
         end
       end
     end

@@ -26,6 +26,12 @@ module OpenAI
         # This tool searches the web for relevant results to use in a response.
         # Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         variant -> { OpenAI::Models::Responses::WebSearchTool }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool)]
+        #     def variants; end
+        #   end
       end
     end
   end

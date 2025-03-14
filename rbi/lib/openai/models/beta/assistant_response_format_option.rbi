@@ -27,14 +27,13 @@ module OpenAI
         abstract!
 
         class << self
-          # @api private
           sig do
             override
               .returns(
-                [[NilClass, Symbol], [NilClass, OpenAI::Models::ResponseFormatText], [NilClass, OpenAI::Models::ResponseFormatJSONObject], [NilClass, OpenAI::Models::ResponseFormatJSONSchema]]
+                [Symbol, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
               )
           end
-          private def variants
+          def variants
           end
         end
       end

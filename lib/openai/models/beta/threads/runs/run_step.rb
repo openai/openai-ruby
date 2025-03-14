@@ -219,6 +219,12 @@ module OpenAI
 
               # Details of the tool call.
               variant :tool_calls, -> { OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails }
+
+              # @!parse
+              #   class << self
+              #     # @return [Array(OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails)]
+              #     def variants; end
+              #   end
             end
 
             # @abstract

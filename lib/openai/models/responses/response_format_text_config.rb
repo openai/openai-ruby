@@ -33,6 +33,12 @@ module OpenAI
         # model will not generate JSON without a system or user message instructing it
         # to do so.
         variant :json_object, -> { OpenAI::Models::ResponseFormatJSONObject }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject)]
+        #     def variants; end
+        #   end
       end
     end
   end

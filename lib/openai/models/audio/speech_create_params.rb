@@ -73,6 +73,12 @@ module OpenAI
 
           # One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1` or `tts-1-hd`
           variant enum: -> { OpenAI::Models::Audio::SpeechModel }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Symbol, OpenAI::Models::Audio::SpeechModel)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract

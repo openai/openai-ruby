@@ -275,7 +275,7 @@ module OpenAI
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::wait
           end
 
-          private def self.variants: -> [[:click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click], [:double_click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick], [:drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag], [:keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress], [:move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move], [:screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot], [:scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll], [:type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type], [:wait, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]]
+          def self.variants: -> [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
         end
 
         type pending_safety_check =

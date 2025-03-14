@@ -23,7 +23,7 @@ module OpenAI
       type filter = OpenAI::Models::ComparisonFilter | top
 
       class Filter < OpenAI::Union
-        private def self.variants: -> [[nil, OpenAI::Models::ComparisonFilter], [nil, top]]
+        def self.variants: -> [OpenAI::Models::ComparisonFilter, top]
       end
 
       type type_ = :and | :or

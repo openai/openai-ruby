@@ -84,14 +84,13 @@ module OpenAI
         end
 
         class << self
-          # @api private
           sig do
             override
               .returns(
-                [[Symbol, OpenAI::Models::Chat::ChatCompletionContentPartText], [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage], [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio], [Symbol, OpenAI::Models::Chat::ChatCompletionContentPart::File]]
+                [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
               )
           end
-          private def variants
+          def variants
           end
         end
       end

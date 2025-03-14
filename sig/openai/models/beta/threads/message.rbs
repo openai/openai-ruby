@@ -122,7 +122,7 @@ module OpenAI
                 def to_hash: -> OpenAI::Models::Beta::Threads::Message::Attachment::Tool::assistant_tools_file_search_type_only
               end
 
-              private def self.variants: -> [[nil, OpenAI::Models::Beta::CodeInterpreterTool], [nil, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]]
+              def self.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
             end
           end
 

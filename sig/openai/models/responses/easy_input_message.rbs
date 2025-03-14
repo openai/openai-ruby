@@ -37,7 +37,7 @@ module OpenAI
           | OpenAI::Models::Responses::response_input_message_content_list
 
         class Content < OpenAI::Union
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::Responses::response_input_message_content_list]]
+          def self.variants: -> [String, OpenAI::Models::Responses::response_input_message_content_list]
         end
 
         type role = :user | :assistant | :system | :developer

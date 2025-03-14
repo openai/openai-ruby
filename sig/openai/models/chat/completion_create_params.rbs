@@ -172,7 +172,7 @@ module OpenAI
         type model = String | OpenAI::Models::chat_model
 
         class Model < OpenAI::Union
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::chat_model]]
+          def self.variants: -> [String, OpenAI::Models::chat_model]
         end
 
         type function_call =
@@ -189,7 +189,7 @@ module OpenAI
             def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode]
           end
 
-          private def self.variants: -> [[nil, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode], [nil, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]]
+          def self.variants: -> [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
         end
 
         type function =
@@ -241,7 +241,7 @@ module OpenAI
           | OpenAI::Models::ResponseFormatJSONObject
 
         class ResponseFormat < OpenAI::Union
-          private def self.variants: -> [[nil, OpenAI::Models::ResponseFormatText], [nil, OpenAI::Models::ResponseFormatJSONSchema], [nil, OpenAI::Models::ResponseFormatJSONObject]]
+          def self.variants: -> [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
         end
 
         type service_tier = :auto | :default
@@ -260,7 +260,7 @@ module OpenAI
 
           StringArray: string_array
 
-          private def self.variants: -> [[nil, String], [nil, ::Array[String]]]
+          def self.variants: -> [String, ::Array[String]]
         end
 
         type web_search_options =

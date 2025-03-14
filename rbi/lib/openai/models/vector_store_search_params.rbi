@@ -95,9 +95,8 @@ module OpenAI
         StringArray = T.type_alias { T::Array[String] }
 
         class << self
-          # @api private
-          sig { override.returns([[NilClass, String], [NilClass, T::Array[String]]]) }
-          private def variants
+          sig { override.returns([String, T::Array[String]]) }
+          def variants
           end
         end
       end
@@ -107,12 +106,8 @@ module OpenAI
         abstract!
 
         class << self
-          # @api private
-          sig do
-            override
-              .returns([[NilClass, OpenAI::Models::ComparisonFilter], [NilClass, OpenAI::Models::CompoundFilter]])
-          end
-          private def variants
+          sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
+          def variants
           end
         end
       end

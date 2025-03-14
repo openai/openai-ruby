@@ -260,7 +260,7 @@ module OpenAI
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::item_reference
         end
 
-        private def self.variants: -> [[:message, OpenAI::Models::Responses::EasyInputMessage], [:message, OpenAI::Models::Responses::ResponseInputItem::Message], [:message, OpenAI::Models::Responses::ResponseOutputMessage], [:file_search_call, OpenAI::Models::Responses::ResponseFileSearchToolCall], [:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall], [:computer_call_output, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput], [:web_search_call, OpenAI::Models::Responses::ResponseFunctionWebSearch], [:function_call, OpenAI::Models::Responses::ResponseFunctionToolCall], [:function_call_output, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput], [:reasoning, OpenAI::Models::Responses::ResponseReasoningItem], [:item_reference, OpenAI::Models::Responses::ResponseInputItem::ItemReference]]
+        def self.variants: -> [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
       end
     end
   end

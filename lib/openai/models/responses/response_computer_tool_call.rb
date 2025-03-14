@@ -399,6 +399,12 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait)]
+          #     def variants; end
+          #   end
         end
 
         class PendingSafetyCheck < OpenAI::BaseModel

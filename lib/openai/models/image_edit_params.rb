@@ -110,6 +110,12 @@ module OpenAI
 
         # The model to use for image generation. Only `dall-e-2` is supported at this time.
         variant enum: -> { OpenAI::Models::ImageModel }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract

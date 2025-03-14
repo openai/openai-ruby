@@ -104,6 +104,12 @@ module OpenAI
 
         # The array of arrays containing integers that will be turned into an embedding.
         variant OpenAI::Models::EmbeddingCreateParams::Input::ArrayOfToken2DArray
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract
@@ -118,6 +124,12 @@ module OpenAI
 
         # ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
         variant enum: -> { OpenAI::Models::EmbeddingModel }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Symbol, OpenAI::Models::EmbeddingModel)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract

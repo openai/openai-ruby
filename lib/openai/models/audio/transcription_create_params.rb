@@ -122,6 +122,12 @@ module OpenAI
 
           # ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.
           variant enum: -> { OpenAI::Models::AudioModel }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract

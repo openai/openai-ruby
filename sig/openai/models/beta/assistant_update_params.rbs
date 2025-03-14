@@ -145,7 +145,7 @@ module OpenAI
             def self.values: -> ::Array[OpenAI::Models::Beta::AssistantUpdateParams::Model::assistant_supported_models]
           end
 
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::Beta::AssistantUpdateParams::Model::assistant_supported_models]]
+          def self.variants: -> [String, OpenAI::Models::Beta::AssistantUpdateParams::Model::assistant_supported_models]
         end
 
         type tool_resources =
