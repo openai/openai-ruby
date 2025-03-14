@@ -306,7 +306,7 @@ module OpenAI
   # when OpenAI::Models::ChatModel::O1
   #   # ...
   # else
-  #   # ...
+  #   puts(chat_model)
   # end
   # ```
   #
@@ -320,7 +320,7 @@ module OpenAI
   # in :o1
   #   # ...
   # else
-  #   # ...
+  #   puts(chat_model)
   # end
   # ```
   class Enum
@@ -407,13 +407,13 @@ module OpenAI
   # # `chat_completion_content_part` is a `OpenAI::Models::Chat::ChatCompletionContentPart`
   # case chat_completion_content_part
   # when OpenAI::Models::Chat::ChatCompletionContentPartText
-  #   # ...
+  #   puts(chat_completion_content_part.text)
   # when OpenAI::Models::Chat::ChatCompletionContentPartImage
-  #   # ...
+  #   puts(chat_completion_content_part.image_url)
   # when OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
-  #   # ...
+  #   puts(chat_completion_content_part.input_audio)
   # else
-  #   # ...
+  #   puts(chat_completion_content_part)
   # end
   # ```
   #
@@ -421,15 +421,13 @@ module OpenAI
   # ```ruby
   # case chat_completion_content_part
   # in {type: :text, text: text}
-  #   # ...
+  #   puts(text)
   # in {type: :image_url, image_url: image_url}
-  #   # ...
+  #   puts(image_url)
   # in {type: :input_audio, input_audio: input_audio}
-  #   # ...
-  # in {type: :file, file: file}
-  #   # ...
+  #   puts(input_audio)
   # else
-  #   # ...
+  #   puts(chat_completion_content_part)
   # end
   # ```
   class Union
