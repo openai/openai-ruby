@@ -19,6 +19,5 @@ jobs:
         run: |
           bash ./bin/check-release-environment
         env:
-          STAINLESS_API_KEY: ${{ secrets.STAINLESS_API_KEY }}
           RUBYGEMS_HOST: ${{ secrets.OPENAI_RUBYGEMS_HOST || secrets.RUBYGEMS_HOST }}
           GEM_HOST_API_KEY: ${{ secrets.OPENAI_GEM_HOST_API_KEY || secrets.GEM_HOST_API_KEY }}
