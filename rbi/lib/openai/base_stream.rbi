@@ -1,7 +1,6 @@
 # typed: strong
 
 module OpenAI
-  # @api private
   module BaseStream
     Message = type_member(:in)
     Elem = type_member(:out)

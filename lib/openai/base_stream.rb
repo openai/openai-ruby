@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module OpenAI
-  # @api private
-  #
   # @example
   # ```ruby
   # stream.for_each do |message|

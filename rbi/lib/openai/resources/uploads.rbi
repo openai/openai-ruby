@@ -36,7 +36,23 @@ module OpenAI
         )
           .returns(OpenAI::Models::Upload)
       end
-      def create(bytes:, filename:, mime_type:, purpose:, request_options: {})
+      def create(
+        # The number of bytes in the file you are uploading.
+        bytes:,
+        # The name of the file to upload.
+        filename:,
+        # The MIME type of the file.
+        #
+        #   This must fall within the supported MIME types for your file purpose. See the
+        #   supported MIME types for assistants and vision.
+        mime_type:,
+        # The intended purpose of the uploaded file.
+        #
+        #   See the
+        #   [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
+        purpose:,
+        request_options: {}
+      )
       end
 
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
@@ -47,7 +63,11 @@ module OpenAI
         )
           .returns(OpenAI::Models::Upload)
       end
-      def cancel(upload_id, request_options: {})
+      def cancel(
+        # The ID of the Upload.
+        upload_id,
+        request_options: {}
+      )
       end
 
       # Completes the
@@ -72,7 +92,16 @@ module OpenAI
         )
           .returns(OpenAI::Models::Upload)
       end
-      def complete(upload_id, part_ids:, md5: nil, request_options: {})
+      def complete(
+        # The ID of the Upload.
+        upload_id,
+        # The ordered list of Part IDs.
+        part_ids:,
+        # The optional md5 checksum for the file contents to verify if the bytes uploaded
+        #   matches what you expect.
+        md5: nil,
+        request_options: {}
+      )
       end
 
       sig { params(client: OpenAI::Client).returns(T.attached_class) }

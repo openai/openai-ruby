@@ -17,7 +17,18 @@ module OpenAI
             )
               .returns(OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage])
           end
-          def list(completion_id, after: nil, limit: nil, order: nil, request_options: {})
+          def list(
+            # The ID of the chat completion to retrieve messages from.
+            completion_id,
+            # Identifier for the last message from the previous pagination request.
+            after: nil,
+            # Number of messages to retrieve.
+            limit: nil,
+            # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
+            #   for descending order. Defaults to `asc`.
+            order: nil,
+            request_options: {}
+          )
           end
 
           sig { params(client: OpenAI::Client).returns(T.attached_class) }

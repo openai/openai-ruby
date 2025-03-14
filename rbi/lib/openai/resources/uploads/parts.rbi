@@ -23,7 +23,13 @@ module OpenAI
           )
             .returns(OpenAI::Models::Uploads::UploadPart)
         end
-        def create(upload_id, data:, request_options: {})
+        def create(
+          # The ID of the Upload.
+          upload_id,
+          # The chunk of bytes for this Part.
+          data:,
+          request_options: {}
+        )
         end
 
         sig { params(client: OpenAI::Client).returns(T.attached_class) }

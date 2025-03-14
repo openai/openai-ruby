@@ -68,7 +68,13 @@ module OpenAI
         params(values: T::Array[T.anything], sentinel: T.nilable(T.anything), concat: T::Boolean)
           .returns(T.anything)
       end
-      def deep_merge(*values, sentinel: nil, concat: false)
+      def deep_merge(
+        *values,
+        # the value to return if no values are provided.
+        sentinel: nil,
+        # whether to merge sequences by concatenation.
+        concat: false
+      )
       end
 
       # @api private
