@@ -32,11 +32,15 @@ module OpenAI
 
     attr_reader fine_tuning: OpenAI::Resources::FineTuning
 
+    attr_reader vector_stores: OpenAI::Resources::VectorStores
+
     attr_reader beta: OpenAI::Resources::Beta
 
     attr_reader batches: OpenAI::Resources::Batches
 
     attr_reader uploads: OpenAI::Resources::Uploads
+
+    attr_reader responses: OpenAI::Resources::Responses
 
     private def auth_headers: -> ::Hash[String, String]
 

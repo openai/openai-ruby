@@ -89,8 +89,9 @@ module OpenAI
         def usage=(_)
         end
 
-        # Represents a streamed chunk of a chat completion response returned by model,
+        # Represents a streamed chunk of a chat completion response returned by the model,
         #   based on the provided input.
+        #   [Learn more](https://platform.openai.com/docs/guides/streaming-responses).
         sig do
           params(
             id: String,

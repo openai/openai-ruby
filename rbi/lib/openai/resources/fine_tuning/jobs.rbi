@@ -21,6 +21,7 @@ module OpenAI
             training_file: String,
             hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
             integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
+            metadata: T.nilable(OpenAI::Models::Metadata),
             method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
@@ -56,6 +57,13 @@ module OpenAI
           hyperparameters: nil,
           # A list of integrations to enable for your fine-tuning job.
           integrations: nil,
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
+          #
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
+          metadata: nil,
           # The method used for fine-tuning.
           method_: nil,
           # The seed controls the reproducibility of the job. Passing in the same seed and
@@ -107,6 +115,7 @@ module OpenAI
           params(
             after: String,
             limit: Integer,
+            metadata: T.nilable(T::Hash[Symbol, String]),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJob])
@@ -116,6 +125,9 @@ module OpenAI
           after: nil,
           # Number of fine-tuning jobs to retrieve.
           limit: nil,
+          # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
+          #   Alternatively, set `metadata=null` to indicate no metadata.
+          metadata: nil,
           request_options: {}
         )
         end

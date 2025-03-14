@@ -3,10 +3,6 @@
 module OpenAI
   module Resources
     class Beta
-      sig { returns(OpenAI::Resources::Beta::VectorStores) }
-      def vector_stores
-      end
-
       sig { returns(OpenAI::Resources::Beta::Assistants) }
       def assistants
       end

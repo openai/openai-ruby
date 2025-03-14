@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_error_event =
+        { code: String?, message: String, param: String?, type: :error }
+
+      class ResponseErrorEvent < OpenAI::BaseModel
+        attr_accessor code: String?
+
+        attr_accessor message: String
+
+        attr_accessor param: String?
+
+        attr_accessor type: :error
+
+        def initialize:
+          (code: String?, message: String, param: String?, type: :error) -> void
+          | (
+            ?OpenAI::Models::Responses::response_error_event
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_error_event
+      end
+    end
+  end
+end

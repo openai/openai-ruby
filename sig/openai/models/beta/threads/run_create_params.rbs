@@ -14,7 +14,7 @@ module OpenAI
             metadata: OpenAI::Models::metadata?,
             model: OpenAI::Models::Beta::Threads::RunCreateParams::model?,
             parallel_tool_calls: bool,
-            reasoning_effort: OpenAI::Models::Beta::Threads::RunCreateParams::reasoning_effort?,
+            reasoning_effort: OpenAI::Models::reasoning_effort?,
             response_format: OpenAI::Models::Beta::assistant_response_format_option?,
             temperature: Float?,
             tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
@@ -54,7 +54,7 @@ module OpenAI
 
           def parallel_tool_calls=: (bool) -> bool
 
-          attr_accessor reasoning_effort: OpenAI::Models::Beta::Threads::RunCreateParams::reasoning_effort?
+          attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
 
           attr_accessor response_format: OpenAI::Models::Beta::assistant_response_format_option?
 
@@ -80,7 +80,7 @@ module OpenAI
               metadata: OpenAI::Models::metadata?,
               model: OpenAI::Models::Beta::Threads::RunCreateParams::model?,
               parallel_tool_calls: bool,
-              reasoning_effort: OpenAI::Models::Beta::Threads::RunCreateParams::reasoning_effort?,
+              reasoning_effort: OpenAI::Models::reasoning_effort?,
               response_format: OpenAI::Models::Beta::assistant_response_format_option?,
               temperature: Float?,
               tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
@@ -207,16 +207,6 @@ module OpenAI
 
           class Model < OpenAI::Union
             def self.variants: -> [String, OpenAI::Models::chat_model]
-          end
-
-          type reasoning_effort = :low | :medium | :high
-
-          class ReasoningEffort < OpenAI::Enum
-            LOW: :low
-            MEDIUM: :medium
-            HIGH: :high
-
-            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::reasoning_effort]
           end
 
           type truncation_strategy =

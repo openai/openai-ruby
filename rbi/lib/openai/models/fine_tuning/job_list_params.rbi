@@ -25,18 +25,39 @@ module OpenAI
         def limit=(_)
         end
 
+        # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
+        #   Alternatively, set `metadata=null` to indicate no metadata.
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
+        def metadata
+        end
+
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
+        def metadata=(_)
+        end
+
         sig do
           params(
             after: String,
             limit: Integer,
+            metadata: T.nilable(T::Hash[Symbol, String]),
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
         end
-        def self.new(after: nil, limit: nil, request_options: {})
+        def self.new(after: nil, limit: nil, metadata: nil, request_options: {})
         end
 
-        sig { override.returns({after: String, limit: Integer, request_options: OpenAI::RequestOptions}) }
+        sig do
+          override
+            .returns(
+              {
+                after: String,
+                limit: Integer,
+                metadata: T.nilable(T::Hash[Symbol, String]),
+                request_options: OpenAI::RequestOptions
+              }
+            )
+        end
         def to_hash
         end
       end

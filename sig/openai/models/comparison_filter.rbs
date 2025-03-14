@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    type comparison_filter =
+      {
+        key: String,
+        type: OpenAI::Models::ComparisonFilter::type_,
+        value: OpenAI::Models::ComparisonFilter::value
+      }
+
+    class ComparisonFilter < OpenAI::BaseModel
+      attr_accessor key: String
+
+      attr_accessor type: OpenAI::Models::ComparisonFilter::type_
+
+      attr_accessor value: OpenAI::Models::ComparisonFilter::value
+
+      def initialize:
+        (
+          key: String,
+          type: OpenAI::Models::ComparisonFilter::type_,
+          value: OpenAI::Models::ComparisonFilter::value
+        ) -> void
+        | (?OpenAI::Models::comparison_filter | OpenAI::BaseModel data) -> void
+
+      def to_hash: -> OpenAI::Models::comparison_filter
+
+      type type_ = :eq | :ne | :gt | :gte | :lt | :lte
+
+      class Type < OpenAI::Enum
+        EQ: :eq
+        NE: :ne
+        GT: :gt
+        GTE: :gte
+        LT: :lt
+        LTE: :lte
+
+        def self.values: -> ::Array[OpenAI::Models::ComparisonFilter::type_]
+      end
+
+      type value = String | Float | bool
+
+      class Value < OpenAI::Union
+        def self.variants: -> [String, Float, bool]
+      end
+    end
+  end
+end

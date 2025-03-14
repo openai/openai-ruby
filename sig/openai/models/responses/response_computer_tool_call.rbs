@@ -1,0 +1,321 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_computer_tool_call =
+        {
+          id: String,
+          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+          call_id: String,
+          pending_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck],
+          status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
+          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
+        }
+
+      class ResponseComputerToolCall < OpenAI::BaseModel
+        attr_accessor id: String
+
+        attr_accessor action: OpenAI::Models::Responses::ResponseComputerToolCall::action
+
+        attr_accessor call_id: String
+
+        attr_accessor pending_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck]
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseComputerToolCall::status
+
+        attr_accessor type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
+
+        def initialize:
+          (
+            id: String,
+            action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+            call_id: String,
+            pending_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck],
+            status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
+            type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_computer_tool_call
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_computer_tool_call
+
+        type action =
+          OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type
+          | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
+
+        class Action < OpenAI::Union
+          type click =
+            {
+              button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
+              type: :click,
+              x: Integer,
+              y_: Integer
+            }
+
+          class Click < OpenAI::BaseModel
+            attr_accessor button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button
+
+            attr_accessor type: :click
+
+            attr_accessor x: Integer
+
+            attr_accessor y_: Integer
+
+            def initialize:
+              (
+                button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
+                x: Integer,
+                y_: Integer,
+                type: :click
+              ) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::click
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::click
+
+            type button = :left | :right | :wheel | :back | :forward
+
+            class Button < OpenAI::Enum
+              LEFT: :left
+              RIGHT: :right
+              WHEEL: :wheel
+              BACK: :back
+              FORWARD: :forward
+
+              def self.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button]
+            end
+          end
+
+          type double_click = { type: :double_click, x: Integer, y_: Integer }
+
+          class DoubleClick < OpenAI::BaseModel
+            attr_accessor type: :double_click
+
+            attr_accessor x: Integer
+
+            attr_accessor y_: Integer
+
+            def initialize:
+              (x: Integer, y_: Integer, type: :double_click) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::double_click
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::double_click
+          end
+
+          type drag =
+            {
+              path: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path],
+              type: :drag
+            }
+
+          class Drag < OpenAI::BaseModel
+            attr_accessor path: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path]
+
+            attr_accessor type: :drag
+
+            def initialize:
+              (
+                path: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path],
+                type: :drag
+              ) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::drag
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::drag
+
+            type path = { x: Integer, y_: Integer }
+
+            class Path < OpenAI::BaseModel
+              attr_accessor x: Integer
+
+              attr_accessor y_: Integer
+
+              def initialize:
+                (x: Integer, y_: Integer) -> void
+                | (
+                  ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::path
+                  | OpenAI::BaseModel data
+                ) -> void
+
+              def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::path
+            end
+          end
+
+          type keypress = { keys: ::Array[String], type: :keypress }
+
+          class Keypress < OpenAI::BaseModel
+            attr_accessor keys: ::Array[String]
+
+            attr_accessor type: :keypress
+
+            def initialize:
+              (keys: ::Array[String], type: :keypress) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::keypress
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::keypress
+          end
+
+          type move = { type: :move, x: Integer, y_: Integer }
+
+          class Move < OpenAI::BaseModel
+            attr_accessor type: :move
+
+            attr_accessor x: Integer
+
+            attr_accessor y_: Integer
+
+            def initialize:
+              (x: Integer, y_: Integer, type: :move) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::move
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::move
+          end
+
+          type screenshot = { type: :screenshot }
+
+          class Screenshot < OpenAI::BaseModel
+            attr_accessor type: :screenshot
+
+            def initialize:
+              (type: :screenshot) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::screenshot
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::screenshot
+          end
+
+          type scroll =
+            {
+              scroll_x: Integer,
+              scroll_y: Integer,
+              type: :scroll,
+              x: Integer,
+              y_: Integer
+            }
+
+          class Scroll < OpenAI::BaseModel
+            attr_accessor scroll_x: Integer
+
+            attr_accessor scroll_y: Integer
+
+            attr_accessor type: :scroll
+
+            attr_accessor x: Integer
+
+            attr_accessor y_: Integer
+
+            def initialize:
+              (
+                scroll_x: Integer,
+                scroll_y: Integer,
+                x: Integer,
+                y_: Integer,
+                type: :scroll
+              ) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::scroll
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::scroll
+          end
+
+          type type_ = { text: String, type: :type }
+
+          class Type < OpenAI::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: :type
+
+            def initialize:
+              (text: String, type: :type) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::type_
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::type_
+          end
+
+          type wait = { type: :wait }
+
+          class Wait < OpenAI::BaseModel
+            attr_accessor type: :wait
+
+            def initialize:
+              (type: :wait) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::wait
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::wait
+          end
+
+          def self.variants: -> [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
+        end
+
+        type pending_safety_check =
+          { id: String, code: String, message: String }
+
+        class PendingSafetyCheck < OpenAI::BaseModel
+          attr_accessor id: String
+
+          attr_accessor code: String
+
+          attr_accessor message: String
+
+          def initialize:
+            (id: String, code: String, message: String) -> void
+            | (
+              ?OpenAI::Models::Responses::ResponseComputerToolCall::pending_safety_check
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::pending_safety_check
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        class Status < OpenAI::Enum
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::status]
+        end
+
+        type type_ = :computer_call
+
+        class Type < OpenAI::Enum
+          COMPUTER_CALL: :computer_call
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::type_]
+        end
+      end
+    end
+  end
+end

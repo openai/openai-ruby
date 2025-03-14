@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_text_config =
+        { format_: OpenAI::Models::Responses::response_format_text_config }
+
+      class ResponseTextConfig < OpenAI::BaseModel
+        attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
+
+        def format_=: (
+          OpenAI::Models::Responses::response_format_text_config
+        ) -> OpenAI::Models::Responses::response_format_text_config
+
+        def initialize:
+          (
+            format_: OpenAI::Models::Responses::response_format_text_config
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_text_config
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_text_config
+      end
+    end
+  end
+end

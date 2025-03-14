@@ -1,0 +1,115 @@
+module OpenAI
+  module Models
+    
+    class VectorStoreFile = VectorStores::VectorStoreFile
+
+    module VectorStores
+      type vector_store_file =
+        {
+          id: String,
+          created_at: Integer,
+          last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?,
+          object: :"vector_store.file",
+          status: OpenAI::Models::VectorStores::VectorStoreFile::status,
+          usage_bytes: Integer,
+          vector_store_id: String,
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+          chunking_strategy: OpenAI::Models::file_chunking_strategy
+        }
+
+      class VectorStoreFile < OpenAI::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?
+
+        attr_accessor object: :"vector_store.file"
+
+        attr_accessor status: OpenAI::Models::VectorStores::VectorStoreFile::status
+
+        attr_accessor usage_bytes: Integer
+
+        attr_accessor vector_store_id: String
+
+        attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?
+
+        attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy?
+
+        def chunking_strategy=: (
+          OpenAI::Models::file_chunking_strategy
+        ) -> OpenAI::Models::file_chunking_strategy
+
+        def initialize:
+          (
+            id: String,
+            created_at: Integer,
+            last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?,
+            status: OpenAI::Models::VectorStores::VectorStoreFile::status,
+            usage_bytes: Integer,
+            vector_store_id: String,
+            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+            chunking_strategy: OpenAI::Models::file_chunking_strategy,
+            object: :"vector_store.file"
+          ) -> void
+          | (
+            ?OpenAI::Models::VectorStores::vector_store_file
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::VectorStores::vector_store_file
+
+        type last_error =
+          {
+            code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code,
+            message: String
+          }
+
+        class LastError < OpenAI::BaseModel
+          attr_accessor code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code
+
+          attr_accessor message: String
+
+          def initialize:
+            (
+              code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code,
+              message: String
+            ) -> void
+            | (
+              ?OpenAI::Models::VectorStores::VectorStoreFile::last_error
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::VectorStores::VectorStoreFile::last_error
+
+          type code = :server_error | :unsupported_file | :invalid_file
+
+          class Code < OpenAI::Enum
+            SERVER_ERROR: :server_error
+            UNSUPPORTED_FILE: :unsupported_file
+            INVALID_FILE: :invalid_file
+
+            def self.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::code]
+          end
+        end
+
+        type status = :in_progress | :completed | :cancelled | :failed
+
+        class Status < OpenAI::Enum
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          CANCELLED: :cancelled
+          FAILED: :failed
+
+          def self.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::status]
+        end
+
+        type attribute = String | Float | bool
+
+        class Attribute < OpenAI::Union
+          def self.variants: -> [String, Float, bool]
+        end
+      end
+    end
+  end
+end

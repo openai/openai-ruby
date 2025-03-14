@@ -29,10 +29,17 @@ module OpenAI
         # `auto` is the default value
         variant const: :auto
 
+        # Default response format. Used to generate text responses.
         variant -> { OpenAI::Models::ResponseFormatText }
 
+        # JSON object response format. An older method of generating JSON responses.
+        # Using `json_schema` is recommended for models that support it. Note that the
+        # model will not generate JSON without a system or user message instructing it
+        # to do so.
         variant -> { OpenAI::Models::ResponseFormatJSONObject }
 
+        # JSON Schema response format. Used to generate structured JSON responses.
+        # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         variant -> { OpenAI::Models::ResponseFormatJSONSchema }
 
         # @!parse

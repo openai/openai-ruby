@@ -69,10 +69,12 @@ module OpenAI
 
               class RankingOptions < OpenAI::BaseModel
                 # @!attribute ranker
-                #   The ranker used for the file search.
+                #   The ranker to use for the file search. If not specified will use the `auto`
+                #     ranker.
                 #
-                #   @return [Symbol, :default_2024_08_21]
-                required :ranker, const: :default_2024_08_21
+                #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker]
+                required :ranker,
+                         enum: -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker }
 
                 # @!attribute score_threshold
                 #   The score threshold for the file search. All values must be a floating point
@@ -84,12 +86,23 @@ module OpenAI
                 # @!parse
                 #   # The ranking options for the file search.
                 #   #
+                #   # @param ranker [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker]
                 #   # @param score_threshold [Float]
-                #   # @param ranker [Symbol, :default_2024_08_21]
                 #   #
-                #   def initialize(score_threshold:, ranker: :default_2024_08_21, **) = super
+                #   def initialize(ranker:, score_threshold:, **) = super
 
                 # def initialize: (Hash | OpenAI::BaseModel) -> void
+
+                # @abstract
+                #
+                # The ranker to use for the file search. If not specified will use the `auto`
+                #   ranker.
+                class Ranker < OpenAI::Enum
+                  AUTO = :auto
+                  DEFAULT_2024_08_21 = :default_2024_08_21
+
+                  finalize!
+                end
               end
 
               class Result < OpenAI::BaseModel

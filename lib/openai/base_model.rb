@@ -883,11 +883,11 @@ module OpenAI
   #
   # @example
   # ```ruby
-  # # `error_object` is a `OpenAI::Models::ErrorObject`
-  # error_object => {
-  #   code: code,
-  #   message: message,
-  #   param: param
+  # # `comparison_filter` is a `OpenAI::Models::ComparisonFilter`
+  # comparison_filter => {
+  #   key: key,
+  #   type: type,
+  #   value: value
   # }
   # ```
   class BaseModel

@@ -69,6 +69,15 @@ module OpenAI
       def status=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the file will expire.
+      sig { returns(T.nilable(Integer)) }
+      def expires_at
+      end
+
+      sig { params(_: Integer).returns(Integer) }
+      def expires_at=(_)
+      end
+
       # Deprecated. For details on why a fine-tuning training file failed validation,
       #   see the `error` field on `fine_tuning.job`.
       sig { returns(T.nilable(String)) }
@@ -88,12 +97,23 @@ module OpenAI
           filename: String,
           purpose: Symbol,
           status: Symbol,
+          expires_at: Integer,
           status_details: String,
           object: Symbol
         )
           .returns(T.attached_class)
       end
-      def self.new(id:, bytes:, created_at:, filename:, purpose:, status:, status_details: nil, object: :file)
+      def self.new(
+        id:,
+        bytes:,
+        created_at:,
+        filename:,
+        purpose:,
+        status:,
+        expires_at: nil,
+        status_details: nil,
+        object: :file
+      )
       end
 
       sig do
@@ -107,6 +127,7 @@ module OpenAI
               object: Symbol,
               purpose: Symbol,
               status: Symbol,
+              expires_at: Integer,
               status_details: String
             }
           )

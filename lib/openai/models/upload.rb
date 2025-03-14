@@ -22,7 +22,7 @@ module OpenAI
       required :created_at, Integer
 
       # @!attribute expires_at
-      #   The Unix timestamp (in seconds) for when the Upload was created.
+      #   The Unix timestamp (in seconds) for when the Upload will expire.
       #
       #   @return [Integer]
       required :expires_at, Integer

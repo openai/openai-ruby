@@ -58,6 +58,10 @@ module OpenAI
     def fine_tuning
     end
 
+    sig { returns(OpenAI::Resources::VectorStores) }
+    def vector_stores
+    end
+
     sig { returns(OpenAI::Resources::Beta) }
     def beta
     end
@@ -68,6 +72,10 @@ module OpenAI
 
     sig { returns(OpenAI::Resources::Uploads) }
     def uploads
+    end
+
+    sig { returns(OpenAI::Resources::Responses) }
+    def responses
     end
 
     # @api private

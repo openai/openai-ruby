@@ -115,22 +115,22 @@ module OpenAI
         # Content that includes instructions or advice that facilitate the planning or
         #   execution of wrongdoing, or that gives advice or instruction on how to commit
         #   illicit acts. For example, "how to shoplift" would fit this category.
-        sig { returns(T::Boolean) }
+        sig { returns(T.nilable(T::Boolean)) }
         def illicit
         end
 
-        sig { params(_: T::Boolean).returns(T::Boolean) }
+        sig { params(_: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
         def illicit=(_)
         end
 
         # Content that includes instructions or advice that facilitate the planning or
         #   execution of wrongdoing that also includes violence, or that gives advice or
         #   instruction on the procurement of any weapon.
-        sig { returns(T::Boolean) }
+        sig { returns(T.nilable(T::Boolean)) }
         def illicit_violent
         end
 
-        sig { params(_: T::Boolean).returns(T::Boolean) }
+        sig { params(_: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
         def illicit_violent=(_)
         end
 
@@ -210,8 +210,8 @@ module OpenAI
             harassment_threatening: T::Boolean,
             hate: T::Boolean,
             hate_threatening: T::Boolean,
-            illicit: T::Boolean,
-            illicit_violent: T::Boolean,
+            illicit: T.nilable(T::Boolean),
+            illicit_violent: T.nilable(T::Boolean),
             self_harm: T::Boolean,
             self_harm_instructions: T::Boolean,
             self_harm_intent: T::Boolean,
@@ -247,8 +247,8 @@ module OpenAI
                 harassment_threatening: T::Boolean,
                 hate: T::Boolean,
                 hate_threatening: T::Boolean,
-                illicit: T::Boolean,
-                illicit_violent: T::Boolean,
+                illicit: T.nilable(T::Boolean),
+                illicit_violent: T.nilable(T::Boolean),
                 self_harm: T::Boolean,
                 self_harm_instructions: T::Boolean,
                 self_harm_intent: T::Boolean,

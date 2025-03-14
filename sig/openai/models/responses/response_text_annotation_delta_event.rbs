@@ -1,0 +1,129 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_text_annotation_delta_event =
+        {
+          annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          type: :"response.output_text.annotation.added"
+        }
+
+      class ResponseTextAnnotationDeltaEvent < OpenAI::BaseModel
+        attr_accessor annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation
+
+        attr_accessor annotation_index: Integer
+
+        attr_accessor content_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor type: :"response.output_text.annotation.added"
+
+        def initialize:
+          (
+            annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation,
+            annotation_index: Integer,
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            type: :"response.output_text.annotation.added"
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_text_annotation_delta_event
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_text_annotation_delta_event
+
+        type annotation =
+          OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation
+          | OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation
+          | OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
+
+        class Annotation < OpenAI::Union
+          type file_citation =
+            { file_id: String, index: Integer, type: :file_citation }
+
+          class FileCitation < OpenAI::BaseModel
+            attr_accessor file_id: String
+
+            attr_accessor index: Integer
+
+            attr_accessor type: :file_citation
+
+            def initialize:
+              (file_id: String, index: Integer, type: :file_citation) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::file_citation
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::file_citation
+          end
+
+          type url_citation =
+            {
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              type: :url_citation,
+              url: String
+            }
+
+          class URLCitation < OpenAI::BaseModel
+            attr_accessor end_index: Integer
+
+            attr_accessor start_index: Integer
+
+            attr_accessor title: String
+
+            attr_accessor type: :url_citation
+
+            attr_accessor url: String
+
+            def initialize:
+              (
+                end_index: Integer,
+                start_index: Integer,
+                title: String,
+                url: String,
+                type: :url_citation
+              ) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::url_citation
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::url_citation
+          end
+
+          type file_path = { file_id: String, index: Integer, type: :file_path }
+
+          class FilePath < OpenAI::BaseModel
+            attr_accessor file_id: String
+
+            attr_accessor index: Integer
+
+            attr_accessor type: :file_path
+
+            def initialize:
+              (file_id: String, index: Integer, type: :file_path) -> void
+              | (
+                ?OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::file_path
+                | OpenAI::BaseModel data
+              ) -> void
+
+            def to_hash: -> OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::file_path
+          end
+
+          def self.variants: -> [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
+        end
+      end
+    end
+  end
+end

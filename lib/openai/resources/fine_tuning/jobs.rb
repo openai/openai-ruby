@@ -43,6 +43,13 @@ module OpenAI
         #
         #   @option params [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil] :integrations A list of integrations to enable for your fine-tuning job.
         #
+        #   @option params [Hash{Symbol=>String}, nil] :metadata Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
+        #
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
+        #
         #   @option params [OpenAI::Models::FineTuning::JobCreateParams::Method] :method_ The method used for fine-tuning.
         #
         #   @option params [Integer, nil] :seed The seed controls the reproducibility of the job. Passing in the same seed and
@@ -109,6 +116,9 @@ module OpenAI
         #   @option params [String] :after Identifier for the last job from the previous pagination request.
         #
         #   @option params [Integer] :limit Number of fine-tuning jobs to retrieve.
+        #
+        #   @option params [Hash{Symbol=>String}, nil] :metadata Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
+        #     Alternatively, set `metadata=null` to indicate no metadata.
         #
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #

@@ -4,7 +4,17 @@ module OpenAI
   module Resources
     class Chat
       class Completions
-        # Creates a model response for the given chat conversation. Learn more in the
+        # @return [OpenAI::Resources::Chat::Completions::Messages]
+        attr_reader :messages
+
+        # **Starting a new project?** We recommend trying
+        #   [Responses](https://platform.openai.com/docs/api-reference/responses) to take
+        #   advantage of the latest OpenAI platform features. Compare
+        #   [Chat Completions with Responses](https://platform.openai.com/docs/guides/responses-vs-chat-completions?api-mode=responses).
+        #
+        #   ---
+        #
+        #   Creates a model response for the given chat conversation. Learn more in the
         #   [text generation](https://platform.openai.com/docs/guides/text-generation),
         #   [vision](https://platform.openai.com/docs/guides/vision), and
         #   [audio](https://platform.openai.com/docs/guides/audio) guides.
@@ -24,9 +34,11 @@ module OpenAI
         #     [images](https://platform.openai.com/docs/guides/vision), and
         #     [audio](https://platform.openai.com/docs/guides/audio).
         #
-        #   @option params [String, Symbol, OpenAI::Models::ChatModel] :model ID of the model to use. See the
-        #     [model endpoint compatibility](https://platform.openai.com/docs/models#model-endpoint-compatibility)
-        #     table for details on which models work with the Chat API.
+        #   @option params [String, Symbol, OpenAI::Models::ChatModel] :model Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        #     wide range of models with different capabilities, performance characteristics,
+        #     and price points. Refer to the
+        #     [model guide](https://platform.openai.com/docs/models) to browse and compare
+        #     available models.
         #
         #   @option params [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] :audio Parameters for audio output. Required when audio output is requested with
         #     `modalities: ["audio"]`.
@@ -36,7 +48,7 @@ module OpenAI
         #     existing frequency in the text so far, decreasing the model's likelihood to
         #     repeat the same line verbatim.
         #
-        #   @option params [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::Auto, OpenAI::Models::Chat::ChatCompletionFunctionCallOption] :function_call Deprecated in favor of `tool_choice`.
+        #   @option params [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption] :function_call Deprecated in favor of `tool_choice`.
         #
         #     Controls which (if any) function is called by the model.
         #
@@ -87,8 +99,8 @@ module OpenAI
         #     Keys are strings with a maximum length of 64 characters. Values are strings with
         #     a maximum length of 512 characters.
         #
-        #   @option params [Array<Symbol, OpenAI::Models::Chat::ChatCompletionModality>, nil] :modalities Output types that you would like the model to generate for this request. Most
-        #     models are capable of generating text, which is the default:
+        #   @option params [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil] :modalities Output types that you would like the model to generate. Most models are capable
+        #     of generating text, which is the default:
         #
         #     `["text"]`
         #
@@ -113,30 +125,23 @@ module OpenAI
         #     whether they appear in the text so far, increasing the model's likelihood to
         #     talk about new topics.
         #
-        #   @option params [Symbol, OpenAI::Models::Chat::ChatCompletionReasoningEffort, nil] :reasoning_effort **o1 and o3-mini models only**
+        #   @option params [Symbol, OpenAI::Models::ReasoningEffort, nil] :reasoning_effort **o-series models only**
         #
         #     Constrains effort on reasoning for
         #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         #     supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #     result in faster responses and fewer tokens used on reasoning in a response.
         #
-        #   @option params [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema] :response_format An object specifying the format that the model must output.
+        #   @option params [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] :response_format An object specifying the format that the model must output.
         #
         #     Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
         #     Outputs which ensures the model will match your supplied JSON schema. Learn more
         #     in the
         #     [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #     Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
-        #     message the model generates is valid JSON.
-        #
-        #     **Important:** when using JSON mode, you **must** also instruct the model to
-        #     produce JSON yourself via a system or user message. Without this, the model may
-        #     generate an unending stream of whitespace until the generation reaches the token
-        #     limit, resulting in a long-running and seemingly "stuck" request. Also note that
-        #     the message content may be partially cut off if `finish_reason="length"`, which
-        #     indicates the generation exceeded `max_tokens` or the conversation exceeded the
-        #     max context length.
+        #     Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+        #     ensures the message the model generates is valid JSON. Using `json_schema` is
+        #     preferred for models that support it.
         #
         #   @option params [Integer, nil] :seed This feature is in Beta. If specified, our system will make a best effort to
         #     sample deterministically, such that repeated requests with the same `seed` and
@@ -151,12 +156,16 @@ module OpenAI
         #       utilize scale tier credits until they are exhausted.
         #     - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #       be processed using the default service tier with a lower uptime SLA and no
-        #       latency guarantee.
+        #       latency guarentee.
         #     - If set to 'default', the request will be processed using the default service
-        #       tier with a lower uptime SLA and no latency guarantee.
+        #       tier with a lower uptime SLA and no latency guarentee.
         #     - When not set, the default behavior is 'auto'.
         #
-        #   @option params [String, Array<String>, nil] :stop Up to 4 sequences where the API will stop generating further tokens.
+        #     When this parameter is set, the response body will include the `service_tier`
+        #     utilized.
+        #
+        #   @option params [String, Array<String>, nil] :stop Up to 4 sequences where the API will stop generating further tokens. The
+        #     returned text will not contain the stop sequence.
         #
         #   @option params [Boolean, nil] :store Whether or not to store the output of this chat completion request for use in
         #     our [model distillation](https://platform.openai.com/docs/guides/distillation)
@@ -196,6 +205,10 @@ module OpenAI
         #   @option params [String] :user A unique identifier representing your end-user, which can help OpenAI to monitor
         #     and detect abuse.
         #     [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        #
+        #   @option params [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] :web_search_options This tool searches the web for relevant results to use in a response. Learn more
+        #     about the
+        #     [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
         #
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
@@ -212,7 +225,14 @@ module OpenAI
           )
         end
 
-        # Creates a model response for the given chat conversation. Learn more in the
+        # **Starting a new project?** We recommend trying
+        #   [Responses](https://platform.openai.com/docs/api-reference/responses) to take
+        #   advantage of the latest OpenAI platform features. Compare
+        #   [Chat Completions with Responses](https://platform.openai.com/docs/guides/responses-vs-chat-completions?api-mode=responses).
+        #
+        #   ---
+        #
+        #   Creates a model response for the given chat conversation. Learn more in the
         #   [text generation](https://platform.openai.com/docs/guides/text-generation),
         #   [vision](https://platform.openai.com/docs/guides/vision), and
         #   [audio](https://platform.openai.com/docs/guides/audio) guides.
@@ -232,9 +252,11 @@ module OpenAI
         #     [images](https://platform.openai.com/docs/guides/vision), and
         #     [audio](https://platform.openai.com/docs/guides/audio).
         #
-        #   @option params [String, Symbol, OpenAI::Models::ChatModel] :model ID of the model to use. See the
-        #     [model endpoint compatibility](https://platform.openai.com/docs/models#model-endpoint-compatibility)
-        #     table for details on which models work with the Chat API.
+        #   @option params [String, Symbol, OpenAI::Models::ChatModel] :model Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        #     wide range of models with different capabilities, performance characteristics,
+        #     and price points. Refer to the
+        #     [model guide](https://platform.openai.com/docs/models) to browse and compare
+        #     available models.
         #
         #   @option params [OpenAI::Models::Chat::ChatCompletionAudioParam, nil] :audio Parameters for audio output. Required when audio output is requested with
         #     `modalities: ["audio"]`.
@@ -244,7 +266,7 @@ module OpenAI
         #     existing frequency in the text so far, decreasing the model's likelihood to
         #     repeat the same line verbatim.
         #
-        #   @option params [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::Auto, OpenAI::Models::Chat::ChatCompletionFunctionCallOption] :function_call Deprecated in favor of `tool_choice`.
+        #   @option params [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption] :function_call Deprecated in favor of `tool_choice`.
         #
         #     Controls which (if any) function is called by the model.
         #
@@ -295,8 +317,8 @@ module OpenAI
         #     Keys are strings with a maximum length of 64 characters. Values are strings with
         #     a maximum length of 512 characters.
         #
-        #   @option params [Array<Symbol, OpenAI::Models::Chat::ChatCompletionModality>, nil] :modalities Output types that you would like the model to generate for this request. Most
-        #     models are capable of generating text, which is the default:
+        #   @option params [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil] :modalities Output types that you would like the model to generate. Most models are capable
+        #     of generating text, which is the default:
         #
         #     `["text"]`
         #
@@ -321,30 +343,23 @@ module OpenAI
         #     whether they appear in the text so far, increasing the model's likelihood to
         #     talk about new topics.
         #
-        #   @option params [Symbol, OpenAI::Models::Chat::ChatCompletionReasoningEffort, nil] :reasoning_effort **o1 and o3-mini models only**
+        #   @option params [Symbol, OpenAI::Models::ReasoningEffort, nil] :reasoning_effort **o-series models only**
         #
         #     Constrains effort on reasoning for
         #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         #     supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #     result in faster responses and fewer tokens used on reasoning in a response.
         #
-        #   @option params [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema] :response_format An object specifying the format that the model must output.
+        #   @option params [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject] :response_format An object specifying the format that the model must output.
         #
         #     Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
         #     Outputs which ensures the model will match your supplied JSON schema. Learn more
         #     in the
         #     [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #     Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
-        #     message the model generates is valid JSON.
-        #
-        #     **Important:** when using JSON mode, you **must** also instruct the model to
-        #     produce JSON yourself via a system or user message. Without this, the model may
-        #     generate an unending stream of whitespace until the generation reaches the token
-        #     limit, resulting in a long-running and seemingly "stuck" request. Also note that
-        #     the message content may be partially cut off if `finish_reason="length"`, which
-        #     indicates the generation exceeded `max_tokens` or the conversation exceeded the
-        #     max context length.
+        #     Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+        #     ensures the message the model generates is valid JSON. Using `json_schema` is
+        #     preferred for models that support it.
         #
         #   @option params [Integer, nil] :seed This feature is in Beta. If specified, our system will make a best effort to
         #     sample deterministically, such that repeated requests with the same `seed` and
@@ -359,12 +374,16 @@ module OpenAI
         #       utilize scale tier credits until they are exhausted.
         #     - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #       be processed using the default service tier with a lower uptime SLA and no
-        #       latency guarantee.
+        #       latency guarentee.
         #     - If set to 'default', the request will be processed using the default service
-        #       tier with a lower uptime SLA and no latency guarantee.
+        #       tier with a lower uptime SLA and no latency guarentee.
         #     - When not set, the default behavior is 'auto'.
         #
-        #   @option params [String, Array<String>, nil] :stop Up to 4 sequences where the API will stop generating further tokens.
+        #     When this parameter is set, the response body will include the `service_tier`
+        #     utilized.
+        #
+        #   @option params [String, Array<String>, nil] :stop Up to 4 sequences where the API will stop generating further tokens. The
+        #     returned text will not contain the stop sequence.
         #
         #   @option params [Boolean, nil] :store Whether or not to store the output of this chat completion request for use in
         #     our [model distillation](https://platform.openai.com/docs/guides/distillation)
@@ -404,6 +423,10 @@ module OpenAI
         #   @option params [String] :user A unique identifier representing your end-user, which can help OpenAI to monitor
         #     and detect abuse.
         #     [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        #
+        #   @option params [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions] :web_search_options This tool searches the web for relevant results to use in a response. Learn more
+        #     about the
+        #     [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
         #
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
@@ -422,9 +445,110 @@ module OpenAI
           )
         end
 
+        # Get a stored chat completion. Only Chat Completions that have been created with
+        #   the `store` parameter set to `true` will be returned.
+        #
+        # @param completion_id [String] The ID of the chat completion to retrieve.
+        #
+        # @param params [OpenAI::Models::Chat::CompletionRetrieveParams, Hash{Symbol=>Object}] .
+        #
+        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        #
+        # @return [OpenAI::Models::Chat::ChatCompletion]
+        def retrieve(completion_id, params = {})
+          @client.request(
+            method: :get,
+            path: ["chat/completions/%0s", completion_id],
+            model: OpenAI::Models::Chat::ChatCompletion,
+            options: params[:request_options]
+          )
+        end
+
+        # Modify a stored chat completion. Only Chat Completions that have been created
+        #   with the `store` parameter set to `true` can be modified. Currently, the only
+        #   supported modification is to update the `metadata` field.
+        #
+        # @param completion_id [String] The ID of the chat completion to update.
+        #
+        # @param params [OpenAI::Models::Chat::CompletionUpdateParams, Hash{Symbol=>Object}] .
+        #
+        #   @option params [Hash{Symbol=>String}, nil] :metadata Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
+        #
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
+        #
+        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        #
+        # @return [OpenAI::Models::Chat::ChatCompletion]
+        def update(completion_id, params)
+          parsed, options = OpenAI::Models::Chat::CompletionUpdateParams.dump_request(params)
+          @client.request(
+            method: :post,
+            path: ["chat/completions/%0s", completion_id],
+            body: parsed,
+            model: OpenAI::Models::Chat::ChatCompletion,
+            options: options
+          )
+        end
+
+        # List stored Chat Completions. Only Chat Completions that have been stored with
+        #   the `store` parameter set to `true` will be returned.
+        #
+        # @param params [OpenAI::Models::Chat::CompletionListParams, Hash{Symbol=>Object}] .
+        #
+        #   @option params [String] :after Identifier for the last chat completion from the previous pagination request.
+        #
+        #   @option params [Integer] :limit Number of Chat Completions to retrieve.
+        #
+        #   @option params [Hash{Symbol=>String}, nil] :metadata A list of metadata keys to filter the Chat Completions by. Example:
+        #
+        #     `metadata[key1]=value1&metadata[key2]=value2`
+        #
+        #   @option params [String] :model The model used to generate the Chat Completions.
+        #
+        #   @option params [Symbol, OpenAI::Models::Chat::CompletionListParams::Order] :order Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
+        #     `desc` for descending order. Defaults to `asc`.
+        #
+        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        #
+        # @return [OpenAI::CursorPage<OpenAI::Models::Chat::ChatCompletion>]
+        def list(params = {})
+          parsed, options = OpenAI::Models::Chat::CompletionListParams.dump_request(params)
+          @client.request(
+            method: :get,
+            path: "chat/completions",
+            query: parsed,
+            page: OpenAI::CursorPage,
+            model: OpenAI::Models::Chat::ChatCompletion,
+            options: options
+          )
+        end
+
+        # Delete a stored chat completion. Only Chat Completions that have been created
+        #   with the `store` parameter set to `true` can be deleted.
+        #
+        # @param completion_id [String] The ID of the chat completion to delete.
+        #
+        # @param params [OpenAI::Models::Chat::CompletionDeleteParams, Hash{Symbol=>Object}] .
+        #
+        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        #
+        # @return [OpenAI::Models::Chat::ChatCompletionDeleted]
+        def delete(completion_id, params = {})
+          @client.request(
+            method: :delete,
+            path: ["chat/completions/%0s", completion_id],
+            model: OpenAI::Models::Chat::ChatCompletionDeleted,
+            options: params[:request_options]
+          )
+        end
+
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client
+          @messages = OpenAI::Resources::Chat::Completions::Messages.new(client: client)
         end
       end
     end

@@ -1,0 +1,43 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_input_file =
+        {
+          type: :input_file,
+          file_data: String,
+          file_id: String,
+          filename: String
+        }
+
+      class ResponseInputFile < OpenAI::BaseModel
+        attr_accessor type: :input_file
+
+        attr_reader file_data: String?
+
+        def file_data=: (String) -> String
+
+        attr_reader file_id: String?
+
+        def file_id=: (String) -> String
+
+        attr_reader filename: String?
+
+        def filename=: (String) -> String
+
+        def initialize:
+          (
+            file_data: String,
+            file_id: String,
+            filename: String,
+            type: :input_file
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_input_file
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_input_file
+      end
+    end
+  end
+end

@@ -4,17 +4,22 @@ module OpenAI
   module Models
     class ResponseFormatJSONSchema < OpenAI::BaseModel
       # @!attribute json_schema
+      #   Structured Outputs configuration options, including a JSON Schema.
       #
       #   @return [OpenAI::Models::ResponseFormatJSONSchema::JSONSchema]
       required :json_schema, -> { OpenAI::Models::ResponseFormatJSONSchema::JSONSchema }
 
       # @!attribute type
-      #   The type of response format being defined: `json_schema`
+      #   The type of response format being defined. Always `json_schema`.
       #
       #   @return [Symbol, :json_schema]
       required :type, const: :json_schema
 
       # @!parse
+      #   # JSON Schema response format. Used to generate structured JSON responses. Learn
+      #   #   more about
+      #   #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+      #   #
       #   # @param json_schema [OpenAI::Models::ResponseFormatJSONSchema::JSONSchema]
       #   # @param type [Symbol, :json_schema]
       #   #
@@ -42,7 +47,8 @@ module OpenAI
         #   attr_writer :description
 
         # @!attribute [r] schema
-        #   The schema for the response format, described as a JSON Schema object.
+        #   The schema for the response format, described as a JSON Schema object. Learn how
+        #     to build JSON schemas [here](https://json-schema.org/).
         #
         #   @return [Hash{Symbol=>Object}, nil]
         optional :schema, OpenAI::HashOf[OpenAI::Unknown]
@@ -62,6 +68,8 @@ module OpenAI
         optional :strict, OpenAI::BooleanModel, nil?: true
 
         # @!parse
+        #   # Structured Outputs configuration options, including a JSON Schema.
+        #   #
         #   # @param name [String]
         #   # @param description [String]
         #   # @param schema [Hash{Symbol=>Object}]

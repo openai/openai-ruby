@@ -66,7 +66,7 @@ module OpenAI
           #     [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
           #     during tool use.
           #
-          #   @option params [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::ReasoningEffort, nil] :reasoning_effort Body param: **o1 and o3-mini models only**
+          #   @option params [Symbol, OpenAI::Models::ReasoningEffort, nil] :reasoning_effort Body param: **o-series models only**
           #
           #     Constrains effort on reasoning for
           #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
@@ -195,7 +195,7 @@ module OpenAI
           #     [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
           #     during tool use.
           #
-          #   @option params [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::ReasoningEffort, nil] :reasoning_effort Body param: **o1 and o3-mini models only**
+          #   @option params [Symbol, OpenAI::Models::ReasoningEffort, nil] :reasoning_effort Body param: **o-series models only**
           #
           #     Constrains effort on reasoning for
           #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently

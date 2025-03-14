@@ -34,8 +34,8 @@ module OpenAI
           harassment_threatening: bool,
           hate: bool,
           hate_threatening: bool,
-          illicit: bool,
-          illicit_violent: bool,
+          illicit: bool?,
+          illicit_violent: bool?,
           self_harm: bool,
           self_harm_instructions: bool,
           self_harm_intent: bool,
@@ -54,9 +54,9 @@ module OpenAI
 
         attr_accessor hate_threatening: bool
 
-        attr_accessor illicit: bool
+        attr_accessor illicit: bool?
 
-        attr_accessor illicit_violent: bool
+        attr_accessor illicit_violent: bool?
 
         attr_accessor self_harm: bool
 
@@ -78,8 +78,8 @@ module OpenAI
             harassment_threatening: bool,
             hate: bool,
             hate_threatening: bool,
-            illicit: bool,
-            illicit_violent: bool,
+            illicit: bool?,
+            illicit_violent: bool?,
             self_harm: bool,
             self_harm_instructions: bool,
             self_harm_intent: bool,

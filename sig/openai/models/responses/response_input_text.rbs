@@ -1,0 +1,22 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_input_text = { text: String, type: :input_text }
+
+      class ResponseInputText < OpenAI::BaseModel
+        attr_accessor text: String
+
+        attr_accessor type: :input_text
+
+        def initialize:
+          (text: String, type: :input_text) -> void
+          | (
+            ?OpenAI::Models::Responses::response_input_text
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_input_text
+      end
+    end
+  end
+end

@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute content
         #   The contents of the user message.
         #
-        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio>]
+        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>]
         required :content, union: -> { OpenAI::Models::Chat::ChatCompletionUserMessageParam::Content }
 
         # @!attribute role
@@ -31,7 +31,7 @@ module OpenAI
         #   # Messages sent by an end user, containing prompts or additional context
         #   #   information.
         #   #
-        #   # @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio>]
+        #   # @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>]
         #   # @param name [String]
         #   # @param role [Symbol, :user]
         #   #
@@ -53,7 +53,7 @@ module OpenAI
 
           # @!parse
           #   class << self
-          #     # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio>)]
+          #     # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
           #     def variants; end
           #   end
         end

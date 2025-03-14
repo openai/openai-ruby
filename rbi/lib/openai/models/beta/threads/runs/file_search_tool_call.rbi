@@ -106,7 +106,8 @@ module OpenAI
               end
 
               class RankingOptions < OpenAI::BaseModel
-                # The ranker used for the file search.
+                # The ranker to use for the file search. If not specified will use the `auto`
+                #   ranker.
                 sig { returns(Symbol) }
                 def ranker
                 end
@@ -126,12 +127,27 @@ module OpenAI
                 end
 
                 # The ranking options for the file search.
-                sig { params(score_threshold: Float, ranker: Symbol).returns(T.attached_class) }
-                def self.new(score_threshold:, ranker: :default_2024_08_21)
+                sig { params(ranker: Symbol, score_threshold: Float).returns(T.attached_class) }
+                def self.new(ranker:, score_threshold:)
                 end
 
                 sig { override.returns({ranker: Symbol, score_threshold: Float}) }
                 def to_hash
+                end
+
+                # The ranker to use for the file search. If not specified will use the `auto`
+                #   ranker.
+                class Ranker < OpenAI::Enum
+                  abstract!
+
+                  AUTO = :auto
+                  DEFAULT_2024_08_21 = :default_2024_08_21
+
+                  class << self
+                    sig { override.returns(T::Array[Symbol]) }
+                    def values
+                    end
+                  end
                 end
               end
 

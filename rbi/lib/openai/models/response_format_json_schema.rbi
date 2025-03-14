@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     class ResponseFormatJSONSchema < OpenAI::BaseModel
+      # Structured Outputs configuration options, including a JSON Schema.
       sig { returns(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema) }
       def json_schema
       end
@@ -14,7 +15,7 @@ module OpenAI
       def json_schema=(_)
       end
 
-      # The type of response format being defined: `json_schema`
+      # The type of response format being defined. Always `json_schema`.
       sig { returns(Symbol) }
       def type
       end
@@ -23,6 +24,9 @@ module OpenAI
       def type=(_)
       end
 
+      # JSON Schema response format. Used to generate structured JSON responses. Learn
+      #   more about
+      #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
       sig do
         params(json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, type: Symbol)
           .returns(T.attached_class)
@@ -55,7 +59,8 @@ module OpenAI
         def description=(_)
         end
 
-        # The schema for the response format, described as a JSON Schema object.
+        # The schema for the response format, described as a JSON Schema object. Learn how
+        #   to build JSON schemas [here](https://json-schema.org/).
         sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
         def schema
         end
@@ -77,6 +82,7 @@ module OpenAI
         def strict=(_)
         end
 
+        # Structured Outputs configuration options, including a JSON Schema.
         sig do
           params(
             name: String,

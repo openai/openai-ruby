@@ -15,7 +15,8 @@ module OpenAI
               T.any(
                 OpenAI::Models::Chat::ChatCompletionContentPartText,
                 OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                OpenAI::Models::Chat::ChatCompletionContentPart::File
               )
               ]
             )
@@ -32,7 +33,8 @@ module OpenAI
               T.any(
                 OpenAI::Models::Chat::ChatCompletionContentPartText,
                 OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                OpenAI::Models::Chat::ChatCompletionContentPart::File
               )
               ]
             )
@@ -44,7 +46,8 @@ module OpenAI
                 T.any(
                   OpenAI::Models::Chat::ChatCompletionContentPartText,
                   OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                  OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+                  OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                  OpenAI::Models::Chat::ChatCompletionContentPart::File
                 )
                 ]
               )
@@ -82,7 +85,8 @@ module OpenAI
               T.any(
                 OpenAI::Models::Chat::ChatCompletionContentPartText,
                 OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                OpenAI::Models::Chat::ChatCompletionContentPart::File
               )
               ]
             ),
@@ -104,7 +108,8 @@ module OpenAI
                   T.any(
                     OpenAI::Models::Chat::ChatCompletionContentPartText,
                     OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                    OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+                    OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                    OpenAI::Models::Chat::ChatCompletionContentPart::File
                   )
                   ]
                 ),
@@ -125,7 +130,8 @@ module OpenAI
             T.any(
               OpenAI::Models::Chat::ChatCompletionContentPartText,
               OpenAI::Models::Chat::ChatCompletionContentPartImage,
-              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+              OpenAI::Models::Chat::ChatCompletionContentPart::File
             )
             ]
           end
@@ -140,7 +146,8 @@ module OpenAI
                                       T.any(
                                         OpenAI::Models::Chat::ChatCompletionContentPartText,
                                         OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                                        OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+                                        OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                                        OpenAI::Models::Chat::ChatCompletionContentPart::File
                                       )
                                       ]
                   ]

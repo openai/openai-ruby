@@ -1,0 +1,138 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_create_params =
+        {
+          input: OpenAI::Models::Responses::ResponseCreateParams::input,
+          model: OpenAI::Models::Responses::ResponseCreateParams::model,
+          include: ::Array[OpenAI::Models::Responses::response_includable]?,
+          instructions: String?,
+          max_output_tokens: Integer?,
+          metadata: OpenAI::Models::metadata?,
+          parallel_tool_calls: bool?,
+          previous_response_id: String?,
+          reasoning: OpenAI::Models::Reasoning?,
+          store: bool?,
+          temperature: Float?,
+          text: OpenAI::Models::Responses::ResponseTextConfig,
+          tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+          tools: ::Array[OpenAI::Models::Responses::tool],
+          top_p: Float?,
+          truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
+          user: String
+        }
+        & OpenAI::request_parameters
+
+      class ResponseCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_accessor input: OpenAI::Models::Responses::ResponseCreateParams::input
+
+        attr_accessor model: OpenAI::Models::Responses::ResponseCreateParams::model
+
+        attr_accessor include: ::Array[OpenAI::Models::Responses::response_includable]?
+
+        attr_accessor instructions: String?
+
+        attr_accessor max_output_tokens: Integer?
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_accessor parallel_tool_calls: bool?
+
+        attr_accessor previous_response_id: String?
+
+        attr_accessor reasoning: OpenAI::Models::Reasoning?
+
+        attr_accessor store: bool?
+
+        attr_accessor temperature: Float?
+
+        attr_reader text: OpenAI::Models::Responses::ResponseTextConfig?
+
+        def text=: (
+          OpenAI::Models::Responses::ResponseTextConfig
+        ) -> OpenAI::Models::Responses::ResponseTextConfig
+
+        attr_reader tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice?
+
+        def tool_choice=: (
+          OpenAI::Models::Responses::ResponseCreateParams::tool_choice
+        ) -> OpenAI::Models::Responses::ResponseCreateParams::tool_choice
+
+        attr_reader tools: ::Array[OpenAI::Models::Responses::tool]?
+
+        def tools=: (
+          ::Array[OpenAI::Models::Responses::tool]
+        ) -> ::Array[OpenAI::Models::Responses::tool]
+
+        attr_accessor top_p: Float?
+
+        attr_accessor truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?
+
+        attr_reader user: String?
+
+        def user=: (String) -> String
+
+        def initialize:
+          (
+            input: OpenAI::Models::Responses::ResponseCreateParams::input,
+            model: OpenAI::Models::Responses::ResponseCreateParams::model,
+            include: ::Array[OpenAI::Models::Responses::response_includable]?,
+            instructions: String?,
+            max_output_tokens: Integer?,
+            metadata: OpenAI::Models::metadata?,
+            parallel_tool_calls: bool?,
+            previous_response_id: String?,
+            reasoning: OpenAI::Models::Reasoning?,
+            store: bool?,
+            temperature: Float?,
+            text: OpenAI::Models::Responses::ResponseTextConfig,
+            tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+            tools: ::Array[OpenAI::Models::Responses::tool],
+            top_p: Float?,
+            truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
+            user: String,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_create_params
+
+        type input = String | OpenAI::Models::Responses::response_input
+
+        class Input < OpenAI::Union
+          def self.variants: -> [String, OpenAI::Models::Responses::response_input]
+        end
+
+        type model = String | OpenAI::Models::chat_model
+
+        class Model < OpenAI::Union
+          def self.variants: -> [String, OpenAI::Models::chat_model]
+        end
+
+        type tool_choice =
+          OpenAI::Models::Responses::tool_choice_options
+          | OpenAI::Models::Responses::ToolChoiceTypes
+          | OpenAI::Models::Responses::ToolChoiceFunction
+
+        class ToolChoice < OpenAI::Union
+          def self.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+        end
+
+        type truncation = :auto | :disabled
+
+        class Truncation < OpenAI::Enum
+          AUTO: :auto
+          DISABLED: :disabled
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::truncation]
+        end
+      end
+    end
+  end
+end

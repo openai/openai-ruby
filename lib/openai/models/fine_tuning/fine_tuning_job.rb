@@ -120,6 +120,17 @@ module OpenAI
                  -> { OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject] },
                  nil?: true
 
+        # @!attribute metadata
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
+        #
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
+        #
+        #   @return [Hash{Symbol=>String}, nil]
+        optional :metadata, OpenAI::HashOf[String], nil?: true
+
         # @!attribute [r] method_
         #   The method used for fine-tuning.
         #
@@ -150,6 +161,7 @@ module OpenAI
         #   # @param validation_file [String, nil]
         #   # @param estimated_finish [Integer, nil]
         #   # @param integrations [Array<OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject>, nil]
+        #   # @param metadata [Hash{Symbol=>String}, nil]
         #   # @param method_ [OpenAI::Models::FineTuning::FineTuningJob::Method]
         #   # @param object [Symbol, :"fine_tuning.job"]
         #   #
@@ -170,6 +182,7 @@ module OpenAI
         #     validation_file:,
         #     estimated_finish: nil,
         #     integrations: nil,
+        #     metadata: nil,
         #     method_: nil,
         #     object: :"fine_tuning.job",
         #     **

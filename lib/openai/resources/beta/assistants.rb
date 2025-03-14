@@ -28,7 +28,7 @@ module OpenAI
         #
         #   @option params [String, nil] :name The name of the assistant. The maximum length is 256 characters.
         #
-        #   @option params [Symbol, OpenAI::Models::Beta::AssistantCreateParams::ReasoningEffort, nil] :reasoning_effort **o1 and o3-mini models only**
+        #   @option params [Symbol, OpenAI::Models::ReasoningEffort, nil] :reasoning_effort **o-series models only**
         #
         #     Constrains effort on reasoning for
         #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
@@ -133,7 +133,7 @@ module OpenAI
         #
         #   @option params [String, nil] :name The name of the assistant. The maximum length is 256 characters.
         #
-        #   @option params [Symbol, OpenAI::Models::Beta::AssistantUpdateParams::ReasoningEffort, nil] :reasoning_effort **o1 and o3-mini models only**
+        #   @option params [Symbol, OpenAI::Models::ReasoningEffort, nil] :reasoning_effort **o-series models only**
         #
         #     Constrains effort on reasoning for
         #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently

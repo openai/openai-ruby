@@ -14,6 +14,7 @@ module OpenAI
             training_file: String,
             hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
             integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?,
+            metadata: OpenAI::Models::metadata?,
             method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
             seed: Integer?,
             suffix: String?,
@@ -40,6 +41,7 @@ module OpenAI
           | (
             after: String,
             limit: Integer,
+            metadata: ::Hash[Symbol, String]?,
             request_options: OpenAI::request_opts
           ) -> OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJob]
 
