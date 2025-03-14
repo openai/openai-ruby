@@ -1,7 +1,6 @@
 # typed: strong
 
 module OpenAI
-  # @api private
   module BasePage
     abstract!
 

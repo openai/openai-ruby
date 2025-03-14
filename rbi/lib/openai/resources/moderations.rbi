@@ -17,7 +17,17 @@ module OpenAI
         )
           .returns(OpenAI::Models::ModerationCreateResponse)
       end
-      def create(input:, model: nil, request_options: {})
+      def create(
+        # Input (or inputs) to classify. Can be a single string, an array of strings, or
+        #   an array of multi-modal input objects similar to other models.
+        input:,
+        # The content moderation model you would like to use. Learn more in
+        #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
+        #   learn about available models
+        #   [here](https://platform.openai.com/docs/models#moderation).
+        model: nil,
+        request_options: {}
+      )
       end
 
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
