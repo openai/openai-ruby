@@ -1,23 +1,23 @@
 module OpenAI
   class Error < StandardError
-    attr_reader cause: StandardError?
+    attr_accessor cause: StandardError?
   end
 
   class ConversionError < OpenAI::Error
   end
 
   class APIError < OpenAI::Error
-    attr_reader url: URI::Generic
+    attr_accessor url: URI::Generic
 
-    attr_reader status: Integer?
+    attr_accessor status: Integer?
 
-    attr_reader body: top?
+    attr_accessor body: top?
 
-    attr_reader code: String?
+    attr_accessor code: String?
 
-    attr_reader param: String?
+    attr_accessor param: String?
 
-    attr_reader type: String?
+    attr_accessor type: String?
 
     def initialize: (
       url: URI::Generic,

@@ -6,11 +6,11 @@ module OpenAI
 
     Elem = type_member
 
-    sig { returns(T::Array[Elem]) }
+    sig { returns(T.nilable(T::Array[Elem])) }
     def data
     end
 
-    sig { params(_: T::Array[Elem]).returns(T::Array[Elem]) }
+    sig { params(_: T.nilable(T::Array[Elem])).returns(T.nilable(T::Array[Elem])) }
     def data=(_)
     end
 
