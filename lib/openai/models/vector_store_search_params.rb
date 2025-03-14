@@ -128,7 +128,6 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # @abstract
-        #
         class Ranker < OpenAI::Enum
           AUTO = :auto
           DEFAULT_2024_11_15 = :"default-2024-11-15"

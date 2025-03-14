@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ComputerTool < OpenAI::BaseModel
+        # The height of the computer display.
         sig { returns(Float) }
         def display_height
         end
@@ -12,6 +13,7 @@ module OpenAI
         def display_height=(_)
         end
 
+        # The width of the computer display.
         sig { returns(Float) }
         def display_width
         end
@@ -20,6 +22,7 @@ module OpenAI
         def display_width=(_)
         end
 
+        # The type of computer environment to control.
         sig { returns(Symbol) }
         def environment
         end
@@ -28,6 +31,7 @@ module OpenAI
         def environment=(_)
         end
 
+        # The type of the computer use tool. Always `computer_use_preview`.
         sig { returns(Symbol) }
         def type
         end
@@ -36,6 +40,8 @@ module OpenAI
         def type=(_)
         end
 
+        # A tool that controls a virtual computer. Learn more about the
+        #   [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
         sig do
           params(display_height: Float, display_width: Float, environment: Symbol, type: Symbol)
             .returns(T.attached_class)
@@ -49,6 +55,7 @@ module OpenAI
         def to_hash
         end
 
+        # The type of computer environment to control.
         class Environment < OpenAI::Enum
           abstract!
 

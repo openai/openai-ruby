@@ -17,6 +17,7 @@ module OpenAI
             def message_creation=(_)
             end
 
+            # Always `message_creation`.
             sig { returns(Symbol) }
             def type
             end
@@ -25,6 +26,7 @@ module OpenAI
             def type=(_)
             end
 
+            # Details of the message creation by the run step.
             sig do
               params(
                 message_creation: OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
@@ -48,6 +50,7 @@ module OpenAI
             end
 
             class MessageCreation < OpenAI::BaseModel
+              # The ID of the message that was created by this run step.
               sig { returns(String) }
               def message_id
               end

@@ -6,6 +6,7 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter)) }
       def expires_after
       end
@@ -17,6 +18,12 @@ module OpenAI
       def expires_after=(_)
       end
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
       sig { returns(T.nilable(OpenAI::Models::Metadata)) }
       def metadata
       end
@@ -25,6 +32,7 @@ module OpenAI
       def metadata=(_)
       end
 
+      # The name of the vector store.
       sig { returns(T.nilable(String)) }
       def name
       end
@@ -60,6 +68,8 @@ module OpenAI
       end
 
       class ExpiresAfter < OpenAI::BaseModel
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `last_active_at`.
         sig { returns(Symbol) }
         def anchor
         end
@@ -68,6 +78,7 @@ module OpenAI
         def anchor=(_)
         end
 
+        # The number of days after the anchor time that the vector store will expire.
         sig { returns(Integer) }
         def days
         end
@@ -76,6 +87,7 @@ module OpenAI
         def days=(_)
         end
 
+        # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
         def self.new(days:, anchor: :last_active_at)
         end

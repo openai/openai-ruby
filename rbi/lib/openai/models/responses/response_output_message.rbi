@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputMessage < OpenAI::BaseModel
+        # The unique ID of the output message.
         sig { returns(String) }
         def id
         end
@@ -12,6 +13,7 @@ module OpenAI
         def id=(_)
         end
 
+        # The content of the output message.
         sig do
           returns(
             T::Array[T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
@@ -31,6 +33,7 @@ module OpenAI
         def content=(_)
         end
 
+        # The role of the output message. Always `assistant`.
         sig { returns(Symbol) }
         def role
         end
@@ -39,6 +42,8 @@ module OpenAI
         def role=(_)
         end
 
+        # The status of the message input. One of `in_progress`, `completed`, or
+        #   `incomplete`. Populated when input items are returned via API.
         sig { returns(Symbol) }
         def status
         end
@@ -47,6 +52,7 @@ module OpenAI
         def status=(_)
         end
 
+        # The type of the output message. Always `message`.
         sig { returns(Symbol) }
         def type
         end
@@ -55,6 +61,7 @@ module OpenAI
         def type=(_)
         end
 
+        # An output message from the model.
         sig do
           params(
             id: String,
@@ -83,10 +90,12 @@ module OpenAI
         def to_hash
         end
 
+        # A text output from the model.
         class Content < OpenAI::Union
           abstract!
 
           class << self
+            # @api private
             sig do
               override
                 .returns(
@@ -98,6 +107,8 @@ module OpenAI
           end
         end
 
+        # The status of the message input. One of `in_progress`, `completed`, or
+        #   `incomplete`. Populated when input items are returned via API.
         class Status < OpenAI::Enum
           abstract!
 

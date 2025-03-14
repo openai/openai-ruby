@@ -3,10 +3,12 @@
 module OpenAI
   module Models
     module Responses
+      # A text input to the model.
       class ResponseInputContent < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

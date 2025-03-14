@@ -78,7 +78,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::Assistant]
-        #
         def create(params)
           parsed, options = OpenAI::Models::Beta::AssistantCreateParams.dump_request(params)
           @client.request(
@@ -99,7 +98,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::Assistant]
-        #
         def retrieve(assistant_id, params = {})
           @client.request(
             method: :get,
@@ -185,7 +183,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::Assistant]
-        #
         def update(assistant_id, params = {})
           parsed, options = OpenAI::Models::Beta::AssistantUpdateParams.dump_request(params)
           @client.request(
@@ -220,7 +217,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Assistant>]
-        #
         def list(params = {})
           parsed, options = OpenAI::Models::Beta::AssistantListParams.dump_request(params)
           @client.request(
@@ -242,7 +238,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::AssistantDeleted]
-        #
         def delete(assistant_id, params = {})
           @client.request(
             method: :delete,
@@ -253,7 +248,6 @@ module OpenAI
         end
 
         # @param client [OpenAI::Client]
-        #
         def initialize(client:)
           @client = client
         end

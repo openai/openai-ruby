@@ -28,7 +28,6 @@ module OpenAI
             #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
             #
             # @return [OpenAI::Models::Beta::Threads::Runs::RunStep]
-            #
             def retrieve(step_id, params)
               parsed, options = OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams.dump_request(params)
               thread_id = parsed.delete(:thread_id) do
@@ -82,7 +81,6 @@ module OpenAI
             #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
             #
             # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Threads::Runs::RunStep>]
-            #
             def list(run_id, params)
               parsed, options = OpenAI::Models::Beta::Threads::Runs::StepListParams.dump_request(params)
               thread_id = parsed.delete(:thread_id) do
@@ -99,7 +97,6 @@ module OpenAI
             end
 
             # @param client [OpenAI::Client]
-            #
             def initialize(client:)
               @client = client
             end

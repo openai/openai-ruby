@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Batches
+      # Creates and executes a batch from an uploaded file of requests
       sig do
         params(
           completion_window: Symbol,
@@ -16,6 +17,7 @@ module OpenAI
       def create(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
       end
 
+      # Retrieves a batch.
       sig do
         params(
           batch_id: String,
@@ -26,6 +28,7 @@ module OpenAI
       def retrieve(batch_id, request_options: {})
       end
 
+      # List your organization's batches.
       sig do
         params(
           after: String,
@@ -37,6 +40,9 @@ module OpenAI
       def list(after: nil, limit: nil, request_options: {})
       end
 
+      # Cancels an in-progress batch. The batch will be in status `cancelling` for up to
+      #   10 minutes, before changing to `cancelled`, where it will have partial results
+      #   (if any) available in the output file.
       sig do
         params(
           batch_id: String,

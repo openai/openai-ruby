@@ -6,6 +6,7 @@ module OpenAI
 
     module Chat
       class ChatCompletionSystemMessageParam < OpenAI::BaseModel
+        # The contents of the system message.
         sig { returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])) }
         def content
         end
@@ -17,6 +18,7 @@ module OpenAI
         def content=(_)
         end
 
+        # The role of the messages author, in this case `system`.
         sig { returns(Symbol) }
         def role
         end
@@ -25,6 +27,8 @@ module OpenAI
         def role=(_)
         end
 
+        # An optional name for the participant. Provides the model information to
+        #   differentiate between participants of the same role.
         sig { returns(T.nilable(String)) }
         def name
         end
@@ -33,6 +37,9 @@ module OpenAI
         def name=(_)
         end
 
+        # Developer-provided instructions that the model should follow, regardless of
+        #   messages sent by the user. With o1 models and newer, use `developer` messages
+        #   for this purpose instead.
         sig do
           params(
             content: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]),
@@ -57,12 +64,14 @@ module OpenAI
         def to_hash
         end
 
+        # The contents of the system message.
         class Content < OpenAI::Union
           abstract!
 
           ChatCompletionContentPartTextArray = T.type_alias { T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText] }
 
           class << self
+            # @api private
             sig do
               override
                 .returns([[NilClass, String], [NilClass, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]])

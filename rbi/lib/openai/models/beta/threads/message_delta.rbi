@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class MessageDelta < OpenAI::BaseModel
+          # The content of the message in array of text and/or images.
           sig do
             returns(
               T.nilable(
@@ -47,6 +48,7 @@ module OpenAI
           def content=(_)
           end
 
+          # The entity that produced the message. One of `user` or `assistant`.
           sig { returns(T.nilable(Symbol)) }
           def role
           end
@@ -55,6 +57,7 @@ module OpenAI
           def role=(_)
           end
 
+          # The delta containing the fields that have changed on the Message.
           sig do
             params(
               content: T::Array[
@@ -91,6 +94,7 @@ module OpenAI
           def to_hash
           end
 
+          # The entity that produced the message. One of `user` or `assistant`.
           class Role < OpenAI::Enum
             abstract!
 

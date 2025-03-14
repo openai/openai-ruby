@@ -33,7 +33,6 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Message]
-          #
           def create(thread_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageCreateParams.dump_request(params)
             @client.request(
@@ -57,7 +56,6 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Message]
-          #
           def retrieve(message_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageRetrieveParams.dump_request(params)
             thread_id = parsed.delete(:thread_id) do
@@ -89,7 +87,6 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Message]
-          #
           def update(message_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageUpdateParams.dump_request(params)
             thread_id = parsed.delete(:thread_id) do
@@ -132,7 +129,6 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Threads::Message>]
-          #
           def list(thread_id, params = {})
             parsed, options = OpenAI::Models::Beta::Threads::MessageListParams.dump_request(params)
             @client.request(
@@ -156,7 +152,6 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::MessageDeleted]
-          #
           def delete(message_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageDeleteParams.dump_request(params)
             thread_id = parsed.delete(:thread_id) do
@@ -171,7 +166,6 @@ module OpenAI
           end
 
           # @param client [OpenAI::Client]
-          #
           def initialize(client:)
             @client = client
           end

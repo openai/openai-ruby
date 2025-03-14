@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseReasoningItem < OpenAI::BaseModel
+        # The unique identifier of the reasoning content.
         sig { returns(String) }
         def id
         end
@@ -12,6 +13,7 @@ module OpenAI
         def id=(_)
         end
 
+        # Reasoning text contents.
         sig { returns(T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary]) }
         def summary
         end
@@ -23,6 +25,7 @@ module OpenAI
         def summary=(_)
         end
 
+        # The type of the object. Always `reasoning`.
         sig { returns(Symbol) }
         def type
         end
@@ -31,6 +34,8 @@ module OpenAI
         def type=(_)
         end
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
         sig { returns(T.nilable(Symbol)) }
         def status
         end
@@ -39,6 +44,8 @@ module OpenAI
         def status=(_)
         end
 
+        # A description of the chain of thought used by a reasoning model while generating
+        #   a response.
         sig do
           params(
             id: String,
@@ -66,6 +73,7 @@ module OpenAI
         end
 
         class Summary < OpenAI::BaseModel
+          # A short summary of the reasoning used by the model when generating the response.
           sig { returns(String) }
           def text
           end
@@ -74,6 +82,7 @@ module OpenAI
           def text=(_)
           end
 
+          # The type of the object. Always `summary_text`.
           sig { returns(Symbol) }
           def type
           end
@@ -91,6 +100,8 @@ module OpenAI
           end
         end
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
         class Status < OpenAI::Enum
           abstract!
 

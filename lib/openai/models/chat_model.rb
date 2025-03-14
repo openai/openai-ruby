@@ -3,7 +3,6 @@
 module OpenAI
   module Models
     # @abstract
-    #
     class ChatModel < OpenAI::Enum
       O3_MINI = :"o3-mini"
       O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"

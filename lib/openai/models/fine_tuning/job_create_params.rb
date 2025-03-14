@@ -168,7 +168,6 @@ module OpenAI
         end
 
         # @deprecated
-        #
         class Hyperparameters < OpenAI::BaseModel
           # @!attribute [r] batch_size
           #   Number of examples in each batch. A larger batch size means that model

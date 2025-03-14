@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionVerbose < OpenAI::BaseModel
+        # The duration of the input audio.
         sig { returns(Float) }
         def duration
         end
@@ -12,6 +13,7 @@ module OpenAI
         def duration=(_)
         end
 
+        # The language of the input audio.
         sig { returns(String) }
         def language
         end
@@ -20,6 +22,7 @@ module OpenAI
         def language=(_)
         end
 
+        # The transcribed text.
         sig { returns(String) }
         def text
         end
@@ -28,6 +31,7 @@ module OpenAI
         def text=(_)
         end
 
+        # Segments of the transcribed text and their corresponding details.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionSegment])) }
         def segments
         end
@@ -39,6 +43,7 @@ module OpenAI
         def segments=(_)
         end
 
+        # Extracted words and their corresponding timestamps.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionWord])) }
         def words
         end
@@ -50,6 +55,8 @@ module OpenAI
         def words=(_)
         end
 
+        # Represents a verbose json transcription response returned by model, based on the
+        #   provided input.
         sig do
           params(
             duration: Float,

@@ -6,6 +6,7 @@ module OpenAI
 
     module Chat
       class ChatCompletionUserMessageParam < OpenAI::BaseModel
+        # The contents of the user message.
         sig do
           returns(
             T.any(
@@ -55,6 +56,7 @@ module OpenAI
         def content=(_)
         end
 
+        # The role of the messages author, in this case `user`.
         sig { returns(Symbol) }
         def role
         end
@@ -63,6 +65,8 @@ module OpenAI
         def role=(_)
         end
 
+        # An optional name for the participant. Provides the model information to
+        #   differentiate between participants of the same role.
         sig { returns(T.nilable(String)) }
         def name
         end
@@ -71,6 +75,8 @@ module OpenAI
         def name=(_)
         end
 
+        # Messages sent by an end user, containing prompts or additional context
+        #   information.
         sig do
           params(
             content: T.any(
@@ -115,6 +121,7 @@ module OpenAI
         def to_hash
         end
 
+        # The contents of the user message.
         class Content < OpenAI::Union
           abstract!
 
@@ -130,6 +137,7 @@ module OpenAI
           end
 
           class << self
+            # @api private
             sig do
               override
                 .returns(

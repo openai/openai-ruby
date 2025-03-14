@@ -12,6 +12,7 @@ module OpenAI
         def messages
         end
 
+        # Create a thread.
         sig do
           params(
             messages: T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
@@ -24,6 +25,7 @@ module OpenAI
         def create(messages: nil, metadata: nil, tool_resources: nil, request_options: {})
         end
 
+        # Retrieves a thread.
         sig do
           params(
             thread_id: String,
@@ -34,6 +36,7 @@ module OpenAI
         def retrieve(thread_id, request_options: {})
         end
 
+        # Modifies a thread.
         sig do
           params(
             thread_id: String,
@@ -46,6 +49,7 @@ module OpenAI
         def update(thread_id, metadata: nil, tool_resources: nil, request_options: {})
         end
 
+        # Delete a thread.
         sig do
           params(
             thread_id: String,
@@ -56,6 +60,7 @@ module OpenAI
         def delete(thread_id, request_options: {})
         end
 
+        # Create a thread and run it in one request.
         sig do
           params(
             assistant_id: String,
@@ -112,6 +117,7 @@ module OpenAI
         )
         end
 
+        # Create a thread and run it in one request.
         sig do
           params(
             assistant_id: String,

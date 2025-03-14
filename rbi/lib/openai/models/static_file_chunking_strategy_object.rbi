@@ -11,6 +11,7 @@ module OpenAI
       def static=(_)
       end
 
+      # Always `static`.
       sig { returns(Symbol) }
       def type
       end

@@ -7,6 +7,7 @@ module OpenAI
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

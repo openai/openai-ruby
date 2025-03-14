@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionSegment < OpenAI::BaseModel
+        # Unique identifier of the segment.
         sig { returns(Integer) }
         def id
         end
@@ -12,6 +13,8 @@ module OpenAI
         def id=(_)
         end
 
+        # Average logprob of the segment. If the value is lower than -1, consider the
+        #   logprobs failed.
         sig { returns(Float) }
         def avg_logprob
         end
@@ -20,6 +23,8 @@ module OpenAI
         def avg_logprob=(_)
         end
 
+        # Compression ratio of the segment. If the value is greater than 2.4, consider the
+        #   compression failed.
         sig { returns(Float) }
         def compression_ratio
         end
@@ -28,6 +33,7 @@ module OpenAI
         def compression_ratio=(_)
         end
 
+        # End time of the segment in seconds.
         sig { returns(Float) }
         def end_
         end
@@ -36,6 +42,8 @@ module OpenAI
         def end_=(_)
         end
 
+        # Probability of no speech in the segment. If the value is higher than 1.0 and the
+        #   `avg_logprob` is below -1, consider this segment silent.
         sig { returns(Float) }
         def no_speech_prob
         end
@@ -44,6 +52,7 @@ module OpenAI
         def no_speech_prob=(_)
         end
 
+        # Seek offset of the segment.
         sig { returns(Integer) }
         def seek
         end
@@ -52,6 +61,7 @@ module OpenAI
         def seek=(_)
         end
 
+        # Start time of the segment in seconds.
         sig { returns(Float) }
         def start
         end
@@ -60,6 +70,7 @@ module OpenAI
         def start=(_)
         end
 
+        # Temperature parameter used for generating the segment.
         sig { returns(Float) }
         def temperature
         end
@@ -68,6 +79,7 @@ module OpenAI
         def temperature=(_)
         end
 
+        # Text content of the segment.
         sig { returns(String) }
         def text
         end
@@ -76,6 +88,7 @@ module OpenAI
         def text=(_)
         end
 
+        # Array of token IDs for the text content.
         sig { returns(T::Array[Integer]) }
         def tokens
         end

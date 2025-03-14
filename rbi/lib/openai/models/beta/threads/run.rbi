@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class Run < OpenAI::BaseModel
+          # The identifier, which can be referenced in API endpoints.
           sig { returns(String) }
           def id
           end
@@ -13,6 +14,9 @@ module OpenAI
           def id=(_)
           end
 
+          # The ID of the
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   execution of this run.
           sig { returns(String) }
           def assistant_id
           end
@@ -21,6 +25,7 @@ module OpenAI
           def assistant_id=(_)
           end
 
+          # The Unix timestamp (in seconds) for when the run was cancelled.
           sig { returns(T.nilable(Integer)) }
           def cancelled_at
           end
@@ -29,6 +34,7 @@ module OpenAI
           def cancelled_at=(_)
           end
 
+          # The Unix timestamp (in seconds) for when the run was completed.
           sig { returns(T.nilable(Integer)) }
           def completed_at
           end
@@ -37,6 +43,7 @@ module OpenAI
           def completed_at=(_)
           end
 
+          # The Unix timestamp (in seconds) for when the run was created.
           sig { returns(Integer) }
           def created_at
           end
@@ -45,6 +52,7 @@ module OpenAI
           def created_at=(_)
           end
 
+          # The Unix timestamp (in seconds) for when the run will expire.
           sig { returns(T.nilable(Integer)) }
           def expires_at
           end
@@ -53,6 +61,7 @@ module OpenAI
           def expires_at=(_)
           end
 
+          # The Unix timestamp (in seconds) for when the run failed.
           sig { returns(T.nilable(Integer)) }
           def failed_at
           end
@@ -61,6 +70,8 @@ module OpenAI
           def failed_at=(_)
           end
 
+          # Details on why the run is incomplete. Will be `null` if the run is not
+          #   incomplete.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Run::IncompleteDetails)) }
           def incomplete_details
           end
@@ -72,6 +83,9 @@ module OpenAI
           def incomplete_details=(_)
           end
 
+          # The instructions that the
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   this run.
           sig { returns(String) }
           def instructions
           end
@@ -80,6 +94,7 @@ module OpenAI
           def instructions=(_)
           end
 
+          # The last error associated with this run. Will be `null` if there are no errors.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Run::LastError)) }
           def last_error
           end
@@ -91,6 +106,8 @@ module OpenAI
           def last_error=(_)
           end
 
+          # The maximum number of completion tokens specified to have been used over the
+          #   course of the run.
           sig { returns(T.nilable(Integer)) }
           def max_completion_tokens
           end
@@ -99,6 +116,8 @@ module OpenAI
           def max_completion_tokens=(_)
           end
 
+          # The maximum number of prompt tokens specified to have been used over the course
+          #   of the run.
           sig { returns(T.nilable(Integer)) }
           def max_prompt_tokens
           end
@@ -107,6 +126,12 @@ module OpenAI
           def max_prompt_tokens=(_)
           end
 
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
+          #
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
           sig { returns(T.nilable(OpenAI::Models::Metadata)) }
           def metadata
           end
@@ -115,6 +140,9 @@ module OpenAI
           def metadata=(_)
           end
 
+          # The model that the
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   this run.
           sig { returns(String) }
           def model
           end
@@ -123,6 +151,7 @@ module OpenAI
           def model=(_)
           end
 
+          # The object type, which is always `thread.run`.
           sig { returns(Symbol) }
           def object
           end
@@ -131,6 +160,9 @@ module OpenAI
           def object=(_)
           end
 
+          # Whether to enable
+          #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          #   during tool use.
           sig { returns(T::Boolean) }
           def parallel_tool_calls
           end
@@ -139,6 +171,8 @@ module OpenAI
           def parallel_tool_calls=(_)
           end
 
+          # Details on the action required to continue the run. Will be `null` if no action
+          #   is required.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Run::RequiredAction)) }
           def required_action
           end
@@ -150,6 +184,26 @@ module OpenAI
           def required_action=(_)
           end
 
+          # Specifies the format that the model must output. Compatible with
+          #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
+          #   [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
+          #   and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          #
+          #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          #   Outputs which ensures the model will match your supplied JSON schema. Learn more
+          #   in the
+          #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          #
+          #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+          #   message the model generates is valid JSON.
+          #
+          #   **Important:** when using JSON mode, you **must** also instruct the model to
+          #   produce JSON yourself via a system or user message. Without this, the model may
+          #   generate an unending stream of whitespace until the generation reaches the token
+          #   limit, resulting in a long-running and seemingly "stuck" request. Also note that
+          #   the message content may be partially cut off if `finish_reason="length"`, which
+          #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
+          #   max context length.
           sig do
             returns(
               T.nilable(
@@ -190,6 +244,7 @@ module OpenAI
           def response_format=(_)
           end
 
+          # The Unix timestamp (in seconds) for when the run was started.
           sig { returns(T.nilable(Integer)) }
           def started_at
           end
@@ -198,6 +253,9 @@ module OpenAI
           def started_at=(_)
           end
 
+          # The status of the run, which can be either `queued`, `in_progress`,
+          #   `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
+          #   `incomplete`, or `expired`.
           sig { returns(Symbol) }
           def status
           end
@@ -206,6 +264,8 @@ module OpenAI
           def status=(_)
           end
 
+          # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
+          #   that was executed on as a part of this run.
           sig { returns(String) }
           def thread_id
           end
@@ -214,6 +274,13 @@ module OpenAI
           def thread_id=(_)
           end
 
+          # Controls which (if any) tool is called by the model. `none` means the model will
+          #   not call any tools and instead generates a message. `auto` is the default value
+          #   and means the model can pick between generating a message or calling one or more
+          #   tools. `required` means the model must call one or more tools before responding
+          #   to the user. Specifying a particular tool like `{"type": "file_search"}` or
+          #   `{"type": "function", "function": {"name": "my_function"}}` forces the model to
+          #   call that tool.
           sig { returns(T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice))) }
           def tool_choice
           end
@@ -225,6 +292,9 @@ module OpenAI
           def tool_choice=(_)
           end
 
+          # The list of tools that the
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   this run.
           sig do
             returns(
               T::Array[
@@ -262,6 +332,8 @@ module OpenAI
           def tools=(_)
           end
 
+          # Controls for how a thread will be truncated prior to the run. Use this to
+          #   control the intial context window of the run.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Run::TruncationStrategy)) }
           def truncation_strategy
           end
@@ -273,6 +345,8 @@ module OpenAI
           def truncation_strategy=(_)
           end
 
+          # Usage statistics related to the run. This value will be `null` if the run is not
+          #   in a terminal state (i.e. `in_progress`, `queued`, etc.).
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Run::Usage)) }
           def usage
           end
@@ -284,6 +358,7 @@ module OpenAI
           def usage=(_)
           end
 
+          # The sampling temperature used for this run. If not set, defaults to 1.
           sig { returns(T.nilable(Float)) }
           def temperature
           end
@@ -292,6 +367,7 @@ module OpenAI
           def temperature=(_)
           end
 
+          # The nucleus sampling value used for this run. If not set, defaults to 1.
           sig { returns(T.nilable(Float)) }
           def top_p
           end
@@ -300,6 +376,8 @@ module OpenAI
           def top_p=(_)
           end
 
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig do
             params(
               id: String,
@@ -427,6 +505,8 @@ module OpenAI
           end
 
           class IncompleteDetails < OpenAI::BaseModel
+            # The reason why the run is incomplete. This will point to which specific token
+            #   limit was reached over the course of the run.
             sig { returns(T.nilable(Symbol)) }
             def reason
             end
@@ -435,6 +515,8 @@ module OpenAI
             def reason=(_)
             end
 
+            # Details on why the run is incomplete. Will be `null` if the run is not
+            #   incomplete.
             sig { params(reason: Symbol).returns(T.attached_class) }
             def self.new(reason: nil)
             end
@@ -443,6 +525,8 @@ module OpenAI
             def to_hash
             end
 
+            # The reason why the run is incomplete. This will point to which specific token
+            #   limit was reached over the course of the run.
             class Reason < OpenAI::Enum
               abstract!
 
@@ -458,6 +542,7 @@ module OpenAI
           end
 
           class LastError < OpenAI::BaseModel
+            # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
             sig { returns(Symbol) }
             def code
             end
@@ -466,6 +551,7 @@ module OpenAI
             def code=(_)
             end
 
+            # A human-readable description of the error.
             sig { returns(String) }
             def message
             end
@@ -474,6 +560,7 @@ module OpenAI
             def message=(_)
             end
 
+            # The last error associated with this run. Will be `null` if there are no errors.
             sig { params(code: Symbol, message: String).returns(T.attached_class) }
             def self.new(code:, message:)
             end
@@ -482,6 +569,7 @@ module OpenAI
             def to_hash
             end
 
+            # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
             class Code < OpenAI::Enum
               abstract!
 
@@ -498,6 +586,7 @@ module OpenAI
           end
 
           class RequiredAction < OpenAI::BaseModel
+            # Details on the tool outputs needed for this run to continue.
             sig { returns(OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs) }
             def submit_tool_outputs
             end
@@ -509,6 +598,7 @@ module OpenAI
             def submit_tool_outputs=(_)
             end
 
+            # For now, this is always `submit_tool_outputs`.
             sig { returns(Symbol) }
             def type
             end
@@ -517,6 +607,8 @@ module OpenAI
             def type=(_)
             end
 
+            # Details on the action required to continue the run. Will be `null` if no action
+            #   is required.
             sig do
               params(
                 submit_tool_outputs: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
@@ -537,6 +629,7 @@ module OpenAI
             end
 
             class SubmitToolOutputs < OpenAI::BaseModel
+              # A list of the relevant tool calls.
               sig { returns(T::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]) }
               def tool_calls
               end
@@ -548,6 +641,7 @@ module OpenAI
               def tool_calls=(_)
               end
 
+              # Details on the tool outputs needed for this run to continue.
               sig do
                 params(tool_calls: T::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall])
                   .returns(T.attached_class)
@@ -562,6 +656,10 @@ module OpenAI
           end
 
           class TruncationStrategy < OpenAI::BaseModel
+            # The truncation strategy to use for the thread. The default is `auto`. If set to
+            #   `last_messages`, the thread will be truncated to the n most recent messages in
+            #   the thread. When set to `auto`, messages in the middle of the thread will be
+            #   dropped to fit the context length of the model, `max_prompt_tokens`.
             sig { returns(Symbol) }
             def type
             end
@@ -570,6 +668,8 @@ module OpenAI
             def type=(_)
             end
 
+            # The number of most recent messages from the thread when constructing the context
+            #   for the run.
             sig { returns(T.nilable(Integer)) }
             def last_messages
             end
@@ -578,6 +678,8 @@ module OpenAI
             def last_messages=(_)
             end
 
+            # Controls for how a thread will be truncated prior to the run. Use this to
+            #   control the intial context window of the run.
             sig { params(type: Symbol, last_messages: T.nilable(Integer)).returns(T.attached_class) }
             def self.new(type:, last_messages: nil)
             end
@@ -586,6 +688,10 @@ module OpenAI
             def to_hash
             end
 
+            # The truncation strategy to use for the thread. The default is `auto`. If set to
+            #   `last_messages`, the thread will be truncated to the n most recent messages in
+            #   the thread. When set to `auto`, messages in the middle of the thread will be
+            #   dropped to fit the context length of the model, `max_prompt_tokens`.
             class Type < OpenAI::Enum
               abstract!
 
@@ -601,6 +707,7 @@ module OpenAI
           end
 
           class Usage < OpenAI::BaseModel
+            # Number of completion tokens used over the course of the run.
             sig { returns(Integer) }
             def completion_tokens
             end
@@ -609,6 +716,7 @@ module OpenAI
             def completion_tokens=(_)
             end
 
+            # Number of prompt tokens used over the course of the run.
             sig { returns(Integer) }
             def prompt_tokens
             end
@@ -617,6 +725,7 @@ module OpenAI
             def prompt_tokens=(_)
             end
 
+            # Total number of tokens used (prompt + completion).
             sig { returns(Integer) }
             def total_tokens
             end
@@ -625,6 +734,8 @@ module OpenAI
             def total_tokens=(_)
             end
 
+            # Usage statistics related to the run. This value will be `null` if the run is not
+            #   in a terminal state (i.e. `in_progress`, `queued`, etc.).
             sig do
               params(
                 completion_tokens: Integer,

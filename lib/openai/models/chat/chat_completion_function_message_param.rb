@@ -4,7 +4,6 @@ module OpenAI
   module Models
     module Chat
       # @deprecated
-      #
       class ChatCompletionFunctionMessageParam < OpenAI::BaseModel
         # @!attribute content
         #   The contents of the function message.

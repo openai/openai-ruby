@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class RefusalDeltaBlock < OpenAI::BaseModel
+          # The index of the refusal part in the message.
           sig { returns(Integer) }
           def index
           end
@@ -13,6 +14,7 @@ module OpenAI
           def index=(_)
           end
 
+          # Always `refusal`.
           sig { returns(Symbol) }
           def type
           end
@@ -29,6 +31,7 @@ module OpenAI
           def refusal=(_)
           end
 
+          # The refusal content that is part of a message.
           sig { params(index: Integer, refusal: String, type: Symbol).returns(T.attached_class) }
           def self.new(index:, refusal: nil, type: :refusal)
           end

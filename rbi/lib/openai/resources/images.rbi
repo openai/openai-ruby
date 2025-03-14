@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Images
+      # Creates a variation of a given image.
       sig do
         params(
           image: T.any(IO, StringIO),
@@ -26,6 +27,7 @@ module OpenAI
       )
       end
 
+      # Creates an edited or extended image given an original image and a prompt.
       sig do
         params(
           image: T.any(IO, StringIO),
@@ -53,6 +55,7 @@ module OpenAI
       )
       end
 
+      # Creates an image given a prompt.
       sig do
         params(
           prompt: String,

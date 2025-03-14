@@ -310,7 +310,6 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # @abstract
-        #
         class Harassment < OpenAI::Enum
           TEXT = :text
 
@@ -318,7 +317,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class HarassmentThreatening < OpenAI::Enum
           TEXT = :text
 
@@ -326,7 +324,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class Hate < OpenAI::Enum
           TEXT = :text
 
@@ -334,7 +331,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class HateThreatening < OpenAI::Enum
           TEXT = :text
 
@@ -342,7 +338,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class Illicit < OpenAI::Enum
           TEXT = :text
 
@@ -350,7 +345,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class IllicitViolent < OpenAI::Enum
           TEXT = :text
 
@@ -358,7 +352,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class SelfHarm < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
@@ -367,7 +360,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class SelfHarmInstruction < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
@@ -376,7 +368,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class SelfHarmIntent < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
@@ -385,7 +376,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class Sexual < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
@@ -394,7 +384,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class SexualMinor < OpenAI::Enum
           TEXT = :text
 
@@ -402,7 +391,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class Violence < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
@@ -411,7 +399,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class ViolenceGraphic < OpenAI::Enum
           TEXT = :text
           IMAGE = :image

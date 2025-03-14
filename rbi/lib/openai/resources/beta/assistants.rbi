@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class Beta
       class Assistants
+        # Create an assistant with a model and instructions.
         sig do
           params(
             model: T.any(String, Symbol),
@@ -50,6 +51,7 @@ module OpenAI
         )
         end
 
+        # Retrieves an assistant.
         sig do
           params(
             assistant_id: String,
@@ -60,6 +62,7 @@ module OpenAI
         def retrieve(assistant_id, request_options: {})
         end
 
+        # Modifies an assistant.
         sig do
           params(
             assistant_id: String,
@@ -108,6 +111,7 @@ module OpenAI
         )
         end
 
+        # Returns a list of assistants.
         sig do
           params(
             after: String,
@@ -121,6 +125,7 @@ module OpenAI
         def list(after: nil, before: nil, limit: nil, order: nil, request_options: {})
         end
 
+        # Delete an assistant.
         sig do
           params(
             assistant_id: String,

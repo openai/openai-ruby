@@ -6,6 +6,7 @@ module OpenAI
 
     module Responses
       class ResponseItemList < OpenAI::BaseModel
+        # A list of items used to generate this response.
         sig do
           returns(
             T::Array[
@@ -58,6 +59,7 @@ module OpenAI
         def data=(_)
         end
 
+        # The ID of the first item in the list.
         sig { returns(String) }
         def first_id
         end
@@ -66,6 +68,7 @@ module OpenAI
         def first_id=(_)
         end
 
+        # Whether there are more items available.
         sig { returns(T::Boolean) }
         def has_more
         end
@@ -74,6 +77,7 @@ module OpenAI
         def has_more=(_)
         end
 
+        # The ID of the last item in the list.
         sig { returns(String) }
         def last_id
         end
@@ -82,6 +86,7 @@ module OpenAI
         def last_id=(_)
         end
 
+        # The type of object returned, must be `list`.
         sig { returns(Symbol) }
         def object
         end
@@ -90,6 +95,7 @@ module OpenAI
         def object=(_)
         end
 
+        # A list of Response items.
         sig do
           params(
             data: T::Array[
@@ -140,10 +146,12 @@ module OpenAI
         def to_hash
         end
 
+        # Content item used to generate a response.
         class Data < OpenAI::Union
           abstract!
 
           class Message < OpenAI::BaseModel
+            # The unique ID of the message input.
             sig { returns(String) }
             def id
             end
@@ -152,6 +160,8 @@ module OpenAI
             def id=(_)
             end
 
+            # A list of one or many input items to the model, containing different content
+            #   types.
             sig { returns(OpenAI::Models::Responses::ResponseInputMessageContentList) }
             def content
             end
@@ -163,6 +173,7 @@ module OpenAI
             def content=(_)
             end
 
+            # The role of the message input. One of `user`, `system`, or `developer`.
             sig { returns(Symbol) }
             def role
             end
@@ -171,6 +182,8 @@ module OpenAI
             def role=(_)
             end
 
+            # The status of item. One of `in_progress`, `completed`, or `incomplete`.
+            #   Populated when items are returned via API.
             sig { returns(T.nilable(Symbol)) }
             def status
             end
@@ -179,6 +192,7 @@ module OpenAI
             def status=(_)
             end
 
+            # The type of the message input. Always set to `message`.
             sig { returns(T.nilable(Symbol)) }
             def type
             end
@@ -215,6 +229,7 @@ module OpenAI
             def to_hash
             end
 
+            # The role of the message input. One of `user`, `system`, or `developer`.
             class Role < OpenAI::Enum
               abstract!
 
@@ -229,6 +244,8 @@ module OpenAI
               end
             end
 
+            # The status of item. One of `in_progress`, `completed`, or `incomplete`.
+            #   Populated when items are returned via API.
             class Status < OpenAI::Enum
               abstract!
 
@@ -243,6 +260,7 @@ module OpenAI
               end
             end
 
+            # The type of the message input. Always set to `message`.
             class Type < OpenAI::Enum
               abstract!
 
@@ -257,6 +275,7 @@ module OpenAI
           end
 
           class ComputerCallOutput < OpenAI::BaseModel
+            # The unique ID of the computer call tool output.
             sig { returns(String) }
             def id
             end
@@ -265,6 +284,7 @@ module OpenAI
             def id=(_)
             end
 
+            # The ID of the computer tool call that produced the output.
             sig { returns(String) }
             def call_id
             end
@@ -273,6 +293,7 @@ module OpenAI
             def call_id=(_)
             end
 
+            # A computer screenshot image used with the computer use tool.
             sig { returns(OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput::Output) }
             def output
             end
@@ -284,6 +305,7 @@ module OpenAI
             def output=(_)
             end
 
+            # The type of the computer tool call output. Always `computer_call_output`.
             sig { returns(Symbol) }
             def type
             end
@@ -292,6 +314,8 @@ module OpenAI
             def type=(_)
             end
 
+            # The safety checks reported by the API that have been acknowledged by the
+            #   developer.
             sig do
               returns(
                 T.nilable(
@@ -313,6 +337,8 @@ module OpenAI
             def acknowledged_safety_checks=(_)
             end
 
+            # The status of the message input. One of `in_progress`, `completed`, or
+            #   `incomplete`. Populated when input items are returned via API.
             sig { returns(T.nilable(Symbol)) }
             def status
             end
@@ -352,6 +378,8 @@ module OpenAI
             end
 
             class Output < OpenAI::BaseModel
+              # Specifies the event type. For a computer screenshot, this property is always set
+              #   to `computer_screenshot`.
               sig { returns(Symbol) }
               def type
               end
@@ -360,6 +388,7 @@ module OpenAI
               def type=(_)
               end
 
+              # The identifier of an uploaded file that contains the screenshot.
               sig { returns(T.nilable(String)) }
               def file_id
               end
@@ -368,6 +397,7 @@ module OpenAI
               def file_id=(_)
               end
 
+              # The URL of the screenshot image.
               sig { returns(T.nilable(String)) }
               def image_url
               end
@@ -376,6 +406,7 @@ module OpenAI
               def image_url=(_)
               end
 
+              # A computer screenshot image used with the computer use tool.
               sig { params(file_id: String, image_url: String, type: Symbol).returns(T.attached_class) }
               def self.new(file_id: nil, image_url: nil, type: :computer_screenshot)
               end
@@ -386,6 +417,7 @@ module OpenAI
             end
 
             class AcknowledgedSafetyCheck < OpenAI::BaseModel
+              # The ID of the pending safety check.
               sig { returns(String) }
               def id
               end
@@ -394,6 +426,7 @@ module OpenAI
               def id=(_)
               end
 
+              # The type of the pending safety check.
               sig { returns(String) }
               def code
               end
@@ -402,6 +435,7 @@ module OpenAI
               def code=(_)
               end
 
+              # Details about the pending safety check.
               sig { returns(String) }
               def message
               end
@@ -410,6 +444,7 @@ module OpenAI
               def message=(_)
               end
 
+              # A pending safety check for the computer call.
               sig { params(id: String, code: String, message: String).returns(T.attached_class) }
               def self.new(id:, code:, message:)
               end
@@ -419,6 +454,8 @@ module OpenAI
               end
             end
 
+            # The status of the message input. One of `in_progress`, `completed`, or
+            #   `incomplete`. Populated when input items are returned via API.
             class Status < OpenAI::Enum
               abstract!
 
@@ -435,6 +472,7 @@ module OpenAI
           end
 
           class FunctionCallOutput < OpenAI::BaseModel
+            # The unique ID of the function call tool output.
             sig { returns(String) }
             def id
             end
@@ -443,6 +481,7 @@ module OpenAI
             def id=(_)
             end
 
+            # The unique ID of the function tool call generated by the model.
             sig { returns(String) }
             def call_id
             end
@@ -451,6 +490,7 @@ module OpenAI
             def call_id=(_)
             end
 
+            # A JSON string of the output of the function tool call.
             sig { returns(String) }
             def output
             end
@@ -459,6 +499,7 @@ module OpenAI
             def output=(_)
             end
 
+            # The type of the function tool call output. Always `function_call_output`.
             sig { returns(Symbol) }
             def type
             end
@@ -467,6 +508,8 @@ module OpenAI
             def type=(_)
             end
 
+            # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+            #   Populated when items are returned via API.
             sig { returns(T.nilable(Symbol)) }
             def status
             end
@@ -493,6 +536,8 @@ module OpenAI
             def to_hash
             end
 
+            # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+            #   Populated when items are returned via API.
             class Status < OpenAI::Enum
               abstract!
 
@@ -509,6 +554,7 @@ module OpenAI
           end
 
           class << self
+            # @api private
             sig do
               override
                 .returns(

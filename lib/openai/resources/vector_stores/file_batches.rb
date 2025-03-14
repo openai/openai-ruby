@@ -26,7 +26,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
-        #
         def create(vector_store_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchCreateParams.dump_request(params)
           @client.request(
@@ -49,7 +48,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
-        #
         def retrieve(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchRetrieveParams.dump_request(params)
           vector_store_id = parsed.delete(:vector_store_id) do
@@ -75,7 +73,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
-        #
         def cancel(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchCancelParams.dump_request(params)
           vector_store_id = parsed.delete(:vector_store_id) do
@@ -119,7 +116,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
-        #
         def list_files(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchListFilesParams.dump_request(params)
           vector_store_id = parsed.delete(:vector_store_id) do
@@ -136,7 +132,6 @@ module OpenAI
         end
 
         # @param client [OpenAI::Client]
-        #
         def initialize(client:)
           @client = client
         end

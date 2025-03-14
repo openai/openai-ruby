@@ -3,10 +3,12 @@
 module OpenAI
   module Models
     module Responses
+      # Multi-modal input and output contents.
       class ResponseContent < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

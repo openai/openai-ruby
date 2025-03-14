@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class Responses
       class InputItems
+        # Returns a list of input items for a given response.
         sig do
           params(
             response_id: String,

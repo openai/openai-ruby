@@ -3,10 +3,13 @@
 module OpenAI
   module Models
     module Audio
+      # Represents a transcription response returned by model, based on the provided
+      #   input.
       class TranscriptionCreateResponse < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

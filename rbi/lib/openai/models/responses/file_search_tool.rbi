@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class FileSearchTool < OpenAI::BaseModel
+        # The type of the file search tool. Always `file_search`.
         sig { returns(Symbol) }
         def type
         end
@@ -12,6 +13,7 @@ module OpenAI
         def type=(_)
         end
 
+        # The IDs of the vector stores to search.
         sig { returns(T::Array[String]) }
         def vector_store_ids
         end
@@ -20,6 +22,7 @@ module OpenAI
         def vector_store_ids=(_)
         end
 
+        # A filter to apply based on file attributes.
         sig { returns(T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))) }
         def filters
         end
@@ -31,6 +34,8 @@ module OpenAI
         def filters=(_)
         end
 
+        # The maximum number of results to return. This number should be between 1 and 50
+        #   inclusive.
         sig { returns(T.nilable(Integer)) }
         def max_num_results
         end
@@ -39,6 +44,7 @@ module OpenAI
         def max_num_results=(_)
         end
 
+        # Ranking options for search.
         sig { returns(T.nilable(OpenAI::Models::Responses::FileSearchTool::RankingOptions)) }
         def ranking_options
         end
@@ -50,6 +56,9 @@ module OpenAI
         def ranking_options=(_)
         end
 
+        # A tool that searches for relevant content from uploaded files. Learn more about
+        #   the
+        #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         sig do
           params(
             vector_store_ids: T::Array[String],
@@ -78,10 +87,12 @@ module OpenAI
         def to_hash
         end
 
+        # A filter to apply based on file attributes.
         class Filters < OpenAI::Union
           abstract!
 
           class << self
+            # @api private
             sig do
               override
                 .returns([[NilClass, OpenAI::Models::ComparisonFilter], [NilClass, OpenAI::Models::CompoundFilter]])
@@ -92,6 +103,7 @@ module OpenAI
         end
 
         class RankingOptions < OpenAI::BaseModel
+          # The ranker to use for the file search.
           sig { returns(T.nilable(Symbol)) }
           def ranker
           end
@@ -100,6 +112,9 @@ module OpenAI
           def ranker=(_)
           end
 
+          # The score threshold for the file search, a number between 0 and 1. Numbers
+          #   closer to 1 will attempt to return only the most relevant results, but may
+          #   return fewer results.
           sig { returns(T.nilable(Float)) }
           def score_threshold
           end
@@ -108,6 +123,7 @@ module OpenAI
           def score_threshold=(_)
           end
 
+          # Ranking options for search.
           sig { params(ranker: Symbol, score_threshold: Float).returns(T.attached_class) }
           def self.new(ranker: nil, score_threshold: nil)
           end
@@ -116,6 +132,7 @@ module OpenAI
           def to_hash
           end
 
+          # The ranker to use for the file search.
           class Ranker < OpenAI::Enum
             abstract!
 

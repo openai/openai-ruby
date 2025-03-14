@@ -11,6 +11,7 @@ module OpenAI
       def id=(_)
       end
 
+      # The time frame within which the batch should be processed.
       sig { returns(String) }
       def completion_window
       end
@@ -19,6 +20,7 @@ module OpenAI
       def completion_window=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch was created.
       sig { returns(Integer) }
       def created_at
       end
@@ -27,6 +29,7 @@ module OpenAI
       def created_at=(_)
       end
 
+      # The OpenAI API endpoint used by the batch.
       sig { returns(String) }
       def endpoint
       end
@@ -35,6 +38,7 @@ module OpenAI
       def endpoint=(_)
       end
 
+      # The ID of the input file for the batch.
       sig { returns(String) }
       def input_file_id
       end
@@ -43,6 +47,7 @@ module OpenAI
       def input_file_id=(_)
       end
 
+      # The object type, which is always `batch`.
       sig { returns(Symbol) }
       def object
       end
@@ -51,6 +56,7 @@ module OpenAI
       def object=(_)
       end
 
+      # The current status of the batch.
       sig { returns(Symbol) }
       def status
       end
@@ -59,6 +65,7 @@ module OpenAI
       def status=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch was cancelled.
       sig { returns(T.nilable(Integer)) }
       def cancelled_at
       end
@@ -67,6 +74,7 @@ module OpenAI
       def cancelled_at=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch started cancelling.
       sig { returns(T.nilable(Integer)) }
       def cancelling_at
       end
@@ -75,6 +83,7 @@ module OpenAI
       def cancelling_at=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch was completed.
       sig { returns(T.nilable(Integer)) }
       def completed_at
       end
@@ -83,6 +92,7 @@ module OpenAI
       def completed_at=(_)
       end
 
+      # The ID of the file containing the outputs of requests with errors.
       sig { returns(T.nilable(String)) }
       def error_file_id
       end
@@ -99,6 +109,7 @@ module OpenAI
       def errors=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch expired.
       sig { returns(T.nilable(Integer)) }
       def expired_at
       end
@@ -107,6 +118,7 @@ module OpenAI
       def expired_at=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch will expire.
       sig { returns(T.nilable(Integer)) }
       def expires_at
       end
@@ -115,6 +127,7 @@ module OpenAI
       def expires_at=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch failed.
       sig { returns(T.nilable(Integer)) }
       def failed_at
       end
@@ -123,6 +136,7 @@ module OpenAI
       def failed_at=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch started finalizing.
       sig { returns(T.nilable(Integer)) }
       def finalizing_at
       end
@@ -131,6 +145,7 @@ module OpenAI
       def finalizing_at=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the batch started processing.
       sig { returns(T.nilable(Integer)) }
       def in_progress_at
       end
@@ -139,6 +154,12 @@ module OpenAI
       def in_progress_at=(_)
       end
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
       sig { returns(T.nilable(OpenAI::Models::Metadata)) }
       def metadata
       end
@@ -147,6 +168,7 @@ module OpenAI
       def metadata=(_)
       end
 
+      # The ID of the file containing the outputs of successfully executed requests.
       sig { returns(T.nilable(String)) }
       def output_file_id
       end
@@ -155,6 +177,7 @@ module OpenAI
       def output_file_id=(_)
       end
 
+      # The request counts for different statuses within the batch.
       sig { returns(T.nilable(OpenAI::Models::BatchRequestCounts)) }
       def request_counts
       end
@@ -242,6 +265,7 @@ module OpenAI
       def to_hash
       end
 
+      # The current status of the batch.
       class Status < OpenAI::Enum
         abstract!
 
@@ -270,6 +294,7 @@ module OpenAI
         def data=(_)
         end
 
+        # The object type, which is always `list`.
         sig { returns(T.nilable(String)) }
         def object
         end

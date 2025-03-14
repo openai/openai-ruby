@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseAudioDeltaEvent < OpenAI::BaseModel
+        # A chunk of Base64 encoded response audio bytes.
         sig { returns(String) }
         def delta
         end
@@ -12,6 +13,7 @@ module OpenAI
         def delta=(_)
         end
 
+        # The type of the event. Always `response.audio.delta`.
         sig { returns(Symbol) }
         def type
         end
@@ -20,6 +22,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when there is a partial audio response.
         sig { params(delta: String, type: Symbol).returns(T.attached_class) }
         def self.new(delta:, type: :"response.audio.delta")
         end

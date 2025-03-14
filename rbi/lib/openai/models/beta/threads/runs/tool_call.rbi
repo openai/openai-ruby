@@ -5,10 +5,12 @@ module OpenAI
     module Beta
       module Threads
         module Runs
+          # Details of the Code Interpreter tool call the run step was involved in.
           class ToolCall < OpenAI::Union
             abstract!
 
             class << self
+              # @api private
               sig do
                 override
                   .returns(

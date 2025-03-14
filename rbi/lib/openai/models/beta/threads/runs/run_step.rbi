@@ -8,6 +8,7 @@ module OpenAI
 
         module Runs
           class RunStep < OpenAI::BaseModel
+            # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }
             def id
             end
@@ -16,6 +17,9 @@ module OpenAI
             def id=(_)
             end
 
+            # The ID of the
+            #   [assistant](https://platform.openai.com/docs/api-reference/assistants)
+            #   associated with the run step.
             sig { returns(String) }
             def assistant_id
             end
@@ -24,6 +28,7 @@ module OpenAI
             def assistant_id=(_)
             end
 
+            # The Unix timestamp (in seconds) for when the run step was cancelled.
             sig { returns(T.nilable(Integer)) }
             def cancelled_at
             end
@@ -32,6 +37,7 @@ module OpenAI
             def cancelled_at=(_)
             end
 
+            # The Unix timestamp (in seconds) for when the run step completed.
             sig { returns(T.nilable(Integer)) }
             def completed_at
             end
@@ -40,6 +46,7 @@ module OpenAI
             def completed_at=(_)
             end
 
+            # The Unix timestamp (in seconds) for when the run step was created.
             sig { returns(Integer) }
             def created_at
             end
@@ -48,6 +55,8 @@ module OpenAI
             def created_at=(_)
             end
 
+            # The Unix timestamp (in seconds) for when the run step expired. A step is
+            #   considered expired if the parent run is expired.
             sig { returns(T.nilable(Integer)) }
             def expired_at
             end
@@ -56,6 +65,7 @@ module OpenAI
             def expired_at=(_)
             end
 
+            # The Unix timestamp (in seconds) for when the run step failed.
             sig { returns(T.nilable(Integer)) }
             def failed_at
             end
@@ -64,6 +74,8 @@ module OpenAI
             def failed_at=(_)
             end
 
+            # The last error associated with this run step. Will be `null` if there are no
+            #   errors.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError)) }
             def last_error
             end
@@ -75,6 +87,12 @@ module OpenAI
             def last_error=(_)
             end
 
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            #   for storing additional information about the object in a structured format, and
+            #   querying for objects via API or the dashboard.
+            #
+            #   Keys are strings with a maximum length of 64 characters. Values are strings with
+            #   a maximum length of 512 characters.
             sig { returns(T.nilable(OpenAI::Models::Metadata)) }
             def metadata
             end
@@ -83,6 +101,7 @@ module OpenAI
             def metadata=(_)
             end
 
+            # The object type, which is always `thread.run.step`.
             sig { returns(Symbol) }
             def object
             end
@@ -91,6 +110,8 @@ module OpenAI
             def object=(_)
             end
 
+            # The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
+            #   this run step is a part of.
             sig { returns(String) }
             def run_id
             end
@@ -99,6 +120,8 @@ module OpenAI
             def run_id=(_)
             end
 
+            # The status of the run step, which can be either `in_progress`, `cancelled`,
+            #   `failed`, `completed`, or `expired`.
             sig { returns(Symbol) }
             def status
             end
@@ -107,6 +130,7 @@ module OpenAI
             def status=(_)
             end
 
+            # The details of the run step.
             sig do
               returns(
                 T.any(
@@ -135,6 +159,8 @@ module OpenAI
             def step_details=(_)
             end
 
+            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
+            #   that was run.
             sig { returns(String) }
             def thread_id
             end
@@ -143,6 +169,7 @@ module OpenAI
             def thread_id=(_)
             end
 
+            # The type of run step, which can be either `message_creation` or `tool_calls`.
             sig { returns(Symbol) }
             def type
             end
@@ -151,6 +178,8 @@ module OpenAI
             def type=(_)
             end
 
+            # Usage statistics related to the run step. This value will be `null` while the
+            #   run step's status is `in_progress`.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage)) }
             def usage
             end
@@ -162,6 +191,7 @@ module OpenAI
             def usage=(_)
             end
 
+            # Represents a step in execution of a run.
             sig do
               params(
                 id: String,
@@ -236,6 +266,7 @@ module OpenAI
             end
 
             class LastError < OpenAI::BaseModel
+              # One of `server_error` or `rate_limit_exceeded`.
               sig { returns(Symbol) }
               def code
               end
@@ -244,6 +275,7 @@ module OpenAI
               def code=(_)
               end
 
+              # A human-readable description of the error.
               sig { returns(String) }
               def message
               end
@@ -252,6 +284,8 @@ module OpenAI
               def message=(_)
               end
 
+              # The last error associated with this run step. Will be `null` if there are no
+              #   errors.
               sig { params(code: Symbol, message: String).returns(T.attached_class) }
               def self.new(code:, message:)
               end
@@ -260,6 +294,7 @@ module OpenAI
               def to_hash
               end
 
+              # One of `server_error` or `rate_limit_exceeded`.
               class Code < OpenAI::Enum
                 abstract!
 
@@ -274,6 +309,8 @@ module OpenAI
               end
             end
 
+            # The status of the run step, which can be either `in_progress`, `cancelled`,
+            #   `failed`, `completed`, or `expired`.
             class Status < OpenAI::Enum
               abstract!
 
@@ -290,10 +327,12 @@ module OpenAI
               end
             end
 
+            # The details of the run step.
             class StepDetails < OpenAI::Union
               abstract!
 
               class << self
+                # @api private
                 sig do
                   override
                     .returns(
@@ -305,6 +344,7 @@ module OpenAI
               end
             end
 
+            # The type of run step, which can be either `message_creation` or `tool_calls`.
             class Type < OpenAI::Enum
               abstract!
 
@@ -319,6 +359,7 @@ module OpenAI
             end
 
             class Usage < OpenAI::BaseModel
+              # Number of completion tokens used over the course of the run step.
               sig { returns(Integer) }
               def completion_tokens
               end
@@ -327,6 +368,7 @@ module OpenAI
               def completion_tokens=(_)
               end
 
+              # Number of prompt tokens used over the course of the run step.
               sig { returns(Integer) }
               def prompt_tokens
               end
@@ -335,6 +377,7 @@ module OpenAI
               def prompt_tokens=(_)
               end
 
+              # Total number of tokens used (prompt + completion).
               sig { returns(Integer) }
               def total_tokens
               end
@@ -343,6 +386,8 @@ module OpenAI
               def total_tokens=(_)
               end
 
+              # Usage statistics related to the run step. This value will be `null` while the
+              #   run step's status is `in_progress`.
               sig do
                 params(
                   completion_tokens: Integer,

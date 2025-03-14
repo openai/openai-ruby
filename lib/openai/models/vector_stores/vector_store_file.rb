@@ -156,7 +156,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class Attribute < OpenAI::Union
           variant String
 

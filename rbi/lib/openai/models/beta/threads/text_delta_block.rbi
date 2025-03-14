@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class TextDeltaBlock < OpenAI::BaseModel
+          # The index of the content part in the message.
           sig { returns(Integer) }
           def index
           end
@@ -13,6 +14,7 @@ module OpenAI
           def index=(_)
           end
 
+          # Always `text`.
           sig { returns(Symbol) }
           def type
           end
@@ -29,6 +31,7 @@ module OpenAI
           def text=(_)
           end
 
+          # The text content that is part of a message.
           sig do
             params(index: Integer, text: OpenAI::Models::Beta::Threads::TextDelta, type: Symbol)
               .returns(T.attached_class)

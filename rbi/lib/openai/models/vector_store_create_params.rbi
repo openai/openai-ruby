@@ -6,6 +6,8 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      #   strategy. Only applicable if `file_ids` is non-empty.
       sig do
         returns(
           T.nilable(
@@ -36,6 +38,7 @@ module OpenAI
       def chunking_strategy=(_)
       end
 
+      # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter)) }
       def expires_after
       end
@@ -47,6 +50,9 @@ module OpenAI
       def expires_after=(_)
       end
 
+      # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
+      #   the vector store should use. Useful for tools like `file_search` that can access
+      #   files.
       sig { returns(T.nilable(T::Array[String])) }
       def file_ids
       end
@@ -55,6 +61,12 @@ module OpenAI
       def file_ids=(_)
       end
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
       sig { returns(T.nilable(OpenAI::Models::Metadata)) }
       def metadata
       end
@@ -63,6 +75,7 @@ module OpenAI
       def metadata=(_)
       end
 
+      # The name of the vector store.
       sig { returns(T.nilable(String)) }
       def name
       end
@@ -108,6 +121,8 @@ module OpenAI
       end
 
       class ExpiresAfter < OpenAI::BaseModel
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `last_active_at`.
         sig { returns(Symbol) }
         def anchor
         end
@@ -116,6 +131,7 @@ module OpenAI
         def anchor=(_)
         end
 
+        # The number of days after the anchor time that the vector store will expire.
         sig { returns(Integer) }
         def days
         end
@@ -124,6 +140,7 @@ module OpenAI
         def days=(_)
         end
 
+        # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
         def self.new(days:, anchor: :last_active_at)
         end

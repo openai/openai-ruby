@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseErrorEvent < OpenAI::BaseModel
+        # The error code.
         sig { returns(T.nilable(String)) }
         def code
         end
@@ -12,6 +13,7 @@ module OpenAI
         def code=(_)
         end
 
+        # The error message.
         sig { returns(String) }
         def message
         end
@@ -20,6 +22,7 @@ module OpenAI
         def message=(_)
         end
 
+        # The error parameter.
         sig { returns(T.nilable(String)) }
         def param
         end
@@ -28,6 +31,7 @@ module OpenAI
         def param=(_)
         end
 
+        # The type of the event. Always `error`.
         sig { returns(Symbol) }
         def type
         end
@@ -36,6 +40,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when an error occurs.
         sig do
           params(code: T.nilable(String), message: String, param: T.nilable(String), type: Symbol)
             .returns(T.attached_class)

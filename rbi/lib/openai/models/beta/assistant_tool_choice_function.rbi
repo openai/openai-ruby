@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Beta
       class AssistantToolChoiceFunction < OpenAI::BaseModel
+        # The name of the function to call.
         sig { returns(String) }
         def name
         end

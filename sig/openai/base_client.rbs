@@ -43,7 +43,7 @@ module OpenAI
       response_headers: ::Hash[String, String]
     ) -> OpenAI::BaseClient::request_input
 
-    # @private
+    # @api private
     attr_accessor requester: top
 
     def initialize: (

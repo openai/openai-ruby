@@ -6,6 +6,7 @@ module OpenAI
 
     module Chat
       class ChatCompletionDeleted < OpenAI::BaseModel
+        # The ID of the chat completion that was deleted.
         sig { returns(String) }
         def id
         end
@@ -14,6 +15,7 @@ module OpenAI
         def id=(_)
         end
 
+        # Whether the chat completion was deleted.
         sig { returns(T::Boolean) }
         def deleted
         end
@@ -22,6 +24,7 @@ module OpenAI
         def deleted=(_)
         end
 
+        # The type of object being deleted.
         sig { returns(Symbol) }
         def object
         end

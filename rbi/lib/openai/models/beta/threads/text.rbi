@@ -39,6 +39,7 @@ module OpenAI
           def annotations=(_)
           end
 
+          # The data that makes up the text.
           sig { returns(String) }
           def value
           end

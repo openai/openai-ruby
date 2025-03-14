@@ -11,6 +11,7 @@ module OpenAI
       def file_batches
       end
 
+      # Create a vector store.
       sig do
         params(
           chunking_strategy: T.any(
@@ -35,6 +36,7 @@ module OpenAI
       )
       end
 
+      # Retrieves a vector store.
       sig do
         params(
           vector_store_id: String,
@@ -45,6 +47,7 @@ module OpenAI
       def retrieve(vector_store_id, request_options: {})
       end
 
+      # Modifies a vector store.
       sig do
         params(
           vector_store_id: String,
@@ -58,6 +61,7 @@ module OpenAI
       def update(vector_store_id, expires_after: nil, metadata: nil, name: nil, request_options: {})
       end
 
+      # Returns a list of vector stores.
       sig do
         params(
           after: String,
@@ -71,6 +75,7 @@ module OpenAI
       def list(after: nil, before: nil, limit: nil, order: nil, request_options: {})
       end
 
+      # Delete a vector store.
       sig do
         params(
           vector_store_id: String,
@@ -81,6 +86,8 @@ module OpenAI
       def delete(vector_store_id, request_options: {})
       end
 
+      # Search a vector store for relevant chunks based on a query and file attributes
+      #   filter.
       sig do
         params(
           vector_store_id: String,

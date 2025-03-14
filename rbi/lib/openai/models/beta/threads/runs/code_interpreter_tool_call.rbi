@@ -6,6 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class CodeInterpreterToolCall < OpenAI::BaseModel
+            # The ID of the tool call.
             sig { returns(String) }
             def id
             end
@@ -14,6 +15,7 @@ module OpenAI
             def id=(_)
             end
 
+            # The Code Interpreter tool call definition.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter) }
             def code_interpreter
             end
@@ -25,6 +27,8 @@ module OpenAI
             def code_interpreter=(_)
             end
 
+            # The type of tool call. This is always going to be `code_interpreter` for this
+            #   type of tool call.
             sig { returns(Symbol) }
             def type
             end
@@ -33,6 +37,7 @@ module OpenAI
             def type=(_)
             end
 
+            # Details of the Code Interpreter tool call the run step was involved in.
             sig do
               params(
                 id: String,
@@ -58,6 +63,7 @@ module OpenAI
             end
 
             class CodeInterpreter < OpenAI::BaseModel
+              # The input to the Code Interpreter tool call.
               sig { returns(String) }
               def input
               end
@@ -66,6 +72,9 @@ module OpenAI
               def input=(_)
               end
 
+              # The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              #   or more items, including text (`logs`) or images (`image`). Each of these are
+              #   represented by a different object type.
               sig do
                 returns(
                   T::Array[
@@ -100,6 +109,7 @@ module OpenAI
               def outputs=(_)
               end
 
+              # The Code Interpreter tool call definition.
               sig do
                 params(
                   input: String,
@@ -132,10 +142,12 @@ module OpenAI
               def to_hash
               end
 
+              # Text output from the Code Interpreter tool call as part of a run step.
               class Output < OpenAI::Union
                 abstract!
 
                 class Logs < OpenAI::BaseModel
+                  # The text output from the Code Interpreter tool call.
                   sig { returns(String) }
                   def logs
                   end
@@ -144,6 +156,7 @@ module OpenAI
                   def logs=(_)
                   end
 
+                  # Always `logs`.
                   sig { returns(Symbol) }
                   def type
                   end
@@ -152,6 +165,7 @@ module OpenAI
                   def type=(_)
                   end
 
+                  # Text output from the Code Interpreter tool call as part of a run step.
                   sig { params(logs: String, type: Symbol).returns(T.attached_class) }
                   def self.new(logs:, type: :logs)
                   end
@@ -181,6 +195,7 @@ module OpenAI
                   def image=(_)
                   end
 
+                  # Always `image`.
                   sig { returns(Symbol) }
                   def type
                   end
@@ -212,6 +227,8 @@ module OpenAI
                   end
 
                   class Image < OpenAI::BaseModel
+                    # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
+                    #   image.
                     sig { returns(String) }
                     def file_id
                     end
@@ -231,6 +248,7 @@ module OpenAI
                 end
 
                 class << self
+                  # @api private
                   sig do
                     override
                       .returns(

@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class TextContentBlockParam < OpenAI::BaseModel
+          # Text content to be sent to the model
           sig { returns(String) }
           def text
           end
@@ -13,6 +14,7 @@ module OpenAI
           def text=(_)
           end
 
+          # Always `text`.
           sig { returns(Symbol) }
           def type
           end
@@ -21,6 +23,7 @@ module OpenAI
           def type=(_)
           end
 
+          # The text content that is part of a message.
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
           def self.new(text:, type: :text)
           end

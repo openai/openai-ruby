@@ -115,7 +115,6 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
             # @abstract
-            #
             class Tool < OpenAI::Union
               discriminator :type
 

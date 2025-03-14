@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputItemDoneEvent < OpenAI::BaseModel
+        # The output item that was marked done.
         sig do
           returns(
             T.any(
@@ -44,6 +45,7 @@ module OpenAI
         def item=(_)
         end
 
+        # The index of the output item that was marked done.
         sig { returns(Integer) }
         def output_index
         end
@@ -52,6 +54,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The type of the event. Always `response.output_item.done`.
         sig { returns(Symbol) }
         def type
         end
@@ -60,6 +63,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when an output item is marked done.
         sig do
           params(
             item: T.any(
