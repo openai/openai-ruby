@@ -41,7 +41,7 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseOutputRefusal
 
         class Content < OpenAI::Union
-          private def self.variants: -> [[:output_text, OpenAI::Models::Responses::ResponseOutputText], [:refusal, OpenAI::Models::Responses::ResponseOutputRefusal]]
+          def self.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         end
 
         type status = :in_progress | :completed | :incomplete

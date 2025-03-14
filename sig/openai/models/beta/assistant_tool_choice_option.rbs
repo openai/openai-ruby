@@ -16,7 +16,7 @@ module OpenAI
           def self.values: -> ::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::auto]
         end
 
-        private def self.variants: -> [[nil, OpenAI::Models::Beta::AssistantToolChoiceOption::auto], [nil, OpenAI::Models::Beta::AssistantToolChoice]]
+        def self.variants: -> [OpenAI::Models::Beta::AssistantToolChoiceOption::auto, OpenAI::Models::Beta::AssistantToolChoice]
       end
     end
   end

@@ -98,9 +98,8 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
-            sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
-            private def variants
+            sig { override.returns([String, Symbol]) }
+            def variants
             end
           end
         end

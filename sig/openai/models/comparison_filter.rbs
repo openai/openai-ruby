@@ -40,7 +40,7 @@ module OpenAI
       type value = String | Float | bool
 
       class Value < OpenAI::Union
-        private def self.variants: -> [[nil, String], [nil, Float], [nil, bool]]
+        def self.variants: -> [String, Float, bool]
       end
     end
   end

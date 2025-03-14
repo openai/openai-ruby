@@ -19,7 +19,7 @@ module OpenAI
           def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto]
         end
 
-        private def self.variants: -> [[nil, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto], [nil, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]]
+        def self.variants: -> [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
       end
     end
   end

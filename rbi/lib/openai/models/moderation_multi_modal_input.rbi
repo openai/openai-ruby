@@ -7,14 +7,8 @@ module OpenAI
       abstract!
 
       class << self
-        # @api private
-        sig do
-          override
-            .returns(
-              [[Symbol, OpenAI::Models::ModerationImageURLInput], [Symbol, OpenAI::Models::ModerationTextInput]]
-            )
-        end
-        private def variants
+        sig { override.returns([OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput]) }
+        def variants
         end
       end
     end

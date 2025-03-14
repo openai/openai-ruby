@@ -10,7 +10,7 @@ module OpenAI
         | OpenAI::Models::Responses::ResponseReasoningItem
 
       class ResponseOutputItem < OpenAI::Union
-        private def self.variants: -> [[:message, OpenAI::Models::Responses::ResponseOutputMessage], [:file_search_call, OpenAI::Models::Responses::ResponseFileSearchToolCall], [:function_call, OpenAI::Models::Responses::ResponseFunctionToolCall], [:web_search_call, OpenAI::Models::Responses::ResponseFunctionWebSearch], [:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall], [:reasoning, OpenAI::Models::Responses::ResponseReasoningItem]]
+        def self.variants: -> [OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem]
       end
     end
   end

@@ -50,7 +50,7 @@ module OpenAI
         type model = String | OpenAI::Models::Audio::speech_model
 
         class Model < OpenAI::Union
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::Audio::speech_model]]
+          def self.variants: -> [String, OpenAI::Models::Audio::speech_model]
         end
 
         type voice =

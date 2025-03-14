@@ -217,38 +217,33 @@ module OpenAI
             abstract!
 
             class << self
-              # @api private
               sig do
                 override
                   .returns(
-                    [[Symbol, OpenAI::Models::Chat::ChatCompletionContentPartText], [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]]
+                    [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
                   )
               end
-              private def variants
+              def variants
               end
             end
           end
 
           class << self
-            # @api private
             sig do
               override
                 .returns(
                   [
-                    [NilClass, String],
-                    [
-                      NilClass,
-                      T::Array[
-                                        T.any(
-                                          OpenAI::Models::Chat::ChatCompletionContentPartText,
-                                          OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-                                        )
-                                        ]
-                    ]
+                    String,
+                    T::Array[
+                                      T.any(
+                                        OpenAI::Models::Chat::ChatCompletionContentPartText,
+                                        OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+                                      )
+                                      ]
                   ]
                 )
             end
-            private def variants
+            def variants
             end
           end
         end

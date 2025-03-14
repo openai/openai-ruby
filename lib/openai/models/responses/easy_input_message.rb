@@ -54,6 +54,12 @@ module OpenAI
           # A list of one or many input items to the model, containing different content
           # types.
           variant -> { OpenAI::Models::Responses::ResponseInputMessageContentList }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract

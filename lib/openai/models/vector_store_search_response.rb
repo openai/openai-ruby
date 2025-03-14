@@ -57,6 +57,12 @@ module OpenAI
         variant Float
 
         variant OpenAI::BooleanModel
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Float, Boolean)]
+        #     def variants; end
+        #   end
       end
 
       class Content < OpenAI::BaseModel

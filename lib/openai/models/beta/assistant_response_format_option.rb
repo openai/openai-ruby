@@ -41,6 +41,12 @@ module OpenAI
         # JSON Schema response format. Used to generate structured JSON responses.
         # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         variant -> { OpenAI::Models::ResponseFormatJSONSchema }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema)]
+        #     def variants; end
+        #   end
       end
     end
   end

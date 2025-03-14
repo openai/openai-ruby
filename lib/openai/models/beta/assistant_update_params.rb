@@ -215,6 +215,12 @@ module OpenAI
 
             finalize!
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels)]
+          #     def variants; end
+          #   end
         end
 
         class ToolResources < OpenAI::BaseModel

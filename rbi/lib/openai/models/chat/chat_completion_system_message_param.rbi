@@ -71,12 +71,8 @@ module OpenAI
           ChatCompletionContentPartTextArray = T.type_alias { T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText] }
 
           class << self
-            # @api private
-            sig do
-              override
-                .returns([[NilClass, String], [NilClass, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]])
-            end
-            private def variants
+            sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
+            def variants
             end
           end
         end

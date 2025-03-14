@@ -158,6 +158,12 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
         end
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete)]
+        #     def variants; end
+        #   end
       end
     end
   end

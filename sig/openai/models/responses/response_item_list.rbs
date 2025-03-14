@@ -278,7 +278,7 @@ module OpenAI
             end
           end
 
-          private def self.variants: -> [[:message, OpenAI::Models::Responses::ResponseItemList::Data::Message], [:message, OpenAI::Models::Responses::ResponseOutputMessage], [:file_search_call, OpenAI::Models::Responses::ResponseFileSearchToolCall], [:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall], [:computer_call_output, OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput], [:web_search_call, OpenAI::Models::Responses::ResponseFunctionWebSearch], [:function_call, OpenAI::Models::Responses::ResponseFunctionToolCall], [:function_call_output, OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput]]
+          def self.variants: -> [OpenAI::Models::Responses::ResponseItemList::Data::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput]
         end
       end
     end

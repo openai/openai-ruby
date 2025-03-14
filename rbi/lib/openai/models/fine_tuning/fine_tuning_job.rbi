@@ -387,9 +387,8 @@ module OpenAI
             abstract!
 
             class << self
-              # @api private
-              sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
-              private def variants
+              sig { override.returns([Symbol, Integer]) }
+              def variants
               end
             end
           end
@@ -400,9 +399,8 @@ module OpenAI
             abstract!
 
             class << self
-              # @api private
-              sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
-              private def variants
+              sig { override.returns([Symbol, Float]) }
+              def variants
               end
             end
           end
@@ -413,9 +411,8 @@ module OpenAI
             abstract!
 
             class << self
-              # @api private
-              sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
-              private def variants
+              sig { override.returns([Symbol, Integer]) }
+              def variants
               end
             end
           end
@@ -601,9 +598,8 @@ module OpenAI
                 abstract!
 
                 class << self
-                  # @api private
-                  sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
-                  private def variants
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
                   end
                 end
               end
@@ -614,9 +610,8 @@ module OpenAI
                 abstract!
 
                 class << self
-                  # @api private
-                  sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
-                  private def variants
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
                   end
                 end
               end
@@ -627,9 +622,8 @@ module OpenAI
                 abstract!
 
                 class << self
-                  # @api private
-                  sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
-                  private def variants
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
                   end
                 end
               end
@@ -640,9 +634,8 @@ module OpenAI
                 abstract!
 
                 class << self
-                  # @api private
-                  sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
-                  private def variants
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
                   end
                 end
               end
@@ -739,9 +732,8 @@ module OpenAI
                 abstract!
 
                 class << self
-                  # @api private
-                  sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
-                  private def variants
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
                   end
                 end
               end
@@ -752,9 +744,8 @@ module OpenAI
                 abstract!
 
                 class << self
-                  # @api private
-                  sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
-                  private def variants
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
                   end
                 end
               end
@@ -765,9 +756,8 @@ module OpenAI
                 abstract!
 
                 class << self
-                  # @api private
-                  sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
-                  private def variants
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
                   end
                 end
               end

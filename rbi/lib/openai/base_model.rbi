@@ -223,10 +223,13 @@ module OpenAI
       end
 
       # @api private
-      #
+      sig { returns(T::Array[[T.nilable(Symbol), T.anything]]) }
+      protected def derefed_variants
+      end
+
       # All of the specified variants for this union.
-      sig { overridable.returns(T::Array[[T.nilable(Symbol), T.anything]]) }
-      protected def variants
+      sig { overridable.returns(T::Array[T.anything]) }
+      def variants
       end
 
       # @api private

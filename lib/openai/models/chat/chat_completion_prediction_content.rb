@@ -44,6 +44,12 @@ module OpenAI
 
           # An array of content parts with a defined type. Supported options differ based on the [model](https://platform.openai.com/docs/models) being used to generate the response. Can contain text inputs.
           variant OpenAI::Models::Chat::ChatCompletionPredictionContent::Content::ChatCompletionContentPartTextArray
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
+          #     def variants; end
+          #   end
         end
       end
     end

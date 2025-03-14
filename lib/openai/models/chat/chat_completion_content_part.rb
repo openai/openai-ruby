@@ -87,6 +87,12 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end
         end
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File)]
+        #     def variants; end
+        #   end
       end
     end
 
