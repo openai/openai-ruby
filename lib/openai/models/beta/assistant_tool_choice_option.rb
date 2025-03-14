@@ -32,6 +32,12 @@ module OpenAI
 
           finalize!
         end
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice)]
+        #     def variants; end
+        #   end
       end
     end
   end

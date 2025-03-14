@@ -552,14 +552,13 @@ module OpenAI
           end
 
           class << self
-            # @api private
             sig do
               override
                 .returns(
-                  [[Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]]
+                  [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
                 )
             end
-            private def variants
+            def variants
             end
           end
         end

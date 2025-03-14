@@ -5,7 +5,7 @@ module OpenAI
       | OpenAI::Models::ModerationTextInput
 
     class ModerationMultiModalInput < OpenAI::Union
-      private def self.variants: -> [[:image_url, OpenAI::Models::ModerationImageURLInput], [:text, OpenAI::Models::ModerationTextInput]]
+      def self.variants: -> [OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput]
     end
   end
 end

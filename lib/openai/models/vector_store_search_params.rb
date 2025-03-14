@@ -85,6 +85,12 @@ module OpenAI
         variant String
 
         variant OpenAI::Models::VectorStoreSearchParams::Query::StringArray
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Array<String>)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract
@@ -96,6 +102,12 @@ module OpenAI
 
         # Combine multiple filters using `and` or `or`.
         variant -> { OpenAI::Models::CompoundFilter }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
+        #     def variants; end
+        #   end
       end
 
       class RankingOptions < OpenAI::BaseModel

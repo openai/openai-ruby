@@ -53,6 +53,12 @@ module OpenAI
 
         # An array of multi-modal inputs to the moderation model.
         variant OpenAI::Models::ModerationCreateParams::Input::ModerationMultiModalInputArray
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract
@@ -68,6 +74,12 @@ module OpenAI
         # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and learn about
         # available models [here](https://platform.openai.com/docs/models#moderation).
         variant enum: -> { OpenAI::Models::ModerationModel }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Symbol, OpenAI::Models::ModerationModel)]
+        #     def variants; end
+        #   end
       end
     end
   end

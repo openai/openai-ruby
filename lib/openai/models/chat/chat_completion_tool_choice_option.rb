@@ -33,6 +33,12 @@ module OpenAI
 
           finalize!
         end
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice)]
+        #     def variants; end
+        #   end
       end
     end
 

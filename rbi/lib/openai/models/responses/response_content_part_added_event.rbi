@@ -94,14 +94,11 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
             sig do
               override
-                .returns(
-                  [[Symbol, OpenAI::Models::Responses::ResponseOutputText], [Symbol, OpenAI::Models::Responses::ResponseOutputRefusal]]
-                )
+                .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
             end
-            private def variants
+            def variants
             end
           end
         end

@@ -93,14 +93,13 @@ module OpenAI
         ModerationMultiModalInputArray = T.type_alias { T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)] }
 
         class << self
-          # @api private
           sig do
             override
               .returns(
-                [[NilClass, String], [NilClass, T::Array[String]], [NilClass, T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]]
+                [String, T::Array[String], T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]
               )
           end
-          private def variants
+          def variants
           end
         end
       end
@@ -113,9 +112,8 @@ module OpenAI
         abstract!
 
         class << self
-          # @api private
-          sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
-          private def variants
+          sig { override.returns([String, Symbol]) }
+          def variants
           end
         end
       end

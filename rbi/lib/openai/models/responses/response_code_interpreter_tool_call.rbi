@@ -221,14 +221,13 @@ module OpenAI
           end
 
           class << self
-            # @api private
             sig do
               override
                 .returns(
-                  [[Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs], [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]]
+                  [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]
                 )
             end
-            private def variants
+            def variants
             end
           end
         end

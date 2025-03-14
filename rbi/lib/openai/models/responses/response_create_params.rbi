@@ -383,9 +383,8 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
-            sig { override.returns([[NilClass, String], [NilClass, OpenAI::Models::Responses::ResponseInput]]) }
-            private def variants
+            sig { override.returns([String, OpenAI::Models::Responses::ResponseInput]) }
+            def variants
             end
           end
         end
@@ -399,9 +398,8 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
-            sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
-            private def variants
+            sig { override.returns([String, Symbol]) }
+            def variants
             end
           end
         end
@@ -413,14 +411,13 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
             sig do
               override
                 .returns(
-                  [[NilClass, Symbol], [NilClass, OpenAI::Models::Responses::ToolChoiceTypes], [NilClass, OpenAI::Models::Responses::ToolChoiceFunction]]
+                  [Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
                 )
             end
-            private def variants
+            def variants
             end
           end
         end

@@ -155,6 +155,12 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
+          #     def variants; end
+          #   end
         end
       end
     end

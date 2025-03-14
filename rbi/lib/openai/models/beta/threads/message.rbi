@@ -359,14 +359,13 @@ module OpenAI
               end
 
               class << self
-                # @api private
                 sig do
                   override
                     .returns(
-                      [[NilClass, OpenAI::Models::Beta::CodeInterpreterTool], [NilClass, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]]
+                      [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
                     )
                 end
-                private def variants
+                def variants
                 end
               end
             end

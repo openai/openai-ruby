@@ -90,9 +90,8 @@ module OpenAI
         abstract!
 
         class << self
-          # @api private
-          sig { override.returns([[NilClass, String], [NilClass, Float], [NilClass, T::Boolean]]) }
-          private def variants
+          sig { override.returns([String, Float, T::Boolean]) }
+          def variants
           end
         end
       end

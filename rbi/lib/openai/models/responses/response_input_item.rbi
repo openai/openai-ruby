@@ -434,14 +434,13 @@ module OpenAI
         end
 
         class << self
-          # @api private
           sig do
             override
               .returns(
-                [[Symbol, OpenAI::Models::Responses::EasyInputMessage], [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message], [Symbol, OpenAI::Models::Responses::ResponseOutputMessage], [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall], [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall], [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput], [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch], [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall], [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput], [Symbol, OpenAI::Models::Responses::ResponseReasoningItem], [Symbol, OpenAI::Models::Responses::ResponseInputItem::ItemReference]]
+                [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
               )
           end
-          private def variants
+          def variants
           end
         end
       end

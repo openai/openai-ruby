@@ -104,7 +104,7 @@ module OpenAI
           def self.values: -> ::Array[OpenAI::Models::CompletionCreateParams::Model::preset]
         end
 
-        private def self.variants: -> [[nil, String], [nil, OpenAI::Models::CompletionCreateParams::Model::preset]]
+        def self.variants: -> [String, OpenAI::Models::CompletionCreateParams::Model::preset]
       end
 
       type prompt =
@@ -123,7 +123,7 @@ module OpenAI
 
         ArrayOfToken2DArray: array_of_token2_d_array
 
-        private def self.variants: -> [[nil, String], [nil, ::Array[String]], [nil, ::Array[Integer]], [nil, ::Array[::Array[Integer]]]]
+        def self.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
       end
 
       type stop = (String | ::Array[String])?
@@ -133,7 +133,7 @@ module OpenAI
 
         StringArray: string_array
 
-        private def self.variants: -> [[nil, String], [nil, ::Array[String]]]
+        def self.variants: -> [String, ::Array[String]]
       end
     end
   end

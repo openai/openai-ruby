@@ -81,7 +81,7 @@ module OpenAI
             def self.values: -> ::Array[OpenAI::Models::FineTuning::JobCreateParams::Model::preset]
           end
 
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::FineTuning::JobCreateParams::Model::preset]]
+          def self.variants: -> [String, OpenAI::Models::FineTuning::JobCreateParams::Model::preset]
         end
 
         type hyperparameters =
@@ -126,19 +126,19 @@ module OpenAI
           type batch_size = :auto | Integer
 
           class BatchSize < OpenAI::Union
-            private def self.variants: -> [[nil, :auto], [nil, Integer]]
+            def self.variants: -> [:auto, Integer]
           end
 
           type learning_rate_multiplier = :auto | Float
 
           class LearningRateMultiplier < OpenAI::Union
-            private def self.variants: -> [[nil, :auto], [nil, Float]]
+            def self.variants: -> [:auto, Float]
           end
 
           type n_epochs = :auto | Integer
 
           class NEpochs < OpenAI::Union
-            private def self.variants: -> [[nil, :auto], [nil, Integer]]
+            def self.variants: -> [:auto, Integer]
           end
         end
 
@@ -312,25 +312,25 @@ module OpenAI
               type batch_size = :auto | Integer
 
               class BatchSize < OpenAI::Union
-                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+                def self.variants: -> [:auto, Integer]
               end
 
               type beta = :auto | Float
 
               class Beta < OpenAI::Union
-                private def self.variants: -> [[nil, :auto], [nil, Float]]
+                def self.variants: -> [:auto, Float]
               end
 
               type learning_rate_multiplier = :auto | Float
 
               class LearningRateMultiplier < OpenAI::Union
-                private def self.variants: -> [[nil, :auto], [nil, Float]]
+                def self.variants: -> [:auto, Float]
               end
 
               type n_epochs = :auto | Integer
 
               class NEpochs < OpenAI::Union
-                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+                def self.variants: -> [:auto, Integer]
               end
             end
           end
@@ -400,19 +400,19 @@ module OpenAI
               type batch_size = :auto | Integer
 
               class BatchSize < OpenAI::Union
-                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+                def self.variants: -> [:auto, Integer]
               end
 
               type learning_rate_multiplier = :auto | Float
 
               class LearningRateMultiplier < OpenAI::Union
-                private def self.variants: -> [[nil, :auto], [nil, Float]]
+                def self.variants: -> [:auto, Float]
               end
 
               type n_epochs = :auto | Integer
 
               class NEpochs < OpenAI::Union
-                private def self.variants: -> [[nil, :auto], [nil, Integer]]
+                def self.variants: -> [:auto, Integer]
               end
             end
           end

@@ -309,14 +309,13 @@ module OpenAI
         end
 
         class << self
-          # @api private
           sig do
             override
               .returns(
-                [[Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled], [Symbol, OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired]]
+                [OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired]
               )
           end
-          private def variants
+          def variants
           end
         end
       end

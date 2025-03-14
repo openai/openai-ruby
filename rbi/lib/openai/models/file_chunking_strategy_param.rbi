@@ -8,14 +8,13 @@ module OpenAI
       abstract!
 
       class << self
-        # @api private
         sig do
           override
             .returns(
-              [[Symbol, OpenAI::Models::AutoFileChunkingStrategyParam], [Symbol, OpenAI::Models::StaticFileChunkingStrategyObjectParam]]
+              [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
             )
         end
-        private def variants
+        def variants
         end
       end
     end

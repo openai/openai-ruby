@@ -67,12 +67,8 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
-            sig do
-              override
-                .returns([[NilClass, String], [NilClass, OpenAI::Models::Responses::ResponseInputMessageContentList]])
-            end
-            private def variants
+            sig { override.returns([String, OpenAI::Models::Responses::ResponseInputMessageContentList]) }
+            def variants
             end
           end
         end

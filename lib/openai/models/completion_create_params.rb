@@ -255,6 +255,12 @@ module OpenAI
 
           finalize!
         end
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Symbol, OpenAI::Models::CompletionCreateParams::Model::Preset)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract
@@ -279,6 +285,12 @@ module OpenAI
         variant OpenAI::Models::CompletionCreateParams::Prompt::IntegerArray
 
         variant OpenAI::Models::CompletionCreateParams::Prompt::ArrayOfToken2DArray
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract
@@ -291,6 +303,12 @@ module OpenAI
         variant String
 
         variant OpenAI::Models::CompletionCreateParams::Stop::StringArray
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(String, Array<String>)]
+        #     def variants; end
+        #   end
       end
     end
   end

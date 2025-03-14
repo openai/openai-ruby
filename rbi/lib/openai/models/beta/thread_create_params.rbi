@@ -222,26 +222,22 @@ module OpenAI
             end
 
             class << self
-              # @api private
               sig do
                 override
                   .returns(
                     [
-                      [NilClass, String],
-                      [
-                        NilClass,
-                        T::Array[
-                                            T.any(
-                                              OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                                              OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                                              OpenAI::Models::Beta::Threads::TextContentBlockParam
-                                            )
-                                            ]
-                      ]
+                      String,
+                      T::Array[
+                                          T.any(
+                                            OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                                            OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                                            OpenAI::Models::Beta::Threads::TextContentBlockParam
+                                          )
+                                          ]
                     ]
                   )
               end
-              private def variants
+              def variants
               end
             end
           end
@@ -367,14 +363,13 @@ module OpenAI
               end
 
               class << self
-                # @api private
                 sig do
                   override
                     .returns(
-                      [[Symbol, OpenAI::Models::Beta::CodeInterpreterTool], [Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch]]
+                      [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch]
                     )
                 end
-                private def variants
+                def variants
                 end
               end
             end
@@ -708,14 +703,13 @@ module OpenAI
                 end
 
                 class << self
-                  # @api private
                   sig do
                     override
                       .returns(
-                        [[Symbol, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto], [Symbol, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]]
+                        [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
                       )
                   end
-                  private def variants
+                  def variants
                   end
                 end
               end

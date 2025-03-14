@@ -129,6 +129,12 @@ module OpenAI
               # def initialize: (Hash | OpenAI::BaseModel) -> void
             end
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract

@@ -432,6 +432,12 @@ module OpenAI
           # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
           # to browse and compare available models.
           variant enum: -> { OpenAI::Models::ChatModel }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract
@@ -470,6 +476,12 @@ module OpenAI
 
             finalize!
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)]
+          #     def variants; end
+          #   end
         end
 
         # @deprecated
@@ -551,6 +563,12 @@ module OpenAI
           # model will not generate JSON without a system or user message instructing it
           # to do so.
           variant -> { OpenAI::Models::ResponseFormatJSONObject }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract
@@ -586,6 +604,12 @@ module OpenAI
           variant String
 
           variant OpenAI::Models::Chat::CompletionCreateParams::Stop::StringArray
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Array<String>)]
+          #     def variants; end
+          #   end
         end
 
         class WebSearchOptions < OpenAI::BaseModel

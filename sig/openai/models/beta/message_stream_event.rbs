@@ -129,7 +129,7 @@ module OpenAI
           def to_hash: -> OpenAI::Models::Beta::MessageStreamEvent::thread_message_incomplete
         end
 
-        private def self.variants: -> [[:"thread.message.created", OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated], [:"thread.message.in_progress", OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress], [:"thread.message.delta", OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta], [:"thread.message.completed", OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted], [:"thread.message.incomplete", OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete]]
+        def self.variants: -> [OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete]
       end
     end
   end

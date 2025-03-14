@@ -254,7 +254,7 @@ module OpenAI
           def to_hash: -> OpenAI::Models::Beta::RunStreamEvent::thread_run_expired
         end
 
-        private def self.variants: -> [[:"thread.run.created", OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated], [:"thread.run.queued", OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued], [:"thread.run.in_progress", OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress], [:"thread.run.requires_action", OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction], [:"thread.run.completed", OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted], [:"thread.run.incomplete", OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete], [:"thread.run.failed", OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed], [:"thread.run.cancelling", OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling], [:"thread.run.cancelled", OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled], [:"thread.run.expired", OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired]]
+        def self.variants: -> [OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired]
       end
     end
   end

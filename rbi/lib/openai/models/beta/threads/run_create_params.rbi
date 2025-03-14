@@ -563,26 +563,22 @@ module OpenAI
               end
 
               class << self
-                # @api private
                 sig do
                   override
                     .returns(
                       [
-                        [NilClass, String],
-                        [
-                          NilClass,
-                          T::Array[
-                                                T.any(
-                                                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                                                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                                                  OpenAI::Models::Beta::Threads::TextContentBlockParam
-                                                )
-                                                ]
-                        ]
+                        String,
+                        T::Array[
+                                              T.any(
+                                                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                                                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                                                OpenAI::Models::Beta::Threads::TextContentBlockParam
+                                              )
+                                              ]
                       ]
                     )
                 end
-                private def variants
+                def variants
                 end
               end
             end
@@ -708,14 +704,13 @@ module OpenAI
                 end
 
                 class << self
-                  # @api private
                   sig do
                     override
                       .returns(
-                        [[Symbol, OpenAI::Models::Beta::CodeInterpreterTool], [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]]
+                        [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
                       )
                   end
-                  private def variants
+                  def variants
                   end
                 end
               end
@@ -730,9 +725,8 @@ module OpenAI
             abstract!
 
             class << self
-              # @api private
-              sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
-              private def variants
+              sig { override.returns([String, Symbol]) }
+              def variants
               end
             end
           end
