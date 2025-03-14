@@ -20,11 +20,9 @@ module OpenAI
         required :messages, -> { OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionMessageParam] }
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #     wide range of models with different capabilities, performance characteristics,
-        #     and price points. Refer to the
-        #     [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #     available models.
+        #   ID of the model to use. See the
+        #     [model endpoint compatibility](https://platform.openai.com/docs/models#model-endpoint-compatibility)
+        #     table for details on which models work with the Chat API.
         #
         #   @return [String, Symbol, OpenAI::Models::ChatModel]
         required :model, union: -> { OpenAI::Models::Chat::CompletionCreateParams::Model }
@@ -61,11 +59,11 @@ module OpenAI
         #     `none` is the default when no functions are present. `auto` is the default if
         #     functions are present.
         #
-        #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption, nil]
+        #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::Auto, OpenAI::Models::Chat::ChatCompletionFunctionCallOption, nil]
         optional :function_call, union: -> { OpenAI::Models::Chat::CompletionCreateParams::FunctionCall }
 
         # @!parse
-        #   # @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+        #   # @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::Auto, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
         #   attr_writer :function_call
 
         # @!attribute [r] functions
@@ -133,8 +131,8 @@ module OpenAI
         optional :metadata, OpenAI::HashOf[String], nil?: true
 
         # @!attribute modalities
-        #   Output types that you would like the model to generate. Most models are capable
-        #     of generating text, which is the default:
+        #   Output types that you would like the model to generate for this request. Most
+        #     models are capable of generating text, which is the default:
         #
         #     `["text"]`
         #
@@ -144,9 +142,9 @@ module OpenAI
         #
         #     `["text", "audio"]`
         #
-        #   @return [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil]
+        #   @return [Array<Symbol, OpenAI::Models::Chat::ChatCompletionModality>, nil]
         optional :modalities,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Chat::CompletionCreateParams::Modality] },
+                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Chat::ChatCompletionModality] },
                  nil?: true
 
         # @!attribute n
@@ -185,15 +183,15 @@ module OpenAI
         optional :presence_penalty, Float, nil?: true
 
         # @!attribute reasoning_effort
-        #   **o-series models only**
+        #   **o1 and o3-mini models only**
         #
         #     Constrains effort on reasoning for
         #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         #     supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #     result in faster responses and fewer tokens used on reasoning in a response.
         #
-        #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
-        optional :reasoning_effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
+        #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionReasoningEffort, nil]
+        optional :reasoning_effort, enum: -> { OpenAI::Models::Chat::ChatCompletionReasoningEffort }, nil?: true
 
         # @!attribute [r] response_format
         #   An object specifying the format that the model must output.
@@ -203,15 +201,22 @@ module OpenAI
         #     in the
         #     [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #     Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-        #     ensures the message the model generates is valid JSON. Using `json_schema` is
-        #     preferred for models that support it.
+        #     Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+        #     message the model generates is valid JSON.
         #
-        #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject, nil]
+        #     **Important:** when using JSON mode, you **must** also instruct the model to
+        #     produce JSON yourself via a system or user message. Without this, the model may
+        #     generate an unending stream of whitespace until the generation reaches the token
+        #     limit, resulting in a long-running and seemingly "stuck" request. Also note that
+        #     the message content may be partially cut off if `finish_reason="length"`, which
+        #     indicates the generation exceeded `max_tokens` or the conversation exceeded the
+        #     max context length.
+        #
+        #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
         optional :response_format, union: -> { OpenAI::Models::Chat::CompletionCreateParams::ResponseFormat }
 
         # @!parse
-        #   # @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+        #   # @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
         #   attr_writer :response_format
 
         # @!attribute seed
@@ -232,23 +237,23 @@ module OpenAI
         #       utilize scale tier credits until they are exhausted.
         #     - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #       be processed using the default service tier with a lower uptime SLA and no
-        #       latency guarentee.
+        #       latency guarantee.
         #     - If set to 'default', the request will be processed using the default service
-        #       tier with a lower uptime SLA and no latency guarentee.
+        #       tier with a lower uptime SLA and no latency guarantee.
         #     - When not set, the default behavior is 'auto'.
-        #
-        #     When this parameter is set, the response body will include the `service_tier`
-        #     utilized.
         #
         #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Models::Chat::CompletionCreateParams::ServiceTier }, nil?: true
 
-        # @!attribute stop
-        #   Up to 4 sequences where the API will stop generating further tokens. The
-        #     returned text will not contain the stop sequence.
+        # @!attribute [r] stop
+        #   Up to 4 sequences where the API will stop generating further tokens.
         #
         #   @return [String, Array<String>, nil]
-        optional :stop, union: -> { OpenAI::Models::Chat::CompletionCreateParams::Stop }, nil?: true
+        optional :stop, union: -> { OpenAI::Models::Chat::CompletionCreateParams::Stop }
+
+        # @!parse
+        #   # @return [String, Array<String>, nil]
+        #   attr_writer :stop
 
         # @!attribute store
         #   Whether or not to store the output of this chat completion request for use in
@@ -333,37 +338,25 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :user
 
-        # @!attribute [r] web_search_options
-        #   This tool searches the web for relevant results to use in a response. Learn more
-        #     about the
-        #     [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
-        #
-        #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
-        optional :web_search_options, -> { OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
-        #   attr_writer :web_search_options
-
         # @!parse
         #   # @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
         #   # @param model [String, Symbol, OpenAI::Models::ChatModel]
         #   # @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil]
         #   # @param frequency_penalty [Float, nil]
-        #   # @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+        #   # @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::Auto, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
         #   # @param functions [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>]
         #   # @param logit_bias [Hash{Symbol=>Integer}, nil]
         #   # @param logprobs [Boolean, nil]
         #   # @param max_completion_tokens [Integer, nil]
         #   # @param max_tokens [Integer, nil]
         #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil]
+        #   # @param modalities [Array<Symbol, OpenAI::Models::Chat::ChatCompletionModality>, nil]
         #   # @param n [Integer, nil]
         #   # @param parallel_tool_calls [Boolean]
         #   # @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil]
         #   # @param presence_penalty [Float, nil]
-        #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
-        #   # @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+        #   # @param reasoning_effort [Symbol, OpenAI::Models::Chat::ChatCompletionReasoningEffort, nil]
+        #   # @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
         #   # @param seed [Integer, nil]
         #   # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil]
         #   # @param stop [String, Array<String>, nil]
@@ -375,7 +368,6 @@ module OpenAI
         #   # @param top_logprobs [Integer, nil]
         #   # @param top_p [Float, nil]
         #   # @param user [String]
-        #   # @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
         #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         #   #
         #   def initialize(
@@ -408,7 +400,6 @@ module OpenAI
         #     top_logprobs: nil,
         #     top_p: nil,
         #     user: nil,
-        #     web_search_options: nil,
         #     request_options: {},
         #     **
         #   )
@@ -419,18 +410,13 @@ module OpenAI
 
         # @abstract
         #
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
+        # ID of the model to use. See the
+        #   [model endpoint compatibility](https://platform.openai.com/docs/models#model-endpoint-compatibility)
+        #   table for details on which models work with the Chat API.
         class Model < OpenAI::Union
           variant String
 
-          # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI
-          # offers a wide range of models with different capabilities, performance
-          # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
-          # to browse and compare available models.
+          # ID of the model to use. See the [model endpoint compatibility](https://platform.openai.com/docs/models#model-endpoint-compatibility) table for details on which models work with the Chat API.
           variant enum: -> { OpenAI::Models::ChatModel }
 
           # @!parse
@@ -460,7 +446,7 @@ module OpenAI
         #   functions are present.
         class FunctionCall < OpenAI::Union
           # `none` means the model will not call a function and instead generates a message. `auto` means the model can pick between generating a message or calling a function.
-          variant enum: -> { OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode }
+          variant enum: -> { OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::Auto }
 
           # Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
           variant -> { OpenAI::Models::Chat::ChatCompletionFunctionCallOption }
@@ -470,7 +456,7 @@ module OpenAI
           # `none` means the model will not call a function and instead generates a message.
           #   `auto` means the model can pick between generating a message or calling a
           #   function.
-          class FunctionCallMode < OpenAI::Enum
+          class Auto < OpenAI::Enum
             NONE = :none
             AUTO = :auto
 
@@ -479,7 +465,7 @@ module OpenAI
 
           # @!parse
           #   class << self
-          #     # @return [Array(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)]
+          #     # @return [Array(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::Auto, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)]
           #     def variants; end
           #   end
         end
@@ -531,14 +517,6 @@ module OpenAI
         end
 
         # @abstract
-        class Modality < OpenAI::Enum
-          TEXT = :text
-          AUDIO = :audio
-
-          finalize!
-        end
-
-        # @abstract
         #
         # An object specifying the format that the model must output.
         #
@@ -547,26 +525,26 @@ module OpenAI
         #   in the
         #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-        #   ensures the message the model generates is valid JSON. Using `json_schema` is
-        #   preferred for models that support it.
+        #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+        #   message the model generates is valid JSON.
+        #
+        #   **Important:** when using JSON mode, you **must** also instruct the model to
+        #   produce JSON yourself via a system or user message. Without this, the model may
+        #   generate an unending stream of whitespace until the generation reaches the token
+        #   limit, resulting in a long-running and seemingly "stuck" request. Also note that
+        #   the message content may be partially cut off if `finish_reason="length"`, which
+        #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
+        #   max context length.
         class ResponseFormat < OpenAI::Union
-          # Default response format. Used to generate text responses.
           variant -> { OpenAI::Models::ResponseFormatText }
 
-          # JSON Schema response format. Used to generate structured JSON responses.
-          # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
-          variant -> { OpenAI::Models::ResponseFormatJSONSchema }
-
-          # JSON object response format. An older method of generating JSON responses.
-          # Using `json_schema` is recommended for models that support it. Note that the
-          # model will not generate JSON without a system or user message instructing it
-          # to do so.
           variant -> { OpenAI::Models::ResponseFormatJSONObject }
+
+          variant -> { OpenAI::Models::ResponseFormatJSONSchema }
 
           # @!parse
           #   class << self
-          #     # @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
+          #     # @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema)]
           #     def variants; end
           #   end
         end
@@ -580,13 +558,10 @@ module OpenAI
         #     utilize scale tier credits until they are exhausted.
         #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #     be processed using the default service tier with a lower uptime SLA and no
-        #     latency guarentee.
+        #     latency guarantee.
         #   - If set to 'default', the request will be processed using the default service
-        #     tier with a lower uptime SLA and no latency guarentee.
+        #     tier with a lower uptime SLA and no latency guarantee.
         #   - When not set, the default behavior is 'auto'.
-        #
-        #   When this parameter is set, the response body will include the `service_tier`
-        #   utilized.
         class ServiceTier < OpenAI::Enum
           AUTO = :auto
           DEFAULT = :default
@@ -596,8 +571,7 @@ module OpenAI
 
         # @abstract
         #
-        # Up to 4 sequences where the API will stop generating further tokens. The
-        #   returned text will not contain the stop sequence.
+        # Up to 4 sequences where the API will stop generating further tokens.
         class Stop < OpenAI::Union
           StringArray = OpenAI::ArrayOf[String]
 
@@ -610,133 +584,6 @@ module OpenAI
           #     # @return [Array(String, Array<String>)]
           #     def variants; end
           #   end
-        end
-
-        class WebSearchOptions < OpenAI::BaseModel
-          # @!attribute [r] search_context_size
-          #   High level guidance for the amount of context window space to use for the
-          #     search. One of `low`, `medium`, or `high`. `medium` is the default.
-          #
-          #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize, nil]
-          optional :search_context_size,
-                   enum: -> { OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize]
-          #   attr_writer :search_context_size
-
-          # @!attribute user_location
-          #   Approximate location parameters for the search.
-          #
-          #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, nil]
-          optional :user_location,
-                   -> { OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation },
-                   nil?: true
-
-          # @!parse
-          #   # This tool searches the web for relevant results to use in a response. Learn more
-          #   #   about the
-          #   #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
-          #   #
-          #   # @param search_context_size [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize]
-          #   # @param user_location [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, nil]
-          #   #
-          #   def initialize(search_context_size: nil, user_location: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
-
-          # @abstract
-          #
-          # High level guidance for the amount of context window space to use for the
-          #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-          class SearchContextSize < OpenAI::Enum
-            LOW = :low
-            MEDIUM = :medium
-            HIGH = :high
-
-            finalize!
-          end
-
-          class UserLocation < OpenAI::BaseModel
-            # @!attribute approximate
-            #   Approximate location parameters for the search.
-            #
-            #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate]
-            required :approximate,
-                     -> { OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate }
-
-            # @!attribute type
-            #   The type of location approximation. Always `approximate`.
-            #
-            #   @return [Symbol, :approximate]
-            required :type, const: :approximate
-
-            # @!parse
-            #   # Approximate location parameters for the search.
-            #   #
-            #   # @param approximate [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate]
-            #   # @param type [Symbol, :approximate]
-            #   #
-            #   def initialize(approximate:, type: :approximate, **) = super
-
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
-
-            class Approximate < OpenAI::BaseModel
-              # @!attribute [r] city
-              #   Free text input for the city of the user, e.g. `San Francisco`.
-              #
-              #   @return [String, nil]
-              optional :city, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :city
-
-              # @!attribute [r] country
-              #   The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
-              #     the user, e.g. `US`.
-              #
-              #   @return [String, nil]
-              optional :country, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :country
-
-              # @!attribute [r] region
-              #   Free text input for the region of the user, e.g. `California`.
-              #
-              #   @return [String, nil]
-              optional :region, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :region
-
-              # @!attribute [r] timezone
-              #   The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
-              #     user, e.g. `America/Los_Angeles`.
-              #
-              #   @return [String, nil]
-              optional :timezone, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :timezone
-
-              # @!parse
-              #   # Approximate location parameters for the search.
-              #   #
-              #   # @param city [String]
-              #   # @param country [String]
-              #   # @param region [String]
-              #   # @param timezone [String]
-              #   #
-              #   def initialize(city: nil, country: nil, region: nil, timezone: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
-            end
-          end
         end
       end
     end

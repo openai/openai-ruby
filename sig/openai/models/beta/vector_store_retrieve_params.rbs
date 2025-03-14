@@ -1,0 +1,21 @@
+module OpenAI
+  module Models
+    module Beta
+      type vector_store_retrieve_params = {  } & OpenAI::request_parameters
+
+      class VectorStoreRetrieveParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        def initialize:
+          (request_options: OpenAI::request_opts) -> void
+          | (
+            ?OpenAI::Models::Beta::vector_store_retrieve_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Beta::vector_store_retrieve_params
+      end
+    end
+  end
+end

@@ -19,7 +19,6 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
         object: Symbol,
         purpose: OpenAI::Models::FileObject::Purpose,
         status: OpenAI::Models::FileObject::Status,
-        expires_at: Integer | nil,
         status_details: String | nil
       }
     end
@@ -41,7 +40,6 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
         object: Symbol,
         purpose: OpenAI::Models::FileObject::Purpose,
         status: OpenAI::Models::FileObject::Status,
-        expires_at: Integer | nil,
         status_details: String | nil
       }
     end
@@ -68,7 +66,6 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
         object: Symbol,
         purpose: OpenAI::Models::FileObject::Purpose,
         status: OpenAI::Models::FileObject::Status,
-        expires_at: Integer | nil,
         status_details: String | nil
       }
     end

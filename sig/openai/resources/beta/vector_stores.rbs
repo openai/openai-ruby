@@ -1,0 +1,76 @@
+module OpenAI
+  module Resources
+    class Beta
+      class VectorStores
+        attr_reader files: OpenAI::Resources::Beta::VectorStores::Files
+
+        attr_reader file_batches: OpenAI::Resources::Beta::VectorStores::FileBatches
+
+        def create:
+          (
+            ?OpenAI::Models::Beta::VectorStoreCreateParams
+            | ::Hash[Symbol, top] params
+          ) -> OpenAI::Models::Beta::VectorStore
+          | (
+            chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param,
+            expires_after: OpenAI::Models::Beta::VectorStoreCreateParams::ExpiresAfter,
+            file_ids: ::Array[String],
+            metadata: OpenAI::Models::metadata?,
+            name: String,
+            request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::VectorStore
+
+        def retrieve:
+          (
+            String vector_store_id,
+            ?OpenAI::Models::Beta::VectorStoreRetrieveParams
+            | ::Hash[Symbol, top] params
+          ) -> OpenAI::Models::Beta::VectorStore
+          | (
+            String vector_store_id,
+            request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::VectorStore
+
+        def update:
+          (
+            String vector_store_id,
+            ?OpenAI::Models::Beta::VectorStoreUpdateParams
+            | ::Hash[Symbol, top] params
+          ) -> OpenAI::Models::Beta::VectorStore
+          | (
+            String vector_store_id,
+            expires_after: OpenAI::Models::Beta::VectorStoreUpdateParams::ExpiresAfter?,
+            metadata: OpenAI::Models::metadata?,
+            name: String?,
+            request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::VectorStore
+
+        def list:
+          (
+            ?OpenAI::Models::Beta::VectorStoreListParams
+            | ::Hash[Symbol, top] params
+          ) -> OpenAI::CursorPage[OpenAI::Models::Beta::VectorStore]
+          | (
+            after: String,
+            before: String,
+            limit: Integer,
+            order: OpenAI::Models::Beta::VectorStoreListParams::order,
+            request_options: OpenAI::request_opts
+          ) -> OpenAI::CursorPage[OpenAI::Models::Beta::VectorStore]
+
+        def delete:
+          (
+            String vector_store_id,
+            ?OpenAI::Models::Beta::VectorStoreDeleteParams
+            | ::Hash[Symbol, top] params
+          ) -> OpenAI::Models::Beta::VectorStoreDeleted
+          | (
+            String vector_store_id,
+            request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::VectorStoreDeleted
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

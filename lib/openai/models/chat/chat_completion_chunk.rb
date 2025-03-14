@@ -65,9 +65,8 @@ module OpenAI
         optional :usage, -> { OpenAI::Models::CompletionUsage }, nil?: true
 
         # @!parse
-        #   # Represents a streamed chunk of a chat completion response returned by the model,
+        #   # Represents a streamed chunk of a chat completion response returned by model,
         #   #   based on the provided input.
-        #   #   [Learn more](https://platform.openai.com/docs/guides/streaming-responses).
         #   #
         #   # @param id [String]
         #   # @param choices [Array<OpenAI::Models::Chat::ChatCompletionChunk::Choice>]

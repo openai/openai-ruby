@@ -12,8 +12,9 @@ module OpenAI
         required :format_, enum: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Format }, api_name: :format
 
         # @!attribute voice
-        #   The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #     `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        #   The voice the model uses to respond. Supported voices are `ash`, `ballad`,
+        #     `coral`, `sage`, and `verse` (also supported but not recommended are `alloy`,
+        #     `echo`, and `shimmer`; these voices are less expressive).
         #
         #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         required :voice, enum: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
@@ -46,8 +47,9 @@ module OpenAI
 
         # @abstract
         #
-        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # The voice the model uses to respond. Supported voices are `ash`, `ballad`,
+        #   `coral`, `sage`, and `verse` (also supported but not recommended are `alloy`,
+        #   `echo`, and `shimmer`; these voices are less expressive).
         class Voice < OpenAI::Enum
           ALLOY = :alloy
           ASH = :ash

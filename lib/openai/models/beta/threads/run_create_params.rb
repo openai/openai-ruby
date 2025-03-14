@@ -110,15 +110,17 @@ module OpenAI
           #   attr_writer :parallel_tool_calls
 
           # @!attribute reasoning_effort
-          #   **o-series models only**
+          #   **o1 and o3-mini models only**
           #
           #     Constrains effort on reasoning for
           #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
           #     supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
           #     result in faster responses and fewer tokens used on reasoning in a response.
           #
-          #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
-          optional :reasoning_effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
+          #   @return [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::ReasoningEffort, nil]
+          optional :reasoning_effort,
+                   enum: -> { OpenAI::Models::Beta::Threads::RunCreateParams::ReasoningEffort },
+                   nil?: true
 
           # @!attribute response_format
           #   Specifies the format that the model must output. Compatible with
@@ -202,7 +204,7 @@ module OpenAI
           #   # @param metadata [Hash{Symbol=>String}, nil]
           #   # @param model [String, Symbol, OpenAI::Models::ChatModel, nil]
           #   # @param parallel_tool_calls [Boolean]
-          #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+          #   # @param reasoning_effort [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::ReasoningEffort, nil]
           #   # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
           #   # @param temperature [Float, nil]
           #   # @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil]
@@ -399,6 +401,22 @@ module OpenAI
             #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
             #     def variants; end
             #   end
+          end
+
+          # @abstract
+          #
+          # **o1 and o3-mini models only**
+          #
+          #   Constrains effort on reasoning for
+          #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+          #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
+          #   result in faster responses and fewer tokens used on reasoning in a response.
+          class ReasoningEffort < OpenAI::Enum
+            LOW = :low
+            MEDIUM = :medium
+            HIGH = :high
+
+            finalize!
           end
 
           class TruncationStrategy < OpenAI::BaseModel

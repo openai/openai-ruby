@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    module Beta
+      module VectorStores
+        type file_batch_retrieve_params =
+          { vector_store_id: String } & OpenAI::request_parameters
+
+        class FileBatchRetrieveParams < OpenAI::BaseModel
+          extend OpenAI::RequestParameters::Converter
+          include OpenAI::RequestParameters
+
+          attr_accessor vector_store_id: String
+
+          def initialize:
+            (
+              vector_store_id: String,
+              request_options: OpenAI::request_opts
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::VectorStores::file_batch_retrieve_params
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::VectorStores::file_batch_retrieve_params
+        end
+      end
+    end
+  end
+end

@@ -7,7 +7,6 @@ module OpenAI
           training_file: String,
           hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
           integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?,
-          metadata: OpenAI::Models::metadata?,
           method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
           seed: Integer?,
           suffix: String?,
@@ -31,8 +30,6 @@ module OpenAI
 
         attr_accessor integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?
 
-        attr_accessor metadata: OpenAI::Models::metadata?
-
         attr_reader method_: OpenAI::Models::FineTuning::JobCreateParams::Method?
 
         def method_=: (
@@ -51,7 +48,6 @@ module OpenAI
             training_file: String,
             hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
             integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?,
-            metadata: OpenAI::Models::metadata?,
             method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
             seed: Integer?,
             suffix: String?,

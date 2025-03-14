@@ -1,0 +1,65 @@
+module OpenAI
+  module Resources
+    class Beta
+      class VectorStores
+        class FileBatches
+          def create:
+            (
+              String vector_store_id,
+              OpenAI::Models::Beta::VectorStores::FileBatchCreateParams
+              | ::Hash[Symbol, top] params
+            ) -> OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch
+            | (
+              String vector_store_id,
+              file_ids: ::Array[String],
+              chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param,
+              request_options: OpenAI::request_opts
+            ) -> OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch
+
+          def retrieve:
+            (
+              String batch_id,
+              OpenAI::Models::Beta::VectorStores::FileBatchRetrieveParams
+              | ::Hash[Symbol, top] params
+            ) -> OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch
+            | (
+              String batch_id,
+              vector_store_id: String,
+              request_options: OpenAI::request_opts
+            ) -> OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch
+
+          def cancel:
+            (
+              String batch_id,
+              OpenAI::Models::Beta::VectorStores::FileBatchCancelParams
+              | ::Hash[Symbol, top] params
+            ) -> OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch
+            | (
+              String batch_id,
+              vector_store_id: String,
+              request_options: OpenAI::request_opts
+            ) -> OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch
+
+          def list_files:
+            (
+              String batch_id,
+              OpenAI::Models::Beta::VectorStores::FileBatchListFilesParams
+              | ::Hash[Symbol, top] params
+            ) -> OpenAI::CursorPage[OpenAI::Models::Beta::VectorStores::VectorStoreFile]
+            | (
+              String batch_id,
+              vector_store_id: String,
+              after: String,
+              before: String,
+              filter: OpenAI::Models::Beta::VectorStores::FileBatchListFilesParams::filter,
+              limit: Integer,
+              order: OpenAI::Models::Beta::VectorStores::FileBatchListFilesParams::order,
+              request_options: OpenAI::request_opts
+            ) -> OpenAI::CursorPage[OpenAI::Models::Beta::VectorStores::VectorStoreFile]
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

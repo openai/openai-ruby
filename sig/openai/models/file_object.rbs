@@ -9,7 +9,6 @@ module OpenAI
         object: :file,
         purpose: OpenAI::Models::FileObject::purpose,
         status: OpenAI::Models::FileObject::status,
-        expires_at: Integer,
         status_details: String
       }
 
@@ -28,10 +27,6 @@ module OpenAI
 
       attr_accessor status: OpenAI::Models::FileObject::status
 
-      attr_reader expires_at: Integer?
-
-      def expires_at=: (Integer) -> Integer
-
       attr_reader status_details: String?
 
       def status_details=: (String) -> String
@@ -44,7 +39,6 @@ module OpenAI
           filename: String,
           purpose: OpenAI::Models::FileObject::purpose,
           status: OpenAI::Models::FileObject::status,
-          expires_at: Integer,
           status_details: String,
           object: :file
         ) -> void

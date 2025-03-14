@@ -62,36 +62,21 @@ module OpenAI
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::file_search
 
               type ranking_options =
-                {
-                  ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker,
-                  score_threshold: Float
-                }
+                { ranker: :default_2024_08_21, score_threshold: Float }
 
               class RankingOptions < OpenAI::BaseModel
-                attr_accessor ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker
+                attr_accessor ranker: :default_2024_08_21
 
                 attr_accessor score_threshold: Float
 
                 def initialize:
-                  (
-                    ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker,
-                    score_threshold: Float
-                  ) -> void
+                  (score_threshold: Float, ranker: :default_2024_08_21) -> void
                   | (
                     ?OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::ranking_options
                     | OpenAI::BaseModel data
                   ) -> void
 
                 def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::ranking_options
-
-                type ranker = :auto | :default_2024_08_21
-
-                class Ranker < OpenAI::Enum
-                  AUTO: :auto
-                  DEFAULT_2024_08_21: :default_2024_08_21
-
-                  def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker]
-                end
               end
 
               type result =

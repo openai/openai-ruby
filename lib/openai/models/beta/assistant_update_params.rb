@@ -53,15 +53,17 @@ module OpenAI
         optional :name, String, nil?: true
 
         # @!attribute reasoning_effort
-        #   **o-series models only**
+        #   **o1 and o3-mini models only**
         #
         #     Constrains effort on reasoning for
         #     [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         #     supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #     result in faster responses and fewer tokens used on reasoning in a response.
         #
-        #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
-        optional :reasoning_effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
+        #   @return [Symbol, OpenAI::Models::Beta::AssistantUpdateParams::ReasoningEffort, nil]
+        optional :reasoning_effort,
+                 enum: -> { OpenAI::Models::Beta::AssistantUpdateParams::ReasoningEffort },
+                 nil?: true
 
         # @!attribute response_format
         #   Specifies the format that the model must output. Compatible with
@@ -133,7 +135,7 @@ module OpenAI
         #   # @param metadata [Hash{Symbol=>String}, nil]
         #   # @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels]
         #   # @param name [String, nil]
-        #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+        #   # @param reasoning_effort [Symbol, OpenAI::Models::Beta::AssistantUpdateParams::ReasoningEffort, nil]
         #   # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
         #   # @param temperature [Float, nil]
         #   # @param tool_resources [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, nil]
@@ -192,8 +194,6 @@ module OpenAI
             GPT_4O_2024_05_13 = :"gpt-4o-2024-05-13"
             GPT_4O_MINI = :"gpt-4o-mini"
             GPT_4O_MINI_2024_07_18 = :"gpt-4o-mini-2024-07-18"
-            GPT_4_5_PREVIEW = :"gpt-4.5-preview"
-            GPT_4_5_PREVIEW_2025_02_27 = :"gpt-4.5-preview-2025-02-27"
             GPT_4_TURBO = :"gpt-4-turbo"
             GPT_4_TURBO_2024_04_09 = :"gpt-4-turbo-2024-04-09"
             GPT_4_0125_PREVIEW = :"gpt-4-0125-preview"
@@ -221,6 +221,22 @@ module OpenAI
           #     # @return [Array(String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels)]
           #     def variants; end
           #   end
+        end
+
+        # @abstract
+        #
+        # **o1 and o3-mini models only**
+        #
+        #   Constrains effort on reasoning for
+        #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+        #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
+        #   result in faster responses and fewer tokens used on reasoning in a response.
+        class ReasoningEffort < OpenAI::Enum
+          LOW = :low
+          MEDIUM = :medium
+          HIGH = :high
+
+          finalize!
         end
 
         class ToolResources < OpenAI::BaseModel

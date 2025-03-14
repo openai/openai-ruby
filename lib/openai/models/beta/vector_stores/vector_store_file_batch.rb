@@ -1,0 +1,123 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Beta
+      module VectorStores
+        class VectorStoreFileBatch < OpenAI::BaseModel
+          # @!attribute id
+          #   The identifier, which can be referenced in API endpoints.
+          #
+          #   @return [String]
+          required :id, String
+
+          # @!attribute created_at
+          #   The Unix timestamp (in seconds) for when the vector store files batch was
+          #     created.
+          #
+          #   @return [Integer]
+          required :created_at, Integer
+
+          # @!attribute file_counts
+          #
+          #   @return [OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch::FileCounts]
+          required :file_counts, -> { OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch::FileCounts }
+
+          # @!attribute object
+          #   The object type, which is always `vector_store.file_batch`.
+          #
+          #   @return [Symbol, :"vector_store.files_batch"]
+          required :object, const: :"vector_store.files_batch"
+
+          # @!attribute status
+          #   The status of the vector store files batch, which can be either `in_progress`,
+          #     `completed`, `cancelled` or `failed`.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch::Status]
+          required :status, enum: -> { OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch::Status }
+
+          # @!attribute vector_store_id
+          #   The ID of the
+          #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+          #     that the [File](https://platform.openai.com/docs/api-reference/files) is
+          #     attached to.
+          #
+          #   @return [String]
+          required :vector_store_id, String
+
+          # @!parse
+          #   # A batch of files attached to a vector store.
+          #   #
+          #   # @param id [String]
+          #   # @param created_at [Integer]
+          #   # @param file_counts [OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch::FileCounts]
+          #   # @param status [Symbol, OpenAI::Models::Beta::VectorStores::VectorStoreFileBatch::Status]
+          #   # @param vector_store_id [String]
+          #   # @param object [Symbol, :"vector_store.files_batch"]
+          #   #
+          #   def initialize(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch", **) = super
+
+          # def initialize: (Hash | OpenAI::BaseModel) -> void
+
+          class FileCounts < OpenAI::BaseModel
+            # @!attribute cancelled
+            #   The number of files that where cancelled.
+            #
+            #   @return [Integer]
+            required :cancelled, Integer
+
+            # @!attribute completed
+            #   The number of files that have been processed.
+            #
+            #   @return [Integer]
+            required :completed, Integer
+
+            # @!attribute failed
+            #   The number of files that have failed to process.
+            #
+            #   @return [Integer]
+            required :failed, Integer
+
+            # @!attribute in_progress
+            #   The number of files that are currently being processed.
+            #
+            #   @return [Integer]
+            required :in_progress, Integer
+
+            # @!attribute total
+            #   The total number of files.
+            #
+            #   @return [Integer]
+            required :total, Integer
+
+            # @!parse
+            #   # @param cancelled [Integer]
+            #   # @param completed [Integer]
+            #   # @param failed [Integer]
+            #   # @param in_progress [Integer]
+            #   # @param total [Integer]
+            #   #
+            #   def initialize(cancelled:, completed:, failed:, in_progress:, total:, **) = super
+
+            # def initialize: (Hash | OpenAI::BaseModel) -> void
+          end
+
+          # @abstract
+          #
+          # The status of the vector store files batch, which can be either `in_progress`,
+          #   `completed`, `cancelled` or `failed`.
+          class Status < OpenAI::Enum
+            IN_PROGRESS = :in_progress
+            COMPLETED = :completed
+            CANCELLED = :cancelled
+            FAILED = :failed
+
+            finalize!
+          end
+        end
+      end
+
+      VectorStoreFileBatch = VectorStores::VectorStoreFileBatch
+    end
+  end
+end

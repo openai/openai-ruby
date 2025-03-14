@@ -48,16 +48,6 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::FileObject::Status]
       required :status, enum: -> { OpenAI::Models::FileObject::Status }
 
-      # @!attribute [r] expires_at
-      #   The Unix timestamp (in seconds) for when the file will expire.
-      #
-      #   @return [Integer, nil]
-      optional :expires_at, Integer
-
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :expires_at
-
       # @!attribute [r] status_details
       #   Deprecated. For details on why a fine-tuning training file failed validation,
       #     see the `error` field on `fine_tuning.job`.
@@ -78,24 +68,10 @@ module OpenAI
       #   # @param filename [String]
       #   # @param purpose [Symbol, OpenAI::Models::FileObject::Purpose]
       #   # @param status [Symbol, OpenAI::Models::FileObject::Status]
-      #   # @param expires_at [Integer]
       #   # @param status_details [String]
       #   # @param object [Symbol, :file]
       #   #
-      #   def initialize(
-      #     id:,
-      #     bytes:,
-      #     created_at:,
-      #     filename:,
-      #     purpose:,
-      #     status:,
-      #     expires_at: nil,
-      #     status_details: nil,
-      #     object: :file,
-      #     **
-      #   )
-      #     super
-      #   end
+      #   def initialize(id:, bytes:, created_at:, filename:, purpose:, status:, status_details: nil, object: :file, **) = super
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 

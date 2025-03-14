@@ -16,8 +16,9 @@ module OpenAI
         def format_=(_)
         end
 
-        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # The voice the model uses to respond. Supported voices are `ash`, `ballad`,
+        #   `coral`, `sage`, and `verse` (also supported but not recommended are `alloy`,
+        #   `echo`, and `shimmer`; these voices are less expressive).
         sig { returns(Symbol) }
         def voice
         end
@@ -55,8 +56,9 @@ module OpenAI
           end
         end
 
-        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # The voice the model uses to respond. Supported voices are `ash`, `ballad`,
+        #   `coral`, `sage`, and `verse` (also supported but not recommended are `alloy`,
+        #   `echo`, and `shimmer`; these voices are less expressive).
         class Voice < OpenAI::Enum
           abstract!
 

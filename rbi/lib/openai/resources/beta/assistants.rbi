@@ -56,7 +56,7 @@ module OpenAI
           metadata: nil,
           # The name of the assistant. The maximum length is 256 characters.
           name: nil,
-          # **o-series models only**
+          # **o1 and o3-mini models only**
           #
           #   Constrains effort on reasoning for
           #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
@@ -177,7 +177,7 @@ module OpenAI
           model: nil,
           # The name of the assistant. The maximum length is 256 characters.
           name: nil,
-          # **o-series models only**
+          # **o1 and o3-mini models only**
           #
           #   Constrains effort on reasoning for
           #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently

@@ -29,7 +29,6 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         validation_file: String | nil,
         estimated_finish: Integer | nil,
         integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end
@@ -61,7 +60,6 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         validation_file: String | nil,
         estimated_finish: Integer | nil,
         integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end
@@ -98,7 +96,6 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         validation_file: String | nil,
         estimated_finish: Integer | nil,
         integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end
@@ -130,7 +127,6 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         validation_file: String | nil,
         estimated_finish: Integer | nil,
         integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end

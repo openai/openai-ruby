@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module Beta
+      type static_file_chunking_strategy =
+        { chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer }
+
+      class StaticFileChunkingStrategy < OpenAI::BaseModel
+        attr_accessor chunk_overlap_tokens: Integer
+
+        attr_accessor max_chunk_size_tokens: Integer
+
+        def initialize:
+          (
+            chunk_overlap_tokens: Integer,
+            max_chunk_size_tokens: Integer
+          ) -> void
+          | (
+            ?OpenAI::Models::Beta::static_file_chunking_strategy
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Beta::static_file_chunking_strategy
+      end
+    end
+  end
+end

@@ -19,78 +19,9 @@ module OpenAI
         # Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
         variant :input_audio, -> { OpenAI::Models::Chat::ChatCompletionContentPartInputAudio }
 
-        # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text generation.
-        variant :file, -> { OpenAI::Models::Chat::ChatCompletionContentPart::File }
-
-        class File < OpenAI::BaseModel
-          # @!attribute file
-          #
-          #   @return [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
-          required :file, -> { OpenAI::Models::Chat::ChatCompletionContentPart::File::File }
-
-          # @!attribute type
-          #   The type of the content part. Always `file`.
-          #
-          #   @return [Symbol, :file]
-          required :type, const: :file
-
-          # @!parse
-          #   # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
-          #   #   generation.
-          #   #
-          #   # @param file [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
-          #   # @param type [Symbol, :file]
-          #   #
-          #   def initialize(file:, type: :file, **) = super
-
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
-
-          class File < OpenAI::BaseModel
-            # @!attribute [r] file_data
-            #   The base64 encoded file data, used when passing the file to the model as a
-            #     string.
-            #
-            #   @return [String, nil]
-            optional :file_data, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_data
-
-            # @!attribute [r] file_id
-            #   The ID of an uploaded file to use as input.
-            #
-            #   @return [String, nil]
-            optional :file_id, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_id
-
-            # @!attribute [r] file_name
-            #   The name of the file, used when passing the file to the model as a string.
-            #
-            #   @return [String, nil]
-            optional :file_name, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_name
-
-            # @!parse
-            #   # @param file_data [String]
-            #   # @param file_id [String]
-            #   # @param file_name [String]
-            #   #
-            #   def initialize(file_data: nil, file_id: nil, file_name: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
-          end
-        end
-
         # @!parse
         #   class << self
-        #     # @return [Array(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File)]
+        #     # @return [Array(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio)]
         #     def variants; end
         #   end
       end

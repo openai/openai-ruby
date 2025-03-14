@@ -1,0 +1,75 @@
+module OpenAI
+  module Models
+    module Beta
+      type vector_store_create_params =
+        {
+          chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param,
+          expires_after: OpenAI::Models::Beta::VectorStoreCreateParams::ExpiresAfter,
+          file_ids: ::Array[String],
+          metadata: OpenAI::Models::metadata?,
+          name: String
+        }
+        & OpenAI::request_parameters
+
+      class VectorStoreCreateParams < OpenAI::BaseModel
+        extend OpenAI::RequestParameters::Converter
+        include OpenAI::RequestParameters
+
+        attr_reader chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param?
+
+        def chunking_strategy=: (
+          OpenAI::Models::Beta::file_chunking_strategy_param
+        ) -> OpenAI::Models::Beta::file_chunking_strategy_param
+
+        attr_reader expires_after: OpenAI::Models::Beta::VectorStoreCreateParams::ExpiresAfter?
+
+        def expires_after=: (
+          OpenAI::Models::Beta::VectorStoreCreateParams::ExpiresAfter
+        ) -> OpenAI::Models::Beta::VectorStoreCreateParams::ExpiresAfter
+
+        attr_reader file_ids: ::Array[String]?
+
+        def file_ids=: (::Array[String]) -> ::Array[String]
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        def initialize:
+          (
+            chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param,
+            expires_after: OpenAI::Models::Beta::VectorStoreCreateParams::ExpiresAfter,
+            file_ids: ::Array[String],
+            metadata: OpenAI::Models::metadata?,
+            name: String,
+            request_options: OpenAI::request_opts
+          ) -> void
+          | (
+            ?OpenAI::Models::Beta::vector_store_create_params
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Beta::vector_store_create_params
+
+        type expires_after = { anchor: :last_active_at, days: Integer }
+
+        class ExpiresAfter < OpenAI::BaseModel
+          attr_accessor anchor: :last_active_at
+
+          attr_accessor days: Integer
+
+          def initialize:
+            (days: Integer, anchor: :last_active_at) -> void
+            | (
+              ?OpenAI::Models::Beta::VectorStoreCreateParams::expires_after
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::VectorStoreCreateParams::expires_after
+        end
+      end
+    end
+  end
+end

@@ -104,7 +104,7 @@ module OpenAI
             #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
             #   during tool use.
             parallel_tool_calls: nil,
-            # Body param: **o-series models only**
+            # Body param: **o1 and o3-mini models only**
             #
             #   Constrains effort on reasoning for
             #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
@@ -286,7 +286,7 @@ module OpenAI
             #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
             #   during tool use.
             parallel_tool_calls: nil,
-            # Body param: **o-series models only**
+            # Body param: **o1 and o3-mini models only**
             #
             #   Constrains effort on reasoning for
             #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently

@@ -23,7 +23,6 @@ module OpenAI
           validation_file: String?,
           estimated_finish: Integer?,
           integrations: ::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]?,
-          metadata: OpenAI::Models::metadata?,
           method_: OpenAI::Models::FineTuning::FineTuningJob::Method
         }
 
@@ -62,8 +61,6 @@ module OpenAI
 
         attr_accessor integrations: ::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]?
 
-        attr_accessor metadata: OpenAI::Models::metadata?
-
         attr_reader method_: OpenAI::Models::FineTuning::FineTuningJob::Method?
 
         def method_=: (
@@ -88,7 +85,6 @@ module OpenAI
             validation_file: String?,
             estimated_finish: Integer?,
             integrations: ::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]?,
-            metadata: OpenAI::Models::metadata?,
             method_: OpenAI::Models::FineTuning::FineTuningJob::Method,
             object: :"fine_tuning.job"
           ) -> void

@@ -310,17 +310,17 @@ module OpenAI
 
               type vector_store =
                 {
-                  chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                  chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param,
                   file_ids: ::Array[String],
                   metadata: OpenAI::Models::metadata?
                 }
 
               class VectorStore < OpenAI::BaseModel
-                attr_reader chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy?
+                attr_reader chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param?
 
                 def chunking_strategy=: (
-                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
-                ) -> OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
+                  OpenAI::Models::Beta::file_chunking_strategy_param
+                ) -> OpenAI::Models::Beta::file_chunking_strategy_param
 
                 attr_reader file_ids: ::Array[String]?
 
@@ -330,7 +330,7 @@ module OpenAI
 
                 def initialize:
                   (
-                    chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                    chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param,
                     file_ids: ::Array[String],
                     metadata: OpenAI::Models::metadata?
                   ) -> void
@@ -340,77 +340,6 @@ module OpenAI
                   ) -> void
 
                 def to_hash: -> OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::vector_store
-
-                type chunking_strategy =
-                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto
-                  | OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
-
-                class ChunkingStrategy < OpenAI::Union
-                  type auto = { type: :auto }
-
-                  class Auto < OpenAI::BaseModel
-                    attr_accessor type: :auto
-
-                    def initialize:
-                      (type: :auto) -> void
-                      | (
-                        ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::auto
-                        | OpenAI::BaseModel data
-                      ) -> void
-
-                    def to_hash: -> OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::auto
-                  end
-
-                  type static =
-                    {
-                      static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                      type: :static
-                    }
-
-                  class Static < OpenAI::BaseModel
-                    attr_accessor static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
-
-                    attr_accessor type: :static
-
-                    def initialize:
-                      (
-                        static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                        type: :static
-                      ) -> void
-                      | (
-                        ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::static
-                        | OpenAI::BaseModel data
-                      ) -> void
-
-                    def to_hash: -> OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::static
-
-                    type static =
-                      {
-                        chunk_overlap_tokens: Integer,
-                        max_chunk_size_tokens: Integer
-                      }
-
-                    class Static < OpenAI::BaseModel
-                      attr_accessor chunk_overlap_tokens: Integer
-
-                      attr_accessor max_chunk_size_tokens: Integer
-
-                      def initialize:
-                        (
-                          chunk_overlap_tokens: Integer,
-                          max_chunk_size_tokens: Integer
-                        ) -> void
-                        | (
-                          ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::static
-                          | OpenAI::BaseModel data
-                        ) -> void
-
-                      def to_hash: -> OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::static
-                    end
-                  end
-
-                  def self.variants: -> [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-                end
               end
             end
           end

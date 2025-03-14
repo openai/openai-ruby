@@ -59,11 +59,9 @@ module OpenAI
         def messages=(_)
         end
 
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
+        # ID of the model to use. See the
+        #   [model endpoint compatibility](https://platform.openai.com/docs/models#model-endpoint-compatibility)
+        #   table for details on which models work with the Chat API.
         sig { returns(T.any(String, Symbol)) }
         def model
         end
@@ -203,8 +201,8 @@ module OpenAI
         def metadata=(_)
         end
 
-        # Output types that you would like the model to generate. Most models are capable
-        #   of generating text, which is the default:
+        # Output types that you would like the model to generate for this request. Most
+        #   models are capable of generating text, which is the default:
         #
         #   `["text"]`
         #
@@ -267,7 +265,7 @@ module OpenAI
         def presence_penalty=(_)
         end
 
-        # **o-series models only**
+        # **o1 and o3-mini models only**
         #
         #   Constrains effort on reasoning for
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
@@ -288,16 +286,23 @@ module OpenAI
         #   in the
         #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-        #   ensures the message the model generates is valid JSON. Using `json_schema` is
-        #   preferred for models that support it.
+        #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+        #   message the model generates is valid JSON.
+        #
+        #   **Important:** when using JSON mode, you **must** also instruct the model to
+        #   produce JSON yourself via a system or user message. Without this, the model may
+        #   generate an unending stream of whitespace until the generation reaches the token
+        #   limit, resulting in a long-running and seemingly "stuck" request. Also note that
+        #   the message content may be partially cut off if `finish_reason="length"`, which
+        #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
+        #   max context length.
         sig do
           returns(
             T.nilable(
               T.any(
                 OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONSchema,
-                OpenAI::Models::ResponseFormatJSONObject
+                OpenAI::Models::ResponseFormatJSONObject,
+                OpenAI::Models::ResponseFormatJSONSchema
               )
             )
           )
@@ -309,15 +314,15 @@ module OpenAI
           params(
             _: T.any(
               OpenAI::Models::ResponseFormatText,
-              OpenAI::Models::ResponseFormatJSONSchema,
-              OpenAI::Models::ResponseFormatJSONObject
+              OpenAI::Models::ResponseFormatJSONObject,
+              OpenAI::Models::ResponseFormatJSONSchema
             )
           )
             .returns(
               T.any(
                 OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONSchema,
-                OpenAI::Models::ResponseFormatJSONObject
+                OpenAI::Models::ResponseFormatJSONObject,
+                OpenAI::Models::ResponseFormatJSONSchema
               )
             )
         end
@@ -344,13 +349,10 @@ module OpenAI
         #     utilize scale tier credits until they are exhausted.
         #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #     be processed using the default service tier with a lower uptime SLA and no
-        #     latency guarentee.
+        #     latency guarantee.
         #   - If set to 'default', the request will be processed using the default service
-        #     tier with a lower uptime SLA and no latency guarentee.
+        #     tier with a lower uptime SLA and no latency guarantee.
         #   - When not set, the default behavior is 'auto'.
-        #
-        #   When this parameter is set, the response body will include the `service_tier`
-        #   utilized.
         sig { returns(T.nilable(Symbol)) }
         def service_tier
         end
@@ -359,8 +361,7 @@ module OpenAI
         def service_tier=(_)
         end
 
-        # Up to 4 sequences where the API will stop generating further tokens. The
-        #   returned text will not contain the stop sequence.
+        # Up to 4 sequences where the API will stop generating further tokens.
         sig { returns(T.nilable(T.any(String, T::Array[String]))) }
         def stop
         end
@@ -482,20 +483,6 @@ module OpenAI
         def user=(_)
         end
 
-        # This tool searches the web for relevant results to use in a response. Learn more
-        #   about the
-        #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
-        sig { returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions)) }
-        def web_search_options
-        end
-
-        sig do
-          params(_: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions)
-            .returns(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions)
-        end
-        def web_search_options=(_)
-        end
-
         sig do
           params(
             messages: T::Array[
@@ -526,8 +513,8 @@ module OpenAI
             reasoning_effort: T.nilable(Symbol),
             response_format: T.any(
               OpenAI::Models::ResponseFormatText,
-              OpenAI::Models::ResponseFormatJSONSchema,
-              OpenAI::Models::ResponseFormatJSONObject
+              OpenAI::Models::ResponseFormatJSONObject,
+              OpenAI::Models::ResponseFormatJSONSchema
             ),
             seed: T.nilable(Integer),
             service_tier: T.nilable(Symbol),
@@ -540,7 +527,6 @@ module OpenAI
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
-            web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -575,7 +561,6 @@ module OpenAI
           top_logprobs: nil,
           top_p: nil,
           user: nil,
-          web_search_options: nil,
           request_options: {}
         )
         end
@@ -612,8 +597,8 @@ module OpenAI
                 reasoning_effort: T.nilable(Symbol),
                 response_format: T.any(
                   OpenAI::Models::ResponseFormatText,
-                  OpenAI::Models::ResponseFormatJSONSchema,
-                  OpenAI::Models::ResponseFormatJSONObject
+                  OpenAI::Models::ResponseFormatJSONObject,
+                  OpenAI::Models::ResponseFormatJSONSchema
                 ),
                 seed: T.nilable(Integer),
                 service_tier: T.nilable(Symbol),
@@ -626,7 +611,6 @@ module OpenAI
                 top_logprobs: T.nilable(Integer),
                 top_p: T.nilable(Float),
                 user: String,
-                web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -634,11 +618,9 @@ module OpenAI
         def to_hash
         end
 
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
+        # ID of the model to use. See the
+        #   [model endpoint compatibility](https://platform.openai.com/docs/models#model-endpoint-compatibility)
+        #   table for details on which models work with the Chat API.
         class Model < OpenAI::Union
           abstract!
 
@@ -669,7 +651,7 @@ module OpenAI
           # `none` means the model will not call a function and instead generates a message.
           #   `auto` means the model can pick between generating a message or calling a
           #   function.
-          class FunctionCallMode < OpenAI::Enum
+          class Auto < OpenAI::Enum
             abstract!
 
             NONE = :none
@@ -737,19 +719,6 @@ module OpenAI
           end
         end
 
-        class Modality < OpenAI::Enum
-          abstract!
-
-          TEXT = :text
-          AUDIO = :audio
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
-        end
-
         # An object specifying the format that the model must output.
         #
         #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
@@ -757,9 +726,16 @@ module OpenAI
         #   in the
         #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-        #   ensures the message the model generates is valid JSON. Using `json_schema` is
-        #   preferred for models that support it.
+        #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+        #   message the model generates is valid JSON.
+        #
+        #   **Important:** when using JSON mode, you **must** also instruct the model to
+        #   produce JSON yourself via a system or user message. Without this, the model may
+        #   generate an unending stream of whitespace until the generation reaches the token
+        #   limit, resulting in a long-running and seemingly "stuck" request. Also note that
+        #   the message content may be partially cut off if `finish_reason="length"`, which
+        #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
+        #   max context length.
         class ResponseFormat < OpenAI::Union
           abstract!
 
@@ -767,7 +743,7 @@ module OpenAI
             sig do
               override
                 .returns(
-                  [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+                  [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
                 )
             end
             def variants
@@ -782,13 +758,10 @@ module OpenAI
         #     utilize scale tier credits until they are exhausted.
         #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
         #     be processed using the default service tier with a lower uptime SLA and no
-        #     latency guarentee.
+        #     latency guarantee.
         #   - If set to 'default', the request will be processed using the default service
-        #     tier with a lower uptime SLA and no latency guarentee.
+        #     tier with a lower uptime SLA and no latency guarantee.
         #   - When not set, the default behavior is 'auto'.
-        #
-        #   When this parameter is set, the response body will include the `service_tier`
-        #   utilized.
         class ServiceTier < OpenAI::Enum
           abstract!
 
@@ -802,8 +775,7 @@ module OpenAI
           end
         end
 
-        # Up to 4 sequences where the API will stop generating further tokens. The
-        #   returned text will not contain the stop sequence.
+        # Up to 4 sequences where the API will stop generating further tokens.
         class Stop < OpenAI::Union
           abstract!
 
@@ -812,173 +784,6 @@ module OpenAI
           class << self
             sig { override.returns([String, T::Array[String]]) }
             def variants
-            end
-          end
-        end
-
-        class WebSearchOptions < OpenAI::BaseModel
-          # High level guidance for the amount of context window space to use for the
-          #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-          sig { returns(T.nilable(Symbol)) }
-          def search_context_size
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def search_context_size=(_)
-          end
-
-          # Approximate location parameters for the search.
-          sig { returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)) }
-          def user_location
-          end
-
-          sig do
-            params(_: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation))
-              .returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation))
-          end
-          def user_location=(_)
-          end
-
-          # This tool searches the web for relevant results to use in a response. Learn more
-          #   about the
-          #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
-          sig do
-            params(
-              search_context_size: Symbol,
-              user_location: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)
-            )
-              .returns(T.attached_class)
-          end
-          def self.new(search_context_size: nil, user_location: nil)
-          end
-
-          sig do
-            override
-              .returns(
-                {
-                  search_context_size: Symbol,
-                  user_location: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)
-                }
-              )
-          end
-          def to_hash
-          end
-
-          # High level guidance for the amount of context window space to use for the
-          #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-          class SearchContextSize < OpenAI::Enum
-            abstract!
-
-            LOW = :low
-            MEDIUM = :medium
-            HIGH = :high
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
-          end
-
-          class UserLocation < OpenAI::BaseModel
-            # Approximate location parameters for the search.
-            sig { returns(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate) }
-            def approximate
-            end
-
-            sig do
-              params(_: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate)
-                .returns(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate)
-            end
-            def approximate=(_)
-            end
-
-            # The type of location approximation. Always `approximate`.
-            sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
-
-            # Approximate location parameters for the search.
-            sig do
-              params(
-                approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                type: Symbol
-              )
-                .returns(T.attached_class)
-            end
-            def self.new(approximate:, type: :approximate)
-            end
-
-            sig do
-              override
-                .returns(
-                  {
-                    approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                    type: Symbol
-                  }
-                )
-            end
-            def to_hash
-            end
-
-            class Approximate < OpenAI::BaseModel
-              # Free text input for the city of the user, e.g. `San Francisco`.
-              sig { returns(T.nilable(String)) }
-              def city
-              end
-
-              sig { params(_: String).returns(String) }
-              def city=(_)
-              end
-
-              # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
-              #   the user, e.g. `US`.
-              sig { returns(T.nilable(String)) }
-              def country
-              end
-
-              sig { params(_: String).returns(String) }
-              def country=(_)
-              end
-
-              # Free text input for the region of the user, e.g. `California`.
-              sig { returns(T.nilable(String)) }
-              def region
-              end
-
-              sig { params(_: String).returns(String) }
-              def region=(_)
-              end
-
-              # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
-              #   user, e.g. `America/Los_Angeles`.
-              sig { returns(T.nilable(String)) }
-              def timezone
-              end
-
-              sig { params(_: String).returns(String) }
-              def timezone=(_)
-              end
-
-              # Approximate location parameters for the search.
-              sig do
-                params(
-                  city: String,
-                  country: String,
-                  region: String,
-                  timezone: String
-                ).returns(T.attached_class)
-              end
-              def self.new(city: nil, country: nil, region: nil, timezone: nil)
-              end
-
-              sig { override.returns({city: String, country: String, region: String, timezone: String}) }
-              def to_hash
-              end
             end
           end
         end

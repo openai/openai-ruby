@@ -74,16 +74,16 @@ module OpenAI
         #     execution of wrongdoing, or that gives advice or instruction on how to commit
         #     illicit acts. For example, "how to shoplift" would fit this category.
         #
-        #   @return [Boolean, nil]
-        required :illicit, OpenAI::BooleanModel, nil?: true
+        #   @return [Boolean]
+        required :illicit, OpenAI::BooleanModel
 
         # @!attribute illicit_violent
         #   Content that includes instructions or advice that facilitate the planning or
         #     execution of wrongdoing that also includes violence, or that gives advice or
         #     instruction on the procurement of any weapon.
         #
-        #   @return [Boolean, nil]
-        required :illicit_violent, OpenAI::BooleanModel, api_name: :"illicit/violent", nil?: true
+        #   @return [Boolean]
+        required :illicit_violent, OpenAI::BooleanModel, api_name: :"illicit/violent"
 
         # @!attribute self_harm
         #   Content that promotes, encourages, or depicts acts of self-harm, such as
@@ -140,8 +140,8 @@ module OpenAI
         #   # @param harassment_threatening [Boolean]
         #   # @param hate [Boolean]
         #   # @param hate_threatening [Boolean]
-        #   # @param illicit [Boolean, nil]
-        #   # @param illicit_violent [Boolean, nil]
+        #   # @param illicit [Boolean]
+        #   # @param illicit_violent [Boolean]
         #   # @param self_harm [Boolean]
         #   # @param self_harm_instructions [Boolean]
         #   # @param self_harm_intent [Boolean]

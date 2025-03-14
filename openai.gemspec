@@ -14,6 +14,6 @@ Gem::Specification.new do |s|
   s.add_dependency "connection_pool"
   s.homepage = "https://gemdocs.org/gems/openai/latest"
   s.metadata["homepage_uri"] = s.homepage
-  s.metadata["source_code_uri"] = "https://github.com/openai/openai-ruby"
+  s.metadata["source_code_uri"] = "https://github.com/stainless-sdks/openai-ruby"
   s.metadata["rubygems_mfa_required"] = "false"
 end

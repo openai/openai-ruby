@@ -10,14 +10,14 @@ module OpenAI
   #
   # @example
   # ```ruby
-  # cursor_page.auto_paging_each do |completion|
-  #   puts(completion)
+  # cursor_page.auto_paging_each do |file|
+  #   puts(file)
   # end
   # ```
   #
   # @example
   # ```ruby
-  # completions = cursor_page
+  # files = cursor_page
   #   .to_enum
   #   .lazy
   #   .select { _1.object_id.even? }
@@ -25,7 +25,7 @@ module OpenAI
   #   .take(2)
   #   .to_a
   #
-  # completions => Array
+  # files => Array
   # ```
   class CursorPage
     include OpenAI::BasePage

@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Beta
+      
+      class VectorStoreFileDeleted = VectorStores::VectorStoreFileDeleted
+
+      module VectorStores
+        type vector_store_file_deleted =
+          { id: String, deleted: bool, object: :"vector_store.file.deleted" }
+
+        class VectorStoreFileDeleted < OpenAI::BaseModel
+          attr_accessor id: String
+
+          attr_accessor deleted: bool
+
+          attr_accessor object: :"vector_store.file.deleted"
+
+          def initialize:
+            (
+              id: String,
+              deleted: bool,
+              object: :"vector_store.file.deleted"
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::VectorStores::vector_store_file_deleted
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::VectorStores::vector_store_file_deleted
+        end
+      end
+    end
+  end
+end

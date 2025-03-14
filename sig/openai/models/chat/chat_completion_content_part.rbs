@@ -8,59 +8,9 @@ module OpenAI
         OpenAI::Models::Chat::ChatCompletionContentPartText
         | OpenAI::Models::Chat::ChatCompletionContentPartImage
         | OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
-        | OpenAI::Models::Chat::ChatCompletionContentPart::File
 
       class ChatCompletionContentPart < OpenAI::Union
-        type file =
-          {
-            file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File,
-            type: :file
-          }
-
-        class File < OpenAI::BaseModel
-          attr_accessor file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File
-
-          attr_accessor type: :file
-
-          def initialize:
-            (
-              file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File,
-              type: :file
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionContentPart::file
-              | OpenAI::BaseModel data
-            ) -> void
-
-          def to_hash: -> OpenAI::Models::Chat::ChatCompletionContentPart::file
-
-          type file = { file_data: String, file_id: String, file_name: String }
-
-          class File < OpenAI::BaseModel
-            attr_reader file_data: String?
-
-            def file_data=: (String) -> String
-
-            attr_reader file_id: String?
-
-            def file_id=: (String) -> String
-
-            attr_reader file_name: String?
-
-            def file_name=: (String) -> String
-
-            def initialize:
-              (file_data: String, file_id: String, file_name: String) -> void
-              | (
-                ?OpenAI::Models::Chat::ChatCompletionContentPart::File::file
-                | OpenAI::BaseModel data
-              ) -> void
-
-            def to_hash: -> OpenAI::Models::Chat::ChatCompletionContentPart::File::file
-          end
-        end
-
-        def self.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
+        def self.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio]
       end
     end
   end

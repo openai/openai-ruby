@@ -30,7 +30,7 @@ module OpenAI
       def created_at=(_)
       end
 
-      # The Unix timestamp (in seconds) for when the Upload will expire.
+      # The Unix timestamp (in seconds) for when the Upload was created.
       sig { returns(Integer) }
       def expires_at
       end

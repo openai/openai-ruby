@@ -1,15 +1,12 @@
 module OpenAI
   module Models
-    type file_purpose =
-      :assistants | :batch | :"fine-tune" | :vision | :user_data | :evals
+    type file_purpose = :assistants | :batch | :"fine-tune" | :vision
 
     class FilePurpose < OpenAI::Enum
       ASSISTANTS: :assistants
       BATCH: :batch
       FINE_TUNE: :"fine-tune"
       VISION: :vision
-      USER_DATA: :user_data
-      EVALS: :evals
 
       def self.values: -> ::Array[OpenAI::Models::file_purpose]
     end

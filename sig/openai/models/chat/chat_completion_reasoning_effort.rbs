@@ -4,8 +4,15 @@ module OpenAI
     class ChatCompletionReasoningEffort = Chat::ChatCompletionReasoningEffort
 
     module Chat
-      
-      class ChatCompletionReasoningEffort = OpenAI::Models::ReasoningEffort
+      type chat_completion_reasoning_effort = :low | :medium | :high
+
+      class ChatCompletionReasoningEffort < OpenAI::Enum
+        LOW: :low
+        MEDIUM: :medium
+        HIGH: :high
+
+        def self.values: -> ::Array[OpenAI::Models::Chat::chat_completion_reasoning_effort]
+      end
     end
   end
 end

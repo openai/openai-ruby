@@ -22,17 +22,6 @@ module OpenAI
         #   @return [Symbol, :assistant]
         required :role, const: :assistant
 
-        # @!attribute [r] annotations
-        #   Annotations for the message, when applicable, as when using the
-        #     [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
-        #
-        #   @return [Array<OpenAI::Models::Chat::ChatCompletionMessage::Annotation>, nil]
-        optional :annotations, -> { OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionMessage::Annotation] }
-
-        # @!parse
-        #   # @return [Array<OpenAI::Models::Chat::ChatCompletionMessage::Annotation>]
-        #   attr_writer :annotations
-
         # @!attribute audio
         #   If the audio output modality is requested, this object contains data about the
         #     audio response from the model.
@@ -67,88 +56,14 @@ module OpenAI
         #   #
         #   # @param content [String, nil]
         #   # @param refusal [String, nil]
-        #   # @param annotations [Array<OpenAI::Models::Chat::ChatCompletionMessage::Annotation>]
         #   # @param audio [OpenAI::Models::Chat::ChatCompletionAudio, nil]
         #   # @param function_call [OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall]
         #   # @param tool_calls [Array<OpenAI::Models::Chat::ChatCompletionMessageToolCall>]
         #   # @param role [Symbol, :assistant]
         #   #
-        #   def initialize(
-        #     content:,
-        #     refusal:,
-        #     annotations: nil,
-        #     audio: nil,
-        #     function_call: nil,
-        #     tool_calls: nil,
-        #     role: :assistant,
-        #     **
-        #   )
-        #     super
-        #   end
+        #   def initialize(content:, refusal:, audio: nil, function_call: nil, tool_calls: nil, role: :assistant, **) = super
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
-
-        class Annotation < OpenAI::BaseModel
-          # @!attribute type
-          #   The type of the URL citation. Always `url_citation`.
-          #
-          #   @return [Symbol, :url_citation]
-          required :type, const: :url_citation
-
-          # @!attribute url_citation
-          #   A URL citation when using web search.
-          #
-          #   @return [OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation]
-          required :url_citation, -> { OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation }
-
-          # @!parse
-          #   # A URL citation when using web search.
-          #   #
-          #   # @param url_citation [OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation]
-          #   # @param type [Symbol, :url_citation]
-          #   #
-          #   def initialize(url_citation:, type: :url_citation, **) = super
-
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
-
-          class URLCitation < OpenAI::BaseModel
-            # @!attribute end_index
-            #   The index of the last character of the URL citation in the message.
-            #
-            #   @return [Integer]
-            required :end_index, Integer
-
-            # @!attribute start_index
-            #   The index of the first character of the URL citation in the message.
-            #
-            #   @return [Integer]
-            required :start_index, Integer
-
-            # @!attribute title
-            #   The title of the web resource.
-            #
-            #   @return [String]
-            required :title, String
-
-            # @!attribute url
-            #   The URL of the web resource.
-            #
-            #   @return [String]
-            required :url, String
-
-            # @!parse
-            #   # A URL citation when using web search.
-            #   #
-            #   # @param end_index [Integer]
-            #   # @param start_index [Integer]
-            #   # @param title [String]
-            #   # @param url [String]
-            #   #
-            #   def initialize(end_index:, start_index:, title:, url:, **) = super
-
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
-          end
-        end
 
         # @deprecated
         class FunctionCall < OpenAI::BaseModel

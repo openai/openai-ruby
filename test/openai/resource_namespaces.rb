@@ -11,14 +11,12 @@ module OpenAI
           module Runs
           end
         end
-      end
 
-      module Chat
-        module Completions
+        module VectorStores
         end
       end
 
-      module Completions
+      module Chat
       end
 
       module FineTuning
@@ -27,9 +25,6 @@ module OpenAI
       end
 
       module Jobs
-      end
-
-      module Responses
       end
 
       module Runs

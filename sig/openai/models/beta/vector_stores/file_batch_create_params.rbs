@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    module Beta
+      module VectorStores
+        type file_batch_create_params =
+          {
+            file_ids: ::Array[String],
+            chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param
+          }
+          & OpenAI::request_parameters
+
+        class FileBatchCreateParams < OpenAI::BaseModel
+          extend OpenAI::RequestParameters::Converter
+          include OpenAI::RequestParameters
+
+          attr_accessor file_ids: ::Array[String]
+
+          attr_reader chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param?
+
+          def chunking_strategy=: (
+            OpenAI::Models::Beta::file_chunking_strategy_param
+          ) -> OpenAI::Models::Beta::file_chunking_strategy_param
+
+          def initialize:
+            (
+              file_ids: ::Array[String],
+              chunking_strategy: OpenAI::Models::Beta::file_chunking_strategy_param,
+              request_options: OpenAI::request_opts
+            ) -> void
+            | (
+              ?OpenAI::Models::Beta::VectorStores::file_batch_create_params
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Beta::VectorStores::file_batch_create_params
+        end
+      end
+    end
+  end
+end
