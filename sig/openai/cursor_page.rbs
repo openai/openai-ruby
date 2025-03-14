@@ -2,7 +2,7 @@ module OpenAI
   class CursorPage[Elem]
     include OpenAI::BasePage[Elem]
 
-    attr_accessor data: ::Array[Elem]
+    attr_accessor data: ::Array[Elem]?
 
     attr_accessor has_more: bool
   end

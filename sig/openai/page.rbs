@@ -2,7 +2,7 @@ module OpenAI
   class Page[Elem]
     include OpenAI::BasePage[Elem]
 
-    attr_accessor data: ::Array[Elem]
+    attr_accessor data: ::Array[Elem]?
 
     attr_accessor object: String
   end

@@ -30,7 +30,7 @@ module OpenAI
   class CursorPage
     include OpenAI::BasePage
 
-    # @return [Array<Object>]
+    # @return [Array<Object>, nil]
     attr_accessor :data
 
     # @return [Boolean]

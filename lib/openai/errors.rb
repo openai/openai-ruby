@@ -4,7 +4,7 @@ module OpenAI
   class Error < StandardError
     # @!parse
     #   # @return [StandardError, nil]
-    #   attr_reader :cause
+    #   attr_accessor :cause
   end
 
   class ConversionError < OpenAI::Error
@@ -12,22 +12,22 @@ module OpenAI
 
   class APIError < OpenAI::Error
     # @return [URI::Generic]
-    attr_reader :url
+    attr_accessor :url
 
     # @return [Integer, nil]
-    attr_reader :status
+    attr_accessor :status
 
     # @return [Object, nil]
-    attr_reader :body
+    attr_accessor :body
 
     # @return [String, nil]
-    attr_reader :code
+    attr_accessor :code
 
     # @return [String, nil]
-    attr_reader :param
+    attr_accessor :param
 
     # @return [String, nil]
-    attr_reader :type
+    attr_accessor :type
 
     # @api private
     #
@@ -50,23 +50,23 @@ module OpenAI
   class APIConnectionError < OpenAI::APIError
     # @!parse
     #   # @return [nil]
-    #   attr_reader :status
+    #   attr_accessor :status
 
     # @!parse
     #   # @return [nil]
-    #   attr_reader :body
+    #   attr_accessor :body
 
     # @!parse
     #   # @return [nil]
-    #   attr_reader :code
+    #   attr_accessor :code
 
     # @!parse
     #   # @return [nil]
-    #   attr_reader :param
+    #   attr_accessor :param
 
     # @!parse
     #   # @return [nil]
-    #   attr_reader :type
+    #   attr_accessor :type
 
     # @api private
     #
@@ -147,19 +147,19 @@ module OpenAI
 
     # @!parse
     #   # @return [Integer]
-    #   attr_reader :status
+    #   attr_accessor :status
 
     # @!parse
     #   # @return [String, nil]
-    #   attr_reader :code
+    #   attr_accessor :code
 
     # @!parse
     #   # @return [String, nil]
-    #   attr_reader :param
+    #   attr_accessor :param
 
     # @!parse
     #   # @return [String, nil]
-    #   attr_reader :type
+    #   attr_accessor :type
 
     # @api private
     #
