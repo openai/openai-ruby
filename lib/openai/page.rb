@@ -30,7 +30,7 @@ module OpenAI
   class Page
     include OpenAI::BasePage
 
-    # @return [Array<Object>]
+    # @return [Array<Object>, nil]
     attr_accessor :data
 
     # @return [String]
@@ -53,7 +53,7 @@ module OpenAI
       end
 
       case page_data
-      in {object: String | nil => object}
+      in {object: String => object}
         @object = object
       else
       end
