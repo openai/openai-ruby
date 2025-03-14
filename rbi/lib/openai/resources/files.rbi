@@ -32,7 +32,16 @@ module OpenAI
         )
           .returns(OpenAI::Models::FileObject)
       end
-      def create(file:, purpose:, request_options: {})
+      def create(
+        # The File object (not file name) to be uploaded.
+        file:,
+        # The intended purpose of the uploaded file. One of: - `assistants`: Used in the
+        #   Assistants API - `batch`: Used in the Batch API - `fine-tune`: Used for
+        #   fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
+        #   Flexible file type for any purpose - `evals`: Used for eval data sets
+        purpose:,
+        request_options: {}
+      )
       end
 
       # Returns information about a specific file.
@@ -43,7 +52,11 @@ module OpenAI
         )
           .returns(OpenAI::Models::FileObject)
       end
-      def retrieve(file_id, request_options: {})
+      def retrieve(
+        # The ID of the file to use for this request.
+        file_id,
+        request_options: {}
+      )
       end
 
       # Returns a list of files.
@@ -57,7 +70,22 @@ module OpenAI
         )
           .returns(OpenAI::CursorPage[OpenAI::Models::FileObject])
       end
-      def list(after: nil, limit: nil, order: nil, purpose: nil, request_options: {})
+      def list(
+        # A cursor for use in pagination. `after` is an object ID that defines your place
+        #   in the list. For instance, if you make a list request and receive 100 objects,
+        #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        #   fetch the next page of the list.
+        after: nil,
+        # A limit on the number of objects to be returned. Limit can range between 1 and
+        #   10,000, and the default is 10,000.
+        limit: nil,
+        # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+        #   order and `desc` for descending order.
+        order: nil,
+        # Only return files with the given purpose.
+        purpose: nil,
+        request_options: {}
+      )
       end
 
       # Delete a file.
@@ -68,7 +96,11 @@ module OpenAI
         )
           .returns(OpenAI::Models::FileDeleted)
       end
-      def delete(file_id, request_options: {})
+      def delete(
+        # The ID of the file to use for this request.
+        file_id,
+        request_options: {}
+      )
       end
 
       # Returns the contents of the specified file.
@@ -79,7 +111,11 @@ module OpenAI
         )
           .returns(T.anything)
       end
-      def content(file_id, request_options: {})
+      def content(
+        # The ID of the file to use for this request.
+        file_id,
+        request_options: {}
+      )
       end
 
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
