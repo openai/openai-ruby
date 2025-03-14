@@ -3,6 +3,11 @@
 module OpenAI
   module Models
     class VectorStoreSearchResponse < OpenAI::BaseModel
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard. Keys are strings with a maximum
+      #   length of 64 characters. Values are strings with a maximum length of 512
+      #   characters, booleans, or numbers.
       sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
       def attributes
       end
@@ -14,6 +19,7 @@ module OpenAI
       def attributes=(_)
       end
 
+      # Content chunks from the file.
       sig { returns(T::Array[OpenAI::Models::VectorStoreSearchResponse::Content]) }
       def content
       end
@@ -25,6 +31,7 @@ module OpenAI
       def content=(_)
       end
 
+      # The ID of the vector store file.
       sig { returns(String) }
       def file_id
       end
@@ -33,6 +40,7 @@ module OpenAI
       def file_id=(_)
       end
 
+      # The name of the vector store file.
       sig { returns(String) }
       def filename
       end
@@ -41,6 +49,7 @@ module OpenAI
       def filename=(_)
       end
 
+      # The similarity score for the result.
       sig { returns(Float) }
       def score
       end
@@ -81,6 +90,7 @@ module OpenAI
         abstract!
 
         class << self
+          # @api private
           sig { override.returns([[NilClass, String], [NilClass, Float], [NilClass, T::Boolean]]) }
           private def variants
           end
@@ -88,6 +98,7 @@ module OpenAI
       end
 
       class Content < OpenAI::BaseModel
+        # The text content returned from search.
         sig { returns(String) }
         def text
         end
@@ -96,6 +107,7 @@ module OpenAI
         def text=(_)
         end
 
+        # The type of content.
         sig { returns(Symbol) }
         def type
         end
@@ -112,6 +124,7 @@ module OpenAI
         def to_hash
         end
 
+        # The type of content.
         class Type < OpenAI::Enum
           abstract!
 

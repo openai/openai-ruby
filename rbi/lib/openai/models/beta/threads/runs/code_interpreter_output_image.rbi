@@ -6,6 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class CodeInterpreterOutputImage < OpenAI::BaseModel
+            # The index of the output in the outputs array.
             sig { returns(Integer) }
             def index
             end
@@ -14,6 +15,7 @@ module OpenAI
             def index=(_)
             end
 
+            # Always `image`.
             sig { returns(Symbol) }
             def type
             end
@@ -54,6 +56,8 @@ module OpenAI
             end
 
             class Image < OpenAI::BaseModel
+              # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
+              #   image.
               sig { returns(T.nilable(String)) }
               def file_id
               end

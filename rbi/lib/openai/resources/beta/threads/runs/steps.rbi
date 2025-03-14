@@ -6,6 +6,7 @@ module OpenAI
       class Threads
         class Runs
           class Steps
+            # Retrieves a run step.
             sig do
               params(
                 step_id: String,
@@ -19,6 +20,7 @@ module OpenAI
             def retrieve(step_id, thread_id:, run_id:, include: nil, request_options: {})
             end
 
+            # Returns a list of run steps belonging to a run.
             sig do
               params(
                 run_id: String,

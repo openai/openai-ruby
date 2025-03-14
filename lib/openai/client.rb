@@ -66,10 +66,9 @@ module OpenAI
     # @return [OpenAI::Resources::Responses]
     attr_reader :responses
 
-    # @private
+    # @api private
     #
     # @return [Hash{String=>String}]
-    #
     private def auth_headers
       return {} if @api_key.nil?
 
@@ -93,7 +92,6 @@ module OpenAI
     # @param initial_retry_delay [Float]
     #
     # @param max_retry_delay [Float]
-    #
     def initialize(
       base_url: nil,
       api_key: ENV["OPENAI_API_KEY"],

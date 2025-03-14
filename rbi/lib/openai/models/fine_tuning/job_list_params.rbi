@@ -7,6 +7,7 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # Identifier for the last job from the previous pagination request.
         sig { returns(T.nilable(String)) }
         def after
         end
@@ -15,6 +16,7 @@ module OpenAI
         def after=(_)
         end
 
+        # Number of fine-tuning jobs to retrieve.
         sig { returns(T.nilable(Integer)) }
         def limit
         end
@@ -23,6 +25,8 @@ module OpenAI
         def limit=(_)
         end
 
+        # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
+        #   Alternatively, set `metadata=null` to indicate no metadata.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end

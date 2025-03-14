@@ -3,7 +3,6 @@
 module OpenAI
   module Models
     # @abstract
-    #
     class ModerationModel < OpenAI::Enum
       OMNI_MODERATION_LATEST = :"omni-moderation-latest"
       OMNI_MODERATION_2024_09_26 = :"omni-moderation-2024-09-26"

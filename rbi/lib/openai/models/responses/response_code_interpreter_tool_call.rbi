@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterToolCall < OpenAI::BaseModel
+        # The unique ID of the code interpreter tool call.
         sig { returns(String) }
         def id
         end
@@ -12,6 +13,7 @@ module OpenAI
         def id=(_)
         end
 
+        # The code to run.
         sig { returns(String) }
         def code
         end
@@ -20,6 +22,7 @@ module OpenAI
         def code=(_)
         end
 
+        # The results of the code interpreter tool call.
         sig do
           returns(
             T::Array[
@@ -54,6 +57,7 @@ module OpenAI
         def results=(_)
         end
 
+        # The status of the code interpreter tool call.
         sig { returns(Symbol) }
         def status
         end
@@ -62,6 +66,7 @@ module OpenAI
         def status=(_)
         end
 
+        # The type of the code interpreter tool call. Always `code_interpreter_call`.
         sig { returns(Symbol) }
         def type
         end
@@ -70,6 +75,7 @@ module OpenAI
         def type=(_)
         end
 
+        # A tool call to run code.
         sig do
           params(
             id: String,
@@ -108,10 +114,12 @@ module OpenAI
         def to_hash
         end
 
+        # The output of a code interpreter tool call that is text.
         class Result < OpenAI::Union
           abstract!
 
           class Logs < OpenAI::BaseModel
+            # The logs of the code interpreter tool call.
             sig { returns(String) }
             def logs
             end
@@ -120,6 +128,7 @@ module OpenAI
             def logs=(_)
             end
 
+            # The type of the code interpreter text output. Always `logs`.
             sig { returns(Symbol) }
             def type
             end
@@ -128,6 +137,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The output of a code interpreter tool call that is text.
             sig { params(logs: String, type: Symbol).returns(T.attached_class) }
             def self.new(logs:, type: :logs)
             end
@@ -149,6 +159,7 @@ module OpenAI
             def files=(_)
             end
 
+            # The type of the code interpreter file output. Always `files`.
             sig { returns(Symbol) }
             def type
             end
@@ -157,6 +168,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The output of a code interpreter tool call that is a file.
             sig do
               params(
                 files: T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
@@ -180,6 +192,7 @@ module OpenAI
             end
 
             class File < OpenAI::BaseModel
+              # The ID of the file.
               sig { returns(String) }
               def file_id
               end
@@ -188,6 +201,7 @@ module OpenAI
               def file_id=(_)
               end
 
+              # The MIME type of the file.
               sig { returns(String) }
               def mime_type
               end
@@ -207,6 +221,7 @@ module OpenAI
           end
 
           class << self
+            # @api private
             sig do
               override
                 .returns(
@@ -218,6 +233,7 @@ module OpenAI
           end
         end
 
+        # The status of the code interpreter tool call.
         class Status < OpenAI::Enum
           abstract!
 

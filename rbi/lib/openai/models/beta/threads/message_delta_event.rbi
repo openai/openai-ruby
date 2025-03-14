@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class MessageDeltaEvent < OpenAI::BaseModel
+          # The identifier of the message, which can be referenced in API endpoints.
           sig { returns(String) }
           def id
           end
@@ -13,6 +14,7 @@ module OpenAI
           def id=(_)
           end
 
+          # The delta containing the fields that have changed on the Message.
           sig { returns(OpenAI::Models::Beta::Threads::MessageDelta) }
           def delta
           end
@@ -23,6 +25,7 @@ module OpenAI
           def delta=(_)
           end
 
+          # The object type, which is always `thread.message.delta`.
           sig { returns(Symbol) }
           def object
           end
@@ -31,6 +34,8 @@ module OpenAI
           def object=(_)
           end
 
+          # Represents a message delta i.e. any changed fields on a message during
+          #   streaming.
           sig do
             params(id: String, delta: OpenAI::Models::Beta::Threads::MessageDelta, object: Symbol)
               .returns(T.attached_class)

@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class FileCitationDeltaAnnotation < OpenAI::BaseModel
+          # The index of the annotation in the text content part.
           sig { returns(Integer) }
           def index
           end
@@ -13,6 +14,7 @@ module OpenAI
           def index=(_)
           end
 
+          # Always `file_citation`.
           sig { returns(Symbol) }
           def type
           end
@@ -48,6 +50,7 @@ module OpenAI
           def start_index=(_)
           end
 
+          # The text in the message content that needs to be replaced.
           sig { returns(T.nilable(String)) }
           def text
           end
@@ -56,6 +59,9 @@ module OpenAI
           def text=(_)
           end
 
+          # A citation within the message that points to a specific quote from a specific
+          #   File associated with the assistant or the message. Generated when the assistant
+          #   uses the "file_search" tool to search files.
           sig do
             params(
               index: Integer,
@@ -87,6 +93,7 @@ module OpenAI
           end
 
           class FileCitation < OpenAI::BaseModel
+            # The ID of the specific File the citation is from.
             sig { returns(T.nilable(String)) }
             def file_id
             end
@@ -95,6 +102,7 @@ module OpenAI
             def file_id=(_)
             end
 
+            # The specific quote in the file.
             sig { returns(T.nilable(String)) }
             def quote
             end

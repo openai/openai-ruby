@@ -3,10 +3,14 @@
 module OpenAI
   module Models
     module Beta
+      # Occurs when a new
+      #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
       class RunStreamEvent < OpenAI::Union
         abstract!
 
         class ThreadRunCreated < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -23,6 +27,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a new
+          #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.created")
           end
@@ -33,6 +39,8 @@ module OpenAI
         end
 
         class ThreadRunQueued < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -49,6 +57,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   moves to a `queued` status.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.queued")
           end
@@ -59,6 +69,8 @@ module OpenAI
         end
 
         class ThreadRunInProgress < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -75,6 +87,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   moves to an `in_progress` status.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.in_progress")
           end
@@ -85,6 +99,8 @@ module OpenAI
         end
 
         class ThreadRunRequiresAction < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -101,6 +117,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   moves to a `requires_action` status.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.requires_action")
           end
@@ -111,6 +129,8 @@ module OpenAI
         end
 
         class ThreadRunCompleted < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -127,6 +147,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   is completed.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.completed")
           end
@@ -137,6 +159,8 @@ module OpenAI
         end
 
         class ThreadRunIncomplete < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -153,6 +177,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   ends with status `incomplete`.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.incomplete")
           end
@@ -163,6 +189,8 @@ module OpenAI
         end
 
         class ThreadRunFailed < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -179,6 +207,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   fails.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.failed")
           end
@@ -189,6 +219,8 @@ module OpenAI
         end
 
         class ThreadRunCancelling < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -205,6 +237,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   moves to a `cancelling` status.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.cancelling")
           end
@@ -215,6 +249,8 @@ module OpenAI
         end
 
         class ThreadRunCancelled < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -231,6 +267,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   is cancelled.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.cancelled")
           end
@@ -241,6 +279,8 @@ module OpenAI
         end
 
         class ThreadRunExpired < OpenAI::BaseModel
+          # Represents an execution run on a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           def data
           end
@@ -257,6 +297,8 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
+          #   expires.
           sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.expired")
           end
@@ -267,6 +309,7 @@ module OpenAI
         end
 
         class << self
+          # @api private
           sig do
             override
               .returns(

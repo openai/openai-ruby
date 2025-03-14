@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseFileSearchCallInProgressEvent < OpenAI::BaseModel
+        # The ID of the output item that the file search call is initiated.
         sig { returns(String) }
         def item_id
         end
@@ -12,6 +13,7 @@ module OpenAI
         def item_id=(_)
         end
 
+        # The index of the output item that the file search call is initiated.
         sig { returns(Integer) }
         def output_index
         end
@@ -20,6 +22,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The type of the event. Always `response.file_search_call.in_progress`.
         sig { returns(Symbol) }
         def type
         end
@@ -28,6 +31,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when a file search call is initiated.
         sig { params(item_id: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
         def self.new(item_id:, output_index:, type: :"response.file_search_call.in_progress")
         end

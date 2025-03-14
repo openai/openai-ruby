@@ -3,7 +3,6 @@
 module OpenAI
   module Models
     # @abstract
-    #
     class AudioModel < OpenAI::Enum
       WHISPER_1 = :"whisper-1"
 

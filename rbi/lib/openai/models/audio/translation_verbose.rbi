@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Audio
       class TranslationVerbose < OpenAI::BaseModel
+        # The duration of the input audio.
         sig { returns(Float) }
         def duration
         end
@@ -12,6 +13,7 @@ module OpenAI
         def duration=(_)
         end
 
+        # The language of the output translation (always `english`).
         sig { returns(String) }
         def language
         end
@@ -20,6 +22,7 @@ module OpenAI
         def language=(_)
         end
 
+        # The translated text.
         sig { returns(String) }
         def text
         end
@@ -28,6 +31,7 @@ module OpenAI
         def text=(_)
         end
 
+        # Segments of the translated text and their corresponding details.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionSegment])) }
         def segments
         end

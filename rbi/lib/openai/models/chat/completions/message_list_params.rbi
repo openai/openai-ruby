@@ -8,6 +8,7 @@ module OpenAI
           extend OpenAI::RequestParameters::Converter
           include OpenAI::RequestParameters
 
+          # Identifier for the last message from the previous pagination request.
           sig { returns(T.nilable(String)) }
           def after
           end
@@ -16,6 +17,7 @@ module OpenAI
           def after=(_)
           end
 
+          # Number of messages to retrieve.
           sig { returns(T.nilable(Integer)) }
           def limit
           end
@@ -24,6 +26,8 @@ module OpenAI
           def limit=(_)
           end
 
+          # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
+          #   for descending order. Defaults to `asc`.
           sig { returns(T.nilable(Symbol)) }
           def order
           end
@@ -57,6 +61,8 @@ module OpenAI
           def to_hash
           end
 
+          # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
+          #   for descending order. Defaults to `asc`.
           class Order < OpenAI::Enum
             abstract!
 

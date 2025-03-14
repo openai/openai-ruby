@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     class Upload < OpenAI::BaseModel
+      # The Upload unique identifier, which can be referenced in API endpoints.
       sig { returns(String) }
       def id
       end
@@ -11,6 +12,7 @@ module OpenAI
       def id=(_)
       end
 
+      # The intended number of bytes to be uploaded.
       sig { returns(Integer) }
       def bytes
       end
@@ -19,6 +21,7 @@ module OpenAI
       def bytes=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the Upload was created.
       sig { returns(Integer) }
       def created_at
       end
@@ -27,6 +30,7 @@ module OpenAI
       def created_at=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the Upload will expire.
       sig { returns(Integer) }
       def expires_at
       end
@@ -35,6 +39,7 @@ module OpenAI
       def expires_at=(_)
       end
 
+      # The name of the file to be uploaded.
       sig { returns(String) }
       def filename
       end
@@ -43,6 +48,7 @@ module OpenAI
       def filename=(_)
       end
 
+      # The object type, which is always "upload".
       sig { returns(Symbol) }
       def object
       end
@@ -51,6 +57,9 @@ module OpenAI
       def object=(_)
       end
 
+      # The intended purpose of the file.
+      #   [Please refer here](https://platform.openai.com/docs/api-reference/files/object#files/object-purpose)
+      #   for acceptable values.
       sig { returns(String) }
       def purpose
       end
@@ -59,6 +68,7 @@ module OpenAI
       def purpose=(_)
       end
 
+      # The status of the Upload.
       sig { returns(Symbol) }
       def status
       end
@@ -67,6 +77,7 @@ module OpenAI
       def status=(_)
       end
 
+      # The `File` object represents a document that has been uploaded to OpenAI.
       sig { returns(T.nilable(OpenAI::Models::FileObject)) }
       def file
       end
@@ -75,6 +86,7 @@ module OpenAI
       def file=(_)
       end
 
+      # The Upload object can accept byte chunks in the form of Parts.
       sig do
         params(
           id: String,
@@ -111,6 +123,7 @@ module OpenAI
       def to_hash
       end
 
+      # The status of the Upload.
       class Status < OpenAI::Enum
         abstract!
 

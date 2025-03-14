@@ -6,6 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class ToolCallDeltaObject < OpenAI::BaseModel
+            # Always `tool_calls`.
             sig { returns(Symbol) }
             def type
             end
@@ -14,6 +15,9 @@ module OpenAI
             def type=(_)
             end
 
+            # An array of tool calls the run step was involved in. These can be associated
+            #   with one of three types of tools: `code_interpreter`, `file_search`, or
+            #   `function`.
             sig do
               returns(
                 T.nilable(
@@ -53,6 +57,7 @@ module OpenAI
             def tool_calls=(_)
             end
 
+            # Details of the tool call.
             sig do
               params(
                 tool_calls: T::Array[

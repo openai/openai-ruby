@@ -5,6 +5,7 @@ module OpenAI
     class FineTuning
       class Jobs
         class Checkpoints
+          # List checkpoints for a fine-tuning job.
           sig do
             params(
               fine_tuning_job_id: String,

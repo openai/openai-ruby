@@ -6,6 +6,7 @@ module OpenAI
 
     module Uploads
       class UploadPart < OpenAI::BaseModel
+        # The upload Part unique identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         def id
         end
@@ -14,6 +15,7 @@ module OpenAI
         def id=(_)
         end
 
+        # The Unix timestamp (in seconds) for when the Part was created.
         sig { returns(Integer) }
         def created_at
         end
@@ -22,6 +24,7 @@ module OpenAI
         def created_at=(_)
         end
 
+        # The object type, which is always `upload.part`.
         sig { returns(Symbol) }
         def object
         end
@@ -30,6 +33,7 @@ module OpenAI
         def object=(_)
         end
 
+        # The ID of the Upload object that this Part was added to.
         sig { returns(String) }
         def upload_id
         end
@@ -38,6 +42,7 @@ module OpenAI
         def upload_id=(_)
         end
 
+        # The upload Part represents a chunk of bytes we can add to an Upload object.
         sig do
           params(id: String, created_at: Integer, upload_id: String, object: Symbol).returns(T.attached_class)
         end

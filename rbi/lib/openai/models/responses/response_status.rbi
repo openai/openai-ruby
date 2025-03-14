@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     module Responses
+      # The status of the response generation. One of `completed`, `failed`,
+      #   `in_progress`, or `incomplete`.
       class ResponseStatus < OpenAI::Enum
         abstract!
 

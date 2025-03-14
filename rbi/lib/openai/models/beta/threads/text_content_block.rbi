@@ -13,6 +13,7 @@ module OpenAI
           def text=(_)
           end
 
+          # Always `text`.
           sig { returns(Symbol) }
           def type
           end
@@ -21,6 +22,7 @@ module OpenAI
           def type=(_)
           end
 
+          # The text content that is part of a message.
           sig { params(text: OpenAI::Models::Beta::Threads::Text, type: Symbol).returns(T.attached_class) }
           def self.new(text:, type: :text)
           end

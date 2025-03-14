@@ -22,7 +22,6 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::CursorPage<OpenAI::Models::Chat::ChatCompletionStoreMessage>]
-          #
           def list(completion_id, params = {})
             parsed, options = OpenAI::Models::Chat::Completions::MessageListParams.dump_request(params)
             @client.request(
@@ -36,7 +35,6 @@ module OpenAI
           end
 
           # @param client [OpenAI::Client]
-          #
           def initialize(client:)
             @client = client
           end

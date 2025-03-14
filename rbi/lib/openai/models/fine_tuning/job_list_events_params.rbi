@@ -7,6 +7,7 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # Identifier for the last event from the previous pagination request.
         sig { returns(T.nilable(String)) }
         def after
         end
@@ -15,6 +16,7 @@ module OpenAI
         def after=(_)
         end
 
+        # Number of events to retrieve.
         sig { returns(T.nilable(Integer)) }
         def limit
         end

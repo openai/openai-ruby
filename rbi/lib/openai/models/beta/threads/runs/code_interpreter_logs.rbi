@@ -6,6 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class CodeInterpreterLogs < OpenAI::BaseModel
+            # The index of the output in the outputs array.
             sig { returns(Integer) }
             def index
             end
@@ -14,6 +15,7 @@ module OpenAI
             def index=(_)
             end
 
+            # Always `logs`.
             sig { returns(Symbol) }
             def type
             end
@@ -22,6 +24,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The text output from the Code Interpreter tool call.
             sig { returns(T.nilable(String)) }
             def logs
             end
@@ -30,6 +33,7 @@ module OpenAI
             def logs=(_)
             end
 
+            # Text output from the Code Interpreter tool call as part of a run step.
             sig { params(index: Integer, logs: String, type: Symbol).returns(T.attached_class) }
             def self.new(index:, logs: nil, type: :logs)
             end

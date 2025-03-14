@@ -30,13 +30,12 @@ module OpenAI
     # @return [Boolean]
     attr_accessor :has_more
 
-    # @private
+    # @api private
     #
     # @param client [OpenAI::BaseClient]
     # @param req [Hash{Symbol=>Object}]
     # @param headers [Hash{String=>String}, Net::HTTPHeader]
     # @param page_data [Hash{Symbol=>Object}]
-    #
     def initialize(client:, req:, headers:, page_data:)
       super
       model = req.fetch(:model)
@@ -61,7 +60,6 @@ module OpenAI
 
     # @raise [OpenAI::HTTP::Error]
     # @return [OpenAI::CursorPage]
-    #
     def next_page
       unless next_page?
         raise RuntimeError.new("No more pages available. Please check #next_page? before calling ##{__method__}")
@@ -72,7 +70,6 @@ module OpenAI
     end
 
     # @param blk [Proc]
-    #
     def auto_paging_each(&blk)
       unless block_given?
         raise ArgumentError.new("A block must be given to ##{__method__}")
@@ -86,7 +83,6 @@ module OpenAI
     end
 
     # @return [String]
-    #
     def inspect
       "#<#{self.class}:0x#{object_id.to_s(16)} data=#{data.inspect} has_more=#{has_more.inspect}>"
     end

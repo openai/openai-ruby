@@ -29,7 +29,7 @@ module OpenAI
     # @return [String, nil]
     attr_reader :type
 
-    # @private
+    # @api private
     #
     # @param url [URI::Generic]
     # @param status [Integer, nil]
@@ -37,7 +37,6 @@ module OpenAI
     # @param request [nil]
     # @param response [nil]
     # @param message [String, nil]
-    #
     def initialize(url:, status: nil, body: nil, request: nil, response: nil, message: nil)
       @url = url
       @status = status
@@ -69,7 +68,7 @@ module OpenAI
     #   # @return [nil]
     #   attr_reader :type
 
-    # @private
+    # @api private
     #
     # @param url [URI::Generic]
     # @param status [nil]
@@ -77,7 +76,6 @@ module OpenAI
     # @param request [nil]
     # @param response [nil]
     # @param message [String, nil]
-    #
     def initialize(
       url:,
       status: nil,
@@ -91,7 +89,7 @@ module OpenAI
   end
 
   class APITimeoutError < OpenAI::APIConnectionError
-    # @private
+    # @api private
     #
     # @param url [URI::Generic]
     # @param status [nil]
@@ -99,7 +97,6 @@ module OpenAI
     # @param request [nil]
     # @param response [nil]
     # @param message [String, nil]
-    #
     def initialize(
       url:,
       status: nil,
@@ -113,7 +110,7 @@ module OpenAI
   end
 
   class APIStatusError < OpenAI::APIError
-    # @private
+    # @api private
     #
     # @param url [URI::Generic]
     # @param status [Integer]
@@ -123,7 +120,6 @@ module OpenAI
     # @param message [String, nil]
     #
     # @return [OpenAI::APIStatusError]
-    #
     def self.for(url:, status:, body:, request:, response:, message: nil)
       kwargs = {url: url, status: status, body: body, request: request, response: response, message: message}
 
@@ -165,7 +161,7 @@ module OpenAI
     #   # @return [String, nil]
     #   attr_reader :type
 
-    # @private
+    # @api private
     #
     # @param url [URI::Generic]
     # @param status [Integer]
@@ -173,7 +169,6 @@ module OpenAI
     # @param request [nil]
     # @param response [nil]
     # @param message [String, nil]
-    #
     def initialize(url:, status:, body:, request:, response:, message: nil)
       message ||= OpenAI::Util.dig(body, :message) { {url: url.to_s, status: status, body: body} }
       @code = OpenAI::Converter.coerce(String, OpenAI::Util.dig(body, :code))

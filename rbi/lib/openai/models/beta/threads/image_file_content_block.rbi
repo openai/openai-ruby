@@ -13,6 +13,7 @@ module OpenAI
           def image_file=(_)
           end
 
+          # Always `image_file`.
           sig { returns(Symbol) }
           def type
           end
@@ -21,6 +22,8 @@ module OpenAI
           def type=(_)
           end
 
+          # References an image [File](https://platform.openai.com/docs/api-reference/files)
+          #   in the content of a message.
           sig { params(image_file: OpenAI::Models::Beta::Threads::ImageFile, type: Symbol).returns(T.attached_class) }
           def self.new(image_file:, type: :image_file)
           end

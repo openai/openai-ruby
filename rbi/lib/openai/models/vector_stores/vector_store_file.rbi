@@ -6,6 +6,7 @@ module OpenAI
 
     module VectorStores
       class VectorStoreFile < OpenAI::BaseModel
+        # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         def id
         end
@@ -14,6 +15,7 @@ module OpenAI
         def id=(_)
         end
 
+        # The Unix timestamp (in seconds) for when the vector store file was created.
         sig { returns(Integer) }
         def created_at
         end
@@ -22,6 +24,8 @@ module OpenAI
         def created_at=(_)
         end
 
+        # The last error associated with this vector store file. Will be `null` if there
+        #   are no errors.
         sig { returns(T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError)) }
         def last_error
         end
@@ -33,6 +37,7 @@ module OpenAI
         def last_error=(_)
         end
 
+        # The object type, which is always `vector_store.file`.
         sig { returns(Symbol) }
         def object
         end
@@ -41,6 +46,9 @@ module OpenAI
         def object=(_)
         end
 
+        # The status of the vector store file, which can be either `in_progress`,
+        #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        #   vector store file is ready for use.
         sig { returns(Symbol) }
         def status
         end
@@ -49,6 +57,8 @@ module OpenAI
         def status=(_)
         end
 
+        # The total vector store usage in bytes. Note that this may be different from the
+        #   original file size.
         sig { returns(Integer) }
         def usage_bytes
         end
@@ -57,6 +67,10 @@ module OpenAI
         def usage_bytes=(_)
         end
 
+        # The ID of the
+        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
+        #   attached to.
         sig { returns(String) }
         def vector_store_id
         end
@@ -65,6 +79,11 @@ module OpenAI
         def vector_store_id=(_)
         end
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard. Keys are strings with a maximum
+        #   length of 64 characters. Values are strings with a maximum length of 512
+        #   characters, booleans, or numbers.
         sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
         def attributes
         end
@@ -76,6 +95,7 @@ module OpenAI
         def attributes=(_)
         end
 
+        # The strategy used to chunk the file.
         sig do
           returns(
             T.nilable(
@@ -97,6 +117,7 @@ module OpenAI
         def chunking_strategy=(_)
         end
 
+        # A list of files attached to a vector store.
         sig do
           params(
             id: String,
@@ -144,6 +165,7 @@ module OpenAI
         end
 
         class LastError < OpenAI::BaseModel
+          # One of `server_error` or `rate_limit_exceeded`.
           sig { returns(Symbol) }
           def code
           end
@@ -152,6 +174,7 @@ module OpenAI
           def code=(_)
           end
 
+          # A human-readable description of the error.
           sig { returns(String) }
           def message
           end
@@ -160,6 +183,8 @@ module OpenAI
           def message=(_)
           end
 
+          # The last error associated with this vector store file. Will be `null` if there
+          #   are no errors.
           sig { params(code: Symbol, message: String).returns(T.attached_class) }
           def self.new(code:, message:)
           end
@@ -168,6 +193,7 @@ module OpenAI
           def to_hash
           end
 
+          # One of `server_error` or `rate_limit_exceeded`.
           class Code < OpenAI::Enum
             abstract!
 
@@ -183,6 +209,9 @@ module OpenAI
           end
         end
 
+        # The status of the vector store file, which can be either `in_progress`,
+        #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        #   vector store file is ready for use.
         class Status < OpenAI::Enum
           abstract!
 
@@ -202,6 +231,7 @@ module OpenAI
           abstract!
 
           class << self
+            # @api private
             sig { override.returns([[NilClass, String], [NilClass, Float], [NilClass, T::Boolean]]) }
             private def variants
             end

@@ -50,7 +50,6 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # @abstract
-        #
         class Attribute < OpenAI::Union
           variant String
 

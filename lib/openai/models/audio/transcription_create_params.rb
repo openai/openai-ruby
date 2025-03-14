@@ -125,7 +125,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class TimestampGranularity < OpenAI::Enum
           WORD = :word
           SEGMENT = :segment

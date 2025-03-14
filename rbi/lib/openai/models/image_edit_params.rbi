@@ -6,6 +6,8 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask
+      #   is not provided, image must have transparency, which will be used as the mask.
       sig { returns(T.any(IO, StringIO)) }
       def image
       end
@@ -14,6 +16,8 @@ module OpenAI
       def image=(_)
       end
 
+      # A text description of the desired image(s). The maximum length is 1000
+      #   characters.
       sig { returns(String) }
       def prompt
       end
@@ -22,6 +26,9 @@ module OpenAI
       def prompt=(_)
       end
 
+      # An additional image whose fully transparent areas (e.g. where alpha is zero)
+      #   indicate where `image` should be edited. Must be a valid PNG file, less than
+      #   4MB, and have the same dimensions as `image`.
       sig { returns(T.nilable(T.any(IO, StringIO))) }
       def mask
       end
@@ -30,6 +37,8 @@ module OpenAI
       def mask=(_)
       end
 
+      # The model to use for image generation. Only `dall-e-2` is supported at this
+      #   time.
       sig { returns(T.nilable(T.any(String, Symbol))) }
       def model
       end
@@ -38,6 +47,7 @@ module OpenAI
       def model=(_)
       end
 
+      # The number of images to generate. Must be between 1 and 10.
       sig { returns(T.nilable(Integer)) }
       def n
       end
@@ -46,6 +56,9 @@ module OpenAI
       def n=(_)
       end
 
+      # The format in which the generated images are returned. Must be one of `url` or
+      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
+      #   generated.
       sig { returns(T.nilable(Symbol)) }
       def response_format
       end
@@ -54,6 +67,8 @@ module OpenAI
       def response_format=(_)
       end
 
+      # The size of the generated images. Must be one of `256x256`, `512x512`, or
+      #   `1024x1024`.
       sig { returns(T.nilable(Symbol)) }
       def size
       end
@@ -62,6 +77,9 @@ module OpenAI
       def size=(_)
       end
 
+      # A unique identifier representing your end-user, which can help OpenAI to monitor
+      #   and detect abuse.
+      #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       sig { returns(T.nilable(String)) }
       def user
       end
@@ -116,16 +134,22 @@ module OpenAI
       def to_hash
       end
 
+      # The model to use for image generation. Only `dall-e-2` is supported at this
+      #   time.
       class Model < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
           private def variants
           end
         end
       end
 
+      # The format in which the generated images are returned. Must be one of `url` or
+      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
+      #   generated.
       class ResponseFormat < OpenAI::Enum
         abstract!
 
@@ -139,6 +163,8 @@ module OpenAI
         end
       end
 
+      # The size of the generated images. Must be one of `256x256`, `512x512`, or
+      #   `1024x1024`.
       class Size < OpenAI::Enum
         abstract!
 

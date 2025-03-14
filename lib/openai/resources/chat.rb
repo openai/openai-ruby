@@ -7,7 +7,6 @@ module OpenAI
       attr_reader :completions
 
       # @param client [OpenAI::Client]
-      #
       def initialize(client:)
         @client = client
         @completions = OpenAI::Resources::Chat::Completions.new(client: client)

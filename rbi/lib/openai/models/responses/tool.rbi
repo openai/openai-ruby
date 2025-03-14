@@ -3,10 +3,14 @@
 module OpenAI
   module Models
     module Responses
+      # A tool that searches for relevant content from uploaded files. Learn more about
+      #   the
+      #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
       class Tool < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

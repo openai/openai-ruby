@@ -6,6 +6,8 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # Input (or inputs) to classify. Can be a single string, an array of strings, or
+      #   an array of multi-modal input objects similar to other models.
       sig do
         returns(
           T.any(
@@ -37,6 +39,10 @@ module OpenAI
       def input=(_)
       end
 
+      # The content moderation model you would like to use. Learn more in
+      #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
+      #   learn about available models
+      #   [here](https://platform.openai.com/docs/models#moderation).
       sig { returns(T.nilable(T.any(String, Symbol))) }
       def model
       end
@@ -77,6 +83,8 @@ module OpenAI
       def to_hash
       end
 
+      # Input (or inputs) to classify. Can be a single string, an array of strings, or
+      #   an array of multi-modal input objects similar to other models.
       class Input < OpenAI::Union
         abstract!
 
@@ -85,6 +93,7 @@ module OpenAI
         ModerationMultiModalInputArray = T.type_alias { T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)] }
 
         class << self
+          # @api private
           sig do
             override
               .returns(
@@ -96,10 +105,15 @@ module OpenAI
         end
       end
 
+      # The content moderation model you would like to use. Learn more in
+      #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
+      #   learn about available models
+      #   [here](https://platform.openai.com/docs/models#moderation).
       class Model < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
           private def variants
           end

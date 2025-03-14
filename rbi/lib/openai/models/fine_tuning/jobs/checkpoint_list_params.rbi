@@ -8,6 +8,7 @@ module OpenAI
           extend OpenAI::RequestParameters::Converter
           include OpenAI::RequestParameters
 
+          # Identifier for the last checkpoint ID from the previous pagination request.
           sig { returns(T.nilable(String)) }
           def after
           end
@@ -16,6 +17,7 @@ module OpenAI
           def after=(_)
           end
 
+          # Number of checkpoints to retrieve.
           sig { returns(T.nilable(Integer)) }
           def limit
           end

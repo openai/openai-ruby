@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionWord < OpenAI::BaseModel
+        # End time of the word in seconds.
         sig { returns(Float) }
         def end_
         end
@@ -12,6 +13,7 @@ module OpenAI
         def end_=(_)
         end
 
+        # Start time of the word in seconds.
         sig { returns(Float) }
         def start
         end
@@ -20,6 +22,7 @@ module OpenAI
         def start=(_)
         end
 
+        # The text content of the word.
         sig { returns(String) }
         def word
         end

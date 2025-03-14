@@ -35,6 +35,7 @@ module OpenAI
     def type
     end
 
+    # @api private
     sig do
       params(
         url: URI::Generic,
@@ -71,6 +72,7 @@ module OpenAI
     def type
     end
 
+    # @api private
     sig do
       params(
         url: URI::Generic,
@@ -87,6 +89,7 @@ module OpenAI
   end
 
   class APITimeoutError < OpenAI::APIConnectionError
+    # @api private
     sig do
       params(
         url: URI::Generic,
@@ -103,6 +106,7 @@ module OpenAI
   end
 
   class APIStatusError < OpenAI::APIError
+    # @api private
     sig do
       params(
         url: URI::Generic,
@@ -133,6 +137,7 @@ module OpenAI
     def type
     end
 
+    # @api private
     sig do
       params(
         url: URI::Generic,

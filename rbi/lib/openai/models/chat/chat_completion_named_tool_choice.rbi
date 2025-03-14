@@ -17,6 +17,7 @@ module OpenAI
         def function=(_)
         end
 
+        # The type of the tool. Currently, only `function` is supported.
         sig { returns(Symbol) }
         def type
         end
@@ -25,6 +26,8 @@ module OpenAI
         def type=(_)
         end
 
+        # Specifies a tool the model should use. Use to force the model to call a specific
+        #   function.
         sig do
           params(function: OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, type: Symbol)
             .returns(T.attached_class)
@@ -37,6 +40,7 @@ module OpenAI
         end
 
         class Function < OpenAI::BaseModel
+          # The name of the function to call.
           sig { returns(String) }
           def name
           end

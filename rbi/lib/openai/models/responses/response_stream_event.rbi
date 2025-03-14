@@ -3,10 +3,12 @@
 module OpenAI
   module Models
     module Responses
+      # Emitted when there is a partial audio response.
       class ResponseStreamEvent < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

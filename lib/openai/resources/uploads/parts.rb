@@ -25,7 +25,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Uploads::UploadPart]
-        #
         def create(upload_id, params)
           parsed, options = OpenAI::Models::Uploads::PartCreateParams.dump_request(params)
           @client.request(
@@ -39,7 +38,6 @@ module OpenAI
         end
 
         # @param client [OpenAI::Client]
-        #
         def initialize(client:)
           @client = client
         end

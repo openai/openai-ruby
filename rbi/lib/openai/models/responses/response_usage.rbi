@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseUsage < OpenAI::BaseModel
+        # The number of input tokens.
         sig { returns(Integer) }
         def input_tokens
         end
@@ -12,6 +13,7 @@ module OpenAI
         def input_tokens=(_)
         end
 
+        # The number of output tokens.
         sig { returns(Integer) }
         def output_tokens
         end
@@ -20,6 +22,7 @@ module OpenAI
         def output_tokens=(_)
         end
 
+        # A detailed breakdown of the output tokens.
         sig { returns(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails) }
         def output_tokens_details
         end
@@ -31,6 +34,7 @@ module OpenAI
         def output_tokens_details=(_)
         end
 
+        # The total number of tokens used.
         sig { returns(Integer) }
         def total_tokens
         end
@@ -39,6 +43,8 @@ module OpenAI
         def total_tokens=(_)
         end
 
+        # Represents token usage details including input tokens, output tokens, a
+        #   breakdown of output tokens, and the total tokens used.
         sig do
           params(
             input_tokens: Integer,
@@ -66,6 +72,7 @@ module OpenAI
         end
 
         class OutputTokensDetails < OpenAI::BaseModel
+          # The number of reasoning tokens.
           sig { returns(Integer) }
           def reasoning_tokens
           end
@@ -74,6 +81,7 @@ module OpenAI
           def reasoning_tokens=(_)
           end
 
+          # A detailed breakdown of the output tokens.
           sig { params(reasoning_tokens: Integer).returns(T.attached_class) }
           def self.new(reasoning_tokens:)
           end

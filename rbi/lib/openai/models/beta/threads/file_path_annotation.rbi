@@ -32,6 +32,7 @@ module OpenAI
           def start_index=(_)
           end
 
+          # The text in the message content that needs to be replaced.
           sig { returns(String) }
           def text
           end
@@ -40,6 +41,7 @@ module OpenAI
           def text=(_)
           end
 
+          # Always `file_path`.
           sig { returns(Symbol) }
           def type
           end
@@ -48,6 +50,8 @@ module OpenAI
           def type=(_)
           end
 
+          # A URL for the file that's generated when the assistant used the
+          #   `code_interpreter` tool to generate a file.
           sig do
             params(
               end_index: Integer,
@@ -77,6 +81,7 @@ module OpenAI
           end
 
           class FilePath < OpenAI::BaseModel
+            # The ID of the file that was generated.
             sig { returns(String) }
             def file_id
             end

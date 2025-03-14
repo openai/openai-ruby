@@ -3,6 +3,8 @@
 module OpenAI
   module Resources
     class Models
+      # Retrieves a model instance, providing basic information about the model such as
+      #   the owner and permissioning.
       sig do
         params(
           model: String,
@@ -13,6 +15,8 @@ module OpenAI
       def retrieve(model, request_options: {})
       end
 
+      # Lists the currently available models, and provides basic information about each
+      #   one such as the owner and availability.
       sig do
         params(request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])))
           .returns(OpenAI::Page[OpenAI::Models::Model])
@@ -20,6 +24,8 @@ module OpenAI
       def list(request_options: {})
       end
 
+      # Delete a fine-tuned model. You must have the Owner role in your organization to
+      #   delete a model.
       sig do
         params(
           model: String,

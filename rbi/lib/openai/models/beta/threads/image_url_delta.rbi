@@ -5,6 +5,8 @@ module OpenAI
     module Beta
       module Threads
         class ImageURLDelta < OpenAI::BaseModel
+          # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          #   to high resolution using `high`.
           sig { returns(T.nilable(Symbol)) }
           def detail
           end
@@ -13,6 +15,8 @@ module OpenAI
           def detail=(_)
           end
 
+          # The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
+          #   webp.
           sig { returns(T.nilable(String)) }
           def url
           end
@@ -29,6 +33,8 @@ module OpenAI
           def to_hash
           end
 
+          # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          #   to high resolution using `high`.
           class Detail < OpenAI::Enum
             abstract!
 

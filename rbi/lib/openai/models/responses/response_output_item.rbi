@@ -3,10 +3,12 @@
 module OpenAI
   module Models
     module Responses
+      # An output message from the model.
       class ResponseOutputItem < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

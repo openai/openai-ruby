@@ -6,6 +6,7 @@ module OpenAI
 
     module FineTuning
       class FineTuningJobWandbIntegrationObject < OpenAI::BaseModel
+        # The type of the integration being enabled for the fine-tuning job
         sig { returns(Symbol) }
         def type
         end
@@ -14,6 +15,10 @@ module OpenAI
         def type=(_)
         end
 
+        # The settings for your integration with Weights and Biases. This payload
+        #   specifies the project that metrics will be sent to. Optionally, you can set an
+        #   explicit display name for your run, add tags to your run, and set a default
+        #   entity (team, username, etc) to be associated with your run.
         sig { returns(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration) }
         def wandb
         end

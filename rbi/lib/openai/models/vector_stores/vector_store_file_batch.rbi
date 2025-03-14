@@ -6,6 +6,7 @@ module OpenAI
 
     module VectorStores
       class VectorStoreFileBatch < OpenAI::BaseModel
+        # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         def id
         end
@@ -14,6 +15,8 @@ module OpenAI
         def id=(_)
         end
 
+        # The Unix timestamp (in seconds) for when the vector store files batch was
+        #   created.
         sig { returns(Integer) }
         def created_at
         end
@@ -33,6 +36,7 @@ module OpenAI
         def file_counts=(_)
         end
 
+        # The object type, which is always `vector_store.file_batch`.
         sig { returns(Symbol) }
         def object
         end
@@ -41,6 +45,8 @@ module OpenAI
         def object=(_)
         end
 
+        # The status of the vector store files batch, which can be either `in_progress`,
+        #   `completed`, `cancelled` or `failed`.
         sig { returns(Symbol) }
         def status
         end
@@ -49,6 +55,10 @@ module OpenAI
         def status=(_)
         end
 
+        # The ID of the
+        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
+        #   attached to.
         sig { returns(String) }
         def vector_store_id
         end
@@ -57,6 +67,7 @@ module OpenAI
         def vector_store_id=(_)
         end
 
+        # A batch of files attached to a vector store.
         sig do
           params(
             id: String,
@@ -88,6 +99,7 @@ module OpenAI
         end
 
         class FileCounts < OpenAI::BaseModel
+          # The number of files that where cancelled.
           sig { returns(Integer) }
           def cancelled
           end
@@ -96,6 +108,7 @@ module OpenAI
           def cancelled=(_)
           end
 
+          # The number of files that have been processed.
           sig { returns(Integer) }
           def completed
           end
@@ -104,6 +117,7 @@ module OpenAI
           def completed=(_)
           end
 
+          # The number of files that have failed to process.
           sig { returns(Integer) }
           def failed
           end
@@ -112,6 +126,7 @@ module OpenAI
           def failed=(_)
           end
 
+          # The number of files that are currently being processed.
           sig { returns(Integer) }
           def in_progress
           end
@@ -120,6 +135,7 @@ module OpenAI
           def in_progress=(_)
           end
 
+          # The total number of files.
           sig { returns(Integer) }
           def total
           end
@@ -155,6 +171,8 @@ module OpenAI
           end
         end
 
+        # The status of the vector store files batch, which can be either `in_progress`,
+        #   `completed`, `cancelled` or `failed`.
         class Status < OpenAI::Enum
           abstract!
 
