@@ -5,6 +5,8 @@ module OpenAI
     ChatCompletionContentPart = T.type_alias { Chat::ChatCompletionContentPart }
 
     module Chat
+      # Learn about
+      #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
       class ChatCompletionContentPart < OpenAI::Union
         abstract!
 
@@ -20,6 +22,7 @@ module OpenAI
           def file=(_)
           end
 
+          # The type of the content part. Always `file`.
           sig { returns(Symbol) }
           def type
           end
@@ -28,6 +31,8 @@ module OpenAI
           def type=(_)
           end
 
+          # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
+          #   generation.
           sig do
             params(file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File, type: Symbol)
               .returns(T.attached_class)
@@ -40,6 +45,8 @@ module OpenAI
           end
 
           class File < OpenAI::BaseModel
+            # The base64 encoded file data, used when passing the file to the model as a
+            #   string.
             sig { returns(T.nilable(String)) }
             def file_data
             end
@@ -48,6 +55,7 @@ module OpenAI
             def file_data=(_)
             end
 
+            # The ID of an uploaded file to use as input.
             sig { returns(T.nilable(String)) }
             def file_id
             end
@@ -56,6 +64,7 @@ module OpenAI
             def file_id=(_)
             end
 
+            # The name of the file, used when passing the file to the model as a string.
             sig { returns(T.nilable(String)) }
             def file_name
             end
@@ -75,6 +84,7 @@ module OpenAI
         end
 
         class << self
+          # @api private
           sig do
             override
               .returns(

@@ -6,6 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class FileSearchToolCallDelta < OpenAI::BaseModel
+            # For now, this is always going to be an empty object.
             sig { returns(T.anything) }
             def file_search
             end
@@ -14,6 +15,7 @@ module OpenAI
             def file_search=(_)
             end
 
+            # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
             def index
             end
@@ -22,6 +24,8 @@ module OpenAI
             def index=(_)
             end
 
+            # The type of tool call. This is always going to be `file_search` for this type of
+            #   tool call.
             sig { returns(Symbol) }
             def type
             end
@@ -30,6 +34,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The ID of the tool call object.
             sig { returns(T.nilable(String)) }
             def id
             end

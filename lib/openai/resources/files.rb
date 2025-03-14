@@ -37,7 +37,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::FileObject]
-      #
       def create(params)
         parsed, options = OpenAI::Models::FileCreateParams.dump_request(params)
         @client.request(
@@ -59,7 +58,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::FileObject]
-      #
       def retrieve(file_id, params = {})
         @client.request(
           method: :get,
@@ -89,7 +87,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::CursorPage<OpenAI::Models::FileObject>]
-      #
       def list(params = {})
         parsed, options = OpenAI::Models::FileListParams.dump_request(params)
         @client.request(
@@ -111,7 +108,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::FileDeleted]
-      #
       def delete(file_id, params = {})
         @client.request(
           method: :delete,
@@ -130,7 +126,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [Object]
-      #
       def content(file_id, params = {})
         @client.request(
           method: :get,
@@ -142,7 +137,6 @@ module OpenAI
       end
 
       # @param client [OpenAI::Client]
-      #
       def initialize(client:)
         @client = client
       end

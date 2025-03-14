@@ -4,7 +4,6 @@ module OpenAI
   module Models
     module Audio
       # @abstract
-      #
       class TranslationCreateResponse < OpenAI::Union
         variant -> { OpenAI::Models::Audio::Translation }
 

@@ -173,7 +173,6 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
             # @abstract
-            #
             class Tool < OpenAI::Union
               variant -> { OpenAI::Models::Beta::CodeInterpreterTool }
 

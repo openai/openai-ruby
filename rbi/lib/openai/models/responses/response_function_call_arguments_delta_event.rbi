@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::BaseModel
+        # The function-call arguments delta that is added.
         sig { returns(String) }
         def delta
         end
@@ -12,6 +13,7 @@ module OpenAI
         def delta=(_)
         end
 
+        # The ID of the output item that the function-call arguments delta is added to.
         sig { returns(String) }
         def item_id
         end
@@ -20,6 +22,7 @@ module OpenAI
         def item_id=(_)
         end
 
+        # The index of the output item that the function-call arguments delta is added to.
         sig { returns(Integer) }
         def output_index
         end
@@ -28,6 +31,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The type of the event. Always `response.function_call_arguments.delta`.
         sig { returns(Symbol) }
         def type
         end
@@ -36,6 +40,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when there is a partial function-call arguments delta.
         sig do
           params(
             delta: String,

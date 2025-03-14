@@ -113,7 +113,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Completion]
-      #
       def create(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
         parsed.delete(:stream)
@@ -236,7 +235,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Stream<OpenAI::Models::Completion>]
-      #
       def create_streaming(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
         parsed.store(:stream, true)
@@ -252,7 +250,6 @@ module OpenAI
       end
 
       # @param client [OpenAI::Client]
-      #
       def initialize(client:)
         @client = client
       end

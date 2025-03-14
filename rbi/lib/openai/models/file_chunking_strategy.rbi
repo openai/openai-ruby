@@ -2,10 +2,12 @@
 
 module OpenAI
   module Models
+    # The strategy used to chunk the file.
     class FileChunkingStrategy < OpenAI::Union
       abstract!
 
       class << self
+        # @api private
         sig do
           override
             .returns(

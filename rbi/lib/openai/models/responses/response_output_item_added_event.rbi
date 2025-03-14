@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputItemAddedEvent < OpenAI::BaseModel
+        # The output item that was added.
         sig do
           returns(
             T.any(
@@ -44,6 +45,7 @@ module OpenAI
         def item=(_)
         end
 
+        # The index of the output item that was added.
         sig { returns(Integer) }
         def output_index
         end
@@ -52,6 +54,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The type of the event. Always `response.output_item.added`.
         sig { returns(Symbol) }
         def type
         end
@@ -60,6 +63,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when a new output item is added.
         sig do
           params(
             item: T.any(

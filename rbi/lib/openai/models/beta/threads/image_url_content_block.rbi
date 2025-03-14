@@ -13,6 +13,7 @@ module OpenAI
           def image_url=(_)
           end
 
+          # The type of the content part.
           sig { returns(Symbol) }
           def type
           end
@@ -21,6 +22,7 @@ module OpenAI
           def type=(_)
           end
 
+          # References an image URL in the content of a message.
           sig { params(image_url: OpenAI::Models::Beta::Threads::ImageURL, type: Symbol).returns(T.attached_class) }
           def self.new(image_url:, type: :image_url)
           end

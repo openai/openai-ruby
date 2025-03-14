@@ -10,7 +10,6 @@ module OpenAI
       attr_reader :threads
 
       # @param client [OpenAI::Client]
-      #
       def initialize(client:)
         @client = client
         @assistants = OpenAI::Resources::Beta::Assistants.new(client: client)

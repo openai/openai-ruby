@@ -8,6 +8,13 @@ module OpenAI
         def checkpoints
         end
 
+        # Creates a fine-tuning job which begins the process of creating a new model from
+        #   a given dataset.
+        #
+        #   Response includes details of the enqueued job including job status and the name
+        #   of the fine-tuned models once complete.
+        #
+        #   [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
         sig do
           params(
             model: T.any(String, Symbol),
@@ -37,6 +44,9 @@ module OpenAI
         )
         end
 
+        # Get info about a fine-tuning job.
+        #
+        #   [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
         sig do
           params(
             fine_tuning_job_id: String,
@@ -47,6 +57,7 @@ module OpenAI
         def retrieve(fine_tuning_job_id, request_options: {})
         end
 
+        # List your organization's fine-tuning jobs
         sig do
           params(
             after: String,
@@ -59,6 +70,7 @@ module OpenAI
         def list(after: nil, limit: nil, metadata: nil, request_options: {})
         end
 
+        # Immediately cancel a fine-tune job.
         sig do
           params(
             fine_tuning_job_id: String,
@@ -69,6 +81,7 @@ module OpenAI
         def cancel(fine_tuning_job_id, request_options: {})
         end
 
+        # Get status updates for a fine-tuning job.
         sig do
           params(
             fine_tuning_job_id: String,

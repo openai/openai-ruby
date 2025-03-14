@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # Additional fields to include in the response. See the `include` parameter for
+        #   Response creation above for more information.
         sig { returns(T.nilable(T::Array[Symbol])) }
         def include
         end

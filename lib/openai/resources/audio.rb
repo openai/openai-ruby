@@ -13,7 +13,6 @@ module OpenAI
       attr_reader :speech
 
       # @param client [OpenAI::Client]
-      #
       def initialize(client:)
         @client = client
         @transcriptions = OpenAI::Resources::Audio::Transcriptions.new(client: client)

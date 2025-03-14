@@ -34,7 +34,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStore]
-      #
       def create(params = {})
         parsed, options = OpenAI::Models::VectorStoreCreateParams.dump_request(params)
         @client.request(
@@ -55,7 +54,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStore]
-      #
       def retrieve(vector_store_id, params = {})
         @client.request(
           method: :get,
@@ -85,7 +83,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStore]
-      #
       def update(vector_store_id, params = {})
         parsed, options = OpenAI::Models::VectorStoreUpdateParams.dump_request(params)
         @client.request(
@@ -120,7 +117,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::CursorPage<OpenAI::Models::VectorStore>]
-      #
       def list(params = {})
         parsed, options = OpenAI::Models::VectorStoreListParams.dump_request(params)
         @client.request(
@@ -142,7 +138,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStoreDeleted]
-      #
       def delete(vector_store_id, params = {})
         @client.request(
           method: :delete,
@@ -173,7 +168,6 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Page<OpenAI::Models::VectorStoreSearchResponse>]
-      #
       def search(vector_store_id, params)
         parsed, options = OpenAI::Models::VectorStoreSearchParams.dump_request(params)
         @client.request(
@@ -187,7 +181,6 @@ module OpenAI
       end
 
       # @param client [OpenAI::Client]
-      #
       def initialize(client:)
         @client = client
         @files = OpenAI::Resources::VectorStores::Files.new(client: client)

@@ -473,7 +473,6 @@ module OpenAI
         end
 
         # @deprecated
-        #
         class Function < OpenAI::BaseModel
           # @!attribute name
           #   The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
@@ -520,7 +519,6 @@ module OpenAI
         end
 
         # @abstract
-        #
         class Modality < OpenAI::Enum
           TEXT = :text
           AUDIO = :audio

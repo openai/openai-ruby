@@ -7,6 +7,7 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # The text to generate audio for. The maximum length is 4096 characters.
         sig { returns(String) }
         def input
         end
@@ -15,6 +16,8 @@ module OpenAI
         def input=(_)
         end
 
+        # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        #   `tts-1` or `tts-1-hd`
         sig { returns(T.any(String, Symbol)) }
         def model
         end
@@ -23,6 +26,10 @@ module OpenAI
         def model=(_)
         end
 
+        # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
+        #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
+        #   voices are available in the
+        #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         sig { returns(Symbol) }
         def voice
         end
@@ -31,6 +38,8 @@ module OpenAI
         def voice=(_)
         end
 
+        # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+        #   `wav`, and `pcm`.
         sig { returns(T.nilable(Symbol)) }
         def response_format
         end
@@ -39,6 +48,8 @@ module OpenAI
         def response_format=(_)
         end
 
+        # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
+        #   the default.
         sig { returns(T.nilable(Float)) }
         def speed
         end
@@ -77,16 +88,23 @@ module OpenAI
         def to_hash
         end
 
+        # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+        #   `tts-1` or `tts-1-hd`
         class Model < OpenAI::Union
           abstract!
 
           class << self
+            # @api private
             sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
             private def variants
             end
           end
         end
 
+        # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
+        #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
+        #   voices are available in the
+        #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         class Voice < OpenAI::Enum
           abstract!
 
@@ -107,6 +125,8 @@ module OpenAI
           end
         end
 
+        # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
+        #   `wav`, and `pcm`.
         class ResponseFormat < OpenAI::Enum
           abstract!
 

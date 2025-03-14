@@ -6,6 +6,8 @@ module OpenAI
 
     module Chat
       class ChatCompletionAudioParam < OpenAI::BaseModel
+        # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
+        #   or `pcm16`.
         sig { returns(Symbol) }
         def format_
         end
@@ -14,6 +16,8 @@ module OpenAI
         def format_=(_)
         end
 
+        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
+        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         sig { returns(Symbol) }
         def voice
         end
@@ -22,6 +26,9 @@ module OpenAI
         def voice=(_)
         end
 
+        # Parameters for audio output. Required when audio output is requested with
+        #   `modalities: ["audio"]`.
+        #   [Learn more](https://platform.openai.com/docs/guides/audio).
         sig { params(format_: Symbol, voice: Symbol).returns(T.attached_class) }
         def self.new(format_:, voice:)
         end
@@ -30,6 +37,8 @@ module OpenAI
         def to_hash
         end
 
+        # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
+        #   or `pcm16`.
         class Format < OpenAI::Enum
           abstract!
 
@@ -46,6 +55,8 @@ module OpenAI
           end
         end
 
+        # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
+        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         class Voice < OpenAI::Enum
           abstract!
 

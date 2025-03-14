@@ -6,6 +6,7 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # The File object (not file name) to be uploaded.
       sig { returns(T.any(IO, StringIO)) }
       def file
       end
@@ -14,6 +15,10 @@ module OpenAI
       def file=(_)
       end
 
+      # The intended purpose of the uploaded file. One of: - `assistants`: Used in the
+      #   Assistants API - `batch`: Used in the Batch API - `fine-tune`: Used for
+      #   fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
+      #   Flexible file type for any purpose - `evals`: Used for eval data sets
       sig { returns(Symbol) }
       def purpose
       end

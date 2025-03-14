@@ -5,6 +5,7 @@ module OpenAI
     class Beta
       class Threads
         class Messages
+          # Create a message.
           sig do
             params(
               thread_id: String,
@@ -28,6 +29,7 @@ module OpenAI
           def create(thread_id, content:, role:, attachments: nil, metadata: nil, request_options: {})
           end
 
+          # Retrieve a message.
           sig do
             params(
               message_id: String,
@@ -39,6 +41,7 @@ module OpenAI
           def retrieve(message_id, thread_id:, request_options: {})
           end
 
+          # Modifies a message.
           sig do
             params(
               message_id: String,
@@ -51,6 +54,7 @@ module OpenAI
           def update(message_id, thread_id:, metadata: nil, request_options: {})
           end
 
+          # Returns a list of messages for a given thread.
           sig do
             params(
               thread_id: String,
@@ -74,6 +78,7 @@ module OpenAI
           )
           end
 
+          # Deletes a message.
           sig do
             params(
               message_id: String,

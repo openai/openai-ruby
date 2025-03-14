@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenAI
-  # @private
+  # @api private
   #
   # @example
   # ```ruby
@@ -18,19 +18,16 @@ module OpenAI
   # ```
   module BaseStream
     # @return [void]
-    #
     def close = OpenAI::Util.close_fused!(@iterator)
 
-    # @private
+    # @api private
     #
     # @return [Enumerable]
-    #
     private def iterator = (raise NotImplementedError)
 
     # @param blk [Proc]
     #
     # @return [void]
-    #
     def for_each(&)
       unless block_given?
         raise ArgumentError.new("A block must be given to ##{__method__}")
@@ -39,19 +36,17 @@ module OpenAI
     end
 
     # @return [Enumerable]
-    #
     def to_enum = @iterator
 
     alias_method :enum_for, :to_enum
 
-    # @private
+    # @api private
     #
     # @param model [Class, OpenAI::Converter]
     # @param url [URI::Generic]
     # @param status [Integer]
     # @param response [Net::HTTPResponse]
     # @param messages [Enumerable]
-    #
     def initialize(model:, url:, status:, response:, messages:)
       @model = model
       @url = url

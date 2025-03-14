@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseFailedEvent < OpenAI::BaseModel
+        # The response that failed.
         sig { returns(OpenAI::Models::Responses::Response) }
         def response
         end
@@ -12,6 +13,7 @@ module OpenAI
         def response=(_)
         end
 
+        # The type of the event. Always `response.failed`.
         sig { returns(Symbol) }
         def type
         end
@@ -20,6 +22,7 @@ module OpenAI
         def type=(_)
         end
 
+        # An event that is emitted when a response fails.
         sig { params(response: OpenAI::Models::Responses::Response, type: Symbol).returns(T.attached_class) }
         def self.new(response:, type: :"response.failed")
         end

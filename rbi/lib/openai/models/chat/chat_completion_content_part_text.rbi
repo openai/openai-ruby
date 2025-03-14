@@ -6,6 +6,7 @@ module OpenAI
 
     module Chat
       class ChatCompletionContentPartText < OpenAI::BaseModel
+        # The text content.
         sig { returns(String) }
         def text
         end
@@ -14,6 +15,7 @@ module OpenAI
         def text=(_)
         end
 
+        # The type of the content part.
         sig { returns(Symbol) }
         def type
         end
@@ -22,6 +24,8 @@ module OpenAI
         def type=(_)
         end
 
+        # Learn about
+        #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
         sig { params(text: String, type: Symbol).returns(T.attached_class) }
         def self.new(text:, type: :text)
         end

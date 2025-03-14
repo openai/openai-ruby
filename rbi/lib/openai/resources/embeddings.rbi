@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Embeddings
+      # Creates an embedding vector representing the input text.
       sig do
         params(
           input: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]),

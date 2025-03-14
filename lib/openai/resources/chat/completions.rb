@@ -213,7 +213,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletion]
-        #
         def create(params)
           parsed, options = OpenAI::Models::Chat::CompletionCreateParams.dump_request(params)
           parsed.delete(:stream)
@@ -432,7 +431,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Stream<OpenAI::Models::Chat::ChatCompletionChunk>]
-        #
         def create_streaming(params)
           parsed, options = OpenAI::Models::Chat::CompletionCreateParams.dump_request(params)
           parsed.store(:stream, true)
@@ -457,7 +455,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletion]
-        #
         def retrieve(completion_id, params = {})
           @client.request(
             method: :get,
@@ -485,7 +482,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletion]
-        #
         def update(completion_id, params)
           parsed, options = OpenAI::Models::Chat::CompletionUpdateParams.dump_request(params)
           @client.request(
@@ -518,7 +514,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::Chat::ChatCompletion>]
-        #
         def list(params = {})
           parsed, options = OpenAI::Models::Chat::CompletionListParams.dump_request(params)
           @client.request(
@@ -541,7 +536,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletionDeleted]
-        #
         def delete(completion_id, params = {})
           @client.request(
             method: :delete,
@@ -552,7 +546,6 @@ module OpenAI
         end
 
         # @param client [OpenAI::Client]
-        #
         def initialize(client:)
           @client = client
           @messages = OpenAI::Resources::Chat::Completions::Messages.new(client: client)

@@ -11,6 +11,7 @@ module OpenAI
       def static=(_)
       end
 
+      # Always `static`.
       sig { returns(Symbol) }
       def type
       end
@@ -19,6 +20,7 @@ module OpenAI
       def type=(_)
       end
 
+      # Customize your own chunking strategy by setting chunk size and chunk overlap.
       sig { params(static: OpenAI::Models::StaticFileChunkingStrategy, type: Symbol).returns(T.attached_class) }
       def self.new(static:, type: :static)
       end

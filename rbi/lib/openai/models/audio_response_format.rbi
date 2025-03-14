@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    # The format of the output, in one of these options: `json`, `text`, `srt`,
+    #   `verbose_json`, or `vtt`.
     class AudioResponseFormat < OpenAI::Enum
       abstract!
 

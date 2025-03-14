@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseTextAnnotationDeltaEvent < OpenAI::BaseModel
+        # A citation to a file.
         sig do
           returns(
             T.any(
@@ -35,6 +36,7 @@ module OpenAI
         def annotation=(_)
         end
 
+        # The index of the annotation that was added.
         sig { returns(Integer) }
         def annotation_index
         end
@@ -43,6 +45,7 @@ module OpenAI
         def annotation_index=(_)
         end
 
+        # The index of the content part that the text annotation was added to.
         sig { returns(Integer) }
         def content_index
         end
@@ -51,6 +54,7 @@ module OpenAI
         def content_index=(_)
         end
 
+        # The ID of the output item that the text annotation was added to.
         sig { returns(String) }
         def item_id
         end
@@ -59,6 +63,7 @@ module OpenAI
         def item_id=(_)
         end
 
+        # The index of the output item that the text annotation was added to.
         sig { returns(Integer) }
         def output_index
         end
@@ -67,6 +72,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The type of the event. Always `response.output_text.annotation.added`.
         sig { returns(Symbol) }
         def type
         end
@@ -75,6 +81,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when a text annotation is added.
         sig do
           params(
             annotation: T.any(
@@ -120,10 +127,12 @@ module OpenAI
         def to_hash
         end
 
+        # A citation to a file.
         class Annotation < OpenAI::Union
           abstract!
 
           class FileCitation < OpenAI::BaseModel
+            # The ID of the file.
             sig { returns(String) }
             def file_id
             end
@@ -132,6 +141,7 @@ module OpenAI
             def file_id=(_)
             end
 
+            # The index of the file in the list of files.
             sig { returns(Integer) }
             def index
             end
@@ -140,6 +150,7 @@ module OpenAI
             def index=(_)
             end
 
+            # The type of the file citation. Always `file_citation`.
             sig { returns(Symbol) }
             def type
             end
@@ -148,6 +159,7 @@ module OpenAI
             def type=(_)
             end
 
+            # A citation to a file.
             sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
             def self.new(file_id:, index:, type: :file_citation)
             end
@@ -158,6 +170,7 @@ module OpenAI
           end
 
           class URLCitation < OpenAI::BaseModel
+            # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
             def end_index
             end
@@ -166,6 +179,7 @@ module OpenAI
             def end_index=(_)
             end
 
+            # The index of the first character of the URL citation in the message.
             sig { returns(Integer) }
             def start_index
             end
@@ -174,6 +188,7 @@ module OpenAI
             def start_index=(_)
             end
 
+            # The title of the web resource.
             sig { returns(String) }
             def title
             end
@@ -182,6 +197,7 @@ module OpenAI
             def title=(_)
             end
 
+            # The type of the URL citation. Always `url_citation`.
             sig { returns(Symbol) }
             def type
             end
@@ -190,6 +206,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The URL of the web resource.
             sig { returns(String) }
             def url
             end
@@ -198,6 +215,7 @@ module OpenAI
             def url=(_)
             end
 
+            # A citation for a web resource used to generate a model response.
             sig do
               params(end_index: Integer, start_index: Integer, title: String, url: String, type: Symbol)
                 .returns(T.attached_class)
@@ -221,6 +239,7 @@ module OpenAI
           end
 
           class FilePath < OpenAI::BaseModel
+            # The ID of the file.
             sig { returns(String) }
             def file_id
             end
@@ -229,6 +248,7 @@ module OpenAI
             def file_id=(_)
             end
 
+            # The index of the file in the list of files.
             sig { returns(Integer) }
             def index
             end
@@ -237,6 +257,7 @@ module OpenAI
             def index=(_)
             end
 
+            # The type of the file path. Always `file_path`.
             sig { returns(Symbol) }
             def type
             end
@@ -245,6 +266,7 @@ module OpenAI
             def type=(_)
             end
 
+            # A path to a file.
             sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
             def self.new(file_id:, index:, type: :file_path)
             end
@@ -255,6 +277,7 @@ module OpenAI
           end
 
           class << self
+            # @api private
             sig do
               override
                 .returns(

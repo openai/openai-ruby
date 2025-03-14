@@ -6,6 +6,7 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # The ordered list of Part IDs.
       sig { returns(T::Array[String]) }
       def part_ids
       end
@@ -14,6 +15,8 @@ module OpenAI
       def part_ids=(_)
       end
 
+      # The optional md5 checksum for the file contents to verify if the bytes uploaded
+      #   matches what you expect.
       sig { returns(T.nilable(String)) }
       def md5
       end

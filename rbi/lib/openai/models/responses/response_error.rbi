@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseError < OpenAI::BaseModel
+        # The error code for the response.
         sig { returns(Symbol) }
         def code
         end
@@ -12,6 +13,7 @@ module OpenAI
         def code=(_)
         end
 
+        # A human-readable description of the error.
         sig { returns(String) }
         def message
         end
@@ -20,6 +22,7 @@ module OpenAI
         def message=(_)
         end
 
+        # An error object returned when the model fails to generate a Response.
         sig { params(code: Symbol, message: String).returns(T.attached_class) }
         def self.new(code:, message:)
         end
@@ -28,6 +31,7 @@ module OpenAI
         def to_hash
         end
 
+        # The error code for the response.
         class Code < OpenAI::Enum
           abstract!
 

@@ -6,6 +6,7 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # The number of bytes in the file you are uploading.
       sig { returns(Integer) }
       def bytes
       end
@@ -14,6 +15,7 @@ module OpenAI
       def bytes=(_)
       end
 
+      # The name of the file to upload.
       sig { returns(String) }
       def filename
       end
@@ -22,6 +24,10 @@ module OpenAI
       def filename=(_)
       end
 
+      # The MIME type of the file.
+      #
+      #   This must fall within the supported MIME types for your file purpose. See the
+      #   supported MIME types for assistants and vision.
       sig { returns(String) }
       def mime_type
       end
@@ -30,6 +36,10 @@ module OpenAI
       def mime_type=(_)
       end
 
+      # The intended purpose of the uploaded file.
+      #
+      #   See the
+      #   [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
       sig { returns(Symbol) }
       def purpose
       end

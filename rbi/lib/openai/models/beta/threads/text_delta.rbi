@@ -41,6 +41,7 @@ module OpenAI
           def annotations=(_)
           end
 
+          # The data that makes up the text.
           sig { returns(T.nilable(String)) }
           def value
           end

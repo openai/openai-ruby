@@ -9,6 +9,7 @@ module OpenAI
           def steps
           end
 
+          # Create a run.
           sig do
             params(
               thread_id: String,
@@ -71,6 +72,7 @@ module OpenAI
           )
           end
 
+          # Create a run.
           sig do
             params(
               thread_id: String,
@@ -162,6 +164,7 @@ module OpenAI
           )
           end
 
+          # Retrieves a run.
           sig do
             params(
               run_id: String,
@@ -173,6 +176,7 @@ module OpenAI
           def retrieve(run_id, thread_id:, request_options: {})
           end
 
+          # Modifies a run.
           sig do
             params(
               run_id: String,
@@ -185,6 +189,7 @@ module OpenAI
           def update(run_id, thread_id:, metadata: nil, request_options: {})
           end
 
+          # Returns a list of runs belonging to a thread.
           sig do
             params(
               thread_id: String,
@@ -199,6 +204,7 @@ module OpenAI
           def list(thread_id, after: nil, before: nil, limit: nil, order: nil, request_options: {})
           end
 
+          # Cancels a run that is `in_progress`.
           sig do
             params(
               run_id: String,
@@ -210,6 +216,10 @@ module OpenAI
           def cancel(run_id, thread_id:, request_options: {})
           end
 
+          # When a run has the `status: "requires_action"` and `required_action.type` is
+          #   `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
+          #   tool calls once they're all completed. All outputs must be submitted in a single
+          #   request.
           sig do
             params(
               run_id: String,
@@ -222,6 +232,10 @@ module OpenAI
           def submit_tool_outputs(run_id, thread_id:, tool_outputs:, request_options: {})
           end
 
+          # When a run has the `status: "requires_action"` and `required_action.type` is
+          #   `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
+          #   tool calls once they're all completed. All outputs must be submitted in a single
+          #   request.
           sig do
             params(
               run_id: String,

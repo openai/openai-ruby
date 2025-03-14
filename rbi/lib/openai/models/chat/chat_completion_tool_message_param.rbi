@@ -6,6 +6,7 @@ module OpenAI
 
     module Chat
       class ChatCompletionToolMessageParam < OpenAI::BaseModel
+        # The contents of the tool message.
         sig { returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])) }
         def content
         end
@@ -17,6 +18,7 @@ module OpenAI
         def content=(_)
         end
 
+        # The role of the messages author, in this case `tool`.
         sig { returns(Symbol) }
         def role
         end
@@ -25,6 +27,7 @@ module OpenAI
         def role=(_)
         end
 
+        # Tool call that this message is responding to.
         sig { returns(String) }
         def tool_call_id
         end
@@ -57,12 +60,14 @@ module OpenAI
         def to_hash
         end
 
+        # The contents of the tool message.
         class Content < OpenAI::Union
           abstract!
 
           ChatCompletionContentPartTextArray = T.type_alias { T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText] }
 
           class << self
+            # @api private
             sig do
               override
                 .returns([[NilClass, String], [NilClass, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]])

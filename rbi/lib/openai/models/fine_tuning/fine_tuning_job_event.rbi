@@ -6,6 +6,7 @@ module OpenAI
 
     module FineTuning
       class FineTuningJobEvent < OpenAI::BaseModel
+        # The object identifier.
         sig { returns(String) }
         def id
         end
@@ -14,6 +15,7 @@ module OpenAI
         def id=(_)
         end
 
+        # The Unix timestamp (in seconds) for when the fine-tuning job was created.
         sig { returns(Integer) }
         def created_at
         end
@@ -22,6 +24,7 @@ module OpenAI
         def created_at=(_)
         end
 
+        # The log level of the event.
         sig { returns(Symbol) }
         def level
         end
@@ -30,6 +33,7 @@ module OpenAI
         def level=(_)
         end
 
+        # The message of the event.
         sig { returns(String) }
         def message
         end
@@ -38,6 +42,7 @@ module OpenAI
         def message=(_)
         end
 
+        # The object type, which is always "fine_tuning.job.event".
         sig { returns(Symbol) }
         def object
         end
@@ -46,6 +51,7 @@ module OpenAI
         def object=(_)
         end
 
+        # The data associated with the event.
         sig { returns(T.nilable(T.anything)) }
         def data
         end
@@ -54,6 +60,7 @@ module OpenAI
         def data=(_)
         end
 
+        # The type of event.
         sig { returns(T.nilable(Symbol)) }
         def type
         end
@@ -62,6 +69,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Fine-tuning job event object
         sig do
           params(
             id: String,
@@ -94,6 +102,7 @@ module OpenAI
         def to_hash
         end
 
+        # The log level of the event.
         class Level < OpenAI::Enum
           abstract!
 
@@ -108,6 +117,7 @@ module OpenAI
           end
         end
 
+        # The type of event.
         class Type < OpenAI::Enum
           abstract!
 

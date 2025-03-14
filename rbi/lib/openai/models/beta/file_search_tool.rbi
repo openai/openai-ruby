@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Beta
       class FileSearchTool < OpenAI::BaseModel
+        # The type of tool being defined: `file_search`
         sig { returns(Symbol) }
         def type
         end
@@ -12,6 +13,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Overrides for the file search tool.
         sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch)) }
         def file_search
         end
@@ -35,6 +37,14 @@ module OpenAI
         end
 
         class FileSearch < OpenAI::BaseModel
+          # The maximum number of results the file search tool should output. The default is
+          #   20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
+          #   1 and 50 inclusive.
+          #
+          #   Note that the file search tool may output fewer than `max_num_results` results.
+          #   See the
+          #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+          #   for more information.
           sig { returns(T.nilable(Integer)) }
           def max_num_results
           end
@@ -43,6 +53,12 @@ module OpenAI
           def max_num_results=(_)
           end
 
+          # The ranking options for the file search. If not specified, the file search tool
+          #   will use the `auto` ranker and a score_threshold of 0.
+          #
+          #   See the
+          #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+          #   for more information.
           sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions)) }
           def ranking_options
           end
@@ -54,6 +70,7 @@ module OpenAI
           def ranking_options=(_)
           end
 
+          # Overrides for the file search tool.
           sig do
             params(
               max_num_results: Integer,
@@ -74,6 +91,8 @@ module OpenAI
           end
 
           class RankingOptions < OpenAI::BaseModel
+            # The score threshold for the file search. All values must be a floating point
+            #   number between 0 and 1.
             sig { returns(Float) }
             def score_threshold
             end
@@ -82,6 +101,8 @@ module OpenAI
             def score_threshold=(_)
             end
 
+            # The ranker to use for the file search. If not specified will use the `auto`
+            #   ranker.
             sig { returns(T.nilable(Symbol)) }
             def ranker
             end
@@ -90,6 +111,12 @@ module OpenAI
             def ranker=(_)
             end
 
+            # The ranking options for the file search. If not specified, the file search tool
+            #   will use the `auto` ranker and a score_threshold of 0.
+            #
+            #   See the
+            #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            #   for more information.
             sig { params(score_threshold: Float, ranker: Symbol).returns(T.attached_class) }
             def self.new(score_threshold:, ranker: nil)
             end
@@ -98,6 +125,8 @@ module OpenAI
             def to_hash
             end
 
+            # The ranker to use for the file search. If not specified will use the `auto`
+            #   ranker.
             class Ranker < OpenAI::Enum
               abstract!
 

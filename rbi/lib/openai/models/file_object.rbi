@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     class FileObject < OpenAI::BaseModel
+      # The file identifier, which can be referenced in the API endpoints.
       sig { returns(String) }
       def id
       end
@@ -11,6 +12,7 @@ module OpenAI
       def id=(_)
       end
 
+      # The size of the file, in bytes.
       sig { returns(Integer) }
       def bytes
       end
@@ -19,6 +21,7 @@ module OpenAI
       def bytes=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the file was created.
       sig { returns(Integer) }
       def created_at
       end
@@ -27,6 +30,7 @@ module OpenAI
       def created_at=(_)
       end
 
+      # The name of the file.
       sig { returns(String) }
       def filename
       end
@@ -35,6 +39,7 @@ module OpenAI
       def filename=(_)
       end
 
+      # The object type, which is always `file`.
       sig { returns(Symbol) }
       def object
       end
@@ -43,6 +48,9 @@ module OpenAI
       def object=(_)
       end
 
+      # The intended purpose of the file. Supported values are `assistants`,
+      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
+      #   and `vision`.
       sig { returns(Symbol) }
       def purpose
       end
@@ -51,6 +59,8 @@ module OpenAI
       def purpose=(_)
       end
 
+      # Deprecated. The current status of the file, which can be either `uploaded`,
+      #   `processed`, or `error`.
       sig { returns(Symbol) }
       def status
       end
@@ -59,6 +69,7 @@ module OpenAI
       def status=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the file will expire.
       sig { returns(T.nilable(Integer)) }
       def expires_at
       end
@@ -67,6 +78,8 @@ module OpenAI
       def expires_at=(_)
       end
 
+      # Deprecated. For details on why a fine-tuning training file failed validation,
+      #   see the `error` field on `fine_tuning.job`.
       sig { returns(T.nilable(String)) }
       def status_details
       end
@@ -75,6 +88,7 @@ module OpenAI
       def status_details=(_)
       end
 
+      # The `File` object represents a document that has been uploaded to OpenAI.
       sig do
         params(
           id: String,
@@ -121,6 +135,9 @@ module OpenAI
       def to_hash
       end
 
+      # The intended purpose of the file. Supported values are `assistants`,
+      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
+      #   and `vision`.
       class Purpose < OpenAI::Enum
         abstract!
 
@@ -139,6 +156,8 @@ module OpenAI
         end
       end
 
+      # Deprecated. The current status of the file, which can be either `uploaded`,
+      #   `processed`, or `error`.
       class Status < OpenAI::Enum
         abstract!
 

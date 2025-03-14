@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Beta
       class CodeInterpreterTool < OpenAI::BaseModel
+        # The type of tool being defined: `code_interpreter`
         sig { returns(Symbol) }
         def type
         end

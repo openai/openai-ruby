@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseComputerToolCall < OpenAI::BaseModel
+        # The unique ID of the computer call.
         sig { returns(String) }
         def id
         end
@@ -12,6 +13,7 @@ module OpenAI
         def id=(_)
         end
 
+        # A click action.
         sig do
           returns(
             T.any(
@@ -61,6 +63,7 @@ module OpenAI
         def action=(_)
         end
 
+        # An identifier used when responding to the tool call with output.
         sig { returns(String) }
         def call_id
         end
@@ -69,6 +72,7 @@ module OpenAI
         def call_id=(_)
         end
 
+        # The pending safety checks for the computer call.
         sig { returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck]) }
         def pending_safety_checks
         end
@@ -80,6 +84,8 @@ module OpenAI
         def pending_safety_checks=(_)
         end
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
         sig { returns(Symbol) }
         def status
         end
@@ -88,6 +94,7 @@ module OpenAI
         def status=(_)
         end
 
+        # The type of the computer call. Always `computer_call`.
         sig { returns(Symbol) }
         def type
         end
@@ -96,6 +103,9 @@ module OpenAI
         def type=(_)
         end
 
+        # A tool call to a computer use tool. See the
+        #   [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        #   for more information.
         sig do
           params(
             id: String,
@@ -146,10 +156,13 @@ module OpenAI
         def to_hash
         end
 
+        # A click action.
         class Action < OpenAI::Union
           abstract!
 
           class Click < OpenAI::BaseModel
+            # Indicates which mouse button was pressed during the click. One of `left`,
+            #   `right`, `wheel`, `back`, or `forward`.
             sig { returns(Symbol) }
             def button
             end
@@ -158,6 +171,8 @@ module OpenAI
             def button=(_)
             end
 
+            # Specifies the event type. For a click action, this property is always set to
+            #   `click`.
             sig { returns(Symbol) }
             def type
             end
@@ -166,6 +181,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The x-coordinate where the click occurred.
             sig { returns(Integer) }
             def x
             end
@@ -174,6 +190,7 @@ module OpenAI
             def x=(_)
             end
 
+            # The y-coordinate where the click occurred.
             sig { returns(Integer) }
             def y_
             end
@@ -182,6 +199,7 @@ module OpenAI
             def y_=(_)
             end
 
+            # A click action.
             sig { params(button: Symbol, x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
             def self.new(button:, x:, y_:, type: :click)
             end
@@ -190,6 +208,8 @@ module OpenAI
             def to_hash
             end
 
+            # Indicates which mouse button was pressed during the click. One of `left`,
+            #   `right`, `wheel`, `back`, or `forward`.
             class Button < OpenAI::Enum
               abstract!
 
@@ -208,6 +228,8 @@ module OpenAI
           end
 
           class DoubleClick < OpenAI::BaseModel
+            # Specifies the event type. For a double click action, this property is always set
+            #   to `double_click`.
             sig { returns(Symbol) }
             def type
             end
@@ -216,6 +238,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The x-coordinate where the double click occurred.
             sig { returns(Integer) }
             def x
             end
@@ -224,6 +247,7 @@ module OpenAI
             def x=(_)
             end
 
+            # The y-coordinate where the double click occurred.
             sig { returns(Integer) }
             def y_
             end
@@ -232,6 +256,7 @@ module OpenAI
             def y_=(_)
             end
 
+            # A double click action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
             def self.new(x:, y_:, type: :double_click)
             end
@@ -242,6 +267,15 @@ module OpenAI
           end
 
           class Drag < OpenAI::BaseModel
+            # An array of coordinates representing the path of the drag action. Coordinates
+            #   will appear as an array of objects, eg
+            #
+            #   ```
+            #   [
+            #     { x: 100, y: 200 },
+            #     { x: 200, y: 300 }
+            #   ]
+            #   ```
             sig { returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path]) }
             def path
             end
@@ -253,6 +287,8 @@ module OpenAI
             def path=(_)
             end
 
+            # Specifies the event type. For a drag action, this property is always set to
+            #   `drag`.
             sig { returns(Symbol) }
             def type
             end
@@ -261,6 +297,7 @@ module OpenAI
             def type=(_)
             end
 
+            # A drag action.
             sig do
               params(
                 path: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path],
@@ -281,6 +318,7 @@ module OpenAI
             end
 
             class Path < OpenAI::BaseModel
+              # The x-coordinate.
               sig { returns(Integer) }
               def x
               end
@@ -289,6 +327,7 @@ module OpenAI
               def x=(_)
               end
 
+              # The y-coordinate.
               sig { returns(Integer) }
               def y_
               end
@@ -297,6 +336,7 @@ module OpenAI
               def y_=(_)
               end
 
+              # A series of x/y coordinate pairs in the drag path.
               sig { params(x: Integer, y_: Integer).returns(T.attached_class) }
               def self.new(x:, y_:)
               end
@@ -308,6 +348,8 @@ module OpenAI
           end
 
           class Keypress < OpenAI::BaseModel
+            # The combination of keys the model is requesting to be pressed. This is an array
+            #   of strings, each representing a key.
             sig { returns(T::Array[String]) }
             def keys
             end
@@ -316,6 +358,8 @@ module OpenAI
             def keys=(_)
             end
 
+            # Specifies the event type. For a keypress action, this property is always set to
+            #   `keypress`.
             sig { returns(Symbol) }
             def type
             end
@@ -324,6 +368,7 @@ module OpenAI
             def type=(_)
             end
 
+            # A collection of keypresses the model would like to perform.
             sig { params(keys: T::Array[String], type: Symbol).returns(T.attached_class) }
             def self.new(keys:, type: :keypress)
             end
@@ -334,6 +379,8 @@ module OpenAI
           end
 
           class Move < OpenAI::BaseModel
+            # Specifies the event type. For a move action, this property is always set to
+            #   `move`.
             sig { returns(Symbol) }
             def type
             end
@@ -342,6 +389,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The x-coordinate to move to.
             sig { returns(Integer) }
             def x
             end
@@ -350,6 +398,7 @@ module OpenAI
             def x=(_)
             end
 
+            # The y-coordinate to move to.
             sig { returns(Integer) }
             def y_
             end
@@ -358,6 +407,7 @@ module OpenAI
             def y_=(_)
             end
 
+            # A mouse move action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
             def self.new(x:, y_:, type: :move)
             end
@@ -368,6 +418,8 @@ module OpenAI
           end
 
           class Screenshot < OpenAI::BaseModel
+            # Specifies the event type. For a screenshot action, this property is always set
+            #   to `screenshot`.
             sig { returns(Symbol) }
             def type
             end
@@ -376,6 +428,7 @@ module OpenAI
             def type=(_)
             end
 
+            # A screenshot action.
             sig { params(type: Symbol).returns(T.attached_class) }
             def self.new(type: :screenshot)
             end
@@ -386,6 +439,7 @@ module OpenAI
           end
 
           class Scroll < OpenAI::BaseModel
+            # The horizontal scroll distance.
             sig { returns(Integer) }
             def scroll_x
             end
@@ -394,6 +448,7 @@ module OpenAI
             def scroll_x=(_)
             end
 
+            # The vertical scroll distance.
             sig { returns(Integer) }
             def scroll_y
             end
@@ -402,6 +457,8 @@ module OpenAI
             def scroll_y=(_)
             end
 
+            # Specifies the event type. For a scroll action, this property is always set to
+            #   `scroll`.
             sig { returns(Symbol) }
             def type
             end
@@ -410,6 +467,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The x-coordinate where the scroll occurred.
             sig { returns(Integer) }
             def x
             end
@@ -418,6 +476,7 @@ module OpenAI
             def x=(_)
             end
 
+            # The y-coordinate where the scroll occurred.
             sig { returns(Integer) }
             def y_
             end
@@ -426,6 +485,7 @@ module OpenAI
             def y_=(_)
             end
 
+            # A scroll action.
             sig do
               params(scroll_x: Integer, scroll_y: Integer, x: Integer, y_: Integer, type: Symbol)
                 .returns(T.attached_class)
@@ -441,6 +501,7 @@ module OpenAI
           end
 
           class Type < OpenAI::BaseModel
+            # The text to type.
             sig { returns(String) }
             def text
             end
@@ -449,6 +510,8 @@ module OpenAI
             def text=(_)
             end
 
+            # Specifies the event type. For a type action, this property is always set to
+            #   `type`.
             sig { returns(Symbol) }
             def type
             end
@@ -457,6 +520,7 @@ module OpenAI
             def type=(_)
             end
 
+            # An action to type in text.
             sig { params(text: String, type: Symbol).returns(T.attached_class) }
             def self.new(text:, type: :type)
             end
@@ -467,6 +531,8 @@ module OpenAI
           end
 
           class Wait < OpenAI::BaseModel
+            # Specifies the event type. For a wait action, this property is always set to
+            #   `wait`.
             sig { returns(Symbol) }
             def type
             end
@@ -475,6 +541,7 @@ module OpenAI
             def type=(_)
             end
 
+            # A wait action.
             sig { params(type: Symbol).returns(T.attached_class) }
             def self.new(type: :wait)
             end
@@ -485,6 +552,7 @@ module OpenAI
           end
 
           class << self
+            # @api private
             sig do
               override
                 .returns(
@@ -497,6 +565,7 @@ module OpenAI
         end
 
         class PendingSafetyCheck < OpenAI::BaseModel
+          # The ID of the pending safety check.
           sig { returns(String) }
           def id
           end
@@ -505,6 +574,7 @@ module OpenAI
           def id=(_)
           end
 
+          # The type of the pending safety check.
           sig { returns(String) }
           def code
           end
@@ -513,6 +583,7 @@ module OpenAI
           def code=(_)
           end
 
+          # Details about the pending safety check.
           sig { returns(String) }
           def message
           end
@@ -521,6 +592,7 @@ module OpenAI
           def message=(_)
           end
 
+          # A pending safety check for the computer call.
           sig { params(id: String, code: String, message: String).returns(T.attached_class) }
           def self.new(id:, code:, message:)
           end
@@ -530,6 +602,8 @@ module OpenAI
           end
         end
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
         class Status < OpenAI::Enum
           abstract!
 
@@ -544,6 +618,7 @@ module OpenAI
           end
         end
 
+        # The type of the computer call. Always `computer_call`.
         class Type < OpenAI::Enum
           abstract!
 

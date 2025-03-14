@@ -16,6 +16,7 @@ module OpenAI
           def thread_id=(_)
           end
 
+          # A list of tools for which the outputs are being submitted.
           sig { returns(T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]) }
           def tool_outputs
           end
@@ -52,6 +53,7 @@ module OpenAI
           end
 
           class ToolOutput < OpenAI::BaseModel
+            # The output of the tool call to be submitted to continue the run.
             sig { returns(T.nilable(String)) }
             def output
             end
@@ -60,6 +62,8 @@ module OpenAI
             def output=(_)
             end
 
+            # The ID of the tool call in the `required_action` object within the run object
+            #   the output is being submitted for.
             sig { returns(T.nilable(String)) }
             def tool_call_id
             end

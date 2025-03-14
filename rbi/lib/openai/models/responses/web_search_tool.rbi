@@ -4,6 +4,10 @@ module OpenAI
   module Models
     module Responses
       class WebSearchTool < OpenAI::BaseModel
+        # The type of the web search tool. One of:
+        #
+        #   - `web_search_preview`
+        #   - `web_search_preview_2025_03_11`
         sig { returns(Symbol) }
         def type
         end
@@ -12,6 +16,8 @@ module OpenAI
         def type=(_)
         end
 
+        # High level guidance for the amount of context window space to use for the
+        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         sig { returns(T.nilable(Symbol)) }
         def search_context_size
         end
@@ -31,6 +37,9 @@ module OpenAI
         def user_location=(_)
         end
 
+        # This tool searches the web for relevant results to use in a response. Learn more
+        #   about the
+        #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         sig do
           params(
             type: Symbol,
@@ -55,6 +64,10 @@ module OpenAI
         def to_hash
         end
 
+        # The type of the web search tool. One of:
+        #
+        #   - `web_search_preview`
+        #   - `web_search_preview_2025_03_11`
         class Type < OpenAI::Enum
           abstract!
 
@@ -68,6 +81,8 @@ module OpenAI
           end
         end
 
+        # High level guidance for the amount of context window space to use for the
+        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         class SearchContextSize < OpenAI::Enum
           abstract!
 
@@ -83,6 +98,7 @@ module OpenAI
         end
 
         class UserLocation < OpenAI::BaseModel
+          # The type of location approximation. Always `approximate`.
           sig { returns(Symbol) }
           def type
           end
@@ -91,6 +107,7 @@ module OpenAI
           def type=(_)
           end
 
+          # Free text input for the city of the user, e.g. `San Francisco`.
           sig { returns(T.nilable(String)) }
           def city
           end
@@ -99,6 +116,8 @@ module OpenAI
           def city=(_)
           end
 
+          # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          #   the user, e.g. `US`.
           sig { returns(T.nilable(String)) }
           def country
           end
@@ -107,6 +126,7 @@ module OpenAI
           def country=(_)
           end
 
+          # Free text input for the region of the user, e.g. `California`.
           sig { returns(T.nilable(String)) }
           def region
           end
@@ -115,6 +135,8 @@ module OpenAI
           def region=(_)
           end
 
+          # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          #   user, e.g. `America/Los_Angeles`.
           sig { returns(T.nilable(String)) }
           def timezone
           end

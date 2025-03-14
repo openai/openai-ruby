@@ -6,6 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class FileSearchToolCall < OpenAI::BaseModel
+            # The ID of the tool call object.
             sig { returns(String) }
             def id
             end
@@ -14,6 +15,7 @@ module OpenAI
             def id=(_)
             end
 
+            # For now, this is always going to be an empty object.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch) }
             def file_search
             end
@@ -25,6 +27,8 @@ module OpenAI
             def file_search=(_)
             end
 
+            # The type of tool call. This is always going to be `file_search` for this type of
+            #   tool call.
             sig { returns(Symbol) }
             def type
             end
@@ -54,6 +58,7 @@ module OpenAI
             end
 
             class FileSearch < OpenAI::BaseModel
+              # The ranking options for the file search.
               sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions)) }
               def ranking_options
               end
@@ -65,6 +70,7 @@ module OpenAI
               def ranking_options=(_)
               end
 
+              # The results of the file search.
               sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result])) }
               def results
               end
@@ -76,6 +82,7 @@ module OpenAI
               def results=(_)
               end
 
+              # For now, this is always going to be an empty object.
               sig do
                 params(
                   ranking_options: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
@@ -99,6 +106,8 @@ module OpenAI
               end
 
               class RankingOptions < OpenAI::BaseModel
+                # The ranker to use for the file search. If not specified will use the `auto`
+                #   ranker.
                 sig { returns(Symbol) }
                 def ranker
                 end
@@ -107,6 +116,8 @@ module OpenAI
                 def ranker=(_)
                 end
 
+                # The score threshold for the file search. All values must be a floating point
+                #   number between 0 and 1.
                 sig { returns(Float) }
                 def score_threshold
                 end
@@ -115,6 +126,7 @@ module OpenAI
                 def score_threshold=(_)
                 end
 
+                # The ranking options for the file search.
                 sig { params(ranker: Symbol, score_threshold: Float).returns(T.attached_class) }
                 def self.new(ranker:, score_threshold:)
                 end
@@ -123,6 +135,8 @@ module OpenAI
                 def to_hash
                 end
 
+                # The ranker to use for the file search. If not specified will use the `auto`
+                #   ranker.
                 class Ranker < OpenAI::Enum
                   abstract!
 
@@ -138,6 +152,7 @@ module OpenAI
               end
 
               class Result < OpenAI::BaseModel
+                # The ID of the file that result was found in.
                 sig { returns(String) }
                 def file_id
                 end
@@ -146,6 +161,7 @@ module OpenAI
                 def file_id=(_)
                 end
 
+                # The name of the file that result was found in.
                 sig { returns(String) }
                 def file_name
                 end
@@ -154,6 +170,8 @@ module OpenAI
                 def file_name=(_)
                 end
 
+                # The score of the result. All values must be a floating point number between 0
+                #   and 1.
                 sig { returns(Float) }
                 def score
                 end
@@ -162,6 +180,8 @@ module OpenAI
                 def score=(_)
                 end
 
+                # The content of the result that was found. The content is only included if
+                #   requested via the include query parameter.
                 sig do
                   returns(
                     T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content])
@@ -177,6 +197,7 @@ module OpenAI
                 def content=(_)
                 end
 
+                # A result instance of the file search.
                 sig do
                   params(
                     file_id: String,
@@ -204,6 +225,7 @@ module OpenAI
                 end
 
                 class Content < OpenAI::BaseModel
+                  # The text content of the file.
                   sig { returns(T.nilable(String)) }
                   def text
                   end
@@ -212,6 +234,7 @@ module OpenAI
                   def text=(_)
                   end
 
+                  # The type of the content.
                   sig { returns(T.nilable(Symbol)) }
                   def type
                   end
@@ -228,6 +251,7 @@ module OpenAI
                   def to_hash
                   end
 
+                  # The type of the content.
                   class Type < OpenAI::Enum
                     abstract!
 

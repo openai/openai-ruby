@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class FunctionTool < OpenAI::BaseModel
+        # The name of the function to call.
         sig { returns(String) }
         def name
         end
@@ -12,6 +13,7 @@ module OpenAI
         def name=(_)
         end
 
+        # A JSON schema object describing the parameters of the function.
         sig { returns(T::Hash[Symbol, T.anything]) }
         def parameters
         end
@@ -20,6 +22,7 @@ module OpenAI
         def parameters=(_)
         end
 
+        # Whether to enforce strict parameter validation. Default `true`.
         sig { returns(T::Boolean) }
         def strict
         end
@@ -28,6 +31,7 @@ module OpenAI
         def strict=(_)
         end
 
+        # The type of the function tool. Always `function`.
         sig { returns(Symbol) }
         def type
         end
@@ -36,6 +40,8 @@ module OpenAI
         def type=(_)
         end
 
+        # A description of the function. Used by the model to determine whether or not to
+        #   call the function.
         sig { returns(T.nilable(String)) }
         def description
         end
@@ -44,6 +50,9 @@ module OpenAI
         def description=(_)
         end
 
+        # Defines a function in your own code the model can choose to call. Learn more
+        #   about
+        #   [function calling](https://platform.openai.com/docs/guides/function-calling).
         sig do
           params(
             name: String,

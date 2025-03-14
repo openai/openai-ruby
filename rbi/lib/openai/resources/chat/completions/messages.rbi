@@ -5,6 +5,8 @@ module OpenAI
     class Chat
       class Completions
         class Messages
+          # Get the messages in a stored chat completion. Only Chat Completions that have
+          #   been created with the `store` parameter set to `true` will be returned.
           sig do
             params(
               completion_id: String,

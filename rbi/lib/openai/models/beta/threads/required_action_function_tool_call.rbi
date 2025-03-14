@@ -5,6 +5,10 @@ module OpenAI
     module Beta
       module Threads
         class RequiredActionFunctionToolCall < OpenAI::BaseModel
+          # The ID of the tool call. This ID must be referenced when you submit the tool
+          #   outputs in using the
+          #   [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+          #   endpoint.
           sig { returns(String) }
           def id
           end
@@ -13,6 +17,7 @@ module OpenAI
           def id=(_)
           end
 
+          # The function definition.
           sig { returns(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function) }
           def function
           end
@@ -24,6 +29,8 @@ module OpenAI
           def function=(_)
           end
 
+          # The type of tool call the output is required for. For now, this is always
+          #   `function`.
           sig { returns(Symbol) }
           def type
           end
@@ -32,6 +39,7 @@ module OpenAI
           def type=(_)
           end
 
+          # Tool call objects
           sig do
             params(
               id: String,
@@ -53,6 +61,7 @@ module OpenAI
           end
 
           class Function < OpenAI::BaseModel
+            # The arguments that the model expects you to pass to the function.
             sig { returns(String) }
             def arguments
             end
@@ -61,6 +70,7 @@ module OpenAI
             def arguments=(_)
             end
 
+            # The name of the function.
             sig { returns(String) }
             def name
             end
@@ -69,6 +79,7 @@ module OpenAI
             def name=(_)
             end
 
+            # The function definition.
             sig { params(arguments: String, name: String).returns(T.attached_class) }
             def self.new(arguments:, name:)
             end

@@ -3,20 +3,17 @@
 module OpenAI
   # rubocop:disable Metrics/ModuleLength
 
-  # @private
-  #
+  # @api private
   module Util
-    # @private
+    # @api private
     #
     # @return [Float]
-    #
     def self.monotonic_secs = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
     class << self
-      # @private
+      # @api private
       #
       # @return [String]
-      #
       def arch
         case (arch = RbConfig::CONFIG["arch"])&.downcase
         in nil
@@ -32,10 +29,9 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @return [String]
-      #
       def os
         case (host = RbConfig::CONFIG["host_os"])&.downcase
         in nil
@@ -57,12 +53,11 @@ module OpenAI
     end
 
     class << self
-      # @private
+      # @api private
       #
       # @param input [Object]
       #
       # @return [Boolean, Object]
-      #
       def primitive?(input)
         case input
         in true | false | Integer | Float | Symbol | String
@@ -72,12 +67,11 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @param input [Object]
       #
       # @return [Boolean, Object]
-      #
       def coerce_boolean(input)
         case input.is_a?(String) ? input.downcase : input
         in Numeric
@@ -91,13 +85,12 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @param input [Object]
       #
       # @raise [ArgumentError]
       # @return [Boolean, nil]
-      #
       def coerce_boolean!(input)
         case coerce_boolean(input)
         in true | false | nil => coerced
@@ -107,12 +100,11 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @param input [Object]
       #
       # @return [Integer, Object]
-      #
       def coerce_integer(input)
         case input
         in true
@@ -124,12 +116,11 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @param input [Object]
       #
       # @return [Float, Object]
-      #
       def coerce_float(input)
         case input
         in true
@@ -141,12 +132,11 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @param input [Object]
       #
       # @return [Hash{Object=>Object}, Object]
-      #
       def coerce_hash(input)
         case input
         in NilClass | Array | Set | Enumerator
@@ -165,14 +155,13 @@ module OpenAI
     OMIT = Object.new.freeze
 
     class << self
-      # @private
+      # @api private
       #
       # @param lhs [Object]
       # @param rhs [Object]
       # @param concat [Boolean]
       #
       # @return [Object]
-      #
       private def deep_merge_lr(lhs, rhs, concat: false)
         case [lhs, rhs, concat]
         in [Hash, Hash, _]
@@ -191,7 +180,7 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # Recursively merge one hash with another. If the values at a given key are not
       #   both hashes, just take the new value.
@@ -203,7 +192,6 @@ module OpenAI
       # @param concat [Boolean] whether to merge sequences by concatenation.
       #
       # @return [Object]
-      #
       def deep_merge(*values, sentinel: nil, concat: false)
         case values
         in [value, *values]
@@ -215,7 +203,7 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @param data [Hash{Symbol=>Object}, Array<Object>, Object]
       # @param pick [Symbol, Integer, Array<Symbol, Integer>, nil]
@@ -223,7 +211,6 @@ module OpenAI
       # @param blk [Proc, nil]
       #
       # @return [Object, nil]
-      #
       def dig(data, pick, sentinel = nil, &blk)
         case [data, pick, blk]
         in [_, nil, nil]
@@ -248,22 +235,20 @@ module OpenAI
     end
 
     class << self
-      # @private
+      # @api private
       #
       # @param uri [URI::Generic]
       #
       # @return [String]
-      #
       def uri_origin(uri)
         "#{uri.scheme}://#{uri.host}#{uri.port == uri.default_port ? '' : ":#{uri.port}"}"
       end
 
-      # @private
+      # @api private
       #
       # @param path [String, Array<String>]
       #
       # @return [String]
-      #
       def interpolate_path(path)
         case path
         in String
@@ -278,40 +263,37 @@ module OpenAI
     end
 
     class << self
-      # @private
+      # @api private
       #
       # @param query [String, nil]
       #
       # @return [Hash{String=>Array<String>}]
-      #
       def decode_query(query)
         CGI.parse(query.to_s)
       end
 
-      # @private
+      # @api private
       #
       # @param query [Hash{String=>Array<String>, String, nil}, nil]
       #
       # @return [String, nil]
-      #
       def encode_query(query)
         query.to_h.empty? ? nil : URI.encode_www_form(query)
       end
     end
 
     class << self
-      # @private
+      # @api private
       #
       # @param url [URI::Generic, String]
       #
       # @return [Hash{Symbol=>String, Integer, nil}]
-      #
       def parse_uri(url)
         parsed = URI::Generic.component.zip(URI.split(url)).to_h
         {**parsed, query: decode_query(parsed.fetch(:query))}
       end
 
-      # @private
+      # @api private
       #
       # @param parsed [Hash{Symbol=>String, Integer, nil}] .
       #
@@ -326,12 +308,11 @@ module OpenAI
       #   @option parsed [Hash{String=>Array<String>}] :query
       #
       # @return [URI::Generic]
-      #
       def unparse_uri(parsed)
         URI::Generic.build(**parsed, query: encode_query(parsed.fetch(:query)))
       end
 
-      # @private
+      # @api private
       #
       # @param lhs [Hash{Symbol=>String, Integer, nil}] .
       #
@@ -358,7 +339,6 @@ module OpenAI
       #   @option rhs [Hash{String=>Array<String>}] :query
       #
       # @return [URI::Generic]
-      #
       def join_parsed_uri(lhs, rhs)
         base_path, base_query = lhs.fetch_values(:path, :query)
         slashed = base_path.end_with?("/") ? base_path : "#{base_path}/"
@@ -380,12 +360,11 @@ module OpenAI
     end
 
     class << self
-      # @private
+      # @api private
       #
       # @param headers [Hash{String=>String, Integer, Array<String, Integer, nil>, nil}]
       #
       # @return [Hash{String=>String}]
-      #
       def normalized_headers(*headers)
         {}.merge(*headers.compact).to_h do |key, val|
           case val
@@ -399,16 +378,15 @@ module OpenAI
       end
     end
 
-    # @private
+    # @api private
     #
     # An adapter that satisfies the IO interface required by `::IO.copy_stream`
     class ReadIOAdapter
-      # @private
+      # @api private
       #
       # @param max_len [Integer, nil]
       #
       # @return [String]
-      #
       private def read_enum(max_len)
         case max_len
         in nil
@@ -422,13 +400,12 @@ module OpenAI
         @buf.slice!(0..)
       end
 
-      # @private
+      # @api private
       #
       # @param max_len [Integer, nil]
       # @param out_string [String, nil]
       #
       # @return [String, nil]
-      #
       def read(max_len = nil, out_string = nil)
         case @stream
         in nil
@@ -447,11 +424,10 @@ module OpenAI
           .tap(&@blk)
       end
 
-      # @private
+      # @api private
       #
       # @param stream [String, IO, StringIO, Enumerable]
       # @param blk [Proc]
-      #
       def initialize(stream, &blk)
         @stream = stream.is_a?(String) ? StringIO.new(stream) : stream
         @buf = String.new.b
@@ -463,7 +439,6 @@ module OpenAI
       # @param blk [Proc]
       #
       # @return [Enumerable]
-      #
       def string_io(&blk)
         Enumerator.new do |y|
           y.define_singleton_method(:write) do
@@ -477,13 +452,12 @@ module OpenAI
     end
 
     class << self
-      # @private
+      # @api private
       #
       # @param y [Enumerator::Yielder]
       # @param boundary [String]
       # @param key [Symbol, String]
       # @param val [Object]
-      #
       private def encode_multipart_formdata(y, boundary:, key:, val:)
         y << "--#{boundary}\r\n"
         y << "Content-Disposition: form-data"
@@ -516,12 +490,11 @@ module OpenAI
         y << "\r\n"
       end
 
-      # @private
+      # @api private
       #
       # @param body [Object]
       #
       # @return [Array(String, Enumerable)]
-      #
       private def encode_multipart_streaming(body)
         boundary = SecureRandom.urlsafe_base64(60)
 
@@ -547,13 +520,12 @@ module OpenAI
         [boundary, strio]
       end
 
-      # @private
+      # @api private
       #
       # @param headers [Hash{String=>String}]
       # @param body [Object]
       #
       # @return [Object]
-      #
       def encode_content(headers, body)
         content_type = headers["content-type"]
         case [content_type, body]
@@ -572,7 +544,7 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # @param headers [Hash{String=>String}, Net::HTTPHeader]
       # @param stream [Enumerable]
@@ -580,7 +552,6 @@ module OpenAI
       #
       # @raise [JSON::ParserError]
       # @return [Object]
-      #
       def decode_content(headers, stream:, suppress_error: false)
         case headers["content-type"]
         in %r{^application/(?:vnd\.api\+)?json}
@@ -609,7 +580,7 @@ module OpenAI
     end
 
     class << self
-      # @private
+      # @api private
       #
       # https://doc.rust-lang.org/std/iter/trait.FusedIterator.html
       #
@@ -618,7 +589,6 @@ module OpenAI
       # @param close [Proc]
       #
       # @return [Enumerable]
-      #
       def fused_enum(enum, external: false, &close)
         fused = false
         iter = Enumerator.new do |y|
@@ -642,10 +612,9 @@ module OpenAI
         iter
       end
 
-      # @private
+      # @api private
       #
       # @param enum [Enumerable, nil]
-      #
       def close_fused!(enum)
         return unless enum.is_a?(Enumerator)
 
@@ -654,11 +623,10 @@ module OpenAI
         # rubocop:enable Lint/UnreachableLoop
       end
 
-      # @private
+      # @api private
       #
       # @param enum [Enumerable, nil]
       # @param blk [Proc]
-      #
       def chain_fused(enum, &blk)
         iter = Enumerator.new { blk.call(_1) }
         fused_enum(iter) { close_fused!(enum) }
@@ -666,12 +634,11 @@ module OpenAI
     end
 
     class << self
-      # @private
+      # @api private
       #
       # @param enum [Enumerable]
       #
       # @return [Enumerable]
-      #
       def decode_lines(enum)
         re = /(\r\n|\r|\n)/
         buffer = String.new.b
@@ -701,14 +668,13 @@ module OpenAI
         end
       end
 
-      # @private
+      # @api private
       #
       # https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream
       #
       # @param lines [Enumerable]
       #
       # @return [Hash{Symbol=>Object}]
-      #
       def decode_sse(lines)
         # rubocop:disable Metrics/BlockLength
         chain_fused(lines) do |y|
