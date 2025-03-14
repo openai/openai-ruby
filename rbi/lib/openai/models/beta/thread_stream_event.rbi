@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Beta
       class ThreadStreamEvent < OpenAI::BaseModel
+        # Represents a thread that contains
+        #   [messages](https://platform.openai.com/docs/api-reference/messages).
         sig { returns(OpenAI::Models::Beta::Thread) }
         def data
         end
@@ -20,6 +22,7 @@ module OpenAI
         def event=(_)
         end
 
+        # Whether to enable input audio transcription.
         sig { returns(T.nilable(T::Boolean)) }
         def enabled
         end
@@ -28,6 +31,9 @@ module OpenAI
         def enabled=(_)
         end
 
+        # Occurs when a new
+        #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
+        #   created.
         sig { params(data: OpenAI::Models::Beta::Thread, enabled: T::Boolean, event: Symbol).returns(T.attached_class) }
         def self.new(data:, enabled: nil, event: :"thread.created")
         end

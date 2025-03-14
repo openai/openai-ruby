@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseContentPartDoneEvent < OpenAI::BaseModel
+        # The index of the content part that is done.
         sig { returns(Integer) }
         def content_index
         end
@@ -12,6 +13,7 @@ module OpenAI
         def content_index=(_)
         end
 
+        # The ID of the output item that the content part was added to.
         sig { returns(String) }
         def item_id
         end
@@ -20,6 +22,7 @@ module OpenAI
         def item_id=(_)
         end
 
+        # The index of the output item that the content part was added to.
         sig { returns(Integer) }
         def output_index
         end
@@ -28,6 +31,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The content part that is done.
         sig do
           returns(
             T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
@@ -47,6 +51,7 @@ module OpenAI
         def part=(_)
         end
 
+        # The type of the event. Always `response.content_part.done`.
         sig { returns(Symbol) }
         def type
         end
@@ -55,6 +60,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when a content part is done.
         sig do
           params(
             content_index: Integer,
@@ -83,10 +89,12 @@ module OpenAI
         def to_hash
         end
 
+        # The content part that is done.
         class Part < OpenAI::Union
           abstract!
 
           class << self
+            # @api private
             sig do
               override
                 .returns(

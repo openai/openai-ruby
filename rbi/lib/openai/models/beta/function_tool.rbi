@@ -12,6 +12,7 @@ module OpenAI
         def function=(_)
         end
 
+        # The type of tool being defined: `function`
         sig { returns(Symbol) }
         def type
         end

@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputAudio < OpenAI::BaseModel
+        # Base64-encoded audio data.
         sig { returns(String) }
         def data
         end
@@ -12,6 +13,7 @@ module OpenAI
         def data=(_)
         end
 
+        # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         sig { returns(Symbol) }
         def format_
         end
@@ -20,6 +22,7 @@ module OpenAI
         def format_=(_)
         end
 
+        # The type of the input item. Always `input_audio`.
         sig { returns(Symbol) }
         def type
         end
@@ -28,6 +31,7 @@ module OpenAI
         def type=(_)
         end
 
+        # An audio input to the model.
         sig { params(data: String, format_: Symbol, type: Symbol).returns(T.attached_class) }
         def self.new(data:, format_:, type: :input_audio)
         end
@@ -36,6 +40,7 @@ module OpenAI
         def to_hash
         end
 
+        # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         class Format < OpenAI::Enum
           abstract!
 

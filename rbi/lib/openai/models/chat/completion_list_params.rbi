@@ -7,6 +7,7 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # Identifier for the last chat completion from the previous pagination request.
         sig { returns(T.nilable(String)) }
         def after
         end
@@ -15,6 +16,7 @@ module OpenAI
         def after=(_)
         end
 
+        # Number of Chat Completions to retrieve.
         sig { returns(T.nilable(Integer)) }
         def limit
         end
@@ -23,6 +25,9 @@ module OpenAI
         def limit=(_)
         end
 
+        # A list of metadata keys to filter the Chat Completions by. Example:
+        #
+        #   `metadata[key1]=value1&metadata[key2]=value2`
         sig { returns(T.nilable(OpenAI::Models::Metadata)) }
         def metadata
         end
@@ -31,6 +36,7 @@ module OpenAI
         def metadata=(_)
         end
 
+        # The model used to generate the Chat Completions.
         sig { returns(T.nilable(String)) }
         def model
         end
@@ -39,6 +45,8 @@ module OpenAI
         def model=(_)
         end
 
+        # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
+        #   `desc` for descending order. Defaults to `asc`.
         sig { returns(T.nilable(Symbol)) }
         def order
         end
@@ -77,6 +85,8 @@ module OpenAI
         def to_hash
         end
 
+        # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
+        #   `desc` for descending order. Defaults to `asc`.
         class Order < OpenAI::Enum
           abstract!
 

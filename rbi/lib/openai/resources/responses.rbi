@@ -7,6 +7,17 @@ module OpenAI
       def input_items
       end
 
+      # Creates a model response. Provide
+      #   [text](https://platform.openai.com/docs/guides/text) or
+      #   [image](https://platform.openai.com/docs/guides/images) inputs to generate
+      #   [text](https://platform.openai.com/docs/guides/text) or
+      #   [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
+      #   the model call your own
+      #   [custom code](https://platform.openai.com/docs/guides/function-calling) or use
+      #   built-in [tools](https://platform.openai.com/docs/guides/tools) like
+      #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+      #   [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
+      #   your own data as input for the model's response.
       sig do
         params(
           input: T.any(String, OpenAI::Models::Responses::ResponseInput),
@@ -59,6 +70,17 @@ module OpenAI
       )
       end
 
+      # Creates a model response. Provide
+      #   [text](https://platform.openai.com/docs/guides/text) or
+      #   [image](https://platform.openai.com/docs/guides/images) inputs to generate
+      #   [text](https://platform.openai.com/docs/guides/text) or
+      #   [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
+      #   the model call your own
+      #   [custom code](https://platform.openai.com/docs/guides/function-calling) or use
+      #   built-in [tools](https://platform.openai.com/docs/guides/tools) like
+      #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+      #   [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
+      #   your own data as input for the model's response.
       sig do
         params(
           input: T.any(String, OpenAI::Models::Responses::ResponseInput),
@@ -148,6 +170,7 @@ module OpenAI
       )
       end
 
+      # Retrieves a model response with the given ID.
       sig do
         params(
           response_id: String,
@@ -159,6 +182,7 @@ module OpenAI
       def retrieve(response_id, include: nil, request_options: {})
       end
 
+      # Deletes a model response with the given ID.
       sig do
         params(
           response_id: String,

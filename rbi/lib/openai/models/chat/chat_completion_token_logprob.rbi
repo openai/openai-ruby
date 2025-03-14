@@ -6,6 +6,7 @@ module OpenAI
 
     module Chat
       class ChatCompletionTokenLogprob < OpenAI::BaseModel
+        # The token.
         sig { returns(String) }
         def token
         end
@@ -14,6 +15,10 @@ module OpenAI
         def token=(_)
         end
 
+        # A list of integers representing the UTF-8 bytes representation of the token.
+        #   Useful in instances where characters are represented by multiple tokens and
+        #   their byte representations must be combined to generate the correct text
+        #   representation. Can be `null` if there is no bytes representation for the token.
         sig { returns(T.nilable(T::Array[Integer])) }
         def bytes
         end
@@ -22,6 +27,9 @@ module OpenAI
         def bytes=(_)
         end
 
+        # The log probability of this token, if it is within the top 20 most likely
+        #   tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+        #   unlikely.
         sig { returns(Float) }
         def logprob
         end
@@ -30,6 +38,9 @@ module OpenAI
         def logprob=(_)
         end
 
+        # List of the most likely tokens and their log probability, at this token
+        #   position. In rare cases, there may be fewer than the number of requested
+        #   `top_logprobs` returned.
         sig { returns(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]) }
         def top_logprobs
         end
@@ -68,6 +79,7 @@ module OpenAI
         end
 
         class TopLogprob < OpenAI::BaseModel
+          # The token.
           sig { returns(String) }
           def token
           end
@@ -76,6 +88,10 @@ module OpenAI
           def token=(_)
           end
 
+          # A list of integers representing the UTF-8 bytes representation of the token.
+          #   Useful in instances where characters are represented by multiple tokens and
+          #   their byte representations must be combined to generate the correct text
+          #   representation. Can be `null` if there is no bytes representation for the token.
           sig { returns(T.nilable(T::Array[Integer])) }
           def bytes
           end
@@ -84,6 +100,9 @@ module OpenAI
           def bytes=(_)
           end
 
+          # The log probability of this token, if it is within the top 20 most likely
+          #   tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+          #   unlikely.
           sig { returns(Float) }
           def logprob
           end

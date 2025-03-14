@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionWebSearch < OpenAI::BaseModel
+        # The unique ID of the web search tool call.
         sig { returns(String) }
         def id
         end
@@ -12,6 +13,7 @@ module OpenAI
         def id=(_)
         end
 
+        # The status of the web search tool call.
         sig { returns(Symbol) }
         def status
         end
@@ -20,6 +22,7 @@ module OpenAI
         def status=(_)
         end
 
+        # The type of the web search tool call. Always `web_search_call`.
         sig { returns(Symbol) }
         def type
         end
@@ -28,6 +31,9 @@ module OpenAI
         def type=(_)
         end
 
+        # The results of a web search tool call. See the
+        #   [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for
+        #   more information.
         sig { params(id: String, status: Symbol, type: Symbol).returns(T.attached_class) }
         def self.new(id:, status:, type: :web_search_call)
         end
@@ -36,6 +42,7 @@ module OpenAI
         def to_hash
         end
 
+        # The status of the web search tool call.
         class Status < OpenAI::Enum
           abstract!
 

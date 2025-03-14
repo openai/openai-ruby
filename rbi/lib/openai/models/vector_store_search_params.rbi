@@ -6,6 +6,7 @@ module OpenAI
       extend OpenAI::RequestParameters::Converter
       include OpenAI::RequestParameters
 
+      # A query string for a search
       sig { returns(T.any(String, T::Array[String])) }
       def query
       end
@@ -14,6 +15,7 @@ module OpenAI
       def query=(_)
       end
 
+      # A filter to apply based on file attributes.
       sig { returns(T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))) }
       def filters
       end
@@ -25,6 +27,8 @@ module OpenAI
       def filters=(_)
       end
 
+      # The maximum number of results to return. This number should be between 1 and 50
+      #   inclusive.
       sig { returns(T.nilable(Integer)) }
       def max_num_results
       end
@@ -33,6 +37,7 @@ module OpenAI
       def max_num_results=(_)
       end
 
+      # Ranking options for search.
       sig { returns(T.nilable(OpenAI::Models::VectorStoreSearchParams::RankingOptions)) }
       def ranking_options
       end
@@ -44,6 +49,7 @@ module OpenAI
       def ranking_options=(_)
       end
 
+      # Whether to rewrite the natural language query for vector search.
       sig { returns(T.nilable(T::Boolean)) }
       def rewrite_query
       end
@@ -82,22 +88,26 @@ module OpenAI
       def to_hash
       end
 
+      # A query string for a search
       class Query < OpenAI::Union
         abstract!
 
         StringArray = T.type_alias { T::Array[String] }
 
         class << self
+          # @api private
           sig { override.returns([[NilClass, String], [NilClass, T::Array[String]]]) }
           private def variants
           end
         end
       end
 
+      # A filter to apply based on file attributes.
       class Filters < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns([[NilClass, OpenAI::Models::ComparisonFilter], [NilClass, OpenAI::Models::CompoundFilter]])
@@ -124,6 +134,7 @@ module OpenAI
         def score_threshold=(_)
         end
 
+        # Ranking options for search.
         sig { params(ranker: Symbol, score_threshold: Float).returns(T.attached_class) }
         def self.new(ranker: nil, score_threshold: nil)
         end

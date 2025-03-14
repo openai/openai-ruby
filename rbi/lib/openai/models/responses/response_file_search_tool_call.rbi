@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseFileSearchToolCall < OpenAI::BaseModel
+        # The unique ID of the file search tool call.
         sig { returns(String) }
         def id
         end
@@ -12,6 +13,7 @@ module OpenAI
         def id=(_)
         end
 
+        # The queries used to search for files.
         sig { returns(T::Array[String]) }
         def queries
         end
@@ -20,6 +22,8 @@ module OpenAI
         def queries=(_)
         end
 
+        # The status of the file search tool call. One of `in_progress`, `searching`,
+        #   `incomplete` or `failed`,
         sig { returns(Symbol) }
         def status
         end
@@ -28,6 +32,7 @@ module OpenAI
         def status=(_)
         end
 
+        # The type of the file search tool call. Always `file_search_call`.
         sig { returns(Symbol) }
         def type
         end
@@ -36,6 +41,7 @@ module OpenAI
         def type=(_)
         end
 
+        # The results of the file search tool call.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result])) }
         def results
         end
@@ -47,6 +53,9 @@ module OpenAI
         def results=(_)
         end
 
+        # The results of a file search tool call. See the
+        #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
+        #   for more information.
         sig do
           params(
             id: String,
@@ -75,6 +84,8 @@ module OpenAI
         def to_hash
         end
 
+        # The status of the file search tool call. One of `in_progress`, `searching`,
+        #   `incomplete` or `failed`,
         class Status < OpenAI::Enum
           abstract!
 
@@ -92,6 +103,11 @@ module OpenAI
         end
 
         class Result < OpenAI::BaseModel
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard. Keys are strings with a maximum
+          #   length of 64 characters. Values are strings with a maximum length of 512
+          #   characters, booleans, or numbers.
           sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
           def attributes
           end
@@ -103,6 +119,7 @@ module OpenAI
           def attributes=(_)
           end
 
+          # The unique ID of the file.
           sig { returns(T.nilable(String)) }
           def file_id
           end
@@ -111,6 +128,7 @@ module OpenAI
           def file_id=(_)
           end
 
+          # The name of the file.
           sig { returns(T.nilable(String)) }
           def filename
           end
@@ -119,6 +137,7 @@ module OpenAI
           def filename=(_)
           end
 
+          # The relevance score of the file - a value between 0 and 1.
           sig { returns(T.nilable(Float)) }
           def score
           end
@@ -127,6 +146,7 @@ module OpenAI
           def score=(_)
           end
 
+          # The text that was retrieved from the file.
           sig { returns(T.nilable(String)) }
           def text
           end
@@ -167,6 +187,7 @@ module OpenAI
             abstract!
 
             class << self
+              # @api private
               sig { override.returns([[NilClass, String], [NilClass, Float], [NilClass, T::Boolean]]) }
               private def variants
               end

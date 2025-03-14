@@ -3,10 +3,14 @@
 module OpenAI
   module Models
     module Beta
+      # Occurs when a
+      #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+      #   is created.
       class RunStepStreamEvent < OpenAI::Union
         abstract!
 
         class ThreadRunStepCreated < OpenAI::BaseModel
+          # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           def data
           end
@@ -26,6 +30,9 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   is created.
           sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.step.created")
           end
@@ -36,6 +43,7 @@ module OpenAI
         end
 
         class ThreadRunStepInProgress < OpenAI::BaseModel
+          # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           def data
           end
@@ -55,6 +63,9 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   moves to an `in_progress` state.
           sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.step.in_progress")
           end
@@ -65,6 +76,8 @@ module OpenAI
         end
 
         class ThreadRunStepDelta < OpenAI::BaseModel
+          # Represents a run step delta i.e. any changed fields on a run step during
+          #   streaming.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
           def data
           end
@@ -84,6 +97,9 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when parts of a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   are being streamed.
           sig do
             params(data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, event: Symbol)
               .returns(T.attached_class)
@@ -97,6 +113,7 @@ module OpenAI
         end
 
         class ThreadRunStepCompleted < OpenAI::BaseModel
+          # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           def data
           end
@@ -116,6 +133,9 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   is completed.
           sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.step.completed")
           end
@@ -126,6 +146,7 @@ module OpenAI
         end
 
         class ThreadRunStepFailed < OpenAI::BaseModel
+          # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           def data
           end
@@ -145,6 +166,9 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   fails.
           sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.step.failed")
           end
@@ -155,6 +179,7 @@ module OpenAI
         end
 
         class ThreadRunStepCancelled < OpenAI::BaseModel
+          # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           def data
           end
@@ -174,6 +199,9 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   is cancelled.
           sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.step.cancelled")
           end
@@ -184,6 +212,7 @@ module OpenAI
         end
 
         class ThreadRunStepExpired < OpenAI::BaseModel
+          # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           def data
           end
@@ -203,6 +232,9 @@ module OpenAI
           def event=(_)
           end
 
+          # Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   expires.
           sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
           def self.new(data:, event: :"thread.run.step.expired")
           end
@@ -213,6 +245,7 @@ module OpenAI
         end
 
         class << self
+          # @api private
           sig do
             override
               .returns(

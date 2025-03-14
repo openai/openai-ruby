@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputRefusal < OpenAI::BaseModel
+        # The refusal explanationfrom the model.
         sig { returns(String) }
         def refusal
         end
@@ -12,6 +13,7 @@ module OpenAI
         def refusal=(_)
         end
 
+        # The type of the refusal. Always `refusal`.
         sig { returns(Symbol) }
         def type
         end
@@ -20,6 +22,7 @@ module OpenAI
         def type=(_)
         end
 
+        # A refusal from the model.
         sig { params(refusal: String, type: Symbol).returns(T.attached_class) }
         def self.new(refusal:, type: :refusal)
         end

@@ -1,6 +1,7 @@
 # typed: strong
 
 module OpenAI
+  # @api private
   module BasePage
     abstract!
 
@@ -24,6 +25,7 @@ module OpenAI
 
     alias_method :enum_for, :to_enum
 
+    # @api private
     sig do
       params(
         client: OpenAI::BaseClient,

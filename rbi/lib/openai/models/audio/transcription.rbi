@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Audio
       class Transcription < OpenAI::BaseModel
+        # The transcribed text.
         sig { returns(String) }
         def text
         end
@@ -12,6 +13,8 @@ module OpenAI
         def text=(_)
         end
 
+        # Represents a transcription response returned by model, based on the provided
+        #   input.
         sig { params(text: String).returns(T.attached_class) }
         def self.new(text:)
         end

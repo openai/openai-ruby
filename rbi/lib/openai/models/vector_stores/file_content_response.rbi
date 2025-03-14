@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       class FileContentResponse < OpenAI::BaseModel
+        # The text content
         sig { returns(T.nilable(String)) }
         def text
         end
@@ -12,6 +13,7 @@ module OpenAI
         def text=(_)
         end
 
+        # The content type (currently only `"text"`)
         sig { returns(T.nilable(String)) }
         def type
         end

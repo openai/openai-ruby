@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OpenAI
-  # @private
+  # @api private
   #
   # @example
   # ```ruby
@@ -19,10 +19,9 @@ module OpenAI
   class Stream
     include OpenAI::BaseStream
 
-    # @private
+    # @api private
     #
     # @return [Enumerable]
-    #
     private def iterator
       # rubocop:disable Metrics/BlockLength
       @iterator ||= OpenAI::Util.chain_fused(@messages) do |y|

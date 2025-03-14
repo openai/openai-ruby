@@ -6,6 +6,7 @@ module OpenAI
 
     module Chat
       class ChatCompletionFunctionMessageParam < OpenAI::BaseModel
+        # The contents of the function message.
         sig { returns(T.nilable(String)) }
         def content
         end
@@ -14,6 +15,7 @@ module OpenAI
         def content=(_)
         end
 
+        # The name of the function to call.
         sig { returns(String) }
         def name
         end
@@ -22,6 +24,7 @@ module OpenAI
         def name=(_)
         end
 
+        # The role of the messages author, in this case `function`.
         sig { returns(Symbol) }
         def role
         end

@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::BaseModel
+        # The final code snippet output by the code interpreter.
         sig { returns(String) }
         def code
         end
@@ -12,6 +13,7 @@ module OpenAI
         def code=(_)
         end
 
+        # The index of the output item that the code interpreter call is in progress.
         sig { returns(Integer) }
         def output_index
         end
@@ -20,6 +22,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The type of the event. Always `response.code_interpreter_call.code.done`.
         sig { returns(Symbol) }
         def type
         end
@@ -28,6 +31,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when code snippet output is finalized by the code interpreter.
         sig { params(code: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
         def self.new(code:, output_index:, type: :"response.code_interpreter_call.code.done")
         end

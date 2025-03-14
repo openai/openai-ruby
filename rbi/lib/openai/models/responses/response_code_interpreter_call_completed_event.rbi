@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallCompletedEvent < OpenAI::BaseModel
+        # A tool call to run code.
         sig { returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall) }
         def code_interpreter_call
         end
@@ -15,6 +16,7 @@ module OpenAI
         def code_interpreter_call=(_)
         end
 
+        # The index of the output item that the code interpreter call is in progress.
         sig { returns(Integer) }
         def output_index
         end
@@ -23,6 +25,7 @@ module OpenAI
         def output_index=(_)
         end
 
+        # The type of the event. Always `response.code_interpreter_call.completed`.
         sig { returns(Symbol) }
         def type
         end
@@ -31,6 +34,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when the code interpreter call is completed.
         sig do
           params(
             code_interpreter_call: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall,

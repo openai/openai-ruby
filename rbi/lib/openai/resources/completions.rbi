@@ -3,6 +3,7 @@
 module OpenAI
   module Resources
     class Completions
+      # Creates a completion for the provided prompt and parameters.
       sig do
         params(
           model: T.any(String, Symbol),
@@ -55,6 +56,7 @@ module OpenAI
       )
       end
 
+      # Creates a completion for the provided prompt and parameters.
       sig do
         params(
           model: T.any(String, Symbol),

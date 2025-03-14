@@ -5,6 +5,7 @@ module OpenAI
     module FineTuning
       module Jobs
         class FineTuningJobCheckpoint < OpenAI::BaseModel
+          # The checkpoint identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
           def id
           end
@@ -13,6 +14,7 @@ module OpenAI
           def id=(_)
           end
 
+          # The Unix timestamp (in seconds) for when the checkpoint was created.
           sig { returns(Integer) }
           def created_at
           end
@@ -21,6 +23,7 @@ module OpenAI
           def created_at=(_)
           end
 
+          # The name of the fine-tuned checkpoint model that is created.
           sig { returns(String) }
           def fine_tuned_model_checkpoint
           end
@@ -29,6 +32,7 @@ module OpenAI
           def fine_tuned_model_checkpoint=(_)
           end
 
+          # The name of the fine-tuning job that this checkpoint was created from.
           sig { returns(String) }
           def fine_tuning_job_id
           end
@@ -37,6 +41,7 @@ module OpenAI
           def fine_tuning_job_id=(_)
           end
 
+          # Metrics at the step number during the fine-tuning job.
           sig { returns(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics) }
           def metrics
           end
@@ -48,6 +53,7 @@ module OpenAI
           def metrics=(_)
           end
 
+          # The object type, which is always "fine_tuning.job.checkpoint".
           sig { returns(Symbol) }
           def object
           end
@@ -56,6 +62,7 @@ module OpenAI
           def object=(_)
           end
 
+          # The step number that the checkpoint was created at.
           sig { returns(Integer) }
           def step_number
           end
@@ -64,6 +71,8 @@ module OpenAI
           def step_number=(_)
           end
 
+          # The `fine_tuning.job.checkpoint` object represents a model checkpoint for a
+          #   fine-tuning job that is ready to use.
           sig do
             params(
               id: String,
@@ -161,6 +170,7 @@ module OpenAI
             def valid_mean_token_accuracy=(_)
             end
 
+            # Metrics at the step number during the fine-tuning job.
             sig do
               params(
                 full_valid_loss: Float,

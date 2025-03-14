@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class Audio
       class Transcriptions
+        # Transcribes audio into the input language.
         sig do
           params(
             file: T.any(IO, StringIO),

@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # The name of the model to fine-tune. You can select one of the
+        #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         sig { returns(T.any(String, Symbol)) }
         def model
         end
@@ -15,6 +17,23 @@ module OpenAI
         def model=(_)
         end
 
+        # The ID of an uploaded file that contains training data.
+        #
+        #   See [upload file](https://platform.openai.com/docs/api-reference/files/create)
+        #   for how to upload a file.
+        #
+        #   Your dataset must be formatted as a JSONL file. Additionally, you must upload
+        #   your file with the purpose `fine-tune`.
+        #
+        #   The contents of the file should differ depending on if the model uses the
+        #   [chat](https://platform.openai.com/docs/api-reference/fine-tuning/chat-input),
+        #   [completions](https://platform.openai.com/docs/api-reference/fine-tuning/completions-input)
+        #   format, or if the fine-tuning method uses the
+        #   [preference](https://platform.openai.com/docs/api-reference/fine-tuning/preference-input)
+        #   format.
+        #
+        #   See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
+        #   for more details.
         sig { returns(String) }
         def training_file
         end
@@ -23,6 +42,8 @@ module OpenAI
         def training_file=(_)
         end
 
+        # The hyperparameters used for the fine-tuning job. This value is now deprecated
+        #   in favor of `method`, and should be passed in under the `method` parameter.
         sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters)) }
         def hyperparameters
         end
@@ -34,6 +55,7 @@ module OpenAI
         def hyperparameters=(_)
         end
 
+        # A list of integrations to enable for your fine-tuning job.
         sig { returns(T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration])) }
         def integrations
         end
@@ -45,6 +67,12 @@ module OpenAI
         def integrations=(_)
         end
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
+        #
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
         sig { returns(T.nilable(OpenAI::Models::Metadata)) }
         def metadata
         end
@@ -53,6 +81,7 @@ module OpenAI
         def metadata=(_)
         end
 
+        # The method used for fine-tuning.
         sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Method)) }
         def method_
         end
@@ -64,6 +93,9 @@ module OpenAI
         def method_=(_)
         end
 
+        # The seed controls the reproducibility of the job. Passing in the same seed and
+        #   job parameters should produce the same results, but may differ in rare cases. If
+        #   a seed is not specified, one will be generated for you.
         sig { returns(T.nilable(Integer)) }
         def seed
         end
@@ -72,6 +104,11 @@ module OpenAI
         def seed=(_)
         end
 
+        # A string of up to 64 characters that will be added to your fine-tuned model
+        #   name.
+        #
+        #   For example, a `suffix` of "custom-model-name" would produce a model name like
+        #   `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
         sig { returns(T.nilable(String)) }
         def suffix
         end
@@ -80,6 +117,18 @@ module OpenAI
         def suffix=(_)
         end
 
+        # The ID of an uploaded file that contains validation data.
+        #
+        #   If you provide this file, the data is used to generate validation metrics
+        #   periodically during fine-tuning. These metrics can be viewed in the fine-tuning
+        #   results file. The same data should not be present in both train and validation
+        #   files.
+        #
+        #   Your dataset must be formatted as a JSONL file. You must upload your file with
+        #   the purpose `fine-tune`.
+        #
+        #   See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
+        #   for more details.
         sig { returns(T.nilable(String)) }
         def validation_file
         end
@@ -137,9 +186,13 @@ module OpenAI
         def to_hash
         end
 
+        # The name of the model to fine-tune. You can select one of the
+        #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         class Model < OpenAI::Union
           abstract!
 
+          # The name of the model to fine-tune. You can select one of the
+          #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
           class Preset < OpenAI::Enum
             abstract!
 
@@ -156,6 +209,7 @@ module OpenAI
           end
 
           class << self
+            # @api private
             sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
             private def variants
             end
@@ -163,6 +217,8 @@ module OpenAI
         end
 
         class Hyperparameters < OpenAI::BaseModel
+          # Number of examples in each batch. A larger batch size means that model
+          #   parameters are updated less frequently, but with lower variance.
           sig { returns(T.nilable(T.any(Symbol, Integer))) }
           def batch_size
           end
@@ -171,6 +227,8 @@ module OpenAI
           def batch_size=(_)
           end
 
+          # Scaling factor for the learning rate. A smaller learning rate may be useful to
+          #   avoid overfitting.
           sig { returns(T.nilable(T.any(Symbol, Float))) }
           def learning_rate_multiplier
           end
@@ -179,6 +237,8 @@ module OpenAI
           def learning_rate_multiplier=(_)
           end
 
+          # The number of epochs to train the model for. An epoch refers to one full cycle
+          #   through the training dataset.
           sig { returns(T.nilable(T.any(Symbol, Integer))) }
           def n_epochs
           end
@@ -187,6 +247,8 @@ module OpenAI
           def n_epochs=(_)
           end
 
+          # The hyperparameters used for the fine-tuning job. This value is now deprecated
+          #   in favor of `method`, and should be passed in under the `method` parameter.
           sig do
             params(
               batch_size: T.any(Symbol, Integer),
@@ -211,30 +273,39 @@ module OpenAI
           def to_hash
           end
 
+          # Number of examples in each batch. A larger batch size means that model
+          #   parameters are updated less frequently, but with lower variance.
           class BatchSize < OpenAI::Union
             abstract!
 
             class << self
+              # @api private
               sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
               private def variants
               end
             end
           end
 
+          # Scaling factor for the learning rate. A smaller learning rate may be useful to
+          #   avoid overfitting.
           class LearningRateMultiplier < OpenAI::Union
             abstract!
 
             class << self
+              # @api private
               sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
               private def variants
               end
             end
           end
 
+          # The number of epochs to train the model for. An epoch refers to one full cycle
+          #   through the training dataset.
           class NEpochs < OpenAI::Union
             abstract!
 
             class << self
+              # @api private
               sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
               private def variants
               end
@@ -243,6 +314,8 @@ module OpenAI
         end
 
         class Integration < OpenAI::BaseModel
+          # The type of integration to enable. Currently, only "wandb" (Weights and Biases)
+          #   is supported.
           sig { returns(Symbol) }
           def type
           end
@@ -251,6 +324,10 @@ module OpenAI
           def type=(_)
           end
 
+          # The settings for your integration with Weights and Biases. This payload
+          #   specifies the project that metrics will be sent to. Optionally, you can set an
+          #   explicit display name for your run, add tags to your run, and set a default
+          #   entity (team, username, etc) to be associated with your run.
           sig { returns(OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb) }
           def wandb
           end
@@ -274,6 +351,7 @@ module OpenAI
           end
 
           class Wandb < OpenAI::BaseModel
+            # The name of the project that the new run will be created under.
             sig { returns(String) }
             def project
             end
@@ -282,6 +360,9 @@ module OpenAI
             def project=(_)
             end
 
+            # The entity to use for the run. This allows you to set the team or username of
+            #   the WandB user that you would like associated with the run. If not set, the
+            #   default entity for the registered WandB API key is used.
             sig { returns(T.nilable(String)) }
             def entity
             end
@@ -290,6 +371,8 @@ module OpenAI
             def entity=(_)
             end
 
+            # A display name to set for the run. If not set, we will use the Job ID as the
+            #   name.
             sig { returns(T.nilable(String)) }
             def name
             end
@@ -298,6 +381,9 @@ module OpenAI
             def name=(_)
             end
 
+            # A list of tags to be attached to the newly created run. These tags are passed
+            #   through directly to WandB. Some default tags are generated by OpenAI:
+            #   "openai/finetune", "openai/{base-model}", "openai/{ftjob-abcdef}".
             sig { returns(T.nilable(T::Array[String])) }
             def tags
             end
@@ -306,6 +392,10 @@ module OpenAI
             def tags=(_)
             end
 
+            # The settings for your integration with Weights and Biases. This payload
+            #   specifies the project that metrics will be sent to. Optionally, you can set an
+            #   explicit display name for your run, add tags to your run, and set a default
+            #   entity (team, username, etc) to be associated with your run.
             sig do
               params(
                 project: String,
@@ -333,6 +423,7 @@ module OpenAI
         end
 
         class Method < OpenAI::BaseModel
+          # Configuration for the DPO fine-tuning method.
           sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo)) }
           def dpo
           end
@@ -344,6 +435,7 @@ module OpenAI
           def dpo=(_)
           end
 
+          # Configuration for the supervised fine-tuning method.
           sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised)) }
           def supervised
           end
@@ -355,6 +447,7 @@ module OpenAI
           def supervised=(_)
           end
 
+          # The type of method. Is either `supervised` or `dpo`.
           sig { returns(T.nilable(Symbol)) }
           def type
           end
@@ -363,6 +456,7 @@ module OpenAI
           def type=(_)
           end
 
+          # The method used for fine-tuning.
           sig do
             params(
               dpo: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo,
@@ -388,6 +482,7 @@ module OpenAI
           end
 
           class Dpo < OpenAI::BaseModel
+            # The hyperparameters used for the fine-tuning job.
             sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters)) }
             def hyperparameters
             end
@@ -399,6 +494,7 @@ module OpenAI
             def hyperparameters=(_)
             end
 
+            # Configuration for the DPO fine-tuning method.
             sig do
               params(hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters)
                 .returns(T.attached_class)
@@ -414,6 +510,8 @@ module OpenAI
             end
 
             class Hyperparameters < OpenAI::BaseModel
+              # Number of examples in each batch. A larger batch size means that model
+              #   parameters are updated less frequently, but with lower variance.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               def batch_size
               end
@@ -422,6 +520,8 @@ module OpenAI
               def batch_size=(_)
               end
 
+              # The beta value for the DPO method. A higher beta value will increase the weight
+              #   of the penalty between the policy and reference model.
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               def beta
               end
@@ -430,6 +530,8 @@ module OpenAI
               def beta=(_)
               end
 
+              # Scaling factor for the learning rate. A smaller learning rate may be useful to
+              #   avoid overfitting.
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               def learning_rate_multiplier
               end
@@ -438,6 +540,8 @@ module OpenAI
               def learning_rate_multiplier=(_)
               end
 
+              # The number of epochs to train the model for. An epoch refers to one full cycle
+              #   through the training dataset.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               def n_epochs
               end
@@ -446,6 +550,7 @@ module OpenAI
               def n_epochs=(_)
               end
 
+              # The hyperparameters used for the fine-tuning job.
               sig do
                 params(
                   batch_size: T.any(Symbol, Integer),
@@ -472,40 +577,52 @@ module OpenAI
               def to_hash
               end
 
+              # Number of examples in each batch. A larger batch size means that model
+              #   parameters are updated less frequently, but with lower variance.
               class BatchSize < OpenAI::Union
                 abstract!
 
                 class << self
+                  # @api private
                   sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
                   private def variants
                   end
                 end
               end
 
+              # The beta value for the DPO method. A higher beta value will increase the weight
+              #   of the penalty between the policy and reference model.
               class Beta < OpenAI::Union
                 abstract!
 
                 class << self
+                  # @api private
                   sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
                   private def variants
                   end
                 end
               end
 
+              # Scaling factor for the learning rate. A smaller learning rate may be useful to
+              #   avoid overfitting.
               class LearningRateMultiplier < OpenAI::Union
                 abstract!
 
                 class << self
+                  # @api private
                   sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
                   private def variants
                   end
                 end
               end
 
+              # The number of epochs to train the model for. An epoch refers to one full cycle
+              #   through the training dataset.
               class NEpochs < OpenAI::Union
                 abstract!
 
                 class << self
+                  # @api private
                   sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
                   private def variants
                   end
@@ -515,6 +632,7 @@ module OpenAI
           end
 
           class Supervised < OpenAI::BaseModel
+            # The hyperparameters used for the fine-tuning job.
             sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters)) }
             def hyperparameters
             end
@@ -526,6 +644,7 @@ module OpenAI
             def hyperparameters=(_)
             end
 
+            # Configuration for the supervised fine-tuning method.
             sig do
               params(hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters)
                 .returns(T.attached_class)
@@ -543,6 +662,8 @@ module OpenAI
             end
 
             class Hyperparameters < OpenAI::BaseModel
+              # Number of examples in each batch. A larger batch size means that model
+              #   parameters are updated less frequently, but with lower variance.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               def batch_size
               end
@@ -551,6 +672,8 @@ module OpenAI
               def batch_size=(_)
               end
 
+              # Scaling factor for the learning rate. A smaller learning rate may be useful to
+              #   avoid overfitting.
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               def learning_rate_multiplier
               end
@@ -559,6 +682,8 @@ module OpenAI
               def learning_rate_multiplier=(_)
               end
 
+              # The number of epochs to train the model for. An epoch refers to one full cycle
+              #   through the training dataset.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               def n_epochs
               end
@@ -567,6 +692,7 @@ module OpenAI
               def n_epochs=(_)
               end
 
+              # The hyperparameters used for the fine-tuning job.
               sig do
                 params(
                   batch_size: T.any(Symbol, Integer),
@@ -591,30 +717,39 @@ module OpenAI
               def to_hash
               end
 
+              # Number of examples in each batch. A larger batch size means that model
+              #   parameters are updated less frequently, but with lower variance.
               class BatchSize < OpenAI::Union
                 abstract!
 
                 class << self
+                  # @api private
                   sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
                   private def variants
                   end
                 end
               end
 
+              # Scaling factor for the learning rate. A smaller learning rate may be useful to
+              #   avoid overfitting.
               class LearningRateMultiplier < OpenAI::Union
                 abstract!
 
                 class << self
+                  # @api private
                   sig { override.returns([[NilClass, Symbol], [NilClass, Float]]) }
                   private def variants
                   end
                 end
               end
 
+              # The number of epochs to train the model for. An epoch refers to one full cycle
+              #   through the training dataset.
               class NEpochs < OpenAI::Union
                 abstract!
 
                 class << self
+                  # @api private
                   sig { override.returns([[NilClass, Symbol], [NilClass, Integer]]) }
                   private def variants
                   end
@@ -623,6 +758,7 @@ module OpenAI
             end
           end
 
+          # The type of method. Is either `supervised` or `dpo`.
           class Type < OpenAI::Enum
             abstract!
 

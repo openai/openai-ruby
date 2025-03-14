@@ -78,7 +78,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
-        #
         def create(params)
           parsed, options = OpenAI::Models::FineTuning::JobCreateParams.dump_request(params)
           @client.request(
@@ -101,7 +100,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
-        #
         def retrieve(fine_tuning_job_id, params = {})
           @client.request(
             method: :get,
@@ -125,7 +123,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJob>]
-        #
         def list(params = {})
           parsed, options = OpenAI::Models::FineTuning::JobListParams.dump_request(params)
           @client.request(
@@ -147,7 +144,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
-        #
         def cancel(fine_tuning_job_id, params = {})
           @client.request(
             method: :post,
@@ -170,7 +166,6 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJobEvent>]
-        #
         def list_events(fine_tuning_job_id, params = {})
           parsed, options = OpenAI::Models::FineTuning::JobListEventsParams.dump_request(params)
           @client.request(
@@ -184,7 +179,6 @@ module OpenAI
         end
 
         # @param client [OpenAI::Client]
-        #
         def initialize(client:)
           @client = client
           @checkpoints = OpenAI::Resources::FineTuning::Jobs::Checkpoints.new(client: client)

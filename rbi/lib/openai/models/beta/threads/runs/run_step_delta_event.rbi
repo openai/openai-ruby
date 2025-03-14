@@ -8,6 +8,7 @@ module OpenAI
 
         module Runs
           class RunStepDeltaEvent < OpenAI::BaseModel
+            # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }
             def id
             end
@@ -16,6 +17,7 @@ module OpenAI
             def id=(_)
             end
 
+            # The delta containing the fields that have changed on the run step.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDelta) }
             def delta
             end
@@ -27,6 +29,7 @@ module OpenAI
             def delta=(_)
             end
 
+            # The object type, which is always `thread.run.step.delta`.
             sig { returns(Symbol) }
             def object
             end
@@ -35,6 +38,8 @@ module OpenAI
             def object=(_)
             end
 
+            # Represents a run step delta i.e. any changed fields on a run step during
+            #   streaming.
             sig do
               params(id: String, delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta, object: Symbol)
                 .returns(T.attached_class)

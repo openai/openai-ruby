@@ -17,6 +17,7 @@ module OpenAI
         def input_audio=(_)
         end
 
+        # The type of the content part. Always `input_audio`.
         sig { returns(Symbol) }
         def type
         end
@@ -25,6 +26,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
         sig do
           params(input_audio: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, type: Symbol)
             .returns(T.attached_class)
@@ -42,6 +44,7 @@ module OpenAI
         end
 
         class InputAudio < OpenAI::BaseModel
+          # Base64 encoded audio data.
           sig { returns(String) }
           def data
           end
@@ -50,6 +53,7 @@ module OpenAI
           def data=(_)
           end
 
+          # The format of the encoded audio data. Currently supports "wav" and "mp3".
           sig { returns(Symbol) }
           def format_
           end
@@ -66,6 +70,7 @@ module OpenAI
           def to_hash
           end
 
+          # The format of the encoded audio data. Currently supports "wav" and "mp3".
           class Format < OpenAI::Enum
             abstract!
 

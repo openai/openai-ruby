@@ -7,6 +7,7 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # An item ID to list items after, used in pagination.
         sig { returns(T.nilable(String)) }
         def after
         end
@@ -15,6 +16,7 @@ module OpenAI
         def after=(_)
         end
 
+        # An item ID to list items before, used in pagination.
         sig { returns(T.nilable(String)) }
         def before
         end
@@ -23,6 +25,8 @@ module OpenAI
         def before=(_)
         end
 
+        # A limit on the number of objects to be returned. Limit can range between 1 and
+        #   100, and the default is 20.
         sig { returns(T.nilable(Integer)) }
         def limit
         end
@@ -31,6 +35,10 @@ module OpenAI
         def limit=(_)
         end
 
+        # The order to return the input items in. Default is `asc`.
+        #
+        #   - `asc`: Return the input items in ascending order.
+        #   - `desc`: Return the input items in descending order.
         sig { returns(T.nilable(Symbol)) }
         def order
         end
@@ -67,6 +75,10 @@ module OpenAI
         def to_hash
         end
 
+        # The order to return the input items in. Default is `asc`.
+        #
+        #   - `asc`: Return the input items in ascending order.
+        #   - `desc`: Return the input items in descending order.
         class Order < OpenAI::Enum
           abstract!
 

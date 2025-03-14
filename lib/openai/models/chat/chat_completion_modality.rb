@@ -4,7 +4,6 @@ module OpenAI
   module Models
     module Chat
       # @abstract
-      #
       class ChatCompletionModality < OpenAI::Enum
         TEXT = :text
         AUDIO = :audio

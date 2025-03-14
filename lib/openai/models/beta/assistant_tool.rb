@@ -4,7 +4,6 @@ module OpenAI
   module Models
     module Beta
       # @abstract
-      #
       class AssistantTool < OpenAI::Union
         discriminator :type
 

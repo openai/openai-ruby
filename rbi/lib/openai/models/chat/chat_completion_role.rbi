@@ -5,6 +5,7 @@ module OpenAI
     ChatCompletionRole = T.type_alias { Chat::ChatCompletionRole }
 
     module Chat
+      # The role of the author of a message
       class ChatCompletionRole < OpenAI::Enum
         abstract!
 

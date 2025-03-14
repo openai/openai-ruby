@@ -8,6 +8,7 @@ module OpenAI
 
         module Runs
           class RunStepDelta < OpenAI::BaseModel
+            # The details of the run step.
             sig do
               returns(
                 T.nilable(
@@ -38,6 +39,7 @@ module OpenAI
             def step_details=(_)
             end
 
+            # The delta containing the fields that have changed on the run step.
             sig do
               params(
                 step_details: T.any(
@@ -64,10 +66,12 @@ module OpenAI
             def to_hash
             end
 
+            # The details of the run step.
             class StepDetails < OpenAI::Union
               abstract!
 
               class << self
+                # @api private
                 sig do
                   override
                     .returns(

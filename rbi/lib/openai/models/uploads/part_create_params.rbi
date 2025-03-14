@@ -7,6 +7,7 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
+        # The chunk of bytes for this Part.
         sig { returns(T.any(IO, StringIO)) }
         def data
         end

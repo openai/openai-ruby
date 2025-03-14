@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     class BatchError < OpenAI::BaseModel
+      # An error code identifying the error type.
       sig { returns(T.nilable(String)) }
       def code
       end
@@ -11,6 +12,7 @@ module OpenAI
       def code=(_)
       end
 
+      # The line number of the input file where the error occurred, if applicable.
       sig { returns(T.nilable(Integer)) }
       def line
       end
@@ -19,6 +21,7 @@ module OpenAI
       def line=(_)
       end
 
+      # A human-readable message providing more details about the error.
       sig { returns(T.nilable(String)) }
       def message
       end
@@ -27,6 +30,7 @@ module OpenAI
       def message=(_)
       end
 
+      # The name of the parameter that caused the error, if applicable.
       sig { returns(T.nilable(String)) }
       def param
       end

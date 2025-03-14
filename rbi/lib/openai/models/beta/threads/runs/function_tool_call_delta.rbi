@@ -6,6 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class FunctionToolCallDelta < OpenAI::BaseModel
+            # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
             def index
             end
@@ -14,6 +15,8 @@ module OpenAI
             def index=(_)
             end
 
+            # The type of tool call. This is always going to be `function` for this type of
+            #   tool call.
             sig { returns(Symbol) }
             def type
             end
@@ -22,6 +25,7 @@ module OpenAI
             def type=(_)
             end
 
+            # The ID of the tool call object.
             sig { returns(T.nilable(String)) }
             def id
             end
@@ -30,6 +34,7 @@ module OpenAI
             def id=(_)
             end
 
+            # The definition of the function that was called.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function)) }
             def function
             end
@@ -68,6 +73,7 @@ module OpenAI
             end
 
             class Function < OpenAI::BaseModel
+              # The arguments passed to the function.
               sig { returns(T.nilable(String)) }
               def arguments
               end
@@ -76,6 +82,7 @@ module OpenAI
               def arguments=(_)
               end
 
+              # The name of the function.
               sig { returns(T.nilable(String)) }
               def name
               end
@@ -84,6 +91,9 @@ module OpenAI
               def name=(_)
               end
 
+              # The output of the function. This will be `null` if the outputs have not been
+              #   [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+              #   yet.
               sig { returns(T.nilable(String)) }
               def output
               end
@@ -92,6 +102,7 @@ module OpenAI
               def output=(_)
               end
 
+              # The definition of the function that was called.
               sig do
                 params(arguments: String, name: String, output: T.nilable(String)).returns(T.attached_class)
               end

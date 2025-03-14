@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionCallArgumentsDoneEvent < OpenAI::BaseModel
+        # The function-call arguments.
         sig { returns(String) }
         def arguments
         end
@@ -12,6 +13,7 @@ module OpenAI
         def arguments=(_)
         end
 
+        # The ID of the item.
         sig { returns(String) }
         def item_id
         end
@@ -20,6 +22,7 @@ module OpenAI
         def item_id=(_)
         end
 
+        # The index of the output item.
         sig { returns(Integer) }
         def output_index
         end
@@ -36,6 +39,7 @@ module OpenAI
         def type=(_)
         end
 
+        # Emitted when function-call arguments are finalized.
         sig do
           params(
             arguments: String,

@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     class VectorStore < OpenAI::BaseModel
+      # The identifier, which can be referenced in API endpoints.
       sig { returns(String) }
       def id
       end
@@ -11,6 +12,7 @@ module OpenAI
       def id=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the vector store was created.
       sig { returns(Integer) }
       def created_at
       end
@@ -27,6 +29,7 @@ module OpenAI
       def file_counts=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the vector store was last active.
       sig { returns(T.nilable(Integer)) }
       def last_active_at
       end
@@ -35,6 +38,12 @@ module OpenAI
       def last_active_at=(_)
       end
 
+      # Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
+      #
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
       sig { returns(T.nilable(OpenAI::Models::Metadata)) }
       def metadata
       end
@@ -43,6 +52,7 @@ module OpenAI
       def metadata=(_)
       end
 
+      # The name of the vector store.
       sig { returns(String) }
       def name
       end
@@ -51,6 +61,7 @@ module OpenAI
       def name=(_)
       end
 
+      # The object type, which is always `vector_store`.
       sig { returns(Symbol) }
       def object
       end
@@ -59,6 +70,9 @@ module OpenAI
       def object=(_)
       end
 
+      # The status of the vector store, which can be either `expired`, `in_progress`, or
+      #   `completed`. A status of `completed` indicates that the vector store is ready
+      #   for use.
       sig { returns(Symbol) }
       def status
       end
@@ -67,6 +81,7 @@ module OpenAI
       def status=(_)
       end
 
+      # The total number of bytes used by the files in the vector store.
       sig { returns(Integer) }
       def usage_bytes
       end
@@ -75,6 +90,7 @@ module OpenAI
       def usage_bytes=(_)
       end
 
+      # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::Models::VectorStore::ExpiresAfter)) }
       def expires_after
       end
@@ -83,6 +99,7 @@ module OpenAI
       def expires_after=(_)
       end
 
+      # The Unix timestamp (in seconds) for when the vector store will expire.
       sig { returns(T.nilable(Integer)) }
       def expires_at
       end
@@ -91,6 +108,8 @@ module OpenAI
       def expires_at=(_)
       end
 
+      # A vector store is a collection of processed files can be used by the
+      #   `file_search` tool.
       sig do
         params(
           id: String,
@@ -144,6 +163,7 @@ module OpenAI
       end
 
       class FileCounts < OpenAI::BaseModel
+        # The number of files that were cancelled.
         sig { returns(Integer) }
         def cancelled
         end
@@ -152,6 +172,7 @@ module OpenAI
         def cancelled=(_)
         end
 
+        # The number of files that have been successfully processed.
         sig { returns(Integer) }
         def completed
         end
@@ -160,6 +181,7 @@ module OpenAI
         def completed=(_)
         end
 
+        # The number of files that have failed to process.
         sig { returns(Integer) }
         def failed
         end
@@ -168,6 +190,7 @@ module OpenAI
         def failed=(_)
         end
 
+        # The number of files that are currently being processed.
         sig { returns(Integer) }
         def in_progress
         end
@@ -176,6 +199,7 @@ module OpenAI
         def in_progress=(_)
         end
 
+        # The total number of files.
         sig { returns(Integer) }
         def total
         end
@@ -211,6 +235,9 @@ module OpenAI
         end
       end
 
+      # The status of the vector store, which can be either `expired`, `in_progress`, or
+      #   `completed`. A status of `completed` indicates that the vector store is ready
+      #   for use.
       class Status < OpenAI::Enum
         abstract!
 
@@ -226,6 +253,8 @@ module OpenAI
       end
 
       class ExpiresAfter < OpenAI::BaseModel
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `last_active_at`.
         sig { returns(Symbol) }
         def anchor
         end
@@ -234,6 +263,7 @@ module OpenAI
         def anchor=(_)
         end
 
+        # The number of days after the anchor time that the vector store will expire.
         sig { returns(Integer) }
         def days
         end
@@ -242,6 +272,7 @@ module OpenAI
         def days=(_)
         end
 
+        # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
         def self.new(days:, anchor: :last_active_at)
         end

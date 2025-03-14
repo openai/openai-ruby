@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class Audio
       class Speech
+        # Generates audio from the input text.
         sig do
           params(
             input: String,

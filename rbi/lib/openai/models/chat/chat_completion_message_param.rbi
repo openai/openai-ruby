@@ -5,10 +5,14 @@ module OpenAI
     ChatCompletionMessageParam = T.type_alias { Chat::ChatCompletionMessageParam }
 
     module Chat
+      # Developer-provided instructions that the model should follow, regardless of
+      #   messages sent by the user. With o1 models and newer, `developer` messages
+      #   replace the previous `system` messages.
       class ChatCompletionMessageParam < OpenAI::Union
         abstract!
 
         class << self
+          # @api private
           sig do
             override
               .returns(

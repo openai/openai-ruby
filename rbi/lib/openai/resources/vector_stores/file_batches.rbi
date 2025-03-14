@@ -4,6 +4,7 @@ module OpenAI
   module Resources
     class VectorStores
       class FileBatches
+        # Create a vector store file batch.
         sig do
           params(
             vector_store_id: String,
@@ -20,6 +21,7 @@ module OpenAI
         def create(vector_store_id, file_ids:, attributes: nil, chunking_strategy: nil, request_options: {})
         end
 
+        # Retrieves a vector store file batch.
         sig do
           params(
             batch_id: String,
@@ -31,6 +33,8 @@ module OpenAI
         def retrieve(batch_id, vector_store_id:, request_options: {})
         end
 
+        # Cancel a vector store file batch. This attempts to cancel the processing of
+        #   files in this batch as soon as possible.
         sig do
           params(
             batch_id: String,
@@ -42,6 +46,7 @@ module OpenAI
         def cancel(batch_id, vector_store_id:, request_options: {})
         end
 
+        # Returns a list of vector store files in a batch.
         sig do
           params(
             batch_id: String,
