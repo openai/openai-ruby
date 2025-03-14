@@ -60,7 +60,7 @@ module OpenAI
       type model = String | OpenAI::Models::image_model
 
       class Model < OpenAI::Union
-        private def self.variants: -> [[nil, String], [nil, OpenAI::Models::image_model]]
+        def self.variants: -> [String, OpenAI::Models::image_model]
       end
 
       type quality = :standard | :hd

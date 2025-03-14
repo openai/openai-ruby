@@ -137,27 +137,23 @@ module OpenAI
           end
 
           class << self
-            # @api private
             sig do
               override
                 .returns(
                   [
-                    [NilClass, String],
-                    [
-                      NilClass,
-                      T::Array[
-                                        T.any(
-                                          OpenAI::Models::Chat::ChatCompletionContentPartText,
-                                          OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                                          OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                                          OpenAI::Models::Chat::ChatCompletionContentPart::File
-                                        )
-                                        ]
-                    ]
+                    String,
+                    T::Array[
+                                      T.any(
+                                        OpenAI::Models::Chat::ChatCompletionContentPartText,
+                                        OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                                        OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                                        OpenAI::Models::Chat::ChatCompletionContentPart::File
+                                      )
+                                      ]
                   ]
                 )
             end
-            private def variants
+            def variants
             end
           end
         end

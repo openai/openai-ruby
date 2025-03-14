@@ -6,7 +6,7 @@ module OpenAI
         | OpenAI::Models::Audio::TranslationVerbose
 
       class TranslationCreateResponse < OpenAI::Union
-        private def self.variants: -> [[nil, OpenAI::Models::Audio::Translation], [nil, OpenAI::Models::Audio::TranslationVerbose]]
+        def self.variants: -> [OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose]
       end
     end
   end

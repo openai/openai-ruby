@@ -32,9 +32,8 @@ module OpenAI
         end
 
         class << self
-          # @api private
-          sig { override.returns([[NilClass, Symbol], [NilClass, OpenAI::Models::Beta::AssistantToolChoice]]) }
-          private def variants
+          sig { override.returns([Symbol, OpenAI::Models::Beta::AssistantToolChoice]) }
+          def variants
           end
         end
       end

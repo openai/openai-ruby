@@ -296,6 +296,12 @@ module OpenAI
 
               # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
               variant OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Content::MessageContentPartParamArray
+
+              # @!parse
+              #   class << self
+              #     # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
+              #     def variants; end
+              #   end
             end
 
             # @abstract
@@ -366,6 +372,12 @@ module OpenAI
 
                   # def initialize: (Hash | OpenAI::BaseModel) -> void
                 end
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch)]
+                #     def variants; end
+                #   end
               end
             end
           end
@@ -381,6 +393,12 @@ module OpenAI
 
             # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to be used to execute this run. If a value is provided here, it will override the model associated with the assistant. If not, the model associated with the assistant will be used.
             variant enum: -> { OpenAI::Models::ChatModel }
+
+            # @!parse
+            #   class << self
+            #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
+            #     def variants; end
+            #   end
           end
 
           class TruncationStrategy < OpenAI::BaseModel

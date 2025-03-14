@@ -9,7 +9,7 @@ module OpenAI
             | OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
 
           class ToolCallDelta < OpenAI::Union
-            private def self.variants: -> [[:code_interpreter, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta], [:file_search, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta], [:function, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]]
+            def self.variants: -> [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]
           end
         end
       end

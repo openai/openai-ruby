@@ -31,6 +31,12 @@ module OpenAI
         # A description of the chain of thought used by a reasoning model while generating
         # a response.
         variant :reasoning, -> { OpenAI::Models::Responses::ResponseReasoningItem }
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem)]
+        #     def variants; end
+        #   end
       end
     end
   end

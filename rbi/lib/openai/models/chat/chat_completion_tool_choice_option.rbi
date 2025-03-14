@@ -35,9 +35,8 @@ module OpenAI
         end
 
         class << self
-          # @api private
-          sig { override.returns([[NilClass, Symbol], [NilClass, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]]) }
-          private def variants
+          sig { override.returns([Symbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]) }
+          def variants
           end
         end
       end

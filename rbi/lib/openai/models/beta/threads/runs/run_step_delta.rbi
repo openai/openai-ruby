@@ -71,14 +71,13 @@ module OpenAI
               abstract!
 
               class << self
-                # @api private
                 sig do
                   override
                     .returns(
-                      [[Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta], [Symbol, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]]
+                      [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
                     )
                 end
-                private def variants
+                def variants
                 end
               end
             end

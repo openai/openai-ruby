@@ -71,6 +71,12 @@ module OpenAI
 
           # Combine multiple filters using `and` or `or`.
           variant -> { OpenAI::Models::CompoundFilter }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
+          #     def variants; end
+          #   end
         end
 
         class RankingOptions < OpenAI::BaseModel

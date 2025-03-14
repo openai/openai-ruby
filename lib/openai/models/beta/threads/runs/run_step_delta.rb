@@ -36,6 +36,12 @@ module OpenAI
 
               # Details of the tool call.
               variant :tool_calls, -> { OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject }
+
+              # @!parse
+              #   class << self
+              #     # @return [Array(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject)]
+              #     def variants; end
+              #   end
             end
           end
         end

@@ -17,6 +17,12 @@ module OpenAI
 
           # A URL for the file that's generated when the assistant used the `code_interpreter` tool to generate a file.
           variant :file_path, -> { OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation)]
+          #     def variants; end
+          #   end
         end
       end
     end

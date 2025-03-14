@@ -35,6 +35,12 @@ module OpenAI
         variant -> { OpenAI::Models::ComparisonFilter }
 
         variant OpenAI::Unknown
+
+        # @!parse
+        #   class << self
+        #     # @return [Array(OpenAI::Models::ComparisonFilter, Object)]
+        #     def variants; end
+        #   end
       end
 
       # @abstract

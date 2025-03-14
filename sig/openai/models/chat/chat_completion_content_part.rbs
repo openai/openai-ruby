@@ -60,7 +60,7 @@ module OpenAI
           end
         end
 
-        private def self.variants: -> [[:text, OpenAI::Models::Chat::ChatCompletionContentPartText], [:image_url, OpenAI::Models::Chat::ChatCompletionContentPartImage], [:input_audio, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio], [:file, OpenAI::Models::Chat::ChatCompletionContentPart::File]]
+        def self.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
       end
     end
   end

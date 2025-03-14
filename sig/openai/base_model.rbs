@@ -87,7 +87,9 @@ module OpenAI
 
     private def self.known_variants: -> ::Array[[Symbol?, Proc]]
 
-    def self.variants: -> ::Array[[Symbol?, top]]
+    def self.derefed_variants: -> ::Array[[Symbol?, top]]
+
+    def self.variants: -> ::Array[top]
 
     private def self.discriminator: (Symbol property) -> void
 

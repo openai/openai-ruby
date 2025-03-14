@@ -179,7 +179,7 @@ module OpenAI
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_expired
         end
 
-        private def self.variants: -> [[:"thread.run.step.created", OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated], [:"thread.run.step.in_progress", OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress], [:"thread.run.step.delta", OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta], [:"thread.run.step.completed", OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted], [:"thread.run.step.failed", OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed], [:"thread.run.step.cancelled", OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled], [:"thread.run.step.expired", OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired]]
+        def self.variants: -> [OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired]
       end
     end
   end

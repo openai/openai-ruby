@@ -130,7 +130,19 @@ module OpenAI
             variant :text, -> { OpenAI::Models::Chat::ChatCompletionContentPartText }
 
             variant :refusal, -> { OpenAI::Models::Chat::ChatCompletionContentPartRefusal }
+
+            # @!parse
+            #   class << self
+            #     # @return [Array(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal)]
+            #     def variants; end
+            #   end
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal>)]
+          #     def variants; end
+          #   end
         end
 
         # @deprecated

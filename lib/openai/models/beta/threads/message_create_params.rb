@@ -67,6 +67,12 @@ module OpenAI
 
             # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
             variant OpenAI::Models::Beta::Threads::MessageCreateParams::Content::MessageContentPartParamArray
+
+            # @!parse
+            #   class << self
+            #     # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
+            #     def variants; end
+            #   end
           end
 
           # @abstract
@@ -137,6 +143,12 @@ module OpenAI
 
                 # def initialize: (Hash | OpenAI::BaseModel) -> void
               end
+
+              # @!parse
+              #   class << self
+              #     # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch)]
+              #     def variants; end
+              #   end
             end
           end
         end

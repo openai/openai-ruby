@@ -189,6 +189,12 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath)]
+          #     def variants; end
+          #   end
         end
       end
     end

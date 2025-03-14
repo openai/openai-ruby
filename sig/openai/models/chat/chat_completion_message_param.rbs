@@ -13,7 +13,7 @@ module OpenAI
         | OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
 
       class ChatCompletionMessageParam < OpenAI::Union
-        private def self.variants: -> [[:developer, OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam], [:system, OpenAI::Models::Chat::ChatCompletionSystemMessageParam], [:user, OpenAI::Models::Chat::ChatCompletionUserMessageParam], [:assistant, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam], [:tool, OpenAI::Models::Chat::ChatCompletionToolMessageParam], [:function, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]]
+        def self.variants: -> [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
       end
     end
   end

@@ -307,9 +307,8 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
-            sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
-            private def variants
+            sig { override.returns([String, Symbol]) }
+            def variants
             end
           end
         end
@@ -641,14 +640,13 @@ module OpenAI
                 end
 
                 class << self
-                  # @api private
                   sig do
                     override
                       .returns(
-                        [[Symbol, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto], [Symbol, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]]
+                        [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
                       )
                   end
-                  private def variants
+                  def variants
                   end
                 end
               end

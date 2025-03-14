@@ -643,9 +643,8 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
-            sig { override.returns([[NilClass, String], [NilClass, Symbol]]) }
-            private def variants
+            sig { override.returns([String, Symbol]) }
+            def variants
             end
           end
         end
@@ -684,9 +683,8 @@ module OpenAI
           end
 
           class << self
-            # @api private
-            sig { override.returns([[NilClass, Symbol], [NilClass, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]]) }
-            private def variants
+            sig { override.returns([Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]) }
+            def variants
             end
           end
         end
@@ -766,14 +764,13 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
             sig do
               override
                 .returns(
-                  [[NilClass, OpenAI::Models::ResponseFormatText], [NilClass, OpenAI::Models::ResponseFormatJSONSchema], [NilClass, OpenAI::Models::ResponseFormatJSONObject]]
+                  [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
                 )
             end
-            private def variants
+            def variants
             end
           end
         end
@@ -813,9 +810,8 @@ module OpenAI
           StringArray = T.type_alias { T::Array[String] }
 
           class << self
-            # @api private
-            sig { override.returns([[NilClass, String], [NilClass, T::Array[String]]]) }
-            private def variants
+            sig { override.returns([String, T::Array[String]]) }
+            def variants
             end
           end
         end

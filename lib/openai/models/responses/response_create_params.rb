@@ -261,6 +261,12 @@ module OpenAI
           # A list of one or many input items to the model, containing
           # different content types.
           variant -> { OpenAI::Models::Responses::ResponseInput }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract
@@ -278,6 +284,12 @@ module OpenAI
           # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
           # to browse and compare available models.
           variant enum: -> { OpenAI::Models::ChatModel }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract
@@ -302,6 +314,12 @@ module OpenAI
 
           # Use this option to force the model to call a specific function.
           variant -> { OpenAI::Models::Responses::ToolChoiceFunction }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract

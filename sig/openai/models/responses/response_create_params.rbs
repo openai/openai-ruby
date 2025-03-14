@@ -106,13 +106,13 @@ module OpenAI
         type input = String | OpenAI::Models::Responses::response_input
 
         class Input < OpenAI::Union
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::Responses::response_input]]
+          def self.variants: -> [String, OpenAI::Models::Responses::response_input]
         end
 
         type model = String | OpenAI::Models::chat_model
 
         class Model < OpenAI::Union
-          private def self.variants: -> [[nil, String], [nil, OpenAI::Models::chat_model]]
+          def self.variants: -> [String, OpenAI::Models::chat_model]
         end
 
         type tool_choice =
@@ -121,7 +121,7 @@ module OpenAI
           | OpenAI::Models::Responses::ToolChoiceFunction
 
         class ToolChoice < OpenAI::Union
-          private def self.variants: -> [[nil, OpenAI::Models::Responses::tool_choice_options], [nil, OpenAI::Models::Responses::ToolChoiceTypes], [nil, OpenAI::Models::Responses::ToolChoiceFunction]]
+          def self.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
         end
 
         type truncation = :auto | :disabled

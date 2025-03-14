@@ -121,7 +121,7 @@ module OpenAI
             def to_hash: -> OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::file_path
           end
 
-          private def self.variants: -> [[:file_citation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation], [:url_citation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation], [:file_path, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]]
+          def self.variants: -> [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
         end
       end
     end

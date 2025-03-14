@@ -9,7 +9,7 @@ module OpenAI
         | OpenAI::Models::Responses::ResponseOutputRefusal
 
       class ResponseContent < OpenAI::Union
-        private def self.variants: -> [[nil, OpenAI::Models::Responses::ResponseInputText], [nil, OpenAI::Models::Responses::ResponseInputImage], [nil, OpenAI::Models::Responses::ResponseInputFile], [nil, OpenAI::Models::Responses::ResponseOutputText], [nil, OpenAI::Models::Responses::ResponseOutputRefusal]]
+        def self.variants: -> [OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
       end
     end
   end

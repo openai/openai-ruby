@@ -58,14 +58,14 @@ module OpenAI
 
         StringArray: string_array
 
-        private def self.variants: -> [[nil, String], [nil, ::Array[String]]]
+        def self.variants: -> [String, ::Array[String]]
       end
 
       type filters =
         OpenAI::Models::ComparisonFilter | OpenAI::Models::CompoundFilter
 
       class Filters < OpenAI::Union
-        private def self.variants: -> [[nil, OpenAI::Models::ComparisonFilter], [nil, OpenAI::Models::CompoundFilter]]
+        def self.variants: -> [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
       end
 
       type ranking_options =

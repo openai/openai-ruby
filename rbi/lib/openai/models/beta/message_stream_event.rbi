@@ -168,14 +168,13 @@ module OpenAI
         end
 
         class << self
-          # @api private
           sig do
             override
               .returns(
-                [[Symbol, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated], [Symbol, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress], [Symbol, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta], [Symbol, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted], [Symbol, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete]]
+                [OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete]
               )
           end
-          private def variants
+          def variants
           end
         end
       end

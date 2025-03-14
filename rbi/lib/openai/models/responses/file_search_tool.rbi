@@ -92,12 +92,8 @@ module OpenAI
           abstract!
 
           class << self
-            # @api private
-            sig do
-              override
-                .returns([[NilClass, OpenAI::Models::ComparisonFilter], [NilClass, OpenAI::Models::CompoundFilter]])
-            end
-            private def variants
+            sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
+            def variants
             end
           end
         end

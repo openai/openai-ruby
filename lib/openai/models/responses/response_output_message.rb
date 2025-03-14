@@ -60,6 +60,12 @@ module OpenAI
 
           # A refusal from the model.
           variant :refusal, -> { OpenAI::Models::Responses::ResponseOutputRefusal }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract

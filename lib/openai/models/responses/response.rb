@@ -315,6 +315,12 @@ module OpenAI
           # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
           # to browse and compare available models.
           variant enum: -> { OpenAI::Models::ChatModel }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract
@@ -339,6 +345,12 @@ module OpenAI
 
           # Use this option to force the model to call a specific function.
           variant -> { OpenAI::Models::Responses::ToolChoiceFunction }
+
+          # @!parse
+          #   class << self
+          #     # @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
+          #     def variants; end
+          #   end
         end
 
         # @abstract

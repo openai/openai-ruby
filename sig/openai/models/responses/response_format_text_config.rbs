@@ -7,7 +7,7 @@ module OpenAI
         | OpenAI::Models::ResponseFormatJSONObject
 
       class ResponseFormatTextConfig < OpenAI::Union
-        private def self.variants: -> [[:text, OpenAI::Models::ResponseFormatText], [:json_schema, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig], [:json_object, OpenAI::Models::ResponseFormatJSONObject]]
+        def self.variants: -> [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
       end
     end
   end
