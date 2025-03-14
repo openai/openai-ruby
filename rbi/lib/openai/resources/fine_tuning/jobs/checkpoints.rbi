@@ -15,7 +15,15 @@ module OpenAI
             )
               .returns(OpenAI::CursorPage[OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint])
           end
-          def list(fine_tuning_job_id, after: nil, limit: nil, request_options: {})
+          def list(
+            # The ID of the fine-tuning job to get checkpoints for.
+            fine_tuning_job_id,
+            # Identifier for the last checkpoint ID from the previous pagination request.
+            after: nil,
+            # Number of checkpoints to retrieve.
+            limit: nil,
+            request_options: {}
+          )
           end
 
           sig { params(client: OpenAI::Client).returns(T.attached_class) }

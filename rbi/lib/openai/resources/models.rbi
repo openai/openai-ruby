@@ -12,7 +12,11 @@ module OpenAI
         )
           .returns(OpenAI::Models::Model)
       end
-      def retrieve(model, request_options: {})
+      def retrieve(
+        # The ID of the model to use for this request
+        model,
+        request_options: {}
+      )
       end
 
       # Lists the currently available models, and provides basic information about each
@@ -33,7 +37,11 @@ module OpenAI
         )
           .returns(OpenAI::Models::ModelDeleted)
       end
-      def delete(model, request_options: {})
+      def delete(
+        # The model to delete
+        model,
+        request_options: {}
+      )
       end
 
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
