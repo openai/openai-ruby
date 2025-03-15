@@ -83,28 +83,29 @@ module OpenAI
     extend OpenAI::Converter
 
     abstract!
+    final!
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def self.===(other)
     end
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def self.==(other)
     end
 
     class << self
       # @api private
-      sig { override.params(value: T.anything).returns(T.anything) }
+      sig(:final) { override.params(value: T.anything).returns(T.anything) }
       def coerce(value)
       end
 
       # @api private
-      sig { override.params(value: T.anything).returns(T.anything) }
+      sig(:final) { override.params(value: T.anything).returns(T.anything) }
       def dump(value)
       end
 
       # @api private
-      sig do
+      sig(:final) do
         override
           .params(value: T.anything)
           .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
@@ -119,28 +120,33 @@ module OpenAI
     extend OpenAI::Converter
 
     abstract!
+    final!
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def self.===(other)
     end
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def self.==(other)
     end
 
     class << self
       # @api private
-      sig { override.params(value: T.any(T::Boolean, T.anything)).returns(T.any(T::Boolean, T.anything)) }
+      sig(:final) do
+        override.params(value: T.any(T::Boolean, T.anything)).returns(T.any(T::Boolean, T.anything))
+      end
       def coerce(value)
       end
 
       # @api private
-      sig { override.params(value: T.any(T::Boolean, T.anything)).returns(T.any(T::Boolean, T.anything)) }
+      sig(:final) do
+        override.params(value: T.any(T::Boolean, T.anything)).returns(T.any(T::Boolean, T.anything))
+      end
       def dump(value)
       end
 
       # @api private
-      sig do
+      sig(:final) do
         override
           .params(value: T.anything)
           .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
@@ -298,17 +304,18 @@ module OpenAI
     include OpenAI::Converter
 
     abstract!
+    final!
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def ===(other)
     end
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def ==(other)
     end
 
     # @api private
-    sig do
+    sig(:final) do
       override
         .params(value: T.any(T::Enumerable[T.anything], T.anything))
         .returns(T.any(T::Array[T.anything], T.anything))
@@ -317,7 +324,7 @@ module OpenAI
     end
 
     # @api private
-    sig do
+    sig(:final) do
       override
         .params(value: T.any(T::Enumerable[T.anything], T.anything))
         .returns(T.any(T::Array[T.anything], T.anything))
@@ -326,7 +333,7 @@ module OpenAI
     end
 
     # @api private
-    sig do
+    sig(:final) do
       override
         .params(value: T.anything)
         .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
@@ -335,12 +342,12 @@ module OpenAI
     end
 
     # @api private
-    sig { returns(OpenAI::Converter::Input) }
+    sig(:final) { returns(OpenAI::Converter::Input) }
     protected def item_type
     end
 
     # @api private
-    sig do
+    sig(:final) do
       params(
         type_info: T.any(
           T::Hash[Symbol, T.anything],
@@ -360,17 +367,18 @@ module OpenAI
     include OpenAI::Converter
 
     abstract!
+    final!
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def ===(other)
     end
 
-    sig { params(other: T.anything).returns(T::Boolean) }
+    sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def ==(other)
     end
 
     # @api private
-    sig do
+    sig(:final) do
       override
         .params(value: T.any(T::Hash[T.anything, T.anything], T.anything))
         .returns(T.any(T::Hash[Symbol, T.anything], T.anything))
@@ -379,7 +387,7 @@ module OpenAI
     end
 
     # @api private
-    sig do
+    sig(:final) do
       override
         .params(value: T.any(T::Hash[T.anything, T.anything], T.anything))
         .returns(T.any(T::Hash[Symbol, T.anything], T.anything))
@@ -388,7 +396,7 @@ module OpenAI
     end
 
     # @api private
-    sig do
+    sig(:final) do
       override
         .params(value: T.anything)
         .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
@@ -397,12 +405,12 @@ module OpenAI
     end
 
     # @api private
-    sig { returns(OpenAI::Converter::Input) }
+    sig(:final) { returns(OpenAI::Converter::Input) }
     protected def item_type
     end
 
     # @api private
-    sig do
+    sig(:final) do
       params(
         type_info: T.any(
           T::Hash[Symbol, T.anything],
