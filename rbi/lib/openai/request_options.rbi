@@ -3,8 +3,6 @@
 module OpenAI
   # @api private
   module RequestParameters
-    abstract!
-
     # Options to specify HTTP behaviour for this request.
     sig { returns(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])) }
     def request_options
