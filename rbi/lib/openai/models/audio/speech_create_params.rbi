@@ -93,11 +93,7 @@ module OpenAI
         class Model < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Symbol]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
@@ -106,6 +102,8 @@ module OpenAI
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         class Voice < OpenAI::Enum
           abstract!
+
+          Value = type_template(:out) { {fixed: Symbol} }
 
           ALLOY = :alloy
           ASH = :ash
@@ -116,12 +114,6 @@ module OpenAI
           NOVA = :nova
           SAGE = :sage
           SHIMMER = :shimmer
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
@@ -129,18 +121,14 @@ module OpenAI
         class ResponseFormat < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           MP3 = :mp3
           OPUS = :opus
           AAC = :aac
           FLAC = :flac
           WAV = :wav
           PCM = :pcm
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

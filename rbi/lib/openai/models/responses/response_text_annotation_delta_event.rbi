@@ -131,6 +131,16 @@ module OpenAI
         class Annotation < OpenAI::Union
           abstract!
 
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
+                OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
+                OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
+              )
+            }
+          end
+
           class FileCitation < OpenAI::BaseModel
             # The ID of the file.
             sig { returns(String) }
@@ -273,17 +283,6 @@ module OpenAI
 
             sig { override.returns({file_id: String, index: Integer, type: Symbol}) }
             def to_hash
-            end
-          end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
-                )
-            end
-            def variants
             end
           end
         end

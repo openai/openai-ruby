@@ -26,6 +26,37 @@ module OpenAI
       class AssistantStreamEvent < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) do
+          {
+            fixed: T.any(
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted,
+              OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
+              OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent
+            )
+          }
+        end
+
         class ThreadCreated < OpenAI::BaseModel
           # Represents a thread that contains
           #   [messages](https://platform.openai.com/docs/api-reference/messages).
@@ -785,17 +816,6 @@ module OpenAI
 
           sig { override.returns({data: OpenAI::Models::ErrorObject, event: Symbol}) }
           def to_hash
-          end
-        end
-
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent]
-              )
-          end
-          def variants
           end
         end
       end

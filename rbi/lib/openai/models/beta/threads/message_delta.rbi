@@ -98,14 +98,10 @@ module OpenAI
           class Role < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             USER = :user
             ASSISTANT = :assistant
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
         end
       end

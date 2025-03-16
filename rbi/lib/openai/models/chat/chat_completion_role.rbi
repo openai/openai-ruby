@@ -9,18 +9,14 @@ module OpenAI
       class ChatCompletionRole < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         DEVELOPER = :developer
         SYSTEM = :system
         USER = :user
         ASSISTANT = :assistant
         TOOL = :tool
         FUNCTION = :function
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

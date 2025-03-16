@@ -269,6 +269,8 @@ module OpenAI
       class Status < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         VALIDATING = :validating
         FAILED = :failed
         IN_PROGRESS = :in_progress
@@ -277,12 +279,6 @@ module OpenAI
         EXPIRED = :expired
         CANCELLING = :cancelling
         CANCELLED = :cancelled
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
 
       class Errors < OpenAI::BaseModel

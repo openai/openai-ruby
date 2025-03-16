@@ -134,24 +134,16 @@ module OpenAI
         class Model < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Symbol]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         class TimestampGranularity < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           WORD = :word
           SEGMENT = :segment
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

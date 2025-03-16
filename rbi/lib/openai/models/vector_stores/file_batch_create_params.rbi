@@ -101,11 +101,7 @@ module OpenAI
         class Attribute < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Float, T::Boolean]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
         end
       end
     end

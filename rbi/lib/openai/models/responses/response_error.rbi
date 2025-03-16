@@ -35,6 +35,8 @@ module OpenAI
         class Code < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           SERVER_ERROR = :server_error
           RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
           INVALID_PROMPT = :invalid_prompt
@@ -53,12 +55,6 @@ module OpenAI
           EMPTY_IMAGE_FILE = :empty_image_file
           FAILED_TO_DOWNLOAD_IMAGE = :failed_to_download_image
           IMAGE_FILE_NOT_FOUND = :image_file_not_found
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

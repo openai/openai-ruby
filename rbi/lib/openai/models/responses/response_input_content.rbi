@@ -7,15 +7,14 @@ module OpenAI
       class ResponseInputContent < OpenAI::Union
         abstract!
 
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile]
-              )
-          end
-          def variants
-          end
+        Variants = type_template(:out) do
+          {
+            fixed: T.any(
+              OpenAI::Models::Responses::ResponseInputText,
+              OpenAI::Models::Responses::ResponseInputImage,
+              OpenAI::Models::Responses::ResponseInputFile
+            )
+          }
         end
       end
     end

@@ -202,6 +202,20 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                String,
+                T::Array[
+                T.any(
+                  OpenAI::Models::Chat::ChatCompletionContentPartText,
+                  OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+                )
+                ]
+              )
+            }
+          end
+
           ArrayOfContentPartArray = T.type_alias do
             T::Array[
             T.any(
@@ -216,34 +230,13 @@ module OpenAI
           class ArrayOfContentPart < OpenAI::Union
             abstract!
 
-            class << self
-              sig do
-                override
-                  .returns(
-                    [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
-                  )
-              end
-              def variants
-              end
-            end
-          end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [
-                    String,
-                    T::Array[
-                                      T.any(
-                                        OpenAI::Models::Chat::ChatCompletionContentPartText,
-                                        OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-                                      )
-                                      ]
-                  ]
+            Variants = type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Chat::ChatCompletionContentPartText,
+                  OpenAI::Models::Chat::ChatCompletionContentPartRefusal
                 )
-            end
-            def variants
+              }
             end
           end
         end

@@ -642,11 +642,7 @@ module OpenAI
         class Model < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Symbol]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         # Deprecated in favor of `tool_choice`.
@@ -666,26 +662,18 @@ module OpenAI
         class FunctionCall < OpenAI::Union
           abstract!
 
+          Variants = type_template(:out) { {fixed: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)} }
+
           # `none` means the model will not call a function and instead generates a message.
           #   `auto` means the model can pick between generating a message or calling a
           #   function.
           class FunctionCallMode < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             NONE = :none
             AUTO = :auto
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
-          end
-
-          class << self
-            sig { override.returns([Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]) }
-            def variants
-            end
           end
         end
 
@@ -740,14 +728,10 @@ module OpenAI
         class Modality < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           TEXT = :text
           AUDIO = :audio
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # An object specifying the format that the model must output.
@@ -763,15 +747,14 @@ module OpenAI
         class ResponseFormat < OpenAI::Union
           abstract!
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
-                )
-            end
-            def variants
-            end
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::ResponseFormatText,
+                OpenAI::Models::ResponseFormatJSONSchema,
+                OpenAI::Models::ResponseFormatJSONObject
+              )
+            }
           end
         end
 
@@ -792,14 +775,10 @@ module OpenAI
         class ServiceTier < OpenAI::Enum
           abstract!
 
-          AUTO = T.let(:auto, T.nilable(Symbol))
-          DEFAULT = T.let(:default, T.nilable(Symbol))
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          AUTO = :auto
+          DEFAULT = :default
         end
 
         # Up to 4 sequences where the API will stop generating further tokens. The
@@ -807,13 +786,9 @@ module OpenAI
         class Stop < OpenAI::Union
           abstract!
 
-          StringArray = T.type_alias { T::Array[String] }
+          Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
 
-          class << self
-            sig { override.returns([String, T::Array[String]]) }
-            def variants
-            end
-          end
+          StringArray = T.type_alias { T::Array[String] }
         end
 
         class WebSearchOptions < OpenAI::BaseModel
@@ -869,15 +844,11 @@ module OpenAI
           class SearchContextSize < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             LOW = :low
             MEDIUM = :medium
             HIGH = :high
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
 
           class UserLocation < OpenAI::BaseModel

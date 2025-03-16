@@ -9,15 +9,14 @@ module OpenAI
           class ToolCall < OpenAI::Union
             abstract!
 
-            class << self
-              sig do
-                override
-                  .returns(
-                    [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall]
-                  )
-              end
-              def variants
-              end
+            Variants = type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
+                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
+                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
+                )
+              }
             end
           end
         end

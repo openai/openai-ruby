@@ -41,16 +41,12 @@ module OpenAI
         class Type < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           FILE_SEARCH = :file_search
           WEB_SEARCH_PREVIEW = :web_search_preview
           COMPUTER_USE_PREVIEW = :computer_use_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

@@ -171,9 +171,11 @@ module OpenAI
 
     abstract!
 
+    Value = type_template(:out)
+
     class << self
       # All of the valid Symbol values for this enum.
-      sig { overridable.returns(T::Array[T.any(NilClass, T::Boolean, Integer, Float, Symbol)]) }
+      sig { overridable.returns(T::Array[Value]) }
       def values
       end
 
@@ -220,6 +222,8 @@ module OpenAI
 
     abstract!
 
+    Variants = type_template(:out)
+
     class << self
       # @api private
       #
@@ -229,12 +233,12 @@ module OpenAI
       end
 
       # @api private
-      sig { returns(T::Array[[T.nilable(Symbol), T.anything]]) }
+      sig { returns(T::Array[[T.nilable(Symbol), Variants]]) }
       protected def derefed_variants
       end
 
       # All of the specified variants for this union.
-      sig { overridable.returns(T::Array[T.anything]) }
+      sig { overridable.returns(T::Array[Variants]) }
       def variants
       end
 
@@ -306,6 +310,8 @@ module OpenAI
     abstract!
     final!
 
+    Elem = type_member(:out)
+
     sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def ===(other)
     end
@@ -342,7 +348,7 @@ module OpenAI
     end
 
     # @api private
-    sig(:final) { returns(OpenAI::Converter::Input) }
+    sig(:final) { returns(Elem) }
     protected def item_type
     end
 
@@ -369,6 +375,8 @@ module OpenAI
     abstract!
     final!
 
+    Elem = type_member(:out)
+
     sig(:final) { params(other: T.anything).returns(T::Boolean) }
     def ===(other)
     end
@@ -405,7 +413,7 @@ module OpenAI
     end
 
     # @api private
-    sig(:final) { returns(OpenAI::Converter::Input) }
+    sig(:final) { returns(Elem) }
     protected def item_type
     end
 

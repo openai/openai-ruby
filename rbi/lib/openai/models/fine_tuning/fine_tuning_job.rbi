@@ -386,11 +386,7 @@ module OpenAI
           class BatchSize < OpenAI::Union
             abstract!
 
-            class << self
-              sig { override.returns([Symbol, Integer]) }
-              def variants
-              end
-            end
+            Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -398,11 +394,7 @@ module OpenAI
           class LearningRateMultiplier < OpenAI::Union
             abstract!
 
-            class << self
-              sig { override.returns([Symbol, Float]) }
-              def variants
-              end
-            end
+            Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -410,11 +402,7 @@ module OpenAI
           class NEpochs < OpenAI::Union
             abstract!
 
-            class << self
-              sig { override.returns([Symbol, Integer]) }
-              def variants
-              end
-            end
+            Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
           end
         end
 
@@ -423,18 +411,14 @@ module OpenAI
         class Status < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           VALIDATING_FILES = :validating_files
           QUEUED = :queued
           RUNNING = :running
           SUCCEEDED = :succeeded
           FAILED = :failed
           CANCELLED = :cancelled
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class Method < OpenAI::BaseModel
@@ -597,11 +581,7 @@ module OpenAI
               class BatchSize < OpenAI::Union
                 abstract!
 
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
-                end
+                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
@@ -609,11 +589,7 @@ module OpenAI
               class Beta < OpenAI::Union
                 abstract!
 
-                class << self
-                  sig { override.returns([Symbol, Float]) }
-                  def variants
-                  end
-                end
+                Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -621,11 +597,7 @@ module OpenAI
               class LearningRateMultiplier < OpenAI::Union
                 abstract!
 
-                class << self
-                  sig { override.returns([Symbol, Float]) }
-                  def variants
-                  end
-                end
+                Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -633,11 +605,7 @@ module OpenAI
               class NEpochs < OpenAI::Union
                 abstract!
 
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
-                end
+                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
             end
           end
@@ -731,11 +699,7 @@ module OpenAI
               class BatchSize < OpenAI::Union
                 abstract!
 
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
-                end
+                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -743,11 +707,7 @@ module OpenAI
               class LearningRateMultiplier < OpenAI::Union
                 abstract!
 
-                class << self
-                  sig { override.returns([Symbol, Float]) }
-                  def variants
-                  end
-                end
+                Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -755,11 +715,7 @@ module OpenAI
               class NEpochs < OpenAI::Union
                 abstract!
 
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
-                end
+                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
             end
           end
@@ -768,14 +724,10 @@ module OpenAI
           class Type < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             SUPERVISED = :supervised
             DPO = :dpo
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
         end
       end

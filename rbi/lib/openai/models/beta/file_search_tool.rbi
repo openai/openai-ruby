@@ -130,14 +130,10 @@ module OpenAI
             class Ranker < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               AUTO = :auto
               DEFAULT_2024_08_21 = :default_2024_08_21
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
         end

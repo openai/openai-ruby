@@ -89,11 +89,7 @@ module OpenAI
       class Attribute < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([String, Float, T::Boolean]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
       end
 
       class Content < OpenAI::BaseModel
@@ -127,13 +123,9 @@ module OpenAI
         class Type < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
       end
     end
