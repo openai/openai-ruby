@@ -124,6 +124,20 @@ module OpenAI
 
         request
       end
+
+      # @api private
+      #
+      # @param status [Integer, OpenAI::APIConnectionError]
+      # @param stream [Enumerable, nil]
+      def reap_connection!(status, stream:)
+        case status
+        in (..199) | (300..499)
+          stream&.each { next }
+        in OpenAI::APIConnectionError | (500..)
+          OpenAI::Util.close_fused!(stream)
+        else
+        end
+      end
     end
 
     # @api private
@@ -321,28 +335,23 @@ module OpenAI
       end
 
       begin
-        response, stream = @requester.execute(input)
-        status = Integer(response.code)
+        status, response, stream = @requester.execute(input)
       rescue OpenAI::APIConnectionError => e
         status = e
       end
-
-      # normally we want to drain the response body and reuse the HTTP session by clearing the socket buffers
-      # unless we hit a server error
-      srv_fault = (500...).include?(status)
 
       case status
       in ..299
         [status, response, stream]
       in 300..399 if redirect_count >= self.class::MAX_REDIRECTS
-        message = "Failed to complete the request within #{self.class::MAX_REDIRECTS} redirects."
+        self.class.reap_connection!(status, stream: stream)
 
-        stream.each { next }
+        message = "Failed to complete the request within #{self.class::MAX_REDIRECTS} redirects."
         raise OpenAI::APIConnectionError.new(url: url, message: message)
       in 300..399
-        request = self.class.follow_redirect(request, status: status, response_headers: response)
+        self.class.reap_connection!(status, stream: stream)
 
-        stream.each { next }
+        request = self.class.follow_redirect(request, status: status, response_headers: response)
         send_request(
           request,
           redirect_count: redirect_count + 1,
@@ -352,12 +361,10 @@ module OpenAI
       in OpenAI::APIConnectionError if retry_count >= max_retries
         raise status
       in (400..) if retry_count >= max_retries || !self.class.should_retry?(status, headers: response)
-        decoded = OpenAI::Util.decode_content(response, stream: stream, suppress_error: true)
-
-        if srv_fault
-          OpenAI::Util.close_fused!(stream)
-        else
-          stream.each { next }
+        decoded = Kernel.then do
+          OpenAI::Util.decode_content(response, stream: stream, suppress_error: true)
+        ensure
+          self.class.reap_connection!(status, stream: stream)
         end
 
         raise OpenAI::APIStatusError.for(
@@ -368,13 +375,9 @@ module OpenAI
           response: response
         )
       in (400..) | OpenAI::APIConnectionError
-        delay = retry_delay(response, retry_count: retry_count)
+        self.class.reap_connection!(status, stream: stream)
 
-        if srv_fault
-          OpenAI::Util.close_fused!(stream)
-        else
-          stream&.each { next }
-        end
+        delay = retry_delay(response, retry_count: retry_count)
         sleep(delay)
 
         send_request(

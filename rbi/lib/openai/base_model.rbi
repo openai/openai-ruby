@@ -228,7 +228,7 @@ module OpenAI
       # @api private
       #
       # All of the specified variant info for this union.
-      sig { returns(T::Array[[T.nilable(Symbol), Proc]]) }
+      sig { returns(T::Array[[T.nilable(Symbol), T.proc.returns(Variants)]]) }
       private def known_variants
       end
 
@@ -250,17 +250,8 @@ module OpenAI
       # @api private
       sig do
         params(
-          key: T.any(
-            Symbol,
-            T::Hash[Symbol, T.anything],
-            T.proc.returns(OpenAI::Converter::Input),
-            OpenAI::Converter::Input
-          ),
-          spec: T.any(
-            T::Hash[Symbol, T.anything],
-            T.proc.returns(OpenAI::Converter::Input),
-            OpenAI::Converter::Input
-          )
+          key: T.any(Symbol, T::Hash[Symbol, T.anything], T.proc.returns(Variants), Variants),
+          spec: T.any(T::Hash[Symbol, T.anything], T.proc.returns(Variants), Variants)
         )
           .void
       end
@@ -268,7 +259,7 @@ module OpenAI
       end
 
       # @api private
-      sig { params(value: T.anything).returns(T.nilable(OpenAI::Converter::Input)) }
+      sig { params(value: T.anything).returns(T.nilable(Variants)) }
       private def resolve_variant(value)
       end
     end
