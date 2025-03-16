@@ -9,15 +9,14 @@ module OpenAI
           class ToolCallDelta < OpenAI::Union
             abstract!
 
-            class << self
-              sig do
-                override
-                  .returns(
-                    [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]
-                  )
-              end
-              def variants
-              end
+            Variants = type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
+                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+                )
+              }
             end
           end
         end

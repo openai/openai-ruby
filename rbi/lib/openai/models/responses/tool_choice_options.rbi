@@ -14,15 +14,11 @@ module OpenAI
       class ToolChoiceOptions < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         NONE = :none
         AUTO = :auto
         REQUIRED = :required
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

@@ -8,14 +8,10 @@ module OpenAI
       class ChatCompletionModality < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         TEXT = :text
         AUDIO = :audio
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

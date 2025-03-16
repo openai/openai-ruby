@@ -306,6 +306,8 @@ module OpenAI
         class Model < OpenAI::Union
           abstract!
 
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+
           # ID of the model to use. You can use the
           #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
           #   see all of your available models, or see our
@@ -313,6 +315,8 @@ module OpenAI
           #   them.
           class AssistantSupportedModels < OpenAI::Enum
             abstract!
+
+            Value = type_template(:out) { {fixed: Symbol} }
 
             O3_MINI = :"o3-mini"
             O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
@@ -344,18 +348,6 @@ module OpenAI
             GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
             GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
             GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
-          end
-
-          class << self
-            sig { override.returns([String, Symbol]) }
-            def variants
-            end
           end
         end
 

@@ -91,11 +91,7 @@ module OpenAI
         class Filters < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
         end
 
         class RankingOptions < OpenAI::BaseModel
@@ -132,14 +128,10 @@ module OpenAI
           class Ranker < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             AUTO = :auto
             DEFAULT_2024_11_15 = :"default-2024-11-15"
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
         end
       end

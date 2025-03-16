@@ -552,6 +552,21 @@ module OpenAI
             class Content < OpenAI::Union
               abstract!
 
+              Variants = type_template(:out) do
+                {
+                  fixed: T.any(
+                    String,
+                    T::Array[
+                    T.any(
+                      OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                      OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                      OpenAI::Models::Beta::Threads::TextContentBlockParam
+                    )
+                    ]
+                  )
+                }
+              end
+
               MessageContentPartParamArray = T.type_alias do
                 T::Array[
                 T.any(
@@ -560,26 +575,6 @@ module OpenAI
                   OpenAI::Models::Beta::Threads::TextContentBlockParam
                 )
                 ]
-              end
-
-              class << self
-                sig do
-                  override
-                    .returns(
-                      [
-                        String,
-                        T::Array[
-                                              T.any(
-                                                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                                                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                                                OpenAI::Models::Beta::Threads::TextContentBlockParam
-                                              )
-                                              ]
-                      ]
-                    )
-                end
-                def variants
-                end
               end
             end
 
@@ -592,14 +587,10 @@ module OpenAI
             class Role < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               USER = :user
               ASSISTANT = :assistant
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
 
             class Attachment < OpenAI::BaseModel
@@ -684,6 +675,15 @@ module OpenAI
               class Tool < OpenAI::Union
                 abstract!
 
+                Variants = type_template(:out) do
+                  {
+                    fixed: T.any(
+                      OpenAI::Models::Beta::CodeInterpreterTool,
+                      OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                    )
+                  }
+                end
+
                 class FileSearch < OpenAI::BaseModel
                   # The type of tool being defined: `file_search`
                   sig { returns(Symbol) }
@@ -702,17 +702,6 @@ module OpenAI
                   def to_hash
                   end
                 end
-
-                class << self
-                  sig do
-                    override
-                      .returns(
-                        [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
-                      )
-                  end
-                  def variants
-                  end
-                end
               end
             end
           end
@@ -724,11 +713,7 @@ module OpenAI
           class Model < OpenAI::Union
             abstract!
 
-            class << self
-              sig { override.returns([String, Symbol]) }
-              def variants
-              end
-            end
+            Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
           end
 
           class TruncationStrategy < OpenAI::BaseModel
@@ -771,14 +756,10 @@ module OpenAI
             class Type < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               AUTO = :auto
               LAST_MESSAGES = :last_messages
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
         end

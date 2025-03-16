@@ -306,11 +306,7 @@ module OpenAI
         class Model < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Symbol]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         class ToolResources < OpenAI::BaseModel
@@ -530,6 +526,15 @@ module OpenAI
               class ChunkingStrategy < OpenAI::Union
                 abstract!
 
+                Variants = type_template(:out) do
+                  {
+                    fixed: T.any(
+                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                    )
+                  }
+                end
+
                 class Auto < OpenAI::BaseModel
                   # Always `auto`.
                   sig { returns(Symbol) }
@@ -636,17 +641,6 @@ module OpenAI
                     sig { override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer}) }
                     def to_hash
                     end
-                  end
-                end
-
-                class << self
-                  sig do
-                    override
-                      .returns(
-                        [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-                      )
-                  end
-                  def variants
                   end
                 end
               end

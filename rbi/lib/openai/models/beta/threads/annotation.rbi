@@ -10,15 +10,13 @@ module OpenAI
         class Annotation < OpenAI::Union
           abstract!
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation]
-                )
-            end
-            def variants
-            end
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Beta::Threads::FileCitationAnnotation,
+                OpenAI::Models::Beta::Threads::FilePathAnnotation
+              )
+            }
           end
         end
       end

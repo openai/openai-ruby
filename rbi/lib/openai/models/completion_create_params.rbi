@@ -340,6 +340,8 @@ module OpenAI
       class Model < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         #   see all of your available models, or see our
@@ -348,21 +350,11 @@ module OpenAI
         class Preset < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           GPT_3_5_TURBO_INSTRUCT = :"gpt-3.5-turbo-instruct"
           DAVINCI_002 = :"davinci-002"
           BABBAGE_002 = :"babbage-002"
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
-        end
-
-        class << self
-          sig { override.returns([String, Symbol]) }
-          def variants
-          end
         end
       end
 
@@ -375,17 +367,15 @@ module OpenAI
       class Prompt < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) do
+          {fixed: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])}
+        end
+
         StringArray = T.type_alias { T::Array[String] }
 
         IntegerArray = T.type_alias { T::Array[Integer] }
 
         ArrayOfToken2DArray = T.type_alias { T::Array[T::Array[Integer]] }
-
-        class << self
-          sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-          def variants
-          end
-        end
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -393,13 +383,9 @@ module OpenAI
       class Stop < OpenAI::Union
         abstract!
 
-        StringArray = T.type_alias { T::Array[String] }
+        Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
 
-        class << self
-          sig { override.returns([String, T::Array[String]]) }
-          def variants
-          end
-        end
+        StringArray = T.type_alias { T::Array[String] }
       end
     end
   end

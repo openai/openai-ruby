@@ -5,13 +5,9 @@ module OpenAI
     class AudioModel < OpenAI::Enum
       abstract!
 
-      WHISPER_1 = :"whisper-1"
+      Value = type_template(:out) { {fixed: Symbol} }
 
-      class << self
-        sig { override.returns(T::Array[Symbol]) }
-        def values
-        end
-      end
+      WHISPER_1 = :"whisper-1"
     end
   end
 end

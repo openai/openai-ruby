@@ -9,15 +9,15 @@ module OpenAI
         class MessageContent < OpenAI::Union
           abstract!
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock]
-                )
-            end
-            def variants
-            end
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                OpenAI::Models::Beta::Threads::TextContentBlock,
+                OpenAI::Models::Beta::Threads::RefusalContentBlock
+              )
+            }
           end
         end
       end

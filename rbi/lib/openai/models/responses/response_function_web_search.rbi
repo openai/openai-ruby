@@ -46,16 +46,12 @@ module OpenAI
         class Status < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           IN_PROGRESS = :in_progress
           SEARCHING = :searching
           COMPLETED = :completed
           FAILED = :failed
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

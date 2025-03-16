@@ -106,29 +106,21 @@ module OpenAI
         class Level < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           INFO = :info
           WARN = :warn
           ERROR = :error
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # The type of event.
         class Type < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           MESSAGE = :message
           METRICS = :metrics
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

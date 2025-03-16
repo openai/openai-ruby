@@ -42,25 +42,17 @@ module OpenAI
       class Filter < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([OpenAI::Models::ComparisonFilter, T.anything]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, T.anything)} }
       end
 
       # Type of operation: `and` or `or`.
       class Type < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         AND = :and
         OR = :or
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

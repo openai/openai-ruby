@@ -110,17 +110,15 @@ module OpenAI
       class Input < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) do
+          {fixed: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])}
+        end
+
         StringArray = T.type_alias { T::Array[String] }
 
         IntegerArray = T.type_alias { T::Array[Integer] }
 
         ArrayOfToken2DArray = T.type_alias { T::Array[T::Array[Integer]] }
-
-        class << self
-          sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-          def variants
-          end
-        end
       end
 
       # ID of the model to use. You can use the
@@ -131,11 +129,7 @@ module OpenAI
       class Model < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([String, Symbol]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
       end
 
       # The format to return the embeddings in. Can be either `float` or
@@ -143,14 +137,10 @@ module OpenAI
       class EncodingFormat < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         FLOAT = :float
         BASE64 = :base64
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

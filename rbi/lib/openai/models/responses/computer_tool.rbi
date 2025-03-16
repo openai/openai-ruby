@@ -59,16 +59,12 @@ module OpenAI
         class Environment < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           MAC = :mac
           WINDOWS = :windows
           UBUNTU = :ubuntu
           BROWSER = :browser
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

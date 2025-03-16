@@ -66,11 +66,7 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, OpenAI::Models::Responses::ResponseInputMessageContentList]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList)} }
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -78,29 +74,21 @@ module OpenAI
         class Role < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           USER = :user
           ASSISTANT = :assistant
           SYSTEM = :system
           DEVELOPER = :developer
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # The type of the message input. Always `message`.
         class Type < OpenAI::Enum
           abstract!
 
-          MESSAGE = :message
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          MESSAGE = :message
         end
       end
     end

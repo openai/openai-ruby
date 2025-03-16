@@ -197,15 +197,11 @@ module OpenAI
           class Code < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             SERVER_ERROR = :server_error
             UNSUPPORTED_FILE = :unsupported_file
             INVALID_FILE = :invalid_file
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
         end
 
@@ -215,26 +211,18 @@ module OpenAI
         class Status < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           CANCELLED = :cancelled
           FAILED = :failed
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class Attribute < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Float, T::Boolean]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
         end
       end
     end

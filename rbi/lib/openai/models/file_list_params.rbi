@@ -80,14 +80,10 @@ module OpenAI
       class Order < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         ASC = :asc
         DESC = :desc
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

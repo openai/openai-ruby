@@ -50,14 +50,10 @@ module OpenAI
       class GenerateSummary < OpenAI::Enum
         abstract!
 
-        CONCISE = T.let(:concise, T.nilable(Symbol))
-        DETAILED = T.let(:detailed, T.nilable(Symbol))
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
+        CONCISE = :concise
+        DETAILED = :detailed
       end
     end
   end

@@ -9,15 +9,15 @@ module OpenAI
         class MessageContentDelta < OpenAI::Union
           abstract!
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock]
-                )
-            end
-            def variants
-            end
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                OpenAI::Models::Beta::Threads::TextDeltaBlock,
+                OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
+                OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+              )
+            }
           end
         end
       end

@@ -92,24 +92,16 @@ module OpenAI
       class Query < OpenAI::Union
         abstract!
 
-        StringArray = T.type_alias { T::Array[String] }
+        Variants = type_template(:out) { {fixed: T.any(String, T::Array[String])} }
 
-        class << self
-          sig { override.returns([String, T::Array[String]]) }
-          def variants
-          end
-        end
+        StringArray = T.type_alias { T::Array[String] }
       end
 
       # A filter to apply based on file attributes.
       class Filters < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
       end
 
       class RankingOptions < OpenAI::BaseModel
@@ -141,14 +133,10 @@ module OpenAI
         class Ranker < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           AUTO = :auto
           DEFAULT_2024_11_15 = :"default-2024-11-15"
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

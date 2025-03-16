@@ -150,6 +150,21 @@ module OpenAI
         class Data < OpenAI::Union
           abstract!
 
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Responses::ResponseItemList::Data::Message,
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseFunctionToolCall,
+                OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput
+              )
+            }
+          end
+
           class Message < OpenAI::BaseModel
             # The unique ID of the message input.
             sig { returns(String) }
@@ -233,15 +248,11 @@ module OpenAI
             class Role < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               USER = :user
               SYSTEM = :system
               DEVELOPER = :developer
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
 
             # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -249,28 +260,20 @@ module OpenAI
             class Status < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               IN_PROGRESS = :in_progress
               COMPLETED = :completed
               INCOMPLETE = :incomplete
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
 
             # The type of the message input. Always set to `message`.
             class Type < OpenAI::Enum
               abstract!
 
-              MESSAGE = :message
+              Value = type_template(:out) { {fixed: Symbol} }
 
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
+              MESSAGE = :message
             end
           end
 
@@ -459,15 +462,11 @@ module OpenAI
             class Status < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               IN_PROGRESS = :in_progress
               COMPLETED = :completed
               INCOMPLETE = :incomplete
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
 
@@ -541,26 +540,11 @@ module OpenAI
             class Status < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               IN_PROGRESS = :in_progress
               COMPLETED = :completed
               INCOMPLETE = :incomplete
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
-            end
-          end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ResponseItemList::Data::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput]
-                )
-            end
-            def variants
             end
           end
         end

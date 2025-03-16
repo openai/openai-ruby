@@ -89,17 +89,13 @@ module OpenAI
         class Status < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           IN_PROGRESS = :in_progress
           SEARCHING = :searching
           COMPLETED = :completed
           INCOMPLETE = :incomplete
           FAILED = :failed
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class Result < OpenAI::BaseModel
@@ -186,11 +182,7 @@ module OpenAI
           class Attribute < OpenAI::Union
             abstract!
 
-            class << self
-              sig { override.returns([String, Float, T::Boolean]) }
-              def variants
-              end
-            end
+            Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
           end
         end
       end

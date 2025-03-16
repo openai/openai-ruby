@@ -11,15 +11,11 @@ module OpenAI
     class ReasoningEffort < OpenAI::Enum
       abstract!
 
-      LOW = T.let(:low, T.nilable(Symbol))
-      MEDIUM = T.let(:medium, T.nilable(Symbol))
-      HIGH = T.let(:high, T.nilable(Symbol))
+      Value = type_template(:out) { {fixed: Symbol} }
 
-      class << self
-        sig { override.returns(T::Array[Symbol]) }
-        def values
-        end
-      end
+      LOW = :low
+      MEDIUM = :medium
+      HIGH = :high
     end
   end
 end
