@@ -127,16 +127,12 @@ module OpenAI
       class Status < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         PENDING = :pending
         COMPLETED = :completed
         CANCELLED = :cancelled
         EXPIRED = :expired
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

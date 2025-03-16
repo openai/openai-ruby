@@ -6,14 +6,10 @@ module OpenAI
       class SpeechModel < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         TTS_1 = :"tts-1"
         TTS_1_HD = :"tts-1-hd"
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

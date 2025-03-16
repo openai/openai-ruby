@@ -141,11 +141,7 @@ module OpenAI
       class Model < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([String, Symbol]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
       end
 
       # The quality of the image that will be generated. `hd` creates images with finer
@@ -154,14 +150,10 @@ module OpenAI
       class Quality < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         STANDARD = :standard
         HD = :hd
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -170,14 +162,10 @@ module OpenAI
       class ResponseFormat < OpenAI::Enum
         abstract!
 
-        URL = T.let(:url, T.nilable(Symbol))
-        B64_JSON = T.let(:b64_json, T.nilable(Symbol))
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
+        URL = :url
+        B64_JSON = :b64_json
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -186,17 +174,13 @@ module OpenAI
       class Size < OpenAI::Enum
         abstract!
 
-        NUMBER_256X256 = T.let(:"256x256", T.nilable(Symbol))
-        NUMBER_512X512 = T.let(:"512x512", T.nilable(Symbol))
-        NUMBER_1024X1024 = T.let(:"1024x1024", T.nilable(Symbol))
-        NUMBER_1792X1024 = T.let(:"1792x1024", T.nilable(Symbol))
-        NUMBER_1024X1792 = T.let(:"1024x1792", T.nilable(Symbol))
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
+        NUMBER_256X256 = :"256x256"
+        NUMBER_512X512 = :"512x512"
+        NUMBER_1024X1024 = :"1024x1024"
+        NUMBER_1792X1024 = :"1792x1024"
+        NUMBER_1024X1792 = :"1024x1792"
       end
 
       # The style of the generated images. Must be one of `vivid` or `natural`. Vivid
@@ -206,14 +190,10 @@ module OpenAI
       class Style < OpenAI::Enum
         abstract!
 
-        VIVID = T.let(:vivid, T.nilable(Symbol))
-        NATURAL = T.let(:natural, T.nilable(Symbol))
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
+        VIVID = :vivid
+        NATURAL = :natural
       end
     end
   end

@@ -97,11 +97,7 @@ module OpenAI
         class Model < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Symbol]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
       end
     end

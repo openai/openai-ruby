@@ -7,17 +7,13 @@ module OpenAI
     class AudioResponseFormat < OpenAI::Enum
       abstract!
 
+      Value = type_template(:out) { {fixed: Symbol} }
+
       JSON = :json
       TEXT = :text
       SRT = :srt
       VERBOSE_JSON = :verbose_json
       VTT = :vtt
-
-      class << self
-        sig { override.returns(T::Array[Symbol]) }
-        def values
-        end
-      end
     end
   end
 end

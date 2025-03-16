@@ -8,6 +8,23 @@ module OpenAI
       class RunStreamEvent < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) do
+          {
+            fixed: T.any(
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled,
+              OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired
+            )
+          }
+        end
+
         class ThreadRunCreated < OpenAI::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -305,17 +322,6 @@ module OpenAI
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
           def to_hash
-          end
-        end
-
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::RunStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::RunStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::RunStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::RunStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::RunStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::RunStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired]
-              )
-          end
-          def variants
           end
         end
       end

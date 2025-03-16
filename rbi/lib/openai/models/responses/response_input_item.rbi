@@ -11,6 +11,24 @@ module OpenAI
       class ResponseInputItem < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) do
+          {
+            fixed: T.any(
+              OpenAI::Models::Responses::EasyInputMessage,
+              OpenAI::Models::Responses::ResponseInputItem::Message,
+              OpenAI::Models::Responses::ResponseOutputMessage,
+              OpenAI::Models::Responses::ResponseFileSearchToolCall,
+              OpenAI::Models::Responses::ResponseComputerToolCall,
+              OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+              OpenAI::Models::Responses::ResponseFunctionWebSearch,
+              OpenAI::Models::Responses::ResponseFunctionToolCall,
+              OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+              OpenAI::Models::Responses::ResponseReasoningItem,
+              OpenAI::Models::Responses::ResponseInputItem::ItemReference
+            )
+          }
+        end
+
         class Message < OpenAI::BaseModel
           # A list of one or many input items to the model, containing different content
           #   types.
@@ -81,15 +99,11 @@ module OpenAI
           class Role < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             USER = :user
             SYSTEM = :system
             DEVELOPER = :developer
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
 
           # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -97,28 +111,20 @@ module OpenAI
           class Status < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             IN_PROGRESS = :in_progress
             COMPLETED = :completed
             INCOMPLETE = :incomplete
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
 
           # The type of the message input. Always set to `message`.
           class Type < OpenAI::Enum
             abstract!
 
-            MESSAGE = :message
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
+            MESSAGE = :message
           end
         end
 
@@ -308,15 +314,11 @@ module OpenAI
           class Status < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             IN_PROGRESS = :in_progress
             COMPLETED = :completed
             INCOMPLETE = :incomplete
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
         end
 
@@ -392,15 +394,11 @@ module OpenAI
           class Status < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             IN_PROGRESS = :in_progress
             COMPLETED = :completed
             INCOMPLETE = :incomplete
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
         end
 
@@ -430,17 +428,6 @@ module OpenAI
 
           sig { override.returns({id: String, type: Symbol}) }
           def to_hash
-          end
-        end
-
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
-              )
-          end
-          def variants
           end
         end
       end

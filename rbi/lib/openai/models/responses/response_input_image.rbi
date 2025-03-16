@@ -69,15 +69,11 @@ module OpenAI
         class Detail < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           HIGH = :high
           LOW = :low
           AUTO = :auto
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

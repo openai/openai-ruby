@@ -88,20 +88,19 @@ module OpenAI
       class Input < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) do
+          {
+            fixed: T.any(
+              String,
+              T::Array[String],
+              T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
+            )
+          }
+        end
+
         StringArray = T.type_alias { T::Array[String] }
 
         ModerationMultiModalInputArray = T.type_alias { T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)] }
-
-        class << self
-          sig do
-            override
-              .returns(
-                [String, T::Array[String], T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]
-              )
-          end
-          def variants
-          end
-        end
       end
 
       # The content moderation model you would like to use. Learn more in
@@ -111,11 +110,7 @@ module OpenAI
       class Model < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([String, Symbol]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
       end
     end
   end

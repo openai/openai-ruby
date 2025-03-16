@@ -75,15 +75,11 @@ module OpenAI
       class FinishReason < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         STOP = :stop
         LENGTH = :length
         CONTENT_FILTER = :content_filter
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
 
       class Logprobs < OpenAI::BaseModel

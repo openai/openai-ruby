@@ -5,6 +5,8 @@ module OpenAI
     class ChatModel < OpenAI::Enum
       abstract!
 
+      Value = type_template(:out) { {fixed: Symbol} }
+
       O3_MINI = :"o3-mini"
       O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
       O1 = :o1
@@ -49,12 +51,6 @@ module OpenAI
       GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
       GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
       GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
-
-      class << self
-        sig { override.returns(T::Array[Symbol]) }
-        def values
-        end
-      end
     end
   end
 end

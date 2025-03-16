@@ -94,13 +94,10 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
-          class << self
-            sig do
-              override
-                .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
-            end
-            def variants
-            end
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
+            }
           end
         end
 
@@ -109,15 +106,11 @@ module OpenAI
         class Status < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           INCOMPLETE = :incomplete
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

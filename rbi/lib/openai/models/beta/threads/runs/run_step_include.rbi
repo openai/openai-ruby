@@ -10,13 +10,9 @@ module OpenAI
           class RunStepInclude < OpenAI::Enum
             abstract!
 
-            STEP_DETAILS_TOOL_CALLS_FILE_SEARCH_RESULTS_CONTENT = :"step_details.tool_calls[*].file_search.results[*].content"
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
+            STEP_DETAILS_TOOL_CALLS_FILE_SEARCH_RESULTS_CONTENT = :"step_details.tool_calls[*].file_search.results[*].content"
           end
         end
       end

@@ -443,163 +443,111 @@ module OpenAI
         class Harassment < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
 
         class HarassmentThreatening < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
 
         class Hate < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
 
         class HateThreatening < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
 
         class Illicit < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
 
         class IllicitViolent < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
 
         class SelfHarm < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           TEXT = :text
           IMAGE = :image
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class SelfHarmInstruction < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           TEXT = :text
           IMAGE = :image
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class SelfHarmIntent < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           TEXT = :text
           IMAGE = :image
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class Sexual < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           TEXT = :text
           IMAGE = :image
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class SexualMinor < OpenAI::Enum
           abstract!
 
-          TEXT = :text
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          TEXT = :text
         end
 
         class Violence < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           TEXT = :text
           IMAGE = :image
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class ViolenceGraphic < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           TEXT = :text
           IMAGE = :image
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
 

@@ -13,6 +13,8 @@ module OpenAI
       class AssistantToolChoiceOption < OpenAI::Union
         abstract!
 
+        Variants = type_template(:out) { {fixed: T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)} }
+
         # `none` means the model will not call any tools and instead generates a message.
         #   `auto` means the model can pick between generating a message or calling one or
         #   more tools. `required` means the model must call one or more tools before
@@ -20,21 +22,11 @@ module OpenAI
         class Auto < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           NONE = :none
           AUTO = :auto
           REQUIRED = :required
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
-        end
-
-        class << self
-          sig { override.returns([Symbol, OpenAI::Models::Beta::AssistantToolChoice]) }
-          def variants
-          end
         end
       end
     end

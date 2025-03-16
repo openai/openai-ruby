@@ -146,6 +146,15 @@ module OpenAI
               class Output < OpenAI::Union
                 abstract!
 
+                Variants = type_template(:out) do
+                  {
+                    fixed: T.any(
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
+                    )
+                  }
+                end
+
                 class Logs < OpenAI::BaseModel
                   # The text output from the Code Interpreter tool call.
                   sig { returns(String) }
@@ -244,17 +253,6 @@ module OpenAI
                     sig { override.returns({file_id: String}) }
                     def to_hash
                     end
-                  end
-                end
-
-                class << self
-                  sig do
-                    override
-                      .returns(
-                        [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image]
-                      )
-                  end
-                  def variants
                   end
                 end
               end

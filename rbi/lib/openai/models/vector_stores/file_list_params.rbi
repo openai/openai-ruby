@@ -94,16 +94,12 @@ module OpenAI
         class Filter < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           FAILED = :failed
           CANCELLED = :cancelled
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -111,14 +107,10 @@ module OpenAI
         class Order < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           ASC = :asc
           DESC = :desc
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

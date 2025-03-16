@@ -382,11 +382,7 @@ module OpenAI
         class Input < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, OpenAI::Models::Responses::ResponseInput]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::Responses::ResponseInput)} }
         end
 
         # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
@@ -397,11 +393,7 @@ module OpenAI
         class Model < OpenAI::Union
           abstract!
 
-          class << self
-            sig { override.returns([String, Symbol]) }
-            def variants
-            end
-          end
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         # How the model should select which tool (or tools) to use when generating a
@@ -410,15 +402,10 @@ module OpenAI
         class ToolChoice < OpenAI::Union
           abstract!
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
-                )
-            end
-            def variants
-            end
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
+            }
           end
         end
 
@@ -432,14 +419,10 @@ module OpenAI
         class Truncation < OpenAI::Enum
           abstract!
 
-          AUTO = T.let(:auto, T.nilable(Symbol))
-          DISABLED = T.let(:disabled, T.nilable(Symbol))
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          AUTO = :auto
+          DISABLED = :disabled
         end
       end
     end

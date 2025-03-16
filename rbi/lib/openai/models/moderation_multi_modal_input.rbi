@@ -6,11 +6,7 @@ module OpenAI
     class ModerationMultiModalInput < OpenAI::Union
       abstract!
 
-      class << self
-        sig { override.returns([OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput]) }
-        def variants
-        end
-      end
+      Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)} }
     end
   end
 end

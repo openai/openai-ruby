@@ -339,6 +339,15 @@ module OpenAI
             class Tool < OpenAI::Union
               abstract!
 
+              Variants = type_template(:out) do
+                {
+                  fixed: T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+                  )
+                }
+              end
+
               class AssistantToolsFileSearchTypeOnly < OpenAI::BaseModel
                 # The type of tool being defined: `file_search`
                 sig { returns(Symbol) }
@@ -355,17 +364,6 @@ module OpenAI
 
                 sig { override.returns({type: Symbol}) }
                 def to_hash
-                end
-              end
-
-              class << self
-                sig do
-                  override
-                    .returns(
-                      [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
-                    )
-                end
-                def variants
                 end
               end
             end
@@ -394,17 +392,13 @@ module OpenAI
             class Reason < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               CONTENT_FILTER = :content_filter
               MAX_TOKENS = :max_tokens
               RUN_CANCELLED = :run_cancelled
               RUN_EXPIRED = :run_expired
               RUN_FAILED = :run_failed
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
 
@@ -412,14 +406,10 @@ module OpenAI
           class Role < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             USER = :user
             ASSISTANT = :assistant
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
@@ -427,15 +417,11 @@ module OpenAI
           class Status < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             IN_PROGRESS = :in_progress
             INCOMPLETE = :incomplete
             COMPLETED = :completed
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
         end
       end

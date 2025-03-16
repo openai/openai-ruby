@@ -118,6 +118,15 @@ module OpenAI
         class Result < OpenAI::Union
           abstract!
 
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
+              )
+            }
+          end
+
           class Logs < OpenAI::BaseModel
             # The logs of the code interpreter tool call.
             sig { returns(String) }
@@ -219,32 +228,17 @@ module OpenAI
               end
             end
           end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]
-                )
-            end
-            def variants
-            end
-          end
         end
 
         # The status of the code interpreter tool call.
         class Status < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           IN_PROGRESS = :in_progress
           INTERPRETING = :interpreting
           COMPLETED = :completed
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

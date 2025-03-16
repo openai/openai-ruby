@@ -145,6 +145,21 @@ module OpenAI
           class Content < OpenAI::Union
             abstract!
 
+            Variants = type_template(:out) do
+              {
+                fixed: T.any(
+                  String,
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                    OpenAI::Models::Beta::Threads::TextContentBlockParam
+                  )
+                  ]
+                )
+              }
+            end
+
             MessageContentPartParamArray = T.type_alias do
               T::Array[
               T.any(
@@ -153,26 +168,6 @@ module OpenAI
                 OpenAI::Models::Beta::Threads::TextContentBlockParam
               )
               ]
-            end
-
-            class << self
-              sig do
-                override
-                  .returns(
-                    [
-                      String,
-                      T::Array[
-                                          T.any(
-                                            OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                                            OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                                            OpenAI::Models::Beta::Threads::TextContentBlockParam
-                                          )
-                                          ]
-                    ]
-                  )
-              end
-              def variants
-              end
             end
           end
 
@@ -185,14 +180,10 @@ module OpenAI
           class Role < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             USER = :user
             ASSISTANT = :assistant
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
 
           class Attachment < OpenAI::BaseModel
@@ -277,6 +268,15 @@ module OpenAI
             class Tool < OpenAI::Union
               abstract!
 
+              Variants = type_template(:out) do
+                {
+                  fixed: T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
+                  )
+                }
+              end
+
               class FileSearch < OpenAI::BaseModel
                 # The type of tool being defined: `file_search`
                 sig { returns(Symbol) }
@@ -293,17 +293,6 @@ module OpenAI
 
                 sig { override.returns({type: Symbol}) }
                 def to_hash
-                end
-              end
-
-              class << self
-                sig do
-                  override
-                    .returns(
-                      [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch]
-                    )
-                end
-                def variants
                 end
               end
             end

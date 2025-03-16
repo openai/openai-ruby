@@ -141,6 +141,8 @@ module OpenAI
       class Purpose < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         ASSISTANTS = :assistants
         ASSISTANTS_OUTPUT = :assistants_output
         BATCH = :batch
@@ -148,12 +150,6 @@ module OpenAI
         FINE_TUNE = :"fine-tune"
         FINE_TUNE_RESULTS = :"fine-tune-results"
         VISION = :vision
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
@@ -161,15 +157,11 @@ module OpenAI
       class Status < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         UPLOADED = :uploaded
         PROCESSED = :processed
         ERROR = :error
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end
