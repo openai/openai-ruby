@@ -1,6 +1,7 @@
 # typed: strong
 
 module OpenAI
+  # @api private
   class PooledNetRequester
     RequestShape = T.type_alias do
       {method: Symbol, url: URI::Generic, headers: T::Hash[String, String], body: T.anything, deadline: Float}

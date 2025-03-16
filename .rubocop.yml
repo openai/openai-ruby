@@ -58,6 +58,11 @@ Layout/MultilineMethodParameterLineBreaks:
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
+# This option occasionally mangles identifier names
+Lint/DeprecatedConstants:
+  Exclude:
+    - "**/*.rbi"
+
 # Fairly useful in tests for pattern assertions.
 Lint/EmptyInPattern:
   Exclude:
