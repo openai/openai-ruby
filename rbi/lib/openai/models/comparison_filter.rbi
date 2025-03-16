@@ -61,18 +61,14 @@ module OpenAI
       class Type < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         EQ = :eq
         NE = :ne
         GT = :gt
         GTE = :gte
         LT = :lt
         LTE = :lte
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
 
       # The value to compare against the attribute key; supports string, number, or
@@ -80,11 +76,7 @@ module OpenAI
       class Value < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([String, Float, T::Boolean]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
       end
     end
   end

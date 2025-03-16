@@ -530,14 +530,10 @@ module OpenAI
             class Reason < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               MAX_COMPLETION_TOKENS = :max_completion_tokens
               MAX_PROMPT_TOKENS = :max_prompt_tokens
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
 
@@ -573,15 +569,11 @@ module OpenAI
             class Code < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               SERVER_ERROR = :server_error
               RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
               INVALID_PROMPT = :invalid_prompt
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
 
@@ -695,14 +687,10 @@ module OpenAI
             class Type < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               AUTO = :auto
               LAST_MESSAGES = :last_messages
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
 

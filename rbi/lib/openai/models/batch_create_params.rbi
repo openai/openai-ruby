@@ -92,13 +92,9 @@ module OpenAI
       class CompletionWindow < OpenAI::Enum
         abstract!
 
-        NUMBER_24H = :"24h"
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
+        NUMBER_24H = :"24h"
       end
 
       # The endpoint to be used for all requests in the batch. Currently
@@ -108,15 +104,11 @@ module OpenAI
       class Endpoint < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         V1_CHAT_COMPLETIONS = :"/v1/chat/completions"
         V1_EMBEDDINGS = :"/v1/embeddings"
         V1_COMPLETIONS = :"/v1/completions"
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
     end
   end

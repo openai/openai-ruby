@@ -93,13 +93,10 @@ module OpenAI
         class Part < OpenAI::Union
           abstract!
 
-          class << self
-            sig do
-              override
-                .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
-            end
-            def variants
-            end
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
+            }
           end
         end
       end

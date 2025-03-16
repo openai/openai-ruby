@@ -26,15 +26,15 @@ module OpenAI
       class AssistantResponseFormatOption < OpenAI::Union
         abstract!
 
-        class << self
-          sig do
-            override
-              .returns(
-                [Symbol, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
-              )
-          end
-          def variants
-          end
+        Variants = type_template(:out) do
+          {
+            fixed: T.any(
+              Symbol,
+              OpenAI::Models::ResponseFormatText,
+              OpenAI::Models::ResponseFormatJSONObject,
+              OpenAI::Models::ResponseFormatJSONSchema
+            )
+          }
         end
       end
     end

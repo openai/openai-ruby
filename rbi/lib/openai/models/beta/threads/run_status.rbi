@@ -10,6 +10,8 @@ module OpenAI
         class RunStatus < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           QUEUED = :queued
           IN_PROGRESS = :in_progress
           REQUIRES_ACTION = :requires_action
@@ -19,12 +21,6 @@ module OpenAI
           COMPLETED = :completed
           INCOMPLETE = :incomplete
           EXPIRED = :expired
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

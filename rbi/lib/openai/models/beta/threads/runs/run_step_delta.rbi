@@ -70,15 +70,13 @@ module OpenAI
             class StepDetails < OpenAI::Union
               abstract!
 
-              class << self
-                sig do
-                  override
-                    .returns(
-                      [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
-                    )
-                end
-                def variants
-                end
+              Variants = type_template(:out) do
+                {
+                  fixed: T.any(
+                    OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                    OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
+                  )
+                }
               end
             end
           end

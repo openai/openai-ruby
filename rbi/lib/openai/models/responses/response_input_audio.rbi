@@ -44,14 +44,10 @@ module OpenAI
         class Format < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           MP3 = :mp3
           WAV = :wav
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

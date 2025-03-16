@@ -5,14 +5,10 @@ module OpenAI
     class ImageModel < OpenAI::Enum
       abstract!
 
+      Value = type_template(:out) { {fixed: Symbol} }
+
       DALL_E_2 = :"dall-e-2"
       DALL_E_3 = :"dall-e-3"
-
-      class << self
-        sig { override.returns(T::Array[Symbol]) }
-        def values
-        end
-      end
     end
   end
 end

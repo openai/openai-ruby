@@ -327,17 +327,13 @@ module OpenAI
             class Role < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               DEVELOPER = :developer
               SYSTEM = :system
               USER = :user
               ASSISTANT = :assistant
               TOOL = :tool
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
 
             class ToolCall < OpenAI::BaseModel
@@ -439,13 +435,9 @@ module OpenAI
               class Type < OpenAI::Enum
                 abstract!
 
-                FUNCTION = :function
+                Value = type_template(:out) { {fixed: Symbol} }
 
-                class << self
-                  sig { override.returns(T::Array[Symbol]) }
-                  def values
-                  end
-                end
+                FUNCTION = :function
               end
             end
           end
@@ -459,17 +451,13 @@ module OpenAI
           class FinishReason < OpenAI::Enum
             abstract!
 
-            STOP = T.let(:stop, T.nilable(Symbol))
-            LENGTH = T.let(:length, T.nilable(Symbol))
-            TOOL_CALLS = T.let(:tool_calls, T.nilable(Symbol))
-            CONTENT_FILTER = T.let(:content_filter, T.nilable(Symbol))
-            FUNCTION_CALL = T.let(:function_call, T.nilable(Symbol))
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
+            STOP = :stop
+            LENGTH = :length
+            TOOL_CALLS = :tool_calls
+            CONTENT_FILTER = :content_filter
+            FUNCTION_CALL = :function_call
           end
 
           class Logprobs < OpenAI::BaseModel
@@ -526,14 +514,10 @@ module OpenAI
         class ServiceTier < OpenAI::Enum
           abstract!
 
-          SCALE = T.let(:scale, T.nilable(Symbol))
-          DEFAULT = T.let(:default, T.nilable(Symbol))
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          SCALE = :scale
+          DEFAULT = :default
         end
       end
     end

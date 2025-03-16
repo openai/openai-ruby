@@ -40,15 +40,11 @@ module OpenAI
         class Type < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           FUNCTION = :function
           CODE_INTERPRETER = :code_interpreter
           FILE_SEARCH = :file_search
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

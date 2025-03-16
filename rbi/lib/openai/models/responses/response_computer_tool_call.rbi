@@ -160,6 +160,22 @@ module OpenAI
         class Action < OpenAI::Union
           abstract!
 
+          Variants = type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type,
+                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
+              )
+            }
+          end
+
           class Click < OpenAI::BaseModel
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
@@ -213,17 +229,13 @@ module OpenAI
             class Button < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               LEFT = :left
               RIGHT = :right
               WHEEL = :wheel
               BACK = :back
               FORWARD = :forward
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
           end
 
@@ -550,17 +562,6 @@ module OpenAI
             def to_hash
             end
           end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
-                )
-            end
-            def variants
-            end
-          end
         end
 
         class PendingSafetyCheck < OpenAI::BaseModel
@@ -606,28 +607,20 @@ module OpenAI
         class Status < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           INCOMPLETE = :incomplete
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # The type of the computer call. Always `computer_call`.
         class Type < OpenAI::Enum
           abstract!
 
-          COMPUTER_CALL = :computer_call
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          COMPUTER_CALL = :computer_call
         end
       end
     end

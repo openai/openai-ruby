@@ -241,15 +241,11 @@ module OpenAI
       class Status < OpenAI::Enum
         abstract!
 
+        Value = type_template(:out) { {fixed: Symbol} }
+
         EXPIRED = :expired
         IN_PROGRESS = :in_progress
         COMPLETED = :completed
-
-        class << self
-          sig { override.returns(T::Array[Symbol]) }
-          def values
-          end
-        end
       end
 
       class ExpiresAfter < OpenAI::BaseModel

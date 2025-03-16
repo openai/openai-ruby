@@ -8,11 +8,7 @@ module OpenAI
       class TranscriptionCreateResponse < OpenAI::Union
         abstract!
 
-        class << self
-          sig { override.returns([OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]) }
-          def variants
-          end
-        end
+        Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)} }
       end
     end
   end

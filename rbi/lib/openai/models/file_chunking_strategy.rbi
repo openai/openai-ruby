@@ -6,15 +6,10 @@ module OpenAI
     class FileChunkingStrategy < OpenAI::Union
       abstract!
 
-      class << self
-        sig do
-          override
-            .returns(
-              [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
-            )
-        end
-        def variants
-        end
+      Variants = type_template(:out) do
+        {
+          fixed: T.any(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)
+        }
       end
     end
   end

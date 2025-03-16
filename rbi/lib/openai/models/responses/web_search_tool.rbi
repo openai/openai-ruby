@@ -71,14 +71,10 @@ module OpenAI
         class Type < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           WEB_SEARCH_PREVIEW = :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # High level guidance for the amount of context window space to use for the
@@ -86,15 +82,11 @@ module OpenAI
         class SearchContextSize < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           LOW = :low
           MEDIUM = :medium
           HIGH = :high
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         class UserLocation < OpenAI::BaseModel

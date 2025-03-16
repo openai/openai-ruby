@@ -298,14 +298,10 @@ module OpenAI
               class Code < OpenAI::Enum
                 abstract!
 
+                Value = type_template(:out) { {fixed: Symbol} }
+
                 SERVER_ERROR = :server_error
                 RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
-
-                class << self
-                  sig { override.returns(T::Array[Symbol]) }
-                  def values
-                  end
-                end
               end
             end
 
@@ -314,32 +310,26 @@ module OpenAI
             class Status < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               IN_PROGRESS = :in_progress
               CANCELLED = :cancelled
               FAILED = :failed
               COMPLETED = :completed
               EXPIRED = :expired
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
 
             # The details of the run step.
             class StepDetails < OpenAI::Union
               abstract!
 
-              class << self
-                sig do
-                  override
-                    .returns(
-                      [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
-                    )
-                end
-                def variants
-                end
+              Variants = type_template(:out) do
+                {
+                  fixed: T.any(
+                    OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
+                    OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
+                  )
+                }
               end
             end
 
@@ -347,14 +337,10 @@ module OpenAI
             class Type < OpenAI::Enum
               abstract!
 
+              Value = type_template(:out) { {fixed: Symbol} }
+
               MESSAGE_CREATION = :message_creation
               TOOL_CALLS = :tool_calls
-
-              class << self
-                sig { override.returns(T::Array[Symbol]) }
-                def values
-                end
-              end
             end
 
             class Usage < OpenAI::BaseModel

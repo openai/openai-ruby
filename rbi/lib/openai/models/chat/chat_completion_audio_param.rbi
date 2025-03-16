@@ -42,23 +42,21 @@ module OpenAI
         class Format < OpenAI::Enum
           abstract!
 
+          Value = type_template(:out) { {fixed: Symbol} }
+
           WAV = :wav
           MP3 = :mp3
           FLAC = :flac
           OPUS = :opus
           PCM16 = :pcm16
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         class Voice < OpenAI::Enum
           abstract!
+
+          Value = type_template(:out) { {fixed: Symbol} }
 
           ALLOY = :alloy
           ASH = :ash
@@ -68,12 +66,6 @@ module OpenAI
           SAGE = :sage
           SHIMMER = :shimmer
           VERSE = :verse
-
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
         end
       end
     end

@@ -212,17 +212,13 @@ module OpenAI
           class FinishReason < OpenAI::Enum
             abstract!
 
+            Value = type_template(:out) { {fixed: Symbol} }
+
             STOP = :stop
             LENGTH = :length
             TOOL_CALLS = :tool_calls
             CONTENT_FILTER = :content_filter
             FUNCTION_CALL = :function_call
-
-            class << self
-              sig { override.returns(T::Array[Symbol]) }
-              def values
-              end
-            end
           end
 
           class Logprobs < OpenAI::BaseModel
@@ -279,14 +275,10 @@ module OpenAI
         class ServiceTier < OpenAI::Enum
           abstract!
 
-          SCALE = T.let(:scale, T.nilable(Symbol))
-          DEFAULT = T.let(:default, T.nilable(Symbol))
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          class << self
-            sig { override.returns(T::Array[Symbol]) }
-            def values
-            end
-          end
+          SCALE = :scale
+          DEFAULT = :default
         end
       end
     end

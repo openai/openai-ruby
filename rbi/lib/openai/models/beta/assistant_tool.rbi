@@ -6,15 +6,14 @@ module OpenAI
       class AssistantTool < OpenAI::Union
         abstract!
 
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
-              )
-          end
-          def variants
-          end
+        Variants = type_template(:out) do
+          {
+            fixed: T.any(
+              OpenAI::Models::Beta::CodeInterpreterTool,
+              OpenAI::Models::Beta::FileSearchTool,
+              OpenAI::Models::Beta::FunctionTool
+            )
+          }
         end
       end
     end
