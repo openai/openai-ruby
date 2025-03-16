@@ -19,11 +19,16 @@ module OpenAI
       (String arg0) -> void
     } -> top
 
-    private def with_pool: (URI::Generic url) { (top arg0) -> void } -> void
+    private def with_pool: (
+      URI::Generic url,
+      deadline: Float
+    ) {
+      (top arg0) -> void
+    } -> void
 
     def execute: (
       OpenAI::PooledNetRequester::request request
-    ) -> [top, Enumerable[String]]
+    ) -> [Integer, top, Enumerable[String]]
 
     def initialize: (size: Integer) -> void
   end

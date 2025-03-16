@@ -57,7 +57,7 @@ module OpenAI
       #
       # @param input [Object]
       #
-      # @return [Boolean, Object]
+      # @return [Boolean]
       def primitive?(input)
         case input
         in true | false | Integer | Float | Symbol | String
@@ -627,6 +627,8 @@ module OpenAI
       #
       # @param enum [Enumerable, nil]
       # @param blk [Proc]
+      #
+      # @return [Enumerable]
       def chain_fused(enum, &blk)
         iter = Enumerator.new { blk.call(_1) }
         fused_enum(iter) { close_fused!(enum) }

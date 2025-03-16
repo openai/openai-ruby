@@ -18,32 +18,6 @@ class OpenAITest < Minitest::Test
     assert_match(/is required/, e.message)
   end
 
-  class MockResponse
-    # @return [Integer]
-    attr_reader :code
-
-    # @param code [Integer]
-    # @param headers [Hash{String=>String}]
-    def initialize(code, headers)
-      @code = code
-      @headers = {"content-type" => "application/json", **headers}
-    end
-
-    # @param header [String]
-    #
-    # @return [String, nil]
-    def [](header)
-      @headers[header]
-    end
-
-    # @param header [String]
-    #
-    # @return [Boolean]
-    def key?(header)
-      @headers.key?(header)
-    end
-  end
-
   class MockRequester
     # @return [Integer]
     attr_reader :response_code
@@ -71,7 +45,8 @@ class OpenAITest < Minitest::Test
     def execute(req)
       # Deep copy the request because it is mutated on each retry.
       attempts.push(Marshal.load(Marshal.dump(req)))
-      [MockResponse.new(response_code, response_headers), response_data.grapheme_clusters]
+      headers = {"content-type" => "application/json", **response_headers}
+      [response_code, headers, response_data.grapheme_clusters]
     end
   end
 
