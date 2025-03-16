@@ -43,6 +43,11 @@ module OpenAI
       response_headers: ::Hash[String, String]
     ) -> OpenAI::BaseClient::request_input
 
+    def self.reap_connection!: (
+      Integer | OpenAI::APIConnectionError status,
+      stream: Enumerable[String]?
+    ) -> void
+
     # @api private
     attr_accessor requester: top
 

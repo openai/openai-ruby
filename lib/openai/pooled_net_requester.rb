@@ -61,6 +61,7 @@ module OpenAI
 
         case body
         in nil
+          nil
         in String
           req["content-length"] ||= body.bytesize.to_s unless req["transfer-encoding"]
           req.body_stream = OpenAI::Util::ReadIOAdapter.new(body, &)
@@ -79,9 +80,11 @@ module OpenAI
     # @api private
     #
     # @param url [URI::Generic]
+    # @param deadline [Float]
     # @param blk [Proc]
-    private def with_pool(url, &)
+    private def with_pool(url, deadline:, &blk)
       origin = OpenAI::Util.uri_origin(url)
+      timeout = deadline - OpenAI::Util.monotonic_secs
       pool =
         @mutex.synchronize do
           @pools[origin] ||= ConnectionPool.new(size: @size) do
@@ -89,7 +92,7 @@ module OpenAI
           end
         end
 
-      pool.with(&)
+      pool.with(timeout: timeout, &blk)
     end
 
     # @api private
@@ -106,14 +109,14 @@ module OpenAI
     #
     #   @option request [Float] :deadline
     #
-    # @return [Array(Net::HTTPResponse, Enumerable)]
+    # @return [Array(Integer, Net::HTTPResponse, Enumerable)]
     def execute(request)
       url, deadline = request.fetch_values(:url, :deadline)
 
       eof = false
       finished = false
       enum = Enumerator.new do |y|
-        with_pool(url) do |conn|
+        with_pool(url, deadline: deadline) do |conn|
           next if finished
 
           req = self.class.build_request(request) do
@@ -125,7 +128,7 @@ module OpenAI
 
           self.class.calibrate_socket_timeout(conn, deadline)
           conn.request(req) do |rsp|
-            y << [conn, rsp]
+            y << [conn, req, rsp]
             break if finished
 
             rsp.read_body do |bytes|
@@ -137,9 +140,11 @@ module OpenAI
             eof = true
           end
         end
+      rescue Timeout::Error
+        raise OpenAI::APITimeoutError
       end
 
-      conn, response = enum.next
+      conn, _, response = enum.next
       body = OpenAI::Util.fused_enum(enum, external: true) do
         finished = true
         tap do
@@ -149,7 +154,7 @@ module OpenAI
         end
         conn.finish if !eof && conn&.started?
       end
-      [response, (response.body = body)]
+      [Integer(response.code), response, (response.body = body)]
     end
 
     # @api private

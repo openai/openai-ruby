@@ -85,7 +85,7 @@ module OpenAI
   class Union
     extend OpenAI::Converter
 
-    private def self.known_variants: -> ::Array[[Symbol?, Proc]]
+    private def self.known_variants: -> ::Array[[Symbol?, (^-> OpenAI::Converter::input)]]
 
     def self.derefed_variants: -> ::Array[[Symbol?, top]]
 
