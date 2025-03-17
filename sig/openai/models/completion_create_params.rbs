@@ -90,21 +90,12 @@ module OpenAI
       def to_hash: -> OpenAI::Models::completion_create_params
 
       type model =
-        String | OpenAI::Models::CompletionCreateParams::Model::preset
+        String | :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
 
       class Model < OpenAI::Union
-        type preset =
-          :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
-
-        class Preset < OpenAI::Enum
-          GPT_3_5_TURBO_INSTRUCT: :"gpt-3.5-turbo-instruct"
-          DAVINCI_002: :"davinci-002"
-          BABBAGE_002: :"babbage-002"
-
-          def self.values: -> ::Array[OpenAI::Models::CompletionCreateParams::Model::preset]
-        end
-
-        def self.variants: -> [String, OpenAI::Models::CompletionCreateParams::Model::preset]
+        def self.variants: -> [String, (:"gpt-3.5-turbo-instruct"
+        | :"davinci-002"
+        | :"babbage-002")]
       end
 
       type prompt =

@@ -17,7 +17,7 @@ module OpenAI
         #
         # @param params [OpenAI::Models::FineTuning::JobCreateParams, Hash{Symbol=>Object}] .
         #
-        #   @option params [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::Preset] :model The name of the model to fine-tune. You can select one of the
+        #   @option params [String, Symbol] :model The name of the model to fine-tune. You can select one of the
         #     [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         #
         #   @option params [String] :training_file The ID of an uploaded file that contains training data.

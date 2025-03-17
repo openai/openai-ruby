@@ -192,19 +192,6 @@ module OpenAI
           abstract!
 
           Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
-
-          # The name of the model to fine-tune. You can select one of the
-          #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
-          class Preset < OpenAI::Enum
-            abstract!
-
-            Value = type_template(:out) { {fixed: Symbol} }
-
-            BABBAGE_002 = :"babbage-002"
-            DAVINCI_002 = :"davinci-002"
-            GPT_3_5_TURBO = :"gpt-3.5-turbo"
-            GPT_4O_MINI = :"gpt-4o-mini"
-          end
         end
 
         class Hyperparameters < OpenAI::BaseModel
