@@ -12,7 +12,7 @@ module OpenAI
         #   The name of the model to fine-tune. You can select one of the
         #     [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         #
-        #   @return [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::Preset]
+        #   @return [String, Symbol]
         required :model, union: -> { OpenAI::Models::FineTuning::JobCreateParams::Model }
 
         # @!attribute training_file
@@ -113,7 +113,7 @@ module OpenAI
         optional :validation_file, String, nil?: true
 
         # @!parse
-        #   # @param model [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::Preset]
+        #   # @param model [String, Symbol]
         #   # @param training_file [String]
         #   # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters]
         #   # @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
@@ -147,28 +147,28 @@ module OpenAI
         # The name of the model to fine-tune. You can select one of the
         #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         class Model < OpenAI::Union
+          # @!group
+
+          BABBAGE_002 = :"babbage-002"
+          DAVINCI_002 = :"davinci-002"
+          GPT_3_5_TURBO = :"gpt-3.5-turbo"
+          GPT_4O_MINI = :"gpt-4o-mini"
+
+          # @!endgroup
+
           variant String
 
-          # The name of the model to fine-tune. You can select one of the
-          # [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
-          variant enum: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::Preset }
+          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::BABBAGE_002
 
-          # @abstract
-          #
-          # The name of the model to fine-tune. You can select one of the
-          #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
-          class Preset < OpenAI::Enum
-            BABBAGE_002 = :"babbage-002"
-            DAVINCI_002 = :"davinci-002"
-            GPT_3_5_TURBO = :"gpt-3.5-turbo"
-            GPT_4O_MINI = :"gpt-4o-mini"
+          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::DAVINCI_002
 
-            finalize!
-          end
+          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_3_5_TURBO
+
+          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_4O_MINI
 
           # @!parse
           #   class << self
-          #     # @return [Array(String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::Preset)]
+          #     # @return [Array(String, Symbol)]
           #     def variants; end
           #   end
         end

@@ -66,22 +66,17 @@ module OpenAI
         def to_hash: -> OpenAI::Models::FineTuning::job_create_params
 
         type model =
-          String | OpenAI::Models::FineTuning::JobCreateParams::Model::preset
+          String
+          | :"babbage-002"
+          | :"davinci-002"
+          | :"gpt-3.5-turbo"
+          | :"gpt-4o-mini"
 
         class Model < OpenAI::Union
-          type preset =
-            :"babbage-002" | :"davinci-002" | :"gpt-3.5-turbo" | :"gpt-4o-mini"
-
-          class Preset < OpenAI::Enum
-            BABBAGE_002: :"babbage-002"
-            DAVINCI_002: :"davinci-002"
-            GPT_3_5_TURBO: :"gpt-3.5-turbo"
-            GPT_4O_MINI: :"gpt-4o-mini"
-
-            def self.values: -> ::Array[OpenAI::Models::FineTuning::JobCreateParams::Model::preset]
-          end
-
-          def self.variants: -> [String, OpenAI::Models::FineTuning::JobCreateParams::Model::preset]
+          def self.variants: -> [String, (:"babbage-002"
+          | :"davinci-002"
+          | :"gpt-3.5-turbo"
+          | :"gpt-4o-mini")]
         end
 
         type hyperparameters =

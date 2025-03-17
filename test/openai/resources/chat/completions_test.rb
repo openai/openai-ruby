@@ -6,7 +6,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
   def test_create_required_params
     response = @openai.chat.completions.create(
       messages: [{content: "string", role: :developer}],
-      model: :"gpt-4o",
+      model: :"o3-mini",
       stream: true
     )
 

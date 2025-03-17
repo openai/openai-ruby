@@ -6,7 +6,7 @@ class OpenAI::Test::Resources::EmbeddingsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
     response = @openai.embeddings.create(
       input: "The quick brown fox jumped over the lazy dog",
-      model: :"text-embedding-3-small"
+      model: :"text-embedding-ada-002"
     )
 
     assert_pattern do

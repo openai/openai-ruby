@@ -14,7 +14,7 @@ module OpenAI
       #     [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #     them.
       #
-      #   @return [String, Symbol, OpenAI::Models::CompletionCreateParams::Model::Preset]
+      #   @return [String, Symbol]
       required :model, union: -> { OpenAI::Models::CompletionCreateParams::Model }
 
       # @!attribute prompt
@@ -183,7 +183,7 @@ module OpenAI
       #   attr_writer :user
 
       # @!parse
-      #   # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model::Preset]
+      #   # @param model [String, Symbol]
       #   # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
       #   # @param best_of [Integer, nil]
       #   # @param echo [Boolean, nil]
@@ -236,29 +236,25 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       class Model < OpenAI::Union
+        # @!group
+
+        GPT_3_5_TURBO_INSTRUCT = :"gpt-3.5-turbo-instruct"
+        DAVINCI_002 = :"davinci-002"
+        BABBAGE_002 = :"babbage-002"
+
+        # @!endgroup
+
         variant String
 
-        # ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
-        variant enum: -> { OpenAI::Models::CompletionCreateParams::Model::Preset }
+        variant const: OpenAI::Models::CompletionCreateParams::Model::GPT_3_5_TURBO_INSTRUCT
 
-        # @abstract
-        #
-        # ID of the model to use. You can use the
-        #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-        #   see all of your available models, or see our
-        #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
-        #   them.
-        class Preset < OpenAI::Enum
-          GPT_3_5_TURBO_INSTRUCT = :"gpt-3.5-turbo-instruct"
-          DAVINCI_002 = :"davinci-002"
-          BABBAGE_002 = :"babbage-002"
+        variant const: OpenAI::Models::CompletionCreateParams::Model::DAVINCI_002
 
-          finalize!
-        end
+        variant const: OpenAI::Models::CompletionCreateParams::Model::BABBAGE_002
 
         # @!parse
         #   class << self
-        #     # @return [Array(String, Symbol, OpenAI::Models::CompletionCreateParams::Model::Preset)]
+        #     # @return [Array(String, Symbol)]
         #     def variants; end
         #   end
       end
