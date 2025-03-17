@@ -39,11 +39,11 @@ module OpenAI
         #     [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #     them.
         #
-        #   @return [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels, nil]
+        #   @return [String, Symbol, nil]
         optional :model, union: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model }
 
         # @!parse
-        #   # @return [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels]
+        #   # @return [String, Symbol]
         #   attr_writer :model
 
         # @!attribute name
@@ -131,7 +131,7 @@ module OpenAI
         #   # @param description [String, nil]
         #   # @param instructions [String, nil]
         #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels]
+        #   # @param model [String, Symbol]
         #   # @param name [String, nil]
         #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
         #   # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
@@ -169,56 +169,106 @@ module OpenAI
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
         class Model < OpenAI::Union
+          # @!group
+
+          O3_MINI = :"o3-mini"
+          O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
+          O1 = :o1
+          O1_2024_12_17 = :"o1-2024-12-17"
+          GPT_4O = :"gpt-4o"
+          GPT_4O_2024_11_20 = :"gpt-4o-2024-11-20"
+          GPT_4O_2024_08_06 = :"gpt-4o-2024-08-06"
+          GPT_4O_2024_05_13 = :"gpt-4o-2024-05-13"
+          GPT_4O_MINI = :"gpt-4o-mini"
+          GPT_4O_MINI_2024_07_18 = :"gpt-4o-mini-2024-07-18"
+          GPT_4_5_PREVIEW = :"gpt-4.5-preview"
+          GPT_4_5_PREVIEW_2025_02_27 = :"gpt-4.5-preview-2025-02-27"
+          GPT_4_TURBO = :"gpt-4-turbo"
+          GPT_4_TURBO_2024_04_09 = :"gpt-4-turbo-2024-04-09"
+          GPT_4_0125_PREVIEW = :"gpt-4-0125-preview"
+          GPT_4_TURBO_PREVIEW = :"gpt-4-turbo-preview"
+          GPT_4_1106_PREVIEW = :"gpt-4-1106-preview"
+          GPT_4_VISION_PREVIEW = :"gpt-4-vision-preview"
+          GPT_4 = :"gpt-4"
+          GPT_4_0314 = :"gpt-4-0314"
+          GPT_4_0613 = :"gpt-4-0613"
+          GPT_4_32K = :"gpt-4-32k"
+          GPT_4_32K_0314 = :"gpt-4-32k-0314"
+          GPT_4_32K_0613 = :"gpt-4-32k-0613"
+          GPT_3_5_TURBO = :"gpt-3.5-turbo"
+          GPT_3_5_TURBO_16K = :"gpt-3.5-turbo-16k"
+          GPT_3_5_TURBO_0613 = :"gpt-3.5-turbo-0613"
+          GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
+          GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
+          GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
+
+          # @!endgroup
+
           variant String
 
-          # ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
-          variant enum: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels }
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::O3_MINI
 
-          # @abstract
-          #
-          # ID of the model to use. You can use the
-          #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-          #   see all of your available models, or see our
-          #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
-          #   them.
-          class AssistantSupportedModels < OpenAI::Enum
-            O3_MINI = :"o3-mini"
-            O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
-            O1 = :o1
-            O1_2024_12_17 = :"o1-2024-12-17"
-            GPT_4O = :"gpt-4o"
-            GPT_4O_2024_11_20 = :"gpt-4o-2024-11-20"
-            GPT_4O_2024_08_06 = :"gpt-4o-2024-08-06"
-            GPT_4O_2024_05_13 = :"gpt-4o-2024-05-13"
-            GPT_4O_MINI = :"gpt-4o-mini"
-            GPT_4O_MINI_2024_07_18 = :"gpt-4o-mini-2024-07-18"
-            GPT_4_5_PREVIEW = :"gpt-4.5-preview"
-            GPT_4_5_PREVIEW_2025_02_27 = :"gpt-4.5-preview-2025-02-27"
-            GPT_4_TURBO = :"gpt-4-turbo"
-            GPT_4_TURBO_2024_04_09 = :"gpt-4-turbo-2024-04-09"
-            GPT_4_0125_PREVIEW = :"gpt-4-0125-preview"
-            GPT_4_TURBO_PREVIEW = :"gpt-4-turbo-preview"
-            GPT_4_1106_PREVIEW = :"gpt-4-1106-preview"
-            GPT_4_VISION_PREVIEW = :"gpt-4-vision-preview"
-            GPT_4 = :"gpt-4"
-            GPT_4_0314 = :"gpt-4-0314"
-            GPT_4_0613 = :"gpt-4-0613"
-            GPT_4_32K = :"gpt-4-32k"
-            GPT_4_32K_0314 = :"gpt-4-32k-0314"
-            GPT_4_32K_0613 = :"gpt-4-32k-0613"
-            GPT_3_5_TURBO = :"gpt-3.5-turbo"
-            GPT_3_5_TURBO_16K = :"gpt-3.5-turbo-16k"
-            GPT_3_5_TURBO_0613 = :"gpt-3.5-turbo-0613"
-            GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
-            GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
-            GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::O3_MINI_2025_01_31
 
-            finalize!
-          end
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::O1
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::O1_2024_12_17
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_2024_11_20
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_2024_08_06
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_2024_05_13
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_MINI
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_MINI_2024_07_18
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_5_PREVIEW
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_5_PREVIEW_2025_02_27
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_TURBO
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_TURBO_2024_04_09
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_0125_PREVIEW
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_TURBO_PREVIEW
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1106_PREVIEW
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_VISION_PREVIEW
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_0314
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_0613
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_32K
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_32K_0314
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_32K_0613
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_16K
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_0613
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_1106
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_0125
+
+          variant const: OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_16K_0613
 
           # @!parse
           #   class << self
-          #     # @return [Array(String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels)]
+          #     # @return [Array(String, Symbol)]
           #     def variants; end
           #   end
         end
