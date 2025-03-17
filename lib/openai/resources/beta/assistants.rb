@@ -125,7 +125,7 @@ module OpenAI
         #     Keys are strings with a maximum length of 64 characters. Values are strings with
         #     a maximum length of 512 characters.
         #
-        #   @option params [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::AssistantSupportedModels] :model ID of the model to use. You can use the
+        #   @option params [String, Symbol] :model ID of the model to use. You can use the
         #     [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         #     see all of your available models, or see our
         #     [Model overview](https://platform.openai.com/docs/models) for descriptions of
