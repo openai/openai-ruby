@@ -176,6 +176,8 @@ module OpenAI
     def self.known_fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
     & { type_fn: (^-> OpenAI::Converter::input) })]
 
+    def self.reverse_map: -> ::Hash[Symbol, Symbol]
+
     def self.fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
     & { type: OpenAI::Converter::input })]
 

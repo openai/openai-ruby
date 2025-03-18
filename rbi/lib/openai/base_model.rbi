@@ -458,6 +458,11 @@ module OpenAI
       end
 
       # @api private
+      sig { returns(T::Hash[Symbol, Symbol]) }
+      def reverse_map
+      end
+
+      # @api private
       sig do
         returns(T::Hash[Symbol, T.all(OpenAI::BaseModel::KnownFieldShape, {type: OpenAI::Converter::Input})])
       end
