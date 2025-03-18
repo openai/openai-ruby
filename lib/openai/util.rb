@@ -452,6 +452,7 @@ module OpenAI
     end
 
     class << self
+      # rubocop:disable Naming/MethodParameterName
       # @api private
       #
       # @param y [Enumerator::Yielder]
@@ -489,6 +490,7 @@ module OpenAI
         end
         y << "\r\n"
       end
+      # rubocop:enable Naming/MethodParameterName
 
       # @api private
       #
