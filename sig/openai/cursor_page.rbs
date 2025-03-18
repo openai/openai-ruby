@@ -5,5 +5,7 @@ module OpenAI
     attr_accessor data: ::Array[Elem]?
 
     attr_accessor has_more: bool
+
+    def inspect: -> String
   end
 end
