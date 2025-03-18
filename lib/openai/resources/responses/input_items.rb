@@ -24,7 +24,7 @@ module OpenAI
         #
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::Responses::ResponseItemList::Data::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput>]
+        # @return [OpenAI::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
         def list(response_id, params = {})
           parsed, options = OpenAI::Models::Responses::InputItemListParams.dump_request(params)
           @client.request(
@@ -32,7 +32,7 @@ module OpenAI
             path: ["responses/%0s/input_items", response_id],
             query: parsed,
             page: OpenAI::CursorPage,
-            model: OpenAI::Models::Responses::ResponseItemList::Data,
+            model: OpenAI::Models::Responses::ResponseItem,
             options: options
           )
         end
