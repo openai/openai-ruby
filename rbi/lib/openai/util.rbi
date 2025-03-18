@@ -52,6 +52,11 @@ module OpenAI
       end
     end
 
+    # Use this to indicate that a value should be explicitly removed from a data
+    #   structure when using `OpenAI::Util.deep_merge`.
+    #
+    #   e.g. merging `{a: 1}` and `{a: OMIT}` should produce `{}`, where merging
+    #   `{a: 1}` and `{}` would produce `{a: 1}`.
     OMIT = T.let(T.anything, T.anything)
 
     class << self
