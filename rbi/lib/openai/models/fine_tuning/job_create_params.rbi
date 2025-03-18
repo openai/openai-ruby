@@ -192,6 +192,11 @@ module OpenAI
           abstract!
 
           Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+
+          BABBAGE_002 = :"babbage-002"
+          DAVINCI_002 = :"davinci-002"
+          GPT_3_5_TURBO = :"gpt-3.5-turbo"
+          GPT_4O_MINI = :"gpt-4o-mini"
         end
 
         class Hyperparameters < OpenAI::BaseModel
