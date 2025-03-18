@@ -9,6 +9,8 @@ module OpenAI
         deadline: Float
       }
 
+    KEEP_ALIVE_TIMEOUT: 30
+
     def self.connect: (URI::Generic url) -> top
 
     def self.calibrate_socket_timeout: (top conn, Float deadline) -> void

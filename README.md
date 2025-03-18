@@ -186,6 +186,18 @@ model = CompletionCreateParams.new(
 openai.chat.completions.create(**model)
 ```
 
+## Advanced
+
+### Concurrency & Connection Pooling
+
+The `OpenAI::Client` instances are thread-safe, and should be re-used across multiple threads. By default, each `Client` have their own HTTP connection pool, with a maximum number of connections equal to thread count.
+
+When the maximum number of connections has been checked out from the connection pool, the `Client` will wait for an in use connection to become available. The queue time for this mechanism is accounted for by the per-request timeout.
+
+Unless otherwise specified, other classes in the SDK do not have locks protecting their underlying data structure.
+
+Currently, `OpenAI::Client` instances are only fork-safe if there are no in-flight HTTP requests.
+
 ## Versioning
 
 This package follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions. As the library is in initial development and has a major version of `0`, APIs may change at any time.
