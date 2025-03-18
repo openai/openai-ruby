@@ -21,5 +21,9 @@ module OpenAI
     sig { params(_: T::Boolean).returns(T::Boolean) }
     def has_more=(_)
     end
+
+    sig { returns(String) }
+    def inspect
+    end
   end
 end

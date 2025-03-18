@@ -21,5 +21,9 @@ module OpenAI
     sig { params(_: String).returns(String) }
     def object=(_)
     end
+
+    sig { returns(String) }
+    def inspect
+    end
   end
 end

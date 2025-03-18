@@ -121,6 +121,13 @@ module OpenAI
   class ArrayOf[Elem]
     include OpenAI::Converter
 
+    def self.[]: (
+      ::Hash[Symbol, top]
+      | ^-> OpenAI::Converter::input
+      | OpenAI::Converter::input type_info,
+      ?::Hash[Symbol, top] spec
+    ) -> instance
+
     def ===: (top other) -> bool
 
     def ==: (top other) -> bool
@@ -145,6 +152,13 @@ module OpenAI
 
   class HashOf[Elem]
     include OpenAI::Converter
+
+    def self.[]: (
+      ::Hash[Symbol, top]
+      | ^-> OpenAI::Converter::input
+      | OpenAI::Converter::input type_info,
+      ?::Hash[Symbol, top] spec
+    ) -> instance
 
     def ===: (top other) -> bool
 
