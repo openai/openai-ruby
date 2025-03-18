@@ -222,6 +222,20 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
     end
   end
 
+  class M4 < M2
+    required :c, M1
+    required :d, OpenAI::ArrayOf[M4]
+    required :e, M2, api_name: :f
+  end
+
+  def test_model_to_h
+    model = M4.new(a: "wow", c: {}, d: [{}, 2, {c: {}}], f: {})
+    assert_pattern do
+      model.to_h => {a: "wow", c: M1, d: [M4, 2, M4 => child], f: M2}
+      assert_equal({c: M1.new}, child.to_h)
+    end
+  end
+
   A3 = OpenAI::ArrayOf[A1]
 
   class M3 < M1
