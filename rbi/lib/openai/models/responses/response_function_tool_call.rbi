@@ -4,15 +4,6 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionToolCall < OpenAI::BaseModel
-        # The unique ID of the function tool call.
-        sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
-
         # A JSON string of the arguments to pass to the function.
         sig { returns(String) }
         def arguments
@@ -49,6 +40,15 @@ module OpenAI
         def type=(_)
         end
 
+        # The unique ID of the function tool call.
+        sig { returns(T.nilable(String)) }
+        def id
+        end
+
+        sig { params(_: String).returns(String) }
+        def id=(_)
+        end
+
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         sig { returns(T.nilable(Symbol)) }
@@ -63,20 +63,20 @@ module OpenAI
         #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
         #   for more information.
         sig do
-          params(id: String, arguments: String, call_id: String, name: String, status: Symbol, type: Symbol)
+          params(arguments: String, call_id: String, name: String, id: String, status: Symbol, type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(id:, arguments:, call_id:, name:, status: nil, type: :function_call)
+        def self.new(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call)
         end
 
         sig do
           override
             .returns({
-                       id: String,
                        arguments: String,
                        call_id: String,
                        name: String,
                        type: Symbol,
+                       id: String,
                        status: Symbol
                      })
         end

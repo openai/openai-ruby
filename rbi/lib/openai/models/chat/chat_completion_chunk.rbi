@@ -79,13 +79,16 @@ module OpenAI
 
         # An optional field that will only be present when you set
         #   `stream_options: {"include_usage": true}` in your request. When present, it
-        #   contains a null value except for the last chunk which contains the token usage
-        #   statistics for the entire request.
+        #   contains a null value **except for the last chunk** which contains the token
+        #   usage statistics for the entire request.
+        #
+        #   **NOTE:** If the stream is interrupted or cancelled, you may not receive the
+        #   final usage chunk which contains the total token usage for the request.
         sig { returns(T.nilable(OpenAI::Models::CompletionUsage)) }
         def usage
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::CompletionUsage)).returns(T.nilable(OpenAI::Models::CompletionUsage)) }
+        sig { params(_: OpenAI::Models::CompletionUsage).returns(OpenAI::Models::CompletionUsage) }
         def usage=(_)
         end
 
@@ -100,7 +103,7 @@ module OpenAI
             model: String,
             service_tier: T.nilable(Symbol),
             system_fingerprint: String,
-            usage: T.nilable(OpenAI::Models::CompletionUsage),
+            usage: OpenAI::Models::CompletionUsage,
             object: Symbol
           )
             .returns(T.attached_class)
@@ -128,7 +131,7 @@ module OpenAI
                 object: Symbol,
                 service_tier: T.nilable(Symbol),
                 system_fingerprint: String,
-                usage: T.nilable(OpenAI::Models::CompletionUsage)
+                usage: OpenAI::Models::CompletionUsage
               }
             )
         end

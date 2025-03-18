@@ -12,10 +12,10 @@ module OpenAI
       #     result in faster responses and fewer tokens used on reasoning in a response.
       #
       #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
-      required :effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
+      optional :effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
 
       # @!attribute generate_summary
-      #   **o-series models only**
+      #   **computer_use_preview only**
       #
       #     A summary of the reasoning performed by the model. This can be useful for
       #     debugging and understanding the model's reasoning process. One of `concise` or
@@ -33,13 +33,13 @@ module OpenAI
       #   # @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
       #   # @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
       #   #
-      #   def initialize(effort:, generate_summary: nil, **) = super
+      #   def initialize(effort: nil, generate_summary: nil, **) = super
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
       # @abstract
       #
-      # **o-series models only**
+      # **computer_use_preview only**
       #
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `concise` or
