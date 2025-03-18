@@ -6,7 +6,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
   def test_create_required_params
     response = @openai.batches.create(
       completion_window: :"24h",
-      endpoint: :"/v1/chat/completions",
+      endpoint: :"/v1/responses",
       input_file_id: "input_file_id"
     )
 
