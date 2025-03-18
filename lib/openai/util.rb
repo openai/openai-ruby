@@ -429,6 +429,8 @@ module OpenAI
       #
       # @param stream [String, IO, StringIO, Enumerable]
       # @param blk [Proc]
+      #
+      # @yieldparam [String]
       def initialize(stream, &blk)
         @stream = stream.is_a?(String) ? StringIO.new(stream) : stream
         @buf = String.new.b
@@ -439,6 +441,7 @@ module OpenAI
     class << self
       # @param blk [Proc]
       #
+      # @yieldparam [Enumerator::Yielder]
       # @return [Enumerable]
       def string_io(&blk)
         Enumerator.new do |y|
@@ -633,6 +636,7 @@ module OpenAI
       # @param enum [Enumerable, nil]
       # @param blk [Proc]
       #
+      # @yieldparam [Enumerator::Yielder]
       # @return [Enumerable]
       def chain_fused(enum, &blk)
         iter = Enumerator.new { blk.call(_1) }
