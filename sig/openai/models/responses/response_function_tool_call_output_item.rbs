@@ -1,0 +1,55 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_function_tool_call_output_item =
+        {
+          id: String,
+          call_id: String,
+          output: String,
+          type: :function_call_output,
+          status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+        }
+
+      class ResponseFunctionToolCallOutputItem < OpenAI::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor output: String
+
+        attr_accessor type: :function_call_output
+
+        attr_reader status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status?
+
+        def status=: (
+          OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+        ) -> OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
+
+        def initialize:
+          (
+            id: String,
+            call_id: String,
+            output: String,
+            status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
+            type: :function_call_output
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_function_tool_call_output_item
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_function_tool_call_output_item
+
+        type status = :in_progress | :completed | :incomplete
+
+        class Status < OpenAI::Enum
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status]
+        end
+      end
+    end
+  end
+end

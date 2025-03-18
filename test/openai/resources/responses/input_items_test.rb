@@ -12,19 +12,19 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
 
     row = response.to_enum.first
     assert_pattern do
-      row => OpenAI::Models::Responses::ResponseItemList::Data
+      row => OpenAI::Models::Responses::ResponseItem
     end
 
     assert_pattern do
       case row
-      in OpenAI::Models::Responses::ResponseItemList::Data::Message
+      in OpenAI::Models::Responses::ResponseInputMessageItem
       in OpenAI::Models::Responses::ResponseOutputMessage
       in OpenAI::Models::Responses::ResponseFileSearchToolCall
       in OpenAI::Models::Responses::ResponseComputerToolCall
-      in OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput
+      in OpenAI::Models::Responses::ResponseComputerToolCallOutputItem
       in OpenAI::Models::Responses::ResponseFunctionWebSearch
-      in OpenAI::Models::Responses::ResponseFunctionToolCall
-      in OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput
+      in OpenAI::Models::Responses::ResponseFunctionToolCallItem
+      in OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
       end
     end
 
@@ -34,8 +34,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         type: :message,
         id: String,
         content: ^(OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseInputContent]),
-        role: OpenAI::Models::Responses::ResponseItemList::Data::Message::Role,
-        status: OpenAI::Models::Responses::ResponseItemList::Data::Message::Status | nil
+        role: OpenAI::Models::Responses::ResponseInputMessageItem::Role,
+        status: OpenAI::Models::Responses::ResponseInputMessageItem::Status | nil
       }
       in {
         type: :message,
@@ -63,25 +63,17 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         type: :computer_call_output,
         id: String,
         call_id: String,
-        output: OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput::Output,
-        acknowledged_safety_checks: ^(OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput::AcknowledgedSafetyCheck]) | nil,
-        status: OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput::Status | nil
+        output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+        acknowledged_safety_checks: ^(OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
+        status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status | nil
       }
       in {type: :web_search_call, id: String, status: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status}
-      in {
-        type: :function_call,
-        arguments: String,
-        call_id: String,
-        name: String,
-        id: String | nil,
-        status: OpenAI::Models::Responses::ResponseFunctionToolCall::Status | nil
-      }
       in {
         type: :function_call_output,
         id: String,
         call_id: String,
         output: String,
-        status: OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput::Status | nil
+        status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status | nil
       }
       end
     end

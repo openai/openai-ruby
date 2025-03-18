@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_computer_tool_call_output_screenshot =
+        { type: :computer_screenshot, file_id: String, image_url: String }
+
+      class ResponseComputerToolCallOutputScreenshot < OpenAI::BaseModel
+        attr_accessor type: :computer_screenshot
+
+        attr_reader file_id: String?
+
+        def file_id=: (String) -> String
+
+        attr_reader image_url: String?
+
+        def image_url=: (String) -> String
+
+        def initialize:
+          (
+            file_id: String,
+            image_url: String,
+            type: :computer_screenshot
+          ) -> void
+          | (
+            ?OpenAI::Models::Responses::response_computer_tool_call_output_screenshot
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_computer_tool_call_output_screenshot
+      end
+    end
+  end
+end
