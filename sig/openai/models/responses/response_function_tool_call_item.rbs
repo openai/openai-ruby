@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_function_tool_call_item = { id: String }
+
+      class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
+        attr_accessor id: String
+
+        def initialize:
+          (id: String) -> void
+          | (
+            ?OpenAI::Models::Responses::response_function_tool_call_item
+            | OpenAI::BaseModel data
+          ) -> void
+
+        def to_hash: -> OpenAI::Models::Responses::response_function_tool_call_item
+      end
+    end
+  end
+end

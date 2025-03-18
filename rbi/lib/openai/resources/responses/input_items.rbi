@@ -17,14 +17,14 @@ module OpenAI
             .returns(
               OpenAI::CursorPage[
               T.any(
-                OpenAI::Models::Responses::ResponseItemList::Data::Message,
+                OpenAI::Models::Responses::ResponseInputMessageItem,
                 OpenAI::Models::Responses::ResponseOutputMessage,
                 OpenAI::Models::Responses::ResponseFileSearchToolCall,
                 OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseItemList::Data::ComputerCallOutput,
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
                 OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCall,
-                OpenAI::Models::Responses::ResponseItemList::Data::FunctionCallOutput
+                OpenAI::Models::Responses::ResponseFunctionToolCallItem,
+                OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
               )
               ]
             )
