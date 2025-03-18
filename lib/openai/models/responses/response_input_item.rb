@@ -149,8 +149,8 @@ module OpenAI
           # @!attribute output
           #   A computer screenshot image used with the computer use tool.
           #
-          #   @return [OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Output]
-          required :output, -> { OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Output }
+          #   @return [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
+          required :output, -> { OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot }
 
           # @!attribute type
           #   The type of the computer tool call output. Always `computer_call_output`.
@@ -195,7 +195,7 @@ module OpenAI
           #   # The output of a computer tool call.
           #   #
           #   # @param call_id [String]
-          #   # @param output [OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Output]
+          #   # @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
           #   # @param id [String]
           #   # @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>]
           #   # @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status]
@@ -204,46 +204,6 @@ module OpenAI
           #   def initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output, **) = super
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
-
-          class Output < OpenAI::BaseModel
-            # @!attribute type
-            #   Specifies the event type. For a computer screenshot, this property is always set
-            #     to `computer_screenshot`.
-            #
-            #   @return [Symbol, :computer_screenshot]
-            required :type, const: :computer_screenshot
-
-            # @!attribute [r] file_id
-            #   The identifier of an uploaded file that contains the screenshot.
-            #
-            #   @return [String, nil]
-            optional :file_id, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_id
-
-            # @!attribute [r] image_url
-            #   The URL of the screenshot image.
-            #
-            #   @return [String, nil]
-            optional :image_url, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :image_url
-
-            # @!parse
-            #   # A computer screenshot image used with the computer use tool.
-            #   #
-            #   # @param file_id [String]
-            #   # @param image_url [String]
-            #   # @param type [Symbol, :computer_screenshot]
-            #   #
-            #   def initialize(file_id: nil, image_url: nil, type: :computer_screenshot, **) = super
-
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
-          end
 
           class AcknowledgedSafetyCheck < OpenAI::BaseModel
             # @!attribute id

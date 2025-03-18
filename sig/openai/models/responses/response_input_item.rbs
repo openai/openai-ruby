@@ -86,7 +86,7 @@ module OpenAI
         type computer_call_output =
           {
             call_id: String,
-            output: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Output,
+            output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
             type: :computer_call_output,
             id: String,
             acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
@@ -96,7 +96,7 @@ module OpenAI
         class ComputerCallOutput < OpenAI::BaseModel
           attr_accessor call_id: String
 
-          attr_accessor output: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Output
+          attr_accessor output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot
 
           attr_accessor type: :computer_call_output
 
@@ -119,7 +119,7 @@ module OpenAI
           def initialize:
             (
               call_id: String,
-              output: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Output,
+              output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
               id: String,
               acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
               status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status,
@@ -131,34 +131,6 @@ module OpenAI
             ) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::computer_call_output
-
-          type output =
-            { type: :computer_screenshot, file_id: String, image_url: String }
-
-          class Output < OpenAI::BaseModel
-            attr_accessor type: :computer_screenshot
-
-            attr_reader file_id: String?
-
-            def file_id=: (String) -> String
-
-            attr_reader image_url: String?
-
-            def image_url=: (String) -> String
-
-            def initialize:
-              (
-                file_id: String,
-                image_url: String,
-                type: :computer_screenshot
-              ) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::output
-                | OpenAI::BaseModel data
-              ) -> void
-
-            def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::output
-          end
 
           type acknowledged_safety_check =
             { id: String, code: String, message: String }
