@@ -7,7 +7,9 @@ module OpenAI
       type chat_completion_store_message = { id: String }
 
       class ChatCompletionStoreMessage < OpenAI::Models::Chat::ChatCompletionMessage
-        attr_accessor id: String
+        def id: -> String
+
+        def id=: (String _) -> String
 
         def initialize:
           (id: String) -> void
