@@ -34,7 +34,7 @@ module OpenAI
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionContentPart::file
 
-          type file = { file_data: String, file_id: String, file_name: String }
+          type file = { file_data: String, file_id: String, filename: String }
 
           class File < OpenAI::BaseModel
             attr_reader file_data: String?
@@ -45,12 +45,12 @@ module OpenAI
 
             def file_id=: (String) -> String
 
-            attr_reader file_name: String?
+            attr_reader filename: String?
 
-            def file_name=: (String) -> String
+            def filename=: (String) -> String
 
             def initialize:
-              (file_data: String, file_id: String, file_name: String) -> void
+              (file_data: String, file_id: String, filename: String) -> void
               | (
                 ?OpenAI::Models::Chat::ChatCompletionContentPart::File::file
                 | OpenAI::BaseModel data

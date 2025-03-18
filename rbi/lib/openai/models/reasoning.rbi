@@ -17,7 +17,7 @@ module OpenAI
       def effort=(_)
       end
 
-      # **o-series models only**
+      # **computer_use_preview only**
       #
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `concise` or
@@ -35,14 +35,14 @@ module OpenAI
       #   Configuration options for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
       sig { params(effort: T.nilable(Symbol), generate_summary: T.nilable(Symbol)).returns(T.attached_class) }
-      def self.new(effort:, generate_summary: nil)
+      def self.new(effort: nil, generate_summary: nil)
       end
 
       sig { override.returns({effort: T.nilable(Symbol), generate_summary: T.nilable(Symbol)}) }
       def to_hash
       end
 
-      # **o-series models only**
+      # **computer_use_preview only**
       #
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `concise` or

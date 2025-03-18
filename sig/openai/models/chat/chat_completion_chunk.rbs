@@ -13,7 +13,7 @@ module OpenAI
           object: :"chat.completion.chunk",
           service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
           system_fingerprint: String,
-          usage: OpenAI::Models::CompletionUsage?
+          usage: OpenAI::Models::CompletionUsage
         }
 
       class ChatCompletionChunk < OpenAI::BaseModel
@@ -33,7 +33,11 @@ module OpenAI
 
         def system_fingerprint=: (String) -> String
 
-        attr_accessor usage: OpenAI::Models::CompletionUsage?
+        attr_reader usage: OpenAI::Models::CompletionUsage?
+
+        def usage=: (
+          OpenAI::Models::CompletionUsage
+        ) -> OpenAI::Models::CompletionUsage
 
         def initialize:
           (
@@ -43,7 +47,7 @@ module OpenAI
             model: String,
             service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
             system_fingerprint: String,
-            usage: OpenAI::Models::CompletionUsage?,
+            usage: OpenAI::Models::CompletionUsage,
             object: :"chat.completion.chunk"
           ) -> void
           | (

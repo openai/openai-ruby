@@ -16,9 +16,9 @@ module OpenAI
 
       # @!attribute endpoint
       #   The endpoint to be used for all requests in the batch. Currently
-      #     `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions` are supported.
-      #     Note that `/v1/embeddings` batches are also restricted to a maximum of 50,000
-      #     embedding inputs across all requests in the batch.
+      #     `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions`
+      #     are supported. Note that `/v1/embeddings` batches are also restricted to a
+      #     maximum of 50,000 embedding inputs across all requests in the batch.
       #
       #   @return [Symbol, OpenAI::Models::BatchCreateParams::Endpoint]
       required :endpoint, enum: -> { OpenAI::Models::BatchCreateParams::Endpoint }
@@ -72,10 +72,11 @@ module OpenAI
       # @abstract
       #
       # The endpoint to be used for all requests in the batch. Currently
-      #   `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions` are supported.
-      #   Note that `/v1/embeddings` batches are also restricted to a maximum of 50,000
-      #   embedding inputs across all requests in the batch.
+      #   `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions`
+      #   are supported. Note that `/v1/embeddings` batches are also restricted to a
+      #   maximum of 50,000 embedding inputs across all requests in the batch.
       class Endpoint < OpenAI::Enum
+        V1_RESPONSES = :"/v1/responses"
         V1_CHAT_COMPLETIONS = :"/v1/chat/completions"
         V1_EMBEDDINGS = :"/v1/embeddings"
         V1_COMPLETIONS = :"/v1/completions"

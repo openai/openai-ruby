@@ -77,18 +77,18 @@ module OpenAI
 
             # The name of the file, used when passing the file to the model as a string.
             sig { returns(T.nilable(String)) }
-            def file_name
+            def filename
             end
 
             sig { params(_: String).returns(String) }
-            def file_name=(_)
+            def filename=(_)
             end
 
-            sig { params(file_data: String, file_id: String, file_name: String).returns(T.attached_class) }
-            def self.new(file_data: nil, file_id: nil, file_name: nil)
+            sig { params(file_data: String, file_id: String, filename: String).returns(T.attached_class) }
+            def self.new(file_data: nil, file_id: nil, filename: nil)
             end
 
-            sig { override.returns({file_data: String, file_id: String, file_name: String}) }
+            sig { override.returns({file_data: String, file_id: String, filename: String}) }
             def to_hash
             end
           end
