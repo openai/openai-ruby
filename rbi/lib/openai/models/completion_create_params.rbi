@@ -341,6 +341,10 @@ module OpenAI
         abstract!
 
         Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+
+        GPT_3_5_TURBO_INSTRUCT = :"gpt-3.5-turbo-instruct"
+        DAVINCI_002 = :"davinci-002"
+        BABBAGE_002 = :"babbage-002"
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
