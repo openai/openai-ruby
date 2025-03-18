@@ -4,7 +4,9 @@ module OpenAI
       type response_function_tool_call_item = { id: String }
 
       class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
-        attr_accessor id: String
+        def id: -> String
+
+        def id=: (String _) -> String
 
         def initialize:
           (id: String) -> void
