@@ -3,17 +3,15 @@ module OpenAI
     module Responses
       type response_function_tool_call =
         {
-          id: String,
           arguments: String,
           call_id: String,
           name: String,
           type: :function_call,
+          id: String,
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status
         }
 
       class ResponseFunctionToolCall < OpenAI::BaseModel
-        attr_accessor id: String
-
         attr_accessor arguments: String
 
         attr_accessor call_id: String
@@ -21,6 +19,10 @@ module OpenAI
         attr_accessor name: String
 
         attr_accessor type: :function_call
+
+        attr_reader id: String?
+
+        def id=: (String) -> String
 
         attr_reader status: OpenAI::Models::Responses::ResponseFunctionToolCall::status?
 
@@ -30,10 +32,10 @@ module OpenAI
 
         def initialize:
           (
-            id: String,
             arguments: String,
             call_id: String,
             name: String,
+            id: String,
             status: OpenAI::Models::Responses::ResponseFunctionToolCall::status,
             type: :function_call
           ) -> void

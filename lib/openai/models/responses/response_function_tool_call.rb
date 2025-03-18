@@ -4,12 +4,6 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionToolCall < OpenAI::BaseModel
-        # @!attribute id
-        #   The unique ID of the function tool call.
-        #
-        #   @return [String]
-        required :id, String
-
         # @!attribute arguments
         #   A JSON string of the arguments to pass to the function.
         #
@@ -34,6 +28,16 @@ module OpenAI
         #   @return [Symbol, :function_call]
         required :type, const: :function_call
 
+        # @!attribute [r] id
+        #   The unique ID of the function tool call.
+        #
+        #   @return [String, nil]
+        optional :id, String
+
+        # @!parse
+        #   # @return [String]
+        #   attr_writer :id
+
         # @!attribute [r] status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #     Populated when items are returned via API.
@@ -50,14 +54,14 @@ module OpenAI
         #   #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
         #   #   for more information.
         #   #
-        #   # @param id [String]
         #   # @param arguments [String]
         #   # @param call_id [String]
         #   # @param name [String]
+        #   # @param id [String]
         #   # @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status]
         #   # @param type [Symbol, :function_call]
         #   #
-        #   def initialize(id:, arguments:, call_id:, name:, status: nil, type: :function_call, **) = super
+        #   def initialize(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call, **) = super
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 

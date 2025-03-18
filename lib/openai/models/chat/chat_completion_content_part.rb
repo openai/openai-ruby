@@ -67,22 +67,22 @@ module OpenAI
             #   # @return [String]
             #   attr_writer :file_id
 
-            # @!attribute [r] file_name
+            # @!attribute [r] filename
             #   The name of the file, used when passing the file to the model as a string.
             #
             #   @return [String, nil]
-            optional :file_name, String
+            optional :filename, String
 
             # @!parse
             #   # @return [String]
-            #   attr_writer :file_name
+            #   attr_writer :filename
 
             # @!parse
             #   # @param file_data [String]
             #   # @param file_id [String]
-            #   # @param file_name [String]
+            #   # @param filename [String]
             #   #
-            #   def initialize(file_data: nil, file_id: nil, file_name: nil, **) = super
+            #   def initialize(file_data: nil, file_id: nil, filename: nil, **) = super
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end

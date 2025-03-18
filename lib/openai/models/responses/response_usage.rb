@@ -10,6 +10,12 @@ module OpenAI
         #   @return [Integer]
         required :input_tokens, Integer
 
+        # @!attribute input_tokens_details
+        #   A detailed breakdown of the input tokens.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails]
+        required :input_tokens_details, -> { OpenAI::Models::Responses::ResponseUsage::InputTokensDetails }
+
         # @!attribute output_tokens
         #   The number of output tokens.
         #
@@ -33,13 +39,32 @@ module OpenAI
         #   #   breakdown of output tokens, and the total tokens used.
         #   #
         #   # @param input_tokens [Integer]
+        #   # @param input_tokens_details [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails]
         #   # @param output_tokens [Integer]
         #   # @param output_tokens_details [OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails]
         #   # @param total_tokens [Integer]
         #   #
-        #   def initialize(input_tokens:, output_tokens:, output_tokens_details:, total_tokens:, **) = super
+        #   def initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:, **) = super
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
+
+        class InputTokensDetails < OpenAI::BaseModel
+          # @!attribute cached_tokens
+          #   The number of tokens that were retrieved from the cache.
+          #     [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+          #
+          #   @return [Integer]
+          required :cached_tokens, Integer
+
+          # @!parse
+          #   # A detailed breakdown of the input tokens.
+          #   #
+          #   # @param cached_tokens [Integer]
+          #   #
+          #   def initialize(cached_tokens:, **) = super
+
+          # def initialize: (Hash | OpenAI::BaseModel) -> void
+        end
 
         class OutputTokensDetails < OpenAI::BaseModel
           # @!attribute reasoning_tokens

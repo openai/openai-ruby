@@ -44,9 +44,13 @@ module OpenAI
       end
 
       type endpoint =
-        :"/v1/chat/completions" | :"/v1/embeddings" | :"/v1/completions"
+        :"/v1/responses"
+        | :"/v1/chat/completions"
+        | :"/v1/embeddings"
+        | :"/v1/completions"
 
       class Endpoint < OpenAI::Enum
+        V1_RESPONSES: :"/v1/responses"
         V1_CHAT_COMPLETIONS: :"/v1/chat/completions"
         V1_EMBEDDINGS: :"/v1/embeddings"
         V1_COMPLETIONS: :"/v1/completions"

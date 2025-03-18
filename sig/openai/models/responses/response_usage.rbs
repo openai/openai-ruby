@@ -4,6 +4,7 @@ module OpenAI
       type response_usage =
         {
           input_tokens: Integer,
+          input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
           output_tokens: Integer,
           output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
           total_tokens: Integer
@@ -11,6 +12,8 @@ module OpenAI
 
       class ResponseUsage < OpenAI::BaseModel
         attr_accessor input_tokens: Integer
+
+        attr_accessor input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails
 
         attr_accessor output_tokens: Integer
 
@@ -21,6 +24,7 @@ module OpenAI
         def initialize:
           (
             input_tokens: Integer,
+            input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
             output_tokens: Integer,
             output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
             total_tokens: Integer
@@ -30,6 +34,21 @@ module OpenAI
           ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_usage
+
+        type input_tokens_details = { cached_tokens: Integer }
+
+        class InputTokensDetails < OpenAI::BaseModel
+          attr_accessor cached_tokens: Integer
+
+          def initialize:
+            (cached_tokens: Integer) -> void
+            | (
+              ?OpenAI::Models::Responses::ResponseUsage::input_tokens_details
+              | OpenAI::BaseModel data
+            ) -> void
+
+          def to_hash: -> OpenAI::Models::Responses::ResponseUsage::input_tokens_details
+        end
 
         type output_tokens_details = { reasoning_tokens: Integer }
 

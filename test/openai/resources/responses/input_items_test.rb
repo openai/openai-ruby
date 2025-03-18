@@ -70,10 +70,10 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in {type: :web_search_call, id: String, status: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status}
       in {
         type: :function_call,
-        id: String,
         arguments: String,
         call_id: String,
         name: String,
+        id: String | nil,
         status: OpenAI::Models::Responses::ResponseFunctionToolCall::Status | nil
       }
       in {
