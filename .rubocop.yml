@@ -83,6 +83,12 @@ Lint/UnusedMethodArgument:
 Metrics/AbcSize:
   Enabled: false
 
+Metrics/BlockLength:
+  AllowedPatterns:
+    - assert_pattern
+  Exclude:
+    - "**/*.rbi"
+
 Metrics/ClassLength:
   Enabled: false
 
@@ -91,6 +97,10 @@ Metrics/CyclomaticComplexity:
 
 Metrics/MethodLength:
   Enabled: false
+
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*.rbi"
 
 Metrics/ParameterLists:
   Enabled: false
@@ -102,7 +112,15 @@ Naming/BlockForwarding:
   Exclude:
     - "**/*.rbi"
 
+Naming/ClassAndModuleCamelCase:
+  Exclude:
+    - "**/*.rbi"
+
 Naming/MethodParameterName:
+  Exclude:
+    - "**/*.rbi"
+
+Naming/PredicateName:
   Exclude:
     - "**/*.rbi"
 
