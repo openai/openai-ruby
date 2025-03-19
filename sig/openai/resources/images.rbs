@@ -8,12 +8,12 @@ module OpenAI
         ) -> OpenAI::Models::ImagesResponse
         | (
           image: IO | StringIO,
-          model: OpenAI::Models::ImageCreateVariationParams::model?,
-          n: Integer?,
-          response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
-          size: OpenAI::Models::ImageCreateVariationParams::size?,
-          user: String,
-          request_options: OpenAI::request_opts
+          ?model: OpenAI::Models::ImageCreateVariationParams::model?,
+          ?n: Integer?,
+          ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
+          ?size: OpenAI::Models::ImageCreateVariationParams::size?,
+          ?user: String,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::ImagesResponse
 
       def edit:
@@ -23,13 +23,13 @@ module OpenAI
         | (
           image: IO | StringIO,
           prompt: String,
-          mask: IO | StringIO,
-          model: OpenAI::Models::ImageEditParams::model?,
-          n: Integer?,
-          response_format: OpenAI::Models::ImageEditParams::response_format?,
-          size: OpenAI::Models::ImageEditParams::size?,
-          user: String,
-          request_options: OpenAI::request_opts
+          ?mask: IO | StringIO,
+          ?model: OpenAI::Models::ImageEditParams::model?,
+          ?n: Integer?,
+          ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+          ?size: OpenAI::Models::ImageEditParams::size?,
+          ?user: String,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::ImagesResponse
 
       def generate:
@@ -38,14 +38,14 @@ module OpenAI
         ) -> OpenAI::Models::ImagesResponse
         | (
           prompt: String,
-          model: OpenAI::Models::ImageGenerateParams::model?,
-          n: Integer?,
-          quality: OpenAI::Models::ImageGenerateParams::quality,
-          response_format: OpenAI::Models::ImageGenerateParams::response_format?,
-          size: OpenAI::Models::ImageGenerateParams::size?,
-          style: OpenAI::Models::ImageGenerateParams::style?,
-          user: String,
-          request_options: OpenAI::request_opts
+          ?model: OpenAI::Models::ImageGenerateParams::model?,
+          ?n: Integer?,
+          ?quality: OpenAI::Models::ImageGenerateParams::quality,
+          ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+          ?size: OpenAI::Models::ImageGenerateParams::size?,
+          ?style: OpenAI::Models::ImageGenerateParams::style?,
+          ?user: String,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::ImagesResponse
 
       def initialize: (client: OpenAI::Client) -> void

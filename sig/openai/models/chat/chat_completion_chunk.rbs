@@ -45,10 +45,10 @@ module OpenAI
             choices: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice],
             created: Integer,
             model: String,
-            service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
-            system_fingerprint: String,
-            usage: OpenAI::Models::CompletionUsage,
-            object: :"chat.completion.chunk"
+            ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
+            ?system_fingerprint: String,
+            ?usage: OpenAI::Models::CompletionUsage,
+            ?object: :"chat.completion.chunk"
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_chunk
@@ -79,7 +79,7 @@ module OpenAI
               delta: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta,
               finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
               index: Integer,
-              logprobs: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs?
+              ?logprobs: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs?
             ) -> void
             | (
               ?OpenAI::Models::Chat::ChatCompletionChunk::choice
@@ -122,11 +122,11 @@ module OpenAI
 
             def initialize:
               (
-                content: String?,
-                function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
-                refusal: String?,
-                role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
-                tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+                ?content: String?,
+                ?function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+                ?refusal: String?,
+                ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
+                ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
               ) -> void
               | (
                 ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::delta
@@ -147,7 +147,7 @@ module OpenAI
               def name=: (String) -> String
 
               def initialize:
-                (arguments: String, name: String) -> void
+                (?arguments: String, ?name: String) -> void
                 | (
                   ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::function_call
                   | OpenAI::BaseModel data
@@ -198,9 +198,9 @@ module OpenAI
               def initialize:
                 (
                   index: Integer,
-                  id: String,
-                  function: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                  type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                  ?id: String,
+                  ?function: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                  ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
                 ) -> void
                 | (
                   ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::tool_call
@@ -221,7 +221,7 @@ module OpenAI
                 def name=: (String) -> String
 
                 def initialize:
-                  (arguments: String, name: String) -> void
+                  (?arguments: String, ?name: String) -> void
                   | (
                     ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::function
                     | OpenAI::BaseModel data

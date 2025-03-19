@@ -28,10 +28,10 @@ module OpenAI
         def initialize:
           (
             schema: ::Hash[Symbol, top],
-            description: String,
-            name: String,
-            strict: bool?,
-            type: :json_schema
+            ?description: String,
+            ?name: String,
+            ?strict: bool?,
+            ?type: :json_schema
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_format_text_json_schema_config

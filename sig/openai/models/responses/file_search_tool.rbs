@@ -34,10 +34,10 @@ module OpenAI
         def initialize:
           (
             vector_store_ids: ::Array[String],
-            filters: OpenAI::Models::Responses::FileSearchTool::filters,
-            max_num_results: Integer,
-            ranking_options: OpenAI::Models::Responses::FileSearchTool::RankingOptions,
-            type: :file_search
+            ?filters: OpenAI::Models::Responses::FileSearchTool::filters,
+            ?max_num_results: Integer,
+            ?ranking_options: OpenAI::Models::Responses::FileSearchTool::RankingOptions,
+            ?type: :file_search
           ) -> void
           | (
             ?OpenAI::Models::Responses::file_search_tool
@@ -72,8 +72,8 @@ module OpenAI
 
           def initialize:
             (
-              ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
-              score_threshold: Float
+              ?ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
+              ?score_threshold: Float
             ) -> void
             | (
               ?OpenAI::Models::Responses::FileSearchTool::ranking_options

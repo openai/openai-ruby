@@ -23,7 +23,7 @@ module OpenAI
             delta: String,
             item_id: String,
             output_index: Integer,
-            type: :"response.function_call_arguments.delta"
+            ?type: :"response.function_call_arguments.delta"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_function_call_arguments_delta_event

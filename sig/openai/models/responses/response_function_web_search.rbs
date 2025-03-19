@@ -19,7 +19,7 @@ module OpenAI
           (
             id: String,
             status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
-            type: :web_search_call
+            ?type: :web_search_call
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_function_web_search

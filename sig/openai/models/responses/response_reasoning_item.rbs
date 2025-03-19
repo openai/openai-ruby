@@ -26,8 +26,8 @@ module OpenAI
           (
             id: String,
             summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
-            status: OpenAI::Models::Responses::ResponseReasoningItem::status,
-            type: :reasoning
+            ?status: OpenAI::Models::Responses::ResponseReasoningItem::status,
+            ?type: :reasoning
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_reasoning_item
@@ -44,7 +44,7 @@ module OpenAI
           attr_accessor type: :summary_text
 
           def initialize:
-            (text: String, type: :summary_text) -> void
+            (text: String, ?type: :summary_text) -> void
             | (
               ?OpenAI::Models::Responses::ResponseReasoningItem::summary
               | OpenAI::BaseModel data

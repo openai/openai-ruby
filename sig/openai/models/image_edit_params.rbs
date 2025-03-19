@@ -41,13 +41,13 @@ module OpenAI
         (
           image: IO | StringIO,
           prompt: String,
-          mask: IO | StringIO,
-          model: OpenAI::Models::ImageEditParams::model?,
-          n: Integer?,
-          response_format: OpenAI::Models::ImageEditParams::response_format?,
-          size: OpenAI::Models::ImageEditParams::size?,
-          user: String,
-          request_options: OpenAI::request_opts
+          ?mask: IO | StringIO,
+          ?model: OpenAI::Models::ImageEditParams::model?,
+          ?n: Integer?,
+          ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+          ?size: OpenAI::Models::ImageEditParams::size?,
+          ?user: String,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (?OpenAI::Models::image_edit_params | OpenAI::BaseModel data) -> void
 

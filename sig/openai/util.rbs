@@ -20,12 +20,12 @@ module OpenAI
 
     OMIT: top
 
-    def self?.deep_merge_lr: (top lhs, top rhs, concat: bool) -> top
+    def self?.deep_merge_lr: (top lhs, top rhs, ?concat: bool) -> top
 
     def self?.deep_merge: (
       *::Array[top] values,
-      sentinel: top?,
-      concat: bool
+      ?sentinel: top?,
+      ?concat: bool
     ) -> top
 
     def self?.dig: (
@@ -102,12 +102,12 @@ module OpenAI
     def self?.decode_content: (
       ::Hash[String, String] headers,
       stream: Enumerable[String],
-      suppress_error: bool
+      ?suppress_error: bool
     ) -> top
 
     def self?.fused_enum: (
       Enumerable[top] enum,
-      external: bool
+      ?external: bool
     ) {
       -> void
     } -> Enumerable[top]

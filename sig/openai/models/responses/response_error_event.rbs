@@ -14,7 +14,12 @@ module OpenAI
         attr_accessor type: :error
 
         def initialize:
-          (code: String?, message: String, param: String?, type: :error) -> void
+          (
+            code: String?,
+            message: String,
+            param: String?,
+            ?type: :error
+          ) -> void
           | (
             ?OpenAI::Models::Responses::response_error_event
             | OpenAI::BaseModel data

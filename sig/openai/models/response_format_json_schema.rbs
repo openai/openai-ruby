@@ -14,7 +14,7 @@ module OpenAI
       def initialize:
         (
           json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema,
-          type: :json_schema
+          ?type: :json_schema
         ) -> void
         | (
           ?OpenAI::Models::response_format_json_schema | OpenAI::BaseModel data
@@ -46,9 +46,9 @@ module OpenAI
         def initialize:
           (
             name: String,
-            description: String,
-            schema: ::Hash[Symbol, top],
-            strict: bool?
+            ?description: String,
+            ?schema: ::Hash[Symbol, top],
+            ?strict: bool?
           ) -> void
           | (
             ?OpenAI::Models::ResponseFormatJSONSchema::json_schema

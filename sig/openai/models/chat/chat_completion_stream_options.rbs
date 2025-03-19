@@ -12,7 +12,7 @@ module OpenAI
         def include_usage=: (bool) -> bool
 
         def initialize:
-          (include_usage: bool) -> void
+          (?include_usage: bool) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_stream_options
             | OpenAI::BaseModel data

@@ -29,9 +29,9 @@ module OpenAI
             def initialize:
               (
                 index: Integer,
-                id: String,
-                function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
-                type: :function
+                ?id: String,
+                ?function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
+                ?type: :function
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::function_tool_call_delta
@@ -54,7 +54,7 @@ module OpenAI
               attr_accessor output: String?
 
               def initialize:
-                (arguments: String, name: String, output: String?) -> void
+                (?arguments: String, ?name: String, ?output: String?) -> void
                 | (
                   ?OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::function
                   | OpenAI::BaseModel data

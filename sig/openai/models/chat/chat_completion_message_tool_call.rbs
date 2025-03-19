@@ -22,7 +22,7 @@ module OpenAI
           (
             id: String,
             function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function,
-            type: :function
+            ?type: :function
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_message_tool_call

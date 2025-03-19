@@ -19,7 +19,7 @@ module OpenAI
           (
             item: OpenAI::Models::Responses::response_output_item,
             output_index: Integer,
-            type: :"response.output_item.added"
+            ?type: :"response.output_item.added"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_output_item_added_event

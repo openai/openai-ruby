@@ -17,9 +17,9 @@ module OpenAI
 
         def initialize:
           (
-            file_id: String,
-            image_url: String,
-            type: :computer_screenshot
+            ?file_id: String,
+            ?image_url: String,
+            ?type: :computer_screenshot
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_computer_tool_call_output_screenshot

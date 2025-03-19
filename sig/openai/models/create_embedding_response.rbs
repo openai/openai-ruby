@@ -22,7 +22,7 @@ module OpenAI
           data: ::Array[OpenAI::Models::Embedding],
           model: String,
           usage: OpenAI::Models::CreateEmbeddingResponse::Usage,
-          object: :list
+          ?object: :list
         ) -> void
         | (
           ?OpenAI::Models::create_embedding_response | OpenAI::BaseModel data

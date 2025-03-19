@@ -23,7 +23,7 @@ module OpenAI
           (
             content: OpenAI::Models::Responses::EasyInputMessage::content,
             role: OpenAI::Models::Responses::EasyInputMessage::role,
-            type: OpenAI::Models::Responses::EasyInputMessage::type_
+            ?type: OpenAI::Models::Responses::EasyInputMessage::type_
           ) -> void
           | (
             ?OpenAI::Models::Responses::easy_input_message

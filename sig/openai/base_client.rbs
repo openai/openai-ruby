@@ -53,14 +53,14 @@ module OpenAI
 
     def initialize: (
       base_url: String,
-      timeout: Float,
-      max_retries: Integer,
-      initial_retry_delay: Float,
-      max_retry_delay: Float,
-      headers: ::Hash[String, (String
+      ?timeout: Float,
+      ?max_retries: Integer,
+      ?initial_retry_delay: Float,
+      ?max_retry_delay: Float,
+      ?headers: ::Hash[String, (String
       | Integer
       | ::Array[(String | Integer)?])?],
-      idempotency_header: String?
+      ?idempotency_header: String?
     ) -> void
 
     private def auth_headers: -> ::Hash[String, String]
@@ -88,16 +88,16 @@ module OpenAI
       (
         Symbol method,
         String | ::Array[String] path,
-        query: ::Hash[String, (::Array[String] | String)?]?,
-        headers: ::Hash[String, (String
+        ?query: ::Hash[String, (::Array[String] | String)?]?,
+        ?headers: ::Hash[String, (String
         | Integer
         | ::Array[(String | Integer)?])?]?,
-        body: top?,
-        unwrap: Symbol?,
-        page: Class?,
-        stream: Class?,
-        model: OpenAI::Converter::input?,
-        options: OpenAI::request_opts?
+        ?body: top?,
+        ?unwrap: Symbol?,
+        ?page: Class?,
+        ?stream: Class?,
+        ?model: OpenAI::Converter::input?,
+        ?options: OpenAI::request_opts?
       ) -> top
       | (OpenAI::BaseClient::request_components req) -> top
 

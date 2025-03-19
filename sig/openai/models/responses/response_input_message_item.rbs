@@ -34,8 +34,8 @@ module OpenAI
             id: String,
             content: OpenAI::Models::Responses::response_input_message_content_list,
             role: OpenAI::Models::Responses::ResponseInputMessageItem::role,
-            status: OpenAI::Models::Responses::ResponseInputMessageItem::status,
-            type: OpenAI::Models::Responses::ResponseInputMessageItem::type_
+            ?status: OpenAI::Models::Responses::ResponseInputMessageItem::status,
+            ?type: OpenAI::Models::Responses::ResponseInputMessageItem::type_
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_input_message_item

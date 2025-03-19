@@ -37,12 +37,12 @@ module OpenAI
 
         def initialize:
           (
-            after: String,
-            limit: Integer,
-            metadata: OpenAI::Models::metadata?,
-            model: String,
-            order: OpenAI::Models::Chat::CompletionListParams::order,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?limit: Integer,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: String,
+            ?order: OpenAI::Models::Chat::CompletionListParams::order,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Chat::completion_list_params

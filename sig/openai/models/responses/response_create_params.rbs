@@ -79,22 +79,22 @@ module OpenAI
           (
             input: OpenAI::Models::Responses::ResponseCreateParams::input,
             model: OpenAI::Models::Responses::ResponseCreateParams::model,
-            include: ::Array[OpenAI::Models::Responses::response_includable]?,
-            instructions: String?,
-            max_output_tokens: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            parallel_tool_calls: bool?,
-            previous_response_id: String?,
-            reasoning: OpenAI::Models::Reasoning?,
-            store: bool?,
-            temperature: Float?,
-            text: OpenAI::Models::Responses::ResponseTextConfig,
-            tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
-            tools: ::Array[OpenAI::Models::Responses::tool],
-            top_p: Float?,
-            truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
-            user: String,
-            request_options: OpenAI::request_opts
+            ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+            ?instructions: String?,
+            ?max_output_tokens: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?parallel_tool_calls: bool?,
+            ?previous_response_id: String?,
+            ?reasoning: OpenAI::Models::Reasoning?,
+            ?store: bool?,
+            ?temperature: Float?,
+            ?text: OpenAI::Models::Responses::ResponseTextConfig,
+            ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+            ?tools: ::Array[OpenAI::Models::Responses::tool],
+            ?top_p: Float?,
+            ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
+            ?user: String,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_create_params

@@ -35,11 +35,11 @@ module OpenAI
 
           def initialize:
             (
-              after: String,
-              before: String,
-              limit: Integer,
-              order: OpenAI::Models::Beta::Threads::RunListParams::order,
-              request_options: OpenAI::request_opts
+              ?after: String,
+              ?before: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Beta::Threads::RunListParams::order,
+              ?request_options: OpenAI::request_opts
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::run_list_params

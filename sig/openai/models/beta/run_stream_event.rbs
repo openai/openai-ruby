@@ -28,7 +28,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.created"
+              ?event: :"thread.run.created"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_created
@@ -52,7 +52,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.queued"
+              ?event: :"thread.run.queued"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_queued
@@ -76,7 +76,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.in_progress"
+              ?event: :"thread.run.in_progress"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_in_progress
@@ -100,7 +100,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.requires_action"
+              ?event: :"thread.run.requires_action"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_requires_action
@@ -124,7 +124,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.completed"
+              ?event: :"thread.run.completed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_completed
@@ -148,7 +148,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.incomplete"
+              ?event: :"thread.run.incomplete"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_incomplete
@@ -172,7 +172,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.failed"
+              ?event: :"thread.run.failed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_failed
@@ -196,7 +196,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.cancelling"
+              ?event: :"thread.run.cancelling"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_cancelling
@@ -220,7 +220,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.cancelled"
+              ?event: :"thread.run.cancelled"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_cancelled
@@ -244,7 +244,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.expired"
+              ?event: :"thread.run.expired"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStreamEvent::thread_run_expired

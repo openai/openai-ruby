@@ -23,8 +23,8 @@ module OpenAI
 
           def initialize:
             (
-              content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
-              role: OpenAI::Models::Beta::Threads::MessageDelta::role
+              ?content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
+              ?role: OpenAI::Models::Beta::Threads::MessageDelta::role
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::message_delta

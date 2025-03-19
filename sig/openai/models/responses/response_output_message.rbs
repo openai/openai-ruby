@@ -26,8 +26,8 @@ module OpenAI
             id: String,
             content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
             status: OpenAI::Models::Responses::ResponseOutputMessage::status,
-            role: :assistant,
-            type: :message
+            ?role: :assistant,
+            ?type: :message
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_output_message

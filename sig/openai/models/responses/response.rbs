@@ -101,15 +101,15 @@ module OpenAI
             tool_choice: OpenAI::Models::Responses::Response::tool_choice,
             tools: ::Array[OpenAI::Models::Responses::tool],
             top_p: Float?,
-            max_output_tokens: Integer?,
-            previous_response_id: String?,
-            reasoning: OpenAI::Models::Reasoning?,
-            status: OpenAI::Models::Responses::response_status,
-            text: OpenAI::Models::Responses::ResponseTextConfig,
-            truncation: OpenAI::Models::Responses::Response::truncation?,
-            usage: OpenAI::Models::Responses::ResponseUsage,
-            user: String,
-            object: :response
+            ?max_output_tokens: Integer?,
+            ?previous_response_id: String?,
+            ?reasoning: OpenAI::Models::Reasoning?,
+            ?status: OpenAI::Models::Responses::response_status,
+            ?text: OpenAI::Models::Responses::ResponseTextConfig,
+            ?truncation: OpenAI::Models::Responses::Response::truncation?,
+            ?usage: OpenAI::Models::Responses::ResponseUsage,
+            ?user: String,
+            ?object: :response
           ) -> void
           | (
             ?OpenAI::Models::Responses::response | OpenAI::BaseModel data
@@ -131,7 +131,7 @@ module OpenAI
 
           def initialize:
             (
-              reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
+              ?reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
             ) -> void
             | (
               ?OpenAI::Models::Responses::Response::incomplete_details

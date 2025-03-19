@@ -14,8 +14,8 @@ module OpenAI
                 String step_id,
                 thread_id: String,
                 run_id: String,
-                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
-                request_options: OpenAI::request_opts
+                ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                ?request_options: OpenAI::request_opts
               ) -> OpenAI::Models::Beta::Threads::Runs::RunStep
 
             def list:
@@ -27,12 +27,12 @@ module OpenAI
               | (
                 String run_id,
                 thread_id: String,
-                after: String,
-                before: String,
-                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
-                limit: Integer,
-                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
-                request_options: OpenAI::request_opts
+                ?after: String,
+                ?before: String,
+                ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                ?limit: Integer,
+                ?order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
+                ?request_options: OpenAI::request_opts
               ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Runs::RunStep]
 
             def initialize: (client: OpenAI::Client) -> void

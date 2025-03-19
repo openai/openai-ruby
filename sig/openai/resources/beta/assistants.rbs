@@ -9,17 +9,17 @@ module OpenAI
           ) -> OpenAI::Models::Beta::Assistant
           | (
             model: OpenAI::Models::Beta::AssistantCreateParams::model,
-            description: String?,
-            instructions: String?,
-            metadata: OpenAI::Models::metadata?,
-            name: String?,
-            reasoning_effort: OpenAI::Models::reasoning_effort?,
-            response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-            temperature: Float?,
-            tool_resources: OpenAI::Models::Beta::AssistantCreateParams::ToolResources?,
-            tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-            top_p: Float?,
-            request_options: OpenAI::request_opts
+            ?description: String?,
+            ?instructions: String?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?name: String?,
+            ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+            ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+            ?temperature: Float?,
+            ?tool_resources: OpenAI::Models::Beta::AssistantCreateParams::ToolResources?,
+            ?tools: ::Array[OpenAI::Models::Beta::assistant_tool],
+            ?top_p: Float?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Assistant
 
         def retrieve:
@@ -30,7 +30,7 @@ module OpenAI
           ) -> OpenAI::Models::Beta::Assistant
           | (
             String assistant_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Assistant
 
         def update:
@@ -41,18 +41,18 @@ module OpenAI
           ) -> OpenAI::Models::Beta::Assistant
           | (
             String assistant_id,
-            description: String?,
-            instructions: String?,
-            metadata: OpenAI::Models::metadata?,
-            model: OpenAI::Models::Beta::AssistantUpdateParams::model,
-            name: String?,
-            reasoning_effort: OpenAI::Models::reasoning_effort?,
-            response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-            temperature: Float?,
-            tool_resources: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources?,
-            tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-            top_p: Float?,
-            request_options: OpenAI::request_opts
+            ?description: String?,
+            ?instructions: String?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: OpenAI::Models::Beta::AssistantUpdateParams::model,
+            ?name: String?,
+            ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+            ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+            ?temperature: Float?,
+            ?tool_resources: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources?,
+            ?tools: ::Array[OpenAI::Models::Beta::assistant_tool],
+            ?top_p: Float?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Assistant
 
         def list:
@@ -61,11 +61,11 @@ module OpenAI
             | ::Hash[Symbol, top] params
           ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Assistant]
           | (
-            after: String,
-            before: String,
-            limit: Integer,
-            order: OpenAI::Models::Beta::AssistantListParams::order,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::AssistantListParams::order,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Assistant]
 
         def delete:
@@ -76,7 +76,7 @@ module OpenAI
           ) -> OpenAI::Models::Beta::AssistantDeleted
           | (
             String assistant_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::AssistantDeleted
 
         def initialize: (client: OpenAI::Client) -> void

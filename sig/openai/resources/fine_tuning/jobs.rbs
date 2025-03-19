@@ -12,14 +12,14 @@ module OpenAI
           | (
             model: OpenAI::Models::FineTuning::JobCreateParams::model,
             training_file: String,
-            hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
-            integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?,
-            metadata: OpenAI::Models::metadata?,
-            method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
-            seed: Integer?,
-            suffix: String?,
-            validation_file: String?,
-            request_options: OpenAI::request_opts
+            ?hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
+            ?integrations: ::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
+            ?seed: Integer?,
+            ?suffix: String?,
+            ?validation_file: String?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::FineTuning::FineTuningJob
 
         def retrieve:
@@ -30,7 +30,7 @@ module OpenAI
           ) -> OpenAI::Models::FineTuning::FineTuningJob
           | (
             String fine_tuning_job_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::FineTuning::FineTuningJob
 
         def list:
@@ -39,10 +39,10 @@ module OpenAI
             | ::Hash[Symbol, top] params
           ) -> OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJob]
           | (
-            after: String,
-            limit: Integer,
-            metadata: ::Hash[Symbol, String]?,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJob]
 
         def cancel:
@@ -53,7 +53,7 @@ module OpenAI
           ) -> OpenAI::Models::FineTuning::FineTuningJob
           | (
             String fine_tuning_job_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::FineTuning::FineTuningJob
 
         def list_events:
@@ -64,9 +64,9 @@ module OpenAI
           ) -> OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJobEvent]
           | (
             String fine_tuning_job_id,
-            after: String,
-            limit: Integer,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJobEvent]
 
         def initialize: (client: OpenAI::Client) -> void

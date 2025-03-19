@@ -26,9 +26,9 @@ module OpenAI
         def initialize:
           (
             file_ids: ::Array[String],
-            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
-            chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
-            request_options: OpenAI::request_opts
+            ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
+            ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::VectorStores::file_batch_create_params

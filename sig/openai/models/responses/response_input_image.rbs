@@ -21,9 +21,9 @@ module OpenAI
         def initialize:
           (
             detail: OpenAI::Models::Responses::ResponseInputImage::detail,
-            file_id: String?,
-            image_url: String?,
-            type: :input_image
+            ?file_id: String?,
+            ?image_url: String?,
+            ?type: :input_image
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_input_image

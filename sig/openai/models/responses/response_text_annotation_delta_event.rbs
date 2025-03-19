@@ -31,7 +31,7 @@ module OpenAI
             content_index: Integer,
             item_id: String,
             output_index: Integer,
-            type: :"response.output_text.annotation.added"
+            ?type: :"response.output_text.annotation.added"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_text_annotation_delta_event
@@ -57,7 +57,7 @@ module OpenAI
             attr_accessor type: :file_citation
 
             def initialize:
-              (file_id: String, index: Integer, type: :file_citation) -> void
+              (file_id: String, index: Integer, ?type: :file_citation) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::file_citation
                 | OpenAI::BaseModel data
@@ -92,7 +92,7 @@ module OpenAI
                 start_index: Integer,
                 title: String,
                 url: String,
-                type: :url_citation
+                ?type: :url_citation
               ) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::url_citation
@@ -112,7 +112,7 @@ module OpenAI
             attr_accessor type: :file_path
 
             def initialize:
-              (file_id: String, index: Integer, type: :file_path) -> void
+              (file_id: String, index: Integer, ?type: :file_path) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::file_path
                 | OpenAI::BaseModel data

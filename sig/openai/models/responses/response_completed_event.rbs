@@ -15,7 +15,7 @@ module OpenAI
         def initialize:
           (
             response: OpenAI::Models::Responses::Response,
-            type: :"response.completed"
+            ?type: :"response.completed"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_completed_event

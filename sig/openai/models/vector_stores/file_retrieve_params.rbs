@@ -13,7 +13,7 @@ module OpenAI
         def initialize:
           (
             vector_store_id: String,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::VectorStores::file_retrieve_params

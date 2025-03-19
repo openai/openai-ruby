@@ -74,7 +74,7 @@ module OpenAI
                 button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
                 x: Integer,
                 y_: Integer,
-                type: :click
+                ?type: :click
               ) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::click
@@ -106,7 +106,7 @@ module OpenAI
             attr_accessor y_: Integer
 
             def initialize:
-              (x: Integer, y_: Integer, type: :double_click) -> void
+              (x: Integer, y_: Integer, ?type: :double_click) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::double_click
                 | OpenAI::BaseModel data
@@ -129,7 +129,7 @@ module OpenAI
             def initialize:
               (
                 path: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path],
-                type: :drag
+                ?type: :drag
               ) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::drag
@@ -164,7 +164,7 @@ module OpenAI
             attr_accessor type: :keypress
 
             def initialize:
-              (keys: ::Array[String], type: :keypress) -> void
+              (keys: ::Array[String], ?type: :keypress) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::keypress
                 | OpenAI::BaseModel data
@@ -183,7 +183,7 @@ module OpenAI
             attr_accessor y_: Integer
 
             def initialize:
-              (x: Integer, y_: Integer, type: :move) -> void
+              (x: Integer, y_: Integer, ?type: :move) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::move
                 | OpenAI::BaseModel data
@@ -198,7 +198,7 @@ module OpenAI
             attr_accessor type: :screenshot
 
             def initialize:
-              (type: :screenshot) -> void
+              (?type: :screenshot) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::screenshot
                 | OpenAI::BaseModel data
@@ -233,7 +233,7 @@ module OpenAI
                 scroll_y: Integer,
                 x: Integer,
                 y_: Integer,
-                type: :scroll
+                ?type: :scroll
               ) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::scroll
@@ -251,7 +251,7 @@ module OpenAI
             attr_accessor type: :type
 
             def initialize:
-              (text: String, type: :type) -> void
+              (text: String, ?type: :type) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::type_
                 | OpenAI::BaseModel data
@@ -266,7 +266,7 @@ module OpenAI
             attr_accessor type: :wait
 
             def initialize:
-              (type: :wait) -> void
+              (?type: :wait) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::wait
                 | OpenAI::BaseModel data

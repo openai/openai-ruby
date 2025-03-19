@@ -20,7 +20,7 @@ module OpenAI
 
             def initialize:
               (
-                step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
+                ?step_details: OpenAI::Models::Beta::Threads::Runs::RunStepDelta::step_details
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::run_step_delta

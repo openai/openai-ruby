@@ -21,8 +21,8 @@ module OpenAI
               (
                 file_search: top,
                 index: Integer,
-                id: String,
-                type: :file_search
+                ?id: String,
+                ?type: :file_search
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::file_search_tool_call_delta

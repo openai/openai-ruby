@@ -29,9 +29,9 @@ module OpenAI
             def initialize:
               (
                 index: Integer,
-                id: String,
-                code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                type: :code_interpreter
+                ?id: String,
+                ?code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                ?type: :code_interpreter
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call_delta
@@ -59,8 +59,8 @@ module OpenAI
 
               def initialize:
                 (
-                  input: String,
-                  outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+                  ?input: String,
+                  ?outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
                 ) -> void
                 | (
                   ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::code_interpreter

@@ -18,7 +18,7 @@ module OpenAI
         def initialize:
           (
             image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL,
-            type: :image_url
+            ?type: :image_url
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_content_part_image
@@ -45,7 +45,7 @@ module OpenAI
           def initialize:
             (
               url: String,
-              detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
+              ?detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
             ) -> void
             | (
               ?OpenAI::Models::Chat::ChatCompletionContentPartImage::image_url

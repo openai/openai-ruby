@@ -27,7 +27,7 @@ module OpenAI
             duration: Float,
             language: String,
             text: String,
-            segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment]
+            ?segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment]
           ) -> void
           | (
             ?OpenAI::Models::Audio::translation_verbose | OpenAI::BaseModel data

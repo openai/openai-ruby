@@ -17,7 +17,7 @@ module OpenAI
             def initialize:
               (
                 tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
-                type: :tool_calls
+                ?type: :tool_calls
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::tool_calls_step_details

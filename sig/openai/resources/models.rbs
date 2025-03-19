@@ -8,7 +8,7 @@ module OpenAI
         ) -> OpenAI::Models::Model
         | (
           String model,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Model
 
       def list:
@@ -16,7 +16,7 @@ module OpenAI
           ?OpenAI::Models::ModelListParams | ::Hash[Symbol, top] params
         ) -> OpenAI::Page[OpenAI::Models::Model]
         | (
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Page[OpenAI::Models::Model]
 
       def delete:
@@ -26,7 +26,7 @@ module OpenAI
         ) -> OpenAI::Models::ModelDeleted
         | (
           String model,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::ModelDeleted
 
       def initialize: (client: OpenAI::Client) -> void
