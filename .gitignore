@@ -1,9 +1,10 @@
-.prism.log
+*.gem
 .idea/
+.prism.log
 .ruby-lsp/
 .yardoc/
-doc/
-sorbet/
 Brewfile.lock.json
 bin/tapioca
-*.gem
+doc/
+sorbet/*
+!/sorbet/config
