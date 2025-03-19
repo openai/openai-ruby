@@ -134,6 +134,7 @@ module OpenAI
             ),
             top_p: T.nilable(Float),
             truncation_strategy: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy),
+            stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(OpenAI::Models::Beta::Threads::Run)
@@ -227,6 +228,9 @@ module OpenAI
           # Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           truncation_strategy: nil,
+          # There is no need to provide `stream:`. Instead, use `#create_and_run_streaming`
+          #   or `#create_and_run` for streaming and non-streaming use cases, respectively.
+          stream: false,
           request_options: {}
         )
         end
@@ -264,6 +268,7 @@ module OpenAI
             ),
             top_p: T.nilable(Float),
             truncation_strategy: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy),
+            stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(
@@ -386,6 +391,9 @@ module OpenAI
           # Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           truncation_strategy: nil,
+          # There is no need to provide `stream:`. Instead, use `#create_and_run_streaming`
+          #   or `#create_and_run` for streaming and non-streaming use cases, respectively.
+          stream: true,
           request_options: {}
         )
         end
