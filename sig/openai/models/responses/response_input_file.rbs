@@ -24,17 +24,12 @@ module OpenAI
 
         def filename=: (String) -> String
 
-        def initialize:
-          (
-            ?file_data: String,
-            ?file_id: String,
-            ?filename: String,
-            ?type: :input_file
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_input_file
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?file_data: String,
+          ?file_id: String,
+          ?filename: String,
+          ?type: :input_file
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_input_file
       end

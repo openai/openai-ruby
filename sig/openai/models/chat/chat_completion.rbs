@@ -39,20 +39,16 @@ module OpenAI
           OpenAI::Models::CompletionUsage
         ) -> OpenAI::Models::CompletionUsage
 
-        def initialize:
-          (
-            id: String,
-            choices: ::Array[OpenAI::Models::Chat::ChatCompletion::Choice],
-            created: Integer,
-            model: String,
-            ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
-            ?system_fingerprint: String,
-            ?usage: OpenAI::Models::CompletionUsage,
-            ?object: :"chat.completion"
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          choices: ::Array[OpenAI::Models::Chat::ChatCompletion::Choice],
+          created: Integer,
+          model: String,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::Models::CompletionUsage,
+          ?object: :"chat.completion"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion
 
@@ -73,17 +69,12 @@ module OpenAI
 
           attr_accessor message: OpenAI::Models::Chat::ChatCompletionMessage
 
-          def initialize:
-            (
-              finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason,
-              index: Integer,
-              logprobs: OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs?,
-              message: OpenAI::Models::Chat::ChatCompletionMessage
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletion::choice
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason,
+            index: Integer,
+            logprobs: OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs?,
+            message: OpenAI::Models::Chat::ChatCompletionMessage
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletion::choice
 
@@ -111,15 +102,10 @@ module OpenAI
 
             attr_accessor refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
 
-            def initialize:
-              (
-                content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?,
-                refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
-              ) -> void
-              | (
-                ?OpenAI::Models::Chat::ChatCompletion::Choice::logprobs
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?,
+              refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Chat::ChatCompletion::Choice::logprobs
           end

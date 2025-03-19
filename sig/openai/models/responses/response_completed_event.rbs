@@ -12,15 +12,10 @@ module OpenAI
 
         attr_accessor type: :"response.completed"
 
-        def initialize:
-          (
-            response: OpenAI::Models::Responses::Response,
-            ?type: :"response.completed"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_completed_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          response: OpenAI::Models::Responses::Response,
+          ?type: :"response.completed"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_completed_event
       end

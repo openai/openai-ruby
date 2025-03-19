@@ -59,29 +59,24 @@ module OpenAI
 
             attr_accessor usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?
 
-            def initialize:
-              (
-                id: String,
-                assistant_id: String,
-                cancelled_at: Integer?,
-                completed_at: Integer?,
-                created_at: Integer,
-                expired_at: Integer?,
-                failed_at: Integer?,
-                last_error: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError?,
-                metadata: OpenAI::Models::metadata?,
-                run_id: String,
-                status: OpenAI::Models::Beta::Threads::Runs::RunStep::status,
-                step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details,
-                thread_id: String,
-                type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
-                usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?,
-                ?object: :"thread.run.step"
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::run_step
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              id: String,
+              assistant_id: String,
+              cancelled_at: Integer?,
+              completed_at: Integer?,
+              created_at: Integer,
+              expired_at: Integer?,
+              failed_at: Integer?,
+              last_error: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError?,
+              metadata: OpenAI::Models::metadata?,
+              run_id: String,
+              status: OpenAI::Models::Beta::Threads::Runs::RunStep::status,
+              step_details: OpenAI::Models::Beta::Threads::Runs::RunStep::step_details,
+              thread_id: String,
+              type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
+              usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?,
+              ?object: :"thread.run.step"
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step
 
@@ -96,15 +91,10 @@ module OpenAI
 
               attr_accessor message: String
 
-              def initialize:
-                (
-                  code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
-                  message: String
-                ) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Runs::RunStep::last_error
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code,
+                message: String
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::RunStep::last_error
 
@@ -162,16 +152,11 @@ module OpenAI
 
               attr_accessor total_tokens: Integer
 
-              def initialize:
-                (
-                  completion_tokens: Integer,
-                  prompt_tokens: Integer,
-                  total_tokens: Integer
-                ) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Runs::RunStep::usage
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                completion_tokens: Integer,
+                prompt_tokens: Integer,
+                total_tokens: Integer
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::RunStep::usage
             end

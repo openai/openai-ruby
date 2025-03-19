@@ -16,15 +16,11 @@ module OpenAI
 
         attr_accessor tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?
 
-        def initialize:
-          (
-            ?metadata: OpenAI::Models::metadata?,
-            ?tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Beta::thread_update_params | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?metadata: OpenAI::Models::metadata?,
+          ?tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Beta::thread_update_params
 
@@ -47,15 +43,10 @@ module OpenAI
             OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
           ) -> OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
 
-          def initialize:
-            (
-              ?code_interpreter: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-              ?file_search: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::ThreadUpdateParams::tool_resources
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?code_interpreter: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::ThreadUpdateParams::tool_resources
 
@@ -66,12 +57,7 @@ module OpenAI
 
             def file_ids=: (::Array[String]) -> ::Array[String]
 
-            def initialize:
-              (?file_ids: ::Array[String]) -> void
-              | (
-                ?OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::code_interpreter
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?file_ids: ::Array[String]) -> void
 
             def to_hash: -> OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::code_interpreter
           end
@@ -83,12 +69,7 @@ module OpenAI
 
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
-            def initialize:
-              (?vector_store_ids: ::Array[String]) -> void
-              | (
-                ?OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::file_search
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?vector_store_ids: ::Array[String]) -> void
 
             def to_hash: -> OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::file_search
           end

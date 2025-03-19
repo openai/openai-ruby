@@ -29,18 +29,13 @@ module OpenAI
           ::Array[OpenAI::Models::Audio::TranscriptionWord]
         ) -> ::Array[OpenAI::Models::Audio::TranscriptionWord]
 
-        def initialize:
-          (
-            duration: Float,
-            language: String,
-            text: String,
-            ?segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment],
-            ?words: ::Array[OpenAI::Models::Audio::TranscriptionWord]
-          ) -> void
-          | (
-            ?OpenAI::Models::Audio::transcription_verbose
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          duration: Float,
+          language: String,
+          text: String,
+          ?segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment],
+          ?words: ::Array[OpenAI::Models::Audio::TranscriptionWord]
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Audio::transcription_verbose
       end

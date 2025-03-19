@@ -15,16 +15,11 @@ module OpenAI
 
         attr_accessor type: :output_text
 
-        def initialize:
-          (
-            annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
-            text: String,
-            ?type: :output_text
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_output_text
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          annotations: ::Array[OpenAI::Models::Responses::ResponseOutputText::annotation],
+          text: String,
+          ?type: :output_text
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_output_text
 
@@ -44,12 +39,11 @@ module OpenAI
 
             attr_accessor type: :file_citation
 
-            def initialize:
-              (file_id: String, index: Integer, ?type: :file_citation) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseOutputText::Annotation::file_citation
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              file_id: String,
+              index: Integer,
+              ?type: :file_citation
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseOutputText::Annotation::file_citation
           end
@@ -74,18 +68,13 @@ module OpenAI
 
             attr_accessor url: String
 
-            def initialize:
-              (
-                end_index: Integer,
-                start_index: Integer,
-                title: String,
-                url: String,
-                ?type: :url_citation
-              ) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseOutputText::Annotation::url_citation
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              url: String,
+              ?type: :url_citation
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseOutputText::Annotation::url_citation
           end
@@ -99,12 +88,11 @@ module OpenAI
 
             attr_accessor type: :file_path
 
-            def initialize:
-              (file_id: String, index: Integer, ?type: :file_path) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseOutputText::Annotation::file_path
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              file_id: String,
+              index: Integer,
+              ?type: :file_path
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseOutputText::Annotation::file_path
           end

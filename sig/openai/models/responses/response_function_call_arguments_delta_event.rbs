@@ -18,17 +18,12 @@ module OpenAI
 
         attr_accessor type: :"response.function_call_arguments.delta"
 
-        def initialize:
-          (
-            delta: String,
-            item_id: String,
-            output_index: Integer,
-            ?type: :"response.function_call_arguments.delta"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_function_call_arguments_delta_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          delta: String,
+          item_id: String,
+          output_index: Integer,
+          ?type: :"response.function_call_arguments.delta"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_function_call_arguments_delta_event
       end

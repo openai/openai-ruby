@@ -15,16 +15,11 @@ module OpenAI
 
         def image_url=: (String) -> String
 
-        def initialize:
-          (
-            ?file_id: String,
-            ?image_url: String,
-            ?type: :computer_screenshot
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_computer_tool_call_output_screenshot
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?file_id: String,
+          ?image_url: String,
+          ?type: :computer_screenshot
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_computer_tool_call_output_screenshot
       end

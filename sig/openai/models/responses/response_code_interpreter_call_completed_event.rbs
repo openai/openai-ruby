@@ -15,16 +15,11 @@ module OpenAI
 
         attr_accessor type: :"response.code_interpreter_call.completed"
 
-        def initialize:
-          (
-            code_interpreter_call: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall,
-            output_index: Integer,
-            ?type: :"response.code_interpreter_call.completed"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_code_interpreter_call_completed_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          code_interpreter_call: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall,
+          output_index: Integer,
+          ?type: :"response.code_interpreter_call.completed"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_code_interpreter_call_completed_event
       end

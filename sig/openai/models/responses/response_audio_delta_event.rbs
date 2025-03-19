@@ -9,12 +9,7 @@ module OpenAI
 
         attr_accessor type: :"response.audio.delta"
 
-        def initialize:
-          (delta: String, ?type: :"response.audio.delta") -> void
-          | (
-            ?OpenAI::Models::Responses::response_audio_delta_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (delta: String, ?type: :"response.audio.delta") -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_audio_delta_event
       end

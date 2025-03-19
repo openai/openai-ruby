@@ -8,15 +8,10 @@ module OpenAI
 
       attr_accessor type: :static
 
-      def initialize:
-        (
-          static: OpenAI::Models::StaticFileChunkingStrategy,
-          ?type: :static
-        ) -> void
-        | (
-          ?OpenAI::Models::static_file_chunking_strategy_object_param
-          | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        static: OpenAI::Models::StaticFileChunkingStrategy,
+        ?type: :static
+      ) -> void
 
       def to_hash: -> OpenAI::Models::static_file_chunking_strategy_object_param
     end

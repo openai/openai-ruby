@@ -11,14 +11,10 @@ module OpenAI
 
       attr_accessor type: :image_url
 
-      def initialize:
-        (
-          image_url: OpenAI::Models::ModerationImageURLInput::ImageURL,
-          ?type: :image_url
-        ) -> void
-        | (
-          ?OpenAI::Models::moderation_image_url_input | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        image_url: OpenAI::Models::ModerationImageURLInput::ImageURL,
+        ?type: :image_url
+      ) -> void
 
       def to_hash: -> OpenAI::Models::moderation_image_url_input
 
@@ -27,12 +23,7 @@ module OpenAI
       class ImageURL < OpenAI::BaseModel
         attr_accessor url: String
 
-        def initialize:
-          (url: String) -> void
-          | (
-            ?OpenAI::Models::ModerationImageURLInput::image_url
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (url: String) -> void
 
         def to_hash: -> OpenAI::Models::ModerationImageURLInput::image_url
       end

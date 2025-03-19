@@ -24,18 +24,13 @@ module OpenAI
 
         attr_accessor object: :list
 
-        def initialize:
-          (
-            data: ::Array[OpenAI::Models::Responses::response_item],
-            first_id: String,
-            has_more: bool,
-            last_id: String,
-            ?object: :list
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_item_list
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          data: ::Array[OpenAI::Models::Responses::response_item],
+          first_id: String,
+          has_more: bool,
+          last_id: String,
+          ?object: :list
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_item_list
       end

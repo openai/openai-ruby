@@ -11,14 +11,9 @@ module OpenAI
           OpenAI::Models::Responses::response_format_text_config
         ) -> OpenAI::Models::Responses::response_format_text_config
 
-        def initialize:
-          (
-            ?format_: OpenAI::Models::Responses::response_format_text_config
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_text_config
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?format_: OpenAI::Models::Responses::response_format_text_config
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_text_config
       end

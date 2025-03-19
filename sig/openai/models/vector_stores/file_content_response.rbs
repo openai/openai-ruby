@@ -12,12 +12,7 @@ module OpenAI
 
         def type=: (String) -> String
 
-        def initialize:
-          (?text: String, ?type: String) -> void
-          | (
-            ?OpenAI::Models::VectorStores::file_content_response
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (?text: String, ?type: String) -> void
 
         def to_hash: -> OpenAI::Models::VectorStores::file_content_response
       end

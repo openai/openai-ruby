@@ -17,16 +17,11 @@ module OpenAI
 
             attr_accessor type: :function
 
-            def initialize:
-              (
-                id: String,
-                function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function,
-                ?type: :function
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::function_tool_call
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              id: String,
+              function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function,
+              ?type: :function
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::function_tool_call
 
@@ -39,12 +34,11 @@ module OpenAI
 
               attr_accessor output: String?
 
-              def initialize:
-                (arguments: String, name: String, output: String?) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::function
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                arguments: String,
+                name: String,
+                output: String?
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::function
             end

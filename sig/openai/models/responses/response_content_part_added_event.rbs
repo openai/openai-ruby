@@ -21,18 +21,13 @@ module OpenAI
 
         attr_accessor type: :"response.content_part.added"
 
-        def initialize:
-          (
-            content_index: Integer,
-            item_id: String,
-            output_index: Integer,
-            part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
-            ?type: :"response.content_part.added"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_content_part_added_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
+          ?type: :"response.content_part.added"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_content_part_added_event
 

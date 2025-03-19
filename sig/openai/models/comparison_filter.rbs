@@ -14,13 +14,11 @@ module OpenAI
 
       attr_accessor value: OpenAI::Models::ComparisonFilter::value
 
-      def initialize:
-        (
-          key: String,
-          type: OpenAI::Models::ComparisonFilter::type_,
-          value: OpenAI::Models::ComparisonFilter::value
-        ) -> void
-        | (?OpenAI::Models::comparison_filter | OpenAI::BaseModel data) -> void
+      def initialize: (
+        key: String,
+        type: OpenAI::Models::ComparisonFilter::type_,
+        value: OpenAI::Models::ComparisonFilter::value
+      ) -> void
 
       def to_hash: -> OpenAI::Models::comparison_filter
 

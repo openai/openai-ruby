@@ -1,18 +1,14 @@
 module OpenAI
   module Resources
     class Embeddings
-      def create:
-        (
-          OpenAI::Models::EmbeddingCreateParams | ::Hash[Symbol, top] params
-        ) -> OpenAI::Models::CreateEmbeddingResponse
-        | (
-          input: OpenAI::Models::EmbeddingCreateParams::input,
-          model: OpenAI::Models::EmbeddingCreateParams::model,
-          ?dimensions: Integer,
-          ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
-          ?user: String,
-          ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::CreateEmbeddingResponse
+      def create: (
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        ?dimensions: Integer,
+        ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::CreateEmbeddingResponse
 
       def initialize: (client: OpenAI::Client) -> void
     end

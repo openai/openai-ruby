@@ -21,18 +21,13 @@ module OpenAI
 
         attr_accessor type: :message
 
-        def initialize:
-          (
-            id: String,
-            content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
-            status: OpenAI::Models::Responses::ResponseOutputMessage::status,
-            ?role: :assistant,
-            ?type: :message
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_output_message
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
+          status: OpenAI::Models::Responses::ResponseOutputMessage::status,
+          ?role: :assistant,
+          ?type: :message
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_output_message
 

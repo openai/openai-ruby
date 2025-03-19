@@ -17,17 +17,12 @@ module OpenAI
 
             def id=: (String) -> String
 
-            def initialize:
-              (
-                file_search: top,
-                index: Integer,
-                ?id: String,
-                ?type: :file_search
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::file_search_tool_call_delta
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              file_search: top,
+              index: Integer,
+              ?id: String,
+              ?type: :file_search
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::file_search_tool_call_delta
           end

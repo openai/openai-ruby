@@ -39,21 +39,17 @@ module OpenAI
 
       def user=: (String) -> String
 
-      def initialize:
-        (
-          prompt: String,
-          ?model: OpenAI::Models::ImageGenerateParams::model?,
-          ?n: Integer?,
-          ?quality: OpenAI::Models::ImageGenerateParams::quality,
-          ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
-          ?size: OpenAI::Models::ImageGenerateParams::size?,
-          ?style: OpenAI::Models::ImageGenerateParams::style?,
-          ?user: String,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (
-          ?OpenAI::Models::image_generate_params | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        prompt: String,
+        ?model: OpenAI::Models::ImageGenerateParams::model?,
+        ?n: Integer?,
+        ?quality: OpenAI::Models::ImageGenerateParams::quality,
+        ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        ?size: OpenAI::Models::ImageGenerateParams::size?,
+        ?style: OpenAI::Models::ImageGenerateParams::style?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::image_generate_params
 

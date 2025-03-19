@@ -12,15 +12,10 @@ module OpenAI
 
         attr_accessor type: :"response.created"
 
-        def initialize:
-          (
-            response: OpenAI::Models::Responses::Response,
-            ?type: :"response.created"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_created_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          response: OpenAI::Models::Responses::Response,
+          ?type: :"response.created"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_created_event
       end

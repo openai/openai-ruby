@@ -16,16 +16,11 @@ module OpenAI
 
         attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?
 
-        def initialize:
-          (
-            vector_store_id: String,
-            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStores::file_update_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          vector_store_id: String,
+          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStores::file_update_params
 

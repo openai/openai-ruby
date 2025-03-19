@@ -12,14 +12,10 @@ module OpenAI
 
         attr_accessor type: :function
 
-        def initialize:
-          (
-            function: OpenAI::Models::FunctionDefinition,
-            ?type: :function
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_tool | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          function: OpenAI::Models::FunctionDefinition,
+          ?type: :function
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_tool
       end
