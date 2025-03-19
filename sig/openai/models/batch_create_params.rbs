@@ -21,17 +21,13 @@ module OpenAI
 
       attr_accessor metadata: OpenAI::Models::metadata?
 
-      def initialize:
-        (
-          completion_window: OpenAI::Models::BatchCreateParams::completion_window,
-          endpoint: OpenAI::Models::BatchCreateParams::endpoint,
-          input_file_id: String,
-          ?metadata: OpenAI::Models::metadata?,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (
-          ?OpenAI::Models::batch_create_params | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        ?metadata: OpenAI::Models::metadata?,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::batch_create_params
 

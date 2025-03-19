@@ -21,15 +21,10 @@ module OpenAI
             OpenAI::Models::Beta::Threads::MessageDelta::role
           ) -> OpenAI::Models::Beta::Threads::MessageDelta::role
 
-          def initialize:
-            (
-              ?content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
-              ?role: OpenAI::Models::Beta::Threads::MessageDelta::role
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::message_delta
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
+            ?role: OpenAI::Models::Beta::Threads::MessageDelta::role
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::message_delta
 

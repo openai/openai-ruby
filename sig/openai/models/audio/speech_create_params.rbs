@@ -31,19 +31,14 @@ module OpenAI
 
         def speed=: (Float) -> Float
 
-        def initialize:
-          (
-            input: String,
-            model: OpenAI::Models::Audio::SpeechCreateParams::model,
-            voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
-            ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
-            ?speed: Float,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Audio::speech_create_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          input: String,
+          model: OpenAI::Models::Audio::SpeechCreateParams::model,
+          voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
+          ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
+          ?speed: Float,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Audio::speech_create_params
 

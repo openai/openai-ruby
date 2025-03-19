@@ -25,18 +25,13 @@ module OpenAI
           OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
         ) -> OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
 
-        def initialize:
-          (
-            id: String,
-            call_id: String,
-            output: String,
-            ?status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
-            ?type: :function_call_output
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_function_tool_call_output_item
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          call_id: String,
+          output: String,
+          ?status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
+          ?type: :function_call_output
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_function_tool_call_output_item
 

@@ -32,18 +32,14 @@ module OpenAI
 
       def user=: (String) -> String
 
-      def initialize:
-        (
-          input: OpenAI::Models::EmbeddingCreateParams::input,
-          model: OpenAI::Models::EmbeddingCreateParams::model,
-          ?dimensions: Integer,
-          ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
-          ?user: String,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (
-          ?OpenAI::Models::embedding_create_params | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        input: OpenAI::Models::EmbeddingCreateParams::input,
+        model: OpenAI::Models::EmbeddingCreateParams::model,
+        ?dimensions: Integer,
+        ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::embedding_create_params
 

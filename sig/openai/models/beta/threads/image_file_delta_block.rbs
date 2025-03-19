@@ -20,16 +20,11 @@ module OpenAI
             OpenAI::Models::Beta::Threads::ImageFileDelta
           ) -> OpenAI::Models::Beta::Threads::ImageFileDelta
 
-          def initialize:
-            (
-              index: Integer,
-              ?image_file: OpenAI::Models::Beta::Threads::ImageFileDelta,
-              ?type: :image_file
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::image_file_delta_block
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            index: Integer,
+            ?image_file: OpenAI::Models::Beta::Threads::ImageFileDelta,
+            ?type: :image_file
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::image_file_delta_block
         end

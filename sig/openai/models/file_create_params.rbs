@@ -12,13 +12,11 @@ module OpenAI
 
       attr_accessor purpose: OpenAI::Models::file_purpose
 
-      def initialize:
-        (
-          file: IO | StringIO,
-          purpose: OpenAI::Models::file_purpose,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (?OpenAI::Models::file_create_params | OpenAI::BaseModel data) -> void
+      def initialize: (
+        file: IO | StringIO,
+        purpose: OpenAI::Models::file_purpose,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::file_create_params
     end

@@ -18,16 +18,12 @@ module OpenAI
 
         attr_accessor type: :computer_use_preview
 
-        def initialize:
-          (
-            display_height: Float,
-            display_width: Float,
-            environment: OpenAI::Models::Responses::ComputerTool::environment,
-            ?type: :computer_use_preview
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::computer_tool | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          display_height: Float,
+          display_width: Float,
+          environment: OpenAI::Models::Responses::ComputerTool::environment,
+          ?type: :computer_use_preview
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::computer_tool
 

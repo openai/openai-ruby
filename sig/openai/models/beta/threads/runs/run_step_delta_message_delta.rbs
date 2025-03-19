@@ -21,15 +21,10 @@ module OpenAI
               OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
             ) -> OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
 
-            def initialize:
-              (
-                ?message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                ?type: :message_creation
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::run_step_delta_message_delta
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              ?message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
+              ?type: :message_creation
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step_delta_message_delta
 
@@ -40,12 +35,7 @@ module OpenAI
 
               def message_id=: (String) -> String
 
-              def initialize:
-                (?message_id: String) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::message_creation
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (?message_id: String) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::message_creation
             end

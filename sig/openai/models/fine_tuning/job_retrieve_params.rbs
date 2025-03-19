@@ -7,12 +7,7 @@ module OpenAI
         extend OpenAI::RequestParameters::Converter
         include OpenAI::RequestParameters
 
-        def initialize:
-          (?request_options: OpenAI::request_opts) -> void
-          | (
-            ?OpenAI::Models::FineTuning::job_retrieve_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (?request_options: OpenAI::request_opts) -> void
 
         def to_hash: -> OpenAI::Models::FineTuning::job_retrieve_params
       end

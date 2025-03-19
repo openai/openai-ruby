@@ -1,33 +1,19 @@
 module OpenAI
   module Resources
     class Models
-      def retrieve:
-        (
-          String model,
-          ?OpenAI::Models::ModelRetrieveParams | ::Hash[Symbol, top] params
-        ) -> OpenAI::Models::Model
-        | (
-          String model,
-          ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::Model
+      def retrieve: (
+        String model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::Model
 
-      def list:
-        (
-          ?OpenAI::Models::ModelListParams | ::Hash[Symbol, top] params
-        ) -> OpenAI::Page[OpenAI::Models::Model]
-        | (
-          ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Page[OpenAI::Models::Model]
+      def list: (
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Page[OpenAI::Models::Model]
 
-      def delete:
-        (
-          String model,
-          ?OpenAI::Models::ModelDeleteParams | ::Hash[Symbol, top] params
-        ) -> OpenAI::Models::ModelDeleted
-        | (
-          String model,
-          ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::ModelDeleted
+      def delete: (
+        String model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::ModelDeleted
 
       def initialize: (client: OpenAI::Client) -> void
     end

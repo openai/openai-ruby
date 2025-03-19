@@ -32,18 +32,13 @@ module OpenAI
           OpenAI::Models::Responses::InputItemListParams::order
         ) -> OpenAI::Models::Responses::InputItemListParams::order
 
-        def initialize:
-          (
-            ?after: String,
-            ?before: String,
-            ?limit: Integer,
-            ?order: OpenAI::Models::Responses::InputItemListParams::order,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::input_item_list_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?after: String,
+          ?before: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Responses::InputItemListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::input_item_list_params
 

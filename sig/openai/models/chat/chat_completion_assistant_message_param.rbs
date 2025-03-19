@@ -36,20 +36,15 @@ module OpenAI
           ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
         ) -> ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
 
-        def initialize:
-          (
-            ?audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?,
-            ?content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
-            ?function_call: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
-            ?name: String,
-            ?refusal: String?,
-            ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
-            ?role: :assistant
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_assistant_message_param
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?,
+          ?content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
+          ?function_call: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
+          ?name: String,
+          ?refusal: String?,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
+          ?role: :assistant
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_assistant_message_param
 
@@ -58,12 +53,7 @@ module OpenAI
         class Audio < OpenAI::BaseModel
           attr_accessor id: String
 
-          def initialize:
-            (id: String) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::audio
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (id: String) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::audio
         end
@@ -96,12 +86,7 @@ module OpenAI
 
           attr_accessor name: String
 
-          def initialize:
-            (arguments: String, name: String) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::function_call
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (arguments: String, name: String) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::function_call
         end

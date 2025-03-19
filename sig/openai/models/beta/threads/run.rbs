@@ -88,39 +88,35 @@ module OpenAI
 
           attr_accessor top_p: Float?
 
-          def initialize:
-            (
-              id: String,
-              assistant_id: String,
-              cancelled_at: Integer?,
-              completed_at: Integer?,
-              created_at: Integer,
-              expires_at: Integer?,
-              failed_at: Integer?,
-              incomplete_details: OpenAI::Models::Beta::Threads::Run::IncompleteDetails?,
-              instructions: String,
-              last_error: OpenAI::Models::Beta::Threads::Run::LastError?,
-              max_completion_tokens: Integer?,
-              max_prompt_tokens: Integer?,
-              metadata: OpenAI::Models::metadata?,
-              model: String,
-              parallel_tool_calls: bool,
-              required_action: OpenAI::Models::Beta::Threads::Run::RequiredAction?,
-              response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-              started_at: Integer?,
-              status: OpenAI::Models::Beta::Threads::run_status,
-              thread_id: String,
-              tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
-              tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-              truncation_strategy: OpenAI::Models::Beta::Threads::Run::TruncationStrategy?,
-              usage: OpenAI::Models::Beta::Threads::Run::Usage?,
-              ?temperature: Float?,
-              ?top_p: Float?,
-              ?object: :"thread.run"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::run | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            id: String,
+            assistant_id: String,
+            cancelled_at: Integer?,
+            completed_at: Integer?,
+            created_at: Integer,
+            expires_at: Integer?,
+            failed_at: Integer?,
+            incomplete_details: OpenAI::Models::Beta::Threads::Run::IncompleteDetails?,
+            instructions: String,
+            last_error: OpenAI::Models::Beta::Threads::Run::LastError?,
+            max_completion_tokens: Integer?,
+            max_prompt_tokens: Integer?,
+            metadata: OpenAI::Models::metadata?,
+            model: String,
+            parallel_tool_calls: bool,
+            required_action: OpenAI::Models::Beta::Threads::Run::RequiredAction?,
+            response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+            started_at: Integer?,
+            status: OpenAI::Models::Beta::Threads::run_status,
+            thread_id: String,
+            tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
+            tools: ::Array[OpenAI::Models::Beta::assistant_tool],
+            truncation_strategy: OpenAI::Models::Beta::Threads::Run::TruncationStrategy?,
+            usage: OpenAI::Models::Beta::Threads::Run::Usage?,
+            ?temperature: Float?,
+            ?top_p: Float?,
+            ?object: :"thread.run"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::run
 
@@ -136,14 +132,9 @@ module OpenAI
               OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
             ) -> OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
 
-            def initialize:
-              (
-                ?reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Run::incomplete_details
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              ?reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Run::incomplete_details
 
@@ -168,15 +159,10 @@ module OpenAI
 
             attr_accessor message: String
 
-            def initialize:
-              (
-                code: OpenAI::Models::Beta::Threads::Run::LastError::code,
-                message: String
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Run::last_error
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              code: OpenAI::Models::Beta::Threads::Run::LastError::code,
+              message: String
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Run::last_error
 
@@ -202,15 +188,10 @@ module OpenAI
 
             attr_accessor type: :submit_tool_outputs
 
-            def initialize:
-              (
-                submit_tool_outputs: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
-                ?type: :submit_tool_outputs
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Run::required_action
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              submit_tool_outputs: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
+              ?type: :submit_tool_outputs
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Run::required_action
 
@@ -222,14 +203,9 @@ module OpenAI
             class SubmitToolOutputs < OpenAI::BaseModel
               attr_accessor tool_calls: ::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]
 
-              def initialize:
-                (
-                  tool_calls: ::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]
-                ) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Run::RequiredAction::submit_tool_outputs
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                tool_calls: ::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Run::RequiredAction::submit_tool_outputs
             end
@@ -246,15 +222,10 @@ module OpenAI
 
             attr_accessor last_messages: Integer?
 
-            def initialize:
-              (
-                type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
-                ?last_messages: Integer?
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Run::truncation_strategy
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
+              ?last_messages: Integer?
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Run::truncation_strategy
 
@@ -282,16 +253,11 @@ module OpenAI
 
             attr_accessor total_tokens: Integer
 
-            def initialize:
-              (
-                completion_tokens: Integer,
-                prompt_tokens: Integer,
-                total_tokens: Integer
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Run::usage
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              completion_tokens: Integer,
+              prompt_tokens: Integer,
+              total_tokens: Integer
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Run::usage
           end

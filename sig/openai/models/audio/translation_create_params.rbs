@@ -33,19 +33,14 @@ module OpenAI
 
         def temperature=: (Float) -> Float
 
-        def initialize:
-          (
-            file: IO | StringIO,
-            model: OpenAI::Models::Audio::TranslationCreateParams::model,
-            ?prompt: String,
-            ?response_format: OpenAI::Models::audio_response_format,
-            ?temperature: Float,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Audio::translation_create_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          file: IO | StringIO,
+          model: OpenAI::Models::Audio::TranslationCreateParams::model,
+          ?prompt: String,
+          ?response_format: OpenAI::Models::audio_response_format,
+          ?temperature: Float,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Audio::translation_create_params
 

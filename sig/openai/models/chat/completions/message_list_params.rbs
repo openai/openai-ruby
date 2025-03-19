@@ -28,17 +28,12 @@ module OpenAI
             OpenAI::Models::Chat::Completions::MessageListParams::order
           ) -> OpenAI::Models::Chat::Completions::MessageListParams::order
 
-          def initialize:
-            (
-              ?after: String,
-              ?limit: Integer,
-              ?order: OpenAI::Models::Chat::Completions::MessageListParams::order,
-              ?request_options: OpenAI::request_opts
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::Completions::message_list_params
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Chat::Completions::MessageListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::Completions::message_list_params
 

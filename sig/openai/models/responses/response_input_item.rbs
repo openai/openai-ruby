@@ -40,17 +40,12 @@ module OpenAI
             OpenAI::Models::Responses::ResponseInputItem::Message::type_
           ) -> OpenAI::Models::Responses::ResponseInputItem::Message::type_
 
-          def initialize:
-            (
-              content: OpenAI::Models::Responses::response_input_message_content_list,
-              role: OpenAI::Models::Responses::ResponseInputItem::Message::role,
-              ?status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
-              ?type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
-            ) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseInputItem::message
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            content: OpenAI::Models::Responses::response_input_message_content_list,
+            role: OpenAI::Models::Responses::ResponseInputItem::Message::role,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
+            ?type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::message
 
@@ -116,19 +111,14 @@ module OpenAI
             OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status
           ) -> OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status
 
-          def initialize:
-            (
-              call_id: String,
-              output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-              ?id: String,
-              ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
-              ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status,
-              ?type: :computer_call_output
-            ) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseInputItem::computer_call_output
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            call_id: String,
+            output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+            ?id: String,
+            ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status,
+            ?type: :computer_call_output
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::computer_call_output
 
@@ -142,12 +132,7 @@ module OpenAI
 
             attr_accessor message: String
 
-            def initialize:
-              (id: String, code: String, message: String) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::acknowledged_safety_check
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (id: String, code: String, message: String) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::acknowledged_safety_check
           end
@@ -189,18 +174,13 @@ module OpenAI
             OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status
           ) -> OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status
 
-          def initialize:
-            (
-              call_id: String,
-              output: String,
-              ?id: String,
-              ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status,
-              ?type: :function_call_output
-            ) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseInputItem::function_call_output
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            call_id: String,
+            output: String,
+            ?id: String,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status,
+            ?type: :function_call_output
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::function_call_output
 
@@ -222,12 +202,7 @@ module OpenAI
 
           attr_accessor type: :item_reference
 
-          def initialize:
-            (id: String, ?type: :item_reference) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseInputItem::item_reference
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (id: String, ?type: :item_reference) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::item_reference
         end

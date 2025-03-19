@@ -36,19 +36,17 @@ module OpenAI
 
       def status_details=: (String) -> String
 
-      def initialize:
-        (
-          id: String,
-          bytes: Integer,
-          created_at: Integer,
-          filename: String,
-          purpose: OpenAI::Models::FileObject::purpose,
-          status: OpenAI::Models::FileObject::status,
-          ?expires_at: Integer,
-          ?status_details: String,
-          ?object: :file
-        ) -> void
-        | (?OpenAI::Models::file_object | OpenAI::BaseModel data) -> void
+      def initialize: (
+        id: String,
+        bytes: Integer,
+        created_at: Integer,
+        filename: String,
+        purpose: OpenAI::Models::FileObject::purpose,
+        status: OpenAI::Models::FileObject::status,
+        ?expires_at: Integer,
+        ?status_details: String,
+        ?object: :file
+      ) -> void
 
       def to_hash: -> OpenAI::Models::file_object
 

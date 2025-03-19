@@ -17,14 +17,12 @@ module OpenAI
 
       attr_accessor text: String
 
-      def initialize:
-        (
-          finish_reason: OpenAI::Models::CompletionChoice::finish_reason,
-          index: Integer,
-          logprobs: OpenAI::Models::CompletionChoice::Logprobs?,
-          text: String
-        ) -> void
-        | (?OpenAI::Models::completion_choice | OpenAI::BaseModel data) -> void
+      def initialize: (
+        finish_reason: OpenAI::Models::CompletionChoice::finish_reason,
+        index: Integer,
+        logprobs: OpenAI::Models::CompletionChoice::Logprobs?,
+        text: String
+      ) -> void
 
       def to_hash: -> OpenAI::Models::completion_choice
 
@@ -65,16 +63,12 @@ module OpenAI
           ::Array[::Hash[Symbol, Float]]
         ) -> ::Array[::Hash[Symbol, Float]]
 
-        def initialize:
-          (
-            ?text_offset: ::Array[Integer],
-            ?token_logprobs: ::Array[Float],
-            ?tokens: ::Array[String],
-            ?top_logprobs: ::Array[::Hash[Symbol, Float]]
-          ) -> void
-          | (
-            ?OpenAI::Models::CompletionChoice::logprobs | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?text_offset: ::Array[Integer],
+          ?token_logprobs: ::Array[Float],
+          ?tokens: ::Array[String],
+          ?top_logprobs: ::Array[::Hash[Symbol, Float]]
+        ) -> void
 
         def to_hash: -> OpenAI::Models::CompletionChoice::logprobs
       end

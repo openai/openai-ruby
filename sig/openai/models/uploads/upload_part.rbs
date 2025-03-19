@@ -21,16 +21,12 @@ module OpenAI
 
         attr_accessor upload_id: String
 
-        def initialize:
-          (
-            id: String,
-            created_at: Integer,
-            upload_id: String,
-            ?object: :"upload.part"
-          ) -> void
-          | (
-            ?OpenAI::Models::Uploads::upload_part | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          upload_id: String,
+          ?object: :"upload.part"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Uploads::upload_part
       end

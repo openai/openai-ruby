@@ -35,19 +35,14 @@ module OpenAI
           OpenAI::Models::Chat::CompletionListParams::order
         ) -> OpenAI::Models::Chat::CompletionListParams::order
 
-        def initialize:
-          (
-            ?after: String,
-            ?limit: Integer,
-            ?metadata: OpenAI::Models::metadata?,
-            ?model: String,
-            ?order: OpenAI::Models::Chat::CompletionListParams::order,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::completion_list_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?after: String,
+          ?limit: Integer,
+          ?metadata: OpenAI::Models::metadata?,
+          ?model: String,
+          ?order: OpenAI::Models::Chat::CompletionListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::completion_list_params
 

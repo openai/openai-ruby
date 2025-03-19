@@ -17,16 +17,11 @@ module OpenAI
 
             attr_accessor type: :code_interpreter
 
-            def initialize:
-              (
-                id: String,
-                code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-                ?type: :code_interpreter
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              id: String,
+              code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+              ?type: :code_interpreter
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call
 
@@ -41,15 +36,10 @@ module OpenAI
 
               attr_accessor outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
 
-              def initialize:
-                (
-                  input: String,
-                  outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
-                ) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::code_interpreter
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                input: String,
+                outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::code_interpreter
 
@@ -65,12 +55,7 @@ module OpenAI
 
                   attr_accessor type: :logs
 
-                  def initialize:
-                    (logs: String, ?type: :logs) -> void
-                    | (
-                      ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::logs
-                      | OpenAI::BaseModel data
-                    ) -> void
+                  def initialize: (logs: String, ?type: :logs) -> void
 
                   def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::logs
                 end
@@ -86,15 +71,10 @@ module OpenAI
 
                   attr_accessor type: :image
 
-                  def initialize:
-                    (
-                      image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                      ?type: :image
-                    ) -> void
-                    | (
-                      ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::image
-                      | OpenAI::BaseModel data
-                    ) -> void
+                  def initialize: (
+                    image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                    ?type: :image
+                  ) -> void
 
                   def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::image
 
@@ -103,12 +83,7 @@ module OpenAI
                   class Image < OpenAI::BaseModel
                     attr_accessor file_id: String
 
-                    def initialize:
-                      (file_id: String) -> void
-                      | (
-                        ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::image
-                        | OpenAI::BaseModel data
-                      ) -> void
+                    def initialize: (file_id: String) -> void
 
                     def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::image
                   end

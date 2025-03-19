@@ -2,17 +2,11 @@ module OpenAI
   module Resources
     class Uploads
       class Parts
-        def create:
-          (
-            String upload_id,
-            OpenAI::Models::Uploads::PartCreateParams
-            | ::Hash[Symbol, top] params
-          ) -> OpenAI::Models::Uploads::UploadPart
-          | (
-            String upload_id,
-            data: IO | StringIO,
-            ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Uploads::UploadPart
+        def create: (
+          String upload_id,
+          data: IO | StringIO,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Uploads::UploadPart
 
         def initialize: (client: OpenAI::Client) -> void
       end

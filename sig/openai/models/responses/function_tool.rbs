@@ -21,17 +21,13 @@ module OpenAI
 
         attr_accessor description: String?
 
-        def initialize:
-          (
-            name: String,
-            parameters: ::Hash[Symbol, top],
-            strict: bool,
-            ?description: String?,
-            ?type: :function
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::function_tool | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          name: String,
+          parameters: ::Hash[Symbol, top],
+          strict: bool,
+          ?description: String?,
+          ?type: :function
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::function_tool
       end

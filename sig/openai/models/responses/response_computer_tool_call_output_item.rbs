@@ -32,19 +32,14 @@ module OpenAI
           OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status
         ) -> OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status
 
-        def initialize:
-          (
-            id: String,
-            call_id: String,
-            output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-            ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-            ?status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
-            ?type: :computer_call_output
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_computer_tool_call_output_item
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          call_id: String,
+          output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+          ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          ?status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
+          ?type: :computer_call_output
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_computer_tool_call_output_item
 
@@ -58,12 +53,7 @@ module OpenAI
 
           attr_accessor message: String
 
-          def initialize:
-            (id: String, code: String, message: String) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::acknowledged_safety_check
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (id: String, code: String, message: String) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::acknowledged_safety_check
         end

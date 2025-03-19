@@ -12,15 +12,10 @@ module OpenAI
 
         attr_accessor type: :"response.in_progress"
 
-        def initialize:
-          (
-            response: OpenAI::Models::Responses::Response,
-            ?type: :"response.in_progress"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_in_progress_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          response: OpenAI::Models::Responses::Response,
+          ?type: :"response.in_progress"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_in_progress_event
       end

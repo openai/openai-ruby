@@ -32,18 +32,13 @@ module OpenAI
           OpenAI::Models::Beta::AssistantListParams::order
         ) -> OpenAI::Models::Beta::AssistantListParams::order
 
-        def initialize:
-          (
-            ?after: String,
-            ?before: String,
-            ?limit: Integer,
-            ?order: OpenAI::Models::Beta::AssistantListParams::order,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Beta::assistant_list_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?after: String,
+          ?before: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Beta::AssistantListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Beta::assistant_list_params
 

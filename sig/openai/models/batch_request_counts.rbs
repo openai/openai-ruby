@@ -10,11 +10,11 @@ module OpenAI
 
       attr_accessor total: Integer
 
-      def initialize:
-        (completed: Integer, failed: Integer, total: Integer) -> void
-        | (
-          ?OpenAI::Models::batch_request_counts | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        completed: Integer,
+        failed: Integer,
+        total: Integer
+      ) -> void
 
       def to_hash: -> OpenAI::Models::batch_request_counts
     end
