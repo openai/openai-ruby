@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    FineTuningJobWandbIntegrationObject = T.type_alias { FineTuning::FineTuningJobWandbIntegrationObject }
-
     module FineTuning
       class FineTuningJobWandbIntegrationObject < OpenAI::BaseModel
         # The type of the integration being enabled for the fine-tuning job
@@ -42,5 +40,7 @@ module OpenAI
         end
       end
     end
+
+    FineTuningJobWandbIntegrationObject = FineTuning::FineTuningJobWandbIntegrationObject
   end
 end

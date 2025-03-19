@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionDeveloperMessageParam = T.type_alias { Chat::ChatCompletionDeveloperMessageParam }
-
     module Chat
       class ChatCompletionDeveloperMessageParam < OpenAI::BaseModel
         # The contents of the developer message.
@@ -76,5 +74,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionDeveloperMessageParam = Chat::ChatCompletionDeveloperMessageParam
   end
 end

@@ -4,8 +4,6 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        RunStepInclude = T.type_alias { Runs::RunStepInclude }
-
         module Runs
           class RunStepInclude < OpenAI::Enum
             abstract!
@@ -16,6 +14,8 @@ module OpenAI
               :"step_details.tool_calls[*].file_search.results[*].content"
           end
         end
+
+        RunStepInclude = Runs::RunStepInclude
       end
     end
   end

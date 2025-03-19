@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionStoreMessage = T.type_alias { Chat::ChatCompletionStoreMessage }
-
     module Chat
       class ChatCompletionStoreMessage < OpenAI::Models::Chat::ChatCompletionMessage
         # The identifier of the chat message.
@@ -25,5 +23,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionStoreMessage = Chat::ChatCompletionStoreMessage
   end
 end

@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionFunctionCallOption = T.type_alias { Chat::ChatCompletionFunctionCallOption }
-
     module Chat
       class ChatCompletionFunctionCallOption < OpenAI::BaseModel
         # The name of the function to call.
@@ -26,5 +24,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionFunctionCallOption = Chat::ChatCompletionFunctionCallOption
   end
 end

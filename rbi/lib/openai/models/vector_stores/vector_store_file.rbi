@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    VectorStoreFile = T.type_alias { VectorStores::VectorStoreFile }
-
     module VectorStores
       class VectorStoreFile < OpenAI::BaseModel
         # The identifier, which can be referenced in API endpoints.
@@ -226,5 +224,7 @@ module OpenAI
         end
       end
     end
+
+    VectorStoreFile = VectorStores::VectorStoreFile
   end
 end

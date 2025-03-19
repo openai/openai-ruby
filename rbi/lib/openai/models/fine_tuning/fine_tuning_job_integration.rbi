@@ -2,11 +2,10 @@
 
 module OpenAI
   module Models
-    FineTuningJobIntegration = T.type_alias { FineTuning::FineTuningJobIntegration }
-
     module FineTuning
-      FineTuningJobIntegration =
-        T.type_alias { OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject }
+      FineTuningJobIntegration = OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject
     end
+
+    FineTuningJobIntegration = FineTuning::FineTuningJobIntegration
   end
 end
