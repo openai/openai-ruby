@@ -160,21 +160,22 @@ module OpenAI
         class Action < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
-              )
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type,
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
+                )
+              }
+            end
 
           class Click < OpenAI::BaseModel
             # Indicates which mouse button was pressed during the click. One of `left`,

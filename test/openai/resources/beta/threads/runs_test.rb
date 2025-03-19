@@ -209,12 +209,13 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
   end
 
   def test_submit_tool_outputs_required_params
-    response = @openai.beta.threads.runs.submit_tool_outputs(
-      "run_id",
-      thread_id: "thread_id",
-      stream: true,
-      tool_outputs: [{}]
-    )
+    response =
+      @openai.beta.threads.runs.submit_tool_outputs(
+        "run_id",
+        thread_id: "thread_id",
+        stream: true,
+        tool_outputs: [{}]
+      )
 
     assert_pattern do
       response => OpenAI::Models::Beta::Threads::Run

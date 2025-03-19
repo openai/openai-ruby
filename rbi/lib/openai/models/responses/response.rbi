@@ -519,11 +519,12 @@ module OpenAI
         class ToolChoice < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
+              }
+            end
         end
 
         # The truncation strategy to use for the model response.

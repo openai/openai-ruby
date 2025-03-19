@@ -7,14 +7,15 @@ module OpenAI
     class FileChunkingStrategyParam < OpenAI::Union
       abstract!
 
-      Variants = type_template(:out) do
-        {
-          fixed: T.any(
-            OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Models::StaticFileChunkingStrategyObjectParam
-          )
-        }
-      end
+      Variants =
+        type_template(:out) do
+          {
+            fixed: T.any(
+              OpenAI::Models::AutoFileChunkingStrategyParam,
+              OpenAI::Models::StaticFileChunkingStrategyObjectParam
+            )
+          }
+        end
     end
   end
 end

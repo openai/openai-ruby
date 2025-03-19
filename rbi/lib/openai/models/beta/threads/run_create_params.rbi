@@ -552,30 +552,32 @@ module OpenAI
             class Content < OpenAI::Union
               abstract!
 
-              Variants = type_template(:out) do
-                {
-                  fixed: T.any(
-                    String,
-                    T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                      OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                      OpenAI::Models::Beta::Threads::TextContentBlockParam
+              Variants =
+                type_template(:out) do
+                  {
+                    fixed: T.any(
+                      String,
+                      T::Array[
+                      T.any(
+                        OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                        OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                        OpenAI::Models::Beta::Threads::TextContentBlockParam
+                      )
+                      ]
                     )
-                    ]
-                  )
-                }
-              end
+                  }
+                end
 
-              MessageContentPartParamArray = T.type_alias do
-                T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                  OpenAI::Models::Beta::Threads::TextContentBlockParam
-                )
-                ]
-              end
+              MessageContentPartParamArray =
+                T.type_alias do
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                    OpenAI::Models::Beta::Threads::TextContentBlockParam
+                  )
+                  ]
+                end
             end
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -675,14 +677,15 @@ module OpenAI
               class Tool < OpenAI::Union
                 abstract!
 
-                Variants = type_template(:out) do
-                  {
-                    fixed: T.any(
-                      OpenAI::Models::Beta::CodeInterpreterTool,
-                      OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                    )
-                  }
-                end
+                Variants =
+                  type_template(:out) do
+                    {
+                      fixed: T.any(
+                        OpenAI::Models::Beta::CodeInterpreterTool,
+                        OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                      )
+                    }
+                  end
 
                 class FileSearch < OpenAI::BaseModel
                   # The type of tool being defined: `file_search`

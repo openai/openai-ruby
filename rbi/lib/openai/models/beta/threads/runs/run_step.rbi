@@ -323,14 +323,15 @@ module OpenAI
             class StepDetails < OpenAI::Union
               abstract!
 
-              Variants = type_template(:out) do
-                {
-                  fixed: T.any(
-                    OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
-                    OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
-                  )
-                }
-              end
+              Variants =
+                type_template(:out) do
+                  {
+                    fixed: T.any(
+                      OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
+                      OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
+                    )
+                  }
+                end
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.

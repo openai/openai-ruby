@@ -17,7 +17,8 @@ module OpenAI
   #
   # @example
   # ```ruby
-  # completions = cursor_page
+  # completions =
+  #   cursor_page
   #   .to_enum
   #   .lazy
   #   .select { _1.object_id.even? }

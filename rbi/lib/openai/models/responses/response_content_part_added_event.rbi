@@ -93,11 +93,12 @@ module OpenAI
         class Part < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
+              }
+            end
         end
       end
     end

@@ -94,11 +94,12 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
+              }
+            end
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or

@@ -111,7 +111,8 @@ module OpenAI
         # The contents of the assistant message. Required unless `tool_calls` or
         #   `function_call` is specified.
         class Content < OpenAI::Union
-          ArrayOfContentPartArray = OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart }]
+          ArrayOfContentPartArray =
+            OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart }]
 
           # The contents of the assistant message.
           variant String

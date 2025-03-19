@@ -10,7 +10,8 @@ module OpenAI
   #
   # @example
   # ```ruby
-  # chunks = stream
+  # chunks =
+  #   stream
   #   .to_enum
   #   .lazy
   #   .select { _1.object_id.even? }

@@ -662,7 +662,8 @@ module OpenAI
         class FunctionCall < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)} }
+          Variants =
+            type_template(:out) { {fixed: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)} }
 
           # `none` means the model will not call a function and instead generates a message.
           #   `auto` means the model can pick between generating a message or calling a
@@ -747,15 +748,16 @@ module OpenAI
         class ResponseFormat < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONSchema,
-                OpenAI::Models::ResponseFormatJSONObject
-              )
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::ResponseFormatText,
+                  OpenAI::Models::ResponseFormatJSONSchema,
+                  OpenAI::Models::ResponseFormatJSONObject
+                )
+              }
+            end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is

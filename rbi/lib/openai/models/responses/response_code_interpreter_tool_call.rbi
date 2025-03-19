@@ -118,14 +118,15 @@ module OpenAI
         class Result < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
-              )
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
+                )
+              }
+            end
 
           class Logs < OpenAI::BaseModel
             # The logs of the code interpreter tool call.

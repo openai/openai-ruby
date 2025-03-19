@@ -7,15 +7,16 @@ module OpenAI
       class ResponseInputContent < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::Responses::ResponseInputText,
-              OpenAI::Models::Responses::ResponseInputImage,
-              OpenAI::Models::Responses::ResponseInputFile
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+            }
+          end
       end
     end
   end
