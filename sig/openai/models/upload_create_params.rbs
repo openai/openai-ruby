@@ -27,7 +27,7 @@ module OpenAI
           filename: String,
           mime_type: String,
           purpose: OpenAI::Models::file_purpose,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::upload_create_params | OpenAI::BaseModel data

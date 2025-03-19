@@ -45,12 +45,12 @@ module OpenAI
         def initialize:
           (
             vector_store_id: String,
-            after: String,
-            before: String,
-            filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,
-            limit: Integer,
-            order: OpenAI::Models::VectorStores::FileBatchListFilesParams::order,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?before: String,
+            ?filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,
+            ?limit: Integer,
+            ?order: OpenAI::Models::VectorStores::FileBatchListFilesParams::order,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::VectorStores::file_batch_list_files_params

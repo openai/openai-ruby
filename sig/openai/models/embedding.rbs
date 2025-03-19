@@ -11,7 +11,7 @@ module OpenAI
       attr_accessor object: :embedding
 
       def initialize:
-        (embedding: ::Array[Float], index: Integer, object: :embedding) -> void
+        (embedding: ::Array[Float], index: Integer, ?object: :embedding) -> void
         | (?OpenAI::Models::embedding | OpenAI::BaseModel data) -> void
 
       def to_hash: -> OpenAI::Models::embedding

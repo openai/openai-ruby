@@ -19,7 +19,7 @@ module OpenAI
           (
             data: String,
             format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
-            type: :input_audio
+            ?type: :input_audio
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_input_audio

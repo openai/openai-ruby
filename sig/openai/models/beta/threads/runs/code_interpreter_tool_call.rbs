@@ -21,7 +21,7 @@ module OpenAI
               (
                 id: String,
                 code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-                type: :code_interpreter
+                ?type: :code_interpreter
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call
@@ -66,7 +66,7 @@ module OpenAI
                   attr_accessor type: :logs
 
                   def initialize:
-                    (logs: String, type: :logs) -> void
+                    (logs: String, ?type: :logs) -> void
                     | (
                       ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::logs
                       | OpenAI::BaseModel data
@@ -89,7 +89,7 @@ module OpenAI
                   def initialize:
                     (
                       image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                      type: :image
+                      ?type: :image
                     ) -> void
                     | (
                       ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::image

@@ -76,7 +76,7 @@ module OpenAI
                 thread_id: String,
                 type: OpenAI::Models::Beta::Threads::Runs::RunStep::type_,
                 usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?,
-                object: :"thread.run.step"
+                ?object: :"thread.run.step"
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::run_step

@@ -26,9 +26,9 @@ module OpenAI
       def initialize:
         (
           name: String,
-          description: String,
-          parameters: OpenAI::Models::function_parameters,
-          strict: bool?
+          ?description: String,
+          ?parameters: OpenAI::Models::function_parameters,
+          ?strict: bool?
         ) -> void
         | (
           ?OpenAI::Models::function_definition | OpenAI::BaseModel data

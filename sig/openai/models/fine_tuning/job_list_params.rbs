@@ -21,10 +21,10 @@ module OpenAI
 
         def initialize:
           (
-            after: String,
-            limit: Integer,
-            metadata: ::Hash[Symbol, String]?,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::FineTuning::job_list_params

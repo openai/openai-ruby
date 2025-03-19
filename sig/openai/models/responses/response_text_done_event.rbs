@@ -27,7 +27,7 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             text: String,
-            type: :"response.output_text.done"
+            ?type: :"response.output_text.done"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_text_done_event

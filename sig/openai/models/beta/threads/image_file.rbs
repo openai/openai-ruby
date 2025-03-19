@@ -20,7 +20,7 @@ module OpenAI
           def initialize:
             (
               file_id: String,
-              detail: OpenAI::Models::Beta::Threads::ImageFile::detail
+              ?detail: OpenAI::Models::Beta::Threads::ImageFile::detail
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::image_file

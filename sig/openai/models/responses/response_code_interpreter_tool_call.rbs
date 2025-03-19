@@ -27,7 +27,7 @@ module OpenAI
             code: String,
             results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
             status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
-            type: :code_interpreter_call
+            ?type: :code_interpreter_call
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_code_interpreter_tool_call
@@ -49,7 +49,7 @@ module OpenAI
             attr_accessor type: :logs
 
             def initialize:
-              (logs: String, type: :logs) -> void
+              (logs: String, ?type: :logs) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::logs
                 | OpenAI::BaseModel data
@@ -72,7 +72,7 @@ module OpenAI
             def initialize:
               (
                 files: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
-                type: :files
+                ?type: :files
               ) -> void
               | (
                 ?OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::files

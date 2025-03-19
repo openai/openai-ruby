@@ -23,8 +23,8 @@ module OpenAI
           def initialize:
             (
               index: Integer,
-              image_url: OpenAI::Models::Beta::Threads::ImageURLDelta,
-              type: :image_url
+              ?image_url: OpenAI::Models::Beta::Threads::ImageURLDelta,
+              ?type: :image_url
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::image_url_delta_block

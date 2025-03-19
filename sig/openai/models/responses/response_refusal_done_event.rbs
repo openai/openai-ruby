@@ -27,7 +27,7 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             refusal: String,
-            type: :"response.refusal.done"
+            ?type: :"response.refusal.done"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_refusal_done_event

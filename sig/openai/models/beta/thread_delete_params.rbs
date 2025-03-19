@@ -8,7 +8,7 @@ module OpenAI
         include OpenAI::RequestParameters
 
         def initialize:
-          (request_options: OpenAI::request_opts) -> void
+          (?request_options: OpenAI::request_opts) -> void
           | (
             ?OpenAI::Models::Beta::thread_delete_params | OpenAI::BaseModel data
           ) -> void

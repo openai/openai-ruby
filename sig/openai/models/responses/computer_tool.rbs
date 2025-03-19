@@ -23,7 +23,7 @@ module OpenAI
             display_height: Float,
             display_width: Float,
             environment: OpenAI::Models::Responses::ComputerTool::environment,
-            type: :computer_use_preview
+            ?type: :computer_use_preview
           ) -> void
           | (
             ?OpenAI::Models::Responses::computer_tool | OpenAI::BaseModel data

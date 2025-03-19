@@ -52,9 +52,9 @@ module OpenAI
           name: String,
           status: OpenAI::Models::VectorStore::status,
           usage_bytes: Integer,
-          expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
-          expires_at: Integer?,
-          object: :vector_store
+          ?expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
+          ?expires_at: Integer?,
+          ?object: :vector_store
         ) -> void
         | (?OpenAI::Models::vector_store | OpenAI::BaseModel data) -> void
 
@@ -113,7 +113,7 @@ module OpenAI
         attr_accessor days: Integer
 
         def initialize:
-          (days: Integer, anchor: :last_active_at) -> void
+          (days: Integer, ?anchor: :last_active_at) -> void
           | (
             ?OpenAI::Models::VectorStore::expires_after | OpenAI::BaseModel data
           ) -> void

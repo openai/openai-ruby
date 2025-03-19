@@ -13,7 +13,12 @@ module OpenAI
       attr_accessor owned_by: String
 
       def initialize:
-        (id: String, created: Integer, owned_by: String, object: :model) -> void
+        (
+          id: String,
+          created: Integer,
+          owned_by: String,
+          ?object: :model
+        ) -> void
         | (?OpenAI::Models::model | OpenAI::BaseModel data) -> void
 
       def to_hash: -> OpenAI::Models::model

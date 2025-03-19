@@ -16,7 +16,7 @@ module OpenAI
           def initialize:
             (
               image_file: OpenAI::Models::Beta::Threads::ImageFile,
-              type: :image_file
+              ?type: :image_file
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::image_file_content_block

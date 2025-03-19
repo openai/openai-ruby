@@ -24,8 +24,8 @@ module OpenAI
             def initialize:
               (
                 index: Integer,
-                image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
-                type: :image
+                ?image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
+                ?type: :image
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_output_image
@@ -42,7 +42,7 @@ module OpenAI
               def file_id=: (String) -> String
 
               def initialize:
-                (file_id: String) -> void
+                (?file_id: String) -> void
                 | (
                   ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::image
                   | OpenAI::BaseModel data

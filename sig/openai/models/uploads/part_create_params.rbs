@@ -11,7 +11,7 @@ module OpenAI
         attr_accessor data: IO | StringIO
 
         def initialize:
-          (data: IO | StringIO, request_options: OpenAI::request_opts) -> void
+          (data: IO | StringIO, ?request_options: OpenAI::request_opts) -> void
           | (
             ?OpenAI::Models::Uploads::part_create_params
             | OpenAI::BaseModel data

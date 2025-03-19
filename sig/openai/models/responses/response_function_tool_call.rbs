@@ -35,9 +35,9 @@ module OpenAI
             arguments: String,
             call_id: String,
             name: String,
-            id: String,
-            status: OpenAI::Models::Responses::ResponseFunctionToolCall::status,
-            type: :function_call
+            ?id: String,
+            ?status: OpenAI::Models::Responses::ResponseFunctionToolCall::status,
+            ?type: :function_call
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_function_tool_call

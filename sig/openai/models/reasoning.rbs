@@ -13,8 +13,8 @@ module OpenAI
 
       def initialize:
         (
-          effort: OpenAI::Models::reasoning_effort?,
-          generate_summary: OpenAI::Models::Reasoning::generate_summary?
+          ?effort: OpenAI::Models::reasoning_effort?,
+          ?generate_summary: OpenAI::Models::Reasoning::generate_summary?
         ) -> void
         | (?OpenAI::Models::reasoning | OpenAI::BaseModel data) -> void
 

@@ -18,9 +18,9 @@ module OpenAI
 
         def initialize:
           (
-            metadata: OpenAI::Models::metadata?,
-            tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?,
-            request_options: OpenAI::request_opts
+            ?metadata: OpenAI::Models::metadata?,
+            ?tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Beta::thread_update_params | OpenAI::BaseModel data
@@ -49,8 +49,8 @@ module OpenAI
 
           def initialize:
             (
-              code_interpreter: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-              file_search: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
+              ?code_interpreter: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+              ?file_search: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
             ) -> void
             | (
               ?OpenAI::Models::Beta::ThreadUpdateParams::tool_resources
@@ -67,7 +67,7 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize:
-              (file_ids: ::Array[String]) -> void
+              (?file_ids: ::Array[String]) -> void
               | (
                 ?OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::code_interpreter
                 | OpenAI::BaseModel data
@@ -84,7 +84,7 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize:
-              (vector_store_ids: ::Array[String]) -> void
+              (?vector_store_ids: ::Array[String]) -> void
               | (
                 ?OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::file_search
                 | OpenAI::BaseModel data

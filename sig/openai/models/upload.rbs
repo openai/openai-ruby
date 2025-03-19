@@ -41,8 +41,8 @@ module OpenAI
           filename: String,
           purpose: String,
           status: OpenAI::Models::Upload::status,
-          file: OpenAI::Models::FileObject?,
-          object: :upload
+          ?file: OpenAI::Models::FileObject?,
+          ?object: :upload
         ) -> void
         | (?OpenAI::Models::upload | OpenAI::BaseModel data) -> void
 

@@ -6,7 +6,7 @@ module OpenAI
       attr_accessor type: :json_object
 
       def initialize:
-        (type: :json_object) -> void
+        (?type: :json_object) -> void
         | (
           ?OpenAI::Models::response_format_json_object | OpenAI::BaseModel data
         ) -> void

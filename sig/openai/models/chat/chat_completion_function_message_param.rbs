@@ -15,7 +15,7 @@ module OpenAI
         attr_accessor role: :function
 
         def initialize:
-          (content: String?, name: String, role: :function) -> void
+          (content: String?, name: String, ?role: :function) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_function_message_param
             | OpenAI::BaseModel data

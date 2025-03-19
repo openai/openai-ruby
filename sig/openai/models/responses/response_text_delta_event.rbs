@@ -27,7 +27,7 @@ module OpenAI
             delta: String,
             item_id: String,
             output_index: Integer,
-            type: :"response.output_text.delta"
+            ?type: :"response.output_text.delta"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_text_delta_event

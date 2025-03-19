@@ -11,10 +11,10 @@ module OpenAI
             ) -> OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage]
             | (
               String completion_id,
-              after: String,
-              limit: Integer,
-              order: OpenAI::Models::Chat::Completions::MessageListParams::order,
-              request_options: OpenAI::request_opts
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Chat::Completions::MessageListParams::order,
+              ?request_options: OpenAI::request_opts
             ) -> OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage]
 
           def initialize: (client: OpenAI::Client) -> void

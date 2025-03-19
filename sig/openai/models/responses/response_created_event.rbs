@@ -15,7 +15,7 @@ module OpenAI
         def initialize:
           (
             response: OpenAI::Models::Responses::Response,
-            type: :"response.created"
+            ?type: :"response.created"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_created_event

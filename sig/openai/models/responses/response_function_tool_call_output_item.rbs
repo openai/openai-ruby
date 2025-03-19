@@ -30,8 +30,8 @@ module OpenAI
             id: String,
             call_id: String,
             output: String,
-            status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
-            type: :function_call_output
+            ?status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status,
+            ?type: :function_call_output
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_function_tool_call_output_item

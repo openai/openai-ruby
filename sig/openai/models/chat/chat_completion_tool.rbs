@@ -15,7 +15,7 @@ module OpenAI
         def initialize:
           (
             function: OpenAI::Models::FunctionDefinition,
-            type: :function
+            ?type: :function
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_tool | OpenAI::BaseModel data

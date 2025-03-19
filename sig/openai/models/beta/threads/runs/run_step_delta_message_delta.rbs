@@ -23,8 +23,8 @@ module OpenAI
 
             def initialize:
               (
-                message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                type: :message_creation
+                ?message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
+                ?type: :message_creation
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::run_step_delta_message_delta
@@ -41,7 +41,7 @@ module OpenAI
               def message_id=: (String) -> String
 
               def initialize:
-                (message_id: String) -> void
+                (?message_id: String) -> void
                 | (
                   ?OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::message_creation
                   | OpenAI::BaseModel data

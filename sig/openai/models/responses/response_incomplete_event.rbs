@@ -15,7 +15,7 @@ module OpenAI
         def initialize:
           (
             response: OpenAI::Models::Responses::Response,
-            type: :"response.incomplete"
+            ?type: :"response.incomplete"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_incomplete_event

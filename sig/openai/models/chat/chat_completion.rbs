@@ -45,10 +45,10 @@ module OpenAI
             choices: ::Array[OpenAI::Models::Chat::ChatCompletion::Choice],
             created: Integer,
             model: String,
-            service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
-            system_fingerprint: String,
-            usage: OpenAI::Models::CompletionUsage,
-            object: :"chat.completion"
+            ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
+            ?system_fingerprint: String,
+            ?usage: OpenAI::Models::CompletionUsage,
+            ?object: :"chat.completion"
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion | OpenAI::BaseModel data

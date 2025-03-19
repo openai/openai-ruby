@@ -24,7 +24,7 @@ module OpenAI
               (
                 id: String,
                 delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta,
-                object: :"thread.run.step.delta"
+                ?object: :"thread.run.step.delta"
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::run_step_delta_event

@@ -16,7 +16,7 @@ module OpenAI
             def logs=: (String) -> String
 
             def initialize:
-              (index: Integer, logs: String, type: :logs) -> void
+              (index: Integer, ?logs: String, ?type: :logs) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_logs
                 | OpenAI::BaseModel data
