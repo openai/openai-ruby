@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionUserMessageParam = T.type_alias { Chat::ChatCompletionUserMessageParam }
-
     module Chat
       class ChatCompletionUserMessageParam < OpenAI::BaseModel
         # The contents of the user message.
@@ -156,5 +154,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionUserMessageParam = Chat::ChatCompletionUserMessageParam
   end
 end

@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionTokenLogprob = T.type_alias { Chat::ChatCompletionTokenLogprob }
-
     module Chat
       class ChatCompletionTokenLogprob < OpenAI::BaseModel
         # The token.
@@ -127,5 +125,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionTokenLogprob = Chat::ChatCompletionTokenLogprob
   end
 end

@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionTool = T.type_alias { Chat::ChatCompletionTool }
-
     module Chat
       class ChatCompletionTool < OpenAI::BaseModel
         sig { returns(OpenAI::Models::FunctionDefinition) }
@@ -32,5 +30,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionTool = Chat::ChatCompletionTool
   end
 end

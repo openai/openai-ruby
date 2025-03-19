@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    UploadPart = T.type_alias { Uploads::UploadPart }
-
     module Uploads
       class UploadPart < OpenAI::BaseModel
         # The upload Part unique identifier, which can be referenced in API endpoints.
@@ -54,5 +52,7 @@ module OpenAI
         end
       end
     end
+
+    UploadPart = Uploads::UploadPart
   end
 end

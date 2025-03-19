@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    FineTuningJobWandbIntegration = T.type_alias { FineTuning::FineTuningJobWandbIntegration }
-
     module FineTuning
       class FineTuningJobWandbIntegration < OpenAI::BaseModel
         # The name of the project that the new run will be created under.
@@ -71,5 +69,7 @@ module OpenAI
         end
       end
     end
+
+    FineTuningJobWandbIntegration = FineTuning::FineTuningJobWandbIntegration
   end
 end

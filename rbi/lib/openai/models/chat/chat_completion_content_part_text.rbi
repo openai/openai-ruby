@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionContentPartText = T.type_alias { Chat::ChatCompletionContentPartText }
-
     module Chat
       class ChatCompletionContentPartText < OpenAI::BaseModel
         # The text content.
@@ -35,5 +33,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionContentPartText = Chat::ChatCompletionContentPartText
   end
 end
