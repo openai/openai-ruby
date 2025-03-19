@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ResponseItemList = T.type_alias { Responses::ResponseItemList }
-
     module Responses
       class ResponseItemList < OpenAI::BaseModel
         # A list of items used to generate this response.
@@ -147,5 +145,7 @@ module OpenAI
         end
       end
     end
+
+    ResponseItemList = Responses::ResponseItemList
   end
 end

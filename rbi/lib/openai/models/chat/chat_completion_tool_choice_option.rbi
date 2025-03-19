@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionToolChoiceOption = T.type_alias { Chat::ChatCompletionToolChoiceOption }
-
     module Chat
       # Controls which (if any) tool is called by the model. `none` means the model will
       #   not call any tool and instead generates a message. `auto` means the model can
@@ -34,5 +32,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionToolChoiceOption = Chat::ChatCompletionToolChoiceOption
   end
 end

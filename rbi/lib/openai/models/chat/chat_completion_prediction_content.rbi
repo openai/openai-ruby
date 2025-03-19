@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionPredictionContent = T.type_alias { Chat::ChatCompletionPredictionContent }
-
     module Chat
       class ChatCompletionPredictionContent < OpenAI::BaseModel
         # The content that should be matched when generating a model response. If
@@ -65,5 +63,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionPredictionContent = Chat::ChatCompletionPredictionContent
   end
 end

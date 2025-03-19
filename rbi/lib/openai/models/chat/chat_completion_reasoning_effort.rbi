@@ -2,10 +2,10 @@
 
 module OpenAI
   module Models
-    ChatCompletionReasoningEffort = T.type_alias { Chat::ChatCompletionReasoningEffort }
-
     module Chat
-      ChatCompletionReasoningEffort = T.type_alias { OpenAI::Models::ReasoningEffort }
+      ChatCompletionReasoningEffort = OpenAI::Models::ReasoningEffort
     end
+
+    ChatCompletionReasoningEffort = Chat::ChatCompletionReasoningEffort
   end
 end

@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletion = T.type_alias { Chat::ChatCompletion }
-
     module Chat
       class ChatCompletion < OpenAI::BaseModel
         # A unique identifier for the chat completion.
@@ -282,5 +280,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletion = Chat::ChatCompletion
   end
 end

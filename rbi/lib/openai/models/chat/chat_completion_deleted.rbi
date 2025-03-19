@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionDeleted = T.type_alias { Chat::ChatCompletionDeleted }
-
     module Chat
       class ChatCompletionDeleted < OpenAI::BaseModel
         # The ID of the chat completion that was deleted.
@@ -42,5 +40,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionDeleted = Chat::ChatCompletionDeleted
   end
 end
