@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
         # @!attribute id
-        #   The unique ID of the function call tool output.
+        #   The unique ID of the function tool call.
         #
         #   @return [String]
         required :id, String

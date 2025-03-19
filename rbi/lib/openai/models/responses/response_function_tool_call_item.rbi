@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
-        # The unique ID of the function call tool output.
+        # The unique ID of the function tool call.
         sig { returns(String) }
         def id
         end
