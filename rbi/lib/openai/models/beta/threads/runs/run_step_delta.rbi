@@ -70,14 +70,15 @@ module OpenAI
             class StepDetails < OpenAI::Union
               abstract!
 
-              Variants = type_template(:out) do
-                {
-                  fixed: T.any(
-                    OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                    OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
-                  )
-                }
-              end
+              Variants =
+                type_template(:out) do
+                  {
+                    fixed: T.any(
+                      OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                      OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
+                    )
+                  }
+                end
             end
           end
         end

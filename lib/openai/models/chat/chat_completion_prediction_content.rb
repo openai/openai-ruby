@@ -36,7 +36,8 @@ module OpenAI
         #   generated tokens would match this content, the entire model response can be
         #   returned much more quickly.
         class Content < OpenAI::Union
-          ChatCompletionContentPartTextArray = OpenAI::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
+          ChatCompletionContentPartTextArray =
+            OpenAI::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
 
           # The content used for a Predicted Output. This is often the
           # text of a file you are regenerating with minor changes.

@@ -9,19 +9,20 @@ module OpenAI
       class RunStepStreamEvent < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated,
-              OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress,
-              OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta,
-              OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted,
-              OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed,
-              OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled,
-              OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated,
+                OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress,
+                OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta,
+                OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted,
+                OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed,
+                OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled,
+                OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired
+              )
+            }
+          end
 
         class ThreadRunStepCreated < OpenAI::BaseModel
           # Represents a step in execution of a run.

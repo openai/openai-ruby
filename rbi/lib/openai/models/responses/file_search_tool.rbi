@@ -91,7 +91,8 @@ module OpenAI
         class Filters < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
+          Variants =
+            type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
         end
 
         class RankingOptions < OpenAI::BaseModel

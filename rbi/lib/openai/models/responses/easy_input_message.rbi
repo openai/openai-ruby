@@ -66,7 +66,8 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList)} }
+          Variants =
+            type_template(:out) { {fixed: T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList)} }
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or

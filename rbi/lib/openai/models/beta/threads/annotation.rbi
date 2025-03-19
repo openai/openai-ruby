@@ -10,14 +10,15 @@ module OpenAI
         class Annotation < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                OpenAI::Models::Beta::Threads::FilePathAnnotation
-              )
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Beta::Threads::FileCitationAnnotation,
+                  OpenAI::Models::Beta::Threads::FilePathAnnotation
+                )
+              }
+            end
         end
       end
     end

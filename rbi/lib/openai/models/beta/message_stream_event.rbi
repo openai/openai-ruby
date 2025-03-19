@@ -9,17 +9,18 @@ module OpenAI
       class MessageStreamEvent < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated,
-              OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress,
-              OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta,
-              OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted,
-              OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated,
+                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress,
+                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta,
+                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted,
+                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete
+              )
+            }
+          end
 
         class ThreadMessageCreated < OpenAI::BaseModel
           # Represents a message within a

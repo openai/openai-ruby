@@ -19,10 +19,11 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
   end
 
   def test_edit_required_params
-    response = @openai.images.edit(
-      image: StringIO.new("some file contents"),
-      prompt: "A cute baby sea otter wearing a beret"
-    )
+    response =
+      @openai.images.edit(
+        image: StringIO.new("some file contents"),
+        prompt: "A cute baby sea otter wearing a beret"
+      )
 
     assert_pattern do
       response => OpenAI::Models::ImagesResponse
