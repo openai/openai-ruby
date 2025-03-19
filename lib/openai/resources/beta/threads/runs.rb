@@ -282,9 +282,10 @@ module OpenAI
           # @return [OpenAI::Models::Beta::Threads::Run]
           def retrieve(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunRetrieveParams.dump_request(params)
-            thread_id = parsed.delete(:thread_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+            thread_id =
+              parsed.delete(:thread_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
             @client.request(
               method: :get,
               path: ["threads/%0s/runs/%1s", thread_id, run_id],
@@ -314,9 +315,10 @@ module OpenAI
           # @return [OpenAI::Models::Beta::Threads::Run]
           def update(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunUpdateParams.dump_request(params)
-            thread_id = parsed.delete(:thread_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+            thread_id =
+              parsed.delete(:thread_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
             @client.request(
               method: :post,
               path: ["threads/%0s/runs/%1s", thread_id, run_id],
@@ -376,9 +378,10 @@ module OpenAI
           # @return [OpenAI::Models::Beta::Threads::Run]
           def cancel(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunCancelParams.dump_request(params)
-            thread_id = parsed.delete(:thread_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+            thread_id =
+              parsed.delete(:thread_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
             @client.request(
               method: :post,
               path: ["threads/%0s/runs/%1s/cancel", thread_id, run_id],
@@ -408,9 +411,10 @@ module OpenAI
           def submit_tool_outputs(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams.dump_request(params)
             parsed.delete(:stream)
-            thread_id = parsed.delete(:thread_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+            thread_id =
+              parsed.delete(:thread_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
             @client.request(
               method: :post,
               path: ["threads/%0s/runs/%1s/submit_tool_outputs", thread_id, run_id],
@@ -441,9 +445,10 @@ module OpenAI
           def submit_tool_outputs_streaming(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams.dump_request(params)
             parsed.store(:stream, true)
-            thread_id = parsed.delete(:thread_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+            thread_id =
+              parsed.delete(:thread_id) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
             @client.request(
               method: :post,
               path: ["threads/%0s/runs/%1s/submit_tool_outputs", thread_id, run_id],

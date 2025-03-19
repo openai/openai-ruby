@@ -52,9 +52,10 @@ module OpenAI
         # @return [OpenAI::Models::VectorStores::VectorStoreFile]
         def retrieve(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileRetrieveParams.dump_request(params)
-          vector_store_id = parsed.delete(:vector_store_id) do
-            raise ArgumentError.new("missing required path argument #{_1}")
-          end
+          vector_store_id =
+            parsed.delete(:vector_store_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
           @client.request(
             method: :get,
             path: ["vector_stores/%0s/files/%1s", vector_store_id, file_id],
@@ -82,9 +83,10 @@ module OpenAI
         # @return [OpenAI::Models::VectorStores::VectorStoreFile]
         def update(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileUpdateParams.dump_request(params)
-          vector_store_id = parsed.delete(:vector_store_id) do
-            raise ArgumentError.new("missing required path argument #{_1}")
-          end
+          vector_store_id =
+            parsed.delete(:vector_store_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
           @client.request(
             method: :post,
             path: ["vector_stores/%0s/files/%1s", vector_store_id, file_id],
@@ -149,9 +151,10 @@ module OpenAI
         # @return [OpenAI::Models::VectorStores::VectorStoreFileDeleted]
         def delete(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileDeleteParams.dump_request(params)
-          vector_store_id = parsed.delete(:vector_store_id) do
-            raise ArgumentError.new("missing required path argument #{_1}")
-          end
+          vector_store_id =
+            parsed.delete(:vector_store_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
           @client.request(
             method: :delete,
             path: ["vector_stores/%0s/files/%1s", vector_store_id, file_id],
@@ -173,9 +176,10 @@ module OpenAI
         # @return [OpenAI::Page<OpenAI::Models::VectorStores::FileContentResponse>]
         def content(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileContentParams.dump_request(params)
-          vector_store_id = parsed.delete(:vector_store_id) do
-            raise ArgumentError.new("missing required path argument #{_1}")
-          end
+          vector_store_id =
+            parsed.delete(:vector_store_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
           @client.request(
             method: :get,
             path: ["vector_stores/%0s/files/%1s/content", vector_store_id, file_id],

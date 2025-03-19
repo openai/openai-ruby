@@ -289,7 +289,8 @@ module OpenAI
             #
             # The text contents of the message.
             class Content < OpenAI::Union
-              MessageContentPartParamArray = OpenAI::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
+              MessageContentPartParamArray =
+                OpenAI::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
 
               # The text contents of the message.
               variant String

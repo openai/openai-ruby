@@ -6,7 +6,8 @@ module OpenAI
     class ModerationMultiModalInput < OpenAI::Union
       abstract!
 
-      Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)} }
+      Variants =
+        type_template(:out) { {fixed: T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)} }
     end
   end
 end

@@ -5,7 +5,8 @@ module OpenAI
     FineTuningJobIntegration = T.type_alias { FineTuning::FineTuningJobIntegration }
 
     module FineTuning
-      FineTuningJobIntegration = T.type_alias { OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject }
+      FineTuningJobIntegration =
+        T.type_alias { OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject }
     end
   end
 end

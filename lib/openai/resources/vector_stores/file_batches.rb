@@ -50,9 +50,10 @@ module OpenAI
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
         def retrieve(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchRetrieveParams.dump_request(params)
-          vector_store_id = parsed.delete(:vector_store_id) do
-            raise ArgumentError.new("missing required path argument #{_1}")
-          end
+          vector_store_id =
+            parsed.delete(:vector_store_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
           @client.request(
             method: :get,
             path: ["vector_stores/%0s/file_batches/%1s", vector_store_id, batch_id],
@@ -75,9 +76,10 @@ module OpenAI
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
         def cancel(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchCancelParams.dump_request(params)
-          vector_store_id = parsed.delete(:vector_store_id) do
-            raise ArgumentError.new("missing required path argument #{_1}")
-          end
+          vector_store_id =
+            parsed.delete(:vector_store_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
           @client.request(
             method: :post,
             path: ["vector_stores/%0s/file_batches/%1s/cancel", vector_store_id, batch_id],
@@ -118,9 +120,10 @@ module OpenAI
         # @return [OpenAI::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
         def list_files(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchListFilesParams.dump_request(params)
-          vector_store_id = parsed.delete(:vector_store_id) do
-            raise ArgumentError.new("missing required path argument #{_1}")
-          end
+          vector_store_id =
+            parsed.delete(:vector_store_id) do
+              raise ArgumentError.new("missing required path argument #{_1}")
+            end
           @client.request(
             method: :get,
             path: ["vector_stores/%0s/file_batches/%1s/files", vector_store_id, batch_id],

@@ -101,15 +101,16 @@ module OpenAI
         class Annotation < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
-              )
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
+                  OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
+                  OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
+                )
+              }
+            end
 
           class FileCitation < OpenAI::BaseModel
             # The ID of the file.

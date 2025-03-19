@@ -11,18 +11,19 @@ module OpenAI
       class ChatCompletionMessageParam < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-              OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-              OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-              OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-              OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-              OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
+                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
+                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
+                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
+                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
+                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+              )
+            }
+          end
       end
     end
   end

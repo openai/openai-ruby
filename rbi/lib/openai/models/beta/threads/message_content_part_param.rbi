@@ -9,15 +9,16 @@ module OpenAI
         class MessageContentPartParam < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                OpenAI::Models::Beta::Threads::TextContentBlockParam
-              )
-            }
-          end
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                  OpenAI::Models::Beta::Threads::TextContentBlockParam
+                )
+              }
+            end
         end
       end
     end

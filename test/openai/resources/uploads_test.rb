@@ -4,12 +4,8 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::UploadsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.uploads.create(
-      bytes: 0,
-      filename: "filename",
-      mime_type: "mime_type",
-      purpose: :assistants
-    )
+    response =
+      @openai.uploads.create(bytes: 0, filename: "filename", mime_type: "mime_type", purpose: :assistants)
 
     assert_pattern do
       response => OpenAI::Models::Upload

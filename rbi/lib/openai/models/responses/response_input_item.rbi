@@ -11,23 +11,24 @@ module OpenAI
       class ResponseInputItem < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::Responses::EasyInputMessage,
-              OpenAI::Models::Responses::ResponseInputItem::Message,
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseFunctionToolCall,
-              OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-              OpenAI::Models::Responses::ResponseReasoningItem,
-              OpenAI::Models::Responses::ResponseInputItem::ItemReference
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Responses::EasyInputMessage,
+                OpenAI::Models::Responses::ResponseInputItem::Message,
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseFunctionToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                OpenAI::Models::Responses::ResponseReasoningItem,
+                OpenAI::Models::Responses::ResponseInputItem::ItemReference
+              )
+            }
+          end
 
         class Message < OpenAI::BaseModel
           # A list of one or many input items to the model, containing different content
