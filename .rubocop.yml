@@ -10,7 +10,7 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: 3.1.0
 
-# Whether MFA is required or not should be left to the token configuration
+# Whether MFA is required or not should be left to the token configuration.
 Gemspec/RequireMFA:
   Enabled: false
 
@@ -71,6 +71,10 @@ Lint/DeprecatedConstants:
 Lint/EmptyInPattern:
   Exclude:
     - "test/**/*"
+
+Lint/MissingCopEnableDirective:
+  Exclude:
+    - "examples/**/*.rb"
 
 Lint/MissingSuper:
   Exclude:
@@ -237,3 +241,8 @@ Style/StringLiterals:
 # Prefer explicit symbols for clarity; you can search for `:the_symbol`.
 Style/SymbolArray:
   EnforcedStyle: brackets
+
+# This option makes examples harder to read for ruby novices.
+Style/SymbolProc:
+  Exclude:
+    - "examples/**/*.rb"
