@@ -10,11 +10,11 @@ module OpenAI
 
       attr_accessor object: :"vector_store.deleted"
 
-      def initialize:
-        (id: String, deleted: bool, ?object: :"vector_store.deleted") -> void
-        | (
-          ?OpenAI::Models::vector_store_deleted | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        id: String,
+        deleted: bool,
+        ?object: :"vector_store.deleted"
+      ) -> void
 
       def to_hash: -> OpenAI::Models::vector_store_deleted
     end

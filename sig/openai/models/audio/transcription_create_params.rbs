@@ -45,21 +45,16 @@ module OpenAI
           ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
         ) -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
 
-        def initialize:
-          (
-            file: IO | StringIO,
-            model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
-            ?language: String,
-            ?prompt: String,
-            ?response_format: OpenAI::Models::audio_response_format,
-            ?temperature: Float,
-            ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Audio::transcription_create_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          file: IO | StringIO,
+          model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          ?language: String,
+          ?prompt: String,
+          ?response_format: OpenAI::Models::audio_response_format,
+          ?temperature: Float,
+          ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Audio::transcription_create_params
 

@@ -17,15 +17,11 @@ module OpenAI
 
         def enabled=: (bool) -> bool
 
-        def initialize:
-          (
-            data: OpenAI::Models::Beta::Thread,
-            ?enabled: bool,
-            ?event: :"thread.created"
-          ) -> void
-          | (
-            ?OpenAI::Models::Beta::thread_stream_event | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          data: OpenAI::Models::Beta::Thread,
+          ?enabled: bool,
+          ?event: :"thread.created"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Beta::thread_stream_event
       end

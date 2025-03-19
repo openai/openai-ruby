@@ -10,12 +10,10 @@ module OpenAI
 
           attr_accessor type: :text
 
-          def initialize:
-            (text: OpenAI::Models::Beta::Threads::Text, ?type: :text) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::text_content_block
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            text: OpenAI::Models::Beta::Threads::Text,
+            ?type: :text
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::text_content_block
         end

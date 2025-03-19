@@ -12,14 +12,10 @@ module OpenAI
 
         attr_accessor message: String
 
-        def initialize:
-          (
-            code: OpenAI::Models::Responses::ResponseError::code,
-            message: String
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_error | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          code: OpenAI::Models::Responses::ResponseError::code,
+          message: String
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_error
 

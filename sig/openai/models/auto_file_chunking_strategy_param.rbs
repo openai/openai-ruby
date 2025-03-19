@@ -5,12 +5,7 @@ module OpenAI
     class AutoFileChunkingStrategyParam < OpenAI::BaseModel
       attr_accessor type: :auto
 
-      def initialize:
-        (?type: :auto) -> void
-        | (
-          ?OpenAI::Models::auto_file_chunking_strategy_param
-          | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (?type: :auto) -> void
 
       def to_hash: -> OpenAI::Models::auto_file_chunking_strategy_param
     end

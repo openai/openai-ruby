@@ -10,15 +10,10 @@ module OpenAI
 
         attr_accessor metadata: OpenAI::Models::metadata?
 
-        def initialize:
-          (
-            metadata: OpenAI::Models::metadata?,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::completion_update_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          metadata: OpenAI::Models::metadata?,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::completion_update_params
       end

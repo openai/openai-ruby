@@ -22,15 +22,10 @@ module OpenAI
 
           attr_accessor event: :"thread.run.step.created"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              ?event: :"thread.run.step.created"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_created
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.created"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_created
         end
@@ -46,15 +41,10 @@ module OpenAI
 
           attr_accessor event: :"thread.run.step.in_progress"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              ?event: :"thread.run.step.in_progress"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_in_progress
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.in_progress"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_in_progress
         end
@@ -70,15 +60,10 @@ module OpenAI
 
           attr_accessor event: :"thread.run.step.delta"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent,
-              ?event: :"thread.run.step.delta"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_delta
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent,
+            ?event: :"thread.run.step.delta"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_delta
         end
@@ -94,15 +79,10 @@ module OpenAI
 
           attr_accessor event: :"thread.run.step.completed"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              ?event: :"thread.run.step.completed"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_completed
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.completed"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_completed
         end
@@ -118,15 +98,10 @@ module OpenAI
 
           attr_accessor event: :"thread.run.step.failed"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              ?event: :"thread.run.step.failed"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_failed
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.failed"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_failed
         end
@@ -142,15 +117,10 @@ module OpenAI
 
           attr_accessor event: :"thread.run.step.cancelled"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              ?event: :"thread.run.step.cancelled"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_cancelled
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.cancelled"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_cancelled
         end
@@ -166,15 +136,10 @@ module OpenAI
 
           attr_accessor event: :"thread.run.step.expired"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              ?event: :"thread.run.step.expired"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_expired
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.expired"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_expired
         end

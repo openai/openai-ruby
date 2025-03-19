@@ -35,19 +35,14 @@ module OpenAI
 
           def text=: (String) -> String
 
-          def initialize:
-            (
-              index: Integer,
-              ?end_index: Integer,
-              ?file_path: OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath,
-              ?start_index: Integer,
-              ?text: String,
-              ?type: :file_path
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::file_path_delta_annotation
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            index: Integer,
+            ?end_index: Integer,
+            ?file_path: OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath,
+            ?start_index: Integer,
+            ?text: String,
+            ?type: :file_path
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::file_path_delta_annotation
 
@@ -58,12 +53,7 @@ module OpenAI
 
             def file_id=: (String) -> String
 
-            def initialize:
-              (?file_id: String) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::file_path
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?file_id: String) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::file_path
           end

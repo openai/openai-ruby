@@ -16,17 +16,12 @@ module OpenAI
 
         attr_accessor transcript: String
 
-        def initialize:
-          (
-            id: String,
-            data: String,
-            expires_at: Integer,
-            transcript: String
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_audio
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          data: String,
+          expires_at: Integer,
+          transcript: String
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_audio
       end

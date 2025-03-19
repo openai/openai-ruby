@@ -17,14 +17,10 @@ module OpenAI
             OpenAI::Models::Beta::Threads::ImageURL::detail
           ) -> OpenAI::Models::Beta::Threads::ImageURL::detail
 
-          def initialize:
-            (
-              url: String,
-              ?detail: OpenAI::Models::Beta::Threads::ImageURL::detail
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::image_url | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            url: String,
+            ?detail: OpenAI::Models::Beta::Threads::ImageURL::detail
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::image_url
 

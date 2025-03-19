@@ -21,17 +21,12 @@ module OpenAI
 
         attr_accessor top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
 
-        def initialize:
-          (
-            token: String,
-            bytes: ::Array[Integer]?,
-            logprob: Float,
-            top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_token_logprob
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          token: String,
+          bytes: ::Array[Integer]?,
+          logprob: Float,
+          top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_token_logprob
 
@@ -45,12 +40,11 @@ module OpenAI
 
           attr_accessor logprob: Float
 
-          def initialize:
-            (token: String, bytes: ::Array[Integer]?, logprob: Float) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionTokenLogprob::top_logprob
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            token: String,
+            bytes: ::Array[Integer]?,
+            logprob: Float
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionTokenLogprob::top_logprob
         end

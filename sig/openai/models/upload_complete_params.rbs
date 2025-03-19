@@ -13,15 +13,11 @@ module OpenAI
 
       def md5=: (String) -> String
 
-      def initialize:
-        (
-          part_ids: ::Array[String],
-          ?md5: String,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (
-          ?OpenAI::Models::upload_complete_params | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        part_ids: ::Array[String],
+        ?md5: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::upload_complete_params
     end

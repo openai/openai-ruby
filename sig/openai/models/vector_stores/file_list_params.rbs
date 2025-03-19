@@ -39,19 +39,14 @@ module OpenAI
           OpenAI::Models::VectorStores::FileListParams::order
         ) -> OpenAI::Models::VectorStores::FileListParams::order
 
-        def initialize:
-          (
-            ?after: String,
-            ?before: String,
-            ?filter: OpenAI::Models::VectorStores::FileListParams::filter,
-            ?limit: Integer,
-            ?order: OpenAI::Models::VectorStores::FileListParams::order,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStores::file_list_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?after: String,
+          ?before: String,
+          ?filter: OpenAI::Models::VectorStores::FileListParams::filter,
+          ?limit: Integer,
+          ?order: OpenAI::Models::VectorStores::FileListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStores::file_list_params
 

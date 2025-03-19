@@ -5,11 +5,7 @@ module OpenAI
     class ResponseFormatJSONObject < OpenAI::BaseModel
       attr_accessor type: :json_object
 
-      def initialize:
-        (?type: :json_object) -> void
-        | (
-          ?OpenAI::Models::response_format_json_object | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (?type: :json_object) -> void
 
       def to_hash: -> OpenAI::Models::response_format_json_object
     end

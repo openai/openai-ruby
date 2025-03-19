@@ -11,12 +11,10 @@ module OpenAI
 
       attr_accessor type: OpenAI::Models::CompoundFilter::type_
 
-      def initialize:
-        (
-          filters: ::Array[OpenAI::Models::CompoundFilter::filter],
-          type: OpenAI::Models::CompoundFilter::type_
-        ) -> void
-        | (?OpenAI::Models::compound_filter | OpenAI::BaseModel data) -> void
+      def initialize: (
+        filters: ::Array[OpenAI::Models::CompoundFilter::filter],
+        type: OpenAI::Models::CompoundFilter::type_
+      ) -> void
 
       def to_hash: -> OpenAI::Models::compound_filter
 

@@ -86,34 +86,30 @@ module OpenAI
 
         def user=: (String) -> String
 
-        def initialize:
-          (
-            id: String,
-            created_at: Float,
-            error: OpenAI::Models::Responses::ResponseError?,
-            incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails?,
-            instructions: String?,
-            metadata: OpenAI::Models::metadata?,
-            model: OpenAI::Models::Responses::Response::model,
-            output: ::Array[OpenAI::Models::Responses::response_output_item],
-            parallel_tool_calls: bool,
-            temperature: Float?,
-            tool_choice: OpenAI::Models::Responses::Response::tool_choice,
-            tools: ::Array[OpenAI::Models::Responses::tool],
-            top_p: Float?,
-            ?max_output_tokens: Integer?,
-            ?previous_response_id: String?,
-            ?reasoning: OpenAI::Models::Reasoning?,
-            ?status: OpenAI::Models::Responses::response_status,
-            ?text: OpenAI::Models::Responses::ResponseTextConfig,
-            ?truncation: OpenAI::Models::Responses::Response::truncation?,
-            ?usage: OpenAI::Models::Responses::ResponseUsage,
-            ?user: String,
-            ?object: :response
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          created_at: Float,
+          error: OpenAI::Models::Responses::ResponseError?,
+          incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails?,
+          instructions: String?,
+          metadata: OpenAI::Models::metadata?,
+          model: OpenAI::Models::Responses::Response::model,
+          output: ::Array[OpenAI::Models::Responses::response_output_item],
+          parallel_tool_calls: bool,
+          temperature: Float?,
+          tool_choice: OpenAI::Models::Responses::Response::tool_choice,
+          tools: ::Array[OpenAI::Models::Responses::tool],
+          top_p: Float?,
+          ?max_output_tokens: Integer?,
+          ?previous_response_id: String?,
+          ?reasoning: OpenAI::Models::Reasoning?,
+          ?status: OpenAI::Models::Responses::response_status,
+          ?text: OpenAI::Models::Responses::ResponseTextConfig,
+          ?truncation: OpenAI::Models::Responses::Response::truncation?,
+          ?usage: OpenAI::Models::Responses::ResponseUsage,
+          ?user: String,
+          ?object: :response
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response
 
@@ -129,14 +125,9 @@ module OpenAI
             OpenAI::Models::Responses::Response::IncompleteDetails::reason
           ) -> OpenAI::Models::Responses::Response::IncompleteDetails::reason
 
-          def initialize:
-            (
-              ?reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
-            ) -> void
-            | (
-              ?OpenAI::Models::Responses::Response::incomplete_details
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Responses::Response::incomplete_details
 

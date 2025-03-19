@@ -23,17 +23,12 @@ module OpenAI
           OpenAI::Models::file_chunking_strategy_param
         ) -> OpenAI::Models::file_chunking_strategy_param
 
-        def initialize:
-          (
-            file_id: String,
-            ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
-            ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStores::file_create_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          file_id: String,
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStores::file_create_params
 

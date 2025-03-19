@@ -18,16 +18,11 @@ module OpenAI
 
         attr_accessor type: :function
 
-        def initialize:
-          (
-            id: String,
-            function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function,
-            ?type: :function
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_message_tool_call
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function,
+          ?type: :function
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_message_tool_call
 
@@ -38,12 +33,7 @@ module OpenAI
 
           attr_accessor name: String
 
-          def initialize:
-            (arguments: String, name: String) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionMessageToolCall::function
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (arguments: String, name: String) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionMessageToolCall::function
         end

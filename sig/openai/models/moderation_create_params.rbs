@@ -19,15 +19,11 @@ module OpenAI
         OpenAI::Models::ModerationCreateParams::model
       ) -> OpenAI::Models::ModerationCreateParams::model
 
-      def initialize:
-        (
-          input: OpenAI::Models::ModerationCreateParams::input,
-          ?model: OpenAI::Models::ModerationCreateParams::model,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (
-          ?OpenAI::Models::moderation_create_params | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        input: OpenAI::Models::ModerationCreateParams::input,
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::moderation_create_params
 

@@ -15,16 +15,11 @@ module OpenAI
 
         attr_accessor type: :input_audio
 
-        def initialize:
-          (
-            data: String,
-            format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
-            ?type: :input_audio
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_input_audio
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          data: String,
+          format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
+          ?type: :input_audio
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_input_audio
 

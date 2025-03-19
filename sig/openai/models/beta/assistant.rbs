@@ -45,23 +45,21 @@ module OpenAI
 
         attr_accessor top_p: Float?
 
-        def initialize:
-          (
-            id: String,
-            created_at: Integer,
-            description: String?,
-            instructions: String?,
-            metadata: OpenAI::Models::metadata?,
-            model: String,
-            name: String?,
-            tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-            ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-            ?temperature: Float?,
-            ?tool_resources: OpenAI::Models::Beta::Assistant::ToolResources?,
-            ?top_p: Float?,
-            ?object: :assistant
-          ) -> void
-          | (?OpenAI::Models::Beta::assistant | OpenAI::BaseModel data) -> void
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          description: String?,
+          instructions: String?,
+          metadata: OpenAI::Models::metadata?,
+          model: String,
+          name: String?,
+          tools: ::Array[OpenAI::Models::Beta::assistant_tool],
+          ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+          ?temperature: Float?,
+          ?tool_resources: OpenAI::Models::Beta::Assistant::ToolResources?,
+          ?top_p: Float?,
+          ?object: :assistant
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Beta::assistant
 
@@ -84,15 +82,10 @@ module OpenAI
             OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
           ) -> OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
 
-          def initialize:
-            (
-              ?code_interpreter: OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter,
-              ?file_search: OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Assistant::tool_resources
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?code_interpreter: OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Assistant::tool_resources
 
@@ -103,12 +96,7 @@ module OpenAI
 
             def file_ids=: (::Array[String]) -> ::Array[String]
 
-            def initialize:
-              (?file_ids: ::Array[String]) -> void
-              | (
-                ?OpenAI::Models::Beta::Assistant::ToolResources::code_interpreter
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?file_ids: ::Array[String]) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Assistant::ToolResources::code_interpreter
           end
@@ -120,12 +108,7 @@ module OpenAI
 
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
-            def initialize:
-              (?vector_store_ids: ::Array[String]) -> void
-              | (
-                ?OpenAI::Models::Beta::Assistant::ToolResources::file_search
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?vector_store_ids: ::Array[String]) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Assistant::ToolResources::file_search
           end

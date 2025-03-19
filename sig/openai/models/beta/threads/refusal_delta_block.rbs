@@ -14,12 +14,11 @@ module OpenAI
 
           def refusal=: (String) -> String
 
-          def initialize:
-            (index: Integer, ?refusal: String, ?type: :refusal) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::refusal_delta_block
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            index: Integer,
+            ?refusal: String,
+            ?type: :refusal
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::refusal_delta_block
         end

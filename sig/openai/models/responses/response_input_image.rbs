@@ -18,17 +18,12 @@ module OpenAI
 
         attr_accessor image_url: String?
 
-        def initialize:
-          (
-            detail: OpenAI::Models::Responses::ResponseInputImage::detail,
-            ?file_id: String?,
-            ?image_url: String?,
-            ?type: :input_image
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_input_image
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          detail: OpenAI::Models::Responses::ResponseInputImage::detail,
+          ?file_id: String?,
+          ?image_url: String?,
+          ?type: :input_image
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_input_image
 

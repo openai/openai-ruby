@@ -13,15 +13,10 @@ module OpenAI
 
           attr_accessor type: :image_file
 
-          def initialize:
-            (
-              image_file: OpenAI::Models::Beta::Threads::ImageFile,
-              ?type: :image_file
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::image_file_content_block
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            image_file: OpenAI::Models::Beta::Threads::ImageFile,
+            ?type: :image_file
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::image_file_content_block
         end

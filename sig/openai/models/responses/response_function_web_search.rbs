@@ -15,16 +15,11 @@ module OpenAI
 
         attr_accessor type: :web_search_call
 
-        def initialize:
-          (
-            id: String,
-            status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
-            ?type: :web_search_call
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_function_web_search
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
+          ?type: :web_search_call
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_function_web_search
 

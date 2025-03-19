@@ -14,15 +14,11 @@ module OpenAI
 
       attr_accessor results: ::Array[OpenAI::Models::Moderation]
 
-      def initialize:
-        (
-          id: String,
-          model: String,
-          results: ::Array[OpenAI::Models::Moderation]
-        ) -> void
-        | (
-          ?OpenAI::Models::moderation_create_response | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        id: String,
+        model: String,
+        results: ::Array[OpenAI::Models::Moderation]
+      ) -> void
 
       def to_hash: -> OpenAI::Models::moderation_create_response
     end

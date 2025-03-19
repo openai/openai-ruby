@@ -15,12 +15,11 @@ module OpenAI
 
             def logs=: (String) -> String
 
-            def initialize:
-              (index: Integer, ?logs: String, ?type: :logs) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_logs
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              index: Integer,
+              ?logs: String,
+              ?type: :logs
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_logs
           end
