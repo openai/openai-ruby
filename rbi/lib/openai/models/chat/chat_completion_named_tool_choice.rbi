@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionNamedToolChoice = T.type_alias { Chat::ChatCompletionNamedToolChoice }
-
     module Chat
       class ChatCompletionNamedToolChoice < OpenAI::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function) }
@@ -59,5 +57,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionNamedToolChoice = Chat::ChatCompletionNamedToolChoice
   end
 end

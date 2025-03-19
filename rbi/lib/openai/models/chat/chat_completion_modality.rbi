@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionModality = T.type_alias { Chat::ChatCompletionModality }
-
     module Chat
       class ChatCompletionModality < OpenAI::Enum
         abstract!
@@ -14,5 +12,7 @@ module OpenAI
         AUDIO = :audio
       end
     end
+
+    ChatCompletionModality = Chat::ChatCompletionModality
   end
 end

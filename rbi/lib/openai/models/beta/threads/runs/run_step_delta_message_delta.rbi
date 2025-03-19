@@ -4,8 +4,6 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        RunStepDeltaMessageDelta = T.type_alias { Runs::RunStepDeltaMessageDelta }
-
         module Runs
           class RunStepDeltaMessageDelta < OpenAI::BaseModel
             # Always `message_creation`.
@@ -71,6 +69,8 @@ module OpenAI
             end
           end
         end
+
+        RunStepDeltaMessageDelta = Runs::RunStepDeltaMessageDelta
       end
     end
   end

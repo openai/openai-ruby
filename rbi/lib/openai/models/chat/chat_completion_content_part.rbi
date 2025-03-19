@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionContentPart = T.type_alias { Chat::ChatCompletionContentPart }
-
     module Chat
       # Learn about
       #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
@@ -96,5 +94,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionContentPart = Chat::ChatCompletionContentPart
   end
 end

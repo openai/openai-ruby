@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    ChatCompletionContentPartInputAudio = T.type_alias { Chat::ChatCompletionContentPartInputAudio }
-
     module Chat
       class ChatCompletionContentPartInputAudio < OpenAI::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio) }
@@ -82,5 +80,7 @@ module OpenAI
         end
       end
     end
+
+    ChatCompletionContentPartInputAudio = Chat::ChatCompletionContentPartInputAudio
   end
 end

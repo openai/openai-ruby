@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    VectorStoreFileDeleted = T.type_alias { VectorStores::VectorStoreFileDeleted }
-
     module VectorStores
       class VectorStoreFileDeleted < OpenAI::BaseModel
         sig { returns(String) }
@@ -39,5 +37,7 @@ module OpenAI
         end
       end
     end
+
+    VectorStoreFileDeleted = VectorStores::VectorStoreFileDeleted
   end
 end

@@ -2,8 +2,6 @@
 
 module OpenAI
   module Models
-    FineTuningJobEvent = T.type_alias { FineTuning::FineTuningJobEvent }
-
     module FineTuning
       class FineTuningJobEvent < OpenAI::BaseModel
         # The object identifier.
@@ -124,5 +122,7 @@ module OpenAI
         end
       end
     end
+
+    FineTuningJobEvent = FineTuning::FineTuningJobEvent
   end
 end
