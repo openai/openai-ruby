@@ -502,17 +502,6 @@ module OpenAI
           end
         end
 
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
-        class Model < OpenAI::Union
-          abstract!
-
-          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
-        end
-
         # How the model should select which tool (or tools) to use when generating a
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.

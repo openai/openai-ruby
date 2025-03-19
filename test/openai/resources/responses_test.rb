@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.responses.create(input: "string", model: :"o3-mini", stream: true)
+    response = @openai.responses.create(input: "string", model: :"gpt-4o", stream: true)
 
     assert_pattern do
       response => OpenAI::Models::Responses::Response
@@ -18,7 +18,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails | nil,
         instructions: String | nil,
         metadata: ^(OpenAI::HashOf[String]) | nil,
-        model: OpenAI::Models::Responses::Response::Model,
+        model: OpenAI::Models::ResponsesModel,
         object: Symbol,
         output: ^(OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputItem]),
         parallel_tool_calls: OpenAI::BooleanModel,
@@ -53,7 +53,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
         incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails | nil,
         instructions: String | nil,
         metadata: ^(OpenAI::HashOf[String]) | nil,
-        model: OpenAI::Models::Responses::Response::Model,
+        model: OpenAI::Models::ResponsesModel,
         object: Symbol,
         output: ^(OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputItem]),
         parallel_tool_calls: OpenAI::BooleanModel,
