@@ -27,7 +27,7 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             part: OpenAI::Models::Responses::ResponseContentPartAddedEvent::part,
-            type: :"response.content_part.added"
+            ?type: :"response.content_part.added"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_content_part_added_event

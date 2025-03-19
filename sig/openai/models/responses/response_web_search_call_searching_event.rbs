@@ -19,7 +19,7 @@ module OpenAI
           (
             item_id: String,
             output_index: Integer,
-            type: :"response.web_search_call.searching"
+            ?type: :"response.web_search_call.searching"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_web_search_call_searching_event

@@ -67,10 +67,10 @@ module OpenAI
 
         def initialize:
           (
-            text_offset: ::Array[Integer],
-            token_logprobs: ::Array[Float],
-            tokens: ::Array[String],
-            top_logprobs: ::Array[::Hash[Symbol, Float]]
+            ?text_offset: ::Array[Integer],
+            ?token_logprobs: ::Array[Float],
+            ?tokens: ::Array[String],
+            ?top_logprobs: ::Array[::Hash[Symbol, Float]]
           ) -> void
           | (
             ?OpenAI::Models::CompletionChoice::logprobs | OpenAI::BaseModel data

@@ -44,8 +44,8 @@ module OpenAI
             (
               content: OpenAI::Models::Responses::response_input_message_content_list,
               role: OpenAI::Models::Responses::ResponseInputItem::Message::role,
-              status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
-              type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
+              ?status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
+              ?type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
             ) -> void
             | (
               ?OpenAI::Models::Responses::ResponseInputItem::message
@@ -120,10 +120,10 @@ module OpenAI
             (
               call_id: String,
               output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-              id: String,
-              acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
-              status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status,
-              type: :computer_call_output
+              ?id: String,
+              ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
+              ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status,
+              ?type: :computer_call_output
             ) -> void
             | (
               ?OpenAI::Models::Responses::ResponseInputItem::computer_call_output
@@ -193,9 +193,9 @@ module OpenAI
             (
               call_id: String,
               output: String,
-              id: String,
-              status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status,
-              type: :function_call_output
+              ?id: String,
+              ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status,
+              ?type: :function_call_output
             ) -> void
             | (
               ?OpenAI::Models::Responses::ResponseInputItem::function_call_output
@@ -223,7 +223,7 @@ module OpenAI
           attr_accessor type: :item_reference
 
           def initialize:
-            (id: String, type: :item_reference) -> void
+            (id: String, ?type: :item_reference) -> void
             | (
               ?OpenAI::Models::Responses::ResponseInputItem::item_reference
               | OpenAI::BaseModel data

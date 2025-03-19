@@ -21,8 +21,8 @@ module OpenAI
 
           def initialize:
             (
-              detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail,
-              url: String
+              ?detail: OpenAI::Models::Beta::Threads::ImageURLDelta::detail,
+              ?url: String
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::image_url_delta

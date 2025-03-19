@@ -29,8 +29,8 @@ module OpenAI
               (
                 thread_id: String,
                 run_id: String,
-                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
-                request_options: OpenAI::request_opts
+                ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                ?request_options: OpenAI::request_opts
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::step_retrieve_params

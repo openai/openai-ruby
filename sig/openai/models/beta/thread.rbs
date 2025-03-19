@@ -27,7 +27,7 @@ module OpenAI
             created_at: Integer,
             metadata: OpenAI::Models::metadata?,
             tool_resources: OpenAI::Models::Beta::Thread::ToolResources?,
-            object: :thread
+            ?object: :thread
           ) -> void
           | (?OpenAI::Models::Beta::thread | OpenAI::BaseModel data) -> void
 
@@ -54,8 +54,8 @@ module OpenAI
 
           def initialize:
             (
-              code_interpreter: OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter,
-              file_search: OpenAI::Models::Beta::Thread::ToolResources::FileSearch
+              ?code_interpreter: OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter,
+              ?file_search: OpenAI::Models::Beta::Thread::ToolResources::FileSearch
             ) -> void
             | (
               ?OpenAI::Models::Beta::Thread::tool_resources
@@ -72,7 +72,7 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize:
-              (file_ids: ::Array[String]) -> void
+              (?file_ids: ::Array[String]) -> void
               | (
                 ?OpenAI::Models::Beta::Thread::ToolResources::code_interpreter
                 | OpenAI::BaseModel data
@@ -89,7 +89,7 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize:
-              (vector_store_ids: ::Array[String]) -> void
+              (?vector_store_ids: ::Array[String]) -> void
               | (
                 ?OpenAI::Models::Beta::Thread::ToolResources::file_search
                 | OpenAI::BaseModel data

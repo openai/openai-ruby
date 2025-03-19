@@ -10,12 +10,12 @@ module OpenAI
           ?OpenAI::Models::VectorStoreCreateParams | ::Hash[Symbol, top] params
         ) -> OpenAI::Models::VectorStore
         | (
-          chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
-          expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
-          file_ids: ::Array[String],
-          metadata: OpenAI::Models::metadata?,
-          name: String,
-          request_options: OpenAI::request_opts
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+          ?expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
+          ?file_ids: ::Array[String],
+          ?metadata: OpenAI::Models::metadata?,
+          ?name: String,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::VectorStore
 
       def retrieve:
@@ -26,7 +26,7 @@ module OpenAI
         ) -> OpenAI::Models::VectorStore
         | (
           String vector_store_id,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::VectorStore
 
       def update:
@@ -36,10 +36,10 @@ module OpenAI
         ) -> OpenAI::Models::VectorStore
         | (
           String vector_store_id,
-          expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?,
-          metadata: OpenAI::Models::metadata?,
-          name: String?,
-          request_options: OpenAI::request_opts
+          ?expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?,
+          ?metadata: OpenAI::Models::metadata?,
+          ?name: String?,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::VectorStore
 
       def list:
@@ -47,11 +47,11 @@ module OpenAI
           ?OpenAI::Models::VectorStoreListParams | ::Hash[Symbol, top] params
         ) -> OpenAI::CursorPage[OpenAI::Models::VectorStore]
         | (
-          after: String,
-          before: String,
-          limit: Integer,
-          order: OpenAI::Models::VectorStoreListParams::order,
-          request_options: OpenAI::request_opts
+          ?after: String,
+          ?before: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::VectorStoreListParams::order,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::CursorPage[OpenAI::Models::VectorStore]
 
       def delete:
@@ -61,7 +61,7 @@ module OpenAI
         ) -> OpenAI::Models::VectorStoreDeleted
         | (
           String vector_store_id,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::VectorStoreDeleted
 
       def search:
@@ -72,11 +72,11 @@ module OpenAI
         | (
           String vector_store_id,
           query: OpenAI::Models::VectorStoreSearchParams::query,
-          filters: OpenAI::Models::VectorStoreSearchParams::filters,
-          max_num_results: Integer,
-          ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
-          rewrite_query: bool,
-          request_options: OpenAI::request_opts
+          ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+          ?rewrite_query: bool,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Page[OpenAI::Models::VectorStoreSearchResponse]
 
       def initialize: (client: OpenAI::Client) -> void

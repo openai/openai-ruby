@@ -19,7 +19,7 @@ module OpenAI
         def initialize:
           (
             type: OpenAI::Models::Beta::AssistantToolChoice::type_,
-            function: OpenAI::Models::Beta::AssistantToolChoiceFunction
+            ?function: OpenAI::Models::Beta::AssistantToolChoiceFunction
           ) -> void
           | (
             ?OpenAI::Models::Beta::assistant_tool_choice

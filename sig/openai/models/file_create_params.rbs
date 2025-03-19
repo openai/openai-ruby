@@ -16,7 +16,7 @@ module OpenAI
         (
           file: IO | StringIO,
           purpose: OpenAI::Models::file_purpose,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (?OpenAI::Models::file_create_params | OpenAI::BaseModel data) -> void
 

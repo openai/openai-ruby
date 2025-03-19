@@ -66,22 +66,22 @@ module OpenAI
         (
           model: OpenAI::Models::CompletionCreateParams::model,
           prompt: OpenAI::Models::CompletionCreateParams::prompt?,
-          best_of: Integer?,
-          echo: bool?,
-          frequency_penalty: Float?,
-          logit_bias: ::Hash[Symbol, Integer]?,
-          logprobs: Integer?,
-          max_tokens: Integer?,
-          n: Integer?,
-          presence_penalty: Float?,
-          seed: Integer?,
-          stop: OpenAI::Models::CompletionCreateParams::stop?,
-          stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
-          suffix: String?,
-          temperature: Float?,
-          top_p: Float?,
-          user: String,
-          request_options: OpenAI::request_opts
+          ?best_of: Integer?,
+          ?echo: bool?,
+          ?frequency_penalty: Float?,
+          ?logit_bias: ::Hash[Symbol, Integer]?,
+          ?logprobs: Integer?,
+          ?max_tokens: Integer?,
+          ?n: Integer?,
+          ?presence_penalty: Float?,
+          ?seed: Integer?,
+          ?stop: OpenAI::Models::CompletionCreateParams::stop?,
+          ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+          ?suffix: String?,
+          ?temperature: Float?,
+          ?top_p: Float?,
+          ?user: String,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::completion_create_params | OpenAI::BaseModel data

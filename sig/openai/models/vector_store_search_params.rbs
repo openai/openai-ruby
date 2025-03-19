@@ -39,11 +39,11 @@ module OpenAI
       def initialize:
         (
           query: OpenAI::Models::VectorStoreSearchParams::query,
-          filters: OpenAI::Models::VectorStoreSearchParams::filters,
-          max_num_results: Integer,
-          ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
-          rewrite_query: bool,
-          request_options: OpenAI::request_opts
+          ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+          ?rewrite_query: bool,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::vector_store_search_params | OpenAI::BaseModel data
@@ -87,8 +87,8 @@ module OpenAI
 
         def initialize:
           (
-            ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
-            score_threshold: Float
+            ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
+            ?score_threshold: Float
           ) -> void
           | (
             ?OpenAI::Models::VectorStoreSearchParams::ranking_options

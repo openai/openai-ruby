@@ -20,8 +20,8 @@ module OpenAI
         def initialize:
           (
             data: OpenAI::Models::Beta::Thread,
-            enabled: bool,
-            event: :"thread.created"
+            ?enabled: bool,
+            ?event: :"thread.created"
           ) -> void
           | (
             ?OpenAI::Models::Beta::thread_stream_event | OpenAI::BaseModel data

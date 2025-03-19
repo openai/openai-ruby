@@ -33,8 +33,8 @@ module OpenAI
           completion_tokens: Integer,
           prompt_tokens: Integer,
           total_tokens: Integer,
-          completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
-          prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
+          ?completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
+          ?prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
         ) -> void
         | (?OpenAI::Models::completion_usage | OpenAI::BaseModel data) -> void
 
@@ -67,10 +67,10 @@ module OpenAI
 
         def initialize:
           (
-            accepted_prediction_tokens: Integer,
-            audio_tokens: Integer,
-            reasoning_tokens: Integer,
-            rejected_prediction_tokens: Integer
+            ?accepted_prediction_tokens: Integer,
+            ?audio_tokens: Integer,
+            ?reasoning_tokens: Integer,
+            ?rejected_prediction_tokens: Integer
           ) -> void
           | (
             ?OpenAI::Models::CompletionUsage::completion_tokens_details
@@ -93,7 +93,7 @@ module OpenAI
         def cached_tokens=: (Integer) -> Integer
 
         def initialize:
-          (audio_tokens: Integer, cached_tokens: Integer) -> void
+          (?audio_tokens: Integer, ?cached_tokens: Integer) -> void
           | (
             ?OpenAI::Models::CompletionUsage::prompt_tokens_details
             | OpenAI::BaseModel data

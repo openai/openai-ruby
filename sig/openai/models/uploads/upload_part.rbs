@@ -26,7 +26,7 @@ module OpenAI
             id: String,
             created_at: Integer,
             upload_id: String,
-            object: :"upload.part"
+            ?object: :"upload.part"
           ) -> void
           | (
             ?OpenAI::Models::Uploads::upload_part | OpenAI::BaseModel data

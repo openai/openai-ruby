@@ -34,7 +34,7 @@ module OpenAI
             file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
             status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status,
             vector_store_id: String,
-            object: :"vector_store.files_batch"
+            ?object: :"vector_store.files_batch"
           ) -> void
           | (
             ?OpenAI::Models::VectorStores::vector_store_file_batch

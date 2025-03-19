@@ -11,7 +11,7 @@ module OpenAI
       def initialize:
         (
           static: OpenAI::Models::StaticFileChunkingStrategy,
-          type: :static
+          ?type: :static
         ) -> void
         | (
           ?OpenAI::Models::static_file_chunking_strategy_object_param

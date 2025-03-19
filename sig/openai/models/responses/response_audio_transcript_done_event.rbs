@@ -8,7 +8,7 @@ module OpenAI
         attr_accessor type: :"response.audio.transcript.done"
 
         def initialize:
-          (type: :"response.audio.transcript.done") -> void
+          (?type: :"response.audio.transcript.done") -> void
           | (
             ?OpenAI::Models::Responses::response_audio_transcript_done_event
             | OpenAI::BaseModel data

@@ -64,21 +64,21 @@ module OpenAI
         def initialize:
           (
             assistant_id: String,
-            instructions: String?,
-            max_completion_tokens: Integer?,
-            max_prompt_tokens: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            model: OpenAI::Models::Beta::ThreadCreateAndRunParams::model?,
-            parallel_tool_calls: bool,
-            response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-            temperature: Float?,
-            thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
-            tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
-            tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
-            tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
-            top_p: Float?,
-            truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
-            request_options: OpenAI::request_opts
+            ?instructions: String?,
+            ?max_completion_tokens: Integer?,
+            ?max_prompt_tokens: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: OpenAI::Models::Beta::ThreadCreateAndRunParams::model?,
+            ?parallel_tool_calls: bool,
+            ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+            ?temperature: Float?,
+            ?thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
+            ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
+            ?tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
+            ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
+            ?top_p: Float?,
+            ?truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Beta::thread_create_and_run_params
@@ -113,9 +113,9 @@ module OpenAI
 
           def initialize:
             (
-              messages: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message],
-              metadata: OpenAI::Models::metadata?,
-              tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources?
+              ?messages: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message],
+              ?metadata: OpenAI::Models::metadata?,
+              ?tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources?
             ) -> void
             | (
               ?OpenAI::Models::Beta::ThreadCreateAndRunParams::thread
@@ -145,8 +145,8 @@ module OpenAI
               (
                 content: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::content,
                 role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::role,
-                attachments: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]?,
-                metadata: OpenAI::Models::metadata?
+                ?attachments: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]?,
+                ?metadata: OpenAI::Models::metadata?
               ) -> void
               | (
                 ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::message
@@ -196,8 +196,8 @@ module OpenAI
 
               def initialize:
                 (
-                  file_id: String,
-                  tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+                  ?file_id: String,
+                  ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
                 ) -> void
                 | (
                   ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::attachment
@@ -217,7 +217,7 @@ module OpenAI
                   attr_accessor type: :file_search
 
                   def initialize:
-                    (type: :file_search) -> void
+                    (?type: :file_search) -> void
                     | (
                       ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::file_search
                       | OpenAI::BaseModel data
@@ -252,8 +252,8 @@ module OpenAI
 
             def initialize:
               (
-                code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
-                file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch
+                ?code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
+                ?file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch
               ) -> void
               | (
                 ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::tool_resources
@@ -270,7 +270,7 @@ module OpenAI
               def file_ids=: (::Array[String]) -> ::Array[String]
 
               def initialize:
-                (file_ids: ::Array[String]) -> void
+                (?file_ids: ::Array[String]) -> void
                 | (
                   ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::code_interpreter
                   | OpenAI::BaseModel data
@@ -298,8 +298,8 @@ module OpenAI
 
               def initialize:
                 (
-                  vector_store_ids: ::Array[String],
-                  vector_stores: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
+                  ?vector_store_ids: ::Array[String],
+                  ?vector_stores: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
                 ) -> void
                 | (
                   ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::file_search
@@ -330,9 +330,9 @@ module OpenAI
 
                 def initialize:
                   (
-                    chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
-                    file_ids: ::Array[String],
-                    metadata: OpenAI::Models::metadata?
+                    ?chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                    ?file_ids: ::Array[String],
+                    ?metadata: OpenAI::Models::metadata?
                   ) -> void
                   | (
                     ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::vector_store
@@ -352,7 +352,7 @@ module OpenAI
                     attr_accessor type: :auto
 
                     def initialize:
-                      (type: :auto) -> void
+                      (?type: :auto) -> void
                       | (
                         ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::auto
                         | OpenAI::BaseModel data
@@ -375,7 +375,7 @@ module OpenAI
                     def initialize:
                       (
                         static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                        type: :static
+                        ?type: :static
                       ) -> void
                       | (
                         ?OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::static
@@ -437,8 +437,8 @@ module OpenAI
 
           def initialize:
             (
-              code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
-              file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch
+              ?code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
+              ?file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch
             ) -> void
             | (
               ?OpenAI::Models::Beta::ThreadCreateAndRunParams::tool_resources
@@ -455,7 +455,7 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize:
-              (file_ids: ::Array[String]) -> void
+              (?file_ids: ::Array[String]) -> void
               | (
                 ?OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::code_interpreter
                 | OpenAI::BaseModel data
@@ -472,7 +472,7 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize:
-              (vector_store_ids: ::Array[String]) -> void
+              (?vector_store_ids: ::Array[String]) -> void
               | (
                 ?OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::file_search
                 | OpenAI::BaseModel data
@@ -505,7 +505,7 @@ module OpenAI
           def initialize:
             (
               type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
-              last_messages: Integer?
+              ?last_messages: Integer?
             ) -> void
             | (
               ?OpenAI::Models::Beta::ThreadCreateAndRunParams::truncation_strategy

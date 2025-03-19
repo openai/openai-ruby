@@ -23,8 +23,8 @@ module OpenAI
         def initialize:
           (
             content: OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::content,
-            name: String,
-            role: :developer
+            ?name: String,
+            ?role: :developer
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_developer_message_param

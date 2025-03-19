@@ -44,9 +44,9 @@ module OpenAI
           filename: String,
           purpose: OpenAI::Models::FileObject::purpose,
           status: OpenAI::Models::FileObject::status,
-          expires_at: Integer,
-          status_details: String,
-          object: :file
+          ?expires_at: Integer,
+          ?status_details: String,
+          ?object: :file
         ) -> void
         | (?OpenAI::Models::file_object | OpenAI::BaseModel data) -> void
 

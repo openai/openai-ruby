@@ -9,8 +9,8 @@ module OpenAI
           completion_window: OpenAI::Models::BatchCreateParams::completion_window,
           endpoint: OpenAI::Models::BatchCreateParams::endpoint,
           input_file_id: String,
-          metadata: OpenAI::Models::metadata?,
-          request_options: OpenAI::request_opts
+          ?metadata: OpenAI::Models::metadata?,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Batch
 
       def retrieve:
@@ -20,7 +20,7 @@ module OpenAI
         ) -> OpenAI::Models::Batch
         | (
           String batch_id,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Batch
 
       def list:
@@ -28,9 +28,9 @@ module OpenAI
           ?OpenAI::Models::BatchListParams | ::Hash[Symbol, top] params
         ) -> OpenAI::CursorPage[OpenAI::Models::Batch]
         | (
-          after: String,
-          limit: Integer,
-          request_options: OpenAI::request_opts
+          ?after: String,
+          ?limit: Integer,
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::CursorPage[OpenAI::Models::Batch]
 
       def cancel:
@@ -40,7 +40,7 @@ module OpenAI
         ) -> OpenAI::Models::Batch
         | (
           String batch_id,
-          request_options: OpenAI::request_opts
+          ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Batch
 
       def initialize: (client: OpenAI::Client) -> void

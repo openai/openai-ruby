@@ -46,11 +46,11 @@ module OpenAI
           (
             content: String?,
             refusal: String?,
-            annotations: ::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation],
-            audio: OpenAI::Models::Chat::ChatCompletionAudio?,
-            function_call: OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall,
-            tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
-            role: :assistant
+            ?annotations: ::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation],
+            ?audio: OpenAI::Models::Chat::ChatCompletionAudio?,
+            ?function_call: OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall,
+            ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
+            ?role: :assistant
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_message
@@ -73,7 +73,7 @@ module OpenAI
           def initialize:
             (
               url_citation: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation,
-              type: :url_citation
+              ?type: :url_citation
             ) -> void
             | (
               ?OpenAI::Models::Chat::ChatCompletionMessage::annotation

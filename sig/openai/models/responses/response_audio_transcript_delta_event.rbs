@@ -10,7 +10,7 @@ module OpenAI
         attr_accessor type: :"response.audio.transcript.delta"
 
         def initialize:
-          (delta: String, type: :"response.audio.transcript.delta") -> void
+          (delta: String, ?type: :"response.audio.transcript.delta") -> void
           | (
             ?OpenAI::Models::Responses::response_audio_transcript_delta_event
             | OpenAI::BaseModel data

@@ -12,7 +12,7 @@ module OpenAI
         def initialize:
           (
             function: OpenAI::Models::FunctionDefinition,
-            type: :function
+            ?type: :function
           ) -> void
           | (
             ?OpenAI::Models::Beta::function_tool | OpenAI::BaseModel data

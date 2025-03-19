@@ -16,7 +16,7 @@ module OpenAI
           def initialize:
             (
               image_url: OpenAI::Models::Beta::Threads::ImageURL,
-              type: :image_url
+              ?type: :image_url
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::image_url_content_block

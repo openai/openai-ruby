@@ -6,7 +6,7 @@ module OpenAI
       attr_accessor type: :other
 
       def initialize:
-        (type: :other) -> void
+        (?type: :other) -> void
         | (
           ?OpenAI::Models::other_file_chunking_strategy_object
           | OpenAI::BaseModel data

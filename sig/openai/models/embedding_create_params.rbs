@@ -36,10 +36,10 @@ module OpenAI
         (
           input: OpenAI::Models::EmbeddingCreateParams::input,
           model: OpenAI::Models::EmbeddingCreateParams::model,
-          dimensions: Integer,
-          encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
-          user: String,
-          request_options: OpenAI::request_opts
+          ?dimensions: Integer,
+          ?encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
+          ?user: String,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::embedding_create_params | OpenAI::BaseModel data

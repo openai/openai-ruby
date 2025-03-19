@@ -23,7 +23,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.created"
+              ?event: :"thread.message.created"
             ) -> void
             | (
               ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_created
@@ -47,7 +47,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.in_progress"
+              ?event: :"thread.message.in_progress"
             ) -> void
             | (
               ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_in_progress
@@ -71,7 +71,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::MessageDeltaEvent,
-              event: :"thread.message.delta"
+              ?event: :"thread.message.delta"
             ) -> void
             | (
               ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_delta
@@ -95,7 +95,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.completed"
+              ?event: :"thread.message.completed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_completed
@@ -119,7 +119,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.incomplete"
+              ?event: :"thread.message.incomplete"
             ) -> void
             | (
               ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_incomplete

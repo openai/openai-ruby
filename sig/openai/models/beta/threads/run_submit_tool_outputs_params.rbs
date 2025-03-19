@@ -21,7 +21,7 @@ module OpenAI
             (
               thread_id: String,
               tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
-              request_options: OpenAI::request_opts
+              ?request_options: OpenAI::request_opts
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::run_submit_tool_outputs_params
@@ -42,7 +42,7 @@ module OpenAI
             def tool_call_id=: (String) -> String
 
             def initialize:
-              (output: String, tool_call_id: String) -> void
+              (?output: String, ?tool_call_id: String) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::tool_output
                 | OpenAI::BaseModel data

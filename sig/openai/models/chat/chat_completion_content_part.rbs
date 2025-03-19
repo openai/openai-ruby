@@ -25,7 +25,7 @@ module OpenAI
           def initialize:
             (
               file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File,
-              type: :file
+              ?type: :file
             ) -> void
             | (
               ?OpenAI::Models::Chat::ChatCompletionContentPart::file
@@ -50,7 +50,7 @@ module OpenAI
             def filename=: (String) -> String
 
             def initialize:
-              (file_data: String, file_id: String, filename: String) -> void
+              (?file_data: String, ?file_id: String, ?filename: String) -> void
               | (
                 ?OpenAI::Models::Chat::ChatCompletionContentPart::File::file
                 | OpenAI::BaseModel data

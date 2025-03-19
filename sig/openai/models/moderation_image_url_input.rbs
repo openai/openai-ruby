@@ -14,7 +14,7 @@ module OpenAI
       def initialize:
         (
           image_url: OpenAI::Models::ModerationImageURLInput::ImageURL,
-          type: :image_url
+          ?type: :image_url
         ) -> void
         | (
           ?OpenAI::Models::moderation_image_url_input | OpenAI::BaseModel data

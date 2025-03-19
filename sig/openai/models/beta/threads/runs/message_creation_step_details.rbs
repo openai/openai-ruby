@@ -17,7 +17,7 @@ module OpenAI
             def initialize:
               (
                 message_creation: OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
-                type: :message_creation
+                ?type: :message_creation
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::message_creation_step_details

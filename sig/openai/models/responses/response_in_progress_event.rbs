@@ -15,7 +15,7 @@ module OpenAI
         def initialize:
           (
             response: OpenAI::Models::Responses::Response,
-            type: :"response.in_progress"
+            ?type: :"response.in_progress"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_in_progress_event

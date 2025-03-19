@@ -20,7 +20,7 @@ module OpenAI
             (
               id: String,
               function: OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function,
-              type: :function
+              ?type: :function
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::required_action_function_tool_call

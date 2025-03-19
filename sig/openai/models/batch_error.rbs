@@ -17,7 +17,12 @@ module OpenAI
       attr_accessor param: String?
 
       def initialize:
-        (code: String, line: Integer?, message: String, param: String?) -> void
+        (
+          ?code: String,
+          ?line: Integer?,
+          ?message: String,
+          ?param: String?
+        ) -> void
         | (?OpenAI::Models::batch_error | OpenAI::BaseModel data) -> void
 
       def to_hash: -> OpenAI::Models::batch_error

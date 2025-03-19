@@ -17,8 +17,8 @@ module OpenAI
 
         def initialize:
           (
-            include: ::Array[OpenAI::Models::Responses::response_includable],
-            request_options: OpenAI::request_opts
+            ?include: ::Array[OpenAI::Models::Responses::response_includable],
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_retrieve_params

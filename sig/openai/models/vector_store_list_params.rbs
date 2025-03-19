@@ -33,11 +33,11 @@ module OpenAI
 
       def initialize:
         (
-          after: String,
-          before: String,
-          limit: Integer,
-          order: OpenAI::Models::VectorStoreListParams::order,
-          request_options: OpenAI::request_opts
+          ?after: String,
+          ?before: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::VectorStoreListParams::order,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::vector_store_list_params | OpenAI::BaseModel data

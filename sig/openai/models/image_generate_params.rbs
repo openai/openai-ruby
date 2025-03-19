@@ -42,14 +42,14 @@ module OpenAI
       def initialize:
         (
           prompt: String,
-          model: OpenAI::Models::ImageGenerateParams::model?,
-          n: Integer?,
-          quality: OpenAI::Models::ImageGenerateParams::quality,
-          response_format: OpenAI::Models::ImageGenerateParams::response_format?,
-          size: OpenAI::Models::ImageGenerateParams::size?,
-          style: OpenAI::Models::ImageGenerateParams::style?,
-          user: String,
-          request_options: OpenAI::request_opts
+          ?model: OpenAI::Models::ImageGenerateParams::model?,
+          ?n: Integer?,
+          ?quality: OpenAI::Models::ImageGenerateParams::quality,
+          ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+          ?size: OpenAI::Models::ImageGenerateParams::size?,
+          ?style: OpenAI::Models::ImageGenerateParams::style?,
+          ?user: String,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::image_generate_params | OpenAI::BaseModel data

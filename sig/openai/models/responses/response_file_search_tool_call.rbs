@@ -26,8 +26,8 @@ module OpenAI
             id: String,
             queries: ::Array[String],
             status: OpenAI::Models::Responses::ResponseFileSearchToolCall::status,
-            results: ::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]?,
-            type: :file_search_call
+            ?results: ::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]?,
+            ?type: :file_search_call
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_file_search_tool_call
@@ -79,11 +79,11 @@ module OpenAI
 
           def initialize:
             (
-              attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
-              file_id: String,
-              filename: String,
-              score: Float,
-              text: String
+              ?attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?,
+              ?file_id: String,
+              ?filename: String,
+              ?score: Float,
+              ?text: String
             ) -> void
             | (
               ?OpenAI::Models::Responses::ResponseFileSearchToolCall::result

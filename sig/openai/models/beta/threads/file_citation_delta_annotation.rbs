@@ -38,11 +38,11 @@ module OpenAI
           def initialize:
             (
               index: Integer,
-              end_index: Integer,
-              file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
-              start_index: Integer,
-              text: String,
-              type: :file_citation
+              ?end_index: Integer,
+              ?file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+              ?start_index: Integer,
+              ?text: String,
+              ?type: :file_citation
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::file_citation_delta_annotation
@@ -63,7 +63,7 @@ module OpenAI
             def quote=: (String) -> String
 
             def initialize:
-              (file_id: String, quote: String) -> void
+              (?file_id: String, ?quote: String) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::file_citation
                 | OpenAI::BaseModel data

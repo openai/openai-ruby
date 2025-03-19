@@ -64,7 +64,7 @@ module OpenAI
               run_id: String?,
               status: OpenAI::Models::Beta::Threads::Message::status,
               thread_id: String,
-              object: :"thread.message"
+              ?object: :"thread.message"
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::message | OpenAI::BaseModel data
@@ -91,8 +91,8 @@ module OpenAI
 
             def initialize:
               (
-                file_id: String,
-                tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+                ?file_id: String,
+                ?tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Message::attachment
@@ -113,7 +113,7 @@ module OpenAI
                 attr_accessor type: :file_search
 
                 def initialize:
-                  (type: :file_search) -> void
+                  (?type: :file_search) -> void
                   | (
                     ?OpenAI::Models::Beta::Threads::Message::Attachment::Tool::assistant_tools_file_search_type_only
                     | OpenAI::BaseModel data

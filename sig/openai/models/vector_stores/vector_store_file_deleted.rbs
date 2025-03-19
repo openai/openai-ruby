@@ -18,7 +18,7 @@ module OpenAI
           (
             id: String,
             deleted: bool,
-            object: :"vector_store.file.deleted"
+            ?object: :"vector_store.file.deleted"
           ) -> void
           | (
             ?OpenAI::Models::VectorStores::vector_store_file_deleted

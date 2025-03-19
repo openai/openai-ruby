@@ -12,35 +12,35 @@ module OpenAI
           | (
             messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
             model: OpenAI::Models::Chat::CompletionCreateParams::model,
-            audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
-            frequency_penalty: Float?,
-            function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
-            functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
-            logit_bias: ::Hash[Symbol, Integer]?,
-            logprobs: bool?,
-            max_completion_tokens: Integer?,
-            max_tokens: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
-            n: Integer?,
-            parallel_tool_calls: bool,
-            prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
-            presence_penalty: Float?,
-            reasoning_effort: OpenAI::Models::reasoning_effort?,
-            response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
-            seed: Integer?,
-            service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
-            stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
-            store: bool?,
-            stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
-            temperature: Float?,
-            tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-            tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
-            top_logprobs: Integer?,
-            top_p: Float?,
-            user: String,
-            web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
-            request_options: OpenAI::request_opts
+            ?audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
+            ?frequency_penalty: Float?,
+            ?function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+            ?functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
+            ?logit_bias: ::Hash[Symbol, Integer]?,
+            ?logprobs: bool?,
+            ?max_completion_tokens: Integer?,
+            ?max_tokens: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+            ?n: Integer?,
+            ?parallel_tool_calls: bool,
+            ?prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
+            ?presence_penalty: Float?,
+            ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+            ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+            ?seed: Integer?,
+            ?service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+            ?stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+            ?store: bool?,
+            ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+            ?temperature: Float?,
+            ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+            ?tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
+            ?top_logprobs: Integer?,
+            ?top_p: Float?,
+            ?user: String,
+            ?web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Chat::ChatCompletion
 
         def create_streaming:
@@ -51,35 +51,35 @@ module OpenAI
           | (
             messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
             model: OpenAI::Models::Chat::CompletionCreateParams::model,
-            audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
-            frequency_penalty: Float?,
-            function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
-            functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
-            logit_bias: ::Hash[Symbol, Integer]?,
-            logprobs: bool?,
-            max_completion_tokens: Integer?,
-            max_tokens: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
-            n: Integer?,
-            parallel_tool_calls: bool,
-            prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
-            presence_penalty: Float?,
-            reasoning_effort: OpenAI::Models::reasoning_effort?,
-            response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
-            seed: Integer?,
-            service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
-            stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
-            store: bool?,
-            stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
-            temperature: Float?,
-            tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-            tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
-            top_logprobs: Integer?,
-            top_p: Float?,
-            user: String,
-            web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
-            request_options: OpenAI::request_opts
+            ?audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
+            ?frequency_penalty: Float?,
+            ?function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+            ?functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
+            ?logit_bias: ::Hash[Symbol, Integer]?,
+            ?logprobs: bool?,
+            ?max_completion_tokens: Integer?,
+            ?max_tokens: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+            ?n: Integer?,
+            ?parallel_tool_calls: bool,
+            ?prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
+            ?presence_penalty: Float?,
+            ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+            ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+            ?seed: Integer?,
+            ?service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+            ?stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+            ?store: bool?,
+            ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+            ?temperature: Float?,
+            ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+            ?tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
+            ?top_logprobs: Integer?,
+            ?top_p: Float?,
+            ?user: String,
+            ?web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Stream[OpenAI::Models::Chat::ChatCompletionChunk]
 
         def retrieve:
@@ -90,7 +90,7 @@ module OpenAI
           ) -> OpenAI::Models::Chat::ChatCompletion
           | (
             String completion_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Chat::ChatCompletion
 
         def update:
@@ -102,7 +102,7 @@ module OpenAI
           | (
             String completion_id,
             metadata: OpenAI::Models::metadata?,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Chat::ChatCompletion
 
         def list:
@@ -111,12 +111,12 @@ module OpenAI
             | ::Hash[Symbol, top] params
           ) -> OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletion]
           | (
-            after: String,
-            limit: Integer,
-            metadata: OpenAI::Models::metadata?,
-            model: String,
-            order: OpenAI::Models::Chat::CompletionListParams::order,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?limit: Integer,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: String,
+            ?order: OpenAI::Models::Chat::CompletionListParams::order,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletion]
 
         def delete:
@@ -127,7 +127,7 @@ module OpenAI
           ) -> OpenAI::Models::Chat::ChatCompletionDeleted
           | (
             String completion_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Chat::ChatCompletionDeleted
 
         def initialize: (client: OpenAI::Client) -> void
