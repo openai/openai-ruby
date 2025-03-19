@@ -70,6 +70,7 @@ module OpenAI
             top_p: T.nilable(Float),
             user: String,
             web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
+            stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(OpenAI::Models::Chat::ChatCompletion)
@@ -258,6 +259,9 @@ module OpenAI
           #   about the
           #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           web_search_options: nil,
+          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+          #   `#create` for streaming and non-streaming use cases, respectively.
+          stream: false,
           request_options: {}
         )
         end
@@ -324,6 +328,7 @@ module OpenAI
             top_p: T.nilable(Float),
             user: String,
             web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
+            stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(OpenAI::Stream[OpenAI::Models::Chat::ChatCompletionChunk])
@@ -512,6 +517,9 @@ module OpenAI
           #   about the
           #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           web_search_options: nil,
+          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+          #   `#create` for streaming and non-streaming use cases, respectively.
+          stream: true,
           request_options: {}
         )
         end

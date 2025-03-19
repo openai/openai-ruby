@@ -2,6 +2,8 @@
 
 module OpenAI
   module BaseStream
+    include Enumerable
+
     Message = type_member(:in)
     Elem = type_member(:out)
 
@@ -15,10 +17,10 @@ module OpenAI
     end
 
     sig { params(blk: T.proc.params(arg0: Elem).void).void }
-    def for_each(&blk)
+    def each(&blk)
     end
 
-    sig { returns(T::Enumerable[Elem]) }
+    sig { returns(T::Enumerator[Elem]) }
     def to_enum
     end
 
@@ -31,11 +33,11 @@ module OpenAI
         url: URI::Generic,
         status: Integer,
         response: Net::HTTPResponse,
-        messages: T::Enumerable[Message]
+        stream: T::Enumerable[Message]
       )
         .void
     end
-    def initialize(model:, url:, status:, response:, messages:)
+    def initialize(model:, url:, status:, response:, stream:)
     end
   end
 end

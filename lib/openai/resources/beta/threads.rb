@@ -208,7 +208,10 @@ module OpenAI
         # @return [OpenAI::Models::Beta::Threads::Run]
         def create_and_run(params)
           parsed, options = OpenAI::Models::Beta::ThreadCreateAndRunParams.dump_request(params)
-          parsed.delete(:stream)
+          if parsed[:stream]
+            message = "Please use `#create_and_run_streaming` for the streaming use case."
+            raise ArgumentError.new(message)
+          end
           @client.request(
             method: :post,
             path: "threads/runs",
@@ -315,6 +318,10 @@ module OpenAI
         # @return [OpenAI::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
         def create_and_run_streaming(params)
           parsed, options = OpenAI::Models::Beta::ThreadCreateAndRunParams.dump_request(params)
+          unless parsed.fetch(:stream, true)
+            message = "Please use `#create_and_run` for the non-streaming use case."
+            raise ArgumentError.new(message)
+          end
           parsed.store(:stream, true)
           @client.request(
             method: :post,

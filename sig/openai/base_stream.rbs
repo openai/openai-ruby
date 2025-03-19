@@ -1,12 +1,14 @@
 module OpenAI
   module BaseStream[Message, Elem]
+    include Enumerable[Elem]
+
     def close: -> void
 
     private def iterator: -> Enumerable[Elem]
 
-    def for_each: { (Elem arg0) -> void } -> void
+    def each: { (Elem arg0) -> void } -> void
 
-    def to_enum: -> Enumerable[Elem]
+    def to_enum: -> Enumerator[Elem]
 
     alias enum_for to_enum
 
@@ -15,7 +17,7 @@ module OpenAI
       url: URI::Generic,
       status: Integer,
       response: top,
-      messages: Enumerable[Message]
+      stream: Enumerable[Message]
     ) -> void
   end
 end

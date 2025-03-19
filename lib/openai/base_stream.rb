@@ -3,7 +3,7 @@
 module OpenAI
   # @example
   # ```ruby
-  # stream.for_each do |chunk|
+  # stream.each do |chunk|
   #   puts(chunk)
   # end
   # ```
@@ -12,7 +12,6 @@ module OpenAI
   # ```ruby
   # chunks =
   #   stream
-  #   .to_enum
   #   .lazy
   #   .select { _1.object_id.even? }
   #   .map(&:itself)
@@ -22,6 +21,8 @@ module OpenAI
   # chunks => Array
   # ```
   module BaseStream
+    include Enumerable
+
     # @return [void]
     def close = OpenAI::Util.close_fused!(@iterator)
 
@@ -33,14 +34,14 @@ module OpenAI
     # @param blk [Proc]
     #
     # @return [void]
-    def for_each(&)
+    def each(&)
       unless block_given?
         raise ArgumentError.new("A block must be given to ##{__method__}")
       end
       @iterator.each(&)
     end
 
-    # @return [Enumerable]
+    # @return [Enumerator]
     def to_enum = @iterator
 
     alias_method :enum_for, :to_enum
@@ -51,13 +52,13 @@ module OpenAI
     # @param url [URI::Generic]
     # @param status [Integer]
     # @param response [Net::HTTPResponse]
-    # @param messages [Enumerable]
-    def initialize(model:, url:, status:, response:, messages:)
+    # @param stream [Enumerable]
+    def initialize(model:, url:, status:, response:, stream:)
       @model = model
       @url = url
       @status = status
       @response = response
-      @messages = messages
+      @stream = stream
       @iterator = iterator
     end
   end

@@ -56,11 +56,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::InternalServerError) do
-      openai.chat.completions.create(
-        messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
-        stream: true
-      )
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
     assert_equal(3, requester.attempts.length)
@@ -72,11 +68,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::InternalServerError) do
-      openai.chat.completions.create(
-        messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
-        stream: true
-      )
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
     assert_equal(4, requester.attempts.length)
@@ -91,7 +83,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {max_retries: 3}
       )
     end
@@ -108,7 +99,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {max_retries: 4}
       )
     end
@@ -122,11 +112,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::InternalServerError) do
-      openai.chat.completions.create(
-        messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
-        stream: true
-      )
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
     assert_equal(2, requester.attempts.length)
@@ -140,11 +126,7 @@ class OpenAITest < Minitest::Test
 
     assert_raises(OpenAI::InternalServerError) do
       Thread.current.thread_variable_set(:time_now, Time.now)
-      openai.chat.completions.create(
-        messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
-        stream: true
-      )
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
       Thread.current.thread_variable_set(:time_now, nil)
     end
 
@@ -158,11 +140,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::InternalServerError) do
-      openai.chat.completions.create(
-        messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
-        stream: true
-      )
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
     assert_equal(2, requester.attempts.length)
@@ -175,11 +153,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::InternalServerError) do
-      openai.chat.completions.create(
-        messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
-        stream: true
-      )
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
     retry_count_headers = requester.attempts.map { _1[:headers]["x-stainless-retry-count"] }
@@ -195,7 +169,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {extra_headers: {"x-stainless-retry-count" => nil}}
       )
     end
@@ -213,7 +186,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {extra_headers: {"x-stainless-retry-count" => "42"}}
       )
     end
@@ -231,7 +203,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {extra_headers: {}}
       )
     end
@@ -254,7 +225,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {extra_headers: {}}
       )
     end
@@ -274,7 +244,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {extra_headers: {"Authorization" => "Bearer xyz"}}
       )
     end
@@ -294,7 +263,6 @@ class OpenAITest < Minitest::Test
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
-        stream: true,
         request_options: {extra_headers: {"Authorization" => "Bearer xyz"}}
       )
     end
@@ -306,11 +274,7 @@ class OpenAITest < Minitest::Test
     openai = OpenAI::Client.new(base_url: "http://localhost:4010", api_key: "My API Key")
     requester = MockRequester.new(200, {}, {})
     openai.requester = requester
-    openai.chat.completions.create(
-      messages: [{content: "string", role: :developer}],
-      model: :"o3-mini",
-      stream: true
-    )
+    openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     headers = requester.attempts.first[:headers]
 
     refute_empty(headers["accept"])
