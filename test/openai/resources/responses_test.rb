@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.responses.create(input: "string", model: :"gpt-4o", stream: true)
+    response = @openai.responses.create(input: "string", model: :"gpt-4o")
 
     assert_pattern do
       response => OpenAI::Models::Responses::Response

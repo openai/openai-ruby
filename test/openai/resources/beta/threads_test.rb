@@ -74,7 +74,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
   end
 
   def test_create_and_run_required_params
-    response = @openai.beta.threads.create_and_run(assistant_id: "assistant_id", stream: true)
+    response = @openai.beta.threads.create_and_run(assistant_id: "assistant_id")
 
     assert_pattern do
       response => OpenAI::Models::Beta::Threads::Run

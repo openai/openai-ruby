@@ -4,7 +4,7 @@ require_relative "../../../test_helper"
 
 class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.beta.threads.runs.create("thread_id", assistant_id: "assistant_id", stream: true)
+    response = @openai.beta.threads.runs.create("thread_id", assistant_id: "assistant_id")
 
     assert_pattern do
       response => OpenAI::Models::Beta::Threads::Run
@@ -210,12 +210,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
 
   def test_submit_tool_outputs_required_params
     response =
-      @openai.beta.threads.runs.submit_tool_outputs(
-        "run_id",
-        thread_id: "thread_id",
-        stream: true,
-        tool_outputs: [{}]
-      )
+      @openai.beta.threads.runs.submit_tool_outputs("run_id", thread_id: "thread_id", tool_outputs: [{}])
 
     assert_pattern do
       response => OpenAI::Models::Beta::Threads::Run
