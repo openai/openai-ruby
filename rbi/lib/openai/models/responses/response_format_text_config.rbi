@@ -19,15 +19,16 @@ module OpenAI
       class ResponseFormatTextConfig < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::ResponseFormatText,
-              OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
-              OpenAI::Models::ResponseFormatJSONObject
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::ResponseFormatText,
+                OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
+                OpenAI::Models::ResponseFormatJSONObject
+              )
+            }
+          end
       end
     end
   end

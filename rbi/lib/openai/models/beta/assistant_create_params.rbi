@@ -526,14 +526,15 @@ module OpenAI
               class ChunkingStrategy < OpenAI::Union
                 abstract!
 
-                Variants = type_template(:out) do
-                  {
-                    fixed: T.any(
-                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
-                    )
-                  }
-                end
+                Variants =
+                  type_template(:out) do
+                    {
+                      fixed: T.any(
+                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                      )
+                    }
+                  end
 
                 class Auto < OpenAI::BaseModel
                   # Always `auto`.

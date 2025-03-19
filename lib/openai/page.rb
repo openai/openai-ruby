@@ -17,7 +17,8 @@ module OpenAI
   #
   # @example
   # ```ruby
-  # models = page
+  # models =
+  #   page
   #   .to_enum
   #   .lazy
   #   .select { _1.object_id.even? }

@@ -110,9 +110,10 @@ module OpenAI
       class Input < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {fixed: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])}
-        end
+        Variants =
+          type_template(:out) do
+            {fixed: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])}
+          end
 
         StringArray = T.type_alias { T::Array[String] }
 

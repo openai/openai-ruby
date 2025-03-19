@@ -48,11 +48,12 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
   end
 
   def test_update_required_params
-    response = @openai.vector_stores.files.update(
-      "file-abc123",
-      vector_store_id: "vs_abc123",
-      attributes: {foo: "string"}
-    )
+    response =
+      @openai.vector_stores.files.update(
+        "file-abc123",
+        vector_store_id: "vs_abc123",
+        attributes: {foo: "string"}
+      )
 
     assert_pattern do
       response => OpenAI::Models::VectorStores::VectorStoreFile

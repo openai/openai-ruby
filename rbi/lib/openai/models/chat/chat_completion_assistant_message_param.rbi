@@ -202,42 +202,45 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                String,
-                T::Array[
-                T.any(
-                  OpenAI::Models::Chat::ChatCompletionContentPartText,
-                  OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  String,
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Chat::ChatCompletionContentPartText,
+                    OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+                  )
+                  ]
                 )
-                ]
-              )
-            }
-          end
+              }
+            end
 
-          ArrayOfContentPartArray = T.type_alias do
-            T::Array[
-            T.any(
-              OpenAI::Models::Chat::ChatCompletionContentPartText,
-              OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-            )
-            ]
-          end
+          ArrayOfContentPartArray =
+            T.type_alias do
+              T::Array[
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionContentPartText,
+                OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+              )
+              ]
+            end
 
           # Learn about
           #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
           class ArrayOfContentPart < OpenAI::Union
             abstract!
 
-            Variants = type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Chat::ChatCompletionContentPartText,
-                  OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-                )
-              }
-            end
+            Variants =
+              type_template(:out) do
+                {
+                  fixed: T.any(
+                    OpenAI::Models::Chat::ChatCompletionContentPartText,
+                    OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+                  )
+                }
+              end
           end
         end
 

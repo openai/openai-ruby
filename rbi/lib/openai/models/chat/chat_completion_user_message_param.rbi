@@ -125,32 +125,34 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) do
-            {
-              fixed: T.any(
-                String,
-                T::Array[
-                T.any(
-                  OpenAI::Models::Chat::ChatCompletionContentPartText,
-                  OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                  OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                  OpenAI::Models::Chat::ChatCompletionContentPart::File
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  String,
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Chat::ChatCompletionContentPartText,
+                    OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                    OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                    OpenAI::Models::Chat::ChatCompletionContentPart::File
+                  )
+                  ]
                 )
-                ]
-              )
-            }
-          end
+              }
+            end
 
-          ChatCompletionContentPartArray = T.type_alias do
-            T::Array[
-            T.any(
-              OpenAI::Models::Chat::ChatCompletionContentPartText,
-              OpenAI::Models::Chat::ChatCompletionContentPartImage,
-              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-              OpenAI::Models::Chat::ChatCompletionContentPart::File
-            )
-            ]
-          end
+          ChatCompletionContentPartArray =
+            T.type_alias do
+              T::Array[
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionContentPartText,
+                OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                OpenAI::Models::Chat::ChatCompletionContentPart::File
+              )
+              ]
+            end
         end
       end
     end

@@ -68,9 +68,11 @@ module OpenAI
         class Content < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])} }
+          Variants =
+            type_template(:out) { {fixed: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])} }
 
-          ChatCompletionContentPartTextArray = T.type_alias { T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText] }
+          ChatCompletionContentPartTextArray =
+            T.type_alias { T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText] }
         end
       end
     end

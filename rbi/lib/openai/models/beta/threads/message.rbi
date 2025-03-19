@@ -339,14 +339,15 @@ module OpenAI
             class Tool < OpenAI::Union
               abstract!
 
-              Variants = type_template(:out) do
-                {
-                  fixed: T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                  )
-                }
-              end
+              Variants =
+                type_template(:out) do
+                  {
+                    fixed: T.any(
+                      OpenAI::Models::Beta::CodeInterpreterTool,
+                      OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+                    )
+                  }
+                end
 
               class AssistantToolsFileSearchTypeOnly < OpenAI::BaseModel
                 # The type of tool being defined: `file_search`

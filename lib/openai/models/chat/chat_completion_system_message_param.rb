@@ -44,7 +44,8 @@ module OpenAI
         #
         # The contents of the system message.
         class Content < OpenAI::Union
-          ChatCompletionContentPartTextArray = OpenAI::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
+          ChatCompletionContentPartTextArray =
+            OpenAI::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
 
           # The contents of the system message.
           variant String

@@ -9,16 +9,17 @@ module OpenAI
       class Tool < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Models::Responses::FunctionTool,
-              OpenAI::Models::Responses::ComputerTool,
-              OpenAI::Models::Responses::WebSearchTool
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Responses::FileSearchTool,
+                OpenAI::Models::Responses::FunctionTool,
+                OpenAI::Models::Responses::ComputerTool,
+                OpenAI::Models::Responses::WebSearchTool
+              )
+            }
+          end
       end
     end
   end

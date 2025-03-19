@@ -8,7 +8,8 @@ module OpenAI
       class TranscriptionCreateResponse < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)} }
+        Variants =
+          type_template(:out) { {fixed: T.any(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)} }
       end
     end
   end

@@ -10,16 +10,17 @@ module OpenAI
       class ChatCompletionContentPart < OpenAI::Union
         abstract!
 
-        Variants = type_template(:out) do
-          {
-            fixed: T.any(
-              OpenAI::Models::Chat::ChatCompletionContentPartText,
-              OpenAI::Models::Chat::ChatCompletionContentPartImage,
-              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-              OpenAI::Models::Chat::ChatCompletionContentPart::File
-            )
-          }
-        end
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Chat::ChatCompletionContentPartText,
+                OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                OpenAI::Models::Chat::ChatCompletionContentPart::File
+              )
+            }
+          end
 
         class File < OpenAI::BaseModel
           sig { returns(OpenAI::Models::Chat::ChatCompletionContentPart::File::File) }
