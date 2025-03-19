@@ -48,9 +48,9 @@ module OpenAI
             status: OpenAI::Models::VectorStores::VectorStoreFile::status,
             usage_bytes: Integer,
             vector_store_id: String,
-            attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
-            chunking_strategy: OpenAI::Models::file_chunking_strategy,
-            object: :"vector_store.file"
+            ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+            ?chunking_strategy: OpenAI::Models::file_chunking_strategy,
+            ?object: :"vector_store.file"
           ) -> void
           | (
             ?OpenAI::Models::VectorStores::vector_store_file

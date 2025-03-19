@@ -20,10 +20,10 @@ module OpenAI
 
       def initialize:
         (
-          expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?,
-          metadata: OpenAI::Models::metadata?,
-          name: String?,
-          request_options: OpenAI::request_opts
+          ?expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?,
+          ?metadata: OpenAI::Models::metadata?,
+          ?name: String?,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::vector_store_update_params | OpenAI::BaseModel data
@@ -39,7 +39,7 @@ module OpenAI
         attr_accessor days: Integer
 
         def initialize:
-          (days: Integer, anchor: :last_active_at) -> void
+          (days: Integer, ?anchor: :last_active_at) -> void
           | (
             ?OpenAI::Models::VectorStoreUpdateParams::expires_after
             | OpenAI::BaseModel data

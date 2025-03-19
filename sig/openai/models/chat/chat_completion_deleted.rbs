@@ -18,7 +18,7 @@ module OpenAI
           (
             id: String,
             deleted: bool,
-            object: :"chat.completion.deleted"
+            ?object: :"chat.completion.deleted"
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_deleted

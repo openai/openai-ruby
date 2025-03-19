@@ -26,9 +26,9 @@ module OpenAI
         def initialize:
           (
             project: String,
-            entity: String?,
-            name: String?,
-            tags: ::Array[String]
+            ?entity: String?,
+            ?name: String?,
+            ?tags: ::Array[String]
           ) -> void
           | (
             ?OpenAI::Models::FineTuning::fine_tuning_job_wandb_integration

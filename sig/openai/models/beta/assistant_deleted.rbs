@@ -12,7 +12,7 @@ module OpenAI
         attr_accessor object: :"assistant.deleted"
 
         def initialize:
-          (id: String, deleted: bool, object: :"assistant.deleted") -> void
+          (id: String, deleted: bool, ?object: :"assistant.deleted") -> void
           | (
             ?OpenAI::Models::Beta::assistant_deleted | OpenAI::BaseModel data
           ) -> void

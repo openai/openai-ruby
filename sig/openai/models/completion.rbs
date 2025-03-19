@@ -38,9 +38,9 @@ module OpenAI
           choices: ::Array[OpenAI::Models::CompletionChoice],
           created: Integer,
           model: String,
-          system_fingerprint: String,
-          usage: OpenAI::Models::CompletionUsage,
-          object: :text_completion
+          ?system_fingerprint: String,
+          ?usage: OpenAI::Models::CompletionUsage,
+          ?object: :text_completion
         ) -> void
         | (?OpenAI::Models::completion | OpenAI::BaseModel data) -> void
 

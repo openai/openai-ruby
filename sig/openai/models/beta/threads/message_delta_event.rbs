@@ -20,7 +20,7 @@ module OpenAI
             (
               id: String,
               delta: OpenAI::Models::Beta::Threads::MessageDelta,
-              object: :"thread.message.delta"
+              ?object: :"thread.message.delta"
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::message_delta_event

@@ -7,7 +7,7 @@ module OpenAI
         attr_accessor type: :"response.audio.done"
 
         def initialize:
-          (type: :"response.audio.done") -> void
+          (?type: :"response.audio.done") -> void
           | (
             ?OpenAI::Models::Responses::response_audio_done_event
             | OpenAI::BaseModel data

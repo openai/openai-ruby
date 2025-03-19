@@ -8,7 +8,7 @@ module OpenAI
       attr_accessor type: :text
 
       def initialize:
-        (text: String, type: :text) -> void
+        (text: String, ?type: :text) -> void
         | (
           ?OpenAI::Models::moderation_text_input | OpenAI::BaseModel data
         ) -> void

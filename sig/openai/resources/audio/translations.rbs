@@ -10,10 +10,10 @@ module OpenAI
           | (
             file: IO | StringIO,
             model: OpenAI::Models::Audio::TranslationCreateParams::model,
-            prompt: String,
-            response_format: OpenAI::Models::audio_response_format,
-            temperature: Float,
-            request_options: OpenAI::request_opts
+            ?prompt: String,
+            ?response_format: OpenAI::Models::audio_response_format,
+            ?temperature: Float,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Audio::translation_create_response
 
         def initialize: (client: OpenAI::Client) -> void

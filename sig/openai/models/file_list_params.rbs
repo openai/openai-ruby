@@ -33,11 +33,11 @@ module OpenAI
 
       def initialize:
         (
-          after: String,
-          limit: Integer,
-          order: OpenAI::Models::FileListParams::order,
-          purpose: String,
-          request_options: OpenAI::request_opts
+          ?after: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::FileListParams::order,
+          ?purpose: String,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (?OpenAI::Models::file_list_params | OpenAI::BaseModel data) -> void
 

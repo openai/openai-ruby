@@ -16,7 +16,7 @@ module OpenAI
             (
               id: String,
               deleted: bool,
-              object: :"thread.message.deleted"
+              ?object: :"thread.message.deleted"
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::message_deleted

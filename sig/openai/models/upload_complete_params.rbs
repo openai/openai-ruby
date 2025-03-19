@@ -16,8 +16,8 @@ module OpenAI
       def initialize:
         (
           part_ids: ::Array[String],
-          md5: String,
-          request_options: OpenAI::request_opts
+          ?md5: String,
+          ?request_options: OpenAI::request_opts
         ) -> void
         | (
           ?OpenAI::Models::upload_complete_params | OpenAI::BaseModel data

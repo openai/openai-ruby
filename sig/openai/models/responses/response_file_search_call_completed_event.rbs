@@ -19,7 +19,7 @@ module OpenAI
           (
             item_id: String,
             output_index: Integer,
-            type: :"response.file_search_call.completed"
+            ?type: :"response.file_search_call.completed"
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_file_search_call_completed_event

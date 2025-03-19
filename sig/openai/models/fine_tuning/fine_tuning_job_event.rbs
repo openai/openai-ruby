@@ -42,9 +42,9 @@ module OpenAI
             created_at: Integer,
             level: OpenAI::Models::FineTuning::FineTuningJobEvent::level,
             message: String,
-            data: top,
-            type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_,
-            object: :"fine_tuning.job.event"
+            ?data: top,
+            ?type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_,
+            ?object: :"fine_tuning.job.event"
           ) -> void
           | (
             ?OpenAI::Models::FineTuning::fine_tuning_job_event

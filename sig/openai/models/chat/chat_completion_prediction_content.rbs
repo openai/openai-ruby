@@ -18,7 +18,7 @@ module OpenAI
         def initialize:
           (
             content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
-            type: :content
+            ?type: :content
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_prediction_content

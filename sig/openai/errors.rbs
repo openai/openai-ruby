@@ -21,33 +21,33 @@ module OpenAI
 
     def initialize: (
       url: URI::Generic,
-      status: Integer?,
-      body: Object?,
-      request: nil,
-      response: nil,
-      message: String?
+      ?status: Integer?,
+      ?body: Object?,
+      ?request: nil,
+      ?response: nil,
+      ?message: String?
     ) -> void
   end
 
   class APIConnectionError < OpenAI::APIError
     def initialize: (
       url: URI::Generic,
-      status: nil,
-      body: nil,
-      request: nil,
-      response: nil,
-      message: String?
+      ?status: nil,
+      ?body: nil,
+      ?request: nil,
+      ?response: nil,
+      ?message: String?
     ) -> void
   end
 
   class APITimeoutError < OpenAI::APIConnectionError
     def initialize: (
       url: URI::Generic,
-      status: nil,
-      body: nil,
-      request: nil,
-      response: nil,
-      message: String?
+      ?status: nil,
+      ?body: nil,
+      ?request: nil,
+      ?response: nil,
+      ?message: String?
     ) -> void
   end
 
@@ -58,7 +58,7 @@ module OpenAI
       body: Object?,
       request: nil,
       response: nil,
-      message: String?
+      ?message: String?
     ) -> instance
 
     def initialize: (
@@ -67,7 +67,7 @@ module OpenAI
       body: Object?,
       request: nil,
       response: nil,
-      message: String?
+      ?message: String?
     ) -> void
   end
 

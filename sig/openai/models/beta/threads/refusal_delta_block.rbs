@@ -15,7 +15,7 @@ module OpenAI
           def refusal=: (String) -> String
 
           def initialize:
-            (index: Integer, refusal: String, type: :refusal) -> void
+            (index: Integer, ?refusal: String, ?type: :refusal) -> void
             | (
               ?OpenAI::Models::Beta::Threads::refusal_delta_block
               | OpenAI::BaseModel data

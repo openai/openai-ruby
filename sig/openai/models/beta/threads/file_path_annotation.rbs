@@ -28,7 +28,7 @@ module OpenAI
               file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath,
               start_index: Integer,
               text: String,
-              type: :file_path
+              ?type: :file_path
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::file_path_annotation

@@ -17,8 +17,8 @@ module OpenAI
           def initialize:
             (
               thread_id: String,
-              metadata: OpenAI::Models::metadata?,
-              request_options: OpenAI::request_opts
+              ?metadata: OpenAI::Models::metadata?,
+              ?request_options: OpenAI::request_opts
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::message_update_params

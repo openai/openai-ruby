@@ -12,7 +12,7 @@ module OpenAI
         attr_accessor type: :output_audio
 
         def initialize:
-          (data: String, transcript: String, type: :output_audio) -> void
+          (data: String, transcript: String, ?type: :output_audio) -> void
           | (
             ?OpenAI::Models::Responses::response_output_audio
             | OpenAI::BaseModel data

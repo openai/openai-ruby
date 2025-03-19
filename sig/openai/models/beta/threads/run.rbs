@@ -114,9 +114,9 @@ module OpenAI
               tools: ::Array[OpenAI::Models::Beta::assistant_tool],
               truncation_strategy: OpenAI::Models::Beta::Threads::Run::TruncationStrategy?,
               usage: OpenAI::Models::Beta::Threads::Run::Usage?,
-              temperature: Float?,
-              top_p: Float?,
-              object: :"thread.run"
+              ?temperature: Float?,
+              ?top_p: Float?,
+              ?object: :"thread.run"
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::run | OpenAI::BaseModel data
@@ -138,7 +138,7 @@ module OpenAI
 
             def initialize:
               (
-                reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
+                ?reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Run::incomplete_details
@@ -205,7 +205,7 @@ module OpenAI
             def initialize:
               (
                 submit_tool_outputs: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
-                type: :submit_tool_outputs
+                ?type: :submit_tool_outputs
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Run::required_action
@@ -249,7 +249,7 @@ module OpenAI
             def initialize:
               (
                 type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_,
-                last_messages: Integer?
+                ?last_messages: Integer?
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Run::truncation_strategy

@@ -38,13 +38,13 @@ module OpenAI
 
         def initialize:
           (
-            audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?,
-            content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
-            function_call: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
-            name: String,
-            refusal: String?,
-            tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
-            role: :assistant
+            ?audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?,
+            ?content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
+            ?function_call: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
+            ?name: String,
+            ?refusal: String?,
+            ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
+            ?role: :assistant
           ) -> void
           | (
             ?OpenAI::Models::Chat::chat_completion_assistant_message_param

@@ -34,8 +34,8 @@ module OpenAI
             duration: Float,
             language: String,
             text: String,
-            segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment],
-            words: ::Array[OpenAI::Models::Audio::TranscriptionWord]
+            ?segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment],
+            ?words: ::Array[OpenAI::Models::Audio::TranscriptionWord]
           ) -> void
           | (
             ?OpenAI::Models::Audio::transcription_verbose

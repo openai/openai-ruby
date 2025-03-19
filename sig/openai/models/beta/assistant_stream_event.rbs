@@ -47,8 +47,8 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Thread,
-              enabled: bool,
-              event: :"thread.created"
+              ?enabled: bool,
+              ?event: :"thread.created"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_created
@@ -72,7 +72,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.created"
+              ?event: :"thread.run.created"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_created
@@ -96,7 +96,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.queued"
+              ?event: :"thread.run.queued"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_queued
@@ -120,7 +120,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.in_progress"
+              ?event: :"thread.run.in_progress"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_in_progress
@@ -144,7 +144,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.requires_action"
+              ?event: :"thread.run.requires_action"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_requires_action
@@ -168,7 +168,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.completed"
+              ?event: :"thread.run.completed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_completed
@@ -192,7 +192,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.incomplete"
+              ?event: :"thread.run.incomplete"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_incomplete
@@ -216,7 +216,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.failed"
+              ?event: :"thread.run.failed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_failed
@@ -240,7 +240,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.cancelling"
+              ?event: :"thread.run.cancelling"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_cancelling
@@ -264,7 +264,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.cancelled"
+              ?event: :"thread.run.cancelled"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_cancelled
@@ -288,7 +288,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Run,
-              event: :"thread.run.expired"
+              ?event: :"thread.run.expired"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_expired
@@ -312,7 +312,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.created"
+              ?event: :"thread.run.step.created"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_created
@@ -336,7 +336,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.in_progress"
+              ?event: :"thread.run.step.in_progress"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_in_progress
@@ -360,7 +360,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent,
-              event: :"thread.run.step.delta"
+              ?event: :"thread.run.step.delta"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_delta
@@ -384,7 +384,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.completed"
+              ?event: :"thread.run.step.completed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_completed
@@ -408,7 +408,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.failed"
+              ?event: :"thread.run.step.failed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_failed
@@ -432,7 +432,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.cancelled"
+              ?event: :"thread.run.step.cancelled"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_cancelled
@@ -456,7 +456,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.expired"
+              ?event: :"thread.run.step.expired"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_expired
@@ -480,7 +480,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.created"
+              ?event: :"thread.message.created"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_message_created
@@ -504,7 +504,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.in_progress"
+              ?event: :"thread.message.in_progress"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_message_in_progress
@@ -528,7 +528,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::MessageDeltaEvent,
-              event: :"thread.message.delta"
+              ?event: :"thread.message.delta"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_message_delta
@@ -552,7 +552,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.completed"
+              ?event: :"thread.message.completed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_message_completed
@@ -576,7 +576,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Message,
-              event: :"thread.message.incomplete"
+              ?event: :"thread.message.incomplete"
             ) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::thread_message_incomplete
@@ -594,7 +594,7 @@ module OpenAI
           attr_accessor event: :error
 
           def initialize:
-            (data: OpenAI::Models::ErrorObject, event: :error) -> void
+            (data: OpenAI::Models::ErrorObject, ?event: :error) -> void
             | (
               ?OpenAI::Models::Beta::AssistantStreamEvent::error_event
               | OpenAI::BaseModel data

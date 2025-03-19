@@ -36,9 +36,9 @@ module OpenAI
             input: String,
             model: OpenAI::Models::Audio::SpeechCreateParams::model,
             voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
-            response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
-            speed: Float,
-            request_options: OpenAI::request_opts
+            ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
+            ?speed: Float,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Audio::speech_create_params

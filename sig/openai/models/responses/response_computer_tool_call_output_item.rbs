@@ -37,9 +37,9 @@ module OpenAI
             id: String,
             call_id: String,
             output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-            acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-            status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
-            type: :computer_call_output
+            ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+            ?status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
+            ?type: :computer_call_output
           ) -> void
           | (
             ?OpenAI::Models::Responses::response_computer_tool_call_output_item

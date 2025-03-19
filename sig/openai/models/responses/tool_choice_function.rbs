@@ -9,7 +9,7 @@ module OpenAI
         attr_accessor type: :function
 
         def initialize:
-          (name: String, type: :function) -> void
+          (name: String, ?type: :function) -> void
           | (
             ?OpenAI::Models::Responses::tool_choice_function
             | OpenAI::BaseModel data

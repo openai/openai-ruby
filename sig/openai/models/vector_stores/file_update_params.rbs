@@ -20,7 +20,7 @@ module OpenAI
           (
             vector_store_id: String,
             attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::VectorStores::file_update_params

@@ -21,8 +21,8 @@ module OpenAI
 
           def initialize:
             (
-              detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
-              file_id: String
+              ?detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
+              ?file_id: String
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::image_file_delta

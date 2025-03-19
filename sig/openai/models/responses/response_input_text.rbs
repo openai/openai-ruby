@@ -9,7 +9,7 @@ module OpenAI
         attr_accessor type: :input_text
 
         def initialize:
-          (text: String, type: :input_text) -> void
+          (text: String, ?type: :input_text) -> void
           | (
             ?OpenAI::Models::Responses::response_input_text
             | OpenAI::BaseModel data

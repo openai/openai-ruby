@@ -25,7 +25,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.created"
+              ?event: :"thread.run.step.created"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_created
@@ -49,7 +49,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.in_progress"
+              ?event: :"thread.run.step.in_progress"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_in_progress
@@ -73,7 +73,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent,
-              event: :"thread.run.step.delta"
+              ?event: :"thread.run.step.delta"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_delta
@@ -97,7 +97,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.completed"
+              ?event: :"thread.run.step.completed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_completed
@@ -121,7 +121,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.failed"
+              ?event: :"thread.run.step.failed"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_failed
@@ -145,7 +145,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.cancelled"
+              ?event: :"thread.run.step.cancelled"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_cancelled
@@ -169,7 +169,7 @@ module OpenAI
           def initialize:
             (
               data: OpenAI::Models::Beta::Threads::Runs::RunStep,
-              event: :"thread.run.step.expired"
+              ?event: :"thread.run.step.expired"
             ) -> void
             | (
               ?OpenAI::Models::Beta::RunStepStreamEvent::thread_run_step_expired

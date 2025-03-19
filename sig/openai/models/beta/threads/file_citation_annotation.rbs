@@ -28,7 +28,7 @@ module OpenAI
               file_citation: OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
               start_index: Integer,
               text: String,
-              type: :file_citation
+              ?type: :file_citation
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::file_citation_annotation

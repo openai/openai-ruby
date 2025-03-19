@@ -12,10 +12,10 @@ module OpenAI
             | ::Hash[Symbol, top] params
           ) -> OpenAI::Models::Beta::Thread
           | (
-            messages: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
-            metadata: OpenAI::Models::metadata?,
-            tool_resources: OpenAI::Models::Beta::ThreadCreateParams::ToolResources?,
-            request_options: OpenAI::request_opts
+            ?messages: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
+            ?metadata: OpenAI::Models::metadata?,
+            ?tool_resources: OpenAI::Models::Beta::ThreadCreateParams::ToolResources?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Thread
 
         def retrieve:
@@ -26,7 +26,7 @@ module OpenAI
           ) -> OpenAI::Models::Beta::Thread
           | (
             String thread_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Thread
 
         def update:
@@ -37,9 +37,9 @@ module OpenAI
           ) -> OpenAI::Models::Beta::Thread
           | (
             String thread_id,
-            metadata: OpenAI::Models::metadata?,
-            tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?,
-            request_options: OpenAI::request_opts
+            ?metadata: OpenAI::Models::metadata?,
+            ?tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Thread
 
         def delete:
@@ -50,7 +50,7 @@ module OpenAI
           ) -> OpenAI::Models::Beta::ThreadDeleted
           | (
             String thread_id,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::ThreadDeleted
 
         def create_and_run:
@@ -60,21 +60,21 @@ module OpenAI
           ) -> OpenAI::Models::Beta::Threads::Run
           | (
             assistant_id: String,
-            instructions: String?,
-            max_completion_tokens: Integer?,
-            max_prompt_tokens: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            model: OpenAI::Models::Beta::ThreadCreateAndRunParams::model?,
-            parallel_tool_calls: bool,
-            response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-            temperature: Float?,
-            thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
-            tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
-            tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
-            tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
-            top_p: Float?,
-            truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
-            request_options: OpenAI::request_opts
+            ?instructions: String?,
+            ?max_completion_tokens: Integer?,
+            ?max_prompt_tokens: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: OpenAI::Models::Beta::ThreadCreateAndRunParams::model?,
+            ?parallel_tool_calls: bool,
+            ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+            ?temperature: Float?,
+            ?thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
+            ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
+            ?tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
+            ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
+            ?top_p: Float?,
+            ?truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Threads::Run
 
         def create_and_run_streaming:
@@ -84,21 +84,21 @@ module OpenAI
           ) -> OpenAI::Stream[OpenAI::Models::Beta::assistant_stream_event]
           | (
             assistant_id: String,
-            instructions: String?,
-            max_completion_tokens: Integer?,
-            max_prompt_tokens: Integer?,
-            metadata: OpenAI::Models::metadata?,
-            model: OpenAI::Models::Beta::ThreadCreateAndRunParams::model?,
-            parallel_tool_calls: bool,
-            response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-            temperature: Float?,
-            thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
-            tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
-            tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
-            tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
-            top_p: Float?,
-            truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
-            request_options: OpenAI::request_opts
+            ?instructions: String?,
+            ?max_completion_tokens: Integer?,
+            ?max_prompt_tokens: Integer?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?model: OpenAI::Models::Beta::ThreadCreateAndRunParams::model?,
+            ?parallel_tool_calls: bool,
+            ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+            ?temperature: Float?,
+            ?thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
+            ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
+            ?tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
+            ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
+            ?top_p: Float?,
+            ?truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::Stream[OpenAI::Models::Beta::assistant_stream_event]
 
         def initialize: (client: OpenAI::Client) -> void

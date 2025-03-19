@@ -34,11 +34,11 @@ module OpenAI
 
         def initialize:
           (
-            after: String,
-            before: String,
-            limit: Integer,
-            order: OpenAI::Models::Responses::InputItemListParams::order,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Responses::InputItemListParams::order,
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Responses::input_item_list_params

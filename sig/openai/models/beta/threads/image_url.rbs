@@ -20,7 +20,7 @@ module OpenAI
           def initialize:
             (
               url: String,
-              detail: OpenAI::Models::Beta::Threads::ImageURL::detail
+              ?detail: OpenAI::Models::Beta::Threads::ImageURL::detail
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::image_url | OpenAI::BaseModel data

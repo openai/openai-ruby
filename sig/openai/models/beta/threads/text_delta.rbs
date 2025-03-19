@@ -21,8 +21,8 @@ module OpenAI
 
           def initialize:
             (
-              annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
-              value: String
+              ?annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
+              ?value: String
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::text_delta

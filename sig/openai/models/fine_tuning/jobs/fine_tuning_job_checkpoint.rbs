@@ -36,7 +36,7 @@ module OpenAI
               fine_tuning_job_id: String,
               metrics: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
               step_number: Integer,
-              object: :"fine_tuning.job.checkpoint"
+              ?object: :"fine_tuning.job.checkpoint"
             ) -> void
             | (
               ?OpenAI::Models::FineTuning::Jobs::fine_tuning_job_checkpoint
@@ -87,13 +87,13 @@ module OpenAI
 
             def initialize:
               (
-                full_valid_loss: Float,
-                full_valid_mean_token_accuracy: Float,
-                step: Float,
-                train_loss: Float,
-                train_mean_token_accuracy: Float,
-                valid_loss: Float,
-                valid_mean_token_accuracy: Float
+                ?full_valid_loss: Float,
+                ?full_valid_mean_token_accuracy: Float,
+                ?step: Float,
+                ?train_loss: Float,
+                ?train_mean_token_accuracy: Float,
+                ?valid_loss: Float,
+                ?valid_mean_token_accuracy: Float
               ) -> void
               | (
                 ?OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::metrics

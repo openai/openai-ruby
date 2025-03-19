@@ -21,7 +21,7 @@ module OpenAI
               (
                 id: String,
                 file_search: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
-                type: :file_search
+                ?type: :file_search
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::file_search_tool_call
@@ -51,8 +51,8 @@ module OpenAI
 
               def initialize:
                 (
-                  ranking_options: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                  results: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                  ?ranking_options: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                  ?results: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
                 ) -> void
                 | (
                   ?OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::file_search
@@ -120,7 +120,7 @@ module OpenAI
                     file_id: String,
                     file_name: String,
                     score: Float,
-                    content: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                    ?content: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
                   ) -> void
                   | (
                     ?OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::result
@@ -148,8 +148,8 @@ module OpenAI
 
                   def initialize:
                     (
-                      text: String,
-                      type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
+                      ?text: String,
+                      ?type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
                     ) -> void
                     | (
                       ?OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::content

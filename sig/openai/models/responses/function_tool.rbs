@@ -26,8 +26,8 @@ module OpenAI
             name: String,
             parameters: ::Hash[Symbol, top],
             strict: bool,
-            description: String?,
-            type: :function
+            ?description: String?,
+            ?type: :function
           ) -> void
           | (
             ?OpenAI::Models::Responses::function_tool | OpenAI::BaseModel data

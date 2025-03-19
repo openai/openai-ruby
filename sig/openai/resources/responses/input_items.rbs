@@ -10,11 +10,11 @@ module OpenAI
           ) -> OpenAI::CursorPage[OpenAI::Models::Responses::response_item]
           | (
             String response_id,
-            after: String,
-            before: String,
-            limit: Integer,
-            order: OpenAI::Models::Responses::InputItemListParams::order,
-            request_options: OpenAI::request_opts
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Responses::InputItemListParams::order,
+            ?request_options: OpenAI::request_opts
           ) -> OpenAI::CursorPage[OpenAI::Models::Responses::response_item]
 
         def initialize: (client: OpenAI::Client) -> void

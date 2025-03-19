@@ -7,7 +7,7 @@ module OpenAI
         attr_accessor type: :code_interpreter
 
         def initialize:
-          (type: :code_interpreter) -> void
+          (?type: :code_interpreter) -> void
           | (
             ?OpenAI::Models::Beta::code_interpreter_tool
             | OpenAI::BaseModel data

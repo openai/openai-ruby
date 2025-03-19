@@ -19,9 +19,9 @@ module OpenAI
 
           def initialize:
             (
-              after: String,
-              limit: Integer,
-              request_options: OpenAI::request_opts
+              ?after: String,
+              ?limit: Integer,
+              ?request_options: OpenAI::request_opts
             ) -> void
             | (
               ?OpenAI::Models::FineTuning::Jobs::checkpoint_list_params

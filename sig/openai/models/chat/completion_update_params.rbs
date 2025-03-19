@@ -13,7 +13,7 @@ module OpenAI
         def initialize:
           (
             metadata: OpenAI::Models::metadata?,
-            request_options: OpenAI::request_opts
+            ?request_options: OpenAI::request_opts
           ) -> void
           | (
             ?OpenAI::Models::Chat::completion_update_params

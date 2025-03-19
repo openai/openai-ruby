@@ -22,8 +22,8 @@ module OpenAI
         def initialize:
           (
             type: OpenAI::Models::Responses::WebSearchTool::type_,
-            search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
-            user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
+            ?search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
+            ?user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
           ) -> void
           | (
             ?OpenAI::Models::Responses::web_search_tool | OpenAI::BaseModel data
@@ -80,11 +80,11 @@ module OpenAI
 
           def initialize:
             (
-              city: String,
-              country: String,
-              region: String,
-              timezone: String,
-              type: :approximate
+              ?city: String,
+              ?country: String,
+              ?region: String,
+              ?timezone: String,
+              ?type: :approximate
             ) -> void
             | (
               ?OpenAI::Models::Responses::WebSearchTool::user_location

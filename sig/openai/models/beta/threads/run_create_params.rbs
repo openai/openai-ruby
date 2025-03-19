@@ -71,23 +71,23 @@ module OpenAI
           def initialize:
             (
               assistant_id: String,
-              include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
-              additional_instructions: String?,
-              additional_messages: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]?,
-              instructions: String?,
-              max_completion_tokens: Integer?,
-              max_prompt_tokens: Integer?,
-              metadata: OpenAI::Models::metadata?,
-              model: OpenAI::Models::Beta::Threads::RunCreateParams::model?,
-              parallel_tool_calls: bool,
-              reasoning_effort: OpenAI::Models::reasoning_effort?,
-              response_format: OpenAI::Models::Beta::assistant_response_format_option?,
-              temperature: Float?,
-              tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
-              tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
-              top_p: Float?,
-              truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?,
-              request_options: OpenAI::request_opts
+              ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+              ?additional_instructions: String?,
+              ?additional_messages: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]?,
+              ?instructions: String?,
+              ?max_completion_tokens: Integer?,
+              ?max_prompt_tokens: Integer?,
+              ?metadata: OpenAI::Models::metadata?,
+              ?model: OpenAI::Models::Beta::Threads::RunCreateParams::model?,
+              ?parallel_tool_calls: bool,
+              ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+              ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
+              ?temperature: Float?,
+              ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
+              ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
+              ?top_p: Float?,
+              ?truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?,
+              ?request_options: OpenAI::request_opts
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::run_create_params
@@ -117,8 +117,8 @@ module OpenAI
               (
                 content: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::content,
                 role: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role,
-                attachments: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?,
-                metadata: OpenAI::Models::metadata?
+                ?attachments: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?,
+                ?metadata: OpenAI::Models::metadata?
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::RunCreateParams::additional_message
@@ -168,8 +168,8 @@ module OpenAI
 
               def initialize:
                 (
-                  file_id: String,
-                  tools: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
+                  ?file_id: String,
+                  ?tools: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
                 ) -> void
                 | (
                   ?OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::attachment
@@ -189,7 +189,7 @@ module OpenAI
                   attr_accessor type: :file_search
 
                   def initialize:
-                    (type: :file_search) -> void
+                    (?type: :file_search) -> void
                     | (
                       ?OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::file_search
                       | OpenAI::BaseModel data
@@ -223,7 +223,7 @@ module OpenAI
             def initialize:
               (
                 type: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_,
-                last_messages: Integer?
+                ?last_messages: Integer?
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::RunCreateParams::truncation_strategy

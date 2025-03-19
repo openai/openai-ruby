@@ -23,8 +23,8 @@ module OpenAI
           def initialize:
             (
               index: Integer,
-              text: OpenAI::Models::Beta::Threads::TextDelta,
-              type: :text
+              ?text: OpenAI::Models::Beta::Threads::TextDelta,
+              ?type: :text
             ) -> void
             | (
               ?OpenAI::Models::Beta::Threads::text_delta_block

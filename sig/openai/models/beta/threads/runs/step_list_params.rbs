@@ -47,12 +47,12 @@ module OpenAI
             def initialize:
               (
                 thread_id: String,
-                after: String,
-                before: String,
-                include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
-                limit: Integer,
-                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
-                request_options: OpenAI::request_opts
+                ?after: String,
+                ?before: String,
+                ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+                ?limit: Integer,
+                ?order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
+                ?request_options: OpenAI::request_opts
               ) -> void
               | (
                 ?OpenAI::Models::Beta::Threads::Runs::step_list_params

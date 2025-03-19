@@ -9,7 +9,7 @@ module OpenAI
         attr_accessor type: :refusal
 
         def initialize:
-          (refusal: String, type: :refusal) -> void
+          (refusal: String, ?type: :refusal) -> void
           | (
             ?OpenAI::Models::Responses::response_output_refusal
             | OpenAI::BaseModel data

@@ -30,10 +30,10 @@ module OpenAI
 
           def initialize:
             (
-              after: String,
-              limit: Integer,
-              order: OpenAI::Models::Chat::Completions::MessageListParams::order,
-              request_options: OpenAI::request_opts
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Chat::Completions::MessageListParams::order,
+              ?request_options: OpenAI::request_opts
             ) -> void
             | (
               ?OpenAI::Models::Chat::Completions::message_list_params
