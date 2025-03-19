@@ -70,7 +70,7 @@ multitask(:steep) do
 end
 
 multitask(:sorbet) do
-  sh(*%w[srb typecheck -- .], chdir: "./rbi")
+  sh(*%w[srb typecheck])
 end
 
 file("sorbet/tapioca") do
