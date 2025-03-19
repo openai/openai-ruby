@@ -2,8 +2,9 @@
 max_files: 0
 include:
   - '*.gemspec'
-  - '/test/openai/test_helper.rb'
   - 'Rakefile'
+  - 'examples/**/*.rb'
   - 'lib/**/*.rb'
+  - 'test/openai/test_helper.rb'
 exclude:
   - 'rbi/**/*'
