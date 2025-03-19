@@ -29,8 +29,8 @@ module OpenAI
         #     [model guide](https://platform.openai.com/docs/models) to browse and compare
         #     available models.
         #
-        #   @return [String, Symbol, OpenAI::Models::ChatModel]
-        required :model, union: -> { OpenAI::Models::Responses::ResponseCreateParams::Model }
+        #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::UnionMember2]
+        required :model, union: -> { OpenAI::Models::ResponsesModel }
 
         # @!attribute include
         #   Specify additional output data to include in the model response. Currently
@@ -198,7 +198,7 @@ module OpenAI
 
         # @!parse
         #   # @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>]
-        #   # @param model [String, Symbol, OpenAI::Models::ChatModel]
+        #   # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::UnionMember2]
         #   # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         #   # @param instructions [String, nil]
         #   # @param max_output_tokens [Integer, nil]
@@ -265,29 +265,6 @@ module OpenAI
           # @!parse
           #   class << self
           #     # @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
-          #     def variants; end
-          #   end
-        end
-
-        # @abstract
-        #
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
-        class Model < OpenAI::Union
-          variant String
-
-          # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI
-          # offers a wide range of models with different capabilities, performance
-          # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
-          # to browse and compare available models.
-          variant enum: -> { OpenAI::Models::ChatModel }
-
-          # @!parse
-          #   class << self
-          #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
           #     def variants; end
           #   end
         end

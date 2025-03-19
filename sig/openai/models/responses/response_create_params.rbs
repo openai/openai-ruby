@@ -4,7 +4,7 @@ module OpenAI
       type response_create_params =
         {
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
-          model: OpenAI::Models::Responses::ResponseCreateParams::model,
+          model: OpenAI::Models::responses_model,
           include: ::Array[OpenAI::Models::Responses::response_includable]?,
           instructions: String?,
           max_output_tokens: Integer?,
@@ -29,7 +29,7 @@ module OpenAI
 
         attr_accessor input: OpenAI::Models::Responses::ResponseCreateParams::input
 
-        attr_accessor model: OpenAI::Models::Responses::ResponseCreateParams::model
+        attr_accessor model: OpenAI::Models::responses_model
 
         attr_accessor include: ::Array[OpenAI::Models::Responses::response_includable]?
 
@@ -77,7 +77,7 @@ module OpenAI
 
         def initialize: (
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
-          model: OpenAI::Models::Responses::ResponseCreateParams::model,
+          model: OpenAI::Models::responses_model,
           ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
           ?instructions: String?,
           ?max_output_tokens: Integer?,
@@ -102,12 +102,6 @@ module OpenAI
 
         class Input < OpenAI::Union
           def self.variants: -> [String, OpenAI::Models::Responses::response_input]
-        end
-
-        type model = String | OpenAI::Models::chat_model
-
-        class Model < OpenAI::Union
-          def self.variants: -> [String, OpenAI::Models::chat_model]
         end
 
         type tool_choice =
