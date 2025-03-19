@@ -57,8 +57,8 @@ module OpenAI
         #     [model guide](https://platform.openai.com/docs/models) to browse and compare
         #     available models.
         #
-        #   @return [String, Symbol, OpenAI::Models::ChatModel]
-        required :model, union: -> { OpenAI::Models::Responses::Response::Model }
+        #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::UnionMember2]
+        required :model, union: -> { OpenAI::Models::ResponsesModel }
 
         # @!attribute object
         #   The object type of this resource - always set to `response`.
@@ -222,7 +222,7 @@ module OpenAI
         #   # @param incomplete_details [OpenAI::Models::Responses::Response::IncompleteDetails, nil]
         #   # @param instructions [String, nil]
         #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String, Symbol, OpenAI::Models::ChatModel]
+        #   # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::UnionMember2]
         #   # @param output [Array<OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem>]
         #   # @param parallel_tool_calls [Boolean]
         #   # @param temperature [Float, nil]
@@ -298,29 +298,6 @@ module OpenAI
 
             finalize!
           end
-        end
-
-        # @abstract
-        #
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
-        class Model < OpenAI::Union
-          variant String
-
-          # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI
-          # offers a wide range of models with different capabilities, performance
-          # characteristics, and price points. Refer to the [model guide](https://platform.openai.com/docs/models)
-          # to browse and compare available models.
-          variant enum: -> { OpenAI::Models::ChatModel }
-
-          # @!parse
-          #   class << self
-          #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
-          #     def variants; end
-          #   end
         end
 
         # @abstract

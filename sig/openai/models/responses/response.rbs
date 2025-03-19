@@ -9,7 +9,7 @@ module OpenAI
           incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails?,
           instructions: String?,
           metadata: OpenAI::Models::metadata?,
-          model: OpenAI::Models::Responses::Response::model,
+          model: OpenAI::Models::responses_model,
           object: :response,
           output: ::Array[OpenAI::Models::Responses::response_output_item],
           parallel_tool_calls: bool,
@@ -40,7 +40,7 @@ module OpenAI
 
         attr_accessor metadata: OpenAI::Models::metadata?
 
-        attr_accessor model: OpenAI::Models::Responses::Response::model
+        attr_accessor model: OpenAI::Models::responses_model
 
         attr_accessor object: :response
 
@@ -93,7 +93,7 @@ module OpenAI
           incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails?,
           instructions: String?,
           metadata: OpenAI::Models::metadata?,
-          model: OpenAI::Models::Responses::Response::model,
+          model: OpenAI::Models::responses_model,
           output: ::Array[OpenAI::Models::Responses::response_output_item],
           parallel_tool_calls: bool,
           temperature: Float?,
@@ -139,12 +139,6 @@ module OpenAI
 
             def self.values: -> ::Array[OpenAI::Models::Responses::Response::IncompleteDetails::reason]
           end
-        end
-
-        type model = String | OpenAI::Models::chat_model
-
-        class Model < OpenAI::Union
-          def self.variants: -> [String, OpenAI::Models::chat_model]
         end
 
         type tool_choice =
