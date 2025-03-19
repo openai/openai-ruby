@@ -115,7 +115,10 @@ module OpenAI
       # @return [OpenAI::Models::Completion]
       def create(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
-        parsed.delete(:stream)
+        if parsed[:stream]
+          message = "Please use `#create_streaming` for the streaming use case."
+          raise ArgumentError.new(message)
+        end
         @client.request(
           method: :post,
           path: "completions",
@@ -237,6 +240,10 @@ module OpenAI
       # @return [OpenAI::Stream<OpenAI::Models::Completion>]
       def create_streaming(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
+        unless parsed.fetch(:stream, true)
+          message = "Please use `#create` for the non-streaming use case."
+          raise ArgumentError.new(message)
+        end
         parsed.store(:stream, true)
         @client.request(
           method: :post,

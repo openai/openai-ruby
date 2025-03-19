@@ -30,6 +30,7 @@ module OpenAI
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
+          stream: T.noreturn,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::Models::Completion)
@@ -138,6 +139,9 @@ module OpenAI
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
+        # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+        #   `#create` for streaming and non-streaming use cases, respectively.
+        stream: false,
         request_options: {}
       )
       end
@@ -169,6 +173,7 @@ module OpenAI
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
+          stream: T.noreturn,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::Stream[OpenAI::Models::Completion])
@@ -277,6 +282,9 @@ module OpenAI
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
+        # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+        #   `#create` for streaming and non-streaming use cases, respectively.
+        stream: true,
         request_options: {}
       )
       end

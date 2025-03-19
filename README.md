@@ -81,7 +81,7 @@ stream = openai.chat.completions.create_streaming(
   model: "gpt-4o"
 )
 
-stream.for_each do |completion|
+stream.each do |completion|
   puts(completion)
 end
 ```

@@ -3,7 +3,7 @@
 module OpenAI
   # @example
   # ```ruby
-  # stream.for_each do |event|
+  # stream.each do |event|
   #   puts(event)
   # end
   # ```
@@ -12,7 +12,6 @@ module OpenAI
   # ```ruby
   # events =
   #   stream
-  #   .to_enum
   #   .lazy
   #   .select { _1.object_id.even? }
   #   .map(&:itself)
@@ -29,10 +28,10 @@ module OpenAI
     # @return [Enumerable]
     private def iterator
       # rubocop:disable Metrics/BlockLength
-      @iterator ||= OpenAI::Util.chain_fused(@messages) do |y|
+      @iterator ||= OpenAI::Util.chain_fused(@stream) do |y|
         consume = false
 
-        @messages.each do |msg|
+        @stream.each do |msg|
           next if consume
 
           case msg

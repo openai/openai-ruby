@@ -45,6 +45,7 @@ module OpenAI
               ),
               top_p: T.nilable(Float),
               truncation_strategy: T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy),
+              stream: T.noreturn,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
@@ -158,6 +159,9 @@ module OpenAI
             # Body param: Controls for how a thread will be truncated prior to the run. Use
             #   this to control the intial context window of the run.
             truncation_strategy: nil,
+            # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+            #   `#create` for streaming and non-streaming use cases, respectively.
+            stream: false,
             request_options: {}
           )
           end
@@ -198,6 +202,7 @@ module OpenAI
               ),
               top_p: T.nilable(Float),
               truncation_strategy: T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy),
+              stream: T.noreturn,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(
@@ -340,6 +345,9 @@ module OpenAI
             # Body param: Controls for how a thread will be truncated prior to the run. Use
             #   this to control the intial context window of the run.
             truncation_strategy: nil,
+            # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+            #   `#create` for streaming and non-streaming use cases, respectively.
+            stream: true,
             request_options: {}
           )
           end
@@ -452,6 +460,7 @@ module OpenAI
               run_id: String,
               thread_id: String,
               tool_outputs: T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+              stream: T.noreturn,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
@@ -465,6 +474,10 @@ module OpenAI
             thread_id:,
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
+            # There is no need to provide `stream:`. Instead, use
+            #   `#submit_tool_outputs_streaming` or `#submit_tool_outputs` for streaming and
+            #   non-streaming use cases, respectively.
+            stream: false,
             request_options: {}
           )
           end
@@ -478,6 +491,7 @@ module OpenAI
               run_id: String,
               thread_id: String,
               tool_outputs: T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+              stream: T.noreturn,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(
@@ -520,6 +534,10 @@ module OpenAI
             thread_id:,
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
+            # There is no need to provide `stream:`. Instead, use
+            #   `#submit_tool_outputs_streaming` or `#submit_tool_outputs` for streaming and
+            #   non-streaming use cases, respectively.
+            stream: true,
             request_options: {}
           )
           end
