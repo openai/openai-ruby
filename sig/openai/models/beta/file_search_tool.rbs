@@ -16,14 +16,10 @@ module OpenAI
           OpenAI::Models::Beta::FileSearchTool::FileSearch
         ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch
 
-        def initialize:
-          (
-            ?file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch,
-            ?type: :file_search
-          ) -> void
-          | (
-            ?OpenAI::Models::Beta::file_search_tool | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch,
+          ?type: :file_search
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Beta::file_search_tool
 
@@ -44,15 +40,10 @@ module OpenAI
             OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
           ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
 
-          def initialize:
-            (
-              ?max_num_results: Integer,
-              ?ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::FileSearchTool::file_search
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?max_num_results: Integer,
+            ?ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::FileSearchTool::file_search
 
@@ -71,15 +62,10 @@ module OpenAI
               OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
 
-            def initialize:
-              (
-                score_threshold: Float,
-                ?ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::FileSearchTool::FileSearch::ranking_options
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              score_threshold: Float,
+              ?ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::FileSearchTool::FileSearch::ranking_options
 

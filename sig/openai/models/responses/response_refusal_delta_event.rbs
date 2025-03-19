@@ -21,18 +21,13 @@ module OpenAI
 
         attr_accessor type: :"response.refusal.delta"
 
-        def initialize:
-          (
-            content_index: Integer,
-            delta: String,
-            item_id: String,
-            output_index: Integer,
-            ?type: :"response.refusal.delta"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_refusal_delta_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          content_index: Integer,
+          delta: String,
+          item_id: String,
+          output_index: Integer,
+          ?type: :"response.refusal.delta"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_refusal_delta_event
       end

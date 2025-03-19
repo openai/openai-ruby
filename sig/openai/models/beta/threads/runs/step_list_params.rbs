@@ -44,20 +44,15 @@ module OpenAI
               OpenAI::Models::Beta::Threads::Runs::StepListParams::order
             ) -> OpenAI::Models::Beta::Threads::Runs::StepListParams::order
 
-            def initialize:
-              (
-                thread_id: String,
-                ?after: String,
-                ?before: String,
-                ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
-                ?limit: Integer,
-                ?order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
-                ?request_options: OpenAI::request_opts
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::step_list_params
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              thread_id: String,
+              ?after: String,
+              ?before: String,
+              ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
+              ?limit: Integer,
+              ?order: OpenAI::Models::Beta::Threads::Runs::StepListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::step_list_params
 

@@ -20,16 +20,11 @@ module OpenAI
 
         def name=: (String) -> String
 
-        def initialize:
-          (
-            content: OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::content,
-            ?name: String,
-            ?role: :developer
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_developer_message_param
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          content: OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::content,
+          ?name: String,
+          ?role: :developer
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_developer_message_param
 

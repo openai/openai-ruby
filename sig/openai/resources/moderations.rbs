@@ -1,15 +1,11 @@
 module OpenAI
   module Resources
     class Moderations
-      def create:
-        (
-          OpenAI::Models::ModerationCreateParams | ::Hash[Symbol, top] params
-        ) -> OpenAI::Models::ModerationCreateResponse
-        | (
-          input: OpenAI::Models::ModerationCreateParams::input,
-          ?model: OpenAI::Models::ModerationCreateParams::model,
-          ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::ModerationCreateResponse
+      def create: (
+        input: OpenAI::Models::ModerationCreateParams::input,
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::ModerationCreateResponse
 
       def initialize: (client: OpenAI::Client) -> void
     end

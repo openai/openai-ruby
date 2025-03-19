@@ -36,23 +36,18 @@ module OpenAI
 
         attr_accessor tokens: ::Array[Integer]
 
-        def initialize:
-          (
-            id: Integer,
-            avg_logprob: Float,
-            compression_ratio: Float,
-            end_: Float,
-            no_speech_prob: Float,
-            seek: Integer,
-            start: Float,
-            temperature: Float,
-            text: String,
-            tokens: ::Array[Integer]
-          ) -> void
-          | (
-            ?OpenAI::Models::Audio::transcription_segment
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: Integer,
+          avg_logprob: Float,
+          compression_ratio: Float,
+          end_: Float,
+          no_speech_prob: Float,
+          seek: Integer,
+          start: Float,
+          temperature: Float,
+          text: String,
+          tokens: ::Array[Integer]
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Audio::transcription_segment
       end

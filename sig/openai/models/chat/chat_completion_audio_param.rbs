@@ -15,15 +15,10 @@ module OpenAI
 
         attr_accessor voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
 
-        def initialize:
-          (
-            format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
-            voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_audio_param
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
+          voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_audio_param
 

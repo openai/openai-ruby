@@ -42,21 +42,19 @@ module OpenAI
 
       attr_accessor expires_at: Integer?
 
-      def initialize:
-        (
-          id: String,
-          created_at: Integer,
-          file_counts: OpenAI::Models::VectorStore::FileCounts,
-          last_active_at: Integer?,
-          metadata: OpenAI::Models::metadata?,
-          name: String,
-          status: OpenAI::Models::VectorStore::status,
-          usage_bytes: Integer,
-          ?expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
-          ?expires_at: Integer?,
-          ?object: :vector_store
-        ) -> void
-        | (?OpenAI::Models::vector_store | OpenAI::BaseModel data) -> void
+      def initialize: (
+        id: String,
+        created_at: Integer,
+        file_counts: OpenAI::Models::VectorStore::FileCounts,
+        last_active_at: Integer?,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        status: OpenAI::Models::VectorStore::status,
+        usage_bytes: Integer,
+        ?expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
+        ?expires_at: Integer?,
+        ?object: :vector_store
+      ) -> void
 
       def to_hash: -> OpenAI::Models::vector_store
 
@@ -80,17 +78,13 @@ module OpenAI
 
         attr_accessor total: Integer
 
-        def initialize:
-          (
-            cancelled: Integer,
-            completed: Integer,
-            failed: Integer,
-            in_progress: Integer,
-            total: Integer
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStore::file_counts | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          cancelled: Integer,
+          completed: Integer,
+          failed: Integer,
+          in_progress: Integer,
+          total: Integer
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStore::file_counts
       end
@@ -112,11 +106,7 @@ module OpenAI
 
         attr_accessor days: Integer
 
-        def initialize:
-          (days: Integer, ?anchor: :last_active_at) -> void
-          | (
-            ?OpenAI::Models::VectorStore::expires_after | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (days: Integer, ?anchor: :last_active_at) -> void
 
         def to_hash: -> OpenAI::Models::VectorStore::expires_after
       end

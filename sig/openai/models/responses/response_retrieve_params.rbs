@@ -15,15 +15,10 @@ module OpenAI
           ::Array[OpenAI::Models::Responses::response_includable]
         ) -> ::Array[OpenAI::Models::Responses::response_includable]
 
-        def initialize:
-          (
-            ?include: ::Array[OpenAI::Models::Responses::response_includable],
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_retrieve_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_retrieve_params
       end

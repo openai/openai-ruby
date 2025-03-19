@@ -19,17 +19,12 @@ module OpenAI
 
         attr_accessor metadata: ::Hash[Symbol, String]?
 
-        def initialize:
-          (
-            ?after: String,
-            ?limit: Integer,
-            ?metadata: ::Hash[Symbol, String]?,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::FineTuning::job_list_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?after: String,
+          ?limit: Integer,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::FineTuning::job_list_params
       end

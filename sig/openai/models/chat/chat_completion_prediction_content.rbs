@@ -15,15 +15,10 @@ module OpenAI
 
         attr_accessor type: :content
 
-        def initialize:
-          (
-            content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
-            ?type: :content
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_prediction_content
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
+          ?type: :content
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_prediction_content
 

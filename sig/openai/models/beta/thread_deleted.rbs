@@ -11,11 +11,11 @@ module OpenAI
 
         attr_accessor object: :"thread.deleted"
 
-        def initialize:
-          (id: String, deleted: bool, ?object: :"thread.deleted") -> void
-          | (
-            ?OpenAI::Models::Beta::thread_deleted | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          deleted: bool,
+          ?object: :"thread.deleted"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Beta::thread_deleted
       end

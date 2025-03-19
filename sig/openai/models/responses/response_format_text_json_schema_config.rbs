@@ -25,18 +25,13 @@ module OpenAI
 
         attr_accessor strict: bool?
 
-        def initialize:
-          (
-            schema: ::Hash[Symbol, top],
-            ?description: String,
-            ?name: String,
-            ?strict: bool?,
-            ?type: :json_schema
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_format_text_json_schema_config
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          schema: ::Hash[Symbol, top],
+          ?description: String,
+          ?name: String,
+          ?strict: bool?,
+          ?type: :json_schema
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_format_text_json_schema_config
       end

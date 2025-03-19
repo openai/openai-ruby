@@ -38,19 +38,14 @@ module OpenAI
 
           def run_id=: (String) -> String
 
-          def initialize:
-            (
-              ?after: String,
-              ?before: String,
-              ?limit: Integer,
-              ?order: OpenAI::Models::Beta::Threads::MessageListParams::order,
-              ?run_id: String,
-              ?request_options: OpenAI::request_opts
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::message_list_params
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?after: String,
+            ?before: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Threads::MessageListParams::order,
+            ?run_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::message_list_params
 

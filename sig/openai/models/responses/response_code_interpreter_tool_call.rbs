@@ -21,18 +21,13 @@ module OpenAI
 
         attr_accessor type: :code_interpreter_call
 
-        def initialize:
-          (
-            id: String,
-            code: String,
-            results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
-            status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
-            ?type: :code_interpreter_call
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_code_interpreter_tool_call
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          code: String,
+          results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
+          status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
+          ?type: :code_interpreter_call
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_code_interpreter_tool_call
 
@@ -48,12 +43,7 @@ module OpenAI
 
             attr_accessor type: :logs
 
-            def initialize:
-              (logs: String, ?type: :logs) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::logs
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (logs: String, ?type: :logs) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::logs
           end
@@ -69,15 +59,10 @@ module OpenAI
 
             attr_accessor type: :files
 
-            def initialize:
-              (
-                files: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
-                ?type: :files
-              ) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::files
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              files: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
+              ?type: :files
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::files
 
@@ -88,12 +73,7 @@ module OpenAI
 
               attr_accessor mime_type: String
 
-              def initialize:
-                (file_id: String, mime_type: String) -> void
-                | (
-                  ?OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::file
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (file_id: String, mime_type: String) -> void
 
               def to_hash: -> OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::file
             end

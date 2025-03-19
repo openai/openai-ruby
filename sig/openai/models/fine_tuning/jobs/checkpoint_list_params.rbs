@@ -17,16 +17,11 @@ module OpenAI
 
           def limit=: (Integer) -> Integer
 
-          def initialize:
-            (
-              ?after: String,
-              ?limit: Integer,
-              ?request_options: OpenAI::request_opts
-            ) -> void
-            | (
-              ?OpenAI::Models::FineTuning::Jobs::checkpoint_list_params
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?after: String,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> void
 
           def to_hash: -> OpenAI::Models::FineTuning::Jobs::checkpoint_list_params
         end

@@ -16,16 +16,11 @@ module OpenAI
 
           attr_accessor object: :"thread.message.delta"
 
-          def initialize:
-            (
-              id: String,
-              delta: OpenAI::Models::Beta::Threads::MessageDelta,
-              ?object: :"thread.message.delta"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::message_delta_event
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            id: String,
+            delta: OpenAI::Models::Beta::Threads::MessageDelta,
+            ?object: :"thread.message.delta"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::message_delta_event
         end

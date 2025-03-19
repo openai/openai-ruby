@@ -11,12 +11,10 @@ module OpenAI
 
       attr_accessor generate_summary: OpenAI::Models::Reasoning::generate_summary?
 
-      def initialize:
-        (
-          ?effort: OpenAI::Models::reasoning_effort?,
-          ?generate_summary: OpenAI::Models::Reasoning::generate_summary?
-        ) -> void
-        | (?OpenAI::Models::reasoning | OpenAI::BaseModel data) -> void
+      def initialize: (
+        ?effort: OpenAI::Models::reasoning_effort?,
+        ?generate_summary: OpenAI::Models::Reasoning::generate_summary?
+      ) -> void
 
       def to_hash: -> OpenAI::Models::reasoning
 

@@ -20,16 +20,11 @@ module OpenAI
 
             attr_accessor object: :"thread.run.step.delta"
 
-            def initialize:
-              (
-                id: String,
-                delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta,
-                ?object: :"thread.run.step.delta"
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::run_step_delta_event
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              id: String,
+              delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta,
+              ?object: :"thread.run.step.delta"
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step_delta_event
           end

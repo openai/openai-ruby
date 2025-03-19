@@ -17,16 +17,12 @@ module OpenAI
 
       attr_accessor usage: OpenAI::Models::CreateEmbeddingResponse::Usage
 
-      def initialize:
-        (
-          data: ::Array[OpenAI::Models::Embedding],
-          model: String,
-          usage: OpenAI::Models::CreateEmbeddingResponse::Usage,
-          ?object: :list
-        ) -> void
-        | (
-          ?OpenAI::Models::create_embedding_response | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        data: ::Array[OpenAI::Models::Embedding],
+        model: String,
+        usage: OpenAI::Models::CreateEmbeddingResponse::Usage,
+        ?object: :list
+      ) -> void
 
       def to_hash: -> OpenAI::Models::create_embedding_response
 
@@ -37,12 +33,7 @@ module OpenAI
 
         attr_accessor total_tokens: Integer
 
-        def initialize:
-          (prompt_tokens: Integer, total_tokens: Integer) -> void
-          | (
-            ?OpenAI::Models::CreateEmbeddingResponse::usage
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (prompt_tokens: Integer, total_tokens: Integer) -> void
 
         def to_hash: -> OpenAI::Models::CreateEmbeddingResponse::usage
       end

@@ -22,17 +22,12 @@ module OpenAI
           OpenAI::Models::Responses::ResponseReasoningItem::status
         ) -> OpenAI::Models::Responses::ResponseReasoningItem::status
 
-        def initialize:
-          (
-            id: String,
-            summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
-            ?status: OpenAI::Models::Responses::ResponseReasoningItem::status,
-            ?type: :reasoning
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_reasoning_item
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
+          ?status: OpenAI::Models::Responses::ResponseReasoningItem::status,
+          ?type: :reasoning
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_reasoning_item
 
@@ -43,12 +38,7 @@ module OpenAI
 
           attr_accessor type: :summary_text
 
-          def initialize:
-            (text: String, ?type: :summary_text) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseReasoningItem::summary
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (text: String, ?type: :summary_text) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseReasoningItem::summary
         end

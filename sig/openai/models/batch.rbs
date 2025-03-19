@@ -93,30 +93,28 @@ module OpenAI
         OpenAI::Models::BatchRequestCounts
       ) -> OpenAI::Models::BatchRequestCounts
 
-      def initialize:
-        (
-          id: String,
-          completion_window: String,
-          created_at: Integer,
-          endpoint: String,
-          input_file_id: String,
-          status: OpenAI::Models::Batch::status,
-          ?cancelled_at: Integer,
-          ?cancelling_at: Integer,
-          ?completed_at: Integer,
-          ?error_file_id: String,
-          ?errors: OpenAI::Models::Batch::Errors,
-          ?expired_at: Integer,
-          ?expires_at: Integer,
-          ?failed_at: Integer,
-          ?finalizing_at: Integer,
-          ?in_progress_at: Integer,
-          ?metadata: OpenAI::Models::metadata?,
-          ?output_file_id: String,
-          ?request_counts: OpenAI::Models::BatchRequestCounts,
-          ?object: :batch
-        ) -> void
-        | (?OpenAI::Models::batch | OpenAI::BaseModel data) -> void
+      def initialize: (
+        id: String,
+        completion_window: String,
+        created_at: Integer,
+        endpoint: String,
+        input_file_id: String,
+        status: OpenAI::Models::Batch::status,
+        ?cancelled_at: Integer,
+        ?cancelling_at: Integer,
+        ?completed_at: Integer,
+        ?error_file_id: String,
+        ?errors: OpenAI::Models::Batch::Errors,
+        ?expired_at: Integer,
+        ?expires_at: Integer,
+        ?failed_at: Integer,
+        ?finalizing_at: Integer,
+        ?in_progress_at: Integer,
+        ?metadata: OpenAI::Models::metadata?,
+        ?output_file_id: String,
+        ?request_counts: OpenAI::Models::BatchRequestCounts,
+        ?object: :batch
+      ) -> void
 
       def to_hash: -> OpenAI::Models::batch
 
@@ -157,9 +155,10 @@ module OpenAI
 
         def object=: (String) -> String
 
-        def initialize:
-          (?data: ::Array[OpenAI::Models::BatchError], ?object: String) -> void
-          | (?OpenAI::Models::Batch::errors | OpenAI::BaseModel data) -> void
+        def initialize: (
+          ?data: ::Array[OpenAI::Models::BatchError],
+          ?object: String
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Batch::errors
       end

@@ -32,17 +32,15 @@ module OpenAI
         OpenAI::Models::CompletionUsage
       ) -> OpenAI::Models::CompletionUsage
 
-      def initialize:
-        (
-          id: String,
-          choices: ::Array[OpenAI::Models::CompletionChoice],
-          created: Integer,
-          model: String,
-          ?system_fingerprint: String,
-          ?usage: OpenAI::Models::CompletionUsage,
-          ?object: :text_completion
-        ) -> void
-        | (?OpenAI::Models::completion | OpenAI::BaseModel data) -> void
+      def initialize: (
+        id: String,
+        choices: ::Array[OpenAI::Models::CompletionChoice],
+        created: Integer,
+        model: String,
+        ?system_fingerprint: String,
+        ?usage: OpenAI::Models::CompletionUsage,
+        ?object: :text_completion
+      ) -> void
 
       def to_hash: -> OpenAI::Models::completion
     end

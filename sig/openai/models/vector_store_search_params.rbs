@@ -36,18 +36,14 @@ module OpenAI
 
       def rewrite_query=: (bool) -> bool
 
-      def initialize:
-        (
-          query: OpenAI::Models::VectorStoreSearchParams::query,
-          ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
-          ?max_num_results: Integer,
-          ?ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
-          ?rewrite_query: bool,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (
-          ?OpenAI::Models::vector_store_search_params | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        query: OpenAI::Models::VectorStoreSearchParams::query,
+        ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
+        ?max_num_results: Integer,
+        ?ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+        ?rewrite_query: bool,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::vector_store_search_params
 
@@ -85,15 +81,10 @@ module OpenAI
 
         def score_threshold=: (Float) -> Float
 
-        def initialize:
-          (
-            ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
-            ?score_threshold: Float
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStoreSearchParams::ranking_options
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
+          ?score_threshold: Float
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStoreSearchParams::ranking_options
 

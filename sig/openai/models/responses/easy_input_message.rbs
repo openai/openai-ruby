@@ -19,16 +19,11 @@ module OpenAI
           OpenAI::Models::Responses::EasyInputMessage::type_
         ) -> OpenAI::Models::Responses::EasyInputMessage::type_
 
-        def initialize:
-          (
-            content: OpenAI::Models::Responses::EasyInputMessage::content,
-            role: OpenAI::Models::Responses::EasyInputMessage::role,
-            ?type: OpenAI::Models::Responses::EasyInputMessage::type_
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::easy_input_message
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          content: OpenAI::Models::Responses::EasyInputMessage::content,
+          role: OpenAI::Models::Responses::EasyInputMessage::role,
+          ?type: OpenAI::Models::Responses::EasyInputMessage::type_
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::easy_input_message
 

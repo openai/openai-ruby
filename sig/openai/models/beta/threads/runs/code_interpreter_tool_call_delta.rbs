@@ -26,17 +26,12 @@ module OpenAI
               OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
             ) -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
 
-            def initialize:
-              (
-                index: Integer,
-                ?id: String,
-                ?code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                ?type: :code_interpreter
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call_delta
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              index: Integer,
+              ?id: String,
+              ?code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+              ?type: :code_interpreter
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_tool_call_delta
 
@@ -57,15 +52,10 @@ module OpenAI
                 ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
 
-              def initialize:
-                (
-                  ?input: String,
-                  ?outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
-                ) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::code_interpreter
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                ?input: String,
+                ?outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::code_interpreter
 

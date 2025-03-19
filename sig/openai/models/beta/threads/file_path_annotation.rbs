@@ -22,18 +22,13 @@ module OpenAI
 
           attr_accessor type: :file_path
 
-          def initialize:
-            (
-              end_index: Integer,
-              file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath,
-              start_index: Integer,
-              text: String,
-              ?type: :file_path
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::file_path_annotation
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            end_index: Integer,
+            file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath,
+            start_index: Integer,
+            text: String,
+            ?type: :file_path
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::file_path_annotation
 
@@ -42,12 +37,7 @@ module OpenAI
           class FilePath < OpenAI::BaseModel
             attr_accessor file_id: String
 
-            def initialize:
-              (file_id: String) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::FilePathAnnotation::file_path
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (file_id: String) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::FilePathAnnotation::file_path
           end

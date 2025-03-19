@@ -42,20 +42,15 @@ module OpenAI
           OpenAI::Models::VectorStores::FileBatchListFilesParams::order
         ) -> OpenAI::Models::VectorStores::FileBatchListFilesParams::order
 
-        def initialize:
-          (
-            vector_store_id: String,
-            ?after: String,
-            ?before: String,
-            ?filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,
-            ?limit: Integer,
-            ?order: OpenAI::Models::VectorStores::FileBatchListFilesParams::order,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStores::file_batch_list_files_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          vector_store_id: String,
+          ?after: String,
+          ?before: String,
+          ?filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::filter,
+          ?limit: Integer,
+          ?order: OpenAI::Models::VectorStores::FileBatchListFilesParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStores::file_batch_list_files_params
 

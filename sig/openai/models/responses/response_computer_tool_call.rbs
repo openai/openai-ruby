@@ -24,19 +24,14 @@ module OpenAI
 
         attr_accessor type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
 
-        def initialize:
-          (
-            id: String,
-            action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
-            call_id: String,
-            pending_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck],
-            status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
-            type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_computer_tool_call
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+          call_id: String,
+          pending_safety_checks: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck],
+          status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
+          type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_computer_tool_call
 
@@ -69,17 +64,12 @@ module OpenAI
 
             attr_accessor y_: Integer
 
-            def initialize:
-              (
-                button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
-                x: Integer,
-                y_: Integer,
-                ?type: :click
-              ) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::click
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
+              x: Integer,
+              y_: Integer,
+              ?type: :click
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::click
 
@@ -105,12 +95,11 @@ module OpenAI
 
             attr_accessor y_: Integer
 
-            def initialize:
-              (x: Integer, y_: Integer, ?type: :double_click) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::double_click
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              x: Integer,
+              y_: Integer,
+              ?type: :double_click
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::double_click
           end
@@ -126,15 +115,10 @@ module OpenAI
 
             attr_accessor type: :drag
 
-            def initialize:
-              (
-                path: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path],
-                ?type: :drag
-              ) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::drag
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              path: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path],
+              ?type: :drag
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::drag
 
@@ -145,12 +129,7 @@ module OpenAI
 
               attr_accessor y_: Integer
 
-              def initialize:
-                (x: Integer, y_: Integer) -> void
-                | (
-                  ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::path
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (x: Integer, y_: Integer) -> void
 
               def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::path
             end
@@ -163,12 +142,7 @@ module OpenAI
 
             attr_accessor type: :keypress
 
-            def initialize:
-              (keys: ::Array[String], ?type: :keypress) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::keypress
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (keys: ::Array[String], ?type: :keypress) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::keypress
           end
@@ -182,12 +156,7 @@ module OpenAI
 
             attr_accessor y_: Integer
 
-            def initialize:
-              (x: Integer, y_: Integer, ?type: :move) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::move
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (x: Integer, y_: Integer, ?type: :move) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::move
           end
@@ -197,12 +166,7 @@ module OpenAI
           class Screenshot < OpenAI::BaseModel
             attr_accessor type: :screenshot
 
-            def initialize:
-              (?type: :screenshot) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::screenshot
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?type: :screenshot) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::screenshot
           end
@@ -227,18 +191,13 @@ module OpenAI
 
             attr_accessor y_: Integer
 
-            def initialize:
-              (
-                scroll_x: Integer,
-                scroll_y: Integer,
-                x: Integer,
-                y_: Integer,
-                ?type: :scroll
-              ) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::scroll
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              scroll_x: Integer,
+              scroll_y: Integer,
+              x: Integer,
+              y_: Integer,
+              ?type: :scroll
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::scroll
           end
@@ -250,12 +209,7 @@ module OpenAI
 
             attr_accessor type: :type
 
-            def initialize:
-              (text: String, ?type: :type) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::type_
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (text: String, ?type: :type) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::type_
           end
@@ -265,12 +219,7 @@ module OpenAI
           class Wait < OpenAI::BaseModel
             attr_accessor type: :wait
 
-            def initialize:
-              (?type: :wait) -> void
-              | (
-                ?OpenAI::Models::Responses::ResponseComputerToolCall::Action::wait
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?type: :wait) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::wait
           end
@@ -288,12 +237,7 @@ module OpenAI
 
           attr_accessor message: String
 
-          def initialize:
-            (id: String, code: String, message: String) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseComputerToolCall::pending_safety_check
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (id: String, code: String, message: String) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::pending_safety_check
         end

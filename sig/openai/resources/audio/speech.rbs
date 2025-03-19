@@ -2,19 +2,14 @@ module OpenAI
   module Resources
     class Audio
       class Speech
-        def create:
-          (
-            OpenAI::Models::Audio::SpeechCreateParams
-            | ::Hash[Symbol, top] params
-          ) -> top
-          | (
-            input: String,
-            model: OpenAI::Models::Audio::SpeechCreateParams::model,
-            voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
-            ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
-            ?speed: Float,
-            ?request_options: OpenAI::request_opts
-          ) -> top
+        def create: (
+          input: String,
+          model: OpenAI::Models::Audio::SpeechCreateParams::model,
+          voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
+          ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
+          ?speed: Float,
+          ?request_options: OpenAI::request_opts
+        ) -> top
 
         def initialize: (client: OpenAI::Client) -> void
       end

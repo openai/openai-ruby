@@ -17,16 +17,11 @@ module OpenAI
 
           attr_accessor tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
 
-          def initialize:
-            (
-              thread_id: String,
-              tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
-              ?request_options: OpenAI::request_opts
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::run_submit_tool_outputs_params
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            thread_id: String,
+            tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+            ?request_options: OpenAI::request_opts
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::run_submit_tool_outputs_params
 
@@ -41,12 +36,7 @@ module OpenAI
 
             def tool_call_id=: (String) -> String
 
-            def initialize:
-              (?output: String, ?tool_call_id: String) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::tool_output
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (?output: String, ?tool_call_id: String) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::tool_output
           end

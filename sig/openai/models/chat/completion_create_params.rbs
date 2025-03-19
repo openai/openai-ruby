@@ -128,44 +128,39 @@ module OpenAI
           OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions
         ) -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions
 
-        def initialize:
-          (
-            messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
-            model: OpenAI::Models::Chat::CompletionCreateParams::model,
-            ?audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
-            ?frequency_penalty: Float?,
-            ?function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
-            ?functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
-            ?logit_bias: ::Hash[Symbol, Integer]?,
-            ?logprobs: bool?,
-            ?max_completion_tokens: Integer?,
-            ?max_tokens: Integer?,
-            ?metadata: OpenAI::Models::metadata?,
-            ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
-            ?n: Integer?,
-            ?parallel_tool_calls: bool,
-            ?prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
-            ?presence_penalty: Float?,
-            ?reasoning_effort: OpenAI::Models::reasoning_effort?,
-            ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
-            ?seed: Integer?,
-            ?service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
-            ?stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
-            ?store: bool?,
-            ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
-            ?temperature: Float?,
-            ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
-            ?tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
-            ?top_logprobs: Integer?,
-            ?top_p: Float?,
-            ?user: String,
-            ?web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
-            ?request_options: OpenAI::request_opts
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::completion_create_params
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
+          model: OpenAI::Models::Chat::CompletionCreateParams::model,
+          ?audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,
+          ?frequency_penalty: Float?,
+          ?function_call: OpenAI::Models::Chat::CompletionCreateParams::function_call,
+          ?functions: ::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
+          ?logit_bias: ::Hash[Symbol, Integer]?,
+          ?logprobs: bool?,
+          ?max_completion_tokens: Integer?,
+          ?max_tokens: Integer?,
+          ?metadata: OpenAI::Models::metadata?,
+          ?modalities: ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]?,
+          ?n: Integer?,
+          ?parallel_tool_calls: bool,
+          ?prediction: OpenAI::Models::Chat::ChatCompletionPredictionContent?,
+          ?presence_penalty: Float?,
+          ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+          ?response_format: OpenAI::Models::Chat::CompletionCreateParams::response_format,
+          ?seed: Integer?,
+          ?service_tier: OpenAI::Models::Chat::CompletionCreateParams::service_tier?,
+          ?stop: OpenAI::Models::Chat::CompletionCreateParams::stop?,
+          ?store: bool?,
+          ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+          ?temperature: Float?,
+          ?tool_choice: OpenAI::Models::Chat::chat_completion_tool_choice_option,
+          ?tools: ::Array[OpenAI::Models::Chat::ChatCompletionTool],
+          ?top_logprobs: Integer?,
+          ?top_p: Float?,
+          ?user: String,
+          ?web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
+          ?request_options: OpenAI::request_opts
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::completion_create_params
 
@@ -212,16 +207,11 @@ module OpenAI
             OpenAI::Models::function_parameters
           ) -> OpenAI::Models::function_parameters
 
-          def initialize:
-            (
-              name: String,
-              ?description: String,
-              ?parameters: OpenAI::Models::function_parameters
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::CompletionCreateParams::function
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            name: String,
+            ?description: String,
+            ?parameters: OpenAI::Models::function_parameters
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::function
         end
@@ -278,15 +268,10 @@ module OpenAI
 
           attr_accessor user_location: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
 
-          def initialize:
-            (
-              ?search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
-              ?user_location: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::CompletionCreateParams::web_search_options
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            ?search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size,
+            ?user_location: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::web_search_options
 
@@ -311,15 +296,10 @@ module OpenAI
 
             attr_accessor type: :approximate
 
-            def initialize:
-              (
-                approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                ?type: :approximate
-              ) -> void
-              | (
-                ?OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::user_location
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+              ?type: :approximate
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::user_location
 
@@ -348,17 +328,12 @@ module OpenAI
 
               def timezone=: (String) -> String
 
-              def initialize:
-                (
-                  ?city: String,
-                  ?country: String,
-                  ?region: String,
-                  ?timezone: String
-                ) -> void
-                | (
-                  ?OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::approximate
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                ?city: String,
+                ?country: String,
+                ?region: String,
+                ?timezone: String
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::approximate
             end

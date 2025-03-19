@@ -40,22 +40,17 @@ module OpenAI
           OpenAI::Models::file_chunking_strategy
         ) -> OpenAI::Models::file_chunking_strategy
 
-        def initialize:
-          (
-            id: String,
-            created_at: Integer,
-            last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?,
-            status: OpenAI::Models::VectorStores::VectorStoreFile::status,
-            usage_bytes: Integer,
-            vector_store_id: String,
-            ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
-            ?chunking_strategy: OpenAI::Models::file_chunking_strategy,
-            ?object: :"vector_store.file"
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStores::vector_store_file
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?,
+          status: OpenAI::Models::VectorStores::VectorStoreFile::status,
+          usage_bytes: Integer,
+          vector_store_id: String,
+          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+          ?chunking_strategy: OpenAI::Models::file_chunking_strategy,
+          ?object: :"vector_store.file"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStores::vector_store_file
 
@@ -70,15 +65,10 @@ module OpenAI
 
           attr_accessor message: String
 
-          def initialize:
-            (
-              code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code,
-              message: String
-            ) -> void
-            | (
-              ?OpenAI::Models::VectorStores::VectorStoreFile::last_error
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code,
+            message: String
+          ) -> void
 
           def to_hash: -> OpenAI::Models::VectorStores::VectorStoreFile::last_error
 

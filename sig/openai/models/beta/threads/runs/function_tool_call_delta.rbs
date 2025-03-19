@@ -26,17 +26,12 @@ module OpenAI
               OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function
             ) -> OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function
 
-            def initialize:
-              (
-                index: Integer,
-                ?id: String,
-                ?function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
-                ?type: :function
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::function_tool_call_delta
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              index: Integer,
+              ?id: String,
+              ?function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
+              ?type: :function
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::function_tool_call_delta
 
@@ -53,12 +48,11 @@ module OpenAI
 
               attr_accessor output: String?
 
-              def initialize:
-                (?arguments: String, ?name: String, ?output: String?) -> void
-                | (
-                  ?OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::function
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                ?arguments: String,
+                ?name: String,
+                ?output: String?
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::function
             end

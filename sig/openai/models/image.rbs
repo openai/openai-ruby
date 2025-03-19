@@ -15,9 +15,11 @@ module OpenAI
 
       def url=: (String) -> String
 
-      def initialize:
-        (?b64_json: String, ?revised_prompt: String, ?url: String) -> void
-        | (?OpenAI::Models::image | OpenAI::BaseModel data) -> void
+      def initialize: (
+        ?b64_json: String,
+        ?revised_prompt: String,
+        ?url: String
+      ) -> void
 
       def to_hash: -> OpenAI::Models::image
     end

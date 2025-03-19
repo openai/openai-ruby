@@ -14,16 +14,11 @@ module OpenAI
 
         attr_accessor object: :"chat.completion.deleted"
 
-        def initialize:
-          (
-            id: String,
-            deleted: bool,
-            ?object: :"chat.completion.deleted"
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_deleted
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          deleted: bool,
+          ?object: :"chat.completion.deleted"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_deleted
       end

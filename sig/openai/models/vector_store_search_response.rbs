@@ -20,17 +20,13 @@ module OpenAI
 
       attr_accessor score: Float
 
-      def initialize:
-        (
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?,
-          content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content],
-          file_id: String,
-          filename: String,
-          score: Float
-        ) -> void
-        | (
-          ?OpenAI::Models::vector_store_search_response | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?,
+        content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content],
+        file_id: String,
+        filename: String,
+        score: Float
+      ) -> void
 
       def to_hash: -> OpenAI::Models::vector_store_search_response
 
@@ -51,15 +47,10 @@ module OpenAI
 
         attr_accessor type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
 
-        def initialize:
-          (
-            text: String,
-            type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStoreSearchResponse::content
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          text: String,
+          type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStoreSearchResponse::content
 

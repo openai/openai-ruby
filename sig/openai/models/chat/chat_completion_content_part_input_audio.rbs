@@ -15,15 +15,10 @@ module OpenAI
 
         attr_accessor type: :input_audio
 
-        def initialize:
-          (
-            input_audio: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio,
-            ?type: :input_audio
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_content_part_input_audio
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          input_audio: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio,
+          ?type: :input_audio
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_content_part_input_audio
 
@@ -38,15 +33,10 @@ module OpenAI
 
           attr_accessor format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
 
-          def initialize:
-            (
-              data: String,
-              format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::input_audio
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: String,
+            format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::input_audio
 

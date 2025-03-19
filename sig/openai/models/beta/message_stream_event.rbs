@@ -20,15 +20,10 @@ module OpenAI
 
           attr_accessor event: :"thread.message.created"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Message,
-              ?event: :"thread.message.created"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_created
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Message,
+            ?event: :"thread.message.created"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::MessageStreamEvent::thread_message_created
         end
@@ -44,15 +39,10 @@ module OpenAI
 
           attr_accessor event: :"thread.message.in_progress"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Message,
-              ?event: :"thread.message.in_progress"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_in_progress
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Message,
+            ?event: :"thread.message.in_progress"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::MessageStreamEvent::thread_message_in_progress
         end
@@ -68,15 +58,10 @@ module OpenAI
 
           attr_accessor event: :"thread.message.delta"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::MessageDeltaEvent,
-              ?event: :"thread.message.delta"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_delta
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::MessageDeltaEvent,
+            ?event: :"thread.message.delta"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::MessageStreamEvent::thread_message_delta
         end
@@ -92,15 +77,10 @@ module OpenAI
 
           attr_accessor event: :"thread.message.completed"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Message,
-              ?event: :"thread.message.completed"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_completed
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Message,
+            ?event: :"thread.message.completed"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::MessageStreamEvent::thread_message_completed
         end
@@ -116,15 +96,10 @@ module OpenAI
 
           attr_accessor event: :"thread.message.incomplete"
 
-          def initialize:
-            (
-              data: OpenAI::Models::Beta::Threads::Message,
-              ?event: :"thread.message.incomplete"
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::MessageStreamEvent::thread_message_incomplete
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            data: OpenAI::Models::Beta::Threads::Message,
+            ?event: :"thread.message.incomplete"
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::MessageStreamEvent::thread_message_incomplete
         end

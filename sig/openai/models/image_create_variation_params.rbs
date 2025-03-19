@@ -29,20 +29,15 @@ module OpenAI
 
       def user=: (String) -> String
 
-      def initialize:
-        (
-          image: IO | StringIO,
-          ?model: OpenAI::Models::ImageCreateVariationParams::model?,
-          ?n: Integer?,
-          ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
-          ?size: OpenAI::Models::ImageCreateVariationParams::size?,
-          ?user: String,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (
-          ?OpenAI::Models::image_create_variation_params
-          | OpenAI::BaseModel data
-        ) -> void
+      def initialize: (
+        image: IO | StringIO,
+        ?model: OpenAI::Models::ImageCreateVariationParams::model?,
+        ?n: Integer?,
+        ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
+        ?size: OpenAI::Models::ImageCreateVariationParams::size?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::image_create_variation_params
 

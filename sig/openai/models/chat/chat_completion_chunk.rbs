@@ -39,21 +39,16 @@ module OpenAI
           OpenAI::Models::CompletionUsage
         ) -> OpenAI::Models::CompletionUsage
 
-        def initialize:
-          (
-            id: String,
-            choices: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice],
-            created: Integer,
-            model: String,
-            ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
-            ?system_fingerprint: String,
-            ?usage: OpenAI::Models::CompletionUsage,
-            ?object: :"chat.completion.chunk"
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_chunk
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          choices: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice],
+          created: Integer,
+          model: String,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::Models::CompletionUsage,
+          ?object: :"chat.completion.chunk"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_chunk
 
@@ -74,17 +69,12 @@ module OpenAI
 
           attr_accessor logprobs: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs?
 
-          def initialize:
-            (
-              delta: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta,
-              finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
-              index: Integer,
-              ?logprobs: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs?
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionChunk::choice
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            delta: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta,
+            finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
+            index: Integer,
+            ?logprobs: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs?
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionChunk::choice
 
@@ -120,18 +110,13 @@ module OpenAI
               ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             ) -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
 
-            def initialize:
-              (
-                ?content: String?,
-                ?function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
-                ?refusal: String?,
-                ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
-                ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
-              ) -> void
-              | (
-                ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::delta
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              ?content: String?,
+              ?function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+              ?refusal: String?,
+              ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
+              ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::delta
 
@@ -146,12 +131,7 @@ module OpenAI
 
               def name=: (String) -> String
 
-              def initialize:
-                (?arguments: String, ?name: String) -> void
-                | (
-                  ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::function_call
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (?arguments: String, ?name: String) -> void
 
               def to_hash: -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::function_call
             end
@@ -195,17 +175,12 @@ module OpenAI
                 OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               ) -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
 
-              def initialize:
-                (
-                  index: Integer,
-                  ?id: String,
-                  ?function: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                  ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
-                ) -> void
-                | (
-                  ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::tool_call
-                  | OpenAI::BaseModel data
-                ) -> void
+              def initialize: (
+                index: Integer,
+                ?id: String,
+                ?function: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+              ) -> void
 
               def to_hash: -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::tool_call
 
@@ -220,12 +195,7 @@ module OpenAI
 
                 def name=: (String) -> String
 
-                def initialize:
-                  (?arguments: String, ?name: String) -> void
-                  | (
-                    ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::function
-                    | OpenAI::BaseModel data
-                  ) -> void
+                def initialize: (?arguments: String, ?name: String) -> void
 
                 def to_hash: -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::function
               end
@@ -264,15 +234,10 @@ module OpenAI
 
             attr_accessor refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
 
-            def initialize:
-              (
-                content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?,
-                refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
-              ) -> void
-              | (
-                ?OpenAI::Models::Chat::ChatCompletionChunk::Choice::logprobs
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?,
+              refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::logprobs
           end

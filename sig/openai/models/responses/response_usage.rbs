@@ -21,17 +21,13 @@ module OpenAI
 
         attr_accessor total_tokens: Integer
 
-        def initialize:
-          (
-            input_tokens: Integer,
-            input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
-            output_tokens: Integer,
-            output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
-            total_tokens: Integer
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_usage | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
+          total_tokens: Integer
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_usage
 
@@ -40,12 +36,7 @@ module OpenAI
         class InputTokensDetails < OpenAI::BaseModel
           attr_accessor cached_tokens: Integer
 
-          def initialize:
-            (cached_tokens: Integer) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseUsage::input_tokens_details
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (cached_tokens: Integer) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseUsage::input_tokens_details
         end
@@ -55,12 +46,7 @@ module OpenAI
         class OutputTokensDetails < OpenAI::BaseModel
           attr_accessor reasoning_tokens: Integer
 
-          def initialize:
-            (reasoning_tokens: Integer) -> void
-            | (
-              ?OpenAI::Models::Responses::ResponseUsage::output_tokens_details
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (reasoning_tokens: Integer) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseUsage::output_tokens_details
         end

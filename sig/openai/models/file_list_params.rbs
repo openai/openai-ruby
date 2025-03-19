@@ -31,15 +31,13 @@ module OpenAI
 
       def purpose=: (String) -> String
 
-      def initialize:
-        (
-          ?after: String,
-          ?limit: Integer,
-          ?order: OpenAI::Models::FileListParams::order,
-          ?purpose: String,
-          ?request_options: OpenAI::request_opts
-        ) -> void
-        | (?OpenAI::Models::file_list_params | OpenAI::BaseModel data) -> void
+      def initialize: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::FileListParams::order,
+        ?purpose: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
 
       def to_hash: -> OpenAI::Models::file_list_params
 

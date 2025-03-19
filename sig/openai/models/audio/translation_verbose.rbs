@@ -22,16 +22,12 @@ module OpenAI
           ::Array[OpenAI::Models::Audio::TranscriptionSegment]
         ) -> ::Array[OpenAI::Models::Audio::TranscriptionSegment]
 
-        def initialize:
-          (
-            duration: Float,
-            language: String,
-            text: String,
-            ?segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment]
-          ) -> void
-          | (
-            ?OpenAI::Models::Audio::translation_verbose | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          duration: Float,
+          language: String,
+          text: String,
+          ?segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment]
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Audio::translation_verbose
       end

@@ -14,16 +14,11 @@ module OpenAI
 
           attr_accessor metadata: OpenAI::Models::metadata?
 
-          def initialize:
-            (
-              thread_id: String,
-              ?metadata: OpenAI::Models::metadata?,
-              ?request_options: OpenAI::request_opts
-            ) -> void
-            | (
-              ?OpenAI::Models::Beta::Threads::run_update_params
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            thread_id: String,
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Beta::Threads::run_update_params
         end

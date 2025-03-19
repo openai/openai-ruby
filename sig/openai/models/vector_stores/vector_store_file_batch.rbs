@@ -27,19 +27,14 @@ module OpenAI
 
         attr_accessor vector_store_id: String
 
-        def initialize:
-          (
-            id: String,
-            created_at: Integer,
-            file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
-            status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status,
-            vector_store_id: String,
-            ?object: :"vector_store.files_batch"
-          ) -> void
-          | (
-            ?OpenAI::Models::VectorStores::vector_store_file_batch
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
+          status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status,
+          vector_store_id: String,
+          ?object: :"vector_store.files_batch"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::VectorStores::vector_store_file_batch
 
@@ -63,18 +58,13 @@ module OpenAI
 
           attr_accessor total: Integer
 
-          def initialize:
-            (
-              cancelled: Integer,
-              completed: Integer,
-              failed: Integer,
-              in_progress: Integer,
-              total: Integer
-            ) -> void
-            | (
-              ?OpenAI::Models::VectorStores::VectorStoreFileBatch::file_counts
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            cancelled: Integer,
+            completed: Integer,
+            failed: Integer,
+            in_progress: Integer,
+            total: Integer
+          ) -> void
 
           def to_hash: -> OpenAI::Models::VectorStores::VectorStoreFileBatch::file_counts
         end

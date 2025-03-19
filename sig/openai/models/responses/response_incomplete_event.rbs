@@ -12,15 +12,10 @@ module OpenAI
 
         attr_accessor type: :"response.incomplete"
 
-        def initialize:
-          (
-            response: OpenAI::Models::Responses::Response,
-            ?type: :"response.incomplete"
-          ) -> void
-          | (
-            ?OpenAI::Models::Responses::response_incomplete_event
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          response: OpenAI::Models::Responses::Response,
+          ?type: :"response.incomplete"
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Responses::response_incomplete_event
       end

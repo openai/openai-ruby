@@ -14,15 +14,10 @@ module OpenAI
 
             attr_accessor type: :tool_calls
 
-            def initialize:
-              (
-                tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
-                ?type: :tool_calls
-              ) -> void
-              | (
-                ?OpenAI::Models::Beta::Threads::Runs::tool_calls_step_details
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
+              ?type: :tool_calls
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Beta::Threads::Runs::tool_calls_step_details
           end

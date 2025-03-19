@@ -42,20 +42,15 @@ module OpenAI
           ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
         ) -> ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
 
-        def initialize:
-          (
-            content: String?,
-            refusal: String?,
-            ?annotations: ::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation],
-            ?audio: OpenAI::Models::Chat::ChatCompletionAudio?,
-            ?function_call: OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall,
-            ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
-            ?role: :assistant
-          ) -> void
-          | (
-            ?OpenAI::Models::Chat::chat_completion_message
-            | OpenAI::BaseModel data
-          ) -> void
+        def initialize: (
+          content: String?,
+          refusal: String?,
+          ?annotations: ::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation],
+          ?audio: OpenAI::Models::Chat::ChatCompletionAudio?,
+          ?function_call: OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall,
+          ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
+          ?role: :assistant
+        ) -> void
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_message
 
@@ -70,15 +65,10 @@ module OpenAI
 
           attr_accessor url_citation: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation
 
-          def initialize:
-            (
-              url_citation: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation,
-              ?type: :url_citation
-            ) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionMessage::annotation
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (
+            url_citation: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation,
+            ?type: :url_citation
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionMessage::annotation
 
@@ -99,17 +89,12 @@ module OpenAI
 
             attr_accessor url: String
 
-            def initialize:
-              (
-                end_index: Integer,
-                start_index: Integer,
-                title: String,
-                url: String
-              ) -> void
-              | (
-                ?OpenAI::Models::Chat::ChatCompletionMessage::Annotation::url_citation
-                | OpenAI::BaseModel data
-              ) -> void
+            def initialize: (
+              end_index: Integer,
+              start_index: Integer,
+              title: String,
+              url: String
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Chat::ChatCompletionMessage::Annotation::url_citation
           end
@@ -122,12 +107,7 @@ module OpenAI
 
           attr_accessor name: String
 
-          def initialize:
-            (arguments: String, name: String) -> void
-            | (
-              ?OpenAI::Models::Chat::ChatCompletionMessage::function_call
-              | OpenAI::BaseModel data
-            ) -> void
+          def initialize: (arguments: String, name: String) -> void
 
           def to_hash: -> OpenAI::Models::Chat::ChatCompletionMessage::function_call
         end
