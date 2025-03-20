@@ -8,12 +8,10 @@ module OpenAI
 
       variant enum: -> { OpenAI::Models::ChatModel }
 
-      variant enum: -> { OpenAI::Models::ChatModel }
-
-      variant enum: -> { OpenAI::Models::AllModels::UnionMember4 }
+      variant enum: -> { OpenAI::Models::AllModels::UnionMember2 }
 
       # @abstract
-      class UnionMember4 < OpenAI::Enum
+      class UnionMember2 < OpenAI::Enum
         O1_PRO = :"o1-pro"
         O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
         COMPUTER_USE_PREVIEW = :"computer-use-preview"
@@ -24,7 +22,7 @@ module OpenAI
 
       # @!parse
       #   class << self
-      #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::AllModels::UnionMember4)]
+      #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::AllModels::UnionMember2)]
       #     def variants; end
       #   end
     end
