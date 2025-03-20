@@ -18,11 +18,14 @@ module OpenAI
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
       #   time.
-      sig { returns(T.nilable(T.any(String, Symbol))) }
+      sig { returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol))) }
       def model
       end
 
-      sig { params(_: T.nilable(T.any(String, Symbol))).returns(T.nilable(T.any(String, Symbol))) }
+      sig do
+        params(_: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)))
+          .returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)))
+      end
       def model=(_)
       end
 
@@ -39,21 +42,27 @@ module OpenAI
       # The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
-      sig { returns(T.nilable(Symbol)) }
+      sig { returns(T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol)) }
       def response_format
       end
 
-      sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
+      sig do
+        params(_: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol))
+          .returns(T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol))
+      end
       def response_format=(_)
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024`.
-      sig { returns(T.nilable(Symbol)) }
+      sig { returns(T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol)) }
       def size
       end
 
-      sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
+      sig do
+        params(_: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol))
+          .returns(T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol))
+      end
       def size=(_)
       end
 
@@ -71,10 +80,10 @@ module OpenAI
       sig do
         params(
           image: T.any(IO, StringIO),
-          model: T.nilable(T.any(String, Symbol)),
+          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
-          response_format: T.nilable(Symbol),
-          size: T.nilable(Symbol),
+          response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
+          size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
           user: String,
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
         )
@@ -88,10 +97,10 @@ module OpenAI
           .returns(
             {
               image: T.any(IO, StringIO),
-              model: T.nilable(T.any(String, Symbol)),
+              model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
               n: T.nilable(Integer),
-              response_format: T.nilable(Symbol),
-              size: T.nilable(Symbol),
+              response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
+              size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
               user: String,
               request_options: OpenAI::RequestOptions
             }
@@ -102,34 +111,37 @@ module OpenAI
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
       #   time.
-      class Model < OpenAI::Union
-        abstract!
+      module Model
+        extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+        Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ImageModel::OrSymbol)} }
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
-      class ResponseFormat < OpenAI::Enum
-        abstract!
+      module ResponseFormat
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol) }
 
-        URL = :url
-        B64_JSON = :b64_json
+        URL = T.let(:url, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol)
+        B64_JSON = T.let(:b64_json, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol)
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024`.
-      class Size < OpenAI::Enum
-        abstract!
+      module Size
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::Size) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol) }
 
-        NUMBER_256X256 = :"256x256"
-        NUMBER_512X512 = :"512x512"
-        NUMBER_1024X1024 = :"1024x1024"
+        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol)
+        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol)
+        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol)
       end
     end
   end

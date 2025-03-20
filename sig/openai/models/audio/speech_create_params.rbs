@@ -50,7 +50,9 @@ module OpenAI
 
         type model = String | OpenAI::Models::Audio::speech_model
 
-        class Model < OpenAI::Union
+        module Model
+          extend OpenAI::Union
+
           def self.variants: -> [String, OpenAI::Models::Audio::speech_model]
         end
 
@@ -65,7 +67,9 @@ module OpenAI
           | :sage
           | :shimmer
 
-        class Voice < OpenAI::Enum
+        module Voice
+          extend OpenAI::Enum
+
           ALLOY: :alloy
           ASH: :ash
           CORAL: :coral
@@ -81,7 +85,9 @@ module OpenAI
 
         type response_format = :mp3 | :opus | :aac | :flac | :wav | :pcm
 
-        class ResponseFormat < OpenAI::Enum
+        module ResponseFormat
+          extend OpenAI::Enum
+
           MP3: :mp3
           OPUS: :opus
           AAC: :aac

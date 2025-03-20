@@ -3,13 +3,14 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionModality < OpenAI::Enum
-        abstract!
+      module ChatCompletionModality
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionModality) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol) }
 
-        TEXT = :text
-        AUDIO = :audio
+        TEXT = T.let(:text, OpenAI::Models::Chat::ChatCompletionModality::OrSymbol)
+        AUDIO = T.let(:audio, OpenAI::Models::Chat::ChatCompletionModality::OrSymbol)
       end
     end
 

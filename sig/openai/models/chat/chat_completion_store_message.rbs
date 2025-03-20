@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class ChatCompletionStoreMessage = Chat::ChatCompletionStoreMessage
 
     module Chat

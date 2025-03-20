@@ -1,7 +1,6 @@
 module OpenAI
   module Models
-    
-    class ChatCompletionMessageParam = Chat::ChatCompletionMessageParam
+    module ChatCompletionMessageParam = Chat::ChatCompletionMessageParam
 
     module Chat
       type chat_completion_message_param =
@@ -12,7 +11,9 @@ module OpenAI
         | OpenAI::Models::Chat::ChatCompletionToolMessageParam
         | OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
 
-      class ChatCompletionMessageParam < OpenAI::Union
+      module ChatCompletionMessageParam
+        extend OpenAI::Union
+
         def self.variants: -> [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
       end
     end

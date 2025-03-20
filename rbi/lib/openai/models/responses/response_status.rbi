@@ -5,15 +5,16 @@ module OpenAI
     module Responses
       # The status of the response generation. One of `completed`, `failed`,
       #   `in_progress`, or `incomplete`.
-      class ResponseStatus < OpenAI::Enum
-        abstract!
+      module ResponseStatus
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseStatus) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol) }
 
-        COMPLETED = :completed
-        FAILED = :failed
-        IN_PROGRESS = :in_progress
-        INCOMPLETE = :incomplete
+        COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
+        FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
+        IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
+        INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
       end
     end
   end

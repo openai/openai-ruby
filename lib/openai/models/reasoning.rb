@@ -37,14 +37,14 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # **computer_use_preview only**
       #
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `concise` or
       #   `detailed`.
-      class GenerateSummary < OpenAI::Enum
+      module GenerateSummary
+        extend OpenAI::Enum
+
         CONCISE = :concise
         DETAILED = :detailed
 

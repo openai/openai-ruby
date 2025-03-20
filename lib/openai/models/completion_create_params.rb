@@ -228,14 +228,14 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # ID of the model to use. You can use the
       #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
       #   see all of your available models, or see our
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
-      class Model < OpenAI::Union
+      module Model
+        extend OpenAI::Union
+
         # @!group
 
         GPT_3_5_TURBO_INSTRUCT = :"gpt-3.5-turbo-instruct"
@@ -259,15 +259,15 @@ module OpenAI
         #   end
       end
 
-      # @abstract
-      #
       # The prompt(s) to generate completions for, encoded as a string, array of
       #   strings, array of tokens, or array of token arrays.
       #
       #   Note that <|endoftext|> is the document separator that the model sees during
       #   training, so if a prompt is not specified the model will generate as if from the
       #   beginning of a new document.
-      class Prompt < OpenAI::Union
+      module Prompt
+        extend OpenAI::Union
+
         StringArray = OpenAI::ArrayOf[String]
 
         IntegerArray = OpenAI::ArrayOf[Integer]
@@ -289,11 +289,11 @@ module OpenAI
         #   end
       end
 
-      # @abstract
-      #
       # Up to 4 sequences where the API will stop generating further tokens. The
       #   returned text will not contain the stop sequence.
-      class Stop < OpenAI::Union
+      module Stop
+        extend OpenAI::Union
+
         StringArray = OpenAI::ArrayOf[String]
 
         variant String

@@ -6,11 +6,14 @@ module OpenAI
       class ResponseInputImage < OpenAI::BaseModel
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol) }
         def detail
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
+        end
         def detail=(_)
         end
 
@@ -45,35 +48,43 @@ module OpenAI
         # An image input to the model. Learn about
         #   [image inputs](https://platform.openai.com/docs/guides/vision).
         sig do
-          params(detail: Symbol, file_id: T.nilable(String), image_url: T.nilable(String), type: Symbol)
+          params(
+            detail: OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol,
+            file_id: T.nilable(String),
+            image_url: T.nilable(String),
+            type: Symbol
+          )
             .returns(T.attached_class)
         end
         def self.new(detail:, file_id: nil, image_url: nil, type: :input_image)
         end
 
         sig do
-          override.returns(
-            {
-              detail: Symbol,
-              type: Symbol,
-              file_id: T.nilable(String),
-              image_url: T.nilable(String)
-            }
-          )
+          override
+            .returns(
+              {
+                detail: OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol,
+                type: Symbol,
+                file_id: T.nilable(String),
+                image_url: T.nilable(String)
+              }
+            )
         end
         def to_hash
         end
 
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
-        class Detail < OpenAI::Enum
-          abstract!
+        module Detail
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol) }
 
-          HIGH = :high
-          LOW = :low
-          AUTO = :auto
+          HIGH = T.let(:high, OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
+          LOW = T.let(:low, OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
         end
       end
     end

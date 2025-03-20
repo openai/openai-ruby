@@ -30,12 +30,12 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The content that should be matched when generating a model response. If
         #   generated tokens would match this content, the entire model response can be
         #   returned much more quickly.
-        class Content < OpenAI::Union
+        module Content
+          extend OpenAI::Union
+
           ChatCompletionContentPartTextArray =
             OpenAI::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
 

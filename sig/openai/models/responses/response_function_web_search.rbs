@@ -25,7 +25,9 @@ module OpenAI
 
         type status = :in_progress | :searching | :completed | :failed
 
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS: :in_progress
           SEARCHING: :searching
           COMPLETED: :completed

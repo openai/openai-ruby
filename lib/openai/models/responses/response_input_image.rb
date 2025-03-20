@@ -43,11 +43,11 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
-        class Detail < OpenAI::Enum
+        module Detail
+          extend OpenAI::Enum
+
           HIGH = :high
           LOW = :low
           AUTO = :auto

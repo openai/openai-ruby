@@ -26,10 +26,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The error code for the response.
-        class Code < OpenAI::Enum
+        module Code
+          extend OpenAI::Enum
+
           SERVER_ERROR = :server_error
           RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
           INVALID_PROMPT = :invalid_prompt

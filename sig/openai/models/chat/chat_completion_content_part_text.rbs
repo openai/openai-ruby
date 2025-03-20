@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class ChatCompletionContentPartText = Chat::ChatCompletionContentPartText
 
     module Chat

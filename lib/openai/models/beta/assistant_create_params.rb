@@ -157,14 +157,14 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         #   see all of your available models, or see our
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
-        class Model < OpenAI::Union
+        module Model
+          extend OpenAI::Union
+
           variant String
 
           # ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
@@ -312,11 +312,11 @@ module OpenAI
 
               # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-              # @abstract
-              #
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               #   strategy.
-              class ChunkingStrategy < OpenAI::Union
+              module ChunkingStrategy
+                extend OpenAI::Union
+
                 discriminator :type
 
                 # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of `800` and `chunk_overlap_tokens` of `400`.

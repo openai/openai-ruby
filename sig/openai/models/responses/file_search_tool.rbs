@@ -44,7 +44,9 @@ module OpenAI
         type filters =
           OpenAI::Models::ComparisonFilter | OpenAI::Models::CompoundFilter
 
-        class Filters < OpenAI::Union
+        module Filters
+          extend OpenAI::Union
+
           def self.variants: -> [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
         end
 
@@ -74,7 +76,9 @@ module OpenAI
 
           type ranker = :auto | :"default-2024-11-15"
 
-          class Ranker < OpenAI::Enum
+          module Ranker
+            extend OpenAI::Enum
+
             AUTO: :auto
             DEFAULT_2024_11_15: :"default-2024-11-15"
 

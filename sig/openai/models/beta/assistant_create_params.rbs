@@ -66,7 +66,9 @@ module OpenAI
 
         type model = String | OpenAI::Models::chat_model
 
-        class Model < OpenAI::Union
+        module Model
+          extend OpenAI::Union
+
           def self.variants: -> [String, OpenAI::Models::chat_model]
         end
 
@@ -164,7 +166,9 @@ module OpenAI
                 OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto
                 | OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
 
-              class ChunkingStrategy < OpenAI::Union
+              module ChunkingStrategy
+                extend OpenAI::Union
+
                 type auto = { type: :auto }
 
                 class Auto < OpenAI::BaseModel

@@ -24,11 +24,14 @@ module OpenAI
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol) }
         def status
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
+        end
         def status=(_)
         end
 
@@ -60,7 +63,7 @@ module OpenAI
           params(
             id: String,
             queries: T::Array[String],
-            status: Symbol,
+            status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
             results: T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]),
             type: Symbol
           )
@@ -75,7 +78,7 @@ module OpenAI
               {
                 id: String,
                 queries: T::Array[String],
-                status: Symbol,
+                status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
                 type: Symbol,
                 results: T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result])
               }
@@ -86,16 +89,20 @@ module OpenAI
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
-        class Status < OpenAI::Enum
-          abstract!
+        module Status
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          SEARCHING = :searching
-          COMPLETED = :completed
-          INCOMPLETE = :incomplete
-          FAILED = :failed
+          IN_PROGRESS =
+            T.let(:in_progress, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
+          SEARCHING = T.let(:searching, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
+          FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
         end
 
         class Result < OpenAI::BaseModel
@@ -179,8 +186,8 @@ module OpenAI
           def to_hash
           end
 
-          class Attribute < OpenAI::Union
-            abstract!
+          module Attribute
+            extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
           end

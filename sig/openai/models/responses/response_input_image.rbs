@@ -29,7 +29,9 @@ module OpenAI
 
         type detail = :high | :low | :auto
 
-        class Detail < OpenAI::Enum
+        module Detail
+          extend OpenAI::Enum
+
           HIGH: :high
           LOW: :low
           AUTO: :auto

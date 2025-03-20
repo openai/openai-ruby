@@ -8,13 +8,13 @@ module OpenAI
         sig do
           params(
             file: T.any(IO, StringIO),
-            model: T.any(String, Symbol),
-            include: T::Array[Symbol],
+            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
+            include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
-            response_format: Symbol,
+            response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
             temperature: Float,
-            timestamp_granularities: T::Array[Symbol],
+            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
             stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
@@ -70,13 +70,13 @@ module OpenAI
         sig do
           params(
             file: T.any(IO, StringIO),
-            model: T.any(String, Symbol),
-            include: T::Array[Symbol],
+            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
+            include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
-            response_format: Symbol,
+            response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
             temperature: Float,
-            timestamp_granularities: T::Array[Symbol],
+            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
             stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )

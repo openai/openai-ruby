@@ -45,11 +45,14 @@ module OpenAI
         #   see all of your available models, or see our
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
-        sig { returns(T.nilable(T.any(String, Symbol))) }
+        sig { returns(T.nilable(T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol))) }
         def model
         end
 
-        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
+        sig do
+          params(_: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol))
+            .returns(T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol))
+        end
         def model=(_)
         end
 
@@ -68,11 +71,14 @@ module OpenAI
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #   result in faster responses and fewer tokens used on reasoning in a response.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
         def reasoning_effort
         end
 
-        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
+        sig do
+          params(_: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
+            .returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
+        end
         def reasoning_effort=(_)
         end
 
@@ -222,9 +228,9 @@ module OpenAI
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(String, Symbol),
+            model: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(Symbol),
+            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
             response_format: T.nilable(
               T.any(
                 Symbol,
@@ -270,9 +276,9 @@ module OpenAI
                 description: T.nilable(String),
                 instructions: T.nilable(String),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.any(String, Symbol),
+                model: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol),
                 name: T.nilable(String),
-                reasoning_effort: T.nilable(Symbol),
+                reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
                 response_format: T.nilable(
                   T.any(
                     Symbol,
@@ -303,41 +309,62 @@ module OpenAI
         #   see all of your available models, or see our
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
-        class Model < OpenAI::Union
-          abstract!
+        module Model
+          extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+          Variants =
+            type_template(:out) { {fixed: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)} }
 
-          O3_MINI = :"o3-mini"
-          O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
-          O1 = :o1
-          O1_2024_12_17 = :"o1-2024-12-17"
-          GPT_4O = :"gpt-4o"
-          GPT_4O_2024_11_20 = :"gpt-4o-2024-11-20"
-          GPT_4O_2024_08_06 = :"gpt-4o-2024-08-06"
-          GPT_4O_2024_05_13 = :"gpt-4o-2024-05-13"
-          GPT_4O_MINI = :"gpt-4o-mini"
-          GPT_4O_MINI_2024_07_18 = :"gpt-4o-mini-2024-07-18"
-          GPT_4_5_PREVIEW = :"gpt-4.5-preview"
-          GPT_4_5_PREVIEW_2025_02_27 = :"gpt-4.5-preview-2025-02-27"
-          GPT_4_TURBO = :"gpt-4-turbo"
-          GPT_4_TURBO_2024_04_09 = :"gpt-4-turbo-2024-04-09"
-          GPT_4_0125_PREVIEW = :"gpt-4-0125-preview"
-          GPT_4_TURBO_PREVIEW = :"gpt-4-turbo-preview"
-          GPT_4_1106_PREVIEW = :"gpt-4-1106-preview"
-          GPT_4_VISION_PREVIEW = :"gpt-4-vision-preview"
-          GPT_4 = :"gpt-4"
-          GPT_4_0314 = :"gpt-4-0314"
-          GPT_4_0613 = :"gpt-4-0613"
-          GPT_4_32K = :"gpt-4-32k"
-          GPT_4_32K_0314 = :"gpt-4-32k-0314"
-          GPT_4_32K_0613 = :"gpt-4-32k-0613"
-          GPT_3_5_TURBO = :"gpt-3.5-turbo"
-          GPT_3_5_TURBO_16K = :"gpt-3.5-turbo-16k"
-          GPT_3_5_TURBO_0613 = :"gpt-3.5-turbo-0613"
-          GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
-          GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
-          GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol) }
+
+          O3_MINI = T.let(:"o3-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          O3_MINI_2025_01_31 =
+            T.let(:"o3-mini-2025-01-31", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          O1 = T.let(:o1, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          O1_2024_12_17 = T.let(:"o1-2024-12-17", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4O = T.let(:"gpt-4o", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4O_2024_11_20 =
+            T.let(:"gpt-4o-2024-11-20", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4O_2024_08_06 =
+            T.let(:"gpt-4o-2024-08-06", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4O_2024_05_13 =
+            T.let(:"gpt-4o-2024-05-13", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4O_MINI_2024_07_18 =
+            T.let(:"gpt-4o-mini-2024-07-18", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_5_PREVIEW = T.let(:"gpt-4.5-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_5_PREVIEW_2025_02_27 =
+            T.let(:"gpt-4.5-preview-2025-02-27", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_TURBO = T.let(:"gpt-4-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_TURBO_2024_04_09 =
+            T.let(:"gpt-4-turbo-2024-04-09", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_0125_PREVIEW =
+            T.let(:"gpt-4-0125-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_TURBO_PREVIEW =
+            T.let(:"gpt-4-turbo-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_1106_PREVIEW =
+            T.let(:"gpt-4-1106-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_VISION_PREVIEW =
+            T.let(:"gpt-4-vision-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4 = T.let(:"gpt-4", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_0314 = T.let(:"gpt-4-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_0613 = T.let(:"gpt-4-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_32K = T.let(:"gpt-4-32k", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_32K_0314 = T.let(:"gpt-4-32k-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_4_32K_0613 = T.let(:"gpt-4-32k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_3_5_TURBO_16K =
+            T.let(:"gpt-3.5-turbo-16k", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_3_5_TURBO_0613 =
+            T.let(:"gpt-3.5-turbo-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_3_5_TURBO_1106 =
+            T.let(:"gpt-3.5-turbo-1106", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_3_5_TURBO_0125 =
+            T.let(:"gpt-3.5-turbo-0125", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          GPT_3_5_TURBO_16K_0613 =
+            T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
         end
 
         class ToolResources < OpenAI::BaseModel

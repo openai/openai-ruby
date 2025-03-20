@@ -58,11 +58,14 @@ module OpenAI
         end
 
         # The status of the code interpreter tool call.
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol) }
         def status
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
+            .returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
+        end
         def status=(_)
         end
 
@@ -86,7 +89,7 @@ module OpenAI
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
             )
             ],
-            status: Symbol,
+            status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,
             type: Symbol
           )
             .returns(T.attached_class)
@@ -106,7 +109,7 @@ module OpenAI
                   OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
                 )
                 ],
-                status: Symbol,
+                status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,
                 type: Symbol
               }
             )
@@ -115,8 +118,8 @@ module OpenAI
         end
 
         # The output of a code interpreter tool call that is text.
-        class Result < OpenAI::Union
-          abstract!
+        module Result
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) do
@@ -232,14 +235,20 @@ module OpenAI
         end
 
         # The status of the code interpreter tool call.
-        class Status < OpenAI::Enum
-          abstract!
+        module Status
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          INTERPRETING = :interpreting
-          COMPLETED = :completed
+          IN_PROGRESS =
+            T.let(:in_progress, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
+          INTERPRETING =
+            T.let(:interpreting, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
+          COMPLETED =
+            T.let(:completed, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
         end
       end
     end

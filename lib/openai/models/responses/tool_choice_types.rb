@@ -27,8 +27,6 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The type of hosted tool the model should to use. Learn more about
         #   [built-in tools](https://platform.openai.com/docs/guides/tools).
         #
@@ -37,7 +35,9 @@ module OpenAI
         #   - `file_search`
         #   - `web_search_preview`
         #   - `computer_use_preview`
-        class Type < OpenAI::Enum
+        module Type
+          extend OpenAI::Enum
+
           FILE_SEARCH = :file_search
           WEB_SEARCH_PREVIEW = :web_search_preview
           COMPUTER_USE_PREVIEW = :computer_use_preview
