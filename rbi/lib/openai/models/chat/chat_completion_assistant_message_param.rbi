@@ -197,8 +197,8 @@ module OpenAI
 
         # The contents of the assistant message. Required unless `tool_calls` or
         #   `function_call` is specified.
-        class Content < OpenAI::Union
-          abstract!
+        module Content
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) do
@@ -223,8 +223,8 @@ module OpenAI
 
           # Learn about
           #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
-          class ArrayOfContentPart < OpenAI::Union
-            abstract!
+          module ArrayOfContentPart
+            extend OpenAI::Union
 
             Variants =
               type_template(:out) do

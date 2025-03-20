@@ -157,12 +157,12 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
       end
 
-      # @abstract
-      #
       # The status of the vector store, which can be either `expired`, `in_progress`, or
       #   `completed`. A status of `completed` indicates that the vector store is ready
       #   for use.
-      class Status < OpenAI::Enum
+      module Status
+        extend OpenAI::Enum
+
         EXPIRED = :expired
         IN_PROGRESS = :in_progress
         COMPLETED = :completed

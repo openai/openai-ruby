@@ -5,8 +5,8 @@ module OpenAI
     module Audio
       # Represents a transcription response returned by model, based on the provided
       #   input.
-      class TranscriptionCreateResponse < OpenAI::Union
-        abstract!
+      module TranscriptionCreateResponse
+        extend OpenAI::Union
 
         Variants =
           type_template(:out) { {fixed: T.any(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)} }

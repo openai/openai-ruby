@@ -6,8 +6,8 @@ module OpenAI
       module Threads
         module Runs
           # Details of the Code Interpreter tool call the run step was involved in.
-          class ToolCallDelta < OpenAI::Union
-            abstract!
+          module ToolCallDelta
+            extend OpenAI::Union
 
             Variants =
               type_template(:out) do

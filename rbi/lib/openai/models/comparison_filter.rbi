@@ -20,11 +20,14 @@ module OpenAI
       #   - `gte`: greater than or equal
       #   - `lt`: less than
       #   - `lte`: less than or equal
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::ComparisonFilter::Type::OrSymbol) }
       def type
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig do
+        params(_: OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+          .returns(OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+      end
       def type=(_)
       end
 
@@ -41,12 +44,22 @@ module OpenAI
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
       sig do
-        params(key: String, type: Symbol, value: T.any(String, Float, T::Boolean)).returns(T.attached_class)
+        params(
+          key: String,
+          type: OpenAI::Models::ComparisonFilter::Type::OrSymbol,
+          value: T.any(String, Float, T::Boolean)
+        )
+          .returns(T.attached_class)
       end
       def self.new(key:, type:, value:)
       end
 
-      sig { override.returns({key: String, type: Symbol, value: T.any(String, Float, T::Boolean)}) }
+      sig do
+        override
+          .returns(
+            {key: String, type: OpenAI::Models::ComparisonFilter::Type::OrSymbol, value: T.any(String, Float, T::Boolean)}
+          )
+      end
       def to_hash
       end
 
@@ -58,23 +71,24 @@ module OpenAI
       #   - `gte`: greater than or equal
       #   - `lt`: less than
       #   - `lte`: less than or equal
-      class Type < OpenAI::Enum
-        abstract!
+      module Type
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ComparisonFilter::Type) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol) }
 
-        EQ = :eq
-        NE = :ne
-        GT = :gt
-        GTE = :gte
-        LT = :lt
-        LTE = :lte
+        EQ = T.let(:eq, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+        NE = T.let(:ne, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+        GT = T.let(:gt, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+        GTE = T.let(:gte, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+        LT = T.let(:lt, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+        LTE = T.let(:lte, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
       end
 
       # The value to compare against the attribute key; supports string, number, or
       #   boolean types.
-      class Value < OpenAI::Union
-        abstract!
+      module Value
+        extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
       end

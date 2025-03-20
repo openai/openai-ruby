@@ -35,7 +35,9 @@ module OpenAI
           OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs
           | OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
 
-        class Result < OpenAI::Union
+        module Result
+          extend OpenAI::Union
+
           type logs = { logs: String, type: :logs }
 
           class Logs < OpenAI::BaseModel
@@ -84,7 +86,9 @@ module OpenAI
 
         type status = :in_progress | :interpreting | :completed
 
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS: :in_progress
           INTERPRETING: :interpreting
           COMPLETED: :completed

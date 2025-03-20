@@ -94,11 +94,11 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
         end
 
-        # @abstract
-        #
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           INCOMPLETE = :incomplete

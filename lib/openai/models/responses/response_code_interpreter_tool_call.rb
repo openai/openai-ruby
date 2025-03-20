@@ -48,10 +48,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The output of a code interpreter tool call that is text.
-        class Result < OpenAI::Union
+        module Result
+          extend OpenAI::Union
+
           discriminator :type
 
           # The output of a code interpreter tool call that is text.
@@ -137,10 +137,10 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        #
         # The status of the code interpreter tool call.
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS = :in_progress
           INTERPRETING = :interpreting
           COMPLETED = :completed

@@ -40,11 +40,14 @@ module OpenAI
         end
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)) }
         def filter
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
+            .returns(OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
+        end
         def filter=(_)
         end
 
@@ -60,11 +63,14 @@ module OpenAI
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)) }
         def order
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
+            .returns(OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
+        end
         def order=(_)
         end
 
@@ -73,9 +79,9 @@ module OpenAI
             vector_store_id: String,
             after: String,
             before: String,
-            filter: Symbol,
+            filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
-            order: Symbol,
+            order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -90,9 +96,9 @@ module OpenAI
                 vector_store_id: String,
                 after: String,
                 before: String,
-                filter: Symbol,
+                filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
                 limit: Integer,
-                order: Symbol,
+                order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -101,26 +107,33 @@ module OpenAI
         end
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
-        class Filter < OpenAI::Enum
-          abstract!
+        module Filter
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          FAILED = :failed
-          CANCELLED = :cancelled
+          IN_PROGRESS =
+            T.let(:in_progress, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
+          FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
+          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
-        class Order < OpenAI::Enum
-          abstract!
+        module Order
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol) }
 
-          ASC = :asc
-          DESC = :desc
+          ASC = T.let(:asc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
+          DESC = T.let(:desc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
         end
       end
     end

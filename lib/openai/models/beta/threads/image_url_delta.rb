@@ -35,11 +35,11 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          # @abstract
-          #
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`.
-          class Detail < OpenAI::Enum
+          module Detail
+            extend OpenAI::Enum
+
             AUTO = :auto
             LOW = :low
             HIGH = :high

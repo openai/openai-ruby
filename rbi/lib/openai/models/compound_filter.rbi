@@ -17,42 +17,57 @@ module OpenAI
       end
 
       # Type of operation: `and` or `or`.
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::CompoundFilter::Type::OrSymbol) }
       def type
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig do
+        params(_: OpenAI::Models::CompoundFilter::Type::OrSymbol)
+          .returns(OpenAI::Models::CompoundFilter::Type::OrSymbol)
+      end
       def type=(_)
       end
 
       # Combine multiple filters using `and` or `or`.
       sig do
-        params(filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)], type: Symbol)
+        params(
+          filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)],
+          type: OpenAI::Models::CompoundFilter::Type::OrSymbol
+        )
           .returns(T.attached_class)
       end
       def self.new(filters:, type:)
       end
 
-      sig { override.returns({filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)], type: Symbol}) }
+      sig do
+        override
+          .returns(
+            {
+              filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)],
+              type: OpenAI::Models::CompoundFilter::Type::OrSymbol
+            }
+          )
+      end
       def to_hash
       end
 
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
-      class Filter < OpenAI::Union
-        abstract!
+      module Filter
+        extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, T.anything)} }
       end
 
       # Type of operation: `and` or `or`.
-      class Type < OpenAI::Enum
-        abstract!
+      module Type
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompoundFilter::Type) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompoundFilter::Type::TaggedSymbol) }
 
-        AND = :and
-        OR = :or
+        AND = T.let(:and, OpenAI::Models::CompoundFilter::Type::OrSymbol)
+        OR = T.let(:or, OpenAI::Models::CompoundFilter::Type::OrSymbol)
       end
     end
   end

@@ -76,8 +76,6 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # Input text to embed, encoded as a string or array of tokens. To embed multiple
       #   inputs in a single request, pass an array of strings or array of token arrays.
       #   The input must not exceed the max input tokens for the model (8192 tokens for
@@ -86,7 +84,9 @@ module OpenAI
       #   [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
       #   for counting tokens. Some models may also impose a limit on total number of
       #   tokens summed across inputs.
-      class Input < OpenAI::Union
+      module Input
+        extend OpenAI::Union
+
         StringArray = OpenAI::ArrayOf[String]
 
         IntegerArray = OpenAI::ArrayOf[Integer]
@@ -112,14 +112,14 @@ module OpenAI
         #   end
       end
 
-      # @abstract
-      #
       # ID of the model to use. You can use the
       #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
       #   see all of your available models, or see our
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
-      class Model < OpenAI::Union
+      module Model
+        extend OpenAI::Union
+
         variant String
 
         # ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
@@ -132,11 +132,11 @@ module OpenAI
         #   end
       end
 
-      # @abstract
-      #
       # The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
-      class EncodingFormat < OpenAI::Enum
+      module EncodingFormat
+        extend OpenAI::Enum
+
         FLOAT = :float
         BASE64 = :base64
 

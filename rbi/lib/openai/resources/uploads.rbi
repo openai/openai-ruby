@@ -31,7 +31,7 @@ module OpenAI
           bytes: Integer,
           filename: String,
           mime_type: String,
-          purpose: Symbol,
+          purpose: OpenAI::Models::FilePurpose::OrSymbol,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::Models::Upload)

@@ -49,11 +49,14 @@ module OpenAI
           end
 
           # The entity that produced the message. One of `user` or `assistant`.
-          sig { returns(T.nilable(Symbol)) }
+          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)) }
           def role
           end
 
-          sig { params(_: Symbol).returns(Symbol) }
+          sig do
+            params(_: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
+              .returns(OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
+          end
           def role=(_)
           end
 
@@ -68,7 +71,7 @@ module OpenAI
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
               )
               ],
-              role: Symbol
+              role: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol
             )
               .returns(T.attached_class)
           end
@@ -87,7 +90,7 @@ module OpenAI
                     OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
                   )
                   ],
-                  role: Symbol
+                  role: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol
                 }
               )
           end
@@ -95,13 +98,15 @@ module OpenAI
           end
 
           # The entity that produced the message. One of `user` or `assistant`.
-          class Role < OpenAI::Enum
-            abstract!
+          module Role
+            extend OpenAI::Enum
 
-            Value = type_template(:out) { {fixed: Symbol} }
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role) }
+            OrSymbol =
+              T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol) }
 
-            USER = :user
-            ASSISTANT = :assistant
+            USER = T.let(:user, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
+            ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
           end
         end
       end

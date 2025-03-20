@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class FineTuningJob = FineTuning::FineTuningJob
 
     module FineTuning
@@ -148,19 +147,25 @@ module OpenAI
 
           type batch_size = :auto | Integer
 
-          class BatchSize < OpenAI::Union
+          module BatchSize
+            extend OpenAI::Union
+
             def self.variants: -> [:auto, Integer]
           end
 
           type learning_rate_multiplier = :auto | Float
 
-          class LearningRateMultiplier < OpenAI::Union
+          module LearningRateMultiplier
+            extend OpenAI::Union
+
             def self.variants: -> [:auto, Float]
           end
 
           type n_epochs = :auto | Integer
 
-          class NEpochs < OpenAI::Union
+          module NEpochs
+            extend OpenAI::Union
+
             def self.variants: -> [:auto, Integer]
           end
         end
@@ -173,7 +178,9 @@ module OpenAI
           | :failed
           | :cancelled
 
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           VALIDATING_FILES: :validating_files
           QUEUED: :queued
           RUNNING: :running
@@ -280,25 +287,33 @@ module OpenAI
 
               type batch_size = :auto | Integer
 
-              class BatchSize < OpenAI::Union
+              module BatchSize
+                extend OpenAI::Union
+
                 def self.variants: -> [:auto, Integer]
               end
 
               type beta = :auto | Float
 
-              class Beta < OpenAI::Union
+              module Beta
+                extend OpenAI::Union
+
                 def self.variants: -> [:auto, Float]
               end
 
               type learning_rate_multiplier = :auto | Float
 
-              class LearningRateMultiplier < OpenAI::Union
+              module LearningRateMultiplier
+                extend OpenAI::Union
+
                 def self.variants: -> [:auto, Float]
               end
 
               type n_epochs = :auto | Integer
 
-              class NEpochs < OpenAI::Union
+              module NEpochs
+                extend OpenAI::Union
+
                 def self.variants: -> [:auto, Integer]
               end
             end
@@ -358,19 +373,25 @@ module OpenAI
 
               type batch_size = :auto | Integer
 
-              class BatchSize < OpenAI::Union
+              module BatchSize
+                extend OpenAI::Union
+
                 def self.variants: -> [:auto, Integer]
               end
 
               type learning_rate_multiplier = :auto | Float
 
-              class LearningRateMultiplier < OpenAI::Union
+              module LearningRateMultiplier
+                extend OpenAI::Union
+
                 def self.variants: -> [:auto, Float]
               end
 
               type n_epochs = :auto | Integer
 
-              class NEpochs < OpenAI::Union
+              module NEpochs
+                extend OpenAI::Union
+
                 def self.variants: -> [:auto, Integer]
               end
             end
@@ -378,7 +399,9 @@ module OpenAI
 
           type type_ = :supervised | :dpo
 
-          class Type < OpenAI::Enum
+          module Type
+            extend OpenAI::Enum
+
             SUPERVISED: :supervised
             DPO: :dpo
 

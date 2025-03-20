@@ -18,11 +18,14 @@ module OpenAI
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
-        sig { returns(T.any(String, Symbol)) }
+        sig { returns(T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol)) }
         def model
         end
 
-        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
+        sig do
+          params(_: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol))
+            .returns(T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol))
+        end
         def model=(_)
         end
 
@@ -30,11 +33,14 @@ module OpenAI
         #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
         #   voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol) }
         def voice
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+            .returns(OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+        end
         def voice=(_)
         end
 
@@ -50,11 +56,14 @@ module OpenAI
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
         #   `wav`, and `pcm`.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)) }
         def response_format
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+            .returns(OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+        end
         def response_format=(_)
         end
 
@@ -71,10 +80,10 @@ module OpenAI
         sig do
           params(
             input: String,
-            model: T.any(String, Symbol),
-            voice: Symbol,
+            model: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol),
+            voice: OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol,
             instructions: String,
-            response_format: Symbol,
+            response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
@@ -88,10 +97,10 @@ module OpenAI
             .returns(
               {
                 input: String,
-                model: T.any(String, Symbol),
-                voice: Symbol,
+                model: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol),
+                voice: OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol,
                 instructions: String,
-                response_format: Symbol,
+                response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
                 speed: Float,
                 request_options: OpenAI::RequestOptions
               }
@@ -102,45 +111,48 @@ module OpenAI
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
-        class Model < OpenAI::Union
-          abstract!
+        module Model
+          extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol)} }
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
         #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
         #   voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
-        class Voice < OpenAI::Enum
-          abstract!
+        module Voice
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice) }
+          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
 
-          ALLOY = :alloy
-          ASH = :ash
-          CORAL = :coral
-          ECHO = :echo
-          FABLE = :fable
-          ONYX = :onyx
-          NOVA = :nova
-          SAGE = :sage
-          SHIMMER = :shimmer
+          ALLOY = T.let(:alloy, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          ASH = T.let(:ash, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          CORAL = T.let(:coral, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          ECHO = T.let(:echo, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          FABLE = T.let(:fable, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          ONYX = T.let(:onyx, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          NOVA = T.let(:nova, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          SAGE = T.let(:sage, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          SHIMMER = T.let(:shimmer, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
         #   `wav`, and `pcm`.
-        class ResponseFormat < OpenAI::Enum
-          abstract!
+        module ResponseFormat
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol) }
 
-          MP3 = :mp3
-          OPUS = :opus
-          AAC = :aac
-          FLAC = :flac
-          WAV = :wav
-          PCM = :pcm
+          MP3 = T.let(:mp3, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+          OPUS = T.let(:opus, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+          AAC = T.let(:aac, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+          FLAC = T.let(:flac, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+          WAV = T.let(:wav, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+          PCM = T.let(:pcm, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
         end
       end
     end

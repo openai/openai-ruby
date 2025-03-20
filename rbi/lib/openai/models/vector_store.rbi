@@ -73,11 +73,14 @@ module OpenAI
       # The status of the vector store, which can be either `expired`, `in_progress`, or
       #   `completed`. A status of `completed` indicates that the vector store is ready
       #   for use.
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::VectorStore::Status::TaggedSymbol) }
       def status
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig do
+        params(_: OpenAI::Models::VectorStore::Status::TaggedSymbol)
+          .returns(OpenAI::Models::VectorStore::Status::TaggedSymbol)
+      end
       def status=(_)
       end
 
@@ -118,7 +121,7 @@ module OpenAI
           last_active_at: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          status: Symbol,
+          status: OpenAI::Models::VectorStore::Status::TaggedSymbol,
           usage_bytes: Integer,
           expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
           expires_at: T.nilable(Integer),
@@ -152,7 +155,7 @@ module OpenAI
               metadata: T.nilable(T::Hash[Symbol, String]),
               name: String,
               object: Symbol,
-              status: Symbol,
+              status: OpenAI::Models::VectorStore::Status::TaggedSymbol,
               usage_bytes: Integer,
               expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
               expires_at: T.nilable(Integer)
@@ -238,14 +241,15 @@ module OpenAI
       # The status of the vector store, which can be either `expired`, `in_progress`, or
       #   `completed`. A status of `completed` indicates that the vector store is ready
       #   for use.
-      class Status < OpenAI::Enum
-        abstract!
+      module Status
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStore::Status) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::VectorStore::Status::TaggedSymbol) }
 
-        EXPIRED = :expired
-        IN_PROGRESS = :in_progress
-        COMPLETED = :completed
+        EXPIRED = T.let(:expired, OpenAI::Models::VectorStore::Status::TaggedSymbol)
+        IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStore::Status::TaggedSymbol)
+        COMPLETED = T.let(:completed, OpenAI::Models::VectorStore::Status::TaggedSymbol)
       end
 
       class ExpiresAfter < OpenAI::BaseModel

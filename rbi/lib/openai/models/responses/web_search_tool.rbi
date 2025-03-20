@@ -8,21 +8,27 @@ module OpenAI
         #
         #   - `web_search_preview`
         #   - `web_search_preview_2025_03_11`
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol) }
         def type
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
+            .returns(OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
+        end
         def type=(_)
         end
 
         # High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)) }
         def search_context_size
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
+            .returns(OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
+        end
         def search_context_size=(_)
         end
 
@@ -42,8 +48,8 @@ module OpenAI
         #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         sig do
           params(
-            type: Symbol,
-            search_context_size: Symbol,
+            type: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol,
+            search_context_size: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol,
             user_location: T.nilable(OpenAI::Models::Responses::WebSearchTool::UserLocation)
           )
             .returns(T.attached_class)
@@ -55,8 +61,8 @@ module OpenAI
           override
             .returns(
               {
-                type: Symbol,
-                search_context_size: Symbol,
+                type: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol,
+                search_context_size: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol,
                 user_location: T.nilable(OpenAI::Models::Responses::WebSearchTool::UserLocation)
               }
             )
@@ -68,25 +74,30 @@ module OpenAI
         #
         #   - `web_search_preview`
         #   - `web_search_preview_2025_03_11`
-        class Type < OpenAI::Enum
-          abstract!
+        module Type
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::WebSearchTool::Type) }
+          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol) }
 
-          WEB_SEARCH_PREVIEW = :web_search_preview
-          WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
+          WEB_SEARCH_PREVIEW = T.let(:web_search_preview, OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
+          WEB_SEARCH_PREVIEW_2025_03_11 =
+            T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
         end
 
         # High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-        class SearchContextSize < OpenAI::Enum
-          abstract!
+        module SearchContextSize
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol) }
 
-          LOW = :low
-          MEDIUM = :medium
-          HIGH = :high
+          LOW = T.let(:low, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
+          MEDIUM = T.let(:medium, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
+          HIGH = T.let(:high, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
         end
 
         class UserLocation < OpenAI::BaseModel

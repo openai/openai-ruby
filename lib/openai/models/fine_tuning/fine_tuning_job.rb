@@ -272,11 +272,11 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          # @abstract
-          #
           # Number of examples in each batch. A larger batch size means that model
           #   parameters are updated less frequently, but with lower variance.
-          class BatchSize < OpenAI::Union
+          module BatchSize
+            extend OpenAI::Union
+
             variant const: :auto
 
             variant Integer
@@ -288,11 +288,11 @@ module OpenAI
             #   end
           end
 
-          # @abstract
-          #
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           #   avoid overfitting.
-          class LearningRateMultiplier < OpenAI::Union
+          module LearningRateMultiplier
+            extend OpenAI::Union
+
             variant const: :auto
 
             variant Float
@@ -304,11 +304,11 @@ module OpenAI
             #   end
           end
 
-          # @abstract
-          #
           # The number of epochs to train the model for. An epoch refers to one full cycle
           #   through the training dataset.
-          class NEpochs < OpenAI::Union
+          module NEpochs
+            extend OpenAI::Union
+
             variant const: :auto
 
             variant Integer
@@ -321,11 +321,11 @@ module OpenAI
           end
         end
 
-        # @abstract
-        #
         # The current status of the fine-tuning job, which can be either
         #   `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           VALIDATING_FILES = :validating_files
           QUEUED = :queued
           RUNNING = :running
@@ -459,11 +459,11 @@ module OpenAI
 
               # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-              # @abstract
-              #
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
-              class BatchSize < OpenAI::Union
+              module BatchSize
+                extend OpenAI::Union
+
                 variant const: :auto
 
                 variant Integer
@@ -475,11 +475,11 @@ module OpenAI
                 #   end
               end
 
-              # @abstract
-              #
               # The beta value for the DPO method. A higher beta value will increase the weight
               #   of the penalty between the policy and reference model.
-              class Beta < OpenAI::Union
+              module Beta
+                extend OpenAI::Union
+
                 variant const: :auto
 
                 variant Float
@@ -491,11 +491,11 @@ module OpenAI
                 #   end
               end
 
-              # @abstract
-              #
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
-              class LearningRateMultiplier < OpenAI::Union
+              module LearningRateMultiplier
+                extend OpenAI::Union
+
                 variant const: :auto
 
                 variant Float
@@ -507,11 +507,11 @@ module OpenAI
                 #   end
               end
 
-              # @abstract
-              #
               # The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
-              class NEpochs < OpenAI::Union
+              module NEpochs
+                extend OpenAI::Union
+
                 variant const: :auto
 
                 variant Integer
@@ -594,11 +594,11 @@ module OpenAI
 
               # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-              # @abstract
-              #
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
-              class BatchSize < OpenAI::Union
+              module BatchSize
+                extend OpenAI::Union
+
                 variant const: :auto
 
                 variant Integer
@@ -610,11 +610,11 @@ module OpenAI
                 #   end
               end
 
-              # @abstract
-              #
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
-              class LearningRateMultiplier < OpenAI::Union
+              module LearningRateMultiplier
+                extend OpenAI::Union
+
                 variant const: :auto
 
                 variant Float
@@ -626,11 +626,11 @@ module OpenAI
                 #   end
               end
 
-              # @abstract
-              #
               # The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
-              class NEpochs < OpenAI::Union
+              module NEpochs
+                extend OpenAI::Union
+
                 variant const: :auto
 
                 variant Integer
@@ -644,10 +644,10 @@ module OpenAI
             end
           end
 
-          # @abstract
-          #
           # The type of method. Is either `supervised` or `dpo`.
-          class Type < OpenAI::Enum
+          module Type
+            extend OpenAI::Enum
+
             SUPERVISED = :supervised
             DPO = :dpo
 
