@@ -11,7 +11,7 @@ module OpenAI
           ?reasoning_effort: OpenAI::Models::reasoning_effort?,
           ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
           ?temperature: Float?,
-          ?tool_resources: OpenAI::Models::Beta::AssistantCreateParams::ToolResources?,
+          ?tool_resources: UnnamedTypeWithNoPropertyInfoOrParent0?,
           ?tools: ::Array[OpenAI::Models::Beta::assistant_tool],
           ?top_p: Float?,
           ?request_options: OpenAI::request_opts
