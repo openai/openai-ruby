@@ -2,24 +2,20 @@
 
 module OpenAI
   # @example
-  # ```ruby
-  # stream.each do |chunk|
-  #   puts(chunk)
-  # end
-  # ```
+  #   stream.each do |chunk|
+  #     puts(chunk)
+  #   end
   #
   # @example
-  # ```ruby
-  # chunks =
-  #   stream
-  #   .lazy
-  #   .select { _1.object_id.even? }
-  #   .map(&:itself)
-  #   .take(2)
-  #   .to_a
+  #   chunks =
+  #     stream
+  #     .lazy
+  #     .select { _1.object_id.even? }
+  #     .map(&:itself)
+  #     .take(2)
+  #     .to_a
   #
-  # chunks => Array
-  # ```
+  #   chunks => Array
   module BaseStream
     include Enumerable
 

@@ -17,7 +17,7 @@ module OpenAI
       idempotency_key: String?,
       extra_query: ::Hash[String, (::Array[String] | String)?]?,
       extra_headers: ::Hash[String, String?]?,
-      extra_body: ::Hash[Symbol, top]?,
+      extra_body: top?,
       max_retries: Integer?,
       timeout: Float?
     }
@@ -31,7 +31,7 @@ module OpenAI
 
     attr_accessor extra_headers: ::Hash[String, String?]?
 
-    attr_accessor extra_body: ::Hash[Symbol, top]?
+    attr_accessor extra_body: top?
 
     attr_accessor max_retries: Integer?
 
