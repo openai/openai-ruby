@@ -2,6 +2,6 @@
 
 module OpenAI
   module Models
-    FunctionParameters = T.type_alias { T::Hash[Symbol, T.anything] }
+    FunctionParameters = T.let(OpenAI::HashOf[OpenAI::Unknown], OpenAI::Converter)
   end
 end

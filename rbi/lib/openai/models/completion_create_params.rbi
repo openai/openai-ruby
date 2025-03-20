@@ -361,11 +361,11 @@ module OpenAI
             {fixed: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])}
           end
 
-        StringArray = T.type_alias { T::Array[String] }
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
-        IntegerArray = T.type_alias { T::Array[Integer] }
+        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
 
-        ArrayOfToken2DArray = T.type_alias { T::Array[T::Array[Integer]] }
+        ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -375,7 +375,7 @@ module OpenAI
 
         Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
 
-        StringArray = T.type_alias { T::Array[String] }
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
       end
     end
   end

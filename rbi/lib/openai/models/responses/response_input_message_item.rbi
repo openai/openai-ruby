@@ -15,13 +15,39 @@ module OpenAI
 
         # A list of one or many input items to the model, containing different content
         #   types.
-        sig { returns(OpenAI::Models::Responses::ResponseInputMessageContentList) }
+        sig do
+          returns(
+            T::Array[
+            T.any(
+              OpenAI::Models::Responses::ResponseInputText,
+              OpenAI::Models::Responses::ResponseInputImage,
+              OpenAI::Models::Responses::ResponseInputFile
+            )
+            ]
+          )
+        end
         def content
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageContentList)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageContentList)
+          params(
+            _: T::Array[
+            T.any(
+              OpenAI::Models::Responses::ResponseInputText,
+              OpenAI::Models::Responses::ResponseInputImage,
+              OpenAI::Models::Responses::ResponseInputFile
+            )
+            ]
+          )
+            .returns(
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+              ]
+            )
         end
         def content=(_)
         end
@@ -57,7 +83,13 @@ module OpenAI
         sig do
           params(
             id: String,
-            content: OpenAI::Models::Responses::ResponseInputMessageContentList,
+            content: T::Array[
+            T.any(
+              OpenAI::Models::Responses::ResponseInputText,
+              OpenAI::Models::Responses::ResponseInputImage,
+              OpenAI::Models::Responses::ResponseInputFile
+            )
+            ],
             role: Symbol,
             status: Symbol,
             type: Symbol
@@ -72,7 +104,13 @@ module OpenAI
             .returns(
               {
                 id: String,
-                content: OpenAI::Models::Responses::ResponseInputMessageContentList,
+                content: T::Array[
+                T.any(
+                  OpenAI::Models::Responses::ResponseInputText,
+                  OpenAI::Models::Responses::ResponseInputImage,
+                  OpenAI::Models::Responses::ResponseInputFile
+                )
+                ],
                 role: Symbol,
                 status: Symbol,
                 type: Symbol

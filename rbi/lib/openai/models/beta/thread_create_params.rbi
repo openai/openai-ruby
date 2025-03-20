@@ -26,11 +26,11 @@ module OpenAI
         #
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
-        sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata=(_)
         end
 
@@ -52,7 +52,7 @@ module OpenAI
         sig do
           params(
             messages: T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateParams::ToolResources),
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
@@ -66,7 +66,7 @@ module OpenAI
             .returns(
               {
                 messages: T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
-                metadata: T.nilable(OpenAI::Models::Metadata),
+                metadata: T.nilable(T::Hash[Symbol, String]),
                 tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateParams::ToolResources),
                 request_options: OpenAI::RequestOptions
               }
@@ -155,11 +155,11 @@ module OpenAI
           #
           #   Keys are strings with a maximum length of 64 characters. Values are strings with
           #   a maximum length of 512 characters.
-          sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+          sig { returns(T.nilable(T::Hash[Symbol, String])) }
           def metadata
           end
 
-          sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+          sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
           def metadata=(_)
           end
 
@@ -177,7 +177,7 @@ module OpenAI
               ),
               role: Symbol,
               attachments: T.nilable(T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment]),
-              metadata: T.nilable(OpenAI::Models::Metadata)
+              metadata: T.nilable(T::Hash[Symbol, String])
             )
               .returns(T.attached_class)
           end
@@ -200,7 +200,7 @@ module OpenAI
                   ),
                   role: Symbol,
                   attachments: T.nilable(T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment]),
-                  metadata: T.nilable(OpenAI::Models::Metadata)
+                  metadata: T.nilable(T::Hash[Symbol, String])
                 }
               )
           end
@@ -228,15 +228,7 @@ module OpenAI
               end
 
             MessageContentPartParamArray =
-              T.type_alias do
-                T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                  OpenAI::Models::Beta::Threads::TextContentBlockParam
-                )
-                ]
-              end
+              T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
           end
 
           # The role of the entity that is creating the message. Allowed values include:
@@ -542,11 +534,13 @@ module OpenAI
               #
               #   Keys are strings with a maximum length of 64 characters. Values are strings with
               #   a maximum length of 512 characters.
-              sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+              sig { returns(T.nilable(T::Hash[Symbol, String])) }
               def metadata
               end
 
-              sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+              sig do
+                params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String]))
+              end
               def metadata=(_)
               end
 
@@ -557,7 +551,7 @@ module OpenAI
                     OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                   ),
                   file_ids: T::Array[String],
-                  metadata: T.nilable(OpenAI::Models::Metadata)
+                  metadata: T.nilable(T::Hash[Symbol, String])
                 )
                   .returns(T.attached_class)
               end
@@ -573,7 +567,7 @@ module OpenAI
                         OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                       ),
                       file_ids: T::Array[String],
-                      metadata: T.nilable(OpenAI::Models::Metadata)
+                      metadata: T.nilable(T::Hash[Symbol, String])
                     }
                   )
               end

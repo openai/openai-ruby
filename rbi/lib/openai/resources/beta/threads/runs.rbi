@@ -20,7 +20,7 @@ module OpenAI
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
-              metadata: T.nilable(OpenAI::Models::Metadata),
+              metadata: T.nilable(T::Hash[Symbol, String]),
               model: T.nilable(T.any(String, Symbol)),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(Symbol),
@@ -177,7 +177,7 @@ module OpenAI
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
-              metadata: T.nilable(OpenAI::Models::Metadata),
+              metadata: T.nilable(T::Hash[Symbol, String]),
               model: T.nilable(T.any(String, Symbol)),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(Symbol),
@@ -376,7 +376,7 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              metadata: T.nilable(OpenAI::Models::Metadata),
+              metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)

@@ -9,7 +9,7 @@ module OpenAI
           completion_window: Symbol,
           endpoint: Symbol,
           input_file_id: String,
-          metadata: T.nilable(OpenAI::Models::Metadata),
+          metadata: T.nilable(T::Hash[Symbol, String]),
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::Models::Batch)

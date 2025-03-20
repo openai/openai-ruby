@@ -195,11 +195,11 @@ module OpenAI
         #
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
-        sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata=(_)
         end
 
@@ -517,7 +517,7 @@ module OpenAI
             logprobs: T.nilable(T::Boolean),
             max_completion_tokens: T.nilable(Integer),
             max_tokens: T.nilable(Integer),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             modalities: T.nilable(T::Array[Symbol]),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
@@ -603,7 +603,7 @@ module OpenAI
                 logprobs: T.nilable(T::Boolean),
                 max_completion_tokens: T.nilable(Integer),
                 max_tokens: T.nilable(Integer),
-                metadata: T.nilable(OpenAI::Models::Metadata),
+                metadata: T.nilable(T::Hash[Symbol, String]),
                 modalities: T.nilable(T::Array[Symbol]),
                 n: T.nilable(Integer),
                 parallel_tool_calls: T::Boolean,
@@ -706,22 +706,24 @@ module OpenAI
           #   documentation about the format.
           #
           #   Omitting `parameters` defines a function with an empty parameter list.
-          sig { returns(T.nilable(OpenAI::Models::FunctionParameters)) }
+          sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
           def parameters
           end
 
-          sig { params(_: OpenAI::Models::FunctionParameters).returns(OpenAI::Models::FunctionParameters) }
+          sig { params(_: T::Hash[Symbol, T.anything]).returns(T::Hash[Symbol, T.anything]) }
           def parameters=(_)
           end
 
           sig do
-            params(name: String, description: String, parameters: OpenAI::Models::FunctionParameters)
+            params(name: String, description: String, parameters: T::Hash[Symbol, T.anything])
               .returns(T.attached_class)
           end
           def self.new(name:, description: nil, parameters: nil)
           end
 
-          sig { override.returns({name: String, description: String, parameters: OpenAI::Models::FunctionParameters}) }
+          sig do
+            override.returns({name: String, description: String, parameters: T::Hash[Symbol, T.anything]})
+          end
           def to_hash
           end
         end
@@ -790,7 +792,7 @@ module OpenAI
 
           Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
 
-          StringArray = T.type_alias { T::Array[String] }
+          StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
         end
 
         class WebSearchOptions < OpenAI::BaseModel

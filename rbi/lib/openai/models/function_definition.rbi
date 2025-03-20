@@ -30,11 +30,11 @@ module OpenAI
       #   documentation about the format.
       #
       #   Omitting `parameters` defines a function with an empty parameter list.
-      sig { returns(T.nilable(OpenAI::Models::FunctionParameters)) }
+      sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
       def parameters
       end
 
-      sig { params(_: OpenAI::Models::FunctionParameters).returns(OpenAI::Models::FunctionParameters) }
+      sig { params(_: T::Hash[Symbol, T.anything]).returns(T::Hash[Symbol, T.anything]) }
       def parameters=(_)
       end
 
@@ -55,7 +55,7 @@ module OpenAI
         params(
           name: String,
           description: String,
-          parameters: OpenAI::Models::FunctionParameters,
+          parameters: T::Hash[Symbol, T.anything],
           strict: T.nilable(T::Boolean)
         )
           .returns(T.attached_class)
@@ -66,7 +66,12 @@ module OpenAI
       sig do
         override
           .returns(
-            {name: String, description: String, parameters: OpenAI::Models::FunctionParameters, strict: T.nilable(T::Boolean)}
+            {
+              name: String,
+              description: String,
+              parameters: T::Hash[Symbol, T.anything],
+              strict: T.nilable(T::Boolean)
+            }
           )
       end
       def to_hash

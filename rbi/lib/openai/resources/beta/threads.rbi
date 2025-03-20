@@ -16,7 +16,7 @@ module OpenAI
         sig do
           params(
             messages: T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateParams::ToolResources),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
@@ -61,7 +61,7 @@ module OpenAI
         sig do
           params(
             thread_id: String,
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             tool_resources: T.nilable(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
@@ -108,7 +108,7 @@ module OpenAI
             instructions: T.nilable(String),
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.nilable(T.any(String, Symbol)),
             parallel_tool_calls: T::Boolean,
             response_format: T.nilable(
@@ -242,7 +242,7 @@ module OpenAI
             instructions: T.nilable(String),
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.nilable(T.any(String, Symbol)),
             parallel_tool_calls: T::Boolean,
             response_format: T.nilable(
