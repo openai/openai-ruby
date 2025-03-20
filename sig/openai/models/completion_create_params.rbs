@@ -88,7 +88,9 @@ module OpenAI
       type model =
         String | :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
 
-      class Model < OpenAI::Union
+      module Model
+        extend OpenAI::Union
+
         GPT_3_5_TURBO_INSTRUCT: :"gpt-3.5-turbo-instruct"
         DAVINCI_002: :"davinci-002"
         BABBAGE_002: :"babbage-002"
@@ -101,7 +103,9 @@ module OpenAI
       type prompt =
         String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
 
-      class Prompt < OpenAI::Union
+      module Prompt
+        extend OpenAI::Union
+
         type string_array = ::Array[String]
 
         StringArray: string_array
@@ -119,7 +123,9 @@ module OpenAI
 
       type stop = (String | ::Array[String])?
 
-      class Stop < OpenAI::Union
+      module Stop
+        extend OpenAI::Union
+
         type string_array = ::Array[String]
 
         StringArray: string_array

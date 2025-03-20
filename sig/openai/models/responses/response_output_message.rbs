@@ -35,13 +35,17 @@ module OpenAI
           OpenAI::Models::Responses::ResponseOutputText
           | OpenAI::Models::Responses::ResponseOutputRefusal
 
-        class Content < OpenAI::Union
+        module Content
+          extend OpenAI::Union
+
           def self.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         end
 
         type status = :in_progress | :completed | :incomplete
 
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
           INCOMPLETE: :incomplete

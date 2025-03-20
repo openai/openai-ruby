@@ -49,8 +49,9 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        class Attribute < OpenAI::Union
+        module Attribute
+          extend OpenAI::Union
+
           variant String
 
           variant Float

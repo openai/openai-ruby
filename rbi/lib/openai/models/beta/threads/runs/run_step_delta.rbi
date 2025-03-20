@@ -65,8 +65,8 @@ module OpenAI
             end
 
             # The details of the run step.
-            class StepDetails < OpenAI::Union
-              abstract!
+            module StepDetails
+              extend OpenAI::Union
 
               Variants =
                 type_template(:out) do

@@ -27,7 +27,7 @@ module OpenAI
       sig do
         params(
           file: T.any(IO, StringIO),
-          purpose: Symbol,
+          purpose: OpenAI::Models::FilePurpose::OrSymbol,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::Models::FileObject)
@@ -64,7 +64,7 @@ module OpenAI
         params(
           after: String,
           limit: Integer,
-          order: Symbol,
+          order: OpenAI::Models::FileListParams::Order::OrSymbol,
           purpose: String,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )

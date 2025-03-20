@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class ChatCompletionAssistantMessageParam = Chat::ChatCompletionAssistantMessageParam
 
     module Chat
@@ -62,7 +61,9 @@ module OpenAI
           String
           | ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
 
-        class Content < OpenAI::Union
+        module Content
+          extend OpenAI::Union
+
           type array_of_content_part_array =
             ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
 
@@ -72,7 +73,9 @@ module OpenAI
             OpenAI::Models::Chat::ChatCompletionContentPartText
             | OpenAI::Models::Chat::ChatCompletionContentPartRefusal
 
-          class ArrayOfContentPart < OpenAI::Union
+          module ArrayOfContentPart
+            extend OpenAI::Union
+
             def self.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
           end
 

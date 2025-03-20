@@ -1,13 +1,14 @@
 module OpenAI
   module Models
-    
-    class ChatCompletionRole = Chat::ChatCompletionRole
+    module ChatCompletionRole = Chat::ChatCompletionRole
 
     module Chat
       type chat_completion_role =
         :developer | :system | :user | :assistant | :tool | :function
 
-      class ChatCompletionRole < OpenAI::Enum
+      module ChatCompletionRole
+        extend OpenAI::Enum
+
         DEVELOPER: :developer
         SYSTEM: :system
         USER: :user

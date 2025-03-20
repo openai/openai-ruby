@@ -25,7 +25,9 @@ module OpenAI
 
         type format_ = :mp3 | :wav
 
-        class Format < OpenAI::Enum
+        module Format
+          extend OpenAI::Enum
+
           MP3: :mp3
           WAV: :wav
 

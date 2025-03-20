@@ -108,11 +108,22 @@ module OpenAI
               class RankingOptions < OpenAI::BaseModel
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
-                sig { returns(Symbol) }
+                sig do
+                  returns(
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                  )
+                end
                 def ranker
                 end
 
-                sig { params(_: Symbol).returns(Symbol) }
+                sig do
+                  params(
+                    _: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                  )
+                    .returns(
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                    )
+                end
                 def ranker=(_)
                 end
 
@@ -127,23 +138,53 @@ module OpenAI
                 end
 
                 # The ranking options for the file search.
-                sig { params(ranker: Symbol, score_threshold: Float).returns(T.attached_class) }
+                sig do
+                  params(
+                    ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol,
+                    score_threshold: Float
+                  )
+                    .returns(T.attached_class)
+                end
                 def self.new(ranker:, score_threshold:)
                 end
 
-                sig { override.returns({ranker: Symbol, score_threshold: Float}) }
+                sig do
+                  override
+                    .returns(
+                      {
+                        ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol,
+                        score_threshold: Float
+                      }
+                    )
+                end
                 def to_hash
                 end
 
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
-                class Ranker < OpenAI::Enum
-                  abstract!
+                module Ranker
+                  extend OpenAI::Enum
 
-                  Value = type_template(:out) { {fixed: Symbol} }
+                  TaggedSymbol =
+                    T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker) }
+                  OrSymbol =
+                    T.type_alias do
+                      T.any(
+                        Symbol,
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                      )
+                    end
 
-                  AUTO = :auto
-                  DEFAULT_2024_08_21 = :default_2024_08_21
+                  AUTO =
+                    T.let(
+                      :auto,
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                    )
+                  DEFAULT_2024_08_21 =
+                    T.let(
+                      :default_2024_08_21,
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                    )
                 end
               end
 
@@ -231,29 +272,68 @@ module OpenAI
                   end
 
                   # The type of the content.
-                  sig { returns(T.nilable(Symbol)) }
+                  sig do
+                    returns(
+                      T.nilable(
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                      )
+                    )
+                  end
                   def type
                   end
 
-                  sig { params(_: Symbol).returns(Symbol) }
+                  sig do
+                    params(
+                      _: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                    )
+                      .returns(
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                      )
+                  end
                   def type=(_)
                   end
 
-                  sig { params(text: String, type: Symbol).returns(T.attached_class) }
+                  sig do
+                    params(
+                      text: String,
+                      type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                    )
+                      .returns(T.attached_class)
+                  end
                   def self.new(text: nil, type: nil)
                   end
 
-                  sig { override.returns({text: String, type: Symbol}) }
+                  sig do
+                    override
+                      .returns(
+                        {
+                          text: String,
+                          type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                        }
+                      )
+                  end
                   def to_hash
                   end
 
                   # The type of the content.
-                  class Type < OpenAI::Enum
-                    abstract!
+                  module Type
+                    extend OpenAI::Enum
 
-                    Value = type_template(:out) { {fixed: Symbol} }
+                    TaggedSymbol =
+                      T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type) }
+                    OrSymbol =
+                      T.type_alias do
+                        T.any(
+                          Symbol,
+                          OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                        )
+                      end
 
-                    TEXT = :text
+                    TEXT =
+                      T.let(
+                        :text,
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                      )
                   end
                 end
               end

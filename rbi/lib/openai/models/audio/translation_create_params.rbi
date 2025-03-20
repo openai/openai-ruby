@@ -19,11 +19,14 @@ module OpenAI
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
-        sig { returns(T.any(String, Symbol)) }
+        sig { returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol)) }
         def model
         end
 
-        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
+        sig do
+          params(_: T.any(String, OpenAI::Models::AudioModel::OrSymbol))
+            .returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol))
+        end
         def model=(_)
         end
 
@@ -41,11 +44,14 @@ module OpenAI
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)) }
         def response_format
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+            .returns(OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+        end
         def response_format=(_)
         end
 
@@ -65,9 +71,9 @@ module OpenAI
         sig do
           params(
             file: T.any(IO, StringIO),
-            model: T.any(String, Symbol),
+            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
             prompt: String,
-            response_format: Symbol,
+            response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
@@ -81,9 +87,9 @@ module OpenAI
             .returns(
               {
                 file: T.any(IO, StringIO),
-                model: T.any(String, Symbol),
+                model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
                 prompt: String,
-                response_format: Symbol,
+                response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
                 temperature: Float,
                 request_options: OpenAI::RequestOptions
               }
@@ -94,24 +100,28 @@ module OpenAI
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
-        class Model < OpenAI::Union
-          abstract!
+        module Model
+          extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::AudioModel::OrSymbol)} }
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
-        class ResponseFormat < OpenAI::Enum
-          abstract!
+        module ResponseFormat
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol) }
 
-          JSON = :json
-          TEXT = :text
-          SRT = :srt
-          VERBOSE_JSON = :verbose_json
-          VTT = :vtt
+          JSON = T.let(:json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+          TEXT = T.let(:text, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+          SRT = T.let(:srt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+          VERBOSE_JSON =
+            T.let(:verbose_json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+          VTT = T.let(:vtt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
         end
       end
     end

@@ -68,11 +68,11 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          # @abstract
-          #
           # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
           #   order and `desc` for descending order.
-          class Order < OpenAI::Enum
+          module Order
+            extend OpenAI::Enum
+
             ASC = :asc
             DESC = :desc
 

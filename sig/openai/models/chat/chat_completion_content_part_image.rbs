@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class ChatCompletionContentPartImage = Chat::ChatCompletionContentPartImage
 
     module Chat
@@ -46,7 +45,9 @@ module OpenAI
 
           type detail = :auto | :low | :high
 
-          class Detail < OpenAI::Enum
+          module Detail
+            extend OpenAI::Enum
+
             AUTO: :auto
             LOW: :low
             HIGH: :high

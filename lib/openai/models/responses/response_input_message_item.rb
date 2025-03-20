@@ -55,10 +55,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The role of the message input. One of `user`, `system`, or `developer`.
-        class Role < OpenAI::Enum
+        module Role
+          extend OpenAI::Enum
+
           USER = :user
           SYSTEM = :system
           DEVELOPER = :developer
@@ -66,11 +66,11 @@ module OpenAI
           finalize!
         end
 
-        # @abstract
-        #
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           INCOMPLETE = :incomplete
@@ -78,10 +78,10 @@ module OpenAI
           finalize!
         end
 
-        # @abstract
-        #
         # The type of the message input. Always set to `message`.
-        class Type < OpenAI::Enum
+        module Type
+          extend OpenAI::Enum
+
           MESSAGE = :message
 
           finalize!

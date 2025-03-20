@@ -106,11 +106,11 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
         end
 
-        # @abstract
-        #
         # The contents of the assistant message. Required unless `tool_calls` or
         #   `function_call` is specified.
-        class Content < OpenAI::Union
+        module Content
+          extend OpenAI::Union
+
           ArrayOfContentPartArray =
             OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart }]
 
@@ -120,11 +120,11 @@ module OpenAI
           # An array of content parts with a defined type. Can be one or more of type `text`, or exactly one of type `refusal`.
           variant OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPartArray
 
-          # @abstract
-          #
           # Learn about
           #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
-          class ArrayOfContentPart < OpenAI::Union
+          module ArrayOfContentPart
+            extend OpenAI::Union
+
             discriminator :type
 
             # Learn about [text inputs](https://platform.openai.com/docs/guides/text-generation).

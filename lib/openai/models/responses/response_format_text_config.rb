@@ -3,8 +3,6 @@
 module OpenAI
   module Models
     module Responses
-      # @abstract
-      #
       # An object specifying the format that the model must output.
       #
       #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
@@ -18,7 +16,9 @@ module OpenAI
       #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
       #   ensures the message the model generates is valid JSON. Using `json_schema` is
       #   preferred for models that support it.
-      class ResponseFormatTextConfig < OpenAI::Union
+      module ResponseFormatTextConfig
+        extend OpenAI::Union
+
         discriminator :type
 
         # Default response format. Used to generate text responses.

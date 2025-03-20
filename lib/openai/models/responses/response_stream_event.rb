@@ -3,10 +3,10 @@
 module OpenAI
   module Models
     module Responses
-      # @abstract
-      #
       # Emitted when there is a partial audio response.
-      class ResponseStreamEvent < OpenAI::Union
+      module ResponseStreamEvent
+        extend OpenAI::Union
+
         discriminator :type
 
         # Emitted when there is a partial audio response.

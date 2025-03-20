@@ -35,10 +35,10 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          # @abstract
-          #
           # The entity that produced the message. One of `user` or `assistant`.
-          class Role < OpenAI::Enum
+          module Role
+            extend OpenAI::Enum
+
             USER = :user
             ASSISTANT = :assistant
 
