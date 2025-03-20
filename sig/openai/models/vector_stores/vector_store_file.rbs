@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class VectorStoreFile = VectorStores::VectorStoreFile
 
     module VectorStores
@@ -74,7 +73,9 @@ module OpenAI
 
           type code = :server_error | :unsupported_file | :invalid_file
 
-          class Code < OpenAI::Enum
+          module Code
+            extend OpenAI::Enum
+
             SERVER_ERROR: :server_error
             UNSUPPORTED_FILE: :unsupported_file
             INVALID_FILE: :invalid_file
@@ -85,7 +86,9 @@ module OpenAI
 
         type status = :in_progress | :completed | :cancelled | :failed
 
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
           CANCELLED: :cancelled
@@ -96,7 +99,9 @@ module OpenAI
 
         type attribute = String | Float | bool
 
-        class Attribute < OpenAI::Union
+        module Attribute
+          extend OpenAI::Union
+
           def self.variants: -> [String, Float, bool]
         end
       end

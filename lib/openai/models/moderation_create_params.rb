@@ -36,11 +36,11 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       #   an array of multi-modal input objects similar to other models.
-      class Input < OpenAI::Union
+      module Input
+        extend OpenAI::Union
+
         StringArray = OpenAI::ArrayOf[String]
 
         ModerationMultiModalInputArray = OpenAI::ArrayOf[union: -> { OpenAI::Models::ModerationMultiModalInput }]
@@ -61,13 +61,13 @@ module OpenAI
         #   end
       end
 
-      # @abstract
-      #
       # The content moderation model you would like to use. Learn more in
       #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
       #   learn about available models
       #   [here](https://platform.openai.com/docs/models#moderation).
-      class Model < OpenAI::Union
+      module Model
+        extend OpenAI::Union
+
         variant String
 
         # The content moderation model you would like to use. Learn more in

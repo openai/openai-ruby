@@ -120,11 +120,14 @@ module OpenAI
 
             # The status of the run step, which can be either `in_progress`, `cancelled`,
             #   `failed`, `completed`, or `expired`.
-            sig { returns(Symbol) }
+            sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol) }
             def status
             end
 
-            sig { params(_: Symbol).returns(Symbol) }
+            sig do
+              params(_: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
+                .returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
+            end
             def status=(_)
             end
 
@@ -168,11 +171,14 @@ module OpenAI
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
-            sig { returns(Symbol) }
+            sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol) }
             def type
             end
 
-            sig { params(_: Symbol).returns(Symbol) }
+            sig do
+              params(_: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
+                .returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
+            end
             def type=(_)
             end
 
@@ -202,13 +208,13 @@ module OpenAI
                 last_error: T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError),
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 run_id: String,
-                status: Symbol,
+                status: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol,
                 step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
                 ),
                 thread_id: String,
-                type: Symbol,
+                type: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol,
                 usage: T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage),
                 object: Symbol
               )
@@ -249,13 +255,13 @@ module OpenAI
                     metadata: T.nilable(T::Hash[Symbol, String]),
                     object: Symbol,
                     run_id: String,
-                    status: Symbol,
+                    status: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol,
                     step_details: T.any(
                       OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
                       OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
                     ),
                     thread_id: String,
-                    type: Symbol,
+                    type: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol,
                     usage: T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage)
                   }
                 )
@@ -265,11 +271,14 @@ module OpenAI
 
             class LastError < OpenAI::BaseModel
               # One of `server_error` or `rate_limit_exceeded`.
-              sig { returns(Symbol) }
+              sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol) }
               def code
               end
 
-              sig { params(_: Symbol).returns(Symbol) }
+              sig do
+                params(_: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
+                  .returns(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
+              end
               def code=(_)
               end
 
@@ -284,42 +293,57 @@ module OpenAI
 
               # The last error associated with this run step. Will be `null` if there are no
               #   errors.
-              sig { params(code: Symbol, message: String).returns(T.attached_class) }
+              sig do
+                params(code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol, message: String)
+                  .returns(T.attached_class)
+              end
               def self.new(code:, message:)
               end
 
-              sig { override.returns({code: Symbol, message: String}) }
+              sig do
+                override
+                  .returns(
+                    {code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol, message: String}
+                  )
+              end
               def to_hash
               end
 
               # One of `server_error` or `rate_limit_exceeded`.
-              class Code < OpenAI::Enum
-                abstract!
+              module Code
+                extend OpenAI::Enum
 
-                Value = type_template(:out) { {fixed: Symbol} }
+                TaggedSymbol =
+                  T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code) }
+                OrSymbol =
+                  T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol) }
 
-                SERVER_ERROR = :server_error
-                RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
+                SERVER_ERROR =
+                  T.let(:server_error, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
+                RATE_LIMIT_EXCEEDED =
+                  T.let(:rate_limit_exceeded, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
               end
             end
 
             # The status of the run step, which can be either `in_progress`, `cancelled`,
             #   `failed`, `completed`, or `expired`.
-            class Status < OpenAI::Enum
-              abstract!
+            module Status
+              extend OpenAI::Enum
 
-              Value = type_template(:out) { {fixed: Symbol} }
+              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status) }
+              OrSymbol =
+                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol) }
 
-              IN_PROGRESS = :in_progress
-              CANCELLED = :cancelled
-              FAILED = :failed
-              COMPLETED = :completed
-              EXPIRED = :expired
+              IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
+              CANCELLED = T.let(:cancelled, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
+              FAILED = T.let(:failed, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
+              COMPLETED = T.let(:completed, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
+              EXPIRED = T.let(:expired, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
             end
 
             # The details of the run step.
-            class StepDetails < OpenAI::Union
-              abstract!
+            module StepDetails
+              extend OpenAI::Union
 
               Variants =
                 type_template(:out) do
@@ -333,13 +357,16 @@ module OpenAI
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
-            class Type < OpenAI::Enum
-              abstract!
+            module Type
+              extend OpenAI::Enum
 
-              Value = type_template(:out) { {fixed: Symbol} }
+              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type) }
+              OrSymbol =
+                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol) }
 
-              MESSAGE_CREATION = :message_creation
-              TOOL_CALLS = :tool_calls
+              MESSAGE_CREATION =
+                T.let(:message_creation, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
+              TOOL_CALLS = T.let(:tool_calls, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
             end
 
             class Usage < OpenAI::BaseModel

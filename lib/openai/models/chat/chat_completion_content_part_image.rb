@@ -51,11 +51,11 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          # @abstract
-          #
           # Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
-          class Detail < OpenAI::Enum
+          module Detail
+            extend OpenAI::Enum
+
             AUTO = :auto
             LOW = :low
             HIGH = :high

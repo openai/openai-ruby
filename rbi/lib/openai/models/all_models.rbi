@@ -2,20 +2,27 @@
 
 module OpenAI
   module Models
-    class AllModels < OpenAI::Union
-      abstract!
+    module AllModels
+      extend OpenAI::Union
 
-      Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+      Variants =
+        type_template(:out) do
+          {
+            fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::AllModels::UnionMember2::OrSymbol)
+          }
+        end
 
-      class UnionMember2 < OpenAI::Enum
-        abstract!
+      module UnionMember2
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::AllModels::UnionMember2) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::AllModels::UnionMember2::TaggedSymbol) }
 
-        O1_PRO = :"o1-pro"
-        O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
-        COMPUTER_USE_PREVIEW = :"computer-use-preview"
-        COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
+        O1_PRO = T.let(:"o1-pro", OpenAI::Models::AllModels::UnionMember2::OrSymbol)
+        O1_PRO_2025_03_19 = T.let(:"o1-pro-2025-03-19", OpenAI::Models::AllModels::UnionMember2::OrSymbol)
+        COMPUTER_USE_PREVIEW = T.let(:"computer-use-preview", OpenAI::Models::AllModels::UnionMember2::OrSymbol)
+        COMPUTER_USE_PREVIEW_2025_03_11 =
+          T.let(:"computer-use-preview-2025-03-11", OpenAI::Models::AllModels::UnionMember2::OrSymbol)
       end
     end
   end

@@ -54,11 +54,14 @@ module OpenAI
         end
 
         # The service tier used for processing the request.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)) }
         def service_tier
         end
 
-        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
+        sig do
+          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol))
+            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol))
+        end
         def service_tier=(_)
         end
 
@@ -91,7 +94,7 @@ module OpenAI
             choices: T::Array[OpenAI::Models::Chat::ChatCompletion::Choice],
             created: Integer,
             model: String,
-            service_tier: T.nilable(Symbol),
+            service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol),
             system_fingerprint: String,
             usage: OpenAI::Models::CompletionUsage,
             object: Symbol
@@ -119,7 +122,7 @@ module OpenAI
                 created: Integer,
                 model: String,
                 object: Symbol,
-                service_tier: T.nilable(Symbol),
+                service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol),
                 system_fingerprint: String,
                 usage: OpenAI::Models::CompletionUsage
               }
@@ -135,11 +138,14 @@ module OpenAI
           #   content was omitted due to a flag from our content filters, `tool_calls` if the
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
-          sig { returns(Symbol) }
+          sig { returns(OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol) }
           def finish_reason
           end
 
-          sig { params(_: Symbol).returns(Symbol) }
+          sig do
+            params(_: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+              .returns(OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+          end
           def finish_reason=(_)
           end
 
@@ -177,7 +183,7 @@ module OpenAI
 
           sig do
             params(
-              finish_reason: Symbol,
+              finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol,
               index: Integer,
               logprobs: T.nilable(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs),
               message: OpenAI::Models::Chat::ChatCompletionMessage
@@ -191,7 +197,7 @@ module OpenAI
             override
               .returns(
                 {
-                  finish_reason: Symbol,
+                  finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol,
                   index: Integer,
                   logprobs: T.nilable(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs),
                   message: OpenAI::Models::Chat::ChatCompletionMessage
@@ -207,16 +213,20 @@ module OpenAI
           #   content was omitted due to a flag from our content filters, `tool_calls` if the
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
-          class FinishReason < OpenAI::Enum
-            abstract!
+          module FinishReason
+            extend OpenAI::Enum
 
-            Value = type_template(:out) { {fixed: Symbol} }
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason) }
+            OrSymbol =
+              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol) }
 
-            STOP = :stop
-            LENGTH = :length
-            TOOL_CALLS = :tool_calls
-            CONTENT_FILTER = :content_filter
-            FUNCTION_CALL = :function_call
+            STOP = T.let(:stop, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+            LENGTH = T.let(:length, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+            TOOL_CALLS = T.let(:tool_calls, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+            CONTENT_FILTER =
+              T.let(:content_filter, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+            FUNCTION_CALL =
+              T.let(:function_call, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
           end
 
           class Logprobs < OpenAI::BaseModel
@@ -270,13 +280,15 @@ module OpenAI
         end
 
         # The service tier used for processing the request.
-        class ServiceTier < OpenAI::Enum
-          abstract!
+        module ServiceTier
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol) }
 
-          SCALE = :scale
-          DEFAULT = :default
+          SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
+          DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
         end
       end
     end

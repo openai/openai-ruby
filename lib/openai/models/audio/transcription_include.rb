@@ -3,8 +3,9 @@
 module OpenAI
   module Models
     module Audio
-      # @abstract
-      class TranscriptionInclude < OpenAI::Enum
+      module TranscriptionInclude
+        extend OpenAI::Enum
+
         LOGPROBS = :logprobs
 
         finalize!

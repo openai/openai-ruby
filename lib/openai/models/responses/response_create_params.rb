@@ -242,8 +242,6 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # Text, image, or file inputs to the model, used to generate a response.
         #
         #   Learn more:
@@ -253,7 +251,9 @@ module OpenAI
         #   - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
         #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        class Input < OpenAI::Union
+        module Input
+          extend OpenAI::Union
+
           # A text input to the model, equivalent to a text input with the
           # `user` role.
           variant String
@@ -269,12 +269,12 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        #
         # How the model should select which tool (or tools) to use when generating a
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
-        class ToolChoice < OpenAI::Union
+        module ToolChoice
+          extend OpenAI::Union
+
           # Controls which (if any) tool is called by the model.
           #
           # `none` means the model will not call any tool and instead generates a message.
@@ -299,8 +299,6 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        #
         # The truncation strategy to use for the model response.
         #
         #   - `auto`: If the context of this response and previous ones exceeds the model's
@@ -308,7 +306,9 @@ module OpenAI
         #     window by dropping input items in the middle of the conversation.
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
-        class Truncation < OpenAI::Enum
+        module Truncation
+          extend OpenAI::Enum
+
           AUTO = :auto
           DISABLED = :disabled
 

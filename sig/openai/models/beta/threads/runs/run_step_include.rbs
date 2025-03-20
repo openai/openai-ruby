@@ -2,14 +2,15 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        
-        class RunStepInclude = Runs::RunStepInclude
+        module RunStepInclude = Runs::RunStepInclude
 
         module Runs
           type run_step_include =
             :"step_details.tool_calls[*].file_search.results[*].content"
 
-          class RunStepInclude < OpenAI::Enum
+          module RunStepInclude
+            extend OpenAI::Enum
+
             STEP_DETAILS_TOOL_CALLS_FILE_SEARCH_RESULTS_CONTENT: :"step_details.tool_calls[*].file_search.results[*].content"
 
             def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include]

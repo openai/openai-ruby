@@ -33,7 +33,9 @@ module OpenAI
 
       type completion_window = :"24h"
 
-      class CompletionWindow < OpenAI::Enum
+      module CompletionWindow
+        extend OpenAI::Enum
+
         NUMBER_24H: :"24h"
 
         def self.values: -> ::Array[OpenAI::Models::BatchCreateParams::completion_window]
@@ -45,7 +47,9 @@ module OpenAI
         | :"/v1/embeddings"
         | :"/v1/completions"
 
-      class Endpoint < OpenAI::Enum
+      module Endpoint
+        extend OpenAI::Enum
+
         V1_RESPONSES: :"/v1/responses"
         V1_CHAT_COMPLETIONS: :"/v1/chat/completions"
         V1_EMBEDDINGS: :"/v1/embeddings"

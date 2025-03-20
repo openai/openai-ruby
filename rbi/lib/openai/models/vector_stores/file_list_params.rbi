@@ -32,11 +32,14 @@ module OpenAI
         end
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)) }
         def filter
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
+            .returns(OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
+        end
         def filter=(_)
         end
 
@@ -52,11 +55,14 @@ module OpenAI
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)) }
         def order
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)
+            .returns(OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)
+        end
         def order=(_)
         end
 
@@ -64,9 +70,9 @@ module OpenAI
           params(
             after: String,
             before: String,
-            filter: Symbol,
+            filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
             limit: Integer,
-            order: Symbol,
+            order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -80,9 +86,9 @@ module OpenAI
               {
                 after: String,
                 before: String,
-                filter: Symbol,
+                filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
                 limit: Integer,
-                order: Symbol,
+                order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -91,26 +97,30 @@ module OpenAI
         end
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
-        class Filter < OpenAI::Enum
-          abstract!
+        module Filter
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Filter) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          FAILED = :failed
-          CANCELLED = :cancelled
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
+          FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
+          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
-        class Order < OpenAI::Enum
-          abstract!
+        module Order
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Order) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol) }
 
-          ASC = :asc
-          DESC = :desc
+          ASC = T.let(:asc, OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)
+          DESC = T.let(:desc, OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)
         end
       end
     end

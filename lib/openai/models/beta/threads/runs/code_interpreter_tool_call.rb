@@ -63,10 +63,10 @@ module OpenAI
 
               # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-              # @abstract
-              #
               # Text output from the Code Interpreter tool call as part of a run step.
-              class Output < OpenAI::Union
+              module Output
+                extend OpenAI::Union
+
                 discriminator :type
 
                 # Text output from the Code Interpreter tool call as part of a run step.

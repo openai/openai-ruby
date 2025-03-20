@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class ChatCompletionMessageToolCall = Chat::ChatCompletionMessageToolCall
 
     module Chat

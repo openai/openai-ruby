@@ -8,14 +8,15 @@ module OpenAI
     #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
     #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
     #   result in faster responses and fewer tokens used on reasoning in a response.
-    class ReasoningEffort < OpenAI::Enum
-      abstract!
+    module ReasoningEffort
+      extend OpenAI::Enum
 
-      Value = type_template(:out) { {fixed: Symbol} }
+      TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ReasoningEffort) }
+      OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ReasoningEffort::TaggedSymbol) }
 
-      LOW = :low
-      MEDIUM = :medium
-      HIGH = :high
+      LOW = T.let(:low, OpenAI::Models::ReasoningEffort::OrSymbol)
+      MEDIUM = T.let(:medium, OpenAI::Models::ReasoningEffort::OrSymbol)
+      HIGH = T.let(:high, OpenAI::Models::ReasoningEffort::OrSymbol)
     end
   end
 end

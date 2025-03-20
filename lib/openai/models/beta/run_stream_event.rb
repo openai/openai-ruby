@@ -3,11 +3,11 @@
 module OpenAI
   module Models
     module Beta
-      # @abstract
-      #
       # Occurs when a new
       #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
-      class RunStreamEvent < OpenAI::Union
+      module RunStreamEvent
+        extend OpenAI::Union
+
         discriminator :event
 
         # Occurs when a new [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
