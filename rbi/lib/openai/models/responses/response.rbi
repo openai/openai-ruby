@@ -81,11 +81,7 @@ module OpenAI
         #   available models.
         sig do
           returns(
-            T.any(
-              String,
-              OpenAI::Models::ChatModel::TaggedSymbol,
-              OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-            )
+            T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol)
           )
         end
         def model
@@ -93,18 +89,10 @@ module OpenAI
 
         sig do
           params(
-            _: T.any(
-              String,
-              OpenAI::Models::ChatModel::TaggedSymbol,
-              OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-            )
+            _: T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol)
           )
             .returns(
-              T.any(
-                String,
-                OpenAI::Models::ChatModel::TaggedSymbol,
-                OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-              )
+              T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol)
             )
         end
         def model=(_)
@@ -410,11 +398,7 @@ module OpenAI
             incomplete_details: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(
-              String,
-              OpenAI::Models::ChatModel::TaggedSymbol,
-              OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-            ),
+            model: T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol),
             output: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputMessage,
@@ -489,11 +473,7 @@ module OpenAI
                 incomplete_details: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails),
                 instructions: T.nilable(String),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.any(
-                  String,
-                  OpenAI::Models::ChatModel::TaggedSymbol,
-                  OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-                ),
+                model: T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol),
                 object: Symbol,
                 output: T::Array[
                 T.any(
