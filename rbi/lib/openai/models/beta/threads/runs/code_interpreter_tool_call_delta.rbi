@@ -40,8 +40,18 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter)
-                .returns(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter)
+              params(
+                _: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                  OpenAI::Util::AnyHash
+                )
+              )
+                .returns(
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                    OpenAI::Util::AnyHash
+                  )
+                )
             end
             def code_interpreter=(_)
             end

@@ -29,8 +29,12 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image)
-                .returns(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image)
+              params(
+                _: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash)
+              )
+                .returns(
+                  T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash)
+                )
             end
             def image=(_)
             end

@@ -79,8 +79,10 @@ module OpenAI
             end
 
             sig do
-              params(_: T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError))
-                .returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError))
+              params(
+                _: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash))
+              )
+                .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash)))
             end
             def last_error=(_)
             end
@@ -189,8 +191,8 @@ module OpenAI
             end
 
             sig do
-              params(_: T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage))
-                .returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage))
+              params(_: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash)))
+                .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash)))
             end
             def usage=(_)
             end

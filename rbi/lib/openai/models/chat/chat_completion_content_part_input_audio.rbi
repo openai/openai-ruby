@@ -9,8 +9,12 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio)
-            .returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio)
+          params(
+            _: T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Util::AnyHash)
+          )
+            .returns(
+              T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Util::AnyHash)
+            )
         end
         def input_audio=(_)
         end

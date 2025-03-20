@@ -36,8 +36,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::CompletionUsage::CompletionTokensDetails)
-          .returns(OpenAI::Models::CompletionUsage::CompletionTokensDetails)
+        params(_: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Util::AnyHash))
       end
       def completion_tokens_details=(_)
       end
@@ -48,8 +48,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::CompletionUsage::PromptTokensDetails)
-          .returns(OpenAI::Models::CompletionUsage::PromptTokensDetails)
+        params(_: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Util::AnyHash))
       end
       def prompt_tokens_details=(_)
       end

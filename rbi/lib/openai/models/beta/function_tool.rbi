@@ -8,7 +8,10 @@ module OpenAI
         def function
         end
 
-        sig { params(_: OpenAI::Models::FunctionDefinition).returns(OpenAI::Models::FunctionDefinition) }
+        sig do
+          params(_: T.any(OpenAI::Models::FunctionDefinition, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::FunctionDefinition, OpenAI::Util::AnyHash))
+        end
         def function=(_)
         end
 

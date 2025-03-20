@@ -26,8 +26,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionContentPart::File::File)
-              .returns(OpenAI::Models::Chat::ChatCompletionContentPart::File::File)
+            params(_: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash))
           end
           def file=(_)
           end

@@ -65,7 +65,10 @@ module OpenAI
       def usage
       end
 
-      sig { params(_: OpenAI::Models::CompletionUsage).returns(OpenAI::Models::CompletionUsage) }
+      sig do
+        params(_: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
+      end
       def usage=(_)
       end
 

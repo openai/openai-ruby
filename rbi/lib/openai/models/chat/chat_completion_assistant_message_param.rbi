@@ -20,8 +20,12 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio))
+          params(
+            _: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio, OpenAI::Util::AnyHash))
+          )
+            .returns(
+              T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio, OpenAI::Util::AnyHash))
+            )
         end
         def audio=(_)
         end
@@ -84,8 +88,16 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall))
+          params(
+            _: T.nilable(
+              T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall, OpenAI::Util::AnyHash)
+            )
+          )
+            .returns(
+              T.nilable(
+                T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall, OpenAI::Util::AnyHash)
+              )
+            )
         end
         def function_call=(_)
         end

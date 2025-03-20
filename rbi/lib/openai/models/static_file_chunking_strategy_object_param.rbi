@@ -7,7 +7,10 @@ module OpenAI
       def static
       end
 
-      sig { params(_: OpenAI::Models::StaticFileChunkingStrategy).returns(OpenAI::Models::StaticFileChunkingStrategy) }
+      sig do
+        params(_: T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Util::AnyHash))
+      end
       def static=(_)
       end
 

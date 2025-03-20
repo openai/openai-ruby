@@ -28,8 +28,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageURLDelta)
-              .returns(OpenAI::Models::Beta::Threads::ImageURLDelta)
+            params(_: T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Util::AnyHash))
           end
           def image_url=(_)
           end

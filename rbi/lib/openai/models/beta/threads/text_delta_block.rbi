@@ -27,7 +27,10 @@ module OpenAI
           def text
           end
 
-          sig { params(_: OpenAI::Models::Beta::Threads::TextDelta).returns(OpenAI::Models::Beta::Threads::TextDelta) }
+          sig do
+            params(_: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash))
+          end
           def text=(_)
           end
 

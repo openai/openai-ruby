@@ -172,8 +172,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread)
-            .returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread)
+          params(_: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Util::AnyHash))
         end
         def thread=(_)
         end
@@ -228,8 +228,12 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources))
-            .returns(T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources))
+          params(
+            _: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Util::AnyHash))
+          )
+            .returns(
+              T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Util::AnyHash))
+            )
         end
         def tool_resources=(_)
         end
@@ -299,8 +303,16 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy))
-            .returns(T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy))
+          params(
+            _: T.nilable(
+              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Util::AnyHash)
+            )
+          )
+            .returns(
+              T.nilable(
+                T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Util::AnyHash)
+              )
+            )
         end
         def truncation_strategy=(_)
         end
@@ -459,8 +471,16 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources))
-              .returns(T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources))
+            params(
+              _: T.nilable(
+                T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, OpenAI::Util::AnyHash)
+              )
+            )
+              .returns(
+                T.nilable(
+                  T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, OpenAI::Util::AnyHash)
+                )
+              )
           end
           def tool_resources=(_)
           end
@@ -791,8 +811,18 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter)
-                .returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter)
+              params(
+                _: T.any(
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
+                  OpenAI::Util::AnyHash
+                )
+              )
+                .returns(
+                  T.any(
+                    OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
+                    OpenAI::Util::AnyHash
+                  )
+                )
             end
             def code_interpreter=(_)
             end
@@ -802,8 +832,18 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch)
-                .returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch)
+              params(
+                _: T.any(
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch,
+                  OpenAI::Util::AnyHash
+                )
+              )
+                .returns(
+                  T.any(
+                    OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch,
+                    OpenAI::Util::AnyHash
+                  )
+                )
             end
             def file_search=(_)
             end
@@ -1052,10 +1092,16 @@ module OpenAI
 
                     sig do
                       params(
-                        _: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                        _: T.any(
+                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                          OpenAI::Util::AnyHash
+                        )
                       )
                         .returns(
-                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                          T.any(
+                            OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                            OpenAI::Util::AnyHash
+                          )
                         )
                     end
                     def static=(_)
@@ -1142,8 +1188,18 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter)
-              .returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter)
+            params(
+              _: T.any(
+                OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
+                OpenAI::Util::AnyHash
+              )
+            )
+              .returns(
+                T.any(
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
+                  OpenAI::Util::AnyHash
+                )
+              )
           end
           def code_interpreter=(_)
           end
@@ -1153,8 +1209,12 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch)
-              .returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch)
+            params(
+              _: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+            )
+              .returns(
+                T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+              )
           end
           def file_search=(_)
           end

@@ -29,8 +29,10 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError))
-            .returns(T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError))
+          params(
+            _: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash))
+          )
+            .returns(T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash)))
         end
         def last_error=(_)
         end

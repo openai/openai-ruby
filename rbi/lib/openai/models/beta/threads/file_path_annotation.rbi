@@ -18,8 +18,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath)
-              .returns(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath)
+            params(_: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Util::AnyHash))
           end
           def file_path=(_)
           end

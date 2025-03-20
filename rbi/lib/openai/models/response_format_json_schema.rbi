@@ -9,8 +9,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema)
-          .returns(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema)
+        params(_: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Util::AnyHash))
       end
       def json_schema=(_)
       end

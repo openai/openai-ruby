@@ -29,7 +29,10 @@ module OpenAI
           def data
           end
 
-          sig { params(_: OpenAI::Models::Beta::Threads::Message).returns(OpenAI::Models::Beta::Threads::Message) }
+          sig do
+            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+          end
           def data=(_)
           end
 
@@ -60,7 +63,10 @@ module OpenAI
           def data
           end
 
-          sig { params(_: OpenAI::Models::Beta::Threads::Message).returns(OpenAI::Models::Beta::Threads::Message) }
+          sig do
+            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+          end
           def data=(_)
           end
 
@@ -92,8 +98,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::MessageDeltaEvent)
-              .returns(OpenAI::Models::Beta::Threads::MessageDeltaEvent)
+            params(_: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end
@@ -125,7 +131,10 @@ module OpenAI
           def data
           end
 
-          sig { params(_: OpenAI::Models::Beta::Threads::Message).returns(OpenAI::Models::Beta::Threads::Message) }
+          sig do
+            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+          end
           def data=(_)
           end
 
@@ -156,7 +165,10 @@ module OpenAI
           def data
           end
 
-          sig { params(_: OpenAI::Models::Beta::Threads::Message).returns(OpenAI::Models::Beta::Threads::Message) }
+          sig do
+            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
+          end
           def data=(_)
           end
 

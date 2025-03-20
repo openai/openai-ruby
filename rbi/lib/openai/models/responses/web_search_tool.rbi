@@ -37,8 +37,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Responses::WebSearchTool::UserLocation))
-            .returns(T.nilable(OpenAI::Models::Responses::WebSearchTool::UserLocation))
+          params(_: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash)))
         end
         def user_location=(_)
         end
