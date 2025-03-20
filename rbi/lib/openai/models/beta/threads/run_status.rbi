@@ -22,6 +22,12 @@ module OpenAI
           COMPLETED = T.let(:completed, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)
           INCOMPLETE = T.let(:incomplete, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)
           EXPIRED = T.let(:expired, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

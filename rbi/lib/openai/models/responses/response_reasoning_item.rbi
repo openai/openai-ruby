@@ -112,9 +112,15 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol) }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
-          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

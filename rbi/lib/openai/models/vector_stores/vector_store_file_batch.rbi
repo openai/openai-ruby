@@ -186,6 +186,12 @@ module OpenAI
           COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
           CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
           FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

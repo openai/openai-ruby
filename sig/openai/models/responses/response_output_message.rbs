@@ -38,7 +38,7 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          def self.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
+          def self?.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         end
 
         type status = :in_progress | :completed | :incomplete
@@ -50,7 +50,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::status]
         end
       end
     end

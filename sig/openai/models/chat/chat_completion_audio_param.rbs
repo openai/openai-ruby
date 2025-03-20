@@ -32,7 +32,7 @@ module OpenAI
           OPUS: :opus
           PCM16: :pcm16
 
-          def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::format_]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::format_]
         end
 
         type voice =
@@ -50,7 +50,7 @@ module OpenAI
           SHIMMER: :shimmer
           VERSE: :verse
 
-          def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::voice]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::voice]
         end
       end
     end

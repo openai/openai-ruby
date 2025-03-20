@@ -104,6 +104,12 @@ module OpenAI
           extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::AudioModel::OrSymbol)} }
+
+          class << self
+            sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
+            def variants
+            end
+          end
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
@@ -116,12 +122,18 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol) }
 
-          JSON = T.let(:json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-          TEXT = T.let(:text, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-          SRT = T.let(:srt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+          JSON = T.let(:json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
+          TEXT = T.let(:text, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
+          SRT = T.let(:srt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
           VERBOSE_JSON =
-            T.let(:verbose_json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-          VTT = T.let(:vtt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+            T.let(:verbose_json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
+          VTT = T.let(:vtt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

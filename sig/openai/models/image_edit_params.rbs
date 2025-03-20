@@ -56,7 +56,7 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
-        def self.variants: -> [String, OpenAI::Models::image_model]
+        def self?.variants: -> [String, OpenAI::Models::image_model]
       end
 
       type response_format = :url | :b64_json
@@ -67,7 +67,7 @@ module OpenAI
         URL: :url
         B64_JSON: :b64_json
 
-        def self.values: -> ::Array[OpenAI::Models::ImageEditParams::response_format]
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::response_format]
       end
 
       type size = :"256x256" | :"512x512" | :"1024x1024"
@@ -79,7 +79,7 @@ module OpenAI
         NUMBER_512X512: :"512x512"
         NUMBER_1024X1024: :"1024x1024"
 
-        def self.values: -> ::Array[OpenAI::Models::ImageEditParams::size]
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::size]
       end
     end
   end

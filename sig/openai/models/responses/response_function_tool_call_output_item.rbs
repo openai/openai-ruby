@@ -44,7 +44,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status]
         end
       end
     end

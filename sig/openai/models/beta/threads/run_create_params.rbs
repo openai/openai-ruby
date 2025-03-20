@@ -129,7 +129,7 @@ module OpenAI
 
               MessageContentPartParamArray: message_content_part_param_array
 
-              def self.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
+              def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
             end
 
             type role = :user | :assistant
@@ -140,7 +140,7 @@ module OpenAI
               USER: :user
               ASSISTANT: :assistant
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role]
             end
 
             type attachment =
@@ -184,7 +184,7 @@ module OpenAI
                   def to_hash: -> OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::file_search
                 end
 
-                def self.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
+                def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
               end
             end
           end
@@ -194,7 +194,7 @@ module OpenAI
           module Model
             extend OpenAI::Union
 
-            def self.variants: -> [String, OpenAI::Models::chat_model]
+            def self?.variants: -> [String, OpenAI::Models::chat_model]
           end
 
           type truncation_strategy =
@@ -223,7 +223,7 @@ module OpenAI
               AUTO: :auto
               LAST_MESSAGES: :last_messages
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_]
             end
           end
         end

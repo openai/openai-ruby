@@ -234,6 +234,26 @@ module OpenAI
 
             MessageContentPartParamArray =
               T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
+
+            class << self
+              sig do
+                override
+                  .returns(
+                    [
+                      String,
+                      T::Array[
+                                          T.any(
+                                            OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                                            OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                                            OpenAI::Models::Beta::Threads::TextContentBlockParam
+                                          )
+                                          ]
+                    ]
+                  )
+              end
+              def variants
+              end
+            end
           end
 
           # The role of the entity that is creating the message. Allowed values include:
@@ -249,8 +269,14 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol) }
 
-            USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::OrSymbol)
-            ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::OrSymbol)
+            USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol)
+            ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol]) }
+              def values
+              end
+            end
           end
 
           class Attachment < OpenAI::BaseModel
@@ -361,6 +387,17 @@ module OpenAI
 
                 sig { override.returns({type: Symbol}) }
                 def to_hash
+                end
+              end
+
+              class << self
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch]
+                    )
+                end
+                def variants
                 end
               end
             end
@@ -714,6 +751,17 @@ module OpenAI
                     sig { override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer}) }
                     def to_hash
                     end
+                  end
+                end
+
+                class << self
+                  sig do
+                    override
+                      .returns(
+                        [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+                      )
+                  end
+                  def variants
                   end
                 end
               end

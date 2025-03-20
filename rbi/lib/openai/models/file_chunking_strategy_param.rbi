@@ -16,6 +16,17 @@ module OpenAI
             )
           }
         end
+
+      class << self
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+            )
+        end
+        def variants
+        end
+      end
     end
   end
 end

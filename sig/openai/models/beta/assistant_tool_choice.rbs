@@ -32,7 +32,7 @@ module OpenAI
           CODE_INTERPRETER: :code_interpreter
           FILE_SEARCH: :file_search
 
-          def self.values: -> ::Array[OpenAI::Models::Beta::AssistantToolChoice::type_]
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AssistantToolChoice::type_]
         end
       end
     end

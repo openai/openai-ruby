@@ -53,6 +53,12 @@ module OpenAI
             AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
             LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
             HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
       end

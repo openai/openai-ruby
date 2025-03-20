@@ -73,6 +73,12 @@ module OpenAI
           DEVELOPER = :developer
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # The type of the message input. Always `message`.
@@ -82,6 +88,12 @@ module OpenAI
           MESSAGE = :message
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

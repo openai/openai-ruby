@@ -56,6 +56,12 @@ module OpenAI
             MP3 = :mp3
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
         end
       end

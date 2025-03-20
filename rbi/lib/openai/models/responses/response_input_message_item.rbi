@@ -140,6 +140,12 @@ module OpenAI
           USER = T.let(:user, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
           SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
           DEVELOPER = T.let(:developer, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -157,6 +163,12 @@ module OpenAI
           COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
           INCOMPLETE =
             T.let(:incomplete, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # The type of the message input. Always set to `message`.
@@ -168,6 +180,12 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol) }
 
           MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

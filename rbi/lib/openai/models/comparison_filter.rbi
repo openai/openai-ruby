@@ -77,12 +77,18 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ComparisonFilter::Type) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol) }
 
-        EQ = T.let(:eq, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
-        NE = T.let(:ne, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
-        GT = T.let(:gt, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
-        GTE = T.let(:gte, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
-        LT = T.let(:lt, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
-        LTE = T.let(:lte, OpenAI::Models::ComparisonFilter::Type::OrSymbol)
+        EQ = T.let(:eq, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
+        NE = T.let(:ne, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
+        GT = T.let(:gt, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
+        GTE = T.let(:gte, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
+        LT = T.let(:lt, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
+        LTE = T.let(:lte, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::ComparisonFilter::Type::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       # The value to compare against the attribute key; supports string, number, or
@@ -91,6 +97,12 @@ module OpenAI
         extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
+
+        class << self
+          sig { override.returns([String, Float, T::Boolean]) }
+          def variants
+          end
+        end
       end
     end
   end

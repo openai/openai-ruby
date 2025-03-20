@@ -89,8 +89,14 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol) }
 
-          ASC = T.let(:asc, OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
-          DESC = T.let(:desc, OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
+          ASC = T.let(:asc, OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol)
+          DESC = T.let(:desc, OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

@@ -76,10 +76,10 @@ module OpenAI
           module ArrayOfContentPart
             extend OpenAI::Union
 
-            def self.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
+            def self?.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
           end
 
-          def self.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]]
+          def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]]
         end
 
         type function_call = { arguments: String, name: String }

@@ -42,6 +42,12 @@ module OpenAI
           PCM16 = :pcm16
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
@@ -59,6 +65,12 @@ module OpenAI
           VERSE = :verse
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

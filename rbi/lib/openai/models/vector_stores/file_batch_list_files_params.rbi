@@ -116,10 +116,18 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol) }
 
           IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
+            T.let(:in_progress, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol)
+          COMPLETED =
+            T.let(:completed, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol)
+          FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol)
+          CANCELLED =
+            T.let(:cancelled, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -132,8 +140,14 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol) }
 
-          ASC = T.let(:asc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
-          DESC = T.let(:desc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
+          ASC = T.let(:asc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol)
+          DESC = T.let(:desc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

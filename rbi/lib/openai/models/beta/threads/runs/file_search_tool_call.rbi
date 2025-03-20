@@ -197,6 +197,17 @@ module OpenAI
                       :default_2024_08_21,
                       OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
                     )
+
+                  class << self
+                    sig do
+                      override
+                        .returns(
+                          T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol]
+                        )
+                    end
+                    def values
+                    end
+                  end
                 end
               end
 
@@ -346,6 +357,17 @@ module OpenAI
                         :text,
                         OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
                       )
+
+                    class << self
+                      sig do
+                        override
+                          .returns(
+                            T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol]
+                          )
+                      end
+                      def values
+                      end
+                    end
                   end
                 end
               end

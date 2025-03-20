@@ -152,12 +152,22 @@ module OpenAI
               OrSymbol =
                 T.type_alias { T.any(Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol) }
 
-              AUTO = T.let(:auto, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)
+              AUTO =
+                T.let(:auto, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol)
               DEFAULT_2024_08_21 =
                 T.let(
                   :default_2024_08_21,
-                  OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
+                  OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol
                 )
+
+              class << self
+                sig do
+                  override
+                    .returns(T::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol])
+                end
+                def values
+                end
+              end
             end
           end
         end

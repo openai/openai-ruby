@@ -105,7 +105,7 @@ module OpenAI
                 SERVER_ERROR: :server_error
                 RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
 
-                def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code]
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code]
               end
             end
 
@@ -121,7 +121,7 @@ module OpenAI
               COMPLETED: :completed
               EXPIRED: :expired
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::status]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::status]
             end
 
             type step_details =
@@ -131,7 +131,7 @@ module OpenAI
             module StepDetails
               extend OpenAI::Union
 
-              def self.variants: -> [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
+              def self?.variants: -> [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
             end
 
             type type_ = :message_creation | :tool_calls
@@ -142,7 +142,7 @@ module OpenAI
               MESSAGE_CREATION: :message_creation
               TOOL_CALLS: :tool_calls
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::type_]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::type_]
             end
 
             type usage =

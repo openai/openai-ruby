@@ -11,11 +11,17 @@ module OpenAI
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::AudioResponseFormat) }
       OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::AudioResponseFormat::TaggedSymbol) }
 
-      JSON = T.let(:json, OpenAI::Models::AudioResponseFormat::OrSymbol)
-      TEXT = T.let(:text, OpenAI::Models::AudioResponseFormat::OrSymbol)
-      SRT = T.let(:srt, OpenAI::Models::AudioResponseFormat::OrSymbol)
-      VERBOSE_JSON = T.let(:verbose_json, OpenAI::Models::AudioResponseFormat::OrSymbol)
-      VTT = T.let(:vtt, OpenAI::Models::AudioResponseFormat::OrSymbol)
+      JSON = T.let(:json, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
+      TEXT = T.let(:text, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
+      SRT = T.let(:srt, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
+      VERBOSE_JSON = T.let(:verbose_json, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
+      VTT = T.let(:vtt, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
+
+      class << self
+        sig { override.returns(T::Array[OpenAI::Models::AudioResponseFormat::TaggedSymbol]) }
+        def values
+        end
+      end
     end
   end
 end

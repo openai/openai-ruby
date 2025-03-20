@@ -48,9 +48,15 @@ module OpenAI
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail) }
             OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail::TaggedSymbol) }
 
-            AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-            LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-            HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
+            AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageFile::Detail::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageFile::Detail::TaggedSymbol)
+            HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageFile::Detail::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::ImageFile::Detail::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
       end

@@ -14,7 +14,7 @@ module OpenAI
       TEXT_MODERATION_LATEST: :"text-moderation-latest"
       TEXT_MODERATION_STABLE: :"text-moderation-stable"
 
-      def self.values: -> ::Array[OpenAI::Models::moderation_model]
+      def self?.values: -> ::Array[OpenAI::Models::moderation_model]
     end
   end
 end

@@ -58,9 +58,16 @@ module OpenAI
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type) }
           OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol) }
 
-          FUNCTION = T.let(:function, OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
-          CODE_INTERPRETER = T.let(:code_interpreter, OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
-          FILE_SEARCH = T.let(:file_search, OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
+          FUNCTION = T.let(:function, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
+          CODE_INTERPRETER =
+            T.let(:code_interpreter, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
+          FILE_SEARCH = T.let(:file_search, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

@@ -71,6 +71,12 @@ module OpenAI
 
           ChatCompletionContentPartTextArray =
             T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Converter)
+
+          class << self
+            sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
+            def variants
+            end
+          end
         end
       end
     end

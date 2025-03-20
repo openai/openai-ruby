@@ -12,6 +12,17 @@ module OpenAI
             fixed: T.any(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)
           }
         end
+
+      class << self
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
+            )
+        end
+        def variants
+        end
+      end
     end
   end
 end

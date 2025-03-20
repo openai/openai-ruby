@@ -31,6 +31,12 @@ module OpenAI
           REQUIRED = :required
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # @!parse

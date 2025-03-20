@@ -169,7 +169,7 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          def self.variants: -> [String, OpenAI::Models::chat_model]
+          def self?.variants: -> [String, OpenAI::Models::chat_model]
         end
 
         type function_call =
@@ -187,10 +187,10 @@ module OpenAI
             NONE: :none
             AUTO: :auto
 
-            def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode]
           end
 
-          def self.variants: -> [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+          def self?.variants: -> [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
         end
 
         type function =
@@ -230,7 +230,7 @@ module OpenAI
           TEXT: :text
           AUDIO: :audio
 
-          def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::modality]
         end
 
         type response_format =
@@ -241,7 +241,7 @@ module OpenAI
         module ResponseFormat
           extend OpenAI::Union
 
-          def self.variants: -> [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+          def self?.variants: -> [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
         end
 
         type service_tier = :auto | :default
@@ -252,7 +252,7 @@ module OpenAI
           AUTO: :auto
           DEFAULT: :default
 
-          def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::service_tier]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::service_tier]
         end
 
         type stop = (String | ::Array[String])?
@@ -264,7 +264,7 @@ module OpenAI
 
           StringArray: string_array
 
-          def self.variants: -> [String, ::Array[String]]
+          def self?.variants: -> [String, ::Array[String]]
         end
 
         type web_search_options =
@@ -298,7 +298,7 @@ module OpenAI
             MEDIUM: :medium
             HIGH: :high
 
-            def self.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size]
           end
 
           type user_location =

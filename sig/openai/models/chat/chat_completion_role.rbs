@@ -16,7 +16,7 @@ module OpenAI
         TOOL: :tool
         FUNCTION: :function
 
-        def self.values: -> ::Array[OpenAI::Models::Chat::chat_completion_role]
+        def self?.values: -> ::Array[OpenAI::Models::Chat::chat_completion_role]
       end
     end
   end

@@ -9,6 +9,12 @@ module OpenAI
         LOGPROBS = :logprobs
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
     end
   end

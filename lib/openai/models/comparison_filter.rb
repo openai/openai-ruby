@@ -60,6 +60,12 @@ module OpenAI
         LTE = :lte
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       # The value to compare against the attribute key; supports string, number, or

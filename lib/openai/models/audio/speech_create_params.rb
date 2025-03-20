@@ -111,6 +111,12 @@ module OpenAI
           SHIMMER = :shimmer
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
@@ -126,6 +132,12 @@ module OpenAI
           PCM = :pcm
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

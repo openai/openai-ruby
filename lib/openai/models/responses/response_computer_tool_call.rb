@@ -142,6 +142,12 @@ module OpenAI
               FORWARD = :forward
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
           end
 
@@ -448,6 +454,12 @@ module OpenAI
           INCOMPLETE = :incomplete
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # The type of the computer call. Always `computer_call`.
@@ -457,6 +469,12 @@ module OpenAI
           COMPUTER_CALL = :computer_call
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

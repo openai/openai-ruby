@@ -256,6 +256,17 @@ module OpenAI
             def to_hash
             end
           end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath]
+                )
+            end
+            def variants
+            end
+          end
         end
       end
     end

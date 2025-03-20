@@ -17,6 +17,17 @@ module OpenAI
               )
             }
           end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile]
+              )
+          end
+          def variants
+          end
+        end
       end
     end
   end

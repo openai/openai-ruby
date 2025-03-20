@@ -178,6 +178,17 @@ module OpenAI
                       )
                     }
                   end
+
+                class << self
+                  sig do
+                    override
+                      .returns(
+                        [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
+                      )
+                  end
+                  def variants
+                  end
+                end
               end
             end
           end

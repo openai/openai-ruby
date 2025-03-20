@@ -377,6 +377,17 @@ module OpenAI
                 def to_hash
                 end
               end
+
+              class << self
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
+                    )
+                end
+                def variants
+                end
+              end
             end
           end
 
@@ -426,6 +437,14 @@ module OpenAI
                 T.let(:run_expired, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
               RUN_FAILED =
                 T.let(:run_failed, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
+
+              class << self
+                sig do
+                  override.returns(T::Array[OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol])
+                end
+                def values
+                end
+              end
             end
           end
 
@@ -438,6 +457,12 @@ module OpenAI
 
             USER = T.let(:user, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
             ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol]) }
+              def values
+              end
+            end
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
@@ -451,6 +476,12 @@ module OpenAI
             IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
             INCOMPLETE = T.let(:incomplete, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
             COMPLETED = T.let(:completed, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
       end

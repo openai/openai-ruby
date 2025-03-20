@@ -115,6 +115,12 @@ module OpenAI
           extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol)} }
+
+          class << self
+            sig { override.returns([String, OpenAI::Models::Audio::SpeechModel::OrSymbol]) }
+            def variants
+            end
+          end
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
@@ -127,15 +133,21 @@ module OpenAI
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice) }
           OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
 
-          ALLOY = T.let(:alloy, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          ASH = T.let(:ash, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          CORAL = T.let(:coral, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          ECHO = T.let(:echo, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          FABLE = T.let(:fable, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          ONYX = T.let(:onyx, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          NOVA = T.let(:nova, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          SAGE = T.let(:sage, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-          SHIMMER = T.let(:shimmer, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
+          ALLOY = T.let(:alloy, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          ASH = T.let(:ash, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          CORAL = T.let(:coral, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          ECHO = T.let(:echo, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          FABLE = T.let(:fable, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          ONYX = T.let(:onyx, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          NOVA = T.let(:nova, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          SAGE = T.let(:sage, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          SHIMMER = T.let(:shimmer, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
@@ -147,12 +159,18 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol) }
 
-          MP3 = T.let(:mp3, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
-          OPUS = T.let(:opus, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
-          AAC = T.let(:aac, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
-          FLAC = T.let(:flac, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
-          WAV = T.let(:wav, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
-          PCM = T.let(:pcm, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
+          MP3 = T.let(:mp3, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          OPUS = T.let(:opus, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          AAC = T.let(:aac, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          FLAC = T.let(:flac, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          WAV = T.let(:wav, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+          PCM = T.let(:pcm, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

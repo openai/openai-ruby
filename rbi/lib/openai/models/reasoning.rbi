@@ -73,8 +73,14 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Reasoning::GenerateSummary) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol) }
 
-        CONCISE = T.let(:concise, OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)
-        DETAILED = T.let(:detailed, OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)
+        CONCISE = T.let(:concise, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol)
+        DETAILED = T.let(:detailed, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end
