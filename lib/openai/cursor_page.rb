@@ -2,32 +2,26 @@
 
 module OpenAI
   # @example
-  # ```ruby
-  # if cursor_page.has_next?
-  #   cursor_page = cursor_page.next_page
-  # end
-  # ```
+  #   if cursor_page.has_next?
+  #     cursor_page = cursor_page.next_page
+  #   end
   #
   # @example
-  # ```ruby
-  # cursor_page.auto_paging_each do |completion|
-  #   puts(completion)
-  # end
-  # ```
+  #   cursor_page.auto_paging_each do |completion|
+  #     puts(completion)
+  #   end
   #
   # @example
-  # ```ruby
-  # completions =
-  #   cursor_page
-  #   .to_enum
-  #   .lazy
-  #   .select { _1.object_id.even? }
-  #   .map(&:itself)
-  #   .take(2)
-  #   .to_a
+  #   completions =
+  #     cursor_page
+  #     .to_enum
+  #     .lazy
+  #     .select { _1.object_id.even? }
+  #     .map(&:itself)
+  #     .take(2)
+  #     .to_a
   #
-  # completions => Array
-  # ```
+  #   completions => Array
   class CursorPage
     include OpenAI::BasePage
 

@@ -2,32 +2,26 @@
 
 module OpenAI
   # @example
-  # ```ruby
-  # if page.has_next?
-  #   page = page.next_page
-  # end
-  # ```
+  #   if page.has_next?
+  #     page = page.next_page
+  #   end
   #
   # @example
-  # ```ruby
-  # page.auto_paging_each do |completion|
-  #   puts(completion)
-  # end
-  # ```
+  #   page.auto_paging_each do |completion|
+  #     puts(completion)
+  #   end
   #
   # @example
-  # ```ruby
-  # completions =
-  #   page
-  #   .to_enum
-  #   .lazy
-  #   .select { _1.object_id.even? }
-  #   .map(&:itself)
-  #   .take(2)
-  #   .to_a
+  #   completions =
+  #     page
+  #     .to_enum
+  #     .lazy
+  #     .select { _1.object_id.even? }
+  #     .map(&:itself)
+  #     .take(2)
+  #     .to_a
   #
-  # completions => Array
-  # ```
+  #   completions => Array
   module BasePage
     # rubocop:disable Lint/UnusedMethodArgument
 
