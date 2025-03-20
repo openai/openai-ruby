@@ -2,24 +2,20 @@
 
 module OpenAI
   # @example
-  # ```ruby
-  # stream.each do |event|
-  #   puts(event)
-  # end
-  # ```
+  #   stream.each do |event|
+  #     puts(event)
+  #   end
   #
   # @example
-  # ```ruby
-  # events =
-  #   stream
-  #   .lazy
-  #   .select { _1.object_id.even? }
-  #   .map(&:itself)
-  #   .take(2)
-  #   .to_a
+  #   events =
+  #     stream
+  #     .lazy
+  #     .select { _1.object_id.even? }
+  #     .map(&:itself)
+  #     .take(2)
+  #     .to_a
   #
-  # events => Array
-  # ```
+  #   events => Array
   class Stream
     include OpenAI::BaseStream
 
