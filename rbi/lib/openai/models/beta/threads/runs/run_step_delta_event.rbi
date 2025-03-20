@@ -21,8 +21,8 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::RunStepDelta)
-                .returns(OpenAI::Models::Beta::Threads::Runs::RunStepDelta)
+              params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Util::AnyHash))
+                .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Util::AnyHash))
             end
             def delta=(_)
             end

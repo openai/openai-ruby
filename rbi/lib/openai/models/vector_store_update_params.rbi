@@ -12,8 +12,8 @@ module OpenAI
       end
 
       sig do
-        params(_: T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter))
-          .returns(T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter))
+        params(_: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Util::AnyHash)))
+          .returns(T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Util::AnyHash)))
       end
       def expires_after=(_)
       end

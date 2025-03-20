@@ -21,8 +21,18 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter)
-                .returns(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter)
+              params(
+                _: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+                  OpenAI::Util::AnyHash
+                )
+              )
+                .returns(
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+                    OpenAI::Util::AnyHash
+                  )
+                )
             end
             def code_interpreter=(_)
             end
@@ -196,10 +206,16 @@ module OpenAI
 
                   sig do
                     params(
-                      _: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
+                      _: T.any(
+                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                        OpenAI::Util::AnyHash
+                      )
                     )
                       .returns(
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
+                        T.any(
+                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                          OpenAI::Util::AnyHash
+                        )
                       )
                   end
                   def image=(_)

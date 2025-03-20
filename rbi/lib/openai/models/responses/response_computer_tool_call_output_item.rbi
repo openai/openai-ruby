@@ -28,8 +28,10 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot)
-            .returns(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot)
+          params(
+            _: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash)
+          )
+            .returns(T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash))
         end
         def output=(_)
         end

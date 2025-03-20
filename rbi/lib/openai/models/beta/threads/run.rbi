@@ -77,8 +77,8 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::Threads::Run::IncompleteDetails))
-              .returns(T.nilable(OpenAI::Models::Beta::Threads::Run::IncompleteDetails))
+            params(_: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::IncompleteDetails, OpenAI::Util::AnyHash)))
+              .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::IncompleteDetails, OpenAI::Util::AnyHash)))
           end
           def incomplete_details=(_)
           end
@@ -100,8 +100,8 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::Threads::Run::LastError))
-              .returns(T.nilable(OpenAI::Models::Beta::Threads::Run::LastError))
+            params(_: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::LastError, OpenAI::Util::AnyHash)))
+              .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::LastError, OpenAI::Util::AnyHash)))
           end
           def last_error=(_)
           end
@@ -178,8 +178,8 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::Threads::Run::RequiredAction))
-              .returns(T.nilable(OpenAI::Models::Beta::Threads::Run::RequiredAction))
+            params(_: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction, OpenAI::Util::AnyHash)))
+              .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction, OpenAI::Util::AnyHash)))
           end
           def required_action=(_)
           end
@@ -365,8 +365,8 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::Threads::Run::TruncationStrategy))
-              .returns(T.nilable(OpenAI::Models::Beta::Threads::Run::TruncationStrategy))
+            params(_: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Util::AnyHash)))
+              .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Util::AnyHash)))
           end
           def truncation_strategy=(_)
           end
@@ -378,8 +378,8 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::Threads::Run::Usage))
-              .returns(T.nilable(OpenAI::Models::Beta::Threads::Run::Usage))
+            params(_: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Util::AnyHash)))
+              .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Util::AnyHash)))
           end
           def usage=(_)
           end
@@ -644,8 +644,12 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs)
-                .returns(OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs)
+              params(
+                _: T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs, OpenAI::Util::AnyHash)
+              )
+                .returns(
+                  T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs, OpenAI::Util::AnyHash)
+                )
             end
             def submit_tool_outputs=(_)
             end

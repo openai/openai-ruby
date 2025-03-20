@@ -47,8 +47,10 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics)
-              .returns(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics)
+            params(
+              _: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash)
+            )
+              .returns(T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash))
           end
           def metrics=(_)
           end

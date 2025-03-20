@@ -52,8 +52,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionAudio))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAudio))
+          params(_: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Util::AnyHash)))
         end
         def audio=(_)
         end
@@ -65,8 +65,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall)
-            .returns(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall)
+          params(_: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Util::AnyHash))
         end
         def function_call=(_)
         end
@@ -132,8 +132,12 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation)
-              .returns(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation)
+            params(
+              _: T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, OpenAI::Util::AnyHash)
+            )
+              .returns(
+                T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, OpenAI::Util::AnyHash)
+              )
           end
           def url_citation=(_)
           end

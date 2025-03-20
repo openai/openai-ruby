@@ -331,8 +331,16 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy))
-              .returns(T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy))
+            params(
+              _: T.nilable(
+                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
+              )
+            )
+              .returns(
+                T.nilable(
+                  T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
+                )
+              )
           end
           def truncation_strategy=(_)
           end

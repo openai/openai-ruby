@@ -54,8 +54,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Beta::Thread::ToolResources))
-            .returns(T.nilable(OpenAI::Models::Beta::Thread::ToolResources))
+          params(_: T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Util::AnyHash)))
         end
         def tool_resources=(_)
         end
@@ -96,8 +96,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter)
-              .returns(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter)
+            params(_: T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash))
           end
           def code_interpreter=(_)
           end
@@ -107,8 +107,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Thread::ToolResources::FileSearch)
-              .returns(OpenAI::Models::Beta::Thread::ToolResources::FileSearch)
+            params(_: T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Util::AnyHash))
           end
           def file_search=(_)
           end

@@ -52,8 +52,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters)
-            .returns(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters)
+          params(_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, OpenAI::Util::AnyHash))
         end
         def hyperparameters=(_)
         end
@@ -90,8 +90,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::FineTuning::JobCreateParams::Method)
-            .returns(OpenAI::Models::FineTuning::JobCreateParams::Method)
+          params(_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Util::AnyHash))
         end
         def method_=(_)
         end
@@ -309,8 +309,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb)
-              .returns(OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb)
+            params(_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb, OpenAI::Util::AnyHash))
           end
           def wandb=(_)
           end
@@ -405,8 +405,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo)
-              .returns(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo)
+            params(_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo, OpenAI::Util::AnyHash))
           end
           def dpo=(_)
           end
@@ -417,8 +417,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised)
-              .returns(OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised)
+            params(_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised, OpenAI::Util::AnyHash))
           end
           def supervised=(_)
           end
@@ -467,8 +467,12 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters)
-                .returns(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters)
+              params(
+                _: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters, OpenAI::Util::AnyHash)
+              )
+                .returns(
+                  T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters, OpenAI::Util::AnyHash)
+                )
             end
             def hyperparameters=(_)
             end
@@ -597,8 +601,18 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters)
-                .returns(OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters)
+              params(
+                _: T.any(
+                  OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters,
+                  OpenAI::Util::AnyHash
+                )
+              )
+                .returns(
+                  T.any(
+                    OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters,
+                    OpenAI::Util::AnyHash
+                  )
+                )
             end
             def hyperparameters=(_)
             end

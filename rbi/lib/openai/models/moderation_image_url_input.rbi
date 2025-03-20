@@ -9,8 +9,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::ModerationImageURLInput::ImageURL)
-          .returns(OpenAI::Models::ModerationImageURLInput::ImageURL)
+        params(_: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash))
       end
       def image_url=(_)
       end

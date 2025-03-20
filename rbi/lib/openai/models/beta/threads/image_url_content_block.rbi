@@ -9,7 +9,10 @@ module OpenAI
           def image_url
           end
 
-          sig { params(_: OpenAI::Models::Beta::Threads::ImageURL).returns(OpenAI::Models::Beta::Threads::ImageURL) }
+          sig do
+            params(_: T.any(OpenAI::Models::Beta::Threads::ImageURL, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::ImageURL, OpenAI::Util::AnyHash))
+          end
           def image_url=(_)
           end
 

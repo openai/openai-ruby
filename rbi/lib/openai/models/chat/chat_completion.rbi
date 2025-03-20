@@ -82,7 +82,10 @@ module OpenAI
         def usage
         end
 
-        sig { params(_: OpenAI::Models::CompletionUsage).returns(OpenAI::Models::CompletionUsage) }
+        sig do
+          params(_: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
+        end
         def usage=(_)
         end
 
@@ -164,8 +167,8 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs))
-              .returns(T.nilable(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs))
+            params(_: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Util::AnyHash)))
+              .returns(T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Util::AnyHash)))
           end
           def logprobs=(_)
           end
@@ -176,7 +179,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionMessage).returns(OpenAI::Models::Chat::ChatCompletionMessage)
+            params(_: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Util::AnyHash))
           end
           def message=(_)
           end
