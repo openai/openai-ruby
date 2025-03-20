@@ -52,52 +52,30 @@ module OpenAI
           end
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
-          sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol) }
+          sig { returns(Symbol) }
           def format_
           end
 
-          sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol)
-              .returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def format_=(_)
           end
 
-          sig do
-            params(
-              data: String,
-              format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol
-            )
-              .returns(T.attached_class)
-          end
+          sig { params(data: String, format_: Symbol).returns(T.attached_class) }
           def self.new(data:, format_:)
           end
 
-          sig do
-            override
-              .returns(
-                {
-                  data: String,
-                  format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol
-                }
-              )
-          end
+          sig { override.returns({data: String, format_: Symbol}) }
           def to_hash
           end
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
-          module Format
-            extend OpenAI::Enum
+          class Format < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            WAV =
-              T.let(:wav, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol)
-            MP3 =
-              T.let(:mp3, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol)
+            WAV = :wav
+            MP3 = :mp3
           end
         end
       end

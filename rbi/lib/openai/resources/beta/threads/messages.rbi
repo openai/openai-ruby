@@ -19,7 +19,7 @@ module OpenAI
                 )
                 ]
               ),
-              role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
+              role: Symbol,
               attachments: T.nilable(T::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment]),
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
@@ -104,7 +104,7 @@ module OpenAI
               after: String,
               before: String,
               limit: Integer,
-              order: OpenAI::Models::Beta::Threads::MessageListParams::Order::OrSymbol,
+              order: Symbol,
               run_id: String,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )

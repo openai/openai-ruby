@@ -11,7 +11,7 @@ module OpenAI
             after: String,
             before: String,
             limit: Integer,
-            order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
+            order: Symbol,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(

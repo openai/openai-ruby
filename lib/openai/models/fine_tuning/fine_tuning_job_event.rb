@@ -69,10 +69,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # The log level of the event.
-        module Level
-          extend OpenAI::Enum
-
+        class Level < OpenAI::Enum
           INFO = :info
           WARN = :warn
           ERROR = :error
@@ -80,10 +80,10 @@ module OpenAI
           finalize!
         end
 
+        # @abstract
+        #
         # The type of event.
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           MESSAGE = :message
           METRICS = :metrics
 

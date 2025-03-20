@@ -156,8 +156,8 @@ module OpenAI
               end
 
               # Text output from the Code Interpreter tool call as part of a run step.
-              module Output
-                extend OpenAI::Union
+              class Output < OpenAI::Union
+                abstract!
 
                 Variants =
                   type_template(:out) do

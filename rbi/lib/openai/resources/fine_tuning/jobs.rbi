@@ -17,7 +17,7 @@ module OpenAI
         #   [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
         sig do
           params(
-            model: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol),
+            model: T.any(String, Symbol),
             training_file: String,
             hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
             integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),

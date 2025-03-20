@@ -6,8 +6,8 @@ module OpenAI
       # Occurs when a
       #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
       #   is created.
-      module RunStepStreamEvent
-        extend OpenAI::Union
+      class RunStepStreamEvent < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

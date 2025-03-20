@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     # The strategy used to chunk the file.
-    module FileChunkingStrategy
-      extend OpenAI::Union
+    class FileChunkingStrategy < OpenAI::Union
+      abstract!
 
       Variants =
         type_template(:out) do

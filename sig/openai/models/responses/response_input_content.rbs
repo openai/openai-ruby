@@ -6,9 +6,7 @@ module OpenAI
         | OpenAI::Models::Responses::ResponseInputImage
         | OpenAI::Models::Responses::ResponseInputFile
 
-      module ResponseInputContent
-        extend OpenAI::Union
-
+      class ResponseInputContent < OpenAI::Union
         def self.variants: -> [OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile]
       end
     end

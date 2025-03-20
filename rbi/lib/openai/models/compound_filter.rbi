@@ -17,57 +17,42 @@ module OpenAI
       end
 
       # Type of operation: `and` or `or`.
-      sig { returns(OpenAI::Models::CompoundFilter::Type::OrSymbol) }
+      sig { returns(Symbol) }
       def type
       end
 
-      sig do
-        params(_: OpenAI::Models::CompoundFilter::Type::OrSymbol)
-          .returns(OpenAI::Models::CompoundFilter::Type::OrSymbol)
-      end
+      sig { params(_: Symbol).returns(Symbol) }
       def type=(_)
       end
 
       # Combine multiple filters using `and` or `or`.
       sig do
-        params(
-          filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)],
-          type: OpenAI::Models::CompoundFilter::Type::OrSymbol
-        )
+        params(filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)], type: Symbol)
           .returns(T.attached_class)
       end
       def self.new(filters:, type:)
       end
 
-      sig do
-        override
-          .returns(
-            {
-              filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)],
-              type: OpenAI::Models::CompoundFilter::Type::OrSymbol
-            }
-          )
-      end
+      sig { override.returns({filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)], type: Symbol}) }
       def to_hash
       end
 
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
-      module Filter
-        extend OpenAI::Union
+      class Filter < OpenAI::Union
+        abstract!
 
         Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, T.anything)} }
       end
 
       # Type of operation: `and` or `or`.
-      module Type
-        extend OpenAI::Enum
+      class Type < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompoundFilter::Type) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompoundFilter::Type::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        AND = T.let(:and, OpenAI::Models::CompoundFilter::Type::OrSymbol)
-        OR = T.let(:or, OpenAI::Models::CompoundFilter::Type::OrSymbol)
+        AND = :and
+        OR = :or
       end
     end
   end

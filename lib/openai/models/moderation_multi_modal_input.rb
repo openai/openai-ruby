@@ -2,10 +2,10 @@
 
 module OpenAI
   module Models
+    # @abstract
+    #
     # An object describing an image to classify.
-    module ModerationMultiModalInput
-      extend OpenAI::Union
-
+    class ModerationMultiModalInput < OpenAI::Union
       discriminator :type
 
       # An object describing an image to classify.

@@ -35,25 +35,24 @@ multitask(:syntax_tree) do
   inplace = /darwin|bsd/ =~ RUBY_PLATFORM ? %w[-i''] : %w[-i]
   uuid = SecureRandom.uuid
 
-  # `syntax_tree` has trouble with `rbs`'s class & module aliases
+  # `syntax_tree` has trouble with `rbs`'s class aliases
 
   sed = xargs + %w[sed -E] + inplace + %w[-e]
-  # annotate unprocessable aliases with a unique comment
-  pre = sed + ["s/(class|module) ([^ ]+) = (.+$)/# \\1 #{uuid}\\n\\2: \\3/", "--"]
+  # annotate class aliases with a unique comment
+  pre = sed + ["s/class ([^ ]+) = (.+$)/# #{uuid}\\n\\1: \\2/", "--"]
   fmt = xargs + %w[stree write --plugin=rbs --]
-  # remove the unique comment and unprocessable aliases to type aliases
+  # remove the unique comment and transform class aliases to type aliases
   subst = <<~SED
-    s/# (class|module) #{uuid}/\\1/
+    s/# #{uuid}//
     t l1
     b
-
     : l1
-    N
-    s/\\n *([^:]+): (.+)$/ \\1 = \\2/
+    n
+    s/([^ :]+): (.+$)/class \\1 = \\2/
   SED
-  # for each line:
-  #   1. try transform the unique comment into `class | module`, if successful, branch to label `l1`.
-  #   2. at label `l1`, join previously annotated line with `class | module` information.
+  # 1. delete the unique comment
+  # 2. if deletion happened, branch to label `l1`, else continue
+  # 3. transform the class alias to a type alias at label `l1`
   pst = sed + [subst, "--"]
 
   # transform class aliases to type aliases, which syntax tree has no trouble with

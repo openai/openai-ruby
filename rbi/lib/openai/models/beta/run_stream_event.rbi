@@ -5,8 +5,8 @@ module OpenAI
     module Beta
       # Occurs when a new
       #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
-      module RunStreamEvent
-        extend OpenAI::Union
+      class RunStreamEvent < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

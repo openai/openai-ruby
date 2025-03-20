@@ -58,10 +58,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # A click action.
-        module Action
-          extend OpenAI::Union
-
+        class Action < OpenAI::Union
           discriminator :type
 
           # A click action.
@@ -130,11 +130,11 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @abstract
+            #
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
-            module Button
-              extend OpenAI::Enum
-
+            class Button < OpenAI::Enum
               LEFT = :left
               RIGHT = :right
               WHEEL = :wheel
@@ -438,11 +438,11 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
         end
 
+        # @abstract
+        #
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        module Status
-          extend OpenAI::Enum
-
+        class Status < OpenAI::Enum
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           INCOMPLETE = :incomplete
@@ -450,10 +450,10 @@ module OpenAI
           finalize!
         end
 
+        # @abstract
+        #
         # The type of the computer call. Always `computer_call`.
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           COMPUTER_CALL = :computer_call
 
           finalize!

@@ -43,14 +43,11 @@ module OpenAI
       #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
       #   learn about available models
       #   [here](https://platform.openai.com/docs/models#moderation).
-      sig { returns(T.nilable(T.any(String, OpenAI::Models::ModerationModel::OrSymbol))) }
+      sig { returns(T.nilable(T.any(String, Symbol))) }
       def model
       end
 
-      sig do
-        params(_: T.any(String, OpenAI::Models::ModerationModel::OrSymbol))
-          .returns(T.any(String, OpenAI::Models::ModerationModel::OrSymbol))
-      end
+      sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
       def model=(_)
       end
 
@@ -61,7 +58,7 @@ module OpenAI
             T::Array[String],
             T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
           ),
-          model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
+          model: T.any(String, Symbol),
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
         )
           .returns(T.attached_class)
@@ -78,7 +75,7 @@ module OpenAI
                 T::Array[String],
                 T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
               ),
-              model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
+              model: T.any(String, Symbol),
               request_options: OpenAI::RequestOptions
             }
           )
@@ -88,8 +85,8 @@ module OpenAI
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       #   an array of multi-modal input objects similar to other models.
-      module Input
-        extend OpenAI::Union
+      class Input < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do
@@ -112,10 +109,10 @@ module OpenAI
       #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
       #   learn about available models
       #   [here](https://platform.openai.com/docs/models#moderation).
-      module Model
-        extend OpenAI::Union
+      class Model < OpenAI::Union
+        abstract!
 
-        Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ModerationModel::OrSymbol)} }
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
       end
     end
   end

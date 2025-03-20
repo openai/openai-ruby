@@ -63,13 +63,13 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # The order to return the input items in. Default is `asc`.
         #
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
-        module Order
-          extend OpenAI::Enum
-
+        class Order < OpenAI::Enum
           ASC = :asc
           DESC = :desc
 

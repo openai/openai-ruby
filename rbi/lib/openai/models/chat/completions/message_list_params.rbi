@@ -28,14 +28,11 @@ module OpenAI
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           #   for descending order. Defaults to `asc`.
-          sig { returns(T.nilable(OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def order
           end
 
-          sig do
-            params(_: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
-              .returns(OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def order=(_)
           end
 
@@ -43,7 +40,7 @@ module OpenAI
             params(
               after: String,
               limit: Integer,
-              order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol,
+              order: Symbol,
               request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
             )
               .returns(T.attached_class)
@@ -52,31 +49,27 @@ module OpenAI
           end
 
           sig do
-            override
-              .returns(
-                {
-                  after: String,
-                  limit: Integer,
-                  order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol,
-                  request_options: OpenAI::RequestOptions
-                }
-              )
+            override.returns(
+              {
+                after: String,
+                limit: Integer,
+                order: Symbol,
+                request_options: OpenAI::RequestOptions
+              }
+            )
           end
           def to_hash
           end
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           #   for descending order. Defaults to `asc`.
-          module Order
-            extend OpenAI::Enum
+          class Order < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            ASC = T.let(:asc, OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
-            DESC = T.let(:desc, OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
+            ASC = :asc
+            DESC = :desc
           end
         end
       end

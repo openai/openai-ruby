@@ -9,9 +9,7 @@ module OpenAI
         | OpenAI::Models::Responses::ResponseComputerToolCall
         | OpenAI::Models::Responses::ResponseReasoningItem
 
-      module ResponseOutputItem
-        extend OpenAI::Union
-
+      class ResponseOutputItem < OpenAI::Union
         def self.variants: -> [OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem]
       end
     end

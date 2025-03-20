@@ -39,10 +39,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # The contents of the user message.
-        module Content
-          extend OpenAI::Union
-
+        class Content < OpenAI::Union
           ChatCompletionContentPartArray =
             OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionContentPart }]
 

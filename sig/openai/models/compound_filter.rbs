@@ -20,17 +20,13 @@ module OpenAI
 
       type filter = OpenAI::Models::ComparisonFilter | top
 
-      module Filter
-        extend OpenAI::Union
-
+      class Filter < OpenAI::Union
         def self.variants: -> [OpenAI::Models::ComparisonFilter, top]
       end
 
       type type_ = :and | :or
 
-      module Type
-        extend OpenAI::Enum
-
+      class Type < OpenAI::Enum
         AND: :and
         OR: :or
 

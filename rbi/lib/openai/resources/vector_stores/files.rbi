@@ -89,9 +89,9 @@ module OpenAI
             vector_store_id: String,
             after: String,
             before: String,
-            filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
+            filter: Symbol,
             limit: Integer,
-            order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
+            order: Symbol,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])

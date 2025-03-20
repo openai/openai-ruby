@@ -103,14 +103,11 @@ module OpenAI
 
             # The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
-            sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)) }
+            sig { returns(T.nilable(Symbol)) }
             def ranker
             end
 
-            sig do
-              params(_: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)
-                .returns(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)
-            end
+            sig { params(_: Symbol).returns(Symbol) }
             def ranker=(_)
             end
 
@@ -120,44 +117,23 @@ module OpenAI
             #   See the
             #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             #   for more information.
-            sig do
-              params(
-                score_threshold: Float,
-                ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
-              )
-                .returns(T.attached_class)
-            end
+            sig { params(score_threshold: Float, ranker: Symbol).returns(T.attached_class) }
             def self.new(score_threshold:, ranker: nil)
             end
 
-            sig do
-              override
-                .returns(
-                  {
-                    score_threshold: Float,
-                    ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
-                  }
-                )
-            end
+            sig { override.returns({score_threshold: Float, ranker: Symbol}) }
             def to_hash
             end
 
             # The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
-            module Ranker
-              extend OpenAI::Enum
+            class Ranker < OpenAI::Enum
+              abstract!
 
-              TaggedSymbol =
-                T.type_alias { T.all(Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol) }
+              Value = type_template(:out) { {fixed: Symbol} }
 
-              AUTO = T.let(:auto, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)
-              DEFAULT_2024_08_21 =
-                T.let(
-                  :default_2024_08_21,
-                  OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
-                )
+              AUTO = :auto
+              DEFAULT_2024_08_21 = :default_2024_08_21
             end
           end
         end

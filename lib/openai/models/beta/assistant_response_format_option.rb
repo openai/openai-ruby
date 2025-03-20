@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     module Beta
+      # @abstract
+      #
       # Specifies the format that the model must output. Compatible with
       #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
       #   [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
@@ -23,9 +25,7 @@ module OpenAI
       #   the message content may be partially cut off if `finish_reason="length"`, which
       #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
       #   max context length.
-      module AssistantResponseFormatOption
-        extend OpenAI::Union
-
+      class AssistantResponseFormatOption < OpenAI::Union
         # `auto` is the default value
         variant const: :auto
 

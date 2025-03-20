@@ -12,14 +12,11 @@ module OpenAI
         #   see all of your available models, or see our
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
-        sig { returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol)) }
+        sig { returns(T.any(String, Symbol)) }
         def model
         end
 
-        sig do
-          params(_: T.any(String, OpenAI::Models::ChatModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol))
-        end
+        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
         def model=(_)
         end
 
@@ -71,14 +68,11 @@ module OpenAI
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #   result in faster responses and fewer tokens used on reasoning in a response.
-        sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def reasoning_effort
         end
 
-        sig do
-          params(_: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-            .returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-        end
+        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
         def reasoning_effort=(_)
         end
 
@@ -225,12 +219,12 @@ module OpenAI
 
         sig do
           params(
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
+            model: T.any(String, Symbol),
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
+            reasoning_effort: T.nilable(Symbol),
             response_format: T.nilable(
               T.any(
                 Symbol,
@@ -273,12 +267,12 @@ module OpenAI
           override
             .returns(
               {
-                model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
+                model: T.any(String, Symbol),
                 description: T.nilable(String),
                 instructions: T.nilable(String),
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 name: T.nilable(String),
-                reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
+                reasoning_effort: T.nilable(Symbol),
                 response_format: T.nilable(
                   T.any(
                     Symbol,
@@ -309,10 +303,10 @@ module OpenAI
         #   see all of your available models, or see our
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
-        module Model
-          extend OpenAI::Union
+        class Model < OpenAI::Union
+          abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         class ToolResources < OpenAI::BaseModel

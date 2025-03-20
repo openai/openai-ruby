@@ -37,9 +37,7 @@ module OpenAI
             String
             | ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
-          module Content
-            extend OpenAI::Union
-
+          class Content < OpenAI::Union
             type message_content_part_param_array =
               ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
@@ -50,9 +48,7 @@ module OpenAI
 
           type role = :user | :assistant
 
-          module Role
-            extend OpenAI::Enum
-
+          class Role < OpenAI::Enum
             USER: :user
             ASSISTANT: :assistant
 
@@ -87,9 +83,7 @@ module OpenAI
               OpenAI::Models::Beta::CodeInterpreterTool
               | OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
 
-            module Tool
-              extend OpenAI::Union
-
+            class Tool < OpenAI::Union
               type file_search = { type: :file_search }
 
               class FileSearch < OpenAI::BaseModel

@@ -2,9 +2,7 @@ module OpenAI
   module Models
     type reasoning_effort = :low | :medium | :high
 
-    module ReasoningEffort
-      extend OpenAI::Enum
-
+    class ReasoningEffort < OpenAI::Enum
       LOW: :low
       MEDIUM: :medium
       HIGH: :high

@@ -58,14 +58,11 @@ module OpenAI
         end
 
         # The status of the code interpreter tool call.
-        sig { returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol) }
+        sig { returns(Symbol) }
         def status
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def status=(_)
         end
 
@@ -89,7 +86,7 @@ module OpenAI
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
             )
             ],
-            status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,
+            status: Symbol,
             type: Symbol
           )
             .returns(T.attached_class)
@@ -109,7 +106,7 @@ module OpenAI
                   OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
                 )
                 ],
-                status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,
+                status: Symbol,
                 type: Symbol
               }
             )
@@ -118,8 +115,8 @@ module OpenAI
         end
 
         # The output of a code interpreter tool call that is text.
-        module Result
-          extend OpenAI::Union
+        class Result < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do
@@ -235,20 +232,14 @@ module OpenAI
         end
 
         # The status of the code interpreter tool call.
-        module Status
-          extend OpenAI::Enum
+        class Status < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
-          INTERPRETING =
-            T.let(:interpreting, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
-          COMPLETED =
-            T.let(:completed, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
+          IN_PROGRESS = :in_progress
+          INTERPRETING = :interpreting
+          COMPLETED = :completed
         end
       end
     end

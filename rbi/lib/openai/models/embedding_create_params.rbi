@@ -30,14 +30,11 @@ module OpenAI
       #   see all of your available models, or see our
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
-      sig { returns(T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol)) }
+      sig { returns(T.any(String, Symbol)) }
       def model
       end
 
-      sig do
-        params(_: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol))
-          .returns(T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol))
-      end
+      sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
       def model=(_)
       end
 
@@ -53,14 +50,11 @@ module OpenAI
 
       # The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
-      sig { returns(T.nilable(OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def encoding_format
       end
 
-      sig do
-        params(_: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
-          .returns(OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
-      end
+      sig { params(_: Symbol).returns(Symbol) }
       def encoding_format=(_)
       end
 
@@ -78,9 +72,9 @@ module OpenAI
       sig do
         params(
           input: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]),
-          model: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol),
+          model: T.any(String, Symbol),
           dimensions: Integer,
-          encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol,
+          encoding_format: Symbol,
           user: String,
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
         )
@@ -94,9 +88,9 @@ module OpenAI
           .returns(
             {
               input: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]),
-              model: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol),
+              model: T.any(String, Symbol),
               dimensions: Integer,
-              encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol,
+              encoding_format: Symbol,
               user: String,
               request_options: OpenAI::RequestOptions
             }
@@ -113,8 +107,8 @@ module OpenAI
       #   [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
       #   for counting tokens. Some models may also impose a limit on total number of
       #   tokens summed across inputs.
-      module Input
-        extend OpenAI::Union
+      class Input < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do
@@ -133,23 +127,21 @@ module OpenAI
       #   see all of your available models, or see our
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
-      module Model
-        extend OpenAI::Union
+      class Model < OpenAI::Union
+        abstract!
 
-        Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol)} }
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
       end
 
       # The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
-      module EncodingFormat
-        extend OpenAI::Enum
+      class EncodingFormat < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        FLOAT = T.let(:float, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
-        BASE64 = T.let(:base64, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
+        FLOAT = :float
+        BASE64 = :base64
       end
     end
   end

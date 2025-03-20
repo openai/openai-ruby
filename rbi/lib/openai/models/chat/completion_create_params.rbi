@@ -64,14 +64,11 @@ module OpenAI
         #   and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
-        sig { returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol)) }
+        sig { returns(T.any(String, Symbol)) }
         def model
         end
 
-        sig do
-          params(_: T.any(String, OpenAI::Models::ChatModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol))
-        end
+        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
         def model=(_)
         end
 
@@ -114,32 +111,13 @@ module OpenAI
         #
         #   `none` is the default when no functions are present. `auto` is the default if
         #   functions are present.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionFunctionCallOption
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption))) }
         def function_call
         end
 
         sig do
-          params(
-            _: T.any(
-              OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionFunctionCallOption
-            )
-          )
-            .returns(
-              T.any(
-                OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionFunctionCallOption
-              )
-            )
+          params(_: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption))
+            .returns(T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption))
         end
         def function_call=(_)
         end
@@ -235,14 +213,11 @@ module OpenAI
         #   this model generate both text and audio responses, you can use:
         #
         #   `["text", "audio"]`
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol])) }
+        sig { returns(T.nilable(T::Array[Symbol])) }
         def modalities
         end
 
-        sig do
-          params(_: T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]))
-            .returns(T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]))
-        end
+        sig { params(_: T.nilable(T::Array[Symbol])).returns(T.nilable(T::Array[Symbol])) }
         def modalities=(_)
         end
 
@@ -298,14 +273,11 @@ module OpenAI
         #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #   result in faster responses and fewer tokens used on reasoning in a response.
-        sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def reasoning_effort
         end
 
-        sig do
-          params(_: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-            .returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-        end
+        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
         def reasoning_effort=(_)
         end
 
@@ -379,14 +351,11 @@ module OpenAI
         #
         #   When this parameter is set, the response body will include the `service_tier`
         #   utilized.
-        sig { returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def service_tier
         end
 
-        sig do
-          params(_: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol))
-            .returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol))
-        end
+        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
         def service_tier=(_)
         end
 
@@ -453,32 +422,13 @@ module OpenAI
         #
         #   `none` is the default when no tools are present. `auto` is the default if tools
         #   are present.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionNamedToolChoice
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice))) }
         def tool_choice
         end
 
         sig do
-          params(
-            _: T.any(
-              OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionNamedToolChoice
-            )
-          )
-            .returns(
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionNamedToolChoice
-              )
-            )
+          params(_: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice))
+            .returns(T.any(Symbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice))
         end
         def tool_choice=(_)
         end
@@ -558,40 +508,34 @@ module OpenAI
               OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
             )
             ],
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
+            model: T.any(String, Symbol),
             audio: T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam),
             frequency_penalty: T.nilable(Float),
-            function_call: T.any(
-              OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionFunctionCallOption
-            ),
+            function_call: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption),
             functions: T::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
             logit_bias: T.nilable(T::Hash[Symbol, Integer]),
             logprobs: T.nilable(T::Boolean),
             max_completion_tokens: T.nilable(Integer),
             max_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            modalities: T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]),
+            modalities: T.nilable(T::Array[Symbol]),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
             prediction: T.nilable(OpenAI::Models::Chat::ChatCompletionPredictionContent),
             presence_penalty: T.nilable(Float),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
+            reasoning_effort: T.nilable(Symbol),
             response_format: T.any(
               OpenAI::Models::ResponseFormatText,
               OpenAI::Models::ResponseFormatJSONSchema,
               OpenAI::Models::ResponseFormatJSONObject
             ),
             seed: T.nilable(Integer),
-            service_tier: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol),
+            service_tier: T.nilable(Symbol),
             stop: T.nilable(T.any(String, T::Array[String])),
             store: T.nilable(T::Boolean),
             stream_options: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions),
             temperature: T.nilable(Float),
-            tool_choice: T.any(
-              OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionNamedToolChoice
-            ),
+            tool_choice: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice),
             tools: T::Array[OpenAI::Models::Chat::ChatCompletionTool],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
@@ -650,40 +594,34 @@ module OpenAI
                   OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
                 )
                 ],
-                model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
+                model: T.any(String, Symbol),
                 audio: T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam),
                 frequency_penalty: T.nilable(Float),
-                function_call: T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                  OpenAI::Models::Chat::ChatCompletionFunctionCallOption
-                ),
+                function_call: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption),
                 functions: T::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
                 logit_bias: T.nilable(T::Hash[Symbol, Integer]),
                 logprobs: T.nilable(T::Boolean),
                 max_completion_tokens: T.nilable(Integer),
                 max_tokens: T.nilable(Integer),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                modalities: T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]),
+                modalities: T.nilable(T::Array[Symbol]),
                 n: T.nilable(Integer),
                 parallel_tool_calls: T::Boolean,
                 prediction: T.nilable(OpenAI::Models::Chat::ChatCompletionPredictionContent),
                 presence_penalty: T.nilable(Float),
-                reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
+                reasoning_effort: T.nilable(Symbol),
                 response_format: T.any(
                   OpenAI::Models::ResponseFormatText,
                   OpenAI::Models::ResponseFormatJSONSchema,
                   OpenAI::Models::ResponseFormatJSONObject
                 ),
                 seed: T.nilable(Integer),
-                service_tier: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol),
+                service_tier: T.nilable(Symbol),
                 stop: T.nilable(T.any(String, T::Array[String])),
                 store: T.nilable(T::Boolean),
                 stream_options: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions),
                 temperature: T.nilable(Float),
-                tool_choice: T.any(
-                  OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Models::Chat::ChatCompletionNamedToolChoice
-                ),
+                tool_choice: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice),
                 tools: T::Array[OpenAI::Models::Chat::ChatCompletionTool],
                 top_logprobs: T.nilable(Integer),
                 top_p: T.nilable(Float),
@@ -701,10 +639,10 @@ module OpenAI
         #   and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
-        module Model
-          extend OpenAI::Union
+        class Model < OpenAI::Union
+          abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         # Deprecated in favor of `tool_choice`.
@@ -721,34 +659,22 @@ module OpenAI
         #
         #   `none` is the default when no functions are present. `auto` is the default if
         #   functions are present.
-        module FunctionCall
-          extend OpenAI::Union
+        class FunctionCall < OpenAI::Union
+          abstract!
 
           Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                  OpenAI::Models::Chat::ChatCompletionFunctionCallOption
-                )
-              }
-            end
+            type_template(:out) { {fixed: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)} }
 
           # `none` means the model will not call a function and instead generates a message.
           #   `auto` means the model can pick between generating a message or calling a
           #   function.
-          module FunctionCallMode
-            extend OpenAI::Enum
+          class FunctionCallMode < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            NONE =
-              T.let(:none, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol)
-            AUTO =
-              T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol)
+            NONE = :none
+            AUTO = :auto
           end
         end
 
@@ -802,15 +728,13 @@ module OpenAI
           end
         end
 
-        module Modality
-          extend OpenAI::Enum
+        class Modality < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          TEXT = T.let(:text, OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol)
-          AUDIO = T.let(:audio, OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol)
+          TEXT = :text
+          AUDIO = :audio
         end
 
         # An object specifying the format that the model must output.
@@ -823,8 +747,8 @@ module OpenAI
         #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
         #   ensures the message the model generates is valid JSON. Using `json_schema` is
         #   preferred for models that support it.
-        module ResponseFormat
-          extend OpenAI::Union
+        class ResponseFormat < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do
@@ -852,21 +776,19 @@ module OpenAI
         #
         #   When this parameter is set, the response body will include the `service_tier`
         #   utilized.
-        module ServiceTier
-          extend OpenAI::Enum
+        class ServiceTier < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          AUTO = T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol)
-          DEFAULT = T.let(:default, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol)
+          AUTO = :auto
+          DEFAULT = :default
         end
 
         # Up to 4 sequences where the API will stop generating further tokens. The
         #   returned text will not contain the stop sequence.
-        module Stop
-          extend OpenAI::Union
+        class Stop < OpenAI::Union
+          abstract!
 
           Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
 
@@ -876,18 +798,11 @@ module OpenAI
         class WebSearchOptions < OpenAI::BaseModel
           # High level guidance for the amount of context window space to use for the
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-          sig do
-            returns(
-              T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol)
-            )
-          end
+          sig { returns(T.nilable(Symbol)) }
           def search_context_size
           end
 
-          sig do
-            params(_: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol)
-              .returns(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def search_context_size=(_)
           end
 
@@ -908,7 +823,7 @@ module OpenAI
           #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           sig do
             params(
-              search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
+              search_context_size: Symbol,
               user_location: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)
             )
               .returns(T.attached_class)
@@ -920,7 +835,7 @@ module OpenAI
             override
               .returns(
                 {
-                  search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
+                  search_context_size: Symbol,
                   user_location: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)
                 }
               )
@@ -930,28 +845,14 @@ module OpenAI
 
           # High level guidance for the amount of context window space to use for the
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-          module SearchContextSize
-            extend OpenAI::Enum
+          class SearchContextSize < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize) }
-            OrSymbol =
-              T.type_alias do
-                T.any(
-                  Symbol,
-                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
-                )
-              end
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            LOW =
-              T.let(:low, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol)
-            MEDIUM =
-              T.let(
-                :medium,
-                OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol
-              )
-            HIGH =
-              T.let(:high, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol)
+            LOW = :low
+            MEDIUM = :medium
+            HIGH = :high
           end
 
           class UserLocation < OpenAI::BaseModel

@@ -17,14 +17,11 @@ module OpenAI
       end
 
       # The model to use for image generation.
-      sig { returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol))) }
+      sig { returns(T.nilable(T.any(String, Symbol))) }
       def model
       end
 
-      sig do
-        params(_: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)))
-          .returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)))
-      end
+      sig { params(_: T.nilable(T.any(String, Symbol))).returns(T.nilable(T.any(String, Symbol))) }
       def model=(_)
       end
 
@@ -41,42 +38,33 @@ module OpenAI
       # The quality of the image that will be generated. `hd` creates images with finer
       #   details and greater consistency across the image. This param is only supported
       #   for `dall-e-3`.
-      sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def quality
       end
 
-      sig do
-        params(_: OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
-          .returns(OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
-      end
+      sig { params(_: Symbol).returns(Symbol) }
       def quality=(_)
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
-      sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def response_format
       end
 
-      sig do
-        params(_: T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol))
-      end
+      sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
       def response_format=(_)
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or
       #   `1024x1792` for `dall-e-3` models.
-      sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def size
       end
 
-      sig do
-        params(_: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol))
-      end
+      sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
       def size=(_)
       end
 
@@ -84,14 +72,11 @@ module OpenAI
       #   causes the model to lean towards generating hyper-real and dramatic images.
       #   Natural causes the model to produce more natural, less hyper-real looking
       #   images. This param is only supported for `dall-e-3`.
-      sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def style
       end
 
-      sig do
-        params(_: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol))
-      end
+      sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
       def style=(_)
       end
 
@@ -109,12 +94,12 @@ module OpenAI
       sig do
         params(
           prompt: String,
-          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
+          model: T.nilable(T.any(String, Symbol)),
           n: T.nilable(Integer),
-          quality: OpenAI::Models::ImageGenerateParams::Quality::OrSymbol,
-          response_format: T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol),
-          style: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol),
+          quality: Symbol,
+          response_format: T.nilable(Symbol),
+          size: T.nilable(Symbol),
+          style: T.nilable(Symbol),
           user: String,
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
         )
@@ -138,12 +123,12 @@ module OpenAI
           .returns(
             {
               prompt: String,
-              model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
+              model: T.nilable(T.any(String, Symbol)),
               n: T.nilable(Integer),
-              quality: OpenAI::Models::ImageGenerateParams::Quality::OrSymbol,
-              response_format: T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol),
-              size: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol),
-              style: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol),
+              quality: Symbol,
+              response_format: T.nilable(Symbol),
+              size: T.nilable(Symbol),
+              style: T.nilable(Symbol),
               user: String,
               request_options: OpenAI::RequestOptions
             }
@@ -153,67 +138,62 @@ module OpenAI
       end
 
       # The model to use for image generation.
-      module Model
-        extend OpenAI::Union
+      class Model < OpenAI::Union
+        abstract!
 
-        Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ImageModel::OrSymbol)} }
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
       end
 
       # The quality of the image that will be generated. `hd` creates images with finer
       #   details and greater consistency across the image. This param is only supported
       #   for `dall-e-3`.
-      module Quality
-        extend OpenAI::Enum
+      class Quality < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Quality) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        STANDARD = T.let(:standard, OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
-        HD = T.let(:hd, OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
+        STANDARD = :standard
+        HD = :hd
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
-      module ResponseFormat
-        extend OpenAI::Enum
+      class ResponseFormat < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        URL = T.let(:url, OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol)
-        B64_JSON = T.let(:b64_json, OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol)
+        URL = :url
+        B64_JSON = :b64_json
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or
       #   `1024x1792` for `dall-e-3` models.
-      module Size
-        extend OpenAI::Enum
+      class Size < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Size) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_1792X1024 = T.let(:"1792x1024", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_1024X1792 = T.let(:"1024x1792", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
+        NUMBER_256X256 = :"256x256"
+        NUMBER_512X512 = :"512x512"
+        NUMBER_1024X1024 = :"1024x1024"
+        NUMBER_1792X1024 = :"1792x1024"
+        NUMBER_1024X1792 = :"1024x1792"
       end
 
       # The style of the generated images. Must be one of `vivid` or `natural`. Vivid
       #   causes the model to lean towards generating hyper-real and dramatic images.
       #   Natural causes the model to produce more natural, less hyper-real looking
       #   images. This param is only supported for `dall-e-3`.
-      module Style
-        extend OpenAI::Enum
+      class Style < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Style) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        VIVID = T.let(:vivid, OpenAI::Models::ImageGenerateParams::Style::OrSymbol)
-        NATURAL = T.let(:natural, OpenAI::Models::ImageGenerateParams::Style::OrSymbol)
+        VIVID = :vivid
+        NATURAL = :natural
       end
     end
   end

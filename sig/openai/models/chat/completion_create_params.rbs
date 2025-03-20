@@ -166,9 +166,7 @@ module OpenAI
 
         type model = String | OpenAI::Models::chat_model
 
-        module Model
-          extend OpenAI::Union
-
+        class Model < OpenAI::Union
           def self.variants: -> [String, OpenAI::Models::chat_model]
         end
 
@@ -176,14 +174,10 @@ module OpenAI
           OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::function_call_mode
           | OpenAI::Models::Chat::ChatCompletionFunctionCallOption
 
-        module FunctionCall
-          extend OpenAI::Union
-
+        class FunctionCall < OpenAI::Union
           type function_call_mode = :none | :auto
 
-          module FunctionCallMode
-            extend OpenAI::Enum
-
+          class FunctionCallMode < OpenAI::Enum
             NONE: :none
             AUTO: :auto
 
@@ -224,9 +218,7 @@ module OpenAI
 
         type modality = :text | :audio
 
-        module Modality
-          extend OpenAI::Enum
-
+        class Modality < OpenAI::Enum
           TEXT: :text
           AUDIO: :audio
 
@@ -238,17 +230,13 @@ module OpenAI
           | OpenAI::Models::ResponseFormatJSONSchema
           | OpenAI::Models::ResponseFormatJSONObject
 
-        module ResponseFormat
-          extend OpenAI::Union
-
+        class ResponseFormat < OpenAI::Union
           def self.variants: -> [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
         end
 
         type service_tier = :auto | :default
 
-        module ServiceTier
-          extend OpenAI::Enum
-
+        class ServiceTier < OpenAI::Enum
           AUTO: :auto
           DEFAULT: :default
 
@@ -257,9 +245,7 @@ module OpenAI
 
         type stop = (String | ::Array[String])?
 
-        module Stop
-          extend OpenAI::Union
-
+        class Stop < OpenAI::Union
           type string_array = ::Array[String]
 
           StringArray: string_array
@@ -291,9 +277,7 @@ module OpenAI
 
           type search_context_size = :low | :medium | :high
 
-          module SearchContextSize
-            extend OpenAI::Enum
-
+          class SearchContextSize < OpenAI::Enum
             LOW: :low
             MEDIUM: :medium
             HIGH: :high

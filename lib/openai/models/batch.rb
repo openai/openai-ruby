@@ -224,10 +224,10 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @abstract
+      #
       # The current status of the batch.
-      module Status
-        extend OpenAI::Enum
-
+      class Status < OpenAI::Enum
         VALIDATING = :validating
         FAILED = :failed
         IN_PROGRESS = :in_progress

@@ -4,9 +4,7 @@ module OpenAI
       OpenAI::Models::ModerationImageURLInput
       | OpenAI::Models::ModerationTextInput
 
-    module ModerationMultiModalInput
-      extend OpenAI::Union
-
+    class ModerationMultiModalInput < OpenAI::Union
       def self.variants: -> [OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput]
     end
   end

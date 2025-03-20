@@ -11,15 +11,14 @@ module OpenAI
       #   more tools.
       #
       #   `required` means the model must call one or more tools.
-      module ToolChoiceOptions
-        extend OpenAI::Enum
+      class ToolChoiceOptions < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ToolChoiceOptions) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        NONE = T.let(:none, OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol)
-        AUTO = T.let(:auto, OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol)
-        REQUIRED = T.let(:required, OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol)
+        NONE = :none
+        AUTO = :auto
+        REQUIRED = :required
       end
     end
   end

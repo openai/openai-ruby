@@ -99,7 +99,7 @@ module OpenAI
           after: String,
           before: String,
           limit: Integer,
-          order: OpenAI::Models::VectorStoreListParams::Order::OrSymbol,
+          order: Symbol,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::CursorPage[OpenAI::Models::VectorStore])

@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class ChatCompletionAudioParam = Chat::ChatCompletionAudioParam
 
     module Chat
@@ -23,9 +24,7 @@ module OpenAI
 
         type format_ = :wav | :mp3 | :flac | :opus | :pcm16
 
-        module Format
-          extend OpenAI::Enum
-
+        class Format < OpenAI::Enum
           WAV: :wav
           MP3: :mp3
           FLAC: :flac
@@ -38,9 +37,7 @@ module OpenAI
         type voice =
           :alloy | :ash | :ballad | :coral | :echo | :sage | :shimmer | :verse
 
-        module Voice
-          extend OpenAI::Enum
-
+        class Voice < OpenAI::Enum
           ALLOY: :alloy
           ASH: :ash
           BALLAD: :ballad

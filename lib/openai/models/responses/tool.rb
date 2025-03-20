@@ -3,12 +3,12 @@
 module OpenAI
   module Models
     module Responses
+      # @abstract
+      #
       # A tool that searches for relevant content from uploaded files. Learn more about
       #   the
       #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
-      module Tool
-        extend OpenAI::Union
-
+      class Tool < OpenAI::Union
         discriminator :type
 
         # A tool that searches for relevant content from uploaded files.

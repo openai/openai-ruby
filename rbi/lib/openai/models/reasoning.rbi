@@ -9,14 +9,11 @@ module OpenAI
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
       #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
       #   result in faster responses and fewer tokens used on reasoning in a response.
-      sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def effort
       end
 
-      sig do
-        params(_: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-      end
+      sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
       def effort=(_)
       end
 
@@ -25,14 +22,11 @@ module OpenAI
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `concise` or
       #   `detailed`.
-      sig { returns(T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def generate_summary
       end
 
-      sig do
-        params(_: T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol))
-      end
+      sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
       def generate_summary=(_)
       end
 
@@ -40,25 +34,11 @@ module OpenAI
       #
       #   Configuration options for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-      sig do
-        params(
-          effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-          generate_summary: T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)
-        )
-          .returns(T.attached_class)
-      end
+      sig { params(effort: T.nilable(Symbol), generate_summary: T.nilable(Symbol)).returns(T.attached_class) }
       def self.new(effort: nil, generate_summary: nil)
       end
 
-      sig do
-        override
-          .returns(
-            {
-              effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-              generate_summary: T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)
-            }
-          )
-      end
+      sig { override.returns({effort: T.nilable(Symbol), generate_summary: T.nilable(Symbol)}) }
       def to_hash
       end
 
@@ -67,14 +47,13 @@ module OpenAI
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `concise` or
       #   `detailed`.
-      module GenerateSummary
-        extend OpenAI::Enum
+      class GenerateSummary < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Reasoning::GenerateSummary) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        CONCISE = T.let(:concise, OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)
-        DETAILED = T.let(:detailed, OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)
+        CONCISE = :concise
+        DETAILED = :detailed
       end
     end
   end

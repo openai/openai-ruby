@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       # A text input to the model.
-      module ResponseInputContent
-        extend OpenAI::Union
+      class ResponseInputContent < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

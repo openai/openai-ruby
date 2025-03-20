@@ -3,10 +3,10 @@
 module OpenAI
   module Models
     module Chat
+      # @abstract
+      #
       # The role of the author of a message
-      module ChatCompletionRole
-        extend OpenAI::Enum
-
+      class ChatCompletionRole < OpenAI::Enum
         DEVELOPER = :developer
         SYSTEM = :system
         USER = :user

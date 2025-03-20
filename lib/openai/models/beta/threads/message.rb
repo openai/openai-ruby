@@ -172,9 +172,8 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-            module Tool
-              extend OpenAI::Union
-
+            # @abstract
+            class Tool < OpenAI::Union
               variant -> { OpenAI::Models::Beta::CodeInterpreterTool }
 
               variant -> { OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly }
@@ -218,10 +217,10 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @abstract
+            #
             # The reason the message is incomplete.
-            module Reason
-              extend OpenAI::Enum
-
+            class Reason < OpenAI::Enum
               CONTENT_FILTER = :content_filter
               MAX_TOKENS = :max_tokens
               RUN_CANCELLED = :run_cancelled
@@ -232,21 +231,21 @@ module OpenAI
             end
           end
 
+          # @abstract
+          #
           # The entity that produced the message. One of `user` or `assistant`.
-          module Role
-            extend OpenAI::Enum
-
+          class Role < OpenAI::Enum
             USER = :user
             ASSISTANT = :assistant
 
             finalize!
           end
 
+          # @abstract
+          #
           # The status of the message, which can be either `in_progress`, `incomplete`, or
           #   `completed`.
-          module Status
-            extend OpenAI::Enum
-
+          class Status < OpenAI::Enum
             IN_PROGRESS = :in_progress
             INCOMPLETE = :incomplete
             COMPLETED = :completed

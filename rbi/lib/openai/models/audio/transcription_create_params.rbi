@@ -20,14 +20,11 @@ module OpenAI
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         #   Whisper V2 model).
-        sig { returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol)) }
+        sig { returns(T.any(String, Symbol)) }
         def model
         end
 
-        sig do
-          params(_: T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-        end
+        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
         def model=(_)
         end
 
@@ -36,14 +33,11 @@ module OpenAI
         #   model's confidence in the transcription. `logprobs` only works with
         #   response_format set to `json` and only with the models `gpt-4o-transcribe` and
         #   `gpt-4o-mini-transcribe`.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol])) }
+        sig { returns(T.nilable(T::Array[Symbol])) }
         def include
         end
 
-        sig do
-          params(_: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol])
-            .returns(T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol])
-        end
+        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
         def include=(_)
         end
 
@@ -73,14 +67,11 @@ module OpenAI
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
         #   the only supported format is `json`.
-        sig { returns(T.nilable(OpenAI::Models::AudioResponseFormat::OrSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def response_format
         end
 
-        sig do
-          params(_: OpenAI::Models::AudioResponseFormat::OrSymbol)
-            .returns(OpenAI::Models::AudioResponseFormat::OrSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def response_format=(_)
         end
 
@@ -102,31 +93,24 @@ module OpenAI
         #   Either or both of these options are supported: `word`, or `segment`. Note: There
         #   is no additional latency for segment timestamps, but generating word timestamps
         #   incurs additional latency.
-        sig do
-          returns(
-            T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol])
-          )
-        end
+        sig { returns(T.nilable(T::Array[Symbol])) }
         def timestamp_granularities
         end
 
-        sig do
-          params(_: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol])
-            .returns(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol])
-        end
+        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
         def timestamp_granularities=(_)
         end
 
         sig do
           params(
             file: T.any(IO, StringIO),
-            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
-            include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
+            model: T.any(String, Symbol),
+            include: T::Array[Symbol],
             language: String,
             prompt: String,
-            response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
+            response_format: Symbol,
             temperature: Float,
-            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
+            timestamp_granularities: T::Array[Symbol],
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -149,13 +133,13 @@ module OpenAI
             .returns(
               {
                 file: T.any(IO, StringIO),
-                model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
-                include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
+                model: T.any(String, Symbol),
+                include: T::Array[Symbol],
                 language: String,
                 prompt: String,
-                response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
+                response_format: Symbol,
                 temperature: Float,
-                timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
+                timestamp_granularities: T::Array[Symbol],
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -166,23 +150,19 @@ module OpenAI
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         #   Whisper V2 model).
-        module Model
-          extend OpenAI::Union
+        class Model < OpenAI::Union
+          abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::AudioModel::OrSymbol)} }
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
-        module TimestampGranularity
-          extend OpenAI::Enum
+        class TimestampGranularity < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          WORD = T.let(:word, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol)
-          SEGMENT =
-            T.let(:segment, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol)
+          WORD = :word
+          SEGMENT = :segment
         end
       end
     end

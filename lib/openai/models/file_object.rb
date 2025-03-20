@@ -99,12 +99,12 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @abstract
+      #
       # The intended purpose of the file. Supported values are `assistants`,
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
       #   and `vision`.
-      module Purpose
-        extend OpenAI::Enum
-
+      class Purpose < OpenAI::Enum
         ASSISTANTS = :assistants
         ASSISTANTS_OUTPUT = :assistants_output
         BATCH = :batch
@@ -116,13 +116,13 @@ module OpenAI
         finalize!
       end
 
+      # @abstract
+      #
       # @deprecated
       #
       # Deprecated. The current status of the file, which can be either `uploaded`,
       #   `processed`, or `error`.
-      module Status
-        extend OpenAI::Enum
-
+      class Status < OpenAI::Enum
         UPLOADED = :uploaded
         PROCESSED = :processed
         ERROR = :error

@@ -183,10 +183,10 @@ module OpenAI
 
               # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+              # @abstract
+              #
               # One of `server_error` or `rate_limit_exceeded`.
-              module Code
-                extend OpenAI::Enum
-
+              class Code < OpenAI::Enum
                 SERVER_ERROR = :server_error
                 RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
 
@@ -194,11 +194,11 @@ module OpenAI
               end
             end
 
+            # @abstract
+            #
             # The status of the run step, which can be either `in_progress`, `cancelled`,
             #   `failed`, `completed`, or `expired`.
-            module Status
-              extend OpenAI::Enum
-
+            class Status < OpenAI::Enum
               IN_PROGRESS = :in_progress
               CANCELLED = :cancelled
               FAILED = :failed
@@ -208,10 +208,10 @@ module OpenAI
               finalize!
             end
 
+            # @abstract
+            #
             # The details of the run step.
-            module StepDetails
-              extend OpenAI::Union
-
+            class StepDetails < OpenAI::Union
               discriminator :type
 
               # Details of the message creation by the run step.
@@ -227,10 +227,10 @@ module OpenAI
               #   end
             end
 
+            # @abstract
+            #
             # The type of run step, which can be either `message_creation` or `tool_calls`.
-            module Type
-              extend OpenAI::Enum
-
+            class Type < OpenAI::Enum
               MESSAGE_CREATION = :message_creation
               TOOL_CALLS = :tool_calls
 

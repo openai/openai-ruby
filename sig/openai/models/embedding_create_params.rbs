@@ -46,9 +46,7 @@ module OpenAI
       type input =
         String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
 
-      module Input
-        extend OpenAI::Union
-
+      class Input < OpenAI::Union
         type string_array = ::Array[String]
 
         StringArray: string_array
@@ -66,17 +64,13 @@ module OpenAI
 
       type model = String | OpenAI::Models::embedding_model
 
-      module Model
-        extend OpenAI::Union
-
+      class Model < OpenAI::Union
         def self.variants: -> [String, OpenAI::Models::embedding_model]
       end
 
       type encoding_format = :float | :base64
 
-      module EncodingFormat
-        extend OpenAI::Enum
-
+      class EncodingFormat < OpenAI::Enum
         FLOAT: :float
         BASE64: :base64
 

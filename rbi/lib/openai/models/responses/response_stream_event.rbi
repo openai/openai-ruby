@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       # Emitted when there is a partial audio response.
-      module ResponseStreamEvent
-        extend OpenAI::Union
+      class ResponseStreamEvent < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

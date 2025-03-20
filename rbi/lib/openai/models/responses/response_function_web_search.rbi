@@ -14,14 +14,11 @@ module OpenAI
         end
 
         # The status of the web search tool call.
-        sig { returns(OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol) }
+        sig { returns(Symbol) }
         def status
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def status=(_)
         end
 
@@ -37,39 +34,24 @@ module OpenAI
         # The results of a web search tool call. See the
         #   [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for
         #   more information.
-        sig do
-          params(
-            id: String,
-            status: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol,
-            type: Symbol
-          )
-            .returns(T.attached_class)
-        end
+        sig { params(id: String, status: Symbol, type: Symbol).returns(T.attached_class) }
         def self.new(id:, status:, type: :web_search_call)
         end
 
-        sig do
-          override
-            .returns(
-              {id: String, status: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol, type: Symbol}
-            )
-        end
+        sig { override.returns({id: String, status: Symbol, type: Symbol}) }
         def to_hash
         end
 
         # The status of the web search tool call.
-        module Status
-          extend OpenAI::Enum
+        class Status < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
-          SEARCHING = T.let(:searching, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
+          IN_PROGRESS = :in_progress
+          SEARCHING = :searching
+          COMPLETED = :completed
+          FAILED = :failed
         end
       end
     end

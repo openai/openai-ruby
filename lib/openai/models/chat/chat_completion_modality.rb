@@ -3,9 +3,8 @@
 module OpenAI
   module Models
     module Chat
-      module ChatCompletionModality
-        extend OpenAI::Enum
-
+      # @abstract
+      class ChatCompletionModality < OpenAI::Enum
         TEXT = :text
         AUDIO = :audio
 

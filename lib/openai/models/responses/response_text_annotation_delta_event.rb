@@ -65,10 +65,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # A citation to a file.
-        module Annotation
-          extend OpenAI::Union
-
+        class Annotation < OpenAI::Union
           discriminator :type
 
           # A citation to a file.

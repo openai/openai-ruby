@@ -56,14 +56,11 @@ module OpenAI
         end
 
         # The service tier used for processing the request.
-        sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def service_tier
         end
 
-        sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol))
-        end
+        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
         def service_tier=(_)
         end
 
@@ -102,7 +99,7 @@ module OpenAI
             choices: T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice],
             created: Integer,
             model: String,
-            service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol),
+            service_tier: T.nilable(Symbol),
             system_fingerprint: String,
             usage: T.nilable(OpenAI::Models::CompletionUsage),
             object: Symbol
@@ -130,7 +127,7 @@ module OpenAI
                 created: Integer,
                 model: String,
                 object: Symbol,
-                service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol),
+                service_tier: T.nilable(Symbol),
                 system_fingerprint: String,
                 usage: T.nilable(OpenAI::Models::CompletionUsage)
               }
@@ -158,14 +155,11 @@ module OpenAI
           #   content was omitted due to a flag from our content filters, `tool_calls` if the
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
-          sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def finish_reason
           end
 
-          sig do
-            params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol))
-              .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol))
-          end
+          sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
           def finish_reason=(_)
           end
 
@@ -193,7 +187,7 @@ module OpenAI
           sig do
             params(
               delta: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta,
-              finish_reason: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol),
+              finish_reason: T.nilable(Symbol),
               index: Integer,
               logprobs: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs)
             )
@@ -207,7 +201,7 @@ module OpenAI
               .returns(
                 {
                   delta: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta,
-                  finish_reason: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol),
+                  finish_reason: T.nilable(Symbol),
                   index: Integer,
                   logprobs: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs)
                 }
@@ -249,14 +243,11 @@ module OpenAI
             end
 
             # The role of the author of this message.
-            sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)) }
+            sig { returns(T.nilable(Symbol)) }
             def role
             end
 
-            sig do
-              params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
-                .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
-            end
+            sig { params(_: Symbol).returns(Symbol) }
             def role=(_)
             end
 
@@ -277,7 +268,7 @@ module OpenAI
                 content: T.nilable(String),
                 function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
                 refusal: T.nilable(String),
-                role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol,
+                role: Symbol,
                 tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
               )
                 .returns(T.attached_class)
@@ -292,7 +283,7 @@ module OpenAI
                     content: T.nilable(String),
                     function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
                     refusal: T.nilable(String),
-                    role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol,
+                    role: Symbol,
                     tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
                   }
                 )
@@ -334,21 +325,16 @@ module OpenAI
             end
 
             # The role of the author of this message.
-            module Role
-              extend OpenAI::Enum
+            class Role < OpenAI::Enum
+              abstract!
 
-              TaggedSymbol =
-                T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol) }
+              Value = type_template(:out) { {fixed: Symbol} }
 
-              DEVELOPER =
-                T.let(:developer, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
-              SYSTEM = T.let(:system, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
-              USER = T.let(:user, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
-              ASSISTANT =
-                T.let(:assistant, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
-              TOOL = T.let(:tool, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
+              DEVELOPER = :developer
+              SYSTEM = :system
+              USER = :user
+              ASSISTANT = :assistant
+              TOOL = :tool
             end
 
             class ToolCall < OpenAI::BaseModel
@@ -381,14 +367,11 @@ module OpenAI
               end
 
               # The type of the tool. Currently, only `function` is supported.
-              sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)) }
+              sig { returns(T.nilable(Symbol)) }
               def type
               end
 
-              sig do
-                params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
-                  .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
-              end
+              sig { params(_: Symbol).returns(Symbol) }
               def type=(_)
               end
 
@@ -397,7 +380,7 @@ module OpenAI
                   index: Integer,
                   id: String,
                   function: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                  type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol
+                  type: Symbol
                 )
                   .returns(T.attached_class)
               end
@@ -411,7 +394,7 @@ module OpenAI
                       index: Integer,
                       id: String,
                       function: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                      type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol
+                      type: Symbol
                     }
                   )
               end
@@ -450,16 +433,12 @@ module OpenAI
               end
 
               # The type of the tool. Currently, only `function` is supported.
-              module Type
-                extend OpenAI::Enum
+              class Type < OpenAI::Enum
+                abstract!
 
-                TaggedSymbol =
-                  T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type) }
-                OrSymbol =
-                  T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol) }
+                Value = type_template(:out) { {fixed: Symbol} }
 
-                FUNCTION =
-                  T.let(:function, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
+                FUNCTION = :function
               end
             end
           end
@@ -470,22 +449,16 @@ module OpenAI
           #   content was omitted due to a flag from our content filters, `tool_calls` if the
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
-          module FinishReason
-            extend OpenAI::Enum
+          class FinishReason < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            STOP = T.let(:stop, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
-            LENGTH = T.let(:length, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
-            TOOL_CALLS =
-              T.let(:tool_calls, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
-            CONTENT_FILTER =
-              T.let(:content_filter, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
-            FUNCTION_CALL =
-              T.let(:function_call, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
+            STOP = :stop
+            LENGTH = :length
+            TOOL_CALLS = :tool_calls
+            CONTENT_FILTER = :content_filter
+            FUNCTION_CALL = :function_call
           end
 
           class Logprobs < OpenAI::BaseModel
@@ -539,15 +512,13 @@ module OpenAI
         end
 
         # The service tier used for processing the request.
-        module ServiceTier
-          extend OpenAI::Enum
+        class ServiceTier < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
-          DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
+          SCALE = :scale
+          DEFAULT = :default
         end
       end
     end

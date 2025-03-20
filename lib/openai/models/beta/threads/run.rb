@@ -305,11 +305,11 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @abstract
+            #
             # The reason why the run is incomplete. This will point to which specific token
             #   limit was reached over the course of the run.
-            module Reason
-              extend OpenAI::Enum
-
+            class Reason < OpenAI::Enum
               MAX_COMPLETION_TOKENS = :max_completion_tokens
               MAX_PROMPT_TOKENS = :max_prompt_tokens
 
@@ -340,10 +340,10 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @abstract
+            #
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
-            module Code
-              extend OpenAI::Enum
-
+            class Code < OpenAI::Enum
               SERVER_ERROR = :server_error
               RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
               INVALID_PROMPT = :invalid_prompt
@@ -424,13 +424,13 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @abstract
+            #
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             #   `last_messages`, the thread will be truncated to the n most recent messages in
             #   the thread. When set to `auto`, messages in the middle of the thread will be
             #   dropped to fit the context length of the model, `max_prompt_tokens`.
-            module Type
-              extend OpenAI::Enum
-
+            class Type < OpenAI::Enum
               AUTO = :auto
               LAST_MESSAGES = :last_messages
 

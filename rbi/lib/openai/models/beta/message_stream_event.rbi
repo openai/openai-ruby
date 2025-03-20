@@ -6,8 +6,8 @@ module OpenAI
       # Occurs when a
       #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
       #   created.
-      module MessageStreamEvent
-        extend OpenAI::Union
+      class MessageStreamEvent < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do
