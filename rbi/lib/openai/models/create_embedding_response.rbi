@@ -36,8 +36,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::CreateEmbeddingResponse::Usage)
-          .returns(OpenAI::Models::CreateEmbeddingResponse::Usage)
+        params(_: T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Util::AnyHash))
       end
       def usage=(_)
       end

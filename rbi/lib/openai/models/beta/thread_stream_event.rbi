@@ -10,7 +10,10 @@ module OpenAI
         def data
         end
 
-        sig { params(_: OpenAI::Models::Beta::Thread).returns(OpenAI::Models::Beta::Thread) }
+        sig do
+          params(_: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash))
+        end
         def data=(_)
         end
 

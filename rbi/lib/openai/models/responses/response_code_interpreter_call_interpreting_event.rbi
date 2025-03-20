@@ -10,8 +10,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall)
-            .returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall)
+          params(_: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash))
         end
         def code_interpreter_call=(_)
         end

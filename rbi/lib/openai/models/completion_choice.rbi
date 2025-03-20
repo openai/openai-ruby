@@ -31,8 +31,8 @@ module OpenAI
       end
 
       sig do
-        params(_: T.nilable(OpenAI::Models::CompletionChoice::Logprobs))
-          .returns(T.nilable(OpenAI::Models::CompletionChoice::Logprobs))
+        params(_: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash)))
+          .returns(T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash)))
       end
       def logprobs=(_)
       end

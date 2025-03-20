@@ -89,7 +89,10 @@ module OpenAI
         def usage
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::CompletionUsage)).returns(T.nilable(OpenAI::Models::CompletionUsage)) }
+        sig do
+          params(_: T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)))
+        end
         def usage=(_)
         end
 
@@ -146,8 +149,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta)
-              .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta)
+            params(_: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Util::AnyHash))
           end
           def delta=(_)
           end
@@ -184,8 +187,12 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs))
-              .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs))
+            params(
+              _: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Util::AnyHash))
+            )
+              .returns(
+                T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Util::AnyHash))
+              )
           end
           def logprobs=(_)
           end
@@ -233,8 +240,12 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall)
-                .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall)
+              params(
+                _: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall, OpenAI::Util::AnyHash)
+              )
+                .returns(
+                  T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall, OpenAI::Util::AnyHash)
+                )
             end
             def function_call=(_)
             end
@@ -374,8 +385,12 @@ module OpenAI
               end
 
               sig do
-                params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function)
-                  .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function)
+                params(
+                  _: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function, OpenAI::Util::AnyHash)
+                )
+                  .returns(
+                    T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function, OpenAI::Util::AnyHash)
+                  )
               end
               def function=(_)
               end

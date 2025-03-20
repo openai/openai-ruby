@@ -9,8 +9,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function)
-            .returns(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function)
+          params(_: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash))
         end
         def function=(_)
         end

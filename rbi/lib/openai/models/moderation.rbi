@@ -8,7 +8,10 @@ module OpenAI
       def categories
       end
 
-      sig { params(_: OpenAI::Models::Moderation::Categories).returns(OpenAI::Models::Moderation::Categories) }
+      sig do
+        params(_: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash))
+      end
       def categories=(_)
       end
 
@@ -18,8 +21,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::Moderation::CategoryAppliedInputTypes)
-          .returns(OpenAI::Models::Moderation::CategoryAppliedInputTypes)
+        params(_: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash))
       end
       def category_applied_input_types=(_)
       end
@@ -29,7 +32,10 @@ module OpenAI
       def category_scores
       end
 
-      sig { params(_: OpenAI::Models::Moderation::CategoryScores).returns(OpenAI::Models::Moderation::CategoryScores) }
+      sig do
+        params(_: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash))
+      end
       def category_scores=(_)
       end
 

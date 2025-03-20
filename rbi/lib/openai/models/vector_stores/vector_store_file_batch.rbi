@@ -28,8 +28,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts)
+          params(_: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash))
         end
         def file_counts=(_)
         end

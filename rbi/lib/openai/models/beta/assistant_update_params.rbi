@@ -162,8 +162,12 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources))
-            .returns(T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources))
+          params(
+            _: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Util::AnyHash))
+          )
+            .returns(
+              T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Util::AnyHash))
+            )
         end
         def tool_resources=(_)
         end
@@ -373,8 +377,12 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter)
-              .returns(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter)
+            params(
+              _: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+            )
+              .returns(
+                T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+              )
           end
           def code_interpreter=(_)
           end
@@ -384,8 +392,12 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch)
-              .returns(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch)
+            params(
+              _: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+            )
+              .returns(
+                T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+              )
           end
           def file_search=(_)
           end

@@ -28,8 +28,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageFileDelta)
-              .returns(OpenAI::Models::Beta::Threads::ImageFileDelta)
+            params(_: T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Util::AnyHash))
           end
           def image_file=(_)
           end

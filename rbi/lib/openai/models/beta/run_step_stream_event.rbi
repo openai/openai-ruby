@@ -31,8 +31,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::Runs::RunStep)
-              .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
+            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end
@@ -64,8 +64,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::Runs::RunStep)
-              .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
+            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end
@@ -98,8 +98,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent)
-              .returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent)
+            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end
@@ -134,8 +134,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::Runs::RunStep)
-              .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
+            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end
@@ -167,8 +167,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::Runs::RunStep)
-              .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
+            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end
@@ -200,8 +200,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::Runs::RunStep)
-              .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
+            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end
@@ -233,8 +233,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::Runs::RunStep)
-              .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
+            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
           end
           def data=(_)
           end

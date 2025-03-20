@@ -9,7 +9,10 @@ module OpenAI
         def response
         end
 
-        sig { params(_: OpenAI::Models::Responses::Response).returns(OpenAI::Models::Responses::Response) }
+        sig do
+          params(_: T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash))
+        end
         def response=(_)
         end
 

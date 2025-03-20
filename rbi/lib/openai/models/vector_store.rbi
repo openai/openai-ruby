@@ -25,7 +25,10 @@ module OpenAI
       def file_counts
       end
 
-      sig { params(_: OpenAI::Models::VectorStore::FileCounts).returns(OpenAI::Models::VectorStore::FileCounts) }
+      sig do
+        params(_: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash))
+      end
       def file_counts=(_)
       end
 
@@ -98,7 +101,10 @@ module OpenAI
       def expires_after
       end
 
-      sig { params(_: OpenAI::Models::VectorStore::ExpiresAfter).returns(OpenAI::Models::VectorStore::ExpiresAfter) }
+      sig do
+        params(_: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash))
+      end
       def expires_after=(_)
       end
 

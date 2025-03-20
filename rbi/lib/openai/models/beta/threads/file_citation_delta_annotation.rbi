@@ -36,8 +36,12 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation)
-              .returns(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation)
+            params(
+              _: T.any(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation, OpenAI::Util::AnyHash)
+            )
+              .returns(
+                T.any(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation, OpenAI::Util::AnyHash)
+              )
           end
           def file_citation=(_)
           end

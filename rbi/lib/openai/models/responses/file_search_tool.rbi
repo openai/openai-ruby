@@ -50,8 +50,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::FileSearchTool::RankingOptions)
-            .returns(OpenAI::Models::Responses::FileSearchTool::RankingOptions)
+          params(_: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash))
         end
         def ranking_options=(_)
         end

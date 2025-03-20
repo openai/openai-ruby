@@ -19,8 +19,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails)
-            .returns(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails)
+          params(_: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash))
         end
         def input_tokens_details=(_)
         end
@@ -40,8 +40,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails)
-            .returns(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails)
+          params(_: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash))
         end
         def output_tokens_details=(_)
         end

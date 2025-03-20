@@ -20,7 +20,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::MessageDelta).returns(OpenAI::Models::Beta::Threads::MessageDelta)
+            params(_: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Util::AnyHash))
           end
           def delta=(_)
           end

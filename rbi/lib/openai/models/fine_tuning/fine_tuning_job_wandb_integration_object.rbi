@@ -22,8 +22,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration)
-            .returns(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration)
+          params(_: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Util::AnyHash))
         end
         def wandb=(_)
         end

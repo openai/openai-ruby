@@ -23,8 +23,12 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function)
-              .returns(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function)
+            params(
+              _: T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Util::AnyHash)
+            )
+              .returns(
+                T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Util::AnyHash)
+              )
           end
           def function=(_)
           end

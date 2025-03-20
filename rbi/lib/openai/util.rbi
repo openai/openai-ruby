@@ -3,6 +3,8 @@
 module OpenAI
   # @api private
   module Util
+    AnyHash = T.type_alias { T::Hash[Symbol, T.anything] }
+
     # @api private
     sig { returns(Float) }
     def self.monotonic_secs
