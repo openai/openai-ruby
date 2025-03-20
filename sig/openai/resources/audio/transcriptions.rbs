@@ -5,6 +5,7 @@ module OpenAI
         def create: (
           file: IO | StringIO,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          ?include: ::Array[OpenAI::Models::Audio::transcription_include],
           ?language: String,
           ?prompt: String,
           ?response_format: OpenAI::Models::audio_response_format,
@@ -12,6 +13,18 @@ module OpenAI
           ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Audio::transcription_create_response
+
+        def create_streaming: (
+          file: IO | StringIO,
+          model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          ?include: ::Array[OpenAI::Models::Audio::transcription_include],
+          ?language: String,
+          ?prompt: String,
+          ?response_format: OpenAI::Models::audio_response_format,
+          ?temperature: Float,
+          ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Stream[OpenAI::Models::Audio::transcription_stream_event]
 
         def initialize: (client: OpenAI::Client) -> void
       end

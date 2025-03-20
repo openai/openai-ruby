@@ -86,7 +86,7 @@ module OpenAI
         def usage
         end
 
-        sig { params(_: OpenAI::Models::CompletionUsage).returns(OpenAI::Models::CompletionUsage) }
+        sig { params(_: T.nilable(OpenAI::Models::CompletionUsage)).returns(T.nilable(OpenAI::Models::CompletionUsage)) }
         def usage=(_)
         end
 
@@ -101,7 +101,7 @@ module OpenAI
             model: String,
             service_tier: T.nilable(Symbol),
             system_fingerprint: String,
-            usage: OpenAI::Models::CompletionUsage,
+            usage: T.nilable(OpenAI::Models::CompletionUsage),
             object: Symbol
           )
             .returns(T.attached_class)
@@ -129,7 +129,7 @@ module OpenAI
                 object: Symbol,
                 service_tier: T.nilable(Symbol),
                 system_fingerprint: String,
-                usage: OpenAI::Models::CompletionUsage
+                usage: T.nilable(OpenAI::Models::CompletionUsage)
               }
             )
         end

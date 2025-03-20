@@ -17,7 +17,7 @@ module OpenAI
         end
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        #   `tts-1` or `tts-1-hd`
+        #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         sig { returns(T.any(String, Symbol)) }
         def model
         end
@@ -36,6 +36,16 @@ module OpenAI
 
         sig { params(_: Symbol).returns(Symbol) }
         def voice=(_)
+        end
+
+        # Control the voice of your generated audio with additional instructions. Does not
+        #   work with `tts-1` or `tts-1-hd`.
+        sig { returns(T.nilable(String)) }
+        def instructions
+        end
+
+        sig { params(_: String).returns(String) }
+        def instructions=(_)
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
@@ -63,13 +73,14 @@ module OpenAI
             input: String,
             model: T.any(String, Symbol),
             voice: Symbol,
+            instructions: String,
             response_format: Symbol,
             speed: Float,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
         end
-        def self.new(input:, model:, voice:, response_format: nil, speed: nil, request_options: {})
+        def self.new(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {})
         end
 
         sig do
@@ -79,6 +90,7 @@ module OpenAI
                 input: String,
                 model: T.any(String, Symbol),
                 voice: Symbol,
+                instructions: String,
                 response_format: Symbol,
                 speed: Float,
                 request_options: OpenAI::RequestOptions
@@ -89,7 +101,7 @@ module OpenAI
         end
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        #   `tts-1` or `tts-1-hd`
+        #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         class Model < OpenAI::Union
           abstract!
 
