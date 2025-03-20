@@ -3,25 +3,25 @@ module OpenAI
     type all_models =
       String
       | OpenAI::Models::chat_model
-      | OpenAI::Models::AllModels::union_member4
+      | OpenAI::Models::AllModels::union_member2
 
     class AllModels < OpenAI::Union
-      type union_member4 =
+      type union_member2 =
         :"o1-pro"
         | :"o1-pro-2025-03-19"
         | :"computer-use-preview"
         | :"computer-use-preview-2025-03-11"
 
-      class UnionMember4 < OpenAI::Enum
+      class UnionMember2 < OpenAI::Enum
         O1_PRO: :"o1-pro"
         O1_PRO_2025_03_19: :"o1-pro-2025-03-19"
         COMPUTER_USE_PREVIEW: :"computer-use-preview"
         COMPUTER_USE_PREVIEW_2025_03_11: :"computer-use-preview-2025-03-11"
 
-        def self.values: -> ::Array[OpenAI::Models::AllModels::union_member4]
+        def self.values: -> ::Array[OpenAI::Models::AllModels::union_member2]
       end
 
-      def self.variants: -> [String, OpenAI::Models::chat_model, OpenAI::Models::chat_model, OpenAI::Models::AllModels::union_member4]
+      def self.variants: -> [String, OpenAI::Models::chat_model, OpenAI::Models::AllModels::union_member2]
     end
   end
 end
