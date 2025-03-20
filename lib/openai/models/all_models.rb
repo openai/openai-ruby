@@ -5,26 +5,30 @@ module OpenAI
     module AllModels
       extend OpenAI::Union
 
+      # @!group
+
+      O1_PRO = :"o1-pro"
+      O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
+      COMPUTER_USE_PREVIEW = :"computer-use-preview"
+      COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
+
+      # @!endgroup
+
       variant String
 
       variant enum: -> { OpenAI::Models::ChatModel }
 
-      variant enum: -> { OpenAI::Models::AllModels::UnionMember2 }
+      variant const: OpenAI::Models::AllModels::O1_PRO
 
-      module UnionMember2
-        extend OpenAI::Enum
+      variant const: OpenAI::Models::AllModels::O1_PRO_2025_03_19
 
-        O1_PRO = :"o1-pro"
-        O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
-        COMPUTER_USE_PREVIEW = :"computer-use-preview"
-        COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
+      variant const: OpenAI::Models::AllModels::COMPUTER_USE_PREVIEW
 
-        finalize!
-      end
+      variant const: OpenAI::Models::AllModels::COMPUTER_USE_PREVIEW_2025_03_11
 
       # @!parse
       #   class << self
-      #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::AllModels::UnionMember2)]
+      #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol)]
       #     def variants; end
       #   end
     end

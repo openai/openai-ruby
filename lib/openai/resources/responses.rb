@@ -30,7 +30,7 @@ module OpenAI
       #     - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
       #     - [Function calling](https://platform.openai.com/docs/guides/function-calling)
       #
-      #   @option params [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::UnionMember2] :model Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+      #   @option params [String, Symbol, OpenAI::Models::ChatModel] :model Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
       #     wide range of models with different capabilities, performance characteristics,
       #     and price points. Refer to the
       #     [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -166,7 +166,7 @@ module OpenAI
       #     - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
       #     - [Function calling](https://platform.openai.com/docs/guides/function-calling)
       #
-      #   @option params [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::UnionMember2] :model Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+      #   @option params [String, Symbol, OpenAI::Models::ChatModel] :model Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
       #     wide range of models with different capabilities, performance characteristics,
       #     and price points. Refer to the
       #     [model guide](https://platform.openai.com/docs/models) to browse and compare
