@@ -118,7 +118,7 @@ module OpenAI
     ) -> ([true, top, nil] | [false, bool, Integer])
   end
 
-  class ArrayOf[Elem]
+  class ArrayOf
     include OpenAI::Converter
 
     def self.[]: (
@@ -140,7 +140,7 @@ module OpenAI
       top value
     ) -> ([true, top, nil] | [false, bool, Integer])
 
-    def item_type: -> Elem
+    def item_type: -> top
 
     def initialize: (
       ::Hash[Symbol, top]
@@ -150,7 +150,7 @@ module OpenAI
     ) -> void
   end
 
-  class HashOf[Elem]
+  class HashOf
     include OpenAI::Converter
 
     def self.[]: (
@@ -172,7 +172,7 @@ module OpenAI
       top value
     ) -> ([true, top, nil] | [false, bool, Integer])
 
-    def item_type: -> Elem
+    def item_type: -> top
 
     def initialize: (
       ::Hash[Symbol, top]

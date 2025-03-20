@@ -33,13 +33,39 @@ module OpenAI
         class Message < OpenAI::BaseModel
           # A list of one or many input items to the model, containing different content
           #   types.
-          sig { returns(OpenAI::Models::Responses::ResponseInputMessageContentList) }
+          sig do
+            returns(
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+              ]
+            )
+          end
           def content
           end
 
           sig do
-            params(_: OpenAI::Models::Responses::ResponseInputMessageContentList)
-              .returns(OpenAI::Models::Responses::ResponseInputMessageContentList)
+            params(
+              _: T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+              ]
+            )
+              .returns(
+                T::Array[
+                T.any(
+                  OpenAI::Models::Responses::ResponseInputText,
+                  OpenAI::Models::Responses::ResponseInputImage,
+                  OpenAI::Models::Responses::ResponseInputFile
+                )
+                ]
+              )
           end
           def content=(_)
           end
@@ -77,7 +103,13 @@ module OpenAI
           #   precedence over instructions given with the `user` role.
           sig do
             params(
-              content: OpenAI::Models::Responses::ResponseInputMessageContentList,
+              content: T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+              ],
               role: Symbol,
               status: Symbol,
               type: Symbol
@@ -90,7 +122,18 @@ module OpenAI
           sig do
             override
               .returns(
-                {content: OpenAI::Models::Responses::ResponseInputMessageContentList, role: Symbol, status: Symbol, type: Symbol}
+                {
+                  content: T::Array[
+                  T.any(
+                    OpenAI::Models::Responses::ResponseInputText,
+                    OpenAI::Models::Responses::ResponseInputImage,
+                    OpenAI::Models::Responses::ResponseInputFile
+                  )
+                  ],
+                  role: Symbol,
+                  status: Symbol,
+                  type: Symbol
+                }
               )
           end
           def to_hash

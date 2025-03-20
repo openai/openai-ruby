@@ -184,11 +184,11 @@ module OpenAI
         #
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
-        sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata=(_)
         end
 
@@ -224,7 +224,7 @@ module OpenAI
             validation_file: T.nilable(String),
             estimated_finish: T.nilable(Integer),
             integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             method_: OpenAI::Models::FineTuning::FineTuningJob::Method,
             object: Symbol
           )
@@ -274,7 +274,7 @@ module OpenAI
                 validation_file: T.nilable(String),
                 estimated_finish: T.nilable(Integer),
                 integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]),
-                metadata: T.nilable(OpenAI::Models::Metadata),
+                metadata: T.nilable(T::Hash[Symbol, String]),
                 method_: OpenAI::Models::FineTuning::FineTuningJob::Method
               }
             )

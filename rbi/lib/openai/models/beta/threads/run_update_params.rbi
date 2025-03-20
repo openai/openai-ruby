@@ -22,18 +22,18 @@ module OpenAI
           #
           #   Keys are strings with a maximum length of 64 characters. Values are strings with
           #   a maximum length of 512 characters.
-          sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+          sig { returns(T.nilable(T::Hash[Symbol, String])) }
           def metadata
           end
 
-          sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+          sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
           def metadata=(_)
           end
 
           sig do
             params(
               thread_id: String,
-              metadata: T.nilable(OpenAI::Models::Metadata),
+              metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
             )
               .returns(T.attached_class)
@@ -44,7 +44,11 @@ module OpenAI
           sig do
             override
               .returns(
-                {thread_id: String, metadata: T.nilable(OpenAI::Models::Metadata), request_options: OpenAI::RequestOptions}
+                {
+                  thread_id: String,
+                  metadata: T.nilable(T::Hash[Symbol, String]),
+                  request_options: OpenAI::RequestOptions
+                }
               )
           end
           def to_hash

@@ -28,11 +28,11 @@ module OpenAI
         # A list of metadata keys to filter the Chat Completions by. Example:
         #
         #   `metadata[key1]=value1&metadata[key2]=value2`
-        sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata=(_)
         end
 
@@ -59,7 +59,7 @@ module OpenAI
           params(
             after: String,
             limit: Integer,
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             order: Symbol,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
@@ -75,7 +75,7 @@ module OpenAI
               {
                 after: String,
                 limit: Integer,
-                metadata: T.nilable(OpenAI::Models::Metadata),
+                metadata: T.nilable(T::Hash[Symbol, String]),
                 model: String,
                 order: Symbol,
                 request_options: OpenAI::RequestOptions

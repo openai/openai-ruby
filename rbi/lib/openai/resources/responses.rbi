@@ -20,12 +20,29 @@ module OpenAI
       #   your own data as input for the model's response.
       sig do
         params(
-          input: T.any(String, OpenAI::Models::Responses::ResponseInput),
+          input: T.any(
+            String,
+            T::Array[
+            T.any(
+              OpenAI::Models::Responses::EasyInputMessage,
+              OpenAI::Models::Responses::ResponseInputItem::Message,
+              OpenAI::Models::Responses::ResponseOutputMessage,
+              OpenAI::Models::Responses::ResponseFileSearchToolCall,
+              OpenAI::Models::Responses::ResponseComputerToolCall,
+              OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+              OpenAI::Models::Responses::ResponseFunctionWebSearch,
+              OpenAI::Models::Responses::ResponseFunctionToolCall,
+              OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+              OpenAI::Models::Responses::ResponseReasoningItem,
+              OpenAI::Models::Responses::ResponseInputItem::ItemReference
+            )
+            ]
+          ),
           model: T.any(String, Symbol),
           include: T.nilable(T::Array[Symbol]),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
-          metadata: T.nilable(OpenAI::Models::Metadata),
+          metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           reasoning: T.nilable(OpenAI::Models::Reasoning),
@@ -174,12 +191,29 @@ module OpenAI
       #   your own data as input for the model's response.
       sig do
         params(
-          input: T.any(String, OpenAI::Models::Responses::ResponseInput),
+          input: T.any(
+            String,
+            T::Array[
+            T.any(
+              OpenAI::Models::Responses::EasyInputMessage,
+              OpenAI::Models::Responses::ResponseInputItem::Message,
+              OpenAI::Models::Responses::ResponseOutputMessage,
+              OpenAI::Models::Responses::ResponseFileSearchToolCall,
+              OpenAI::Models::Responses::ResponseComputerToolCall,
+              OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+              OpenAI::Models::Responses::ResponseFunctionWebSearch,
+              OpenAI::Models::Responses::ResponseFunctionToolCall,
+              OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+              OpenAI::Models::Responses::ResponseReasoningItem,
+              OpenAI::Models::Responses::ResponseInputItem::ItemReference
+            )
+            ]
+          ),
           model: T.any(String, Symbol),
           include: T.nilable(T::Array[Symbol]),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
-          metadata: T.nilable(OpenAI::Models::Metadata),
+          metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           reasoning: T.nilable(OpenAI::Models::Reasoning),

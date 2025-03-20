@@ -21,7 +21,7 @@ module OpenAI
               ),
               role: Symbol,
               attachments: T.nilable(T::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment]),
-              metadata: T.nilable(OpenAI::Models::Metadata),
+              metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)
@@ -76,7 +76,7 @@ module OpenAI
             params(
               message_id: String,
               thread_id: String,
-              metadata: T.nilable(OpenAI::Models::Metadata),
+              metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)

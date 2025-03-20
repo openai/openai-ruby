@@ -99,10 +99,10 @@ module OpenAI
             }
           end
 
-        StringArray = T.type_alias { T::Array[String] }
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
         ModerationMultiModalInputArray =
-          T.type_alias { T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)] }
+          T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Converter)
       end
 
       # The content moderation model you would like to use. Learn more in

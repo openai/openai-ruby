@@ -94,7 +94,7 @@ module OpenAI
 
         Variants = type_template(:out) { {fixed: T.any(String, T::Array[String])} }
 
-        StringArray = T.type_alias { T::Array[String] }
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
       end
 
       # A filter to apply based on file attributes.

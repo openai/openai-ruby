@@ -16,13 +16,72 @@ module OpenAI
         #   - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
         #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        sig { returns(T.any(String, OpenAI::Models::Responses::ResponseInput)) }
+        sig do
+          returns(
+            T.any(
+              String,
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::EasyInputMessage,
+                OpenAI::Models::Responses::ResponseInputItem::Message,
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseFunctionToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                OpenAI::Models::Responses::ResponseReasoningItem,
+                OpenAI::Models::Responses::ResponseInputItem::ItemReference
+              )
+              ]
+            )
+          )
+        end
         def input
         end
 
         sig do
-          params(_: T.any(String, OpenAI::Models::Responses::ResponseInput))
-            .returns(T.any(String, OpenAI::Models::Responses::ResponseInput))
+          params(
+            _: T.any(
+              String,
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::EasyInputMessage,
+                OpenAI::Models::Responses::ResponseInputItem::Message,
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseFunctionToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                OpenAI::Models::Responses::ResponseReasoningItem,
+                OpenAI::Models::Responses::ResponseInputItem::ItemReference
+              )
+              ]
+            )
+          )
+            .returns(
+              T.any(
+                String,
+                T::Array[
+                T.any(
+                  OpenAI::Models::Responses::EasyInputMessage,
+                  OpenAI::Models::Responses::ResponseInputItem::Message,
+                  OpenAI::Models::Responses::ResponseOutputMessage,
+                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                  OpenAI::Models::Responses::ResponseComputerToolCall,
+                  OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                  OpenAI::Models::Responses::ResponseFunctionToolCall,
+                  OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                  OpenAI::Models::Responses::ResponseReasoningItem,
+                  OpenAI::Models::Responses::ResponseInputItem::ItemReference
+                )
+                ]
+              )
+            )
         end
         def input=(_)
         end
@@ -87,11 +146,11 @@ module OpenAI
         #
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
-        sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata=(_)
         end
 
@@ -285,12 +344,29 @@ module OpenAI
 
         sig do
           params(
-            input: T.any(String, OpenAI::Models::Responses::ResponseInput),
+            input: T.any(
+              String,
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::EasyInputMessage,
+                OpenAI::Models::Responses::ResponseInputItem::Message,
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseFunctionToolCall,
+                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                OpenAI::Models::Responses::ResponseReasoningItem,
+                OpenAI::Models::Responses::ResponseInputItem::ItemReference
+              )
+              ]
+            ),
             model: T.any(String, Symbol),
             include: T.nilable(T::Array[Symbol]),
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Models::Reasoning),
@@ -339,12 +415,29 @@ module OpenAI
           override
             .returns(
               {
-                input: T.any(String, OpenAI::Models::Responses::ResponseInput),
+                input: T.any(
+                  String,
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Responses::EasyInputMessage,
+                    OpenAI::Models::Responses::ResponseInputItem::Message,
+                    OpenAI::Models::Responses::ResponseOutputMessage,
+                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Models::Responses::ResponseComputerToolCall,
+                    OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Models::Responses::ResponseFunctionToolCall,
+                    OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                    OpenAI::Models::Responses::ResponseReasoningItem,
+                    OpenAI::Models::Responses::ResponseInputItem::ItemReference
+                  )
+                  ]
+                ),
                 model: T.any(String, Symbol),
                 include: T.nilable(T::Array[Symbol]),
                 instructions: T.nilable(String),
                 max_output_tokens: T.nilable(Integer),
-                metadata: T.nilable(OpenAI::Models::Metadata),
+                metadata: T.nilable(T::Hash[Symbol, String]),
                 parallel_tool_calls: T.nilable(T::Boolean),
                 previous_response_id: T.nilable(String),
                 reasoning: T.nilable(OpenAI::Models::Reasoning),
@@ -382,7 +475,29 @@ module OpenAI
         class Input < OpenAI::Union
           abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::Responses::ResponseInput)} }
+          Variants =
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  String,
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Responses::EasyInputMessage,
+                    OpenAI::Models::Responses::ResponseInputItem::Message,
+                    OpenAI::Models::Responses::ResponseOutputMessage,
+                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Models::Responses::ResponseComputerToolCall,
+                    OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Models::Responses::ResponseFunctionToolCall,
+                    OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                    OpenAI::Models::Responses::ResponseReasoningItem,
+                    OpenAI::Models::Responses::ResponseInputItem::ItemReference
+                  )
+                  ]
+                )
+              }
+            end
         end
 
         # How the model should select which tool (or tools) to use when generating a
