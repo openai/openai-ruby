@@ -30,7 +30,7 @@ module OpenAI
             module StepDetails
               extend OpenAI::Union
 
-              def self.variants: -> [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
+              def self?.variants: -> [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
             end
           end
         end

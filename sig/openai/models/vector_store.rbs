@@ -98,7 +98,7 @@ module OpenAI
         IN_PROGRESS: :in_progress
         COMPLETED: :completed
 
-        def self.values: -> ::Array[OpenAI::Models::VectorStore::status]
+        def self?.values: -> ::Array[OpenAI::Models::VectorStore::status]
       end
 
       type expires_after = { anchor: :last_active_at, days: Integer }

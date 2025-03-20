@@ -43,7 +43,7 @@ module OpenAI
           INCOMPLETE: :incomplete
           FAILED: :failed
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::status]
         end
 
         type result =
@@ -89,7 +89,7 @@ module OpenAI
           module Attribute
             extend OpenAI::Union
 
-            def self.variants: -> [String, Float, bool]
+            def self?.variants: -> [String, Float, bool]
           end
         end
       end

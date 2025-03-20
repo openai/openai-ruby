@@ -318,6 +318,12 @@ module OpenAI
               ASSISTANT = :assistant
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
 
             class Attachment < OpenAI::BaseModel
@@ -442,6 +448,12 @@ module OpenAI
               LAST_MESSAGES = :last_messages
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
           end
         end

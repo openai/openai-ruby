@@ -35,7 +35,7 @@ module OpenAI
         LENGTH: :length
         CONTENT_FILTER: :content_filter
 
-        def self.values: -> ::Array[OpenAI::Models::CompletionChoice::finish_reason]
+        def self?.values: -> ::Array[OpenAI::Models::CompletionChoice::finish_reason]
       end
 
       type logprobs =

@@ -20,6 +20,17 @@ module OpenAI
               )
             }
           end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem]
+              )
+          end
+          def variants
+          end
+        end
       end
     end
   end

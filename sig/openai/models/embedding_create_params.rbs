@@ -61,7 +61,7 @@ module OpenAI
 
         ArrayOfToken2DArray: array_of_token2_d_array
 
-        def self.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
+        def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
       end
 
       type model = String | OpenAI::Models::embedding_model
@@ -69,7 +69,7 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
-        def self.variants: -> [String, OpenAI::Models::embedding_model]
+        def self?.variants: -> [String, OpenAI::Models::embedding_model]
       end
 
       type encoding_format = :float | :base64
@@ -80,7 +80,7 @@ module OpenAI
         FLOAT: :float
         BASE64: :base64
 
-        def self.values: -> ::Array[OpenAI::Models::EmbeddingCreateParams::encoding_format]
+        def self?.values: -> ::Array[OpenAI::Models::EmbeddingCreateParams::encoding_format]
       end
     end
   end

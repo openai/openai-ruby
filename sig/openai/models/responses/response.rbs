@@ -139,7 +139,7 @@ module OpenAI
             MAX_OUTPUT_TOKENS: :max_output_tokens
             CONTENT_FILTER: :content_filter
 
-            def self.values: -> ::Array[OpenAI::Models::Responses::Response::IncompleteDetails::reason]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::IncompleteDetails::reason]
           end
         end
 
@@ -151,7 +151,7 @@ module OpenAI
         module ToolChoice
           extend OpenAI::Union
 
-          def self.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+          def self?.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
         end
 
         type truncation = :auto | :disabled
@@ -162,7 +162,7 @@ module OpenAI
           AUTO: :auto
           DISABLED: :disabled
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::Response::truncation]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::Response::truncation]
         end
       end
     end

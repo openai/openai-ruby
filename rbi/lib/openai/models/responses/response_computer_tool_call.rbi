@@ -262,14 +262,27 @@ module OpenAI
               OrSymbol =
                 T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol) }
 
-              LEFT = T.let(:left, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+              LEFT =
+                T.let(:left, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
               RIGHT =
-                T.let(:right, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+                T.let(:right, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
               WHEEL =
-                T.let(:wheel, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
-              BACK = T.let(:back, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+                T.let(:wheel, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
+              BACK =
+                T.let(:back, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
               FORWARD =
-                T.let(:forward, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+                T.let(:forward, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
+
+              class << self
+                sig do
+                  override
+                    .returns(
+                      T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol]
+                    )
+                end
+                def values
+                end
+              end
             end
           end
 
@@ -596,6 +609,17 @@ module OpenAI
             def to_hash
             end
           end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
+                )
+            end
+            def variants
+            end
+          end
         end
 
         class PendingSafetyCheck < OpenAI::BaseModel
@@ -646,9 +670,17 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol) }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
-          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
+          IN_PROGRESS =
+            T.let(:in_progress, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
+          INCOMPLETE =
+            T.let(:incomplete, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # The type of the computer call. Always `computer_call`.
@@ -660,7 +692,13 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol) }
 
           COMPUTER_CALL =
-            T.let(:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol)
+            T.let(:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

@@ -36,7 +36,7 @@ module OpenAI
           LOW: :low
           AUTO: :auto
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputImage::detail]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputImage::detail]
         end
       end
     end

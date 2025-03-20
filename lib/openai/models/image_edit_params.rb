@@ -128,6 +128,12 @@ module OpenAI
         B64_JSON = :b64_json
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -140,6 +146,12 @@ module OpenAI
         NUMBER_1024X1024 = :"1024x1024"
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
     end
   end

@@ -99,7 +99,7 @@ module OpenAI
             def to_hash: -> OpenAI::Models::Responses::ResponseOutputText::Annotation::file_path
           end
 
-          def self.variants: -> [OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath]
+          def self?.variants: -> [OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath]
         end
       end
     end

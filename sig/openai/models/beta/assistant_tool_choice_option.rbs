@@ -17,10 +17,10 @@ module OpenAI
           AUTO: :auto
           REQUIRED: :required
 
-          def self.values: -> ::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::auto]
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::auto]
         end
 
-        def self.variants: -> [OpenAI::Models::Beta::AssistantToolChoiceOption::auto, OpenAI::Models::Beta::AssistantToolChoice]
+        def self?.variants: -> [OpenAI::Models::Beta::AssistantToolChoiceOption::auto, OpenAI::Models::Beta::AssistantToolChoice]
       end
     end
   end

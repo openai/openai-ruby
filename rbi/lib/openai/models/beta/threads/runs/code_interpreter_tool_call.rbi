@@ -272,6 +272,17 @@ module OpenAI
                     end
                   end
                 end
+
+                class << self
+                  sig do
+                    override
+                      .returns(
+                        [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image]
+                      )
+                  end
+                  def variants
+                  end
+                end
               end
             end
           end

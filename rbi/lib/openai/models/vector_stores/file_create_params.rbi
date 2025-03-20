@@ -102,6 +102,12 @@ module OpenAI
           extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
+
+          class << self
+            sig { override.returns([String, Float, T::Boolean]) }
+            def variants
+            end
+          end
         end
       end
     end

@@ -11,7 +11,7 @@ module OpenAI
       VERBOSE_JSON: :verbose_json
       VTT: :vtt
 
-      def self.values: -> ::Array[OpenAI::Models::audio_response_format]
+      def self?.values: -> ::Array[OpenAI::Models::audio_response_format]
     end
   end
 end

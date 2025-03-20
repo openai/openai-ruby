@@ -66,7 +66,7 @@ module OpenAI
               module Output
                 extend OpenAI::Union
 
-                def self.variants: -> [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
+                def self?.variants: -> [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
               end
             end
           end

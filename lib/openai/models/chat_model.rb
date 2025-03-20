@@ -50,6 +50,12 @@ module OpenAI
       GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
 
       finalize!
+
+      class << self
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def values; end
+      end
     end
   end
 end

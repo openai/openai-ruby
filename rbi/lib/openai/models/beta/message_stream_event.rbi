@@ -191,6 +191,17 @@ module OpenAI
           def to_hash
           end
         end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete]
+              )
+          end
+          def variants
+          end
+        end
       end
     end
   end

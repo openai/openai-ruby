@@ -70,7 +70,7 @@ module OpenAI
 
             MessageContentPartParamArray: message_content_part_param_array
 
-            def self.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
+            def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
           end
 
           type role = :user | :assistant
@@ -81,7 +81,7 @@ module OpenAI
             USER: :user
             ASSISTANT: :assistant
 
-            def self.values: -> ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::role]
+            def self?.values: -> ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::role]
           end
 
           type attachment =
@@ -125,7 +125,7 @@ module OpenAI
                 def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::file_search
               end
 
-              def self.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch]
+              def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch]
             end
           end
         end
@@ -275,7 +275,7 @@ module OpenAI
                   end
                 end
 
-                def self.variants: -> [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+                def self?.variants: -> [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
               end
             end
           end

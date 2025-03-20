@@ -146,7 +146,7 @@ module OpenAI
               MAX_COMPLETION_TOKENS: :max_completion_tokens
               MAX_PROMPT_TOKENS: :max_prompt_tokens
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason]
             end
           end
 
@@ -177,7 +177,7 @@ module OpenAI
               RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
               INVALID_PROMPT: :invalid_prompt
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::LastError::code]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::LastError::code]
             end
           end
 
@@ -241,7 +241,7 @@ module OpenAI
               AUTO: :auto
               LAST_MESSAGES: :last_messages
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_]
             end
           end
 

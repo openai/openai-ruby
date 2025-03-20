@@ -8,7 +8,7 @@ module OpenAI
 
         LOGPROBS: :logprobs
 
-        def self.values: -> ::Array[OpenAI::Models::Audio::transcription_include]
+        def self?.values: -> ::Array[OpenAI::Models::Audio::transcription_include]
       end
     end
   end

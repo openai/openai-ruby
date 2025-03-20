@@ -510,6 +510,14 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol)
+
+          class << self
+            sig do
+              override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
+            end
+            def values
+            end
+          end
         end
 
         module HarassmentThreatening
@@ -522,6 +530,17 @@ module OpenAI
 
           TEXT =
             T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(
+                  T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
+                )
+            end
+            def values
+            end
+          end
         end
 
         module Hate
@@ -533,6 +552,12 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         module HateThreatening
@@ -544,6 +569,15 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
+            end
+            def values
+            end
+          end
         end
 
         module Illicit
@@ -555,6 +589,12 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         module IllicitViolent
@@ -566,6 +606,15 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
+            end
+            def values
+            end
+          end
         end
 
         module SelfHarm
@@ -578,6 +627,12 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         module SelfHarmInstruction
@@ -592,6 +647,17 @@ module OpenAI
             T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol)
           IMAGE =
             T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(
+                  T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
+                )
+            end
+            def values
+            end
+          end
         end
 
         module SelfHarmIntent
@@ -605,6 +671,15 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol)
           IMAGE =
             T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
+            end
+            def values
+            end
+          end
         end
 
         module Sexual
@@ -617,6 +692,12 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         module SexualMinor
@@ -628,6 +709,15 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
+            end
+            def values
+            end
+          end
         end
 
         module Violence
@@ -640,6 +730,12 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         module ViolenceGraphic
@@ -653,6 +749,15 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol)
           IMAGE =
             T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
+            end
+            def values
+            end
+          end
         end
       end
 

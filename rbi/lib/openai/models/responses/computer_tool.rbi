@@ -79,10 +79,16 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol) }
 
-          MAC = T.let(:mac, OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol)
-          WINDOWS = T.let(:windows, OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol)
-          UBUNTU = T.let(:ubuntu, OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol)
-          BROWSER = T.let(:browser, OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol)
+          MAC = T.let(:mac, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
+          WINDOWS = T.let(:windows, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
+          UBUNTU = T.let(:ubuntu, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
+          BROWSER = T.let(:browser, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

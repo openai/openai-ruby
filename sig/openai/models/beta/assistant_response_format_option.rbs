@@ -10,7 +10,7 @@ module OpenAI
       module AssistantResponseFormatOption
         extend OpenAI::Union
 
-        def self.variants: -> [:auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
+        def self?.variants: -> [:auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
       end
     end
   end

@@ -114,6 +114,12 @@ module OpenAI
               DEFAULT_2024_08_21 = :default_2024_08_21
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
           end
         end

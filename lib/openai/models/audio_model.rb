@@ -10,6 +10,12 @@ module OpenAI
       GPT_4O_MINI_TRANSCRIBE = :"gpt-4o-mini-transcribe"
 
       finalize!
+
+      class << self
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def values; end
+      end
     end
   end
 end

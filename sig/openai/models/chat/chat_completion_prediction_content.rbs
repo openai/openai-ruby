@@ -32,7 +32,7 @@ module OpenAI
 
           ChatCompletionContentPartTextArray: chat_completion_content_part_text_array
 
-          def self.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
+          def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
         end
       end
     end

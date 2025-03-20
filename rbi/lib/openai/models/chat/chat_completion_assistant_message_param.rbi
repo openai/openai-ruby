@@ -247,6 +247,36 @@ module OpenAI
                   )
                 }
               end
+
+            class << self
+              sig do
+                override
+                  .returns(
+                    [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
+                  )
+              end
+              def variants
+              end
+            end
+          end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [
+                    String,
+                    T::Array[
+                                      T.any(
+                                        OpenAI::Models::Chat::ChatCompletionContentPartText,
+                                        OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+                                      )
+                                      ]
+                  ]
+                )
+            end
+            def variants
+            end
           end
         end
 

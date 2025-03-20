@@ -104,10 +104,16 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol) }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
+          FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
+          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -119,8 +125,14 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol) }
 
-          ASC = T.let(:asc, OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)
-          DESC = T.let(:desc, OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)
+          ASC = T.let(:asc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
+          DESC = T.let(:desc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

@@ -140,7 +140,7 @@ module OpenAI
         CANCELLING: :cancelling
         CANCELLED: :cancelled
 
-        def self.values: -> ::Array[OpenAI::Models::Batch::status]
+        def self?.values: -> ::Array[OpenAI::Models::Batch::status]
       end
 
       type errors =

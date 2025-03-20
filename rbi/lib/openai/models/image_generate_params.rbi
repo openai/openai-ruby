@@ -157,6 +157,12 @@ module OpenAI
         extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ImageModel::OrSymbol)} }
+
+        class << self
+          sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
+          def variants
+          end
+        end
       end
 
       # The quality of the image that will be generated. `hd` creates images with finer
@@ -168,8 +174,14 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Quality) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol) }
 
-        STANDARD = T.let(:standard, OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
-        HD = T.let(:hd, OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
+        STANDARD = T.let(:standard, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol)
+        HD = T.let(:hd, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -182,8 +194,14 @@ module OpenAI
         OrSymbol =
           T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol) }
 
-        URL = T.let(:url, OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol)
-        B64_JSON = T.let(:b64_json, OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol)
+        URL = T.let(:url, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol)
+        B64_JSON = T.let(:b64_json, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -195,11 +213,17 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Size) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol) }
 
-        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_1792X1024 = T.let(:"1792x1024", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
-        NUMBER_1024X1792 = T.let(:"1024x1792", OpenAI::Models::ImageGenerateParams::Size::OrSymbol)
+        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        NUMBER_1792X1024 = T.let(:"1792x1024", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        NUMBER_1024X1792 = T.let(:"1024x1792", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       # The style of the generated images. Must be one of `vivid` or `natural`. Vivid
@@ -212,8 +236,14 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Style) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol) }
 
-        VIVID = T.let(:vivid, OpenAI::Models::ImageGenerateParams::Style::OrSymbol)
-        NATURAL = T.let(:natural, OpenAI::Models::ImageGenerateParams::Style::OrSymbol)
+        VIVID = T.let(:vivid, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol)
+        NATURAL = T.let(:natural, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

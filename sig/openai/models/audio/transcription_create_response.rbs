@@ -8,7 +8,7 @@ module OpenAI
       module TranscriptionCreateResponse
         extend OpenAI::Union
 
-        def self.variants: -> [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]
+        def self?.variants: -> [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]
       end
     end
   end

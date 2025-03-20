@@ -64,7 +64,7 @@ module OpenAI
           FAILED: :failed
           CANCELLED: :cancelled
 
-          def self.values: -> ::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::filter]
+          def self?.values: -> ::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::filter]
         end
 
         type order = :asc | :desc
@@ -75,7 +75,7 @@ module OpenAI
           ASC: :asc
           DESC: :desc
 
-          def self.values: -> ::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::order]
+          def self?.values: -> ::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::order]
         end
       end
     end

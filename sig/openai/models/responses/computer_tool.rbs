@@ -37,7 +37,7 @@ module OpenAI
           UBUNTU: :ubuntu
           BROWSER: :browser
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ComputerTool::environment]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ComputerTool::environment]
         end
       end
     end

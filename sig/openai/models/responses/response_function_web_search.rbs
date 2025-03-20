@@ -33,7 +33,7 @@ module OpenAI
           COMPLETED: :completed
           FAILED: :failed
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::status]
         end
       end
     end

@@ -47,7 +47,7 @@ module OpenAI
         module Filters
           extend OpenAI::Union
 
-          def self.variants: -> [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
+          def self?.variants: -> [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
         end
 
         type ranking_options =
@@ -82,7 +82,7 @@ module OpenAI
             AUTO: :auto
             DEFAULT_2024_11_15: :"default-2024-11-15"
 
-            def self.values: -> ::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker]
           end
         end
       end

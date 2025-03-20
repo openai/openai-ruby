@@ -64,6 +64,12 @@ module OpenAI
           FAILED = :failed
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         class Result < OpenAI::BaseModel

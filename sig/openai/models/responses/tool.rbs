@@ -10,7 +10,7 @@ module OpenAI
       module Tool
         extend OpenAI::Union
 
-        def self.variants: -> [OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool]
+        def self?.variants: -> [OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool]
       end
     end
   end

@@ -67,6 +67,12 @@ module OpenAI
         NUMBER_24H = :"24h"
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       # The endpoint to be used for all requests in the batch. Currently
@@ -82,6 +88,12 @@ module OpenAI
         V1_COMPLETIONS = :"/v1/completions"
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
     end
   end

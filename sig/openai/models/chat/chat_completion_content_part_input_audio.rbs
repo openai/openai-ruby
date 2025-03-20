@@ -47,7 +47,7 @@ module OpenAI
             WAV: :wav
             MP3: :mp3
 
-            def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_]
           end
         end
       end

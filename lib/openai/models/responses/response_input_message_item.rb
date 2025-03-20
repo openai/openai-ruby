@@ -64,6 +64,12 @@ module OpenAI
           DEVELOPER = :developer
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -76,6 +82,12 @@ module OpenAI
           INCOMPLETE = :incomplete
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # The type of the message input. Always set to `message`.
@@ -85,6 +97,12 @@ module OpenAI
           MESSAGE = :message
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

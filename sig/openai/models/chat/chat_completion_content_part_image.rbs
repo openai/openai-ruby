@@ -52,7 +52,7 @@ module OpenAI
             LOW: :low
             HIGH: :high
 
-            def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail]
           end
         end
       end

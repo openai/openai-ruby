@@ -140,6 +140,12 @@ module OpenAI
         COMPLETED = T.let(:completed, OpenAI::Models::Upload::Status::TaggedSymbol)
         CANCELLED = T.let(:cancelled, OpenAI::Models::Upload::Status::TaggedSymbol)
         EXPIRED = T.let(:expired, OpenAI::Models::Upload::Status::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::Upload::Status::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

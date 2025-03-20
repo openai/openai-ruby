@@ -232,6 +232,17 @@ module OpenAI
               end
             end
           end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]
+                )
+            end
+            def variants
+            end
+          end
         end
 
         # The status of the code interpreter tool call.
@@ -249,6 +260,15 @@ module OpenAI
             T.let(:interpreting, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
           COMPLETED =
             T.let(:completed, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
+
+          class << self
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol])
+            end
+            def values
+            end
+          end
         end
       end
     end

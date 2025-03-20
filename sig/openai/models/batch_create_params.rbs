@@ -38,7 +38,7 @@ module OpenAI
 
         NUMBER_24H: :"24h"
 
-        def self.values: -> ::Array[OpenAI::Models::BatchCreateParams::completion_window]
+        def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::completion_window]
       end
 
       type endpoint =
@@ -55,7 +55,7 @@ module OpenAI
         V1_EMBEDDINGS: :"/v1/embeddings"
         V1_COMPLETIONS: :"/v1/completions"
 
-        def self.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
+        def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
       end
     end
   end

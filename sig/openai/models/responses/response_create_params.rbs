@@ -103,7 +103,7 @@ module OpenAI
         module Input
           extend OpenAI::Union
 
-          def self.variants: -> [String, OpenAI::Models::Responses::response_input]
+          def self?.variants: -> [String, OpenAI::Models::Responses::response_input]
         end
 
         type tool_choice =
@@ -114,7 +114,7 @@ module OpenAI
         module ToolChoice
           extend OpenAI::Union
 
-          def self.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+          def self?.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
         end
 
         type truncation = :auto | :disabled
@@ -125,7 +125,7 @@ module OpenAI
           AUTO: :auto
           DISABLED: :disabled
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::truncation]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::truncation]
         end
       end
     end

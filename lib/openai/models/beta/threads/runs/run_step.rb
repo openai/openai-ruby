@@ -191,6 +191,12 @@ module OpenAI
                 RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
 
                 finalize!
+
+                class << self
+                  # @!parse
+                  #   # @return [Array<Symbol>]
+                  #   def values; end
+                end
               end
             end
 
@@ -206,6 +212,12 @@ module OpenAI
               EXPIRED = :expired
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
 
             # The details of the run step.
@@ -235,6 +247,12 @@ module OpenAI
               TOOL_CALLS = :tool_calls
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
 
             class Usage < OpenAI::BaseModel

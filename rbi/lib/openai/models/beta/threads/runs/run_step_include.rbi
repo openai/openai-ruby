@@ -15,8 +15,14 @@ module OpenAI
             STEP_DETAILS_TOOL_CALLS_FILE_SEARCH_RESULTS_CONTENT =
               T.let(
                 :"step_details.tool_calls[*].file_search.results[*].content",
-                OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                OpenAI::Models::Beta::Threads::Runs::RunStepInclude::TaggedSymbol
               )
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
 

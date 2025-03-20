@@ -530,6 +530,34 @@ module OpenAI
                 )
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [
+                    String,
+                    T::Array[
+                                      T.any(
+                                        OpenAI::Models::Responses::EasyInputMessage,
+                                        OpenAI::Models::Responses::ResponseInputItem::Message,
+                                        OpenAI::Models::Responses::ResponseOutputMessage,
+                                        OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                                        OpenAI::Models::Responses::ResponseComputerToolCall,
+                                        OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                                        OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                                        OpenAI::Models::Responses::ResponseFunctionToolCall,
+                                        OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                                        OpenAI::Models::Responses::ResponseReasoningItem,
+                                        OpenAI::Models::Responses::ResponseInputItem::ItemReference
+                                      )
+                                      ]
+                  ]
+                )
+            end
+            def variants
+            end
+          end
         end
 
         # How the model should select which tool (or tools) to use when generating a
@@ -548,6 +576,17 @@ module OpenAI
                 )
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+                )
+            end
+            def variants
+            end
+          end
         end
 
         # The truncation strategy to use for the model response.
@@ -565,8 +604,14 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol) }
 
-          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol)
-          DISABLED = T.let(:disabled, OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)
+          DISABLED = T.let(:disabled, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

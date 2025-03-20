@@ -33,7 +33,7 @@ module OpenAI
             LOW: :low
             HIGH: :high
 
-            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::ImageURL::detail]
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::ImageURL::detail]
           end
         end
       end

@@ -324,6 +324,12 @@ module OpenAI
                   T.let(:server_error, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
                 RATE_LIMIT_EXCEEDED =
                   T.let(:rate_limit_exceeded, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
+
+                class << self
+                  sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol]) }
+                  def values
+                  end
+                end
               end
             end
 
@@ -341,6 +347,12 @@ module OpenAI
               FAILED = T.let(:failed, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
               COMPLETED = T.let(:completed, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
               EXPIRED = T.let(:expired, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
+
+              class << self
+                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol]) }
+                def values
+                end
+              end
             end
 
             # The details of the run step.
@@ -356,6 +368,17 @@ module OpenAI
                     )
                   }
                 end
+
+              class << self
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
+                    )
+                end
+                def variants
+                end
+              end
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
@@ -369,6 +392,12 @@ module OpenAI
               MESSAGE_CREATION =
                 T.let(:message_creation, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
               TOOL_CALLS = T.let(:tool_calls, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
+
+              class << self
+                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol]) }
+                def values
+                end
+              end
             end
 
             class Usage < OpenAI::BaseModel

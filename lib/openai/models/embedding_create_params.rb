@@ -141,6 +141,12 @@ module OpenAI
         BASE64 = :base64
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
     end
   end

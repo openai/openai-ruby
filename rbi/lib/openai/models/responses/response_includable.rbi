@@ -18,11 +18,20 @@ module OpenAI
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol) }
 
         FILE_SEARCH_CALL_RESULTS =
-          T.let(:"file_search_call.results", OpenAI::Models::Responses::ResponseIncludable::OrSymbol)
+          T.let(:"file_search_call.results", OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol)
         MESSAGE_INPUT_IMAGE_IMAGE_URL =
-          T.let(:"message.input_image.image_url", OpenAI::Models::Responses::ResponseIncludable::OrSymbol)
+          T.let(:"message.input_image.image_url", OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol)
         COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
-          T.let(:"computer_call_output.output.image_url", OpenAI::Models::Responses::ResponseIncludable::OrSymbol)
+          T.let(
+            :"computer_call_output.output.image_url",
+            OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol
+          )
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

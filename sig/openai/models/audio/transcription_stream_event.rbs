@@ -8,7 +8,7 @@ module OpenAI
       module TranscriptionStreamEvent
         extend OpenAI::Union
 
-        def self.variants: -> [OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent]
+        def self?.variants: -> [OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent]
       end
     end
   end

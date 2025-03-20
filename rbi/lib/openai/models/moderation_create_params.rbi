@@ -106,6 +106,17 @@ module OpenAI
 
         ModerationMultiModalInputArray =
           T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Converter)
+
+        class << self
+          sig do
+            override
+              .returns(
+                [String, T::Array[String], T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]
+              )
+          end
+          def variants
+          end
+        end
       end
 
       # The content moderation model you would like to use. Learn more in
@@ -116,6 +127,12 @@ module OpenAI
         extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ModerationModel::OrSymbol)} }
+
+        class << self
+          sig { override.returns([String, OpenAI::Models::ModerationModel::OrSymbol]) }
+          def variants
+          end
+        end
       end
     end
   end

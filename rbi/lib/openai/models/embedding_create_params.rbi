@@ -126,6 +126,12 @@ module OpenAI
         IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
 
         ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
+
+        class << self
+          sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
+          def variants
+          end
+        end
       end
 
       # ID of the model to use. You can use the
@@ -137,6 +143,12 @@ module OpenAI
         extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol)} }
+
+        class << self
+          sig { override.returns([String, OpenAI::Models::EmbeddingModel::OrSymbol]) }
+          def variants
+          end
+        end
       end
 
       # The format to return the embeddings in. Can be either `float` or
@@ -148,8 +160,14 @@ module OpenAI
         OrSymbol =
           T.type_alias { T.any(Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol) }
 
-        FLOAT = T.let(:float, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
-        BASE64 = T.let(:base64, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
+        FLOAT = T.let(:float, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
+        BASE64 = T.let(:base64, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end
