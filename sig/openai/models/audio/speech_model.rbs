@@ -10,7 +10,7 @@ module OpenAI
         TTS_1_HD: :"tts-1-hd"
         GPT_4O_MINI_TTS: :"gpt-4o-mini-tts"
 
-        def self.values: -> ::Array[OpenAI::Models::Audio::speech_model]
+        def self?.values: -> ::Array[OpenAI::Models::Audio::speech_model]
       end
     end
   end

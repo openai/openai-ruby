@@ -231,6 +231,12 @@ module OpenAI
               T.let(:content_filter, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
             FUNCTION_CALL =
               T.let(:function_call, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol]) }
+              def values
+              end
+            end
           end
 
           class Logprobs < OpenAI::BaseModel
@@ -293,6 +299,12 @@ module OpenAI
 
           SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

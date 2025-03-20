@@ -69,7 +69,7 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          def self.variants: -> [String, OpenAI::Models::chat_model]
+          def self?.variants: -> [String, OpenAI::Models::chat_model]
         end
 
         type tool_resources =
@@ -217,7 +217,7 @@ module OpenAI
                   end
                 end
 
-                def self.variants: -> [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+                def self?.variants: -> [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
               end
             end
           end

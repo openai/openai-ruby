@@ -19,10 +19,10 @@ module OpenAI
           AUTO: :auto
           REQUIRED: :required
 
-          def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto]
         end
 
-        def self.variants: -> [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
+        def self?.variants: -> [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
       end
     end
   end

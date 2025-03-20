@@ -56,7 +56,7 @@ module OpenAI
           WARN: :warn
           ERROR: :error
 
-          def self.values: -> ::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::level]
+          def self?.values: -> ::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::level]
         end
 
         type type_ = :message | :metrics
@@ -67,7 +67,7 @@ module OpenAI
           MESSAGE: :message
           METRICS: :metrics
 
-          def self.values: -> ::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::type_]
+          def self?.values: -> ::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::type_]
         end
       end
     end

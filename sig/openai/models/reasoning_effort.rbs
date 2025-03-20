@@ -9,7 +9,7 @@ module OpenAI
       MEDIUM: :medium
       HIGH: :high
 
-      def self.values: -> ::Array[OpenAI::Models::reasoning_effort]
+      def self?.values: -> ::Array[OpenAI::Models::reasoning_effort]
     end
   end
 end

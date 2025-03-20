@@ -10,6 +10,12 @@ module OpenAI
 
         Variants =
           type_template(:out) { {fixed: T.any(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)} }
+
+        class << self
+          sig { override.returns([OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]) }
+          def variants
+          end
+        end
       end
     end
   end

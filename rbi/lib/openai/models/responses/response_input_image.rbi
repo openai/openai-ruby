@@ -82,9 +82,15 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol) }
 
-          HIGH = T.let(:high, OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
-          LOW = T.let(:low, OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
-          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
+          HIGH = T.let(:high, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
+          LOW = T.let(:low, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

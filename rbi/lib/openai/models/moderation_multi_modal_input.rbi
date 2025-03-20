@@ -8,6 +8,12 @@ module OpenAI
 
       Variants =
         type_template(:out) { {fixed: T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)} }
+
+      class << self
+        sig { override.returns([OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput]) }
+        def variants
+        end
+      end
     end
   end
 end

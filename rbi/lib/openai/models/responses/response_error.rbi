@@ -74,6 +74,12 @@ module OpenAI
             T.let(:failed_to_download_image, OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol)
           IMAGE_FILE_NOT_FOUND =
             T.let(:image_file_not_found, OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

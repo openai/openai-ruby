@@ -350,9 +350,15 @@ module OpenAI
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol) }
 
         GPT_3_5_TURBO_INSTRUCT =
-          T.let(:"gpt-3.5-turbo-instruct", OpenAI::Models::CompletionCreateParams::Model::OrSymbol)
-        DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::CompletionCreateParams::Model::OrSymbol)
-        BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::CompletionCreateParams::Model::OrSymbol)
+          T.let(:"gpt-3.5-turbo-instruct", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
+        DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
+        BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
+
+        class << self
+          sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
+          def variants
+          end
+        end
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -374,6 +380,12 @@ module OpenAI
         IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
 
         ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
+
+        class << self
+          sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
+          def variants
+          end
+        end
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -384,6 +396,12 @@ module OpenAI
         Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
 
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+
+        class << self
+          sig { override.returns([String, T::Array[String]]) }
+          def variants
+          end
+        end
       end
     end
   end

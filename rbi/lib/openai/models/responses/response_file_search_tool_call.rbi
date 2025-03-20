@@ -98,11 +98,20 @@ module OpenAI
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol) }
 
           IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
-          SEARCHING = T.let(:searching, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
-          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
+            T.let(:in_progress, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+          SEARCHING =
+            T.let(:searching, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+          COMPLETED =
+            T.let(:completed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+          INCOMPLETE =
+            T.let(:incomplete, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+          FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         class Result < OpenAI::BaseModel
@@ -190,6 +199,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
+
+            class << self
+              sig { override.returns([String, Float, T::Boolean]) }
+              def variants
+              end
+            end
           end
         end
       end

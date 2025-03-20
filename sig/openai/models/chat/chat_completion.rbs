@@ -89,7 +89,7 @@ module OpenAI
             CONTENT_FILTER: :content_filter
             FUNCTION_CALL: :function_call
 
-            def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason]
           end
 
           type logprobs =
@@ -120,7 +120,7 @@ module OpenAI
           SCALE: :scale
           DEFAULT: :default
 
-          def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::service_tier]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::service_tier]
         end
       end
     end

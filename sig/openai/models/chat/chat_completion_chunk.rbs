@@ -142,7 +142,7 @@ module OpenAI
               ASSISTANT: :assistant
               TOOL: :tool
 
-              def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role]
+              def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role]
             end
 
             type tool_call =
@@ -204,7 +204,7 @@ module OpenAI
 
                 FUNCTION: :function
 
-                def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_]
+                def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_]
               end
             end
           end
@@ -221,7 +221,7 @@ module OpenAI
             CONTENT_FILTER: :content_filter
             FUNCTION_CALL: :function_call
 
-            def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason]
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason]
           end
 
           type logprobs =
@@ -252,7 +252,7 @@ module OpenAI
           SCALE: :scale
           DEFAULT: :default
 
-          def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::service_tier]
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::service_tier]
         end
       end
     end

@@ -225,6 +225,12 @@ module OpenAI
               T.let(:unsupported_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
             INVALID_FILE =
               T.let(:invalid_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
 
@@ -242,12 +248,24 @@ module OpenAI
           COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
           CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
           FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         module Attribute
           extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
+
+          class << self
+            sig { override.returns([String, Float, T::Boolean]) }
+            def variants
+            end
+          end
         end
       end
     end

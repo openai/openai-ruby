@@ -93,6 +93,12 @@ module OpenAI
 
           Variants =
             type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
+
+          class << self
+            sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
+            def variants
+            end
+          end
         end
 
         class RankingOptions < OpenAI::BaseModel
@@ -148,9 +154,20 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol) }
 
-            AUTO = T.let(:auto, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
+            AUTO = T.let(:auto, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol)
             DEFAULT_2024_11_15 =
-              T.let(:"default-2024-11-15", OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
+              T.let(
+                :"default-2024-11-15",
+                OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
+              )
+
+            class << self
+              sig do
+                override.returns(T::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol])
+              end
+              def values
+              end
+            end
           end
         end
       end

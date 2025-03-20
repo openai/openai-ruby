@@ -11,7 +11,7 @@ module OpenAI
         IN_PROGRESS: :in_progress
         INCOMPLETE: :incomplete
 
-        def self.values: -> ::Array[OpenAI::Models::Responses::response_status]
+        def self?.values: -> ::Array[OpenAI::Models::Responses::response_status]
       end
     end
   end

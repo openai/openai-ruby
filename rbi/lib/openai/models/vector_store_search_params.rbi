@@ -95,6 +95,12 @@ module OpenAI
         Variants = type_template(:out) { {fixed: T.any(String, T::Array[String])} }
 
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+
+        class << self
+          sig { override.returns([String, T::Array[String]]) }
+          def variants
+          end
+        end
       end
 
       # A filter to apply based on file attributes.
@@ -103,6 +109,12 @@ module OpenAI
 
         Variants =
           type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
+
+        class << self
+          sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
+          def variants
+          end
+        end
       end
 
       class RankingOptions < OpenAI::BaseModel
@@ -153,9 +165,18 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol) }
 
-          AUTO = T.let(:auto, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol)
           DEFAULT_2024_11_15 =
-            T.let(:"default-2024-11-15", OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol)
+            T.let(
+              :"default-2024-11-15",
+              OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
+            )
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

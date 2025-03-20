@@ -475,6 +475,12 @@ module OpenAI
             AUTO = :auto
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
 
           # @!parse
@@ -537,6 +543,12 @@ module OpenAI
           AUDIO = :audio
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # An object specifying the format that the model must output.
@@ -593,6 +605,12 @@ module OpenAI
           DEFAULT = :default
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # Up to 4 sequences where the API will stop generating further tokens. The
@@ -656,6 +674,12 @@ module OpenAI
             HIGH = :high
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
 
           class UserLocation < OpenAI::BaseModel

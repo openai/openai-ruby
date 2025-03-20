@@ -432,6 +432,12 @@ module OpenAI
           extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
+
+          class << self
+            sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+            def variants
+            end
+          end
         end
 
         class Thread < OpenAI::BaseModel
@@ -670,6 +676,26 @@ module OpenAI
 
               MessageContentPartParamArray =
                 T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
+
+              class << self
+                sig do
+                  override
+                    .returns(
+                      [
+                        String,
+                        T::Array[
+                                              T.any(
+                                                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                                                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                                                OpenAI::Models::Beta::Threads::TextContentBlockParam
+                                              )
+                                              ]
+                      ]
+                    )
+                end
+                def variants
+                end
+              end
             end
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -686,9 +712,18 @@ module OpenAI
               OrSymbol =
                 T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol) }
 
-              USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol)
+              USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol)
               ASSISTANT =
-                T.let(:assistant, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol)
+                T.let(:assistant, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol)
+
+              class << self
+                sig do
+                  override
+                    .returns(T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol])
+                end
+                def values
+                end
+              end
             end
 
             class Attachment < OpenAI::BaseModel
@@ -799,6 +834,17 @@ module OpenAI
 
                   sig { override.returns({type: Symbol}) }
                   def to_hash
+                  end
+                end
+
+                class << self
+                  sig do
+                    override
+                      .returns(
+                        [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch]
+                      )
+                  end
+                  def variants
                   end
                 end
               end
@@ -1176,6 +1222,17 @@ module OpenAI
                       end
                     end
                   end
+
+                  class << self
+                    sig do
+                      override
+                        .returns(
+                          [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+                        )
+                    end
+                    def variants
+                    end
+                  end
                 end
               end
             end
@@ -1302,6 +1359,17 @@ module OpenAI
                 )
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
+                )
+            end
+            def variants
+            end
+          end
         end
 
         class TruncationStrategy < OpenAI::BaseModel
@@ -1366,9 +1434,22 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol) }
 
-            AUTO = T.let(:auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol)
+            AUTO =
+              T.let(:auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol)
             LAST_MESSAGES =
-              T.let(:last_messages, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol)
+              T.let(
+                :last_messages,
+                OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol
+              )
+
+            class << self
+              sig do
+                override
+                  .returns(T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol])
+              end
+              def values
+              end
+            end
           end
         end
       end

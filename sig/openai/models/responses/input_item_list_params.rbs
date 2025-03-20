@@ -50,7 +50,7 @@ module OpenAI
           ASC: :asc
           DESC: :desc
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::InputItemListParams::order]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::InputItemListParams::order]
         end
       end
     end

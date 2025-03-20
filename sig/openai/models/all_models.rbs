@@ -16,7 +16,7 @@ module OpenAI
       COMPUTER_USE_PREVIEW: :"computer-use-preview"
       COMPUTER_USE_PREVIEW_2025_03_11: :"computer-use-preview-2025-03-11"
 
-      def self.variants: -> [String, OpenAI::Models::chat_model, (:"o1-pro"
+      def self?.variants: -> [String, OpenAI::Models::chat_model, (:"o1-pro"
       | :"o1-pro-2025-03-19"
       | :"computer-use-preview"
       | :"computer-use-preview-2025-03-11")]

@@ -77,7 +77,7 @@ module OpenAI
               AUTO: :auto
               DEFAULT_2024_08_21: :default_2024_08_21
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker]
             end
           end
         end

@@ -49,7 +49,7 @@ module OpenAI
         ASC: :asc
         DESC: :desc
 
-        def self.values: -> ::Array[OpenAI::Models::VectorStoreListParams::order]
+        def self?.values: -> ::Array[OpenAI::Models::VectorStoreListParams::order]
       end
     end
   end

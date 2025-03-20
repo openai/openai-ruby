@@ -35,9 +35,26 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol) }
 
-          NONE = T.let(:none, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol)
-          AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol)
-          REQUIRED = T.let(:required, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol)
+          NONE = T.let(:none, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
+          REQUIRED = T.let(:required, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol]) }
+            def values
+            end
+          end
+        end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
+              )
+          end
+          def variants
+          end
         end
       end
     end

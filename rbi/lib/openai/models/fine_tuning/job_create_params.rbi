@@ -201,10 +201,16 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol) }
 
-          BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
-          DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
-          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
-          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
+          BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
+          DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
+          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
+          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
+
+          class << self
+            sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol]) }
+            def variants
+            end
+          end
         end
 
         class Hyperparameters < OpenAI::BaseModel
@@ -270,6 +276,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+            class << self
+              sig { override.returns([Symbol, Integer]) }
+              def variants
+              end
+            end
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -278,6 +290,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+            class << self
+              sig { override.returns([Symbol, Float]) }
+              def variants
+              end
+            end
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -286,6 +304,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+            class << self
+              sig { override.returns([Symbol, Integer]) }
+              def variants
+              end
+            end
           end
         end
 
@@ -566,6 +590,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
@@ -574,6 +604,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+                class << self
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
+                  end
+                end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -582,6 +618,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+                class << self
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
+                  end
+                end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -590,6 +632,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
             end
           end
@@ -696,6 +744,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -704,6 +758,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+                class << self
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
+                  end
+                end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -712,6 +772,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
             end
           end
@@ -724,8 +790,14 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol) }
 
-            SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol)
-            DPO = T.let(:dpo, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol)
+            SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)
+            DPO = T.let(:dpo, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
       end

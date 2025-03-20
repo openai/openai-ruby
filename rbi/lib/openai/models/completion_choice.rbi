@@ -84,6 +84,12 @@ module OpenAI
         STOP = T.let(:stop, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
         LENGTH = T.let(:length, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
         CONTENT_FILTER = T.let(:content_filter, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       class Logprobs < OpenAI::BaseModel

@@ -29,6 +29,17 @@ module OpenAI
               )
             }
           end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
+              )
+          end
+          def variants
+          end
+        end
       end
     end
   end

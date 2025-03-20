@@ -19,6 +19,17 @@ module OpenAI
                   )
                 }
               end
+
+            class << self
+              sig do
+                override
+                  .returns(
+                    [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]
+                  )
+              end
+              def variants
+              end
+            end
           end
         end
       end

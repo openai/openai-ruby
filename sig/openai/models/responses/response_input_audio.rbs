@@ -31,7 +31,7 @@ module OpenAI
           MP3: :mp3
           WAV: :wav
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputAudio::format_]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputAudio::format_]
         end
       end
     end

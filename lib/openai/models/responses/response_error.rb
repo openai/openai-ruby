@@ -50,6 +50,12 @@ module OpenAI
           IMAGE_FILE_NOT_FOUND = :image_file_not_found
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

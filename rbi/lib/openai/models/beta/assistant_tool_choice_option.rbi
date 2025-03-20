@@ -34,9 +34,26 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol) }
 
-          NONE = T.let(:none, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol)
-          AUTO = T.let(:auto, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol)
-          REQUIRED = T.let(:required, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol)
+          NONE = T.let(:none, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
+          REQUIRED = T.let(:required, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol]) }
+            def values
+            end
+          end
+        end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Beta::AssistantToolChoice]
+              )
+          end
+          def variants
+          end
         end
       end
     end

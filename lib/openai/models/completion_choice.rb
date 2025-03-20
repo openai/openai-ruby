@@ -49,6 +49,12 @@ module OpenAI
         CONTENT_FILTER = :content_filter
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       class Logprobs < OpenAI::BaseModel

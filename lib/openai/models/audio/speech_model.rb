@@ -11,6 +11,12 @@ module OpenAI
         GPT_4O_MINI_TTS = :"gpt-4o-mini-tts"
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
     end
   end

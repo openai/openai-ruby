@@ -229,6 +229,12 @@ module OpenAI
               RUN_FAILED = :run_failed
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
           end
 
@@ -240,6 +246,12 @@ module OpenAI
             ASSISTANT = :assistant
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
@@ -252,6 +264,12 @@ module OpenAI
             COMPLETED = :completed
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
         end
       end

@@ -360,6 +360,12 @@ module OpenAI
               ASSISTANT =
                 T.let(:assistant, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
               TOOL = T.let(:tool, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
+
+              class << self
+                sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol]) }
+                def values
+                end
+              end
             end
 
             class ToolCall < OpenAI::BaseModel
@@ -475,6 +481,15 @@ module OpenAI
 
                 FUNCTION =
                   T.let(:function, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
+
+                class << self
+                  sig do
+                    override
+                      .returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol])
+                  end
+                  def values
+                  end
+                end
               end
             end
           end
@@ -501,6 +516,12 @@ module OpenAI
               T.let(:content_filter, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
             FUNCTION_CALL =
               T.let(:function_call, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol]) }
+              def values
+              end
+            end
           end
 
           class Logprobs < OpenAI::BaseModel
@@ -563,6 +584,12 @@ module OpenAI
 
           SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

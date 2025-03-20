@@ -623,6 +623,26 @@ module OpenAI
 
               MessageContentPartParamArray =
                 T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
+
+              class << self
+                sig do
+                  override
+                    .returns(
+                      [
+                        String,
+                        T::Array[
+                                              T.any(
+                                                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                                                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                                                OpenAI::Models::Beta::Threads::TextContentBlockParam
+                                              )
+                                              ]
+                      ]
+                    )
+                end
+                def variants
+                end
+              end
             end
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -639,9 +659,19 @@ module OpenAI
               OrSymbol =
                 T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol) }
 
-              USER = T.let(:user, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol)
+              USER =
+                T.let(:user, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol)
               ASSISTANT =
-                T.let(:assistant, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol)
+                T.let(:assistant, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol)
+
+              class << self
+                sig do
+                  override
+                    .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol])
+                end
+                def values
+                end
+              end
             end
 
             class Attachment < OpenAI::BaseModel
@@ -754,6 +784,17 @@ module OpenAI
                   def to_hash
                   end
                 end
+
+                class << self
+                  sig do
+                    override
+                      .returns(
+                        [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
+                      )
+                  end
+                  def variants
+                  end
+                end
               end
             end
           end
@@ -766,6 +807,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
+
+            class << self
+              sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+              def variants
+              end
+            end
           end
 
           class TruncationStrategy < OpenAI::BaseModel
@@ -830,9 +877,22 @@ module OpenAI
               OrSymbol =
                 T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol) }
 
-              AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol)
+              AUTO =
+                T.let(:auto, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol)
               LAST_MESSAGES =
-                T.let(:last_messages, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol)
+                T.let(
+                  :last_messages,
+                  OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol
+                )
+
+              class << self
+                sig do
+                  override
+                    .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol])
+                end
+                def values
+                end
+              end
             end
           end
         end

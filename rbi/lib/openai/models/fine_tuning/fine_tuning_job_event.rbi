@@ -117,6 +117,12 @@ module OpenAI
           INFO = T.let(:info, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
           WARN = T.let(:warn, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
           ERROR = T.let(:error, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # The type of event.
@@ -129,6 +135,12 @@ module OpenAI
 
           MESSAGE = T.let(:message, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
           METRICS = T.let(:metrics, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

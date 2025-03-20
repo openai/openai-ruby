@@ -149,6 +149,12 @@ module OpenAI
         extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ImageModel::OrSymbol)} }
+
+        class << self
+          sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
+          def variants
+          end
+        end
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -160,8 +166,14 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageEditParams::ResponseFormat) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol) }
 
-        URL = T.let(:url, OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol)
-        B64_JSON = T.let(:b64_json, OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol)
+        URL = T.let(:url, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol)
+        B64_JSON = T.let(:b64_json, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -172,9 +184,15 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageEditParams::Size) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageEditParams::Size::TaggedSymbol) }
 
-        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageEditParams::Size::OrSymbol)
-        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageEditParams::Size::OrSymbol)
-        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageEditParams::Size::OrSymbol)
+        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::Size::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

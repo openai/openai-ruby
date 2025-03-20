@@ -144,6 +144,26 @@ module OpenAI
                 )
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [
+                    String,
+                    T::Array[
+                                      T.any(
+                                        OpenAI::Models::Responses::ResponseInputText,
+                                        OpenAI::Models::Responses::ResponseInputImage,
+                                        OpenAI::Models::Responses::ResponseInputFile
+                                      )
+                                      ]
+                  ]
+                )
+            end
+            def variants
+            end
+          end
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -155,10 +175,16 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol) }
 
-          USER = T.let(:user, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-          ASSISTANT = T.let(:assistant, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-          SYSTEM = T.let(:system, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-          DEVELOPER = T.let(:developer, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
+          USER = T.let(:user, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
+          ASSISTANT = T.let(:assistant, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
+          SYSTEM = T.let(:system, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
+          DEVELOPER = T.let(:developer, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # The type of the message input. Always `message`.
@@ -169,7 +195,13 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol) }
 
-          MESSAGE = T.let(:message, OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)
+          MESSAGE = T.let(:message, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

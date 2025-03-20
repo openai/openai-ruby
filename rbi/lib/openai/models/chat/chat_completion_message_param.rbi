@@ -22,6 +22,17 @@ module OpenAI
               )
             }
           end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
+              )
+          end
+          def variants
+          end
+        end
       end
     end
 

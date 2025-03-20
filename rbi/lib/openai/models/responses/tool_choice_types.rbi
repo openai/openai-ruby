@@ -47,13 +47,19 @@ module OpenAI
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type) }
           OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol) }
 
-          FILE_SEARCH = T.let(:file_search, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+          FILE_SEARCH = T.let(:file_search, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol)
           WEB_SEARCH_PREVIEW =
-            T.let(:web_search_preview, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+            T.let(:web_search_preview, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol)
           COMPUTER_USE_PREVIEW =
-            T.let(:computer_use_preview, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+            T.let(:computer_use_preview, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol)
           WEB_SEARCH_PREVIEW_2025_03_11 =
-            T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+            T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

@@ -103,6 +103,15 @@ module OpenAI
                 fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
+            end
+            def variants
+            end
+          end
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
@@ -114,9 +123,15 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol) }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
-          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

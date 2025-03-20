@@ -323,52 +323,61 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol) }
 
-          O3_MINI = T.let(:"o3-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+          O3_MINI = T.let(:"o3-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           O3_MINI_2025_01_31 =
-            T.let(:"o3-mini-2025-01-31", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          O1 = T.let(:o1, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          O1_2024_12_17 = T.let(:"o1-2024-12-17", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4O = T.let(:"gpt-4o", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"o3-mini-2025-01-31", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          O1 = T.let(:o1, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          O1_2024_12_17 = T.let(:"o1-2024-12-17", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4O = T.let(:"gpt-4o", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4O_2024_11_20 =
-            T.let(:"gpt-4o-2024-11-20", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4o-2024-11-20", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4O_2024_08_06 =
-            T.let(:"gpt-4o-2024-08-06", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4o-2024-08-06", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4O_2024_05_13 =
-            T.let(:"gpt-4o-2024-05-13", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4o-2024-05-13", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4O_MINI_2024_07_18 =
-            T.let(:"gpt-4o-mini-2024-07-18", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4_5_PREVIEW = T.let(:"gpt-4.5-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4o-mini-2024-07-18", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_5_PREVIEW =
+            T.let(:"gpt-4.5-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4_5_PREVIEW_2025_02_27 =
-            T.let(:"gpt-4.5-preview-2025-02-27", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4_TURBO = T.let(:"gpt-4-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4.5-preview-2025-02-27", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_TURBO = T.let(:"gpt-4-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4_TURBO_2024_04_09 =
-            T.let(:"gpt-4-turbo-2024-04-09", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4-turbo-2024-04-09", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4_0125_PREVIEW =
-            T.let(:"gpt-4-0125-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4-0125-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4_TURBO_PREVIEW =
-            T.let(:"gpt-4-turbo-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4-turbo-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4_1106_PREVIEW =
-            T.let(:"gpt-4-1106-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4-1106-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4_VISION_PREVIEW =
-            T.let(:"gpt-4-vision-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4 = T.let(:"gpt-4", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4_0314 = T.let(:"gpt-4-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4_0613 = T.let(:"gpt-4-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4_32K = T.let(:"gpt-4-32k", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4_32K_0314 = T.let(:"gpt-4-32k-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_4_32K_0613 = T.let(:"gpt-4-32k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
-          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-4-vision-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4 = T.let(:"gpt-4", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_0314 = T.let(:"gpt-4-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_0613 = T.let(:"gpt-4-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_32K = T.let(:"gpt-4-32k", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_32K_0314 =
+            T.let(:"gpt-4-32k-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_32K_0613 =
+            T.let(:"gpt-4-32k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO_16K =
-            T.let(:"gpt-3.5-turbo-16k", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-3.5-turbo-16k", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO_0613 =
-            T.let(:"gpt-3.5-turbo-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-3.5-turbo-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO_1106 =
-            T.let(:"gpt-3.5-turbo-1106", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-3.5-turbo-1106", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO_0125 =
-            T.let(:"gpt-3.5-turbo-0125", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-3.5-turbo-0125", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO_16K_0613 =
-            T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)
+            T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+
+          class << self
+            sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol]) }
+            def variants
+            end
+          end
         end
 
         class ToolResources < OpenAI::BaseModel

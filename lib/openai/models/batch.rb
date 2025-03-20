@@ -238,6 +238,12 @@ module OpenAI
         CANCELLED = :cancelled
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       class Errors < OpenAI::BaseModel

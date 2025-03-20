@@ -77,6 +77,17 @@ module OpenAI
                     )
                   }
                 end
+
+              class << self
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
+                    )
+                end
+                def variants
+                end
+              end
             end
           end
         end

@@ -90,9 +90,18 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol) }
 
-            AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-            LOW = T.let(:low, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-            HIGH = T.let(:high, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
+            AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
+            HIGH = T.let(:high, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
+
+            class << self
+              sig do
+                override
+                  .returns(T::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol])
+              end
+              def values
+              end
+            end
           end
         end
       end

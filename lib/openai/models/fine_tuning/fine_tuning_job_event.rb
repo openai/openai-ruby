@@ -78,6 +78,12 @@ module OpenAI
           ERROR = :error
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # The type of event.
@@ -88,6 +94,12 @@ module OpenAI
           METRICS = :metrics
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

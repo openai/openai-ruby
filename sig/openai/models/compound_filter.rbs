@@ -23,7 +23,7 @@ module OpenAI
       module Filter
         extend OpenAI::Union
 
-        def self.variants: -> [OpenAI::Models::ComparisonFilter, top]
+        def self?.variants: -> [OpenAI::Models::ComparisonFilter, top]
       end
 
       type type_ = :and | :or
@@ -34,7 +34,7 @@ module OpenAI
         AND: :and
         OR: :or
 
-        def self.values: -> ::Array[OpenAI::Models::CompoundFilter::type_]
+        def self?.values: -> ::Array[OpenAI::Models::CompoundFilter::type_]
       end
     end
   end

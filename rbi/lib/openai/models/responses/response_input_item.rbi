@@ -157,9 +157,15 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol) }
 
-            USER = T.let(:user, OpenAI::Models::Responses::ResponseInputItem::Message::Role::OrSymbol)
-            SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputItem::Message::Role::OrSymbol)
-            DEVELOPER = T.let(:developer, OpenAI::Models::Responses::ResponseInputItem::Message::Role::OrSymbol)
+            USER = T.let(:user, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
+            SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
+            DEVELOPER = T.let(:developer, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol]) }
+              def values
+              end
+            end
           end
 
           # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -173,9 +179,17 @@ module OpenAI
               T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol) }
 
             IN_PROGRESS =
-              T.let(:in_progress, OpenAI::Models::Responses::ResponseInputItem::Message::Status::OrSymbol)
-            COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseInputItem::Message::Status::OrSymbol)
-            INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::Message::Status::OrSymbol)
+              T.let(:in_progress, OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
+            COMPLETED =
+              T.let(:completed, OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
+            INCOMPLETE =
+              T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol]) }
+              def values
+              end
+            end
           end
 
           # The type of the message input. Always set to `message`.
@@ -187,7 +201,13 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol) }
 
-            MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputItem::Message::Type::OrSymbol)
+            MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
 
@@ -349,11 +369,23 @@ module OpenAI
               T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol) }
 
             IN_PROGRESS =
-              T.let(:in_progress, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)
+              T.let(
+                :in_progress,
+                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
+              )
             COMPLETED =
-              T.let(:completed, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)
+              T.let(:completed, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol)
             INCOMPLETE =
-              T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)
+              T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol)
+
+            class << self
+              sig do
+                override
+                  .returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol])
+              end
+              def values
+              end
+            end
           end
         end
 
@@ -448,11 +480,23 @@ module OpenAI
               T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol) }
 
             IN_PROGRESS =
-              T.let(:in_progress, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)
+              T.let(
+                :in_progress,
+                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
+              )
             COMPLETED =
-              T.let(:completed, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)
+              T.let(:completed, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol)
             INCOMPLETE =
-              T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)
+              T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol)
+
+            class << self
+              sig do
+                override
+                  .returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol])
+              end
+              def values
+              end
+            end
           end
         end
 
@@ -482,6 +526,17 @@ module OpenAI
 
           sig { override.returns({id: String, type: Symbol}) }
           def to_hash
+          end
+        end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
+              )
+          end
+          def variants
           end
         end
       end

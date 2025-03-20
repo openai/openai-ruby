@@ -80,9 +80,16 @@ module OpenAI
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::WebSearchTool::Type) }
           OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol) }
 
-          WEB_SEARCH_PREVIEW = T.let(:web_search_preview, OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
+          WEB_SEARCH_PREVIEW =
+            T.let(:web_search_preview, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol)
           WEB_SEARCH_PREVIEW_2025_03_11 =
-            T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
+            T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # High level guidance for the amount of context window space to use for the
@@ -95,9 +102,15 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol) }
 
-          LOW = T.let(:low, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
-          MEDIUM = T.let(:medium, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
-          HIGH = T.let(:high, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
+          LOW = T.let(:low, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)
+          MEDIUM = T.let(:medium, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)
+          HIGH = T.let(:high, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         class UserLocation < OpenAI::BaseModel

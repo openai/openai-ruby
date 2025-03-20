@@ -388,6 +388,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+            class << self
+              sig { override.returns([Symbol, Integer]) }
+              def variants
+              end
+            end
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -396,6 +402,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+            class << self
+              sig { override.returns([Symbol, Float]) }
+              def variants
+              end
+            end
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -404,6 +416,12 @@ module OpenAI
             extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+            class << self
+              sig { override.returns([Symbol, Integer]) }
+              def variants
+              end
+            end
           end
         end
 
@@ -423,6 +441,12 @@ module OpenAI
           SUCCEEDED = T.let(:succeeded, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
           FAILED = T.let(:failed, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
           CANCELLED = T.let(:cancelled, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         class Method < OpenAI::BaseModel
@@ -593,6 +617,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
@@ -601,6 +631,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+                class << self
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
+                  end
+                end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -609,6 +645,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+                class << self
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
+                  end
+                end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -617,6 +659,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
             end
           end
@@ -721,6 +769,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -729,6 +783,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
+
+                class << self
+                  sig { override.returns([Symbol, Float]) }
+                  def variants
+                  end
+                end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -737,6 +797,12 @@ module OpenAI
                 extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
+
+                class << self
+                  sig { override.returns([Symbol, Integer]) }
+                  def variants
+                  end
+                end
               end
             end
           end
@@ -751,6 +817,12 @@ module OpenAI
 
             SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)
             DPO = T.let(:dpo, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
       end

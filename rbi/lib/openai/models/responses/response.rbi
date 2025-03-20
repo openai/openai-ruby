@@ -553,6 +553,12 @@ module OpenAI
               T.let(:max_output_tokens, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
             CONTENT_FILTER =
               T.let(:content_filter, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
 
@@ -572,6 +578,17 @@ module OpenAI
                 )
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+                )
+            end
+            def variants
+            end
+          end
         end
 
         # The truncation strategy to use for the model response.
@@ -589,6 +606,12 @@ module OpenAI
 
           AUTO = T.let(:auto, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
           DISABLED = T.let(:disabled, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Responses::Response::Truncation::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

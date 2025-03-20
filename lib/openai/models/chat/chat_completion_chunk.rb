@@ -244,6 +244,12 @@ module OpenAI
               TOOL = :tool
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
 
             class ToolCall < OpenAI::BaseModel
@@ -331,6 +337,12 @@ module OpenAI
                 FUNCTION = :function
 
                 finalize!
+
+                class << self
+                  # @!parse
+                  #   # @return [Array<Symbol>]
+                  #   def values; end
+                end
               end
             end
           end
@@ -351,6 +363,12 @@ module OpenAI
             FUNCTION_CALL = :function_call
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
 
           class Logprobs < OpenAI::BaseModel
@@ -386,6 +404,12 @@ module OpenAI
           DEFAULT = :default
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

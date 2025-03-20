@@ -78,7 +78,7 @@ module OpenAI
           CANCELLED: :cancelled
           FAILED: :failed
 
-          def self.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFileBatch::status]
+          def self?.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFileBatch::status]
         end
       end
     end

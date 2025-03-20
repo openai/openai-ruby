@@ -43,6 +43,12 @@ module OpenAI
             ASSISTANT = :assistant
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
         end
       end

@@ -288,6 +288,12 @@ module OpenAI
         EXPIRED = T.let(:expired, OpenAI::Models::Batch::Status::TaggedSymbol)
         CANCELLING = T.let(:cancelling, OpenAI::Models::Batch::Status::TaggedSymbol)
         CANCELLED = T.let(:cancelled, OpenAI::Models::Batch::Status::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::Batch::Status::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       class Errors < OpenAI::BaseModel

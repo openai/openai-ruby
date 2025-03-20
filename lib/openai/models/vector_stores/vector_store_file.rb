@@ -138,6 +138,12 @@ module OpenAI
             INVALID_FILE = :invalid_file
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
         end
 
@@ -153,6 +159,12 @@ module OpenAI
           FAILED = :failed
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module Attribute

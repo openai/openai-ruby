@@ -9,6 +9,12 @@ module OpenAI
       DALL_E_3 = :"dall-e-3"
 
       finalize!
+
+      class << self
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def values; end
+      end
     end
   end
 end

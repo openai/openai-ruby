@@ -71,7 +71,7 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          def self.variants: -> [String, OpenAI::Models::audio_model]
+          def self?.variants: -> [String, OpenAI::Models::audio_model]
         end
 
         type timestamp_granularity = :word | :segment
@@ -82,7 +82,7 @@ module OpenAI
           WORD: :word
           SEGMENT: :segment
 
-          def self.values: -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
+          def self?.values: -> ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
         end
       end
     end
