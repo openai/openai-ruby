@@ -12,7 +12,7 @@ module OpenAI
             T::Array[String],
             T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
           ),
-          model: T.any(String, Symbol),
+          model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::Models::ModerationCreateResponse)

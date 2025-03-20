@@ -11,7 +11,9 @@ module OpenAI
         | OpenAI::Models::Responses::ResponseFunctionToolCallItem
         | OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
 
-      class ResponseItem < OpenAI::Union
+      module ResponseItem
+        extend OpenAI::Union
+
         def self.variants: -> [OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem]
       end
     end

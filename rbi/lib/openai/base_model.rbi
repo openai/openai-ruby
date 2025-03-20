@@ -170,132 +170,116 @@ module OpenAI
   #
   #   We can therefore convert string values to Symbols, but can't convert other
   #   values safely.
-  class Enum
-    extend OpenAI::Converter
+  module Enum
+    include OpenAI::Converter
 
-    abstract!
+    # All of the valid Symbol values for this enum.
+    sig { overridable.returns(T::Array[T.any(NilClass, T::Boolean, Integer, Float, Symbol)]) }
+    def values
+    end
 
-    Value = type_template(:out)
-
-    class << self
-      # All of the valid Symbol values for this enum.
-      sig { overridable.returns(T::Array[Value]) }
-      def values
-      end
-
-      # @api private
-      #
-      # Guard against thread safety issues by instantiating `@values`.
-      sig { void }
-      private def finalize!
-      end
+    # @api private
+    #
+    # Guard against thread safety issues by instantiating `@values`.
+    sig { void }
+    private def finalize!
     end
 
     sig { params(other: T.anything).returns(T::Boolean) }
-    def self.===(other)
+    def ===(other)
     end
 
     sig { params(other: T.anything).returns(T::Boolean) }
-    def self.==(other)
+    def ==(other)
     end
 
-    class << self
-      # @api private
-      sig { override.params(value: T.any(String, Symbol, T.anything)).returns(T.any(Symbol, T.anything)) }
-      def coerce(value)
-      end
+    # @api private
+    sig { override.params(value: T.any(String, Symbol, T.anything)).returns(T.any(Symbol, T.anything)) }
+    def coerce(value)
+    end
 
-      # @api private
-      sig { override.params(value: T.any(Symbol, T.anything)).returns(T.any(Symbol, T.anything)) }
-      def dump(value)
-      end
+    # @api private
+    sig { override.params(value: T.any(Symbol, T.anything)).returns(T.any(Symbol, T.anything)) }
+    def dump(value)
+    end
 
-      # @api private
-      sig do
-        override
-          .params(value: T.anything)
-          .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
-      end
-      def try_strict_coerce(value)
-      end
+    # @api private
+    sig do
+      override
+        .params(value: T.anything)
+        .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
+    end
+    def try_strict_coerce(value)
     end
   end
 
   # @api private
-  class Union
-    extend OpenAI::Converter
+  module Union
+    include OpenAI::Converter
 
-    abstract!
+    # @api private
+    #
+    # All of the specified variant info for this union.
+    sig { returns(T::Array[[T.nilable(Symbol), T.proc.returns(OpenAI::Converter::Input)]]) }
+    private def known_variants
+    end
 
-    Variants = type_template(:out)
+    # @api private
+    sig { returns(T::Array[[T.nilable(Symbol), T.anything]]) }
+    protected def derefed_variants
+    end
 
-    class << self
-      # @api private
-      #
-      # All of the specified variant info for this union.
-      sig { returns(T::Array[[T.nilable(Symbol), T.proc.returns(Variants)]]) }
-      private def known_variants
-      end
+    # All of the specified variants for this union.
+    sig { overridable.returns(T::Array[T.anything]) }
+    def variants
+    end
 
-      # @api private
-      sig { returns(T::Array[[T.nilable(Symbol), Variants]]) }
-      protected def derefed_variants
-      end
+    # @api private
+    sig { params(property: Symbol).void }
+    private def discriminator(property)
+    end
 
-      # All of the specified variants for this union.
-      sig { overridable.returns(T::Array[Variants]) }
-      def variants
-      end
+    # @api private
+    sig do
+      params(
+        key: T.any(Symbol, T::Hash[Symbol, T.anything], T.proc.returns(T.anything), T.anything),
+        spec: T.any(T::Hash[Symbol, T.anything], T.proc.returns(T.anything), T.anything)
+      )
+        .void
+    end
+    private def variant(key, spec = nil)
+    end
 
-      # @api private
-      sig { params(property: Symbol).void }
-      private def discriminator(property)
-      end
-
-      # @api private
-      sig do
-        params(
-          key: T.any(Symbol, T::Hash[Symbol, T.anything], T.proc.returns(Variants), Variants),
-          spec: T.any(T::Hash[Symbol, T.anything], T.proc.returns(Variants), Variants)
-        )
-          .void
-      end
-      private def variant(key, spec = nil)
-      end
-
-      # @api private
-      sig { params(value: T.anything).returns(T.nilable(Variants)) }
-      private def resolve_variant(value)
-      end
+    # @api private
+    sig { params(value: T.anything).returns(T.nilable(T.anything)) }
+    private def resolve_variant(value)
     end
 
     sig { params(other: T.anything).returns(T::Boolean) }
-    def self.===(other)
+    def ===(other)
     end
 
     sig { params(other: T.anything).returns(T::Boolean) }
-    def self.==(other)
+    def ==(other)
     end
 
-    class << self
-      # @api private
-      sig { override.params(value: T.anything).returns(T.anything) }
-      def coerce(value)
-      end
+    # @api private
+    sig { override.params(value: T.anything).returns(T.anything) }
+    def coerce(value)
+    end
 
-      # @api private
-      sig { override.params(value: T.anything).returns(T.anything) }
-      def dump(value)
-      end
+    # @api private
+    sig { override.params(value: T.anything).returns(T.anything) }
+    def dump(value)
+    end
 
-      # @api private
-      sig do
-        override
-          .params(value: T.anything)
-          .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
-      end
-      def try_strict_coerce(value)
-      end
+    # @api private
+    sig do
+      override
+        .params(value: T.anything)
+        .returns(T.any([T::Boolean, T.anything, NilClass], [T::Boolean, T::Boolean, Integer]))
+    end
+    def try_strict_coerce(value)
     end
   end
 

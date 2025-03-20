@@ -48,7 +48,9 @@ module OpenAI
 
       type status = :pending | :completed | :cancelled | :expired
 
-      class Status < OpenAI::Enum
+      module Status
+        extend OpenAI::Enum
+
         PENDING: :pending
         COMPLETED: :completed
         CANCELLED: :cancelled

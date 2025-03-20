@@ -24,7 +24,9 @@ module OpenAI
 
       type type_ = :eq | :ne | :gt | :gte | :lt | :lte
 
-      class Type < OpenAI::Enum
+      module Type
+        extend OpenAI::Enum
+
         EQ: :eq
         NE: :ne
         GT: :gt
@@ -37,7 +39,9 @@ module OpenAI
 
       type value = String | Float | bool
 
-      class Value < OpenAI::Union
+      module Value
+        extend OpenAI::Union
+
         def self.variants: -> [String, Float, bool]
       end
     end

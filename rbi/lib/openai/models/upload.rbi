@@ -69,11 +69,14 @@ module OpenAI
       end
 
       # The status of the Upload.
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::Upload::Status::TaggedSymbol) }
       def status
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig do
+        params(_: OpenAI::Models::Upload::Status::TaggedSymbol)
+          .returns(OpenAI::Models::Upload::Status::TaggedSymbol)
+      end
       def status=(_)
       end
 
@@ -95,7 +98,7 @@ module OpenAI
           expires_at: Integer,
           filename: String,
           purpose: String,
-          status: Symbol,
+          status: OpenAI::Models::Upload::Status::TaggedSymbol,
           file: T.nilable(OpenAI::Models::FileObject),
           object: Symbol
         )
@@ -115,7 +118,7 @@ module OpenAI
               filename: String,
               object: Symbol,
               purpose: String,
-              status: Symbol,
+              status: OpenAI::Models::Upload::Status::TaggedSymbol,
               file: T.nilable(OpenAI::Models::FileObject)
             }
           )
@@ -124,15 +127,16 @@ module OpenAI
       end
 
       # The status of the Upload.
-      class Status < OpenAI::Enum
-        abstract!
+      module Status
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Upload::Status) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Upload::Status::TaggedSymbol) }
 
-        PENDING = :pending
-        COMPLETED = :completed
-        CANCELLED = :cancelled
-        EXPIRED = :expired
+        PENDING = T.let(:pending, OpenAI::Models::Upload::Status::TaggedSymbol)
+        COMPLETED = T.let(:completed, OpenAI::Models::Upload::Status::TaggedSymbol)
+        CANCELLED = T.let(:cancelled, OpenAI::Models::Upload::Status::TaggedSymbol)
+        EXPIRED = T.let(:expired, OpenAI::Models::Upload::Status::TaggedSymbol)
       end
     end
   end

@@ -3,8 +3,6 @@
 module OpenAI
   module Models
     module Responses
-      # @abstract
-      #
       # Controls which (if any) tool is called by the model.
       #
       #   `none` means the model will not call any tool and instead generates a message.
@@ -13,7 +11,9 @@ module OpenAI
       #   more tools.
       #
       #   `required` means the model must call one or more tools.
-      class ToolChoiceOptions < OpenAI::Enum
+      module ToolChoiceOptions
+        extend OpenAI::Enum
+
         NONE = :none
         AUTO = :auto
         REQUIRED = :required

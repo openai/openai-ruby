@@ -88,8 +88,8 @@ module OpenAI
         end
 
         # A filter to apply based on file attributes.
-        class Filters < OpenAI::Union
-          abstract!
+        module Filters
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
@@ -97,11 +97,14 @@ module OpenAI
 
         class RankingOptions < OpenAI::BaseModel
           # The ranker to use for the file search.
-          sig { returns(T.nilable(Symbol)) }
+          sig { returns(T.nilable(OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)) }
           def ranker
           end
 
-          sig { params(_: Symbol).returns(Symbol) }
+          sig do
+            params(_: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
+              .returns(OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
+          end
           def ranker=(_)
           end
 
@@ -117,22 +120,37 @@ module OpenAI
           end
 
           # Ranking options for search.
-          sig { params(ranker: Symbol, score_threshold: Float).returns(T.attached_class) }
+          sig do
+            params(
+              ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
+              score_threshold: Float
+            )
+              .returns(T.attached_class)
+          end
           def self.new(ranker: nil, score_threshold: nil)
           end
 
-          sig { override.returns({ranker: Symbol, score_threshold: Float}) }
+          sig do
+            override
+              .returns(
+                {ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol, score_threshold: Float}
+              )
+          end
           def to_hash
           end
 
           # The ranker to use for the file search.
-          class Ranker < OpenAI::Enum
-            abstract!
+          module Ranker
+            extend OpenAI::Enum
 
-            Value = type_template(:out) { {fixed: Symbol} }
+            TaggedSymbol =
+              T.type_alias { T.all(Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker) }
+            OrSymbol =
+              T.type_alias { T.any(Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol) }
 
-            AUTO = :auto
-            DEFAULT_2024_11_15 = :"default-2024-11-15"
+            AUTO = T.let(:auto, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
+            DEFAULT_2024_11_15 =
+              T.let(:"default-2024-11-15", OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
           end
         end
       end

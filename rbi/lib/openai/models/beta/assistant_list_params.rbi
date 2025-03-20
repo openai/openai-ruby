@@ -43,11 +43,14 @@ module OpenAI
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)) }
         def order
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)
+            .returns(OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)
+        end
         def order=(_)
         end
 
@@ -56,7 +59,7 @@ module OpenAI
             after: String,
             before: String,
             limit: Integer,
-            order: Symbol,
+            order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -71,7 +74,7 @@ module OpenAI
                 after: String,
                 before: String,
                 limit: Integer,
-                order: Symbol,
+                order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -81,13 +84,14 @@ module OpenAI
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
-        class Order < OpenAI::Enum
-          abstract!
+        module Order
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantListParams::Order) }
+          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantListParams::Order::TaggedSymbol) }
 
-          ASC = :asc
-          DESC = :desc
+          ASC = T.let(:asc, OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)
+          DESC = T.let(:desc, OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)
         end
       end
     end

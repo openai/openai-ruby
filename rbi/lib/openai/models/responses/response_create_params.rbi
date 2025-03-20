@@ -91,11 +91,22 @@ module OpenAI
         #   and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
-        sig { returns(T.any(String, Symbol)) }
+        sig do
+          returns(
+            T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
+          )
+        end
         def model
         end
 
-        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
+        sig do
+          params(
+            _: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
+          )
+            .returns(
+              T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
+            )
+        end
         def model=(_)
         end
 
@@ -107,11 +118,14 @@ module OpenAI
         #   - `message.input_image.image_url`: Include image urls from the input message.
         #   - `computer_call_output.output.image_url`: Include image urls from the computer
         #     call output.
-        sig { returns(T.nilable(T::Array[Symbol])) }
+        sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])) }
         def include
         end
 
-        sig { params(_: T.nilable(T::Array[Symbol])).returns(T.nilable(T::Array[Symbol])) }
+        sig do
+          params(_: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]))
+            .returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]))
+        end
         def include=(_)
         end
 
@@ -229,7 +243,11 @@ module OpenAI
         sig do
           returns(
             T.nilable(
-              T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
+              T.any(
+                OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Models::Responses::ToolChoiceTypes,
+                OpenAI::Models::Responses::ToolChoiceFunction
+              )
             )
           )
         end
@@ -238,10 +256,18 @@ module OpenAI
 
         sig do
           params(
-            _: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
+            _: T.any(
+              OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Models::Responses::ToolChoiceTypes,
+              OpenAI::Models::Responses::ToolChoiceFunction
+            )
           )
             .returns(
-              T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
+              T.any(
+                OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Models::Responses::ToolChoiceTypes,
+                OpenAI::Models::Responses::ToolChoiceFunction
+              )
             )
         end
         def tool_choice=(_)
@@ -323,11 +349,14 @@ module OpenAI
         #     window by dropping input items in the middle of the conversation.
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol)) }
         def truncation
         end
 
-        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
+        sig do
+          params(_: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol))
+            .returns(T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol))
+        end
         def truncation=(_)
         end
 
@@ -362,8 +391,8 @@ module OpenAI
               )
               ]
             ),
-            model: T.any(String, Symbol),
-            include: T.nilable(T::Array[Symbol]),
+            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
+            include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
@@ -373,7 +402,11 @@ module OpenAI
             store: T.nilable(T::Boolean),
             temperature: T.nilable(Float),
             text: OpenAI::Models::Responses::ResponseTextConfig,
-            tool_choice: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction),
+            tool_choice: T.any(
+              OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Models::Responses::ToolChoiceTypes,
+              OpenAI::Models::Responses::ToolChoiceFunction
+            ),
             tools: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
@@ -383,7 +416,7 @@ module OpenAI
             )
             ],
             top_p: T.nilable(Float),
-            truncation: T.nilable(Symbol),
+            truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
             user: String,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
@@ -433,8 +466,8 @@ module OpenAI
                   )
                   ]
                 ),
-                model: T.any(String, Symbol),
-                include: T.nilable(T::Array[Symbol]),
+                model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
+                include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
                 instructions: T.nilable(String),
                 max_output_tokens: T.nilable(Integer),
                 metadata: T.nilable(T::Hash[Symbol, String]),
@@ -444,7 +477,11 @@ module OpenAI
                 store: T.nilable(T::Boolean),
                 temperature: T.nilable(Float),
                 text: OpenAI::Models::Responses::ResponseTextConfig,
-                tool_choice: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction),
+                tool_choice: T.any(
+                  OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
+                  OpenAI::Models::Responses::ToolChoiceTypes,
+                  OpenAI::Models::Responses::ToolChoiceFunction
+                ),
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Responses::FileSearchTool,
@@ -454,7 +491,7 @@ module OpenAI
                 )
                 ],
                 top_p: T.nilable(Float),
-                truncation: T.nilable(Symbol),
+                truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
                 user: String,
                 request_options: OpenAI::RequestOptions
               }
@@ -472,8 +509,8 @@ module OpenAI
         #   - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
         #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
-        class Input < OpenAI::Union
-          abstract!
+        module Input
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) do
@@ -503,13 +540,17 @@ module OpenAI
         # How the model should select which tool (or tools) to use when generating a
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
-        class ToolChoice < OpenAI::Union
-          abstract!
+        module ToolChoice
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) do
               {
-                fixed: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
+                fixed: T.any(
+                  OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
+                  OpenAI::Models::Responses::ToolChoiceTypes,
+                  OpenAI::Models::Responses::ToolChoiceFunction
+                )
               }
             end
         end
@@ -521,13 +562,16 @@ module OpenAI
         #     window by dropping input items in the middle of the conversation.
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
-        class Truncation < OpenAI::Enum
-          abstract!
+        module Truncation
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol) }
 
-          AUTO = :auto
-          DISABLED = :disabled
+          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol)
+          DISABLED = T.let(:disabled, OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol)
         end
       end
     end

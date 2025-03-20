@@ -8,11 +8,14 @@ module OpenAI
 
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol) }
       def completion_window
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig do
+        params(_: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol)
+          .returns(OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol)
+      end
       def completion_window=(_)
       end
 
@@ -20,11 +23,14 @@ module OpenAI
       #   `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions`
       #   are supported. Note that `/v1/embeddings` batches are also restricted to a
       #   maximum of 50,000 embedding inputs across all requests in the batch.
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol) }
       def endpoint
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig do
+        params(_: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
+          .returns(OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
+      end
       def endpoint=(_)
       end
 
@@ -61,8 +67,8 @@ module OpenAI
 
       sig do
         params(
-          completion_window: Symbol,
-          endpoint: Symbol,
+          completion_window: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol,
+          endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
@@ -76,8 +82,8 @@ module OpenAI
         override
           .returns(
             {
-              completion_window: Symbol,
-              endpoint: Symbol,
+              completion_window: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol,
+              endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
               input_file_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: OpenAI::RequestOptions
@@ -89,27 +95,31 @@ module OpenAI
 
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
-      class CompletionWindow < OpenAI::Enum
-        abstract!
+      module CompletionWindow
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol) }
 
-        NUMBER_24H = :"24h"
+        NUMBER_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol)
       end
 
       # The endpoint to be used for all requests in the batch. Currently
       #   `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions`
       #   are supported. Note that `/v1/embeddings` batches are also restricted to a
       #   maximum of 50,000 embedding inputs across all requests in the batch.
-      class Endpoint < OpenAI::Enum
-        abstract!
+      module Endpoint
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::Endpoint) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol) }
 
-        V1_RESPONSES = :"/v1/responses"
-        V1_CHAT_COMPLETIONS = :"/v1/chat/completions"
-        V1_EMBEDDINGS = :"/v1/embeddings"
-        V1_COMPLETIONS = :"/v1/completions"
+        V1_RESPONSES = T.let(:"/v1/responses", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
+        V1_CHAT_COMPLETIONS =
+          T.let(:"/v1/chat/completions", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
+        V1_EMBEDDINGS = T.let(:"/v1/embeddings", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
+        V1_COMPLETIONS = T.let(:"/v1/completions", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
       end
     end
   end

@@ -18,32 +18,39 @@ module OpenAI
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
-          sig { returns(T.nilable(Symbol)) }
+          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)) }
           def detail
           end
 
-          sig { params(_: Symbol).returns(Symbol) }
+          sig do
+            params(_: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
+              .returns(OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
+          end
           def detail=(_)
           end
 
-          sig { params(file_id: String, detail: Symbol).returns(T.attached_class) }
+          sig do
+            params(file_id: String, detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
+              .returns(T.attached_class)
+          end
           def self.new(file_id:, detail: nil)
           end
 
-          sig { override.returns({file_id: String, detail: Symbol}) }
+          sig { override.returns({file_id: String, detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol}) }
           def to_hash
           end
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
-          class Detail < OpenAI::Enum
-            abstract!
+          module Detail
+            extend OpenAI::Enum
 
-            Value = type_template(:out) { {fixed: Symbol} }
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail) }
+            OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail::TaggedSymbol) }
 
-            AUTO = :auto
-            LOW = :low
-            HIGH = :high
+            AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
+            LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
+            HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
           end
         end
       end

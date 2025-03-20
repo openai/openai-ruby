@@ -44,11 +44,14 @@ module OpenAI
 
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol) }
         def status
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
+        end
         def status=(_)
         end
 
@@ -66,7 +69,7 @@ module OpenAI
           params(
             id: String,
             content: T::Array[T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)],
-            status: Symbol,
+            status: OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol,
             role: Symbol,
             type: Symbol
           )
@@ -82,7 +85,7 @@ module OpenAI
                 id: String,
                 content: T::Array[T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)],
                 role: Symbol,
-                status: Symbol,
+                status: OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol,
                 type: Symbol
               }
             )
@@ -91,8 +94,8 @@ module OpenAI
         end
 
         # A text output from the model.
-        class Content < OpenAI::Union
-          abstract!
+        module Content
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) do
@@ -104,14 +107,16 @@ module OpenAI
 
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
-        class Status < OpenAI::Enum
-          abstract!
+        module Status
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          INCOMPLETE = :incomplete
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
         end
       end
     end

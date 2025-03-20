@@ -47,10 +47,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The content part that is done.
-        class Part < OpenAI::Union
+        module Part
+          extend OpenAI::Union
+
           discriminator :type
 
           # A text output from the model.

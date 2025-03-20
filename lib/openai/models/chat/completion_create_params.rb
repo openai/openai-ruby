@@ -417,14 +417,14 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
         #   wide range of models with different capabilities, performance characteristics,
         #   and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
-        class Model < OpenAI::Union
+        module Model
+          extend OpenAI::Union
+
           variant String
 
           # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI
@@ -440,8 +440,6 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        #
         # @deprecated
         #
         # Deprecated in favor of `tool_choice`.
@@ -458,19 +456,21 @@ module OpenAI
         #
         #   `none` is the default when no functions are present. `auto` is the default if
         #   functions are present.
-        class FunctionCall < OpenAI::Union
+        module FunctionCall
+          extend OpenAI::Union
+
           # `none` means the model will not call a function and instead generates a message. `auto` means the model can pick between generating a message or calling a function.
           variant enum: -> { OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode }
 
           # Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
           variant -> { OpenAI::Models::Chat::ChatCompletionFunctionCallOption }
 
-          # @abstract
-          #
           # `none` means the model will not call a function and instead generates a message.
           #   `auto` means the model can pick between generating a message or calling a
           #   function.
-          class FunctionCallMode < OpenAI::Enum
+          module FunctionCallMode
+            extend OpenAI::Enum
+
             NONE = :none
             AUTO = :auto
 
@@ -530,16 +530,15 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
         end
 
-        # @abstract
-        class Modality < OpenAI::Enum
+        module Modality
+          extend OpenAI::Enum
+
           TEXT = :text
           AUDIO = :audio
 
           finalize!
         end
 
-        # @abstract
-        #
         # An object specifying the format that the model must output.
         #
         #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
@@ -550,7 +549,9 @@ module OpenAI
         #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
         #   ensures the message the model generates is valid JSON. Using `json_schema` is
         #   preferred for models that support it.
-        class ResponseFormat < OpenAI::Union
+        module ResponseFormat
+          extend OpenAI::Union
+
           # Default response format. Used to generate text responses.
           variant -> { OpenAI::Models::ResponseFormatText }
 
@@ -571,8 +572,6 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        #
         # Specifies the latency tier to use for processing the request. This parameter is
         #   relevant for customers subscribed to the scale tier service:
         #
@@ -587,18 +586,20 @@ module OpenAI
         #
         #   When this parameter is set, the response body will include the `service_tier`
         #   utilized.
-        class ServiceTier < OpenAI::Enum
+        module ServiceTier
+          extend OpenAI::Enum
+
           AUTO = :auto
           DEFAULT = :default
 
           finalize!
         end
 
-        # @abstract
-        #
         # Up to 4 sequences where the API will stop generating further tokens. The
         #   returned text will not contain the stop sequence.
-        class Stop < OpenAI::Union
+        module Stop
+          extend OpenAI::Union
+
           StringArray = OpenAI::ArrayOf[String]
 
           variant String
@@ -645,11 +646,11 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          # @abstract
-          #
           # High level guidance for the amount of context window space to use for the
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-          class SearchContextSize < OpenAI::Enum
+          module SearchContextSize
+            extend OpenAI::Enum
+
             LOW = :low
             MEDIUM = :medium
             HIGH = :high

@@ -36,11 +36,14 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)) }
         def status
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
+        end
         def status=(_)
         end
 
@@ -50,7 +53,7 @@ module OpenAI
           params(
             id: String,
             summary: T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
-            status: Symbol,
+            status: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol,
             type: Symbol
           )
             .returns(T.attached_class)
@@ -65,7 +68,7 @@ module OpenAI
                 id: String,
                 summary: T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
                 type: Symbol,
-                status: Symbol
+                status: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol
               }
             )
         end
@@ -102,14 +105,16 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        class Status < OpenAI::Enum
-          abstract!
+        module Status
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          INCOMPLETE = :incomplete
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
         end
       end
     end
