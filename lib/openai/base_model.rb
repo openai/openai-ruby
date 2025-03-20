@@ -288,33 +288,29 @@ module OpenAI
   #   values safely.
   #
   # @example
-  # ```ruby
-  # # `chat_model` is a `OpenAI::Models::ChatModel`
-  # case chat_model
-  # when OpenAI::Models::ChatModel::O3_MINI
-  #   # ...
-  # when OpenAI::Models::ChatModel::O3_MINI_2025_01_31
-  #   # ...
-  # when OpenAI::Models::ChatModel::O1
-  #   # ...
-  # else
-  #   puts(chat_model)
-  # end
-  # ```
+  #   # `chat_model` is a `OpenAI::Models::ChatModel`
+  #   case chat_model
+  #   when OpenAI::Models::ChatModel::O3_MINI
+  #     # ...
+  #   when OpenAI::Models::ChatModel::O3_MINI_2025_01_31
+  #     # ...
+  #   when OpenAI::Models::ChatModel::O1
+  #     # ...
+  #   else
+  #     puts(chat_model)
+  #   end
   #
   # @example
-  # ```ruby
-  # case chat_model
-  # in :"o3-mini"
-  #   # ...
-  # in :"o3-mini-2025-01-31"
-  #   # ...
-  # in :o1
-  #   # ...
-  # else
-  #   puts(chat_model)
-  # end
-  # ```
+  #   case chat_model
+  #   in :"o3-mini"
+  #     # ...
+  #   in :"o3-mini-2025-01-31"
+  #     # ...
+  #   in :o1
+  #     # ...
+  #   else
+  #     puts(chat_model)
+  #   end
   module Enum
     include OpenAI::Converter
 
@@ -387,33 +383,29 @@ module OpenAI
   # @api private
   #
   # @example
-  # ```ruby
-  # # `chat_completion_content_part` is a `OpenAI::Models::Chat::ChatCompletionContentPart`
-  # case chat_completion_content_part
-  # when OpenAI::Models::Chat::ChatCompletionContentPartText
-  #   puts(chat_completion_content_part.text)
-  # when OpenAI::Models::Chat::ChatCompletionContentPartImage
-  #   puts(chat_completion_content_part.image_url)
-  # when OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
-  #   puts(chat_completion_content_part.input_audio)
-  # else
-  #   puts(chat_completion_content_part)
-  # end
-  # ```
+  #   # `chat_completion_content_part` is a `OpenAI::Models::Chat::ChatCompletionContentPart`
+  #   case chat_completion_content_part
+  #   when OpenAI::Models::Chat::ChatCompletionContentPartText
+  #     puts(chat_completion_content_part.text)
+  #   when OpenAI::Models::Chat::ChatCompletionContentPartImage
+  #     puts(chat_completion_content_part.image_url)
+  #   when OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+  #     puts(chat_completion_content_part.input_audio)
+  #   else
+  #     puts(chat_completion_content_part)
+  #   end
   #
   # @example
-  # ```ruby
-  # case chat_completion_content_part
-  # in {type: :text, text: text}
-  #   puts(text)
-  # in {type: :image_url, image_url: image_url}
-  #   puts(image_url)
-  # in {type: :input_audio, input_audio: input_audio}
-  #   puts(input_audio)
-  # else
-  #   puts(chat_completion_content_part)
-  # end
-  # ```
+  #   case chat_completion_content_part
+  #   in {type: :text, text: text}
+  #     puts(text)
+  #   in {type: :image_url, image_url: image_url}
+  #     puts(image_url)
+  #   in {type: :input_audio, input_audio: input_audio}
+  #     puts(input_audio)
+  #   else
+  #     puts(chat_completion_content_part)
+  #   end
   module Union
     include OpenAI::Converter
 
@@ -878,14 +870,12 @@ module OpenAI
   # @abstract
   #
   # @example
-  # ```ruby
-  # # `comparison_filter` is a `OpenAI::Models::ComparisonFilter`
-  # comparison_filter => {
-  #   key: key,
-  #   type: type,
-  #   value: value
-  # }
-  # ```
+  #   # `comparison_filter` is a `OpenAI::Models::ComparisonFilter`
+  #   comparison_filter => {
+  #     key: key,
+  #     type: type,
+  #     value: value
+  #   }
   class BaseModel
     extend OpenAI::Converter
 

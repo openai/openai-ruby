@@ -73,11 +73,11 @@ module OpenAI
 
     # Extra data to send with the request. These are deep merged into any data
     #   generated as part of the normal request.
-    sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
+    sig { returns(T.nilable(T.anything)) }
     def extra_body
     end
 
-    sig { params(_: T.nilable(T::Hash[Symbol, T.anything])).returns(T.nilable(T::Hash[Symbol, T.anything])) }
+    sig { params(_: T.nilable(T.anything)).returns(T.nilable(T.anything)) }
     def extra_body=(_)
     end
 
