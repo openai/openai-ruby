@@ -922,8 +922,8 @@ module OpenAI
                   returns(
                     T.nilable(
                       T.any(
-                        UnnamedTypeWithNoPropertyInfoOrParent1::Auto,
-                        UnnamedTypeWithNoPropertyInfoOrParent1::Static
+                        OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                       )
                     )
                   )
@@ -934,14 +934,14 @@ module OpenAI
                 sig do
                   params(
                     _: T.any(
-                      UnnamedTypeWithNoPropertyInfoOrParent1::Auto,
-                      UnnamedTypeWithNoPropertyInfoOrParent1::Static
+                      OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     )
                   )
                     .returns(
                       T.any(
-                        UnnamedTypeWithNoPropertyInfoOrParent1::Auto,
-                        UnnamedTypeWithNoPropertyInfoOrParent1::Static
+                        OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                       )
                     )
                 end
@@ -978,8 +978,8 @@ module OpenAI
                 sig do
                   params(
                     chunking_strategy: T.any(
-                      UnnamedTypeWithNoPropertyInfoOrParent1::Auto,
-                      UnnamedTypeWithNoPropertyInfoOrParent1::Static
+                      OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     ),
                     file_ids: T::Array[String],
                     metadata: T.nilable(T::Hash[Symbol, String])
@@ -994,8 +994,8 @@ module OpenAI
                     .returns(
                       {
                         chunking_strategy: T.any(
-                          UnnamedTypeWithNoPropertyInfoOrParent1::Auto,
-                          UnnamedTypeWithNoPropertyInfoOrParent1::Static
+                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                         ),
                         file_ids: T::Array[String],
                         metadata: T.nilable(T::Hash[Symbol, String])
@@ -1003,6 +1003,133 @@ module OpenAI
                     )
                 end
                 def to_hash
+                end
+
+                # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+                #   strategy.
+                module ChunkingStrategy
+                  extend OpenAI::Union
+
+                  Variants =
+                    type_template(:out) do
+                      {
+                        fixed: T.any(
+                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                        )
+                      }
+                    end
+
+                  class Auto < OpenAI::BaseModel
+                    # Always `auto`.
+                    sig { returns(Symbol) }
+                    def type
+                    end
+
+                    sig { params(_: Symbol).returns(Symbol) }
+                    def type=(_)
+                    end
+
+                    # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
+                    #   `800` and `chunk_overlap_tokens` of `400`.
+                    sig { params(type: Symbol).returns(T.attached_class) }
+                    def self.new(type: :auto)
+                    end
+
+                    sig { override.returns({type: Symbol}) }
+                    def to_hash
+                    end
+                  end
+
+                  class Static < OpenAI::BaseModel
+                    sig do
+                      returns(
+                        OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                      )
+                    end
+                    def static
+                    end
+
+                    sig do
+                      params(
+                        _: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                      )
+                        .returns(
+                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                        )
+                    end
+                    def static=(_)
+                    end
+
+                    # Always `static`.
+                    sig { returns(Symbol) }
+                    def type
+                    end
+
+                    sig { params(_: Symbol).returns(Symbol) }
+                    def type=(_)
+                    end
+
+                    sig do
+                      params(
+                        static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                        type: Symbol
+                      )
+                        .returns(T.attached_class)
+                    end
+                    def self.new(static:, type: :static)
+                    end
+
+                    sig do
+                      override
+                        .returns(
+                          {
+                            static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                            type: Symbol
+                          }
+                        )
+                    end
+                    def to_hash
+                    end
+
+                    class Static < OpenAI::BaseModel
+                      # The number of tokens that overlap between chunks. The default value is `400`.
+                      #
+                      #   Note that the overlap must not exceed half of `max_chunk_size_tokens`.
+                      sig { returns(Integer) }
+                      def chunk_overlap_tokens
+                      end
+
+                      sig { params(_: Integer).returns(Integer) }
+                      def chunk_overlap_tokens=(_)
+                      end
+
+                      # The maximum number of tokens in each chunk. The default value is `800`. The
+                      #   minimum value is `100` and the maximum value is `4096`.
+                      sig { returns(Integer) }
+                      def max_chunk_size_tokens
+                      end
+
+                      sig { params(_: Integer).returns(Integer) }
+                      def max_chunk_size_tokens=(_)
+                      end
+
+                      sig do
+                        params(
+                          chunk_overlap_tokens: Integer,
+                          max_chunk_size_tokens: Integer
+                        ).returns(T.attached_class)
+                      end
+                      def self.new(chunk_overlap_tokens:, max_chunk_size_tokens:)
+                      end
+
+                      sig do
+                        override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer})
+                      end
+                      def to_hash
+                      end
+                    end
+                  end
                 end
               end
             end

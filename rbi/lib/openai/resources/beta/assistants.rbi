@@ -22,7 +22,7 @@ module OpenAI
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(UnnamedTypeWithNoPropertyInfoOrParent0),
+            tool_resources: T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources),
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,

@@ -98,8 +98,8 @@ module OpenAI
         #     a list of file IDs, while the `file_search` tool requires a list of vector store
         #     IDs.
         #
-        #   @return [UnnamedTypeWithNoPropertyInfoOrParent0, nil]
-        optional :tool_resources, -> { UnnamedTypeWithNoPropertyInfoOrParent0 }, nil?: true
+        #   @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources, nil]
+        optional :tool_resources, -> { OpenAI::Models::Beta::AssistantCreateParams::ToolResources }, nil?: true
 
         # @!attribute [r] tools
         #   A list of tool enabled on the assistant. There can be a maximum of 128 tools per
@@ -132,7 +132,7 @@ module OpenAI
         #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
         #   # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
         #   # @param temperature [Float, nil]
-        #   # @param tool_resources [UnnamedTypeWithNoPropertyInfoOrParent0, nil]
+        #   # @param tool_resources [OpenAI::Models::Beta::AssistantCreateParams::ToolResources, nil]
         #   # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
         #   # @param top_p [Float, nil]
         #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
@@ -175,6 +175,230 @@ module OpenAI
           #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
           #     def variants; end
           #   end
+        end
+
+        class ToolResources < OpenAI::BaseModel
+          # @!attribute [r] code_interpreter
+          #
+          #   @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter, nil]
+          optional :code_interpreter,
+                   -> { OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter }
+
+          # @!parse
+          #   # @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter]
+          #   attr_writer :code_interpreter
+
+          # @!attribute [r] file_search
+          #
+          #   @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch, nil]
+          optional :file_search, -> { OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch }
+
+          # @!parse
+          #   # @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch]
+          #   attr_writer :file_search
+
+          # @!parse
+          #   # A set of resources that are used by the assistant's tools. The resources are
+          #   #   specific to the type of tool. For example, the `code_interpreter` tool requires
+          #   #   a list of file IDs, while the `file_search` tool requires a list of vector store
+          #   #   IDs.
+          #   #
+          #   # @param code_interpreter [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter]
+          #   # @param file_search [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch]
+          #   #
+          #   def initialize(code_interpreter: nil, file_search: nil, **) = super
+
+          # def initialize: (Hash | OpenAI::BaseModel) -> void
+
+          class CodeInterpreter < OpenAI::BaseModel
+            # @!attribute [r] file_ids
+            #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #     available to the `code_interpreter` tool. There can be a maximum of 20 files
+            #     associated with the tool.
+            #
+            #   @return [Array<String>, nil]
+            optional :file_ids, OpenAI::ArrayOf[String]
+
+            # @!parse
+            #   # @return [Array<String>]
+            #   attr_writer :file_ids
+
+            # @!parse
+            #   # @param file_ids [Array<String>]
+            #   #
+            #   def initialize(file_ids: nil, **) = super
+
+            # def initialize: (Hash | OpenAI::BaseModel) -> void
+          end
+
+          class FileSearch < OpenAI::BaseModel
+            # @!attribute [r] vector_store_ids
+            #   The
+            #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            #     attached to this assistant. There can be a maximum of 1 vector store attached to
+            #     the assistant.
+            #
+            #   @return [Array<String>, nil]
+            optional :vector_store_ids, OpenAI::ArrayOf[String]
+
+            # @!parse
+            #   # @return [Array<String>]
+            #   attr_writer :vector_store_ids
+
+            # @!attribute [r] vector_stores
+            #   A helper to create a
+            #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            #     with file_ids and attach it to this assistant. There can be a maximum of 1
+            #     vector store attached to the assistant.
+            #
+            #   @return [Array<OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore>, nil]
+            optional :vector_stores,
+                     -> { OpenAI::ArrayOf[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore] }
+
+            # @!parse
+            #   # @return [Array<OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore>]
+            #   attr_writer :vector_stores
+
+            # @!parse
+            #   # @param vector_store_ids [Array<String>]
+            #   # @param vector_stores [Array<OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore>]
+            #   #
+            #   def initialize(vector_store_ids: nil, vector_stores: nil, **) = super
+
+            # def initialize: (Hash | OpenAI::BaseModel) -> void
+
+            class VectorStore < OpenAI::BaseModel
+              # @!attribute [r] chunking_strategy
+              #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              #     strategy.
+              #
+              #   @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static, nil]
+              optional :chunking_strategy,
+                       union: -> { OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy }
+
+              # @!parse
+              #   # @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+              #   attr_writer :chunking_strategy
+
+              # @!attribute [r] file_ids
+              #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
+              #     add to the vector store. There can be a maximum of 10000 files in a vector
+              #     store.
+              #
+              #   @return [Array<String>, nil]
+              optional :file_ids, OpenAI::ArrayOf[String]
+
+              # @!parse
+              #   # @return [Array<String>]
+              #   attr_writer :file_ids
+
+              # @!attribute metadata
+              #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+              #     for storing additional information about the object in a structured format, and
+              #     querying for objects via API or the dashboard.
+              #
+              #     Keys are strings with a maximum length of 64 characters. Values are strings with
+              #     a maximum length of 512 characters.
+              #
+              #   @return [Hash{Symbol=>String}, nil]
+              optional :metadata, OpenAI::HashOf[String], nil?: true
+
+              # @!parse
+              #   # @param chunking_strategy [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+              #   # @param file_ids [Array<String>]
+              #   # @param metadata [Hash{Symbol=>String}, nil]
+              #   #
+              #   def initialize(chunking_strategy: nil, file_ids: nil, metadata: nil, **) = super
+
+              # def initialize: (Hash | OpenAI::BaseModel) -> void
+
+              # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              #   strategy.
+              module ChunkingStrategy
+                extend OpenAI::Union
+
+                discriminator :type
+
+                # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of `800` and `chunk_overlap_tokens` of `400`.
+                variant :auto,
+                        -> { OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto }
+
+                variant :static,
+                        -> { OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static }
+
+                class Auto < OpenAI::BaseModel
+                  # @!attribute type
+                  #   Always `auto`.
+                  #
+                  #   @return [Symbol, :auto]
+                  required :type, const: :auto
+
+                  # @!parse
+                  #   # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
+                  #   #   `800` and `chunk_overlap_tokens` of `400`.
+                  #   #
+                  #   # @param type [Symbol, :auto]
+                  #   #
+                  #   def initialize(type: :auto, **) = super
+
+                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+                end
+
+                class Static < OpenAI::BaseModel
+                  # @!attribute static
+                  #
+                  #   @return [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
+                  required :static,
+                           -> { OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static }
+
+                  # @!attribute type
+                  #   Always `static`.
+                  #
+                  #   @return [Symbol, :static]
+                  required :type, const: :static
+
+                  # @!parse
+                  #   # @param static [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
+                  #   # @param type [Symbol, :static]
+                  #   #
+                  #   def initialize(static:, type: :static, **) = super
+
+                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+
+                  class Static < OpenAI::BaseModel
+                    # @!attribute chunk_overlap_tokens
+                    #   The number of tokens that overlap between chunks. The default value is `400`.
+                    #
+                    #     Note that the overlap must not exceed half of `max_chunk_size_tokens`.
+                    #
+                    #   @return [Integer]
+                    required :chunk_overlap_tokens, Integer
+
+                    # @!attribute max_chunk_size_tokens
+                    #   The maximum number of tokens in each chunk. The default value is `800`. The
+                    #     minimum value is `100` and the maximum value is `4096`.
+                    #
+                    #   @return [Integer]
+                    required :max_chunk_size_tokens, Integer
+
+                    # @!parse
+                    #   # @param chunk_overlap_tokens [Integer]
+                    #   # @param max_chunk_size_tokens [Integer]
+                    #   #
+                    #   def initialize(chunk_overlap_tokens:, max_chunk_size_tokens:, **) = super
+
+                    # def initialize: (Hash | OpenAI::BaseModel) -> void
+                  end
+                end
+
+                # @!parse
+                #   class << self
+                #     # @return [Array(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
+                #     def variants; end
+                #   end
+              end
+            end
+          end
         end
       end
     end

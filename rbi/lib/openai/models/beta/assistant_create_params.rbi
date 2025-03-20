@@ -157,13 +157,13 @@ module OpenAI
         #   specific to the type of tool. For example, the `code_interpreter` tool requires
         #   a list of file IDs, while the `file_search` tool requires a list of vector store
         #   IDs.
-        sig { returns(T.nilable(UnnamedTypeWithNoPropertyInfoOrParent0)) }
+        sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources)) }
         def tool_resources
         end
 
         sig do
-          params(_: T.nilable(UnnamedTypeWithNoPropertyInfoOrParent0))
-            .returns(T.nilable(UnnamedTypeWithNoPropertyInfoOrParent0))
+          params(_: T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources))
+            .returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources))
         end
         def tool_resources=(_)
         end
@@ -240,7 +240,7 @@ module OpenAI
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(UnnamedTypeWithNoPropertyInfoOrParent0),
+            tool_resources: T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources),
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
@@ -288,7 +288,7 @@ module OpenAI
                   )
                 ),
                 temperature: T.nilable(Float),
-                tool_resources: T.nilable(UnnamedTypeWithNoPropertyInfoOrParent0),
+                tool_resources: T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources),
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
@@ -313,6 +313,348 @@ module OpenAI
           extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
+        end
+
+        class ToolResources < OpenAI::BaseModel
+          sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter)) }
+          def code_interpreter
+          end
+
+          sig do
+            params(_: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter)
+              .returns(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter)
+          end
+          def code_interpreter=(_)
+          end
+
+          sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch)) }
+          def file_search
+          end
+
+          sig do
+            params(_: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch)
+              .returns(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch)
+          end
+          def file_search=(_)
+          end
+
+          # A set of resources that are used by the assistant's tools. The resources are
+          #   specific to the type of tool. For example, the `code_interpreter` tool requires
+          #   a list of file IDs, while the `file_search` tool requires a list of vector store
+          #   IDs.
+          sig do
+            params(
+              code_interpreter: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter,
+              file_search: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(code_interpreter: nil, file_search: nil)
+          end
+
+          sig do
+            override
+              .returns(
+                {
+                  code_interpreter: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter,
+                  file_search: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch
+                }
+              )
+          end
+          def to_hash
+          end
+
+          class CodeInterpreter < OpenAI::BaseModel
+            # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #   available to the `code_interpreter` tool. There can be a maximum of 20 files
+            #   associated with the tool.
+            sig { returns(T.nilable(T::Array[String])) }
+            def file_ids
+            end
+
+            sig { params(_: T::Array[String]).returns(T::Array[String]) }
+            def file_ids=(_)
+            end
+
+            sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
+            def self.new(file_ids: nil)
+            end
+
+            sig { override.returns({file_ids: T::Array[String]}) }
+            def to_hash
+            end
+          end
+
+          class FileSearch < OpenAI::BaseModel
+            # The
+            #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            #   attached to this assistant. There can be a maximum of 1 vector store attached to
+            #   the assistant.
+            sig { returns(T.nilable(T::Array[String])) }
+            def vector_store_ids
+            end
+
+            sig { params(_: T::Array[String]).returns(T::Array[String]) }
+            def vector_store_ids=(_)
+            end
+
+            # A helper to create a
+            #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            #   with file_ids and attach it to this assistant. There can be a maximum of 1
+            #   vector store attached to the assistant.
+            sig do
+              returns(
+                T.nilable(T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore])
+              )
+            end
+            def vector_stores
+            end
+
+            sig do
+              params(_: T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore])
+                .returns(T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore])
+            end
+            def vector_stores=(_)
+            end
+
+            sig do
+              params(
+                vector_store_ids: T::Array[String],
+                vector_stores: T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(vector_store_ids: nil, vector_stores: nil)
+            end
+
+            sig do
+              override
+                .returns(
+                  {
+                    vector_store_ids: T::Array[String],
+                    vector_stores: T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]
+                  }
+                )
+            end
+            def to_hash
+            end
+
+            class VectorStore < OpenAI::BaseModel
+              # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              #   strategy.
+              sig do
+                returns(
+                  T.nilable(
+                    T.any(
+                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                    )
+                  )
+                )
+              end
+              def chunking_strategy
+              end
+
+              sig do
+                params(
+                  _: T.any(
+                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                  )
+                )
+                  .returns(
+                    T.any(
+                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                    )
+                  )
+              end
+              def chunking_strategy=(_)
+              end
+
+              # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
+              #   add to the vector store. There can be a maximum of 10000 files in a vector
+              #   store.
+              sig { returns(T.nilable(T::Array[String])) }
+              def file_ids
+              end
+
+              sig { params(_: T::Array[String]).returns(T::Array[String]) }
+              def file_ids=(_)
+              end
+
+              # Set of 16 key-value pairs that can be attached to an object. This can be useful
+              #   for storing additional information about the object in a structured format, and
+              #   querying for objects via API or the dashboard.
+              #
+              #   Keys are strings with a maximum length of 64 characters. Values are strings with
+              #   a maximum length of 512 characters.
+              sig { returns(T.nilable(T::Hash[Symbol, String])) }
+              def metadata
+              end
+
+              sig do
+                params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String]))
+              end
+              def metadata=(_)
+              end
+
+              sig do
+                params(
+                  chunking_strategy: T.any(
+                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                  ),
+                  file_ids: T::Array[String],
+                  metadata: T.nilable(T::Hash[Symbol, String])
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(chunking_strategy: nil, file_ids: nil, metadata: nil)
+              end
+
+              sig do
+                override
+                  .returns(
+                    {
+                      chunking_strategy: T.any(
+                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                      ),
+                      file_ids: T::Array[String],
+                      metadata: T.nilable(T::Hash[Symbol, String])
+                    }
+                  )
+              end
+              def to_hash
+              end
+
+              # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              #   strategy.
+              module ChunkingStrategy
+                extend OpenAI::Union
+
+                Variants =
+                  type_template(:out) do
+                    {
+                      fixed: T.any(
+                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                      )
+                    }
+                  end
+
+                class Auto < OpenAI::BaseModel
+                  # Always `auto`.
+                  sig { returns(Symbol) }
+                  def type
+                  end
+
+                  sig { params(_: Symbol).returns(Symbol) }
+                  def type=(_)
+                  end
+
+                  # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
+                  #   `800` and `chunk_overlap_tokens` of `400`.
+                  sig { params(type: Symbol).returns(T.attached_class) }
+                  def self.new(type: :auto)
+                  end
+
+                  sig { override.returns({type: Symbol}) }
+                  def to_hash
+                  end
+                end
+
+                class Static < OpenAI::BaseModel
+                  sig do
+                    returns(
+                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                    )
+                  end
+                  def static
+                  end
+
+                  sig do
+                    params(
+                      _: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                    )
+                      .returns(
+                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                      )
+                  end
+                  def static=(_)
+                  end
+
+                  # Always `static`.
+                  sig { returns(Symbol) }
+                  def type
+                  end
+
+                  sig { params(_: Symbol).returns(Symbol) }
+                  def type=(_)
+                  end
+
+                  sig do
+                    params(
+                      static: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                      type: Symbol
+                    )
+                      .returns(T.attached_class)
+                  end
+                  def self.new(static:, type: :static)
+                  end
+
+                  sig do
+                    override
+                      .returns(
+                        {
+                          static: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                          type: Symbol
+                        }
+                      )
+                  end
+                  def to_hash
+                  end
+
+                  class Static < OpenAI::BaseModel
+                    # The number of tokens that overlap between chunks. The default value is `400`.
+                    #
+                    #   Note that the overlap must not exceed half of `max_chunk_size_tokens`.
+                    sig { returns(Integer) }
+                    def chunk_overlap_tokens
+                    end
+
+                    sig { params(_: Integer).returns(Integer) }
+                    def chunk_overlap_tokens=(_)
+                    end
+
+                    # The maximum number of tokens in each chunk. The default value is `800`. The
+                    #   minimum value is `100` and the maximum value is `4096`.
+                    sig { returns(Integer) }
+                    def max_chunk_size_tokens
+                    end
+
+                    sig { params(_: Integer).returns(Integer) }
+                    def max_chunk_size_tokens=(_)
+                    end
+
+                    sig do
+                      params(
+                        chunk_overlap_tokens: Integer,
+                        max_chunk_size_tokens: Integer
+                      ).returns(T.attached_class)
+                    end
+                    def self.new(chunk_overlap_tokens:, max_chunk_size_tokens:)
+                    end
+
+                    sig { override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer}) }
+                    def to_hash
+                    end
+                  end
+                end
+              end
+            end
+          end
         end
       end
     end

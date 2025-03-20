@@ -60,7 +60,7 @@ module OpenAI
         #     make the output more random, while lower values like 0.2 will make it more
         #     focused and deterministic.
         #
-        #   @option params [UnnamedTypeWithNoPropertyInfoOrParent0, nil] :tool_resources A set of resources that are used by the assistant's tools. The resources are
+        #   @option params [OpenAI::Models::Beta::AssistantCreateParams::ToolResources, nil] :tool_resources A set of resources that are used by the assistant's tools. The resources are
         #     specific to the type of tool. For example, the `code_interpreter` tool requires
         #     a list of file IDs, while the `file_search` tool requires a list of vector store
         #     IDs.
