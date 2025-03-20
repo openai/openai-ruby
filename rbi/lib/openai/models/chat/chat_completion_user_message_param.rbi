@@ -120,8 +120,8 @@ module OpenAI
         end
 
         # The contents of the user message.
-        module Content
-          extend OpenAI::Union
+        class Content < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do

@@ -37,13 +37,13 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @abstract
+      #
       # The reason the model stopped generating tokens. This will be `stop` if the model
       #   hit a natural stop point or a provided stop sequence, `length` if the maximum
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
-      module FinishReason
-        extend OpenAI::Enum
-
+      class FinishReason < OpenAI::Enum
         STOP = :stop
         LENGTH = :length
         CONTENT_FILTER = :content_filter

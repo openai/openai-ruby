@@ -5,9 +5,7 @@ module OpenAI
         OpenAI::Models::Audio::Translation
         | OpenAI::Models::Audio::TranslationVerbose
 
-      module TranslationCreateResponse
-        extend OpenAI::Union
-
+      class TranslationCreateResponse < OpenAI::Union
         def self.variants: -> [OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose]
       end
     end

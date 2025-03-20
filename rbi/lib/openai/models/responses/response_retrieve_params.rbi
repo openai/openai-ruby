@@ -9,20 +9,17 @@ module OpenAI
 
         # Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])) }
+        sig { returns(T.nilable(T::Array[Symbol])) }
         def include
         end
 
-        sig do
-          params(_: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])
-            .returns(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])
-        end
+        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
         def include=(_)
         end
 
         sig do
           params(
-            include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
+            include: T::Array[Symbol],
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -30,15 +27,7 @@ module OpenAI
         def self.new(include: nil, request_options: {})
         end
 
-        sig do
-          override
-            .returns(
-              {
-                include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
-                request_options: OpenAI::RequestOptions
-              }
-            )
-        end
+        sig { override.returns({include: T::Array[Symbol], request_options: OpenAI::RequestOptions}) }
         def to_hash
         end
       end

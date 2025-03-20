@@ -79,34 +79,11 @@ module OpenAI
         #   and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
-        sig do
-          returns(
-            T.any(
-              String,
-              OpenAI::Models::ChatModel::TaggedSymbol,
-              OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-            )
-          )
-        end
+        sig { returns(T.any(String, Symbol)) }
         def model
         end
 
-        sig do
-          params(
-            _: T.any(
-              String,
-              OpenAI::Models::ChatModel::TaggedSymbol,
-              OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-            )
-          )
-            .returns(
-              T.any(
-                String,
-                OpenAI::Models::ChatModel::TaggedSymbol,
-                OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-              )
-            )
-        end
+        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
         def model=(_)
         end
 
@@ -198,11 +175,7 @@ module OpenAI
         #   can call.
         sig do
           returns(
-            T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-              OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Models::Responses::ToolChoiceFunction
-            )
+            T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
           )
         end
         def tool_choice
@@ -210,18 +183,10 @@ module OpenAI
 
         sig do
           params(
-            _: T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-              OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Models::Responses::ToolChoiceFunction
-            )
+            _: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
           )
             .returns(
-              T.any(
-                OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-                OpenAI::Models::Responses::ToolChoiceTypes,
-                OpenAI::Models::Responses::ToolChoiceFunction
-              )
+              T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
             )
         end
         def tool_choice=(_)
@@ -330,14 +295,11 @@ module OpenAI
 
         # The status of the response generation. One of `completed`, `failed`,
         #   `in_progress`, or `incomplete`.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def status
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def status=(_)
         end
 
@@ -364,14 +326,11 @@ module OpenAI
         #     window by dropping input items in the middle of the conversation.
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
-        sig { returns(T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def truncation
         end
 
-        sig do
-          params(_: T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol))
-            .returns(T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol))
-        end
+        sig { params(_: T.nilable(Symbol)).returns(T.nilable(Symbol)) }
         def truncation=(_)
         end
 
@@ -404,11 +363,7 @@ module OpenAI
             incomplete_details: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(
-              String,
-              OpenAI::Models::ChatModel::TaggedSymbol,
-              OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-            ),
+            model: T.any(String, Symbol),
             output: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputMessage,
@@ -421,11 +376,7 @@ module OpenAI
             ],
             parallel_tool_calls: T::Boolean,
             temperature: T.nilable(Float),
-            tool_choice: T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-              OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Models::Responses::ToolChoiceFunction
-            ),
+            tool_choice: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction),
             tools: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
@@ -438,9 +389,9 @@ module OpenAI
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Models::Reasoning),
-            status: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol,
+            status: Symbol,
             text: OpenAI::Models::Responses::ResponseTextConfig,
-            truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol),
+            truncation: T.nilable(Symbol),
             usage: OpenAI::Models::Responses::ResponseUsage,
             user: String,
             object: Symbol
@@ -483,11 +434,7 @@ module OpenAI
                 incomplete_details: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails),
                 instructions: T.nilable(String),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.any(
-                  String,
-                  OpenAI::Models::ChatModel::TaggedSymbol,
-                  OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol
-                ),
+                model: T.any(String, Symbol),
                 object: Symbol,
                 output: T::Array[
                 T.any(
@@ -501,11 +448,7 @@ module OpenAI
                 ],
                 parallel_tool_calls: T::Boolean,
                 temperature: T.nilable(Float),
-                tool_choice: T.any(
-                  OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-                  OpenAI::Models::Responses::ToolChoiceTypes,
-                  OpenAI::Models::Responses::ToolChoiceFunction
-                ),
+                tool_choice: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction),
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Responses::FileSearchTool,
@@ -518,9 +461,9 @@ module OpenAI
                 max_output_tokens: T.nilable(Integer),
                 previous_response_id: T.nilable(String),
                 reasoning: T.nilable(OpenAI::Models::Reasoning),
-                status: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol,
+                status: Symbol,
                 text: OpenAI::Models::Responses::ResponseTextConfig,
-                truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol),
+                truncation: T.nilable(Symbol),
                 usage: OpenAI::Models::Responses::ResponseUsage,
                 user: String
               }
@@ -531,59 +474,44 @@ module OpenAI
 
         class IncompleteDetails < OpenAI::BaseModel
           # The reason why the response is incomplete.
-          sig { returns(T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def reason
           end
 
-          sig do
-            params(_: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
-              .returns(OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def reason=(_)
           end
 
           # Details about why the response is incomplete.
-          sig do
-            params(reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
-              .returns(T.attached_class)
-          end
+          sig { params(reason: Symbol).returns(T.attached_class) }
           def self.new(reason: nil)
           end
 
-          sig { override.returns({reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol}) }
+          sig { override.returns({reason: Symbol}) }
           def to_hash
           end
 
           # The reason why the response is incomplete.
-          module Reason
-            extend OpenAI::Enum
+          class Reason < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            MAX_OUTPUT_TOKENS =
-              T.let(:max_output_tokens, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
-            CONTENT_FILTER =
-              T.let(:content_filter, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
+            MAX_OUTPUT_TOKENS = :max_output_tokens
+            CONTENT_FILTER = :content_filter
           end
         end
 
         # How the model should select which tool (or tools) to use when generating a
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
-        module ToolChoice
-          extend OpenAI::Union
+        class ToolChoice < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do
               {
-                fixed: T.any(
-                  OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-                  OpenAI::Models::Responses::ToolChoiceTypes,
-                  OpenAI::Models::Responses::ToolChoiceFunction
-                )
+                fixed: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)
               }
             end
         end
@@ -595,14 +523,13 @@ module OpenAI
         #     window by dropping input items in the middle of the conversation.
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
-        module Truncation
-          extend OpenAI::Enum
+        class Truncation < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::Truncation) }
-          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          AUTO = T.let(:auto, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
-          DISABLED = T.let(:disabled, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
+          AUTO = :auto
+          DISABLED = :disabled
         end
       end
     end

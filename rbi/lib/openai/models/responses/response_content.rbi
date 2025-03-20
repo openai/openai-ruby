@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       # Multi-modal input and output contents.
-      module ResponseContent
-        extend OpenAI::Union
+      class ResponseContent < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

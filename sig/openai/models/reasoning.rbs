@@ -20,9 +20,7 @@ module OpenAI
 
       type generate_summary = :concise | :detailed
 
-      module GenerateSummary
-        extend OpenAI::Enum
-
+      class GenerateSummary < OpenAI::Enum
         CONCISE: :concise
         DETAILED: :detailed
 

@@ -10,9 +10,7 @@ module OpenAI
         | OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled
         | OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired
 
-      module RunStepStreamEvent
-        extend OpenAI::Union
-
+      class RunStepStreamEvent < OpenAI::Union
         type thread_run_step_created =
           {
             data: OpenAI::Models::Beta::Threads::Runs::RunStep,

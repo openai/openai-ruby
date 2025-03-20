@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class FineTuningJobEvent = FineTuning::FineTuningJobEvent
 
     module FineTuning
@@ -49,9 +50,7 @@ module OpenAI
 
         type level = :info | :warn | :error
 
-        module Level
-          extend OpenAI::Enum
-
+        class Level < OpenAI::Enum
           INFO: :info
           WARN: :warn
           ERROR: :error
@@ -61,9 +60,7 @@ module OpenAI
 
         type type_ = :message | :metrics
 
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           MESSAGE: :message
           METRICS: :metrics
 

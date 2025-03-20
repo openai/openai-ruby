@@ -46,9 +46,7 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type
           | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
 
-        module Action
-          extend OpenAI::Union
-
+        class Action < OpenAI::Union
           type click =
             {
               button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
@@ -77,9 +75,7 @@ module OpenAI
 
             type button = :left | :right | :wheel | :back | :forward
 
-            module Button
-              extend OpenAI::Enum
-
+            class Button < OpenAI::Enum
               LEFT: :left
               RIGHT: :right
               WHEEL: :wheel
@@ -248,9 +244,7 @@ module OpenAI
 
         type status = :in_progress | :completed | :incomplete
 
-        module Status
-          extend OpenAI::Enum
-
+        class Status < OpenAI::Enum
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
           INCOMPLETE: :incomplete
@@ -260,9 +254,7 @@ module OpenAI
 
         type type_ = :computer_call
 
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           COMPUTER_CALL: :computer_call
 
           def self.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::type_]

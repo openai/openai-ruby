@@ -50,49 +50,32 @@ module OpenAI
 
           # Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
-          sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def detail
           end
 
-          sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-              .returns(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def detail=(_)
           end
 
-          sig do
-            params(
-              url: String,
-              detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol
-            )
-              .returns(T.attached_class)
-          end
+          sig { params(url: String, detail: Symbol).returns(T.attached_class) }
           def self.new(url:, detail: nil)
           end
 
-          sig do
-            override
-              .returns(
-                {url: String, detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol}
-              )
-          end
+          sig { override.returns({url: String, detail: Symbol}) }
           def to_hash
           end
 
           # Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
-          module Detail
-            extend OpenAI::Enum
+          class Detail < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-            LOW = T.let(:low, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-            HIGH = T.let(:high, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
+            AUTO = :auto
+            LOW = :low
+            HIGH = :high
           end
         end
       end

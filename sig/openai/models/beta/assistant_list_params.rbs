@@ -44,9 +44,7 @@ module OpenAI
 
         type order = :asc | :desc
 
-        module Order
-          extend OpenAI::Enum
-
+        class Order < OpenAI::Enum
           ASC: :asc
           DESC: :desc
 

@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class ChatCompletionContentPartInputAudio = Chat::ChatCompletionContentPartInputAudio
 
     module Chat
@@ -41,9 +42,7 @@ module OpenAI
 
           type format_ = :wav | :mp3
 
-          module Format
-            extend OpenAI::Enum
-
+          class Format < OpenAI::Enum
             WAV: :wav
             MP3: :mp3
 

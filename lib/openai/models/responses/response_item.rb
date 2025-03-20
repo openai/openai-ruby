@@ -3,10 +3,10 @@
 module OpenAI
   module Models
     module Responses
+      # @abstract
+      #
       # Content item used to generate a response.
-      module ResponseItem
-        extend OpenAI::Union
-
+      class ResponseItem < OpenAI::Union
         discriminator :type
 
         variant :message, -> { OpenAI::Models::Responses::ResponseInputMessageItem }

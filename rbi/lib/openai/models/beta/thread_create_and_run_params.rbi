@@ -72,14 +72,11 @@ module OpenAI
         #   be used to execute this run. If a value is provided here, it will override the
         #   model associated with the assistant. If not, the model associated with the
         #   assistant will be used.
-        sig { returns(T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol))) }
+        sig { returns(T.nilable(T.any(String, Symbol))) }
         def model
         end
 
-        sig do
-          params(_: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)))
-            .returns(T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)))
-        end
+        sig { params(_: T.nilable(T.any(String, Symbol))).returns(T.nilable(T.any(String, Symbol))) }
         def model=(_)
         end
 
@@ -185,36 +182,13 @@ module OpenAI
         #   to the user. Specifying a particular tool like `{"type": "file_search"}` or
         #   `{"type": "function", "function": {"name": "my_function"}}` forces the model to
         #   call that tool.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice))) }
         def tool_choice
         end
 
         sig do
-          params(
-            _: T.nilable(
-              T.any(
-                OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
-              )
-            )
-          )
-            .returns(
-              T.nilable(
-                T.any(
-                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Models::Beta::AssistantToolChoice
-                )
-              )
-            )
+          params(_: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)))
+            .returns(T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)))
         end
         def tool_choice=(_)
         end
@@ -312,7 +286,7 @@ module OpenAI
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
+            model: T.nilable(T.any(String, Symbol)),
             parallel_tool_calls: T::Boolean,
             response_format: T.nilable(
               T.any(
@@ -324,12 +298,7 @@ module OpenAI
             ),
             temperature: T.nilable(Float),
             thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
-            tool_choice: T.nilable(
-              T.any(
-                OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
-              )
-            ),
+            tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
             tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources),
             tools: T.nilable(
               T::Array[
@@ -375,7 +344,7 @@ module OpenAI
                 max_completion_tokens: T.nilable(Integer),
                 max_prompt_tokens: T.nilable(Integer),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
+                model: T.nilable(T.any(String, Symbol)),
                 parallel_tool_calls: T::Boolean,
                 response_format: T.nilable(
                   T.any(
@@ -387,12 +356,7 @@ module OpenAI
                 ),
                 temperature: T.nilable(Float),
                 thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
-                tool_choice: T.nilable(
-                  T.any(
-                    OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Models::Beta::AssistantToolChoice
-                  )
-                ),
+                tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
                 tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources),
                 tools: T.nilable(
                   T::Array[
@@ -416,10 +380,10 @@ module OpenAI
         #   be used to execute this run. If a value is provided here, it will override the
         #   model associated with the assistant. If not, the model associated with the
         #   assistant will be used.
-        module Model
-          extend OpenAI::Union
+        class Model < OpenAI::Union
+          abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         class Thread < OpenAI::BaseModel
@@ -545,14 +509,11 @@ module OpenAI
             #     most cases to represent user-generated messages.
             #   - `assistant`: Indicates the message is generated by the assistant. Use this
             #     value to insert messages from the assistant into the conversation.
-            sig { returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol) }
+            sig { returns(Symbol) }
             def role
             end
 
-            sig do
-              params(_: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol)
-                .returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol)
-            end
+            sig { params(_: Symbol).returns(Symbol) }
             def role=(_)
             end
 
@@ -596,7 +557,7 @@ module OpenAI
                   )
                   ]
                 ),
-                role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol,
+                role: Symbol,
                 attachments: T.nilable(T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]),
                 metadata: T.nilable(T::Hash[Symbol, String])
               )
@@ -619,7 +580,7 @@ module OpenAI
                       )
                       ]
                     ),
-                    role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol,
+                    role: Symbol,
                     attachments: T.nilable(T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]),
                     metadata: T.nilable(T::Hash[Symbol, String])
                   }
@@ -629,8 +590,8 @@ module OpenAI
             end
 
             # The text contents of the message.
-            module Content
-              extend OpenAI::Union
+            class Content < OpenAI::Union
+              abstract!
 
               Variants =
                 type_template(:out) do
@@ -658,17 +619,13 @@ module OpenAI
             #     most cases to represent user-generated messages.
             #   - `assistant`: Indicates the message is generated by the assistant. Use this
             #     value to insert messages from the assistant into the conversation.
-            module Role
-              extend OpenAI::Enum
+            class Role < OpenAI::Enum
+              abstract!
 
-              TaggedSymbol =
-                T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol) }
+              Value = type_template(:out) { {fixed: Symbol} }
 
-              USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol)
-              ASSISTANT =
-                T.let(:assistant, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol)
+              USER = :user
+              ASSISTANT = :assistant
             end
 
             class Attachment < OpenAI::BaseModel
@@ -750,8 +707,8 @@ module OpenAI
               def to_hash
               end
 
-              module Tool
-                extend OpenAI::Union
+              class Tool < OpenAI::Union
+                abstract!
 
                 Variants =
                   type_template(:out) do
@@ -1229,8 +1186,8 @@ module OpenAI
           end
         end
 
-        module Tool
-          extend OpenAI::Union
+        class Tool < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do
@@ -1249,14 +1206,11 @@ module OpenAI
           #   `last_messages`, the thread will be truncated to the n most recent messages in
           #   the thread. When set to `auto`, messages in the middle of the thread will be
           #   dropped to fit the context length of the model, `max_prompt_tokens`.
-          sig { returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol) }
+          sig { returns(Symbol) }
           def type
           end
 
-          sig do
-            params(_: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol)
-              .returns(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def type=(_)
           end
 
@@ -1272,25 +1226,11 @@ module OpenAI
 
           # Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
-          sig do
-            params(
-              type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol,
-              last_messages: T.nilable(Integer)
-            )
-              .returns(T.attached_class)
-          end
+          sig { params(type: Symbol, last_messages: T.nilable(Integer)).returns(T.attached_class) }
           def self.new(type:, last_messages: nil)
           end
 
-          sig do
-            override
-              .returns(
-                {
-                  type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol,
-                  last_messages: T.nilable(Integer)
-                }
-              )
-          end
+          sig { override.returns({type: Symbol, last_messages: T.nilable(Integer)}) }
           def to_hash
           end
 
@@ -1298,17 +1238,13 @@ module OpenAI
           #   `last_messages`, the thread will be truncated to the n most recent messages in
           #   the thread. When set to `auto`, messages in the middle of the thread will be
           #   dropped to fit the context length of the model, `max_prompt_tokens`.
-          module Type
-            extend OpenAI::Enum
+          class Type < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            AUTO = T.let(:auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol)
-            LAST_MESSAGES =
-              T.let(:last_messages, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol)
+            AUTO = :auto
+            LAST_MESSAGES = :last_messages
           end
         end
       end

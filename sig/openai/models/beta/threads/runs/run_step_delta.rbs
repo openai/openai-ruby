@@ -2,6 +2,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        
         class RunStepDelta = Runs::RunStepDelta
 
         module Runs
@@ -27,9 +28,7 @@ module OpenAI
               OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta
               | OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
 
-            module StepDetails
-              extend OpenAI::Union
-
+            class StepDetails < OpenAI::Union
               def self.variants: -> [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
             end
           end

@@ -53,39 +53,30 @@ module OpenAI
         end
 
         # The role of the message input. One of `user`, `system`, or `developer`.
-        sig { returns(OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol) }
+        sig { returns(Symbol) }
         def role
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def role=(_)
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def status
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def status=(_)
         end
 
         # The type of the message input. Always set to `message`.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def type
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def type=(_)
         end
 
@@ -99,9 +90,9 @@ module OpenAI
               OpenAI::Models::Responses::ResponseInputFile
             )
             ],
-            role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
-            status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol,
-            type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+            role: Symbol,
+            status: Symbol,
+            type: Symbol
           )
             .returns(T.attached_class)
         end
@@ -120,9 +111,9 @@ module OpenAI
                   OpenAI::Models::Responses::ResponseInputFile
                 )
                 ],
-                role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
-                status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol,
-                type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+                role: Symbol,
+                status: Symbol,
+                type: Symbol
               }
             )
         end
@@ -130,44 +121,35 @@ module OpenAI
         end
 
         # The role of the message input. One of `user`, `system`, or `developer`.
-        module Role
-          extend OpenAI::Enum
+        class Role < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          USER = T.let(:user, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-          SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-          DEVELOPER = T.let(:developer, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
+          USER = :user
+          SYSTEM = :system
+          DEVELOPER = :developer
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        module Status
-          extend OpenAI::Enum
+        class Status < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
-          INCOMPLETE =
-            T.let(:incomplete, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
+          IN_PROGRESS = :in_progress
+          COMPLETED = :completed
+          INCOMPLETE = :incomplete
         end
 
         # The type of the message input. Always set to `message`.
-        module Type
-          extend OpenAI::Enum
+        class Type < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
+          MESSAGE = :message
         end
       end
     end

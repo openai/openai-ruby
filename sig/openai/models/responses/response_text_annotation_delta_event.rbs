@@ -40,9 +40,7 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation
           | OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
 
-        module Annotation
-          extend OpenAI::Union
-
+        class Annotation < OpenAI::Union
           type file_citation =
             { file_id: String, index: Integer, type: :file_citation }
 

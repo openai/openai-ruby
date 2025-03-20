@@ -7,14 +7,11 @@ module OpenAI
         class ImageFileDelta < OpenAI::BaseModel
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
-          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def detail
           end
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def detail=(_)
           end
 
@@ -29,32 +26,24 @@ module OpenAI
           def file_id=(_)
           end
 
-          sig do
-            params(detail: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol, file_id: String)
-              .returns(T.attached_class)
-          end
+          sig { params(detail: Symbol, file_id: String).returns(T.attached_class) }
           def self.new(detail: nil, file_id: nil)
           end
 
-          sig do
-            override
-              .returns({detail: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol, file_id: String})
-          end
+          sig { override.returns({detail: Symbol, file_id: String}) }
           def to_hash
           end
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
-          module Detail
-            extend OpenAI::Enum
+          class Detail < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
-            LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
-            HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
+            AUTO = :auto
+            LOW = :low
+            HIGH = :high
           end
         end
       end

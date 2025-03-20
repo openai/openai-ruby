@@ -6,8 +6,8 @@ module OpenAI
       module Threads
         # References an image [File](https://platform.openai.com/docs/api-reference/files)
         #   in the content of a message.
-        module MessageContent
-          extend OpenAI::Union
+        class MessageContent < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do

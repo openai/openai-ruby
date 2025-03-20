@@ -309,110 +309,97 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        module Harassment
-          extend OpenAI::Enum
-
+        # @abstract
+        class Harassment < OpenAI::Enum
           TEXT = :text
 
           finalize!
         end
 
-        module HarassmentThreatening
-          extend OpenAI::Enum
-
+        # @abstract
+        class HarassmentThreatening < OpenAI::Enum
           TEXT = :text
 
           finalize!
         end
 
-        module Hate
-          extend OpenAI::Enum
-
+        # @abstract
+        class Hate < OpenAI::Enum
           TEXT = :text
 
           finalize!
         end
 
-        module HateThreatening
-          extend OpenAI::Enum
-
+        # @abstract
+        class HateThreatening < OpenAI::Enum
           TEXT = :text
 
           finalize!
         end
 
-        module Illicit
-          extend OpenAI::Enum
-
+        # @abstract
+        class Illicit < OpenAI::Enum
           TEXT = :text
 
           finalize!
         end
 
-        module IllicitViolent
-          extend OpenAI::Enum
-
+        # @abstract
+        class IllicitViolent < OpenAI::Enum
           TEXT = :text
 
           finalize!
         end
 
-        module SelfHarm
-          extend OpenAI::Enum
-
+        # @abstract
+        class SelfHarm < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
 
           finalize!
         end
 
-        module SelfHarmInstruction
-          extend OpenAI::Enum
-
+        # @abstract
+        class SelfHarmInstruction < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
 
           finalize!
         end
 
-        module SelfHarmIntent
-          extend OpenAI::Enum
-
+        # @abstract
+        class SelfHarmIntent < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
 
           finalize!
         end
 
-        module Sexual
-          extend OpenAI::Enum
-
+        # @abstract
+        class Sexual < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
 
           finalize!
         end
 
-        module SexualMinor
-          extend OpenAI::Enum
-
+        # @abstract
+        class SexualMinor < OpenAI::Enum
           TEXT = :text
 
           finalize!
         end
 
-        module Violence
-          extend OpenAI::Enum
-
+        # @abstract
+        class Violence < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
 
           finalize!
         end
 
-        module ViolenceGraphic
-          extend OpenAI::Enum
-
+        # @abstract
+        class ViolenceGraphic < OpenAI::Enum
           TEXT = :text
           IMAGE = :image
 

@@ -46,17 +46,13 @@ module OpenAI
 
         type model = String | OpenAI::Models::audio_model
 
-        module Model
-          extend OpenAI::Union
-
+        class Model < OpenAI::Union
           def self.variants: -> [String, OpenAI::Models::audio_model]
         end
 
         type response_format = :json | :text | :srt | :verbose_json | :vtt
 
-        module ResponseFormat
-          extend OpenAI::Enum
-
+        class ResponseFormat < OpenAI::Enum
           JSON: :json
           TEXT: :text
           SRT: :srt

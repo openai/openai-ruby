@@ -7,10 +7,10 @@ module OpenAI
       sig do
         params(
           image: T.any(IO, StringIO),
-          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
+          model: T.nilable(T.any(String, Symbol)),
           n: T.nilable(Integer),
-          response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
-          size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
+          response_format: T.nilable(Symbol),
+          size: T.nilable(Symbol),
           user: String,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
@@ -47,10 +47,10 @@ module OpenAI
           image: T.any(IO, StringIO),
           prompt: String,
           mask: T.any(IO, StringIO),
-          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
+          model: T.nilable(T.any(String, Symbol)),
           n: T.nilable(Integer),
-          response_format: T.nilable(OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol),
-          size: T.nilable(OpenAI::Models::ImageEditParams::Size::OrSymbol),
+          response_format: T.nilable(Symbol),
+          size: T.nilable(Symbol),
           user: String,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
@@ -91,12 +91,12 @@ module OpenAI
       sig do
         params(
           prompt: String,
-          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
+          model: T.nilable(T.any(String, Symbol)),
           n: T.nilable(Integer),
-          quality: OpenAI::Models::ImageGenerateParams::Quality::OrSymbol,
-          response_format: T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol),
-          style: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol),
+          quality: Symbol,
+          response_format: T.nilable(Symbol),
+          size: T.nilable(Symbol),
+          style: T.nilable(Symbol),
           user: String,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )

@@ -90,8 +90,8 @@ module OpenAI
         end
 
         # The content part that is done.
-        module Part
-          extend OpenAI::Union
+        class Part < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do

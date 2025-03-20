@@ -2,6 +2,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        
         class RunStepDeltaEvent = Runs::RunStepDeltaEvent
 
         module Runs

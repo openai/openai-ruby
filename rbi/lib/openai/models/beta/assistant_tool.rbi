@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     module Beta
-      module AssistantTool
-        extend OpenAI::Union
+      class AssistantTool < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

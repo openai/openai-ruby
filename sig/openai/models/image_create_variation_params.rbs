@@ -43,17 +43,13 @@ module OpenAI
 
       type model = String | OpenAI::Models::image_model
 
-      module Model
-        extend OpenAI::Union
-
+      class Model < OpenAI::Union
         def self.variants: -> [String, OpenAI::Models::image_model]
       end
 
       type response_format = :url | :b64_json
 
-      module ResponseFormat
-        extend OpenAI::Enum
-
+      class ResponseFormat < OpenAI::Enum
         URL: :url
         B64_JSON: :b64_json
 
@@ -62,9 +58,7 @@ module OpenAI
 
       type size = :"256x256" | :"512x512" | :"1024x1024"
 
-      module Size
-        extend OpenAI::Enum
-
+      class Size < OpenAI::Enum
         NUMBER_256X256: :"256x256"
         NUMBER_512X512: :"512x512"
         NUMBER_1024X1024: :"1024x1024"

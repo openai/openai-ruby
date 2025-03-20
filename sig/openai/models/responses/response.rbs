@@ -133,9 +133,7 @@ module OpenAI
 
           type reason = :max_output_tokens | :content_filter
 
-          module Reason
-            extend OpenAI::Enum
-
+          class Reason < OpenAI::Enum
             MAX_OUTPUT_TOKENS: :max_output_tokens
             CONTENT_FILTER: :content_filter
 
@@ -148,17 +146,13 @@ module OpenAI
           | OpenAI::Models::Responses::ToolChoiceTypes
           | OpenAI::Models::Responses::ToolChoiceFunction
 
-        module ToolChoice
-          extend OpenAI::Union
-
+        class ToolChoice < OpenAI::Union
           def self.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
         end
 
         type truncation = :auto | :disabled
 
-        module Truncation
-          extend OpenAI::Enum
-
+        class Truncation < OpenAI::Enum
           AUTO: :auto
           DISABLED: :disabled
 

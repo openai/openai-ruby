@@ -6,9 +6,7 @@ module OpenAI
         | OpenAI::Models::Beta::FileSearchTool
         | OpenAI::Models::Beta::FunctionTool
 
-      module AssistantTool
-        extend OpenAI::Union
-
+      class AssistantTool < OpenAI::Union
         def self.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
       end
     end

@@ -17,39 +17,32 @@ module OpenAI
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`. Default value is `auto`
-          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def detail
           end
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def detail=(_)
           end
 
-          sig do
-            params(url: String, detail: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
-              .returns(T.attached_class)
-          end
+          sig { params(url: String, detail: Symbol).returns(T.attached_class) }
           def self.new(url:, detail: nil)
           end
 
-          sig { override.returns({url: String, detail: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol}) }
+          sig { override.returns({url: String, detail: Symbol}) }
           def to_hash
           end
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`. Default value is `auto`
-          module Detail
-            extend OpenAI::Enum
+          class Detail < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail) }
-            OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
-            LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
-            HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
+            AUTO = :auto
+            LOW = :low
+            HIGH = :high
           end
         end
       end

@@ -23,8 +23,8 @@ module OpenAI
       #   gracefully in your code. See the
       #   [Assistants API quickstart](https://platform.openai.com/docs/assistants/overview)
       #   to learn how to integrate the Assistants API with streaming.
-      module AssistantStreamEvent
-        extend OpenAI::Union
+      class AssistantStreamEvent < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class ChatCompletionChunk = Chat::ChatCompletionChunk
 
     module Chat
@@ -133,9 +134,7 @@ module OpenAI
 
             type role = :developer | :system | :user | :assistant | :tool
 
-            module Role
-              extend OpenAI::Enum
-
+            class Role < OpenAI::Enum
               DEVELOPER: :developer
               SYSTEM: :system
               USER: :user
@@ -199,9 +198,7 @@ module OpenAI
 
               type type_ = :function
 
-              module Type
-                extend OpenAI::Enum
-
+              class Type < OpenAI::Enum
                 FUNCTION: :function
 
                 def self.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_]
@@ -212,9 +209,7 @@ module OpenAI
           type finish_reason =
             :stop | :length | :tool_calls | :content_filter | :function_call
 
-          module FinishReason
-            extend OpenAI::Enum
-
+          class FinishReason < OpenAI::Enum
             STOP: :stop
             LENGTH: :length
             TOOL_CALLS: :tool_calls
@@ -246,9 +241,7 @@ module OpenAI
 
         type service_tier = :scale | :default
 
-        module ServiceTier
-          extend OpenAI::Enum
-
+        class ServiceTier < OpenAI::Enum
           SCALE: :scale
           DEFAULT: :default
 

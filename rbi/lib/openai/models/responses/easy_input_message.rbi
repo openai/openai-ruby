@@ -54,26 +54,20 @@ module OpenAI
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
         #   `developer`.
-        sig { returns(OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol) }
+        sig { returns(Symbol) }
         def role
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-            .returns(OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def role=(_)
         end
 
         # The type of the message input. Always `message`.
-        sig { returns(T.nilable(OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def type
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)
-            .returns(OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def type=(_)
         end
 
@@ -94,8 +88,8 @@ module OpenAI
               )
               ]
             ),
-            role: OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol,
-            type: OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol
+            role: Symbol,
+            type: Symbol
           )
             .returns(T.attached_class)
         end
@@ -116,8 +110,8 @@ module OpenAI
                   )
                   ]
                 ),
-                role: OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol,
-                type: OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol
+                role: Symbol,
+                type: Symbol
               }
             )
         end
@@ -126,8 +120,8 @@ module OpenAI
 
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
-        module Content
-          extend OpenAI::Union
+        class Content < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do
@@ -148,28 +142,24 @@ module OpenAI
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
         #   `developer`.
-        module Role
-          extend OpenAI::Enum
+        class Role < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::EasyInputMessage::Role) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          USER = T.let(:user, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-          ASSISTANT = T.let(:assistant, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-          SYSTEM = T.let(:system, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-          DEVELOPER = T.let(:developer, OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
+          USER = :user
+          ASSISTANT = :assistant
+          SYSTEM = :system
+          DEVELOPER = :developer
         end
 
         # The type of the message input. Always `message`.
-        module Type
-          extend OpenAI::Enum
+        class Type < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::EasyInputMessage::Type) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          MESSAGE = T.let(:message, OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)
+          MESSAGE = :message
         end
       end
     end

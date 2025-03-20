@@ -62,10 +62,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # A filter to apply based on file attributes.
-        module Filters
-          extend OpenAI::Union
-
+        class Filters < OpenAI::Union
           # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
           variant -> { OpenAI::Models::ComparisonFilter }
 
@@ -112,10 +112,10 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @abstract
+          #
           # The ranker to use for the file search.
-          module Ranker
-            extend OpenAI::Enum
-
+          class Ranker < OpenAI::Enum
             AUTO = :auto
             DEFAULT_2024_11_15 = :"default-2024-11-15"
 

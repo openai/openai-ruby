@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       # An output message from the model.
-      module ResponseOutputItem
-        extend OpenAI::Union
+      class ResponseOutputItem < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

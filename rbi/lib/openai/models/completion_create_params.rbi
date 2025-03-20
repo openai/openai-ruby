@@ -11,14 +11,11 @@ module OpenAI
       #   see all of your available models, or see our
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
-      sig { returns(T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol)) }
+      sig { returns(T.any(String, Symbol)) }
       def model
       end
 
-      sig do
-        params(_: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol))
-          .returns(T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol))
-      end
+      sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
       def model=(_)
       end
 
@@ -250,7 +247,7 @@ module OpenAI
 
       sig do
         params(
-          model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
+          model: T.any(String, Symbol),
           prompt: T.nilable(
             T.any(
               String,
@@ -304,7 +301,7 @@ module OpenAI
         override
           .returns(
             {
-              model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
+              model: T.any(String, Symbol),
               prompt: T.nilable(
                 T.any(
                   String,
@@ -340,19 +337,14 @@ module OpenAI
       #   see all of your available models, or see our
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
-      module Model
-        extend OpenAI::Union
+      class Model < OpenAI::Union
+        abstract!
 
-        Variants =
-          type_template(:out) { {fixed: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol)} }
+        Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionCreateParams::Model) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol) }
-
-        GPT_3_5_TURBO_INSTRUCT =
-          T.let(:"gpt-3.5-turbo-instruct", OpenAI::Models::CompletionCreateParams::Model::OrSymbol)
-        DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::CompletionCreateParams::Model::OrSymbol)
-        BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::CompletionCreateParams::Model::OrSymbol)
+        GPT_3_5_TURBO_INSTRUCT = :"gpt-3.5-turbo-instruct"
+        DAVINCI_002 = :"davinci-002"
+        BABBAGE_002 = :"babbage-002"
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -361,8 +353,8 @@ module OpenAI
       #   Note that <|endoftext|> is the document separator that the model sees during
       #   training, so if a prompt is not specified the model will generate as if from the
       #   beginning of a new document.
-      module Prompt
-        extend OpenAI::Union
+      class Prompt < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do
@@ -378,8 +370,8 @@ module OpenAI
 
       # Up to 4 sequences where the API will stop generating further tokens. The
       #   returned text will not contain the stop sequence.
-      module Stop
-        extend OpenAI::Union
+      class Stop < OpenAI::Union
+        abstract!
 
         Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
 

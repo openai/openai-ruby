@@ -76,10 +76,10 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @abstract
+      #
       # A query string for a search
-      module Query
-        extend OpenAI::Union
-
+      class Query < OpenAI::Union
         StringArray = OpenAI::ArrayOf[String]
 
         variant String
@@ -93,10 +93,10 @@ module OpenAI
         #   end
       end
 
+      # @abstract
+      #
       # A filter to apply based on file attributes.
-      module Filters
-        extend OpenAI::Union
-
+      class Filters < OpenAI::Union
         # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
         variant -> { OpenAI::Models::ComparisonFilter }
 
@@ -139,9 +139,8 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        module Ranker
-          extend OpenAI::Enum
-
+        # @abstract
+        class Ranker < OpenAI::Enum
           AUTO = :auto
           DEFAULT_2024_11_15 = :"default-2024-11-15"
 

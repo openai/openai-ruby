@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class ChatCompletion = Chat::ChatCompletion
 
     module Chat
@@ -80,9 +81,7 @@ module OpenAI
           type finish_reason =
             :stop | :length | :tool_calls | :content_filter | :function_call
 
-          module FinishReason
-            extend OpenAI::Enum
-
+          class FinishReason < OpenAI::Enum
             STOP: :stop
             LENGTH: :length
             TOOL_CALLS: :tool_calls
@@ -114,9 +113,7 @@ module OpenAI
 
         type service_tier = :scale | :default
 
-        module ServiceTier
-          extend OpenAI::Enum
-
+        class ServiceTier < OpenAI::Enum
           SCALE: :scale
           DEFAULT: :default
 

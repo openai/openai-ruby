@@ -3,9 +3,8 @@
 module OpenAI
   module Models
     module Beta
-      module AssistantTool
-        extend OpenAI::Union
-
+      # @abstract
+      class AssistantTool < OpenAI::Union
         discriminator :type
 
         variant :code_interpreter, -> { OpenAI::Models::Beta::CodeInterpreterTool }

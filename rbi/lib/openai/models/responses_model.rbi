@@ -2,28 +2,20 @@
 
 module OpenAI
   module Models
-    module ResponsesModel
-      extend OpenAI::Union
+    class ResponsesModel < OpenAI::Union
+      abstract!
 
-      Variants =
-        type_template(:out) do
-          {
-            fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
-          }
-        end
+      Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
 
-      module UnionMember2
-        extend OpenAI::Enum
+      class UnionMember2 < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ResponsesModel::UnionMember2) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ResponsesModel::UnionMember2::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        O1_PRO = T.let(:"o1-pro", OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
-        O1_PRO_2025_03_19 = T.let(:"o1-pro-2025-03-19", OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
-        COMPUTER_USE_PREVIEW =
-          T.let(:"computer-use-preview", OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
-        COMPUTER_USE_PREVIEW_2025_03_11 =
-          T.let(:"computer-use-preview-2025-03-11", OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
+        O1_PRO = :"o1-pro"
+        O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
+        COMPUTER_USE_PREVIEW = :"computer-use-preview"
+        COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
       end
     end
   end

@@ -66,9 +66,7 @@ module OpenAI
 
         type model = String | OpenAI::Models::chat_model
 
-        module Model
-          extend OpenAI::Union
-
+        class Model < OpenAI::Union
           def self.variants: -> [String, OpenAI::Models::chat_model]
         end
 

@@ -43,11 +43,11 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
-        module Content
-          extend OpenAI::Union
-
+        class Content < OpenAI::Union
           # A text input to the model.
           variant String
 
@@ -62,11 +62,11 @@ module OpenAI
           #   end
         end
 
+        # @abstract
+        #
         # The role of the message input. One of `user`, `assistant`, `system`, or
         #   `developer`.
-        module Role
-          extend OpenAI::Enum
-
+        class Role < OpenAI::Enum
           USER = :user
           ASSISTANT = :assistant
           SYSTEM = :system
@@ -75,10 +75,10 @@ module OpenAI
           finalize!
         end
 
+        # @abstract
+        #
         # The type of the message input. Always `message`.
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           MESSAGE = :message
 
           finalize!

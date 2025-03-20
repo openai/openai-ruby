@@ -29,9 +29,7 @@ module OpenAI
 
         type environment = :mac | :windows | :ubuntu | :browser
 
-        module Environment
-          extend OpenAI::Enum
-
+        class Environment < OpenAI::Enum
           MAC: :mac
           WINDOWS: :windows
           UBUNTU: :ubuntu

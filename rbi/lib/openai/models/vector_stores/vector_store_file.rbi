@@ -47,14 +47,11 @@ module OpenAI
         # The status of the vector store file, which can be either `in_progress`,
         #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         #   vector store file is ready for use.
-        sig { returns(OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
+        sig { returns(Symbol) }
         def status
         end
 
-        sig do
-          params(_: OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def status=(_)
         end
 
@@ -124,7 +121,7 @@ module OpenAI
             id: String,
             created_at: Integer,
             last_error: T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError),
-            status: OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol,
+            status: Symbol,
             usage_bytes: Integer,
             vector_store_id: String,
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
@@ -154,7 +151,7 @@ module OpenAI
                 created_at: Integer,
                 last_error: T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError),
                 object: Symbol,
-                status: OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol,
+                status: Symbol,
                 usage_bytes: Integer,
                 vector_store_id: String,
                 attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
@@ -167,14 +164,11 @@ module OpenAI
 
         class LastError < OpenAI::BaseModel
           # One of `server_error` or `rate_limit_exceeded`.
-          sig { returns(OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol) }
+          sig { returns(Symbol) }
           def code
           end
 
-          sig do
-            params(_: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
-              .returns(OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def code=(_)
           end
 
@@ -189,61 +183,42 @@ module OpenAI
 
           # The last error associated with this vector store file. Will be `null` if there
           #   are no errors.
-          sig do
-            params(
-              code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol,
-              message: String
-            )
-              .returns(T.attached_class)
-          end
+          sig { params(code: Symbol, message: String).returns(T.attached_class) }
           def self.new(code:, message:)
           end
 
-          sig do
-            override
-              .returns(
-                {code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol, message: String}
-              )
-          end
+          sig { override.returns({code: Symbol, message: String}) }
           def to_hash
           end
 
           # One of `server_error` or `rate_limit_exceeded`.
-          module Code
-            extend OpenAI::Enum
+          class Code < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            SERVER_ERROR =
-              T.let(:server_error, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
-            UNSUPPORTED_FILE =
-              T.let(:unsupported_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
-            INVALID_FILE =
-              T.let(:invalid_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
+            SERVER_ERROR = :server_error
+            UNSUPPORTED_FILE = :unsupported_file
+            INVALID_FILE = :invalid_file
           end
         end
 
         # The status of the vector store file, which can be either `in_progress`,
         #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         #   vector store file is ready for use.
-        module Status
-          extend OpenAI::Enum
+        class Status < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
+          IN_PROGRESS = :in_progress
+          COMPLETED = :completed
+          CANCELLED = :cancelled
+          FAILED = :failed
         end
 
-        module Attribute
-          extend OpenAI::Union
+        class Attribute < OpenAI::Union
+          abstract!
 
           Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
         end

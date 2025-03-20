@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class ResponseItemList = Responses::ResponseItemList
 
     module Responses

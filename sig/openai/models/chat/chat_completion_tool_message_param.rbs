@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class ChatCompletionToolMessageParam = Chat::ChatCompletionToolMessageParam
 
     module Chat
@@ -28,9 +29,7 @@ module OpenAI
         type content =
           String | ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
 
-        module Content
-          extend OpenAI::Union
-
+        class Content < OpenAI::Union
           type chat_completion_content_part_text_array =
             ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
 

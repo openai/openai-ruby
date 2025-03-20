@@ -34,9 +34,7 @@ module OpenAI
         type status =
           :in_progress | :searching | :completed | :incomplete | :failed
 
-        module Status
-          extend OpenAI::Enum
-
+        class Status < OpenAI::Enum
           IN_PROGRESS: :in_progress
           SEARCHING: :searching
           COMPLETED: :completed
@@ -86,9 +84,7 @@ module OpenAI
 
           type attribute = String | Float | bool
 
-          module Attribute
-            extend OpenAI::Union
-
+          class Attribute < OpenAI::Union
             def self.variants: -> [String, Float, bool]
           end
         end

@@ -25,9 +25,7 @@ module OpenAI
 
         type type_ = :function | :code_interpreter | :file_search
 
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           FUNCTION: :function
           CODE_INTERPRETER: :code_interpreter
           FILE_SEARCH: :file_search

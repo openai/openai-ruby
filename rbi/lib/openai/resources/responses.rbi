@@ -38,8 +38,8 @@ module OpenAI
             )
             ]
           ),
-          model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
-          include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
+          model: T.any(String, Symbol),
+          include: T.nilable(T::Array[Symbol]),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
@@ -49,11 +49,7 @@ module OpenAI
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
           text: OpenAI::Models::Responses::ResponseTextConfig,
-          tool_choice: T.any(
-            OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-            OpenAI::Models::Responses::ToolChoiceTypes,
-            OpenAI::Models::Responses::ToolChoiceFunction
-          ),
+          tool_choice: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction),
           tools: T::Array[
           T.any(
             OpenAI::Models::Responses::FileSearchTool,
@@ -63,7 +59,7 @@ module OpenAI
           )
           ],
           top_p: T.nilable(Float),
-          truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
+          truncation: T.nilable(Symbol),
           user: String,
           stream: T.noreturn,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
@@ -213,8 +209,8 @@ module OpenAI
             )
             ]
           ),
-          model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
-          include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
+          model: T.any(String, Symbol),
+          include: T.nilable(T::Array[Symbol]),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
@@ -224,11 +220,7 @@ module OpenAI
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
           text: OpenAI::Models::Responses::ResponseTextConfig,
-          tool_choice: T.any(
-            OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-            OpenAI::Models::Responses::ToolChoiceTypes,
-            OpenAI::Models::Responses::ToolChoiceFunction
-          ),
+          tool_choice: T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction),
           tools: T::Array[
           T.any(
             OpenAI::Models::Responses::FileSearchTool,
@@ -238,7 +230,7 @@ module OpenAI
           )
           ],
           top_p: T.nilable(Float),
-          truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
+          truncation: T.nilable(Symbol),
           user: String,
           stream: T.noreturn,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
@@ -398,7 +390,7 @@ module OpenAI
       sig do
         params(
           response_id: String,
-          include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
+          include: T::Array[Symbol],
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
           .returns(OpenAI::Models::Responses::Response)

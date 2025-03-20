@@ -19,9 +19,7 @@ module OpenAI
           | :computer_use_preview
           | :web_search_preview_2025_03_11
 
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           FILE_SEARCH: :file_search
           WEB_SEARCH_PREVIEW: :web_search_preview
           COMPUTER_USE_PREVIEW: :computer_use_preview

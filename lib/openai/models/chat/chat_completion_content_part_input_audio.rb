@@ -48,10 +48,10 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @abstract
+          #
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
-          module Format
-            extend OpenAI::Enum
-
+          class Format < OpenAI::Enum
             WAV = :wav
             MP3 = :mp3
 

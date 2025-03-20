@@ -52,11 +52,11 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
-        module Status
-          extend OpenAI::Enum
-
+        class Status < OpenAI::Enum
           IN_PROGRESS = :in_progress
           SEARCHING = :searching
           COMPLETED = :completed
@@ -130,9 +130,8 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          module Attribute
-            extend OpenAI::Union
-
+          # @abstract
+          class Attribute < OpenAI::Union
             variant String
 
             variant Float

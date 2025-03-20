@@ -49,14 +49,11 @@ module OpenAI
           end
 
           # The entity that produced the message. One of `user` or `assistant`.
-          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def role
           end
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def role=(_)
           end
 
@@ -71,7 +68,7 @@ module OpenAI
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
               )
               ],
-              role: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol
+              role: Symbol
             )
               .returns(T.attached_class)
           end
@@ -90,7 +87,7 @@ module OpenAI
                     OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
                   )
                   ],
-                  role: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol
+                  role: Symbol
                 }
               )
           end
@@ -98,15 +95,13 @@ module OpenAI
           end
 
           # The entity that produced the message. One of `user` or `assistant`.
-          module Role
-            extend OpenAI::Enum
+          class Role < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            USER = T.let(:user, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
-            ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
+            USER = :user
+            ASSISTANT = :assistant
           end
         end
       end

@@ -32,9 +32,7 @@ module OpenAI
         | ::Array[String]
         | ::Array[OpenAI::Models::moderation_multi_modal_input]
 
-      module Input
-        extend OpenAI::Union
-
+      class Input < OpenAI::Union
         type string_array = ::Array[String]
 
         StringArray: string_array
@@ -49,9 +47,7 @@ module OpenAI
 
       type model = String | OpenAI::Models::moderation_model
 
-      module Model
-        extend OpenAI::Union
-
+      class Model < OpenAI::Union
         def self.variants: -> [String, OpenAI::Models::moderation_model]
       end
     end

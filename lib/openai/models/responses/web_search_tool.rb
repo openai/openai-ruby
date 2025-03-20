@@ -42,24 +42,24 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # The type of the web search tool. One of:
         #
         #   - `web_search_preview`
         #   - `web_search_preview_2025_03_11`
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           WEB_SEARCH_PREVIEW = :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
 
           finalize!
         end
 
+        # @abstract
+        #
         # High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
-        module SearchContextSize
-          extend OpenAI::Enum
-
+        class SearchContextSize < OpenAI::Enum
           LOW = :low
           MEDIUM = :medium
           HIGH = :high

@@ -68,17 +68,13 @@ module OpenAI
 
         type model = String | OpenAI::Models::audio_model
 
-        module Model
-          extend OpenAI::Union
-
+        class Model < OpenAI::Union
           def self.variants: -> [String, OpenAI::Models::audio_model]
         end
 
         type timestamp_granularity = :word | :segment
 
-        module TimestampGranularity
-          extend OpenAI::Enum
-
+        class TimestampGranularity < OpenAI::Enum
           WORD: :word
           SEGMENT: :segment
 

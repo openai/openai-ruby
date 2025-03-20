@@ -25,10 +25,10 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @abstract
+            #
             # The details of the run step.
-            module StepDetails
-              extend OpenAI::Union
-
+            class StepDetails < OpenAI::Union
               discriminator :type
 
               # Details of the message creation by the run step.

@@ -57,13 +57,11 @@ module OpenAI
       end
 
       # The current status of the batch.
-      sig { returns(OpenAI::Models::Batch::Status::TaggedSymbol) }
+      sig { returns(Symbol) }
       def status
       end
 
-      sig do
-        params(_: OpenAI::Models::Batch::Status::TaggedSymbol).returns(OpenAI::Models::Batch::Status::TaggedSymbol)
-      end
+      sig { params(_: Symbol).returns(Symbol) }
       def status=(_)
       end
 
@@ -195,7 +193,7 @@ module OpenAI
           created_at: Integer,
           endpoint: String,
           input_file_id: String,
-          status: OpenAI::Models::Batch::Status::TaggedSymbol,
+          status: Symbol,
           cancelled_at: Integer,
           cancelling_at: Integer,
           completed_at: Integer,
@@ -247,7 +245,7 @@ module OpenAI
               endpoint: String,
               input_file_id: String,
               object: Symbol,
-              status: OpenAI::Models::Batch::Status::TaggedSymbol,
+              status: Symbol,
               cancelled_at: Integer,
               cancelling_at: Integer,
               completed_at: Integer,
@@ -268,20 +266,19 @@ module OpenAI
       end
 
       # The current status of the batch.
-      module Status
-        extend OpenAI::Enum
+      class Status < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Batch::Status) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Batch::Status::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        VALIDATING = T.let(:validating, OpenAI::Models::Batch::Status::TaggedSymbol)
-        FAILED = T.let(:failed, OpenAI::Models::Batch::Status::TaggedSymbol)
-        IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Batch::Status::TaggedSymbol)
-        FINALIZING = T.let(:finalizing, OpenAI::Models::Batch::Status::TaggedSymbol)
-        COMPLETED = T.let(:completed, OpenAI::Models::Batch::Status::TaggedSymbol)
-        EXPIRED = T.let(:expired, OpenAI::Models::Batch::Status::TaggedSymbol)
-        CANCELLING = T.let(:cancelling, OpenAI::Models::Batch::Status::TaggedSymbol)
-        CANCELLED = T.let(:cancelled, OpenAI::Models::Batch::Status::TaggedSymbol)
+        VALIDATING = :validating
+        FAILED = :failed
+        IN_PROGRESS = :in_progress
+        FINALIZING = :finalizing
+        COMPLETED = :completed
+        EXPIRED = :expired
+        CANCELLING = :cancelling
+        CANCELLED = :cancelled
       end
 
       class Errors < OpenAI::BaseModel

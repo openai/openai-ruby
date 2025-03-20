@@ -30,14 +30,11 @@ module OpenAI
 
       # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
       #   order and `desc` for descending order.
-      sig { returns(T.nilable(OpenAI::Models::FileListParams::Order::OrSymbol)) }
+      sig { returns(T.nilable(Symbol)) }
       def order
       end
 
-      sig do
-        params(_: OpenAI::Models::FileListParams::Order::OrSymbol)
-          .returns(OpenAI::Models::FileListParams::Order::OrSymbol)
-      end
+      sig { params(_: Symbol).returns(Symbol) }
       def order=(_)
       end
 
@@ -54,7 +51,7 @@ module OpenAI
         params(
           after: String,
           limit: Integer,
-          order: OpenAI::Models::FileListParams::Order::OrSymbol,
+          order: Symbol,
           purpose: String,
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
         )
@@ -69,7 +66,7 @@ module OpenAI
             {
               after: String,
               limit: Integer,
-              order: OpenAI::Models::FileListParams::Order::OrSymbol,
+              order: Symbol,
               purpose: String,
               request_options: OpenAI::RequestOptions
             }
@@ -80,14 +77,13 @@ module OpenAI
 
       # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
       #   order and `desc` for descending order.
-      module Order
-        extend OpenAI::Enum
+      class Order < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileListParams::Order) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::FileListParams::Order::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        ASC = T.let(:asc, OpenAI::Models::FileListParams::Order::OrSymbol)
-        DESC = T.let(:desc, OpenAI::Models::FileListParams::Order::OrSymbol)
+        ASC = :asc
+        DESC = :desc
       end
     end
   end

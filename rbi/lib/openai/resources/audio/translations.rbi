@@ -8,9 +8,9 @@ module OpenAI
         sig do
           params(
             file: T.any(IO, StringIO),
-            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
+            model: T.any(String, Symbol),
             prompt: String,
-            response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
+            response_format: Symbol,
             temperature: Float,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )

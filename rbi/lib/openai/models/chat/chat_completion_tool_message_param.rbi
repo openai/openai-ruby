@@ -59,8 +59,8 @@ module OpenAI
         end
 
         # The contents of the tool message.
-        module Content
-          extend OpenAI::Union
+        class Content < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) { {fixed: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])} }

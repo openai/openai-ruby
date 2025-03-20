@@ -101,11 +101,11 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
         end
 
+        # @abstract
+        #
         # The status of the vector store files batch, which can be either `in_progress`,
         #   `completed`, `cancelled` or `failed`.
-        module Status
-          extend OpenAI::Enum
-
+        class Status < OpenAI::Enum
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           CANCELLED = :cancelled

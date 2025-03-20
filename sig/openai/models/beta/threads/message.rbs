@@ -96,9 +96,7 @@ module OpenAI
               OpenAI::Models::Beta::CodeInterpreterTool
               | OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
 
-            module Tool
-              extend OpenAI::Union
-
+            class Tool < OpenAI::Union
               type assistant_tools_file_search_type_only =
                 { type: :file_search }
 
@@ -135,9 +133,7 @@ module OpenAI
               | :run_expired
               | :run_failed
 
-            module Reason
-              extend OpenAI::Enum
-
+            class Reason < OpenAI::Enum
               CONTENT_FILTER: :content_filter
               MAX_TOKENS: :max_tokens
               RUN_CANCELLED: :run_cancelled
@@ -150,9 +146,7 @@ module OpenAI
 
           type role = :user | :assistant
 
-          module Role
-            extend OpenAI::Enum
-
+          class Role < OpenAI::Enum
             USER: :user
             ASSISTANT: :assistant
 
@@ -161,9 +155,7 @@ module OpenAI
 
           type status = :in_progress | :incomplete | :completed
 
-          module Status
-            extend OpenAI::Enum
-
+          class Status < OpenAI::Enum
             IN_PROGRESS: :in_progress
             INCOMPLETE: :incomplete
             COMPLETED: :completed

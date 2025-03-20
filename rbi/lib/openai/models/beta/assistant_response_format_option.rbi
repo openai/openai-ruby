@@ -23,8 +23,8 @@ module OpenAI
       #   the message content may be partially cut off if `finish_reason="length"`, which
       #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
       #   max context length.
-      module AssistantResponseFormatOption
-        extend OpenAI::Union
+      class AssistantResponseFormatOption < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

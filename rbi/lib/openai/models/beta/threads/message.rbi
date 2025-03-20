@@ -141,14 +141,11 @@ module OpenAI
           end
 
           # The entity that produced the message. One of `user` or `assistant`.
-          sig { returns(OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol) }
+          sig { returns(Symbol) }
           def role
           end
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def role=(_)
           end
 
@@ -165,14 +162,11 @@ module OpenAI
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
           #   `completed`.
-          sig { returns(OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol) }
+          sig { returns(Symbol) }
           def status
           end
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def status=(_)
           end
 
@@ -206,9 +200,9 @@ module OpenAI
               incomplete_at: T.nilable(Integer),
               incomplete_details: T.nilable(OpenAI::Models::Beta::Threads::Message::IncompleteDetails),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              role: OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol,
+              role: Symbol,
               run_id: T.nilable(String),
-              status: OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol,
+              status: Symbol,
               thread_id: String,
               object: Symbol
             )
@@ -253,9 +247,9 @@ module OpenAI
                   incomplete_details: T.nilable(OpenAI::Models::Beta::Threads::Message::IncompleteDetails),
                   metadata: T.nilable(T::Hash[Symbol, String]),
                   object: Symbol,
-                  role: OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol,
+                  role: Symbol,
                   run_id: T.nilable(String),
-                  status: OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol,
+                  status: Symbol,
                   thread_id: String
                 }
               )
@@ -342,8 +336,8 @@ module OpenAI
             def to_hash
             end
 
-            module Tool
-              extend OpenAI::Union
+            class Tool < OpenAI::Union
+              abstract!
 
               Variants =
                 type_template(:out) do
@@ -378,75 +372,57 @@ module OpenAI
 
           class IncompleteDetails < OpenAI::BaseModel
             # The reason the message is incomplete.
-            sig { returns(OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol) }
+            sig { returns(Symbol) }
             def reason
             end
 
-            sig do
-              params(_: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-                .returns(OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-            end
+            sig { params(_: Symbol).returns(Symbol) }
             def reason=(_)
             end
 
             # On an incomplete message, details about why the message is incomplete.
-            sig do
-              params(reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-                .returns(T.attached_class)
-            end
+            sig { params(reason: Symbol).returns(T.attached_class) }
             def self.new(reason:)
             end
 
-            sig do
-              override.returns({reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol})
-            end
+            sig { override.returns({reason: Symbol}) }
             def to_hash
             end
 
             # The reason the message is incomplete.
-            module Reason
-              extend OpenAI::Enum
+            class Reason < OpenAI::Enum
+              abstract!
 
-              TaggedSymbol =
-                T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol) }
+              Value = type_template(:out) { {fixed: Symbol} }
 
-              CONTENT_FILTER =
-                T.let(:content_filter, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-              MAX_TOKENS =
-                T.let(:max_tokens, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-              RUN_CANCELLED =
-                T.let(:run_cancelled, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-              RUN_EXPIRED =
-                T.let(:run_expired, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-              RUN_FAILED =
-                T.let(:run_failed, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
+              CONTENT_FILTER = :content_filter
+              MAX_TOKENS = :max_tokens
+              RUN_CANCELLED = :run_cancelled
+              RUN_EXPIRED = :run_expired
+              RUN_FAILED = :run_failed
             end
           end
 
           # The entity that produced the message. One of `user` or `assistant`.
-          module Role
-            extend OpenAI::Enum
+          class Role < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::Role) }
-            OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            USER = T.let(:user, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
-            ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
+            USER = :user
+            ASSISTANT = :assistant
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
           #   `completed`.
-          module Status
-            extend OpenAI::Enum
+          class Status < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::Status) }
-            OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
-            INCOMPLETE = T.let(:incomplete, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
-            COMPLETED = T.let(:completed, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
+            IN_PROGRESS = :in_progress
+            INCOMPLETE = :incomplete
+            COMPLETED = :completed
           end
         end
       end
