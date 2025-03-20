@@ -3,14 +3,15 @@
 module OpenAI
   module Models
     module Audio
-      class SpeechModel < OpenAI::Enum
-        abstract!
+      module SpeechModel
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechModel) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechModel::TaggedSymbol) }
 
-        TTS_1 = :"tts-1"
-        TTS_1_HD = :"tts-1-hd"
-        GPT_4O_MINI_TTS = :"gpt-4o-mini-tts"
+        TTS_1 = T.let(:"tts-1", OpenAI::Models::Audio::SpeechModel::OrSymbol)
+        TTS_1_HD = T.let(:"tts-1-hd", OpenAI::Models::Audio::SpeechModel::OrSymbol)
+        GPT_4O_MINI_TTS = T.let(:"gpt-4o-mini-tts", OpenAI::Models::Audio::SpeechModel::OrSymbol)
       end
     end
   end

@@ -6,7 +6,9 @@ module OpenAI
           OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation
           | OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
 
-        class AnnotationDelta < OpenAI::Union
+        module AnnotationDelta
+          extend OpenAI::Union
+
           def self.variants: -> [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation]
         end
       end

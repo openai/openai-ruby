@@ -131,12 +131,12 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         #   Whisper V2 model).
-        class Model < OpenAI::Union
+        module Model
+          extend OpenAI::Union
+
           variant String
 
           # ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source Whisper V2 model).
@@ -149,8 +149,9 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        class TimestampGranularity < OpenAI::Enum
+        module TimestampGranularity
+          extend OpenAI::Enum
+
           WORD = :word
           SEGMENT = :segment
 

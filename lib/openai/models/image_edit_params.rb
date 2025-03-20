@@ -101,11 +101,11 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # The model to use for image generation. Only `dall-e-2` is supported at this
       #   time.
-      class Model < OpenAI::Union
+      module Model
+        extend OpenAI::Union
+
         variant String
 
         # The model to use for image generation. Only `dall-e-2` is supported at this time.
@@ -118,23 +118,23 @@ module OpenAI
         #   end
       end
 
-      # @abstract
-      #
       # The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
-      class ResponseFormat < OpenAI::Enum
+      module ResponseFormat
+        extend OpenAI::Enum
+
         URL = :url
         B64_JSON = :b64_json
 
         finalize!
       end
 
-      # @abstract
-      #
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024`.
-      class Size < OpenAI::Enum
+      module Size
+        extend OpenAI::Enum
+
         NUMBER_256X256 = :"256x256"
         NUMBER_512X512 = :"512x512"
         NUMBER_1024X1024 = :"1024x1024"

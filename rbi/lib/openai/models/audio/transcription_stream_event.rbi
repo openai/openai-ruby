@@ -7,8 +7,8 @@ module OpenAI
       #   emitted when the transcription starts. Only emitted when you
       #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
       #   with the `Stream` parameter set to `true`.
-      class TranscriptionStreamEvent < OpenAI::Union
-        abstract!
+      module TranscriptionStreamEvent
+        extend OpenAI::Union
 
         Variants =
           type_template(:out) do

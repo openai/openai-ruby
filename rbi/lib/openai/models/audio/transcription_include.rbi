@@ -3,12 +3,13 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionInclude < OpenAI::Enum
-        abstract!
+      module TranscriptionInclude
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranscriptionInclude) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Audio::TranscriptionInclude::TaggedSymbol) }
 
-        LOGPROBS = :logprobs
+        LOGPROBS = T.let(:logprobs, OpenAI::Models::Audio::TranscriptionInclude::OrSymbol)
       end
     end
   end

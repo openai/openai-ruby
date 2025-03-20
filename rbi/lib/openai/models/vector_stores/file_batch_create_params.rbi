@@ -98,8 +98,8 @@ module OpenAI
         def to_hash
         end
 
-        class Attribute < OpenAI::Union
-          abstract!
+        module Attribute
+          extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
         end

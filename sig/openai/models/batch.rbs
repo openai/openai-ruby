@@ -128,7 +128,9 @@ module OpenAI
         | :cancelling
         | :cancelled
 
-      class Status < OpenAI::Enum
+      module Status
+        extend OpenAI::Enum
+
         VALIDATING: :validating
         FAILED: :failed
         IN_PROGRESS: :in_progress

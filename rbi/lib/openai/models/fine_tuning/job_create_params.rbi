@@ -9,11 +9,14 @@ module OpenAI
 
         # The name of the model to fine-tune. You can select one of the
         #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
-        sig { returns(T.any(String, Symbol)) }
+        sig { returns(T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)) }
         def model
         end
 
-        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
+        sig do
+          params(_: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol))
+            .returns(T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol))
+        end
         def model=(_)
         end
 
@@ -139,7 +142,7 @@ module OpenAI
 
         sig do
           params(
-            model: T.any(String, Symbol),
+            model: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol),
             training_file: String,
             hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
             integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
@@ -170,7 +173,7 @@ module OpenAI
           override
             .returns(
               {
-                model: T.any(String, Symbol),
+                model: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol),
                 training_file: String,
                 hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
                 integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
@@ -188,15 +191,20 @@ module OpenAI
 
         # The name of the model to fine-tune. You can select one of the
         #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
-        class Model < OpenAI::Union
-          abstract!
+        module Model
+          extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
+          Variants =
+            type_template(:out) { {fixed: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)} }
 
-          BABBAGE_002 = :"babbage-002"
-          DAVINCI_002 = :"davinci-002"
-          GPT_3_5_TURBO = :"gpt-3.5-turbo"
-          GPT_4O_MINI = :"gpt-4o-mini"
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol) }
+
+          BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
+          DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
+          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
+          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)
         end
 
         class Hyperparameters < OpenAI::BaseModel
@@ -258,24 +266,24 @@ module OpenAI
 
           # Number of examples in each batch. A larger batch size means that model
           #   parameters are updated less frequently, but with lower variance.
-          class BatchSize < OpenAI::Union
-            abstract!
+          module BatchSize
+            extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           #   avoid overfitting.
-          class LearningRateMultiplier < OpenAI::Union
-            abstract!
+          module LearningRateMultiplier
+            extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
           #   through the training dataset.
-          class NEpochs < OpenAI::Union
-            abstract!
+          module NEpochs
+            extend OpenAI::Union
 
             Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
           end
@@ -416,11 +424,14 @@ module OpenAI
           end
 
           # The type of method. Is either `supervised` or `dpo`.
-          sig { returns(T.nilable(Symbol)) }
+          sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol)) }
           def type
           end
 
-          sig { params(_: Symbol).returns(Symbol) }
+          sig do
+            params(_: OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol)
+              .returns(OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol)
+          end
           def type=(_)
           end
 
@@ -429,7 +440,7 @@ module OpenAI
             params(
               dpo: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo,
               supervised: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised,
-              type: Symbol
+              type: OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol
             )
               .returns(T.attached_class)
           end
@@ -442,7 +453,7 @@ module OpenAI
                 {
                   dpo: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo,
                   supervised: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised,
-                  type: Symbol
+                  type: OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol
                 }
               )
           end
@@ -547,32 +558,32 @@ module OpenAI
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
-              class BatchSize < OpenAI::Union
-                abstract!
+              module BatchSize
+                extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
               #   of the penalty between the policy and reference model.
-              class Beta < OpenAI::Union
-                abstract!
+              module Beta
+                extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
-              class LearningRateMultiplier < OpenAI::Union
-                abstract!
+              module LearningRateMultiplier
+                extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
-              class NEpochs < OpenAI::Union
-                abstract!
+              module NEpochs
+                extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
@@ -667,24 +678,24 @@ module OpenAI
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
-              class BatchSize < OpenAI::Union
-                abstract!
+              module BatchSize
+                extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
-              class LearningRateMultiplier < OpenAI::Union
-                abstract!
+              module LearningRateMultiplier
+                extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
-              class NEpochs < OpenAI::Union
-                abstract!
+              module NEpochs
+                extend OpenAI::Union
 
                 Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
               end
@@ -692,13 +703,15 @@ module OpenAI
           end
 
           # The type of method. Is either `supervised` or `dpo`.
-          class Type < OpenAI::Enum
-            abstract!
+          module Type
+            extend OpenAI::Enum
 
-            Value = type_template(:out) { {fixed: Symbol} }
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type) }
+            OrSymbol =
+              T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol) }
 
-            SUPERVISED = :supervised
-            DPO = :dpo
+            SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol)
+            DPO = T.let(:dpo, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol)
           end
         end
       end

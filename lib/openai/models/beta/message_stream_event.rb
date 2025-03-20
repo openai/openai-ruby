@@ -3,12 +3,12 @@
 module OpenAI
   module Models
     module Beta
-      # @abstract
-      #
       # Occurs when a
       #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
       #   created.
-      class MessageStreamEvent < OpenAI::Union
+      module MessageStreamEvent
+        extend OpenAI::Union
+
         discriminator :event
 
         # Occurs when a [message](https://platform.openai.com/docs/api-reference/messages/object) is created.

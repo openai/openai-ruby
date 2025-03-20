@@ -3,7 +3,9 @@
 require_relative "test_helper"
 
 class OpenAI::Test::BaseModelTest < Minitest::Test
-  class E1 < OpenAI::Enum
+  module E1
+    extend OpenAI::Enum
+
     A = :a
     B = :b
   end
@@ -242,13 +244,17 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
     optional :b, E1, api_name: :renamed_again
   end
 
-  class U1 < OpenAI::Union
+  module U1
+    extend OpenAI::Union
+
     discriminator :type
     variant :a, M1
     variant :b, M3
   end
 
-  class U2 < OpenAI::Union
+  module U2
+    extend OpenAI::Union
+
     variant A1
     variant A3
   end
@@ -330,12 +336,16 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
     end
   end
 
-  class E2 < OpenAI::Enum
+  module E2
+    extend OpenAI::Enum
+
     A = :a
     B = :b
   end
 
-  class U3 < OpenAI::Union
+  module U3
+    extend OpenAI::Union
+
     discriminator :type
     variant :a, M1
     variant :b, M3
@@ -353,7 +363,9 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
     assert_equal(U1, U3)
   end
 
-  class U4 < OpenAI::Union
+  module U4
+    extend OpenAI::Union
+
     variant :a, const: :a
     variant :b, const: :b
   end

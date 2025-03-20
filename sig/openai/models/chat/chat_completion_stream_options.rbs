@@ -1,6 +1,5 @@
 module OpenAI
   module Models
-    
     class ChatCompletionStreamOptions = Chat::ChatCompletionStreamOptions
 
     module Chat

@@ -4,7 +4,9 @@ module OpenAI
       OpenAI::Models::StaticFileChunkingStrategyObject
       | OpenAI::Models::OtherFileChunkingStrategyObject
 
-    class FileChunkingStrategy < OpenAI::Union
+    module FileChunkingStrategy
+      extend OpenAI::Union
+
       def self.variants: -> [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
     end
   end

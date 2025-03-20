@@ -66,11 +66,14 @@ module OpenAI
 
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)) }
         def status
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+            .returns(OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+        end
         def status=(_)
         end
 
@@ -80,7 +83,7 @@ module OpenAI
             call_id: String,
             output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
             acknowledged_safety_checks: T::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-            status: Symbol,
+            status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol,
             type: Symbol
           )
             .returns(T.attached_class)
@@ -97,7 +100,7 @@ module OpenAI
                 output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
                 type: Symbol,
                 acknowledged_safety_checks: T::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-                status: Symbol
+                status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol
               }
             )
         end
@@ -144,14 +147,20 @@ module OpenAI
 
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
-        class Status < OpenAI::Enum
-          abstract!
+        module Status
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          INCOMPLETE = :incomplete
+          IN_PROGRESS =
+            T.let(:in_progress, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+          COMPLETED =
+            T.let(:completed, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+          INCOMPLETE =
+            T.let(:incomplete, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)
         end
       end
     end

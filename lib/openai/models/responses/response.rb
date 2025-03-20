@@ -289,10 +289,10 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-          # @abstract
-          #
           # The reason why the response is incomplete.
-          class Reason < OpenAI::Enum
+          module Reason
+            extend OpenAI::Enum
+
             MAX_OUTPUT_TOKENS = :max_output_tokens
             CONTENT_FILTER = :content_filter
 
@@ -300,12 +300,12 @@ module OpenAI
           end
         end
 
-        # @abstract
-        #
         # How the model should select which tool (or tools) to use when generating a
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
-        class ToolChoice < OpenAI::Union
+        module ToolChoice
+          extend OpenAI::Union
+
           # Controls which (if any) tool is called by the model.
           #
           # `none` means the model will not call any tool and instead generates a message.
@@ -330,8 +330,6 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        #
         # The truncation strategy to use for the model response.
         #
         #   - `auto`: If the context of this response and previous ones exceeds the model's
@@ -339,7 +337,9 @@ module OpenAI
         #     window by dropping input items in the middle of the conversation.
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
-        class Truncation < OpenAI::Enum
+        module Truncation
+          extend OpenAI::Enum
+
           AUTO = :auto
           DISABLED = :disabled
 

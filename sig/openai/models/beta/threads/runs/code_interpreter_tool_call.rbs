@@ -47,7 +47,9 @@ module OpenAI
                 OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs
                 | OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
 
-              class Output < OpenAI::Union
+              module Output
+                extend OpenAI::Union
+
                 type logs = { logs: String, type: :logs }
 
                 class Logs < OpenAI::BaseModel

@@ -27,7 +27,9 @@ module OpenAI
         | OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete
         | OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent
 
-      class AssistantStreamEvent < OpenAI::Union
+      module AssistantStreamEvent
+        extend OpenAI::Union
+
         type thread_created =
           {
             data: OpenAI::Models::Beta::Thread,

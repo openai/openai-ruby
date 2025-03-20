@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     # An object describing an image to classify.
-    class ModerationMultiModalInput < OpenAI::Union
-      abstract!
+    module ModerationMultiModalInput
+      extend OpenAI::Union
 
       Variants =
         type_template(:out) { {fixed: T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)} }

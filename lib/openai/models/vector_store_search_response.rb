@@ -50,8 +50,9 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      class Attribute < OpenAI::Union
+      module Attribute
+        extend OpenAI::Union
+
         variant String
 
         variant Float
@@ -86,10 +87,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The type of content.
-        class Type < OpenAI::Enum
+        module Type
+          extend OpenAI::Enum
+
           TEXT = :text
 
           finalize!
