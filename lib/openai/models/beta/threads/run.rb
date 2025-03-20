@@ -314,6 +314,12 @@ module OpenAI
               MAX_PROMPT_TOKENS = :max_prompt_tokens
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
           end
 
@@ -349,6 +355,12 @@ module OpenAI
               INVALID_PROMPT = :invalid_prompt
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
           end
 
@@ -435,6 +447,12 @@ module OpenAI
               LAST_MESSAGES = :last_messages
 
               finalize!
+
+              class << self
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def values; end
+              end
             end
           end
 

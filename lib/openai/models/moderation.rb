@@ -315,6 +315,12 @@ module OpenAI
           TEXT = :text
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module HarassmentThreatening
@@ -323,6 +329,12 @@ module OpenAI
           TEXT = :text
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module Hate
@@ -331,6 +343,12 @@ module OpenAI
           TEXT = :text
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module HateThreatening
@@ -339,6 +357,12 @@ module OpenAI
           TEXT = :text
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module Illicit
@@ -347,6 +371,12 @@ module OpenAI
           TEXT = :text
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module IllicitViolent
@@ -355,6 +385,12 @@ module OpenAI
           TEXT = :text
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module SelfHarm
@@ -364,6 +400,12 @@ module OpenAI
           IMAGE = :image
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module SelfHarmInstruction
@@ -373,6 +415,12 @@ module OpenAI
           IMAGE = :image
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module SelfHarmIntent
@@ -382,6 +430,12 @@ module OpenAI
           IMAGE = :image
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module Sexual
@@ -391,6 +445,12 @@ module OpenAI
           IMAGE = :image
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module SexualMinor
@@ -399,6 +459,12 @@ module OpenAI
           TEXT = :text
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module Violence
@@ -408,6 +474,12 @@ module OpenAI
           IMAGE = :image
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         module ViolenceGraphic
@@ -417,6 +489,12 @@ module OpenAI
           IMAGE = :image
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
 

@@ -256,6 +256,12 @@ module OpenAI
         EXPIRED = T.let(:expired, OpenAI::Models::VectorStore::Status::TaggedSymbol)
         IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStore::Status::TaggedSymbol)
         COMPLETED = T.let(:completed, OpenAI::Models::VectorStore::Status::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::VectorStore::Status::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       class ExpiresAfter < OpenAI::BaseModel

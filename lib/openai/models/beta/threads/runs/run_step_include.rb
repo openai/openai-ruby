@@ -12,6 +12,12 @@ module OpenAI
               :"step_details.tool_calls[*].file_search.results[*].content"
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
         end
 

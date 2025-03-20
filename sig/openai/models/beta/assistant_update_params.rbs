@@ -135,7 +135,7 @@ module OpenAI
           GPT_3_5_TURBO_0125: :"gpt-3.5-turbo-0125"
           GPT_3_5_TURBO_16K_0613: :"gpt-3.5-turbo-16k-0613"
 
-          def self.variants: -> [String, (:"o3-mini"
+          def self?.variants: -> [String, (:"o3-mini"
           | :"o3-mini-2025-01-31"
           | :o1
           | :"o1-2024-12-17"

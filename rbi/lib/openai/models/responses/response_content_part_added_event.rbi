@@ -99,6 +99,15 @@ module OpenAI
                 fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
+            end
+            def variants
+            end
+          end
         end
       end
     end

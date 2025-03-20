@@ -53,7 +53,7 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          def self.variants: -> [String, OpenAI::Models::Audio::speech_model]
+          def self?.variants: -> [String, OpenAI::Models::Audio::speech_model]
         end
 
         type voice =
@@ -80,7 +80,7 @@ module OpenAI
           SAGE: :sage
           SHIMMER: :shimmer
 
-          def self.values: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::voice]
+          def self?.values: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::voice]
         end
 
         type response_format = :mp3 | :opus | :aac | :flac | :wav | :pcm
@@ -95,7 +95,7 @@ module OpenAI
           WAV: :wav
           PCM: :pcm
 
-          def self.values: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::response_format]
+          def self?.values: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::response_format]
         end
       end
     end

@@ -13,7 +13,7 @@ module OpenAI
       USER_DATA: :user_data
       EVALS: :evals
 
-      def self.values: -> ::Array[OpenAI::Models::file_purpose]
+      def self?.values: -> ::Array[OpenAI::Models::file_purpose]
     end
   end
 end

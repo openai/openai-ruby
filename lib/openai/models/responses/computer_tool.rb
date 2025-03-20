@@ -51,6 +51,12 @@ module OpenAI
           BROWSER = :browser
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

@@ -75,7 +75,7 @@ module OpenAI
           GPT_3_5_TURBO: :"gpt-3.5-turbo"
           GPT_4O_MINI: :"gpt-4o-mini"
 
-          def self.variants: -> [String, (:"babbage-002"
+          def self?.variants: -> [String, (:"babbage-002"
           | :"davinci-002"
           | :"gpt-3.5-turbo"
           | :"gpt-4o-mini")]
@@ -120,7 +120,7 @@ module OpenAI
           module BatchSize
             extend OpenAI::Union
 
-            def self.variants: -> [:auto, Integer]
+            def self?.variants: -> [:auto, Integer]
           end
 
           type learning_rate_multiplier = :auto | Float
@@ -128,7 +128,7 @@ module OpenAI
           module LearningRateMultiplier
             extend OpenAI::Union
 
-            def self.variants: -> [:auto, Float]
+            def self?.variants: -> [:auto, Float]
           end
 
           type n_epochs = :auto | Integer
@@ -136,7 +136,7 @@ module OpenAI
           module NEpochs
             extend OpenAI::Union
 
-            def self.variants: -> [:auto, Integer]
+            def self?.variants: -> [:auto, Integer]
           end
         end
 
@@ -287,7 +287,7 @@ module OpenAI
               module BatchSize
                 extend OpenAI::Union
 
-                def self.variants: -> [:auto, Integer]
+                def self?.variants: -> [:auto, Integer]
               end
 
               type beta = :auto | Float
@@ -295,7 +295,7 @@ module OpenAI
               module Beta
                 extend OpenAI::Union
 
-                def self.variants: -> [:auto, Float]
+                def self?.variants: -> [:auto, Float]
               end
 
               type learning_rate_multiplier = :auto | Float
@@ -303,7 +303,7 @@ module OpenAI
               module LearningRateMultiplier
                 extend OpenAI::Union
 
-                def self.variants: -> [:auto, Float]
+                def self?.variants: -> [:auto, Float]
               end
 
               type n_epochs = :auto | Integer
@@ -311,7 +311,7 @@ module OpenAI
               module NEpochs
                 extend OpenAI::Union
 
-                def self.variants: -> [:auto, Integer]
+                def self?.variants: -> [:auto, Integer]
               end
             end
           end
@@ -373,7 +373,7 @@ module OpenAI
               module BatchSize
                 extend OpenAI::Union
 
-                def self.variants: -> [:auto, Integer]
+                def self?.variants: -> [:auto, Integer]
               end
 
               type learning_rate_multiplier = :auto | Float
@@ -381,7 +381,7 @@ module OpenAI
               module LearningRateMultiplier
                 extend OpenAI::Union
 
-                def self.variants: -> [:auto, Float]
+                def self?.variants: -> [:auto, Float]
               end
 
               type n_epochs = :auto | Integer
@@ -389,7 +389,7 @@ module OpenAI
               module NEpochs
                 extend OpenAI::Union
 
-                def self.variants: -> [:auto, Integer]
+                def self?.variants: -> [:auto, Integer]
               end
             end
           end
@@ -402,7 +402,7 @@ module OpenAI
             SUPERVISED: :supervised
             DPO: :dpo
 
-            def self.values: -> ::Array[OpenAI::Models::FineTuning::JobCreateParams::Method::type_]
+            def self?.values: -> ::Array[OpenAI::Models::FineTuning::JobCreateParams::Method::type_]
           end
         end
       end

@@ -64,11 +64,17 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol) }
 
-          WAV = T.let(:wav, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol)
-          MP3 = T.let(:mp3, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol)
-          FLAC = T.let(:flac, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol)
-          OPUS = T.let(:opus, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol)
-          PCM16 = T.let(:pcm16, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol)
+          WAV = T.let(:wav, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
+          MP3 = T.let(:mp3, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
+          FLAC = T.let(:flac, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
+          OPUS = T.let(:opus, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
+          PCM16 = T.let(:pcm16, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol]) }
+            def values
+            end
+          end
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
@@ -80,14 +86,20 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
 
-          ALLOY = T.let(:alloy, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-          ASH = T.let(:ash, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-          BALLAD = T.let(:ballad, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-          CORAL = T.let(:coral, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-          ECHO = T.let(:echo, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-          SAGE = T.let(:sage, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-          SHIMMER = T.let(:shimmer, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-          VERSE = T.let(:verse, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
+          ALLOY = T.let(:alloy, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          ASH = T.let(:ash, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          BALLAD = T.let(:ballad, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          CORAL = T.let(:coral, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          ECHO = T.let(:echo, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          SAGE = T.let(:sage, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          SHIMMER = T.let(:shimmer, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          VERSE = T.let(:verse, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+
+          class << self
+            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol]) }
+            def values
+            end
+          end
         end
       end
     end

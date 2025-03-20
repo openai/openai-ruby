@@ -44,6 +44,12 @@ module OpenAI
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

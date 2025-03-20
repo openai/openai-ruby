@@ -102,7 +102,13 @@ module OpenAI
         OrSymbol =
           T.type_alias { T.any(Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol) }
 
-        NUMBER_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol)
+        NUMBER_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       # The endpoint to be used for all requests in the batch. Currently
@@ -115,11 +121,17 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::Endpoint) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol) }
 
-        V1_RESPONSES = T.let(:"/v1/responses", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
+        V1_RESPONSES = T.let(:"/v1/responses", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
         V1_CHAT_COMPLETIONS =
-          T.let(:"/v1/chat/completions", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
-        V1_EMBEDDINGS = T.let(:"/v1/embeddings", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
-        V1_COMPLETIONS = T.let(:"/v1/completions", OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
+          T.let(:"/v1/chat/completions", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
+        V1_EMBEDDINGS = T.let(:"/v1/embeddings", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
+        V1_COMPLETIONS = T.let(:"/v1/completions", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

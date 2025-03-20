@@ -11,7 +11,7 @@ module OpenAI
         TEXT: :text
         AUDIO: :audio
 
-        def self.values: -> ::Array[OpenAI::Models::Chat::chat_completion_modality]
+        def self?.values: -> ::Array[OpenAI::Models::Chat::chat_completion_modality]
       end
     end
   end

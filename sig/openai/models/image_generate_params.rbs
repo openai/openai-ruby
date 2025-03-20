@@ -58,7 +58,7 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
-        def self.variants: -> [String, OpenAI::Models::image_model]
+        def self?.variants: -> [String, OpenAI::Models::image_model]
       end
 
       type quality = :standard | :hd
@@ -69,7 +69,7 @@ module OpenAI
         STANDARD: :standard
         HD: :hd
 
-        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::quality]
+        def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::quality]
       end
 
       type response_format = :url | :b64_json
@@ -80,7 +80,7 @@ module OpenAI
         URL: :url
         B64_JSON: :b64_json
 
-        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::response_format]
+        def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::response_format]
       end
 
       type size =
@@ -95,7 +95,7 @@ module OpenAI
         NUMBER_1792X1024: :"1792x1024"
         NUMBER_1024X1792: :"1024x1792"
 
-        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::size]
+        def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::size]
       end
 
       type style = :vivid | :natural
@@ -106,7 +106,7 @@ module OpenAI
         VIVID: :vivid
         NATURAL: :natural
 
-        def self.values: -> ::Array[OpenAI::Models::ImageGenerateParams::style]
+        def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::style]
       end
     end
   end

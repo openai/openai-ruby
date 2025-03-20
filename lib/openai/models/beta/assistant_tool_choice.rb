@@ -39,6 +39,12 @@ module OpenAI
           FILE_SEARCH = :file_search
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

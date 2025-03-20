@@ -34,7 +34,7 @@ module OpenAI
         LT: :lt
         LTE: :lte
 
-        def self.values: -> ::Array[OpenAI::Models::ComparisonFilter::type_]
+        def self?.values: -> ::Array[OpenAI::Models::ComparisonFilter::type_]
       end
 
       type value = String | Float | bool
@@ -42,7 +42,7 @@ module OpenAI
       module Value
         extend OpenAI::Union
 
-        def self.variants: -> [String, Float, bool]
+        def self?.variants: -> [String, Float, bool]
       end
     end
   end

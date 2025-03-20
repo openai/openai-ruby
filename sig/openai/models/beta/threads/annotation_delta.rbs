@@ -9,7 +9,7 @@ module OpenAI
         module AnnotationDelta
           extend OpenAI::Union
 
-          def self.variants: -> [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation]
+          def self?.variants: -> [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation]
         end
       end
     end

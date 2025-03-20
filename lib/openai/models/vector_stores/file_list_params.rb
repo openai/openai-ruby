@@ -88,6 +88,12 @@ module OpenAI
           CANCELLED = :cancelled
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -99,6 +105,12 @@ module OpenAI
           DESC = :desc
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
       end
     end

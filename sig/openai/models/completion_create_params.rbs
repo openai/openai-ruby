@@ -95,7 +95,7 @@ module OpenAI
         DAVINCI_002: :"davinci-002"
         BABBAGE_002: :"babbage-002"
 
-        def self.variants: -> [String, (:"gpt-3.5-turbo-instruct"
+        def self?.variants: -> [String, (:"gpt-3.5-turbo-instruct"
         | :"davinci-002"
         | :"babbage-002")]
       end
@@ -118,7 +118,7 @@ module OpenAI
 
         ArrayOfToken2DArray: array_of_token2_d_array
 
-        def self.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
+        def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
       end
 
       type stop = (String | ::Array[String])?
@@ -130,7 +130,7 @@ module OpenAI
 
         StringArray: string_array
 
-        def self.variants: -> [String, ::Array[String]]
+        def self?.variants: -> [String, ::Array[String]]
       end
     end
   end

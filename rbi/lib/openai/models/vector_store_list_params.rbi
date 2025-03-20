@@ -89,8 +89,14 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStoreListParams::Order) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol) }
 
-        ASC = T.let(:asc, OpenAI::Models::VectorStoreListParams::Order::OrSymbol)
-        DESC = T.let(:desc, OpenAI::Models::VectorStoreListParams::Order::OrSymbol)
+        ASC = T.let(:asc, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol)
+        DESC = T.let(:desc, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

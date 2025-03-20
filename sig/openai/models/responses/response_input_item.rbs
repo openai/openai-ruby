@@ -60,7 +60,7 @@ module OpenAI
             SYSTEM: :system
             DEVELOPER: :developer
 
-            def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::role]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::role]
           end
 
           type status = :in_progress | :completed | :incomplete
@@ -72,7 +72,7 @@ module OpenAI
             COMPLETED: :completed
             INCOMPLETE: :incomplete
 
-            def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::status]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::status]
           end
 
           type type_ = :message
@@ -82,7 +82,7 @@ module OpenAI
 
             MESSAGE: :message
 
-            def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::type_]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::type_]
           end
         end
 
@@ -154,7 +154,7 @@ module OpenAI
             COMPLETED: :completed
             INCOMPLETE: :incomplete
 
-            def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status]
           end
         end
 
@@ -203,7 +203,7 @@ module OpenAI
             COMPLETED: :completed
             INCOMPLETE: :incomplete
 
-            def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status]
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status]
           end
         end
 
@@ -219,7 +219,7 @@ module OpenAI
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::item_reference
         end
 
-        def self.variants: -> [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
+        def self?.variants: -> [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
       end
     end
   end

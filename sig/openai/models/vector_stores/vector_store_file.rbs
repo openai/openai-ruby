@@ -80,7 +80,7 @@ module OpenAI
             UNSUPPORTED_FILE: :unsupported_file
             INVALID_FILE: :invalid_file
 
-            def self.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::code]
+            def self?.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::code]
           end
         end
 
@@ -94,7 +94,7 @@ module OpenAI
           CANCELLED: :cancelled
           FAILED: :failed
 
-          def self.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::status]
+          def self?.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::status]
         end
 
         type attribute = String | Float | bool
@@ -102,7 +102,7 @@ module OpenAI
         module Attribute
           extend OpenAI::Union
 
-          def self.variants: -> [String, Float, bool]
+          def self?.variants: -> [String, Float, bool]
         end
       end
     end

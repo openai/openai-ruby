@@ -35,7 +35,7 @@ module OpenAI
       module Attribute
         extend OpenAI::Union
 
-        def self.variants: -> [String, Float, bool]
+        def self?.variants: -> [String, Float, bool]
       end
 
       type content =
@@ -63,7 +63,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self.values: -> ::Array[OpenAI::Models::VectorStoreSearchResponse::Content::type_]
+          def self?.values: -> ::Array[OpenAI::Models::VectorStoreSearchResponse::Content::type_]
         end
       end
     end

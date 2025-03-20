@@ -10,7 +10,7 @@ module OpenAI
       GPT_4O_TRANSCRIBE: :"gpt-4o-transcribe"
       GPT_4O_MINI_TRANSCRIBE: :"gpt-4o-mini-transcribe"
 
-      def self.values: -> ::Array[OpenAI::Models::audio_model]
+      def self?.values: -> ::Array[OpenAI::Models::audio_model]
     end
   end
 end

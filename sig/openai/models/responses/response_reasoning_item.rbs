@@ -52,7 +52,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseReasoningItem::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseReasoningItem::status]
         end
       end
     end

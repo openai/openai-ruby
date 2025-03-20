@@ -35,7 +35,7 @@ module OpenAI
             LOW: :low
             HIGH: :high
 
-            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::ImageFileDelta::detail]
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::ImageFileDelta::detail]
           end
         end
       end

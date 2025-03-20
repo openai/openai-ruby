@@ -61,7 +61,7 @@ module OpenAI
           FAILED_TO_DOWNLOAD_IMAGE: :failed_to_download_image
           IMAGE_FILE_NOT_FOUND: :image_file_not_found
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseError::code]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseError::code]
         end
       end
     end

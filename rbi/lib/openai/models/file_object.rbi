@@ -157,6 +157,12 @@ module OpenAI
         FINE_TUNE = T.let(:"fine-tune", OpenAI::Models::FileObject::Purpose::TaggedSymbol)
         FINE_TUNE_RESULTS = T.let(:"fine-tune-results", OpenAI::Models::FileObject::Purpose::TaggedSymbol)
         VISION = T.let(:vision, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::FileObject::Purpose::TaggedSymbol]) }
+          def values
+          end
+        end
       end
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
@@ -170,6 +176,12 @@ module OpenAI
         UPLOADED = T.let(:uploaded, OpenAI::Models::FileObject::Status::TaggedSymbol)
         PROCESSED = T.let(:processed, OpenAI::Models::FileObject::Status::TaggedSymbol)
         ERROR = T.let(:error, OpenAI::Models::FileObject::Status::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::FileObject::Status::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

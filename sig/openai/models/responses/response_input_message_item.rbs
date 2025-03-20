@@ -48,7 +48,7 @@ module OpenAI
           SYSTEM: :system
           DEVELOPER: :developer
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::role]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::role]
         end
 
         type status = :in_progress | :completed | :incomplete
@@ -60,7 +60,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::status]
         end
 
         type type_ = :message
@@ -70,7 +70,7 @@ module OpenAI
 
           MESSAGE: :message
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::type_]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputMessageItem::type_]
         end
       end
     end

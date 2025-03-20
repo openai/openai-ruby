@@ -110,7 +110,7 @@ module OpenAI
                 def to_hash: -> OpenAI::Models::Beta::Threads::Message::Attachment::Tool::assistant_tools_file_search_type_only
               end
 
-              def self.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
+              def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
             end
           end
 
@@ -144,7 +144,7 @@ module OpenAI
               RUN_EXPIRED: :run_expired
               RUN_FAILED: :run_failed
 
-              def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason]
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason]
             end
           end
 
@@ -156,7 +156,7 @@ module OpenAI
             USER: :user
             ASSISTANT: :assistant
 
-            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::role]
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::role]
           end
 
           type status = :in_progress | :incomplete | :completed
@@ -168,7 +168,7 @@ module OpenAI
             INCOMPLETE: :incomplete
             COMPLETED: :completed
 
-            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::status]
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::status]
           end
         end
       end

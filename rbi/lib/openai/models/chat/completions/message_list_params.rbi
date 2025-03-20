@@ -75,8 +75,14 @@ module OpenAI
             OrSymbol =
               T.type_alias { T.any(Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol) }
 
-            ASC = T.let(:asc, OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
-            DESC = T.let(:desc, OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
+            ASC = T.let(:asc, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol)
+            DESC = T.let(:desc, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol)
+
+            class << self
+              sig { override.returns(T::Array[OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol]) }
+              def values
+              end
+            end
           end
         end
       end

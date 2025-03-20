@@ -19,6 +19,17 @@ module OpenAI
                 )
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam]
+                )
+            end
+            def variants
+            end
+          end
         end
       end
     end

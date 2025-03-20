@@ -8,7 +8,7 @@ module OpenAI
       DALL_E_2: :"dall-e-2"
       DALL_E_3: :"dall-e-3"
 
-      def self.values: -> ::Array[OpenAI::Models::image_model]
+      def self?.values: -> ::Array[OpenAI::Models::image_model]
     end
   end
 end

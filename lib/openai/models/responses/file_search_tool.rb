@@ -120,6 +120,12 @@ module OpenAI
             DEFAULT_2024_11_15 = :"default-2024-11-15"
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
         end
       end

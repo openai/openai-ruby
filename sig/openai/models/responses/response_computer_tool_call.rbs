@@ -86,7 +86,7 @@ module OpenAI
               BACK: :back
               FORWARD: :forward
 
-              def self.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button]
+              def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button]
             end
           end
 
@@ -228,7 +228,7 @@ module OpenAI
             def to_hash: -> OpenAI::Models::Responses::ResponseComputerToolCall::Action::wait
           end
 
-          def self.variants: -> [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
+          def self?.variants: -> [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
         end
 
         type pending_safety_check =
@@ -255,7 +255,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::status]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::status]
         end
 
         type type_ = :computer_call
@@ -265,7 +265,7 @@ module OpenAI
 
           COMPUTER_CALL: :computer_call
 
-          def self.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::type_]
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::type_]
         end
       end
     end

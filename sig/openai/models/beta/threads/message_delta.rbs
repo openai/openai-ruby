@@ -36,7 +36,7 @@ module OpenAI
             USER: :user
             ASSISTANT: :assistant
 
-            def self.values: -> ::Array[OpenAI::Models::Beta::Threads::MessageDelta::role]
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::MessageDelta::role]
           end
         end
       end

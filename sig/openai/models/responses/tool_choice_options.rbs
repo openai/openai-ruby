@@ -10,7 +10,7 @@ module OpenAI
         AUTO: :auto
         REQUIRED: :required
 
-        def self.values: -> ::Array[OpenAI::Models::Responses::tool_choice_options]
+        def self?.values: -> ::Array[OpenAI::Models::Responses::tool_choice_options]
       end
     end
   end

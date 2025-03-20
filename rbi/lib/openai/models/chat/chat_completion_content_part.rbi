@@ -92,6 +92,17 @@ module OpenAI
             end
           end
         end
+
+        class << self
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
+              )
+          end
+          def variants
+          end
+        end
       end
     end
 

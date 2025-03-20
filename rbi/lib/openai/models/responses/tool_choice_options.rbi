@@ -17,9 +17,15 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ToolChoiceOptions) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol) }
 
-        NONE = T.let(:none, OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol)
-        AUTO = T.let(:auto, OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol)
-        REQUIRED = T.let(:required, OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol)
+        NONE = T.let(:none, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol)
+        AUTO = T.let(:auto, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol)
+        REQUIRED = T.let(:required, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

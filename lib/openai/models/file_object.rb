@@ -114,6 +114,12 @@ module OpenAI
         VISION = :vision
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       # @deprecated
@@ -128,6 +134,12 @@ module OpenAI
         ERROR = :error
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
     end
   end

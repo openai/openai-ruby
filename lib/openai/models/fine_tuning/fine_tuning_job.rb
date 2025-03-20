@@ -334,6 +334,12 @@ module OpenAI
           CANCELLED = :cancelled
 
           finalize!
+
+          class << self
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def values; end
+          end
         end
 
         class Method < OpenAI::BaseModel
@@ -652,6 +658,12 @@ module OpenAI
             DPO = :dpo
 
             finalize!
+
+            class << self
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def values; end
+            end
           end
         end
       end

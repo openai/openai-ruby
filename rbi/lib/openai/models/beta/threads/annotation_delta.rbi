@@ -19,6 +19,17 @@ module OpenAI
                 )
               }
             end
+
+          class << self
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation]
+                )
+            end
+            def variants
+            end
+          end
         end
       end
     end

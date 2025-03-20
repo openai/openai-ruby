@@ -130,6 +130,12 @@ module OpenAI
         HD = :hd
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -142,6 +148,12 @@ module OpenAI
         B64_JSON = :b64_json
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -157,6 +169,12 @@ module OpenAI
         NUMBER_1024X1792 = :"1024x1792"
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
 
       # The style of the generated images. Must be one of `vivid` or `natural`. Vivid
@@ -170,6 +188,12 @@ module OpenAI
         NATURAL = :natural
 
         finalize!
+
+        class << self
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def values; end
+        end
       end
     end
   end

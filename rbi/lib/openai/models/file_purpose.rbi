@@ -12,12 +12,18 @@ module OpenAI
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FilePurpose) }
       OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::FilePurpose::TaggedSymbol) }
 
-      ASSISTANTS = T.let(:assistants, OpenAI::Models::FilePurpose::OrSymbol)
-      BATCH = T.let(:batch, OpenAI::Models::FilePurpose::OrSymbol)
-      FINE_TUNE = T.let(:"fine-tune", OpenAI::Models::FilePurpose::OrSymbol)
-      VISION = T.let(:vision, OpenAI::Models::FilePurpose::OrSymbol)
-      USER_DATA = T.let(:user_data, OpenAI::Models::FilePurpose::OrSymbol)
-      EVALS = T.let(:evals, OpenAI::Models::FilePurpose::OrSymbol)
+      ASSISTANTS = T.let(:assistants, OpenAI::Models::FilePurpose::TaggedSymbol)
+      BATCH = T.let(:batch, OpenAI::Models::FilePurpose::TaggedSymbol)
+      FINE_TUNE = T.let(:"fine-tune", OpenAI::Models::FilePurpose::TaggedSymbol)
+      VISION = T.let(:vision, OpenAI::Models::FilePurpose::TaggedSymbol)
+      USER_DATA = T.let(:user_data, OpenAI::Models::FilePurpose::TaggedSymbol)
+      EVALS = T.let(:evals, OpenAI::Models::FilePurpose::TaggedSymbol)
+
+      class << self
+        sig { override.returns(T::Array[OpenAI::Models::FilePurpose::TaggedSymbol]) }
+        def values
+        end
+      end
     end
   end
 end

@@ -86,8 +86,14 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileListParams::Order) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::FileListParams::Order::TaggedSymbol) }
 
-        ASC = T.let(:asc, OpenAI::Models::FileListParams::Order::OrSymbol)
-        DESC = T.let(:desc, OpenAI::Models::FileListParams::Order::OrSymbol)
+        ASC = T.let(:asc, OpenAI::Models::FileListParams::Order::TaggedSymbol)
+        DESC = T.let(:desc, OpenAI::Models::FileListParams::Order::TaggedSymbol)
+
+        class << self
+          sig { override.returns(T::Array[OpenAI::Models::FileListParams::Order::TaggedSymbol]) }
+          def values
+          end
+        end
       end
     end
   end

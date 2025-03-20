@@ -317,6 +317,12 @@ module OpenAI
           extend OpenAI::Union
 
           Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
+
+          class << self
+            sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+            def variants
+            end
+          end
         end
 
         class ToolResources < OpenAI::BaseModel
@@ -668,6 +674,17 @@ module OpenAI
                     sig { override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer}) }
                     def to_hash
                     end
+                  end
+                end
+
+                class << self
+                  sig do
+                    override
+                      .returns(
+                        [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+                      )
+                  end
+                  def variants
                   end
                 end
               end

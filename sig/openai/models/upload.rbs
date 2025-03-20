@@ -56,7 +56,7 @@ module OpenAI
         CANCELLED: :cancelled
         EXPIRED: :expired
 
-        def self.values: -> ::Array[OpenAI::Models::Upload::status]
+        def self?.values: -> ::Array[OpenAI::Models::Upload::status]
       end
     end
   end

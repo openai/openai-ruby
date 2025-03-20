@@ -14,9 +14,15 @@ module OpenAI
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ReasoningEffort) }
       OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ReasoningEffort::TaggedSymbol) }
 
-      LOW = T.let(:low, OpenAI::Models::ReasoningEffort::OrSymbol)
-      MEDIUM = T.let(:medium, OpenAI::Models::ReasoningEffort::OrSymbol)
-      HIGH = T.let(:high, OpenAI::Models::ReasoningEffort::OrSymbol)
+      LOW = T.let(:low, OpenAI::Models::ReasoningEffort::TaggedSymbol)
+      MEDIUM = T.let(:medium, OpenAI::Models::ReasoningEffort::TaggedSymbol)
+      HIGH = T.let(:high, OpenAI::Models::ReasoningEffort::TaggedSymbol)
+
+      class << self
+        sig { override.returns(T::Array[OpenAI::Models::ReasoningEffort::TaggedSymbol]) }
+        def values
+        end
+      end
     end
   end
 end
