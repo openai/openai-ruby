@@ -194,8 +194,8 @@ module OpenAI
       end
 
       sig do
-        params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions))
-          .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions))
+        params(_: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)))
+          .returns(T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)))
       end
       def stream_options=(_)
       end

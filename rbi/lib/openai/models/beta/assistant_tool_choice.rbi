@@ -21,8 +21,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Beta::AssistantToolChoiceFunction)
-            .returns(OpenAI::Models::Beta::AssistantToolChoiceFunction)
+          params(_: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash))
         end
         def function=(_)
         end

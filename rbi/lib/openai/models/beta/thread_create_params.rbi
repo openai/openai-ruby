@@ -43,8 +43,10 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Beta::ThreadCreateParams::ToolResources))
-            .returns(T.nilable(OpenAI::Models::Beta::ThreadCreateParams::ToolResources))
+          params(
+            _: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources, OpenAI::Util::AnyHash))
+          )
+            .returns(T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources, OpenAI::Util::AnyHash)))
         end
         def tool_resources=(_)
         end
@@ -371,8 +373,12 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter)
-              .returns(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter)
+            params(
+              _: T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+            )
+              .returns(
+                T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+              )
           end
           def code_interpreter=(_)
           end
@@ -382,8 +388,10 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch)
-              .returns(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch)
+            params(
+              _: T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+            )
+              .returns(T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash))
           end
           def file_search=(_)
           end
@@ -626,10 +634,16 @@ module OpenAI
 
                   sig do
                     params(
-                      _: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                      _: T.any(
+                        OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                        OpenAI::Util::AnyHash
+                      )
                     )
                       .returns(
-                        OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                        T.any(
+                          OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                          OpenAI::Util::AnyHash
+                        )
                       )
                   end
                   def static=(_)

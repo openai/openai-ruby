@@ -83,8 +83,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam))
+          params(_: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Util::AnyHash)))
         end
         def audio=(_)
         end
@@ -275,8 +275,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionPredictionContent))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionPredictionContent))
+          params(_: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Util::AnyHash)))
         end
         def prediction=(_)
         end
@@ -426,8 +426,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions))
+          params(_: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)))
         end
         def stream_options=(_)
         end
@@ -540,8 +540,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions)
-            .returns(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions)
+          params(_: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Util::AnyHash))
         end
         def web_search_options=(_)
         end
@@ -897,8 +897,16 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation))
-              .returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation))
+            params(
+              _: T.nilable(
+                T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, OpenAI::Util::AnyHash)
+              )
+            )
+              .returns(
+                T.nilable(
+                  T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, OpenAI::Util::AnyHash)
+                )
+              )
           end
           def user_location=(_)
           end
@@ -961,8 +969,18 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate)
-                .returns(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate)
+              params(
+                _: T.any(
+                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+                  OpenAI::Util::AnyHash
+                )
+              )
+                .returns(
+                  T.any(
+                    OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+                    OpenAI::Util::AnyHash
+                  )
+                )
             end
             def approximate=(_)
             end

@@ -20,8 +20,18 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation)
-                .returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation)
+              params(
+                _: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
+                  OpenAI::Util::AnyHash
+                )
+              )
+                .returns(
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
+                    OpenAI::Util::AnyHash
+                  )
+                )
             end
             def message_creation=(_)
             end

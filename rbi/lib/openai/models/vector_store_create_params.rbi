@@ -44,8 +44,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter)
-          .returns(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter)
+        params(_: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash))
       end
       def expires_after=(_)
       end

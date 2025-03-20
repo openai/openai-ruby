@@ -19,8 +19,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Beta::FileSearchTool::FileSearch)
-            .returns(OpenAI::Models::Beta::FileSearchTool::FileSearch)
+          params(_: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash))
         end
         def file_search=(_)
         end
@@ -64,8 +64,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions)
-              .returns(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions)
+            params(_: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash))
+              .returns(T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash))
           end
           def ranking_options=(_)
           end

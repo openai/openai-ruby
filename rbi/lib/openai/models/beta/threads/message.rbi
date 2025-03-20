@@ -111,8 +111,12 @@ module OpenAI
           end
 
           sig do
-            params(_: T.nilable(OpenAI::Models::Beta::Threads::Message::IncompleteDetails))
-              .returns(T.nilable(OpenAI::Models::Beta::Threads::Message::IncompleteDetails))
+            params(
+              _: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash))
+            )
+              .returns(
+                T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash))
+              )
           end
           def incomplete_details=(_)
           end

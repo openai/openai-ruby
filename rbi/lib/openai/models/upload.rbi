@@ -85,7 +85,10 @@ module OpenAI
       def file
       end
 
-      sig { params(_: T.nilable(OpenAI::Models::FileObject)).returns(T.nilable(OpenAI::Models::FileObject)) }
+      sig do
+        params(_: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash)))
+          .returns(T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash)))
+      end
       def file=(_)
       end
 

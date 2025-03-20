@@ -9,8 +9,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL)
-            .returns(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL)
+          params(_: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash))
         end
         def image_url=(_)
         end

@@ -28,8 +28,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Responses::ResponseError))
-            .returns(T.nilable(OpenAI::Models::Responses::ResponseError))
+          params(_: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Util::AnyHash)))
         end
         def error=(_)
         end
@@ -40,8 +40,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails))
-            .returns(T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails))
+          params(_: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Util::AnyHash)))
         end
         def incomplete_details=(_)
         end
@@ -324,7 +324,10 @@ module OpenAI
         def reasoning
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Reasoning)).returns(T.nilable(OpenAI::Models::Reasoning)) }
+        sig do
+          params(_: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)))
+        end
         def reasoning=(_)
         end
 
@@ -351,8 +354,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseTextConfig)
-            .returns(OpenAI::Models::Responses::ResponseTextConfig)
+          params(_: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash))
         end
         def text=(_)
         end
@@ -381,7 +384,10 @@ module OpenAI
         def usage
         end
 
-        sig { params(_: OpenAI::Models::Responses::ResponseUsage).returns(OpenAI::Models::Responses::ResponseUsage) }
+        sig do
+          params(_: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Util::AnyHash))
+        end
         def usage=(_)
         end
 

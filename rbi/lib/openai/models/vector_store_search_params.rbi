@@ -43,8 +43,8 @@ module OpenAI
       end
 
       sig do
-        params(_: OpenAI::Models::VectorStoreSearchParams::RankingOptions)
-          .returns(OpenAI::Models::VectorStoreSearchParams::RankingOptions)
+        params(_: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash))
       end
       def ranking_options=(_)
       end

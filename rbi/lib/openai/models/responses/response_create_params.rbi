@@ -196,7 +196,10 @@ module OpenAI
         def reasoning
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Reasoning)).returns(T.nilable(OpenAI::Models::Reasoning)) }
+        sig do
+          params(_: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)))
+            .returns(T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)))
+        end
         def reasoning=(_)
         end
 
@@ -231,8 +234,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseTextConfig)
-            .returns(OpenAI::Models::Responses::ResponseTextConfig)
+          params(_: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash))
+            .returns(T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash))
         end
         def text=(_)
         end

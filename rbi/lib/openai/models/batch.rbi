@@ -107,7 +107,10 @@ module OpenAI
       def errors
       end
 
-      sig { params(_: OpenAI::Models::Batch::Errors).returns(OpenAI::Models::Batch::Errors) }
+      sig do
+        params(_: T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash))
+      end
       def errors=(_)
       end
 
@@ -184,7 +187,10 @@ module OpenAI
       def request_counts
       end
 
-      sig { params(_: OpenAI::Models::BatchRequestCounts).returns(OpenAI::Models::BatchRequestCounts) }
+      sig do
+        params(_: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash))
+          .returns(T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash))
+      end
       def request_counts=(_)
       end
 
