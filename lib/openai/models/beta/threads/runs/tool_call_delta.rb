@@ -5,10 +5,10 @@ module OpenAI
     module Beta
       module Threads
         module Runs
+          # @abstract
+          #
           # Details of the Code Interpreter tool call the run step was involved in.
-          module ToolCallDelta
-            extend OpenAI::Union
-
+          class ToolCallDelta < OpenAI::Union
             discriminator :type
 
             # Details of the Code Interpreter tool call the run step was involved in.

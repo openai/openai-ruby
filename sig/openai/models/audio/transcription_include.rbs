@@ -3,9 +3,7 @@ module OpenAI
     module Audio
       type transcription_include = :logprobs
 
-      module TranscriptionInclude
-        extend OpenAI::Enum
-
+      class TranscriptionInclude < OpenAI::Enum
         LOGPROBS: :logprobs
 
         def self.values: -> ::Array[OpenAI::Models::Audio::transcription_include]

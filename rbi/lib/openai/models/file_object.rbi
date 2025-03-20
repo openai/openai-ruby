@@ -51,27 +51,21 @@ module OpenAI
       # The intended purpose of the file. Supported values are `assistants`,
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
       #   and `vision`.
-      sig { returns(OpenAI::Models::FileObject::Purpose::TaggedSymbol) }
+      sig { returns(Symbol) }
       def purpose
       end
 
-      sig do
-        params(_: OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-          .returns(OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-      end
+      sig { params(_: Symbol).returns(Symbol) }
       def purpose=(_)
       end
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
       #   `processed`, or `error`.
-      sig { returns(OpenAI::Models::FileObject::Status::TaggedSymbol) }
+      sig { returns(Symbol) }
       def status
       end
 
-      sig do
-        params(_: OpenAI::Models::FileObject::Status::TaggedSymbol)
-          .returns(OpenAI::Models::FileObject::Status::TaggedSymbol)
-      end
+      sig { params(_: Symbol).returns(Symbol) }
       def status=(_)
       end
 
@@ -101,8 +95,8 @@ module OpenAI
           bytes: Integer,
           created_at: Integer,
           filename: String,
-          purpose: OpenAI::Models::FileObject::Purpose::TaggedSymbol,
-          status: OpenAI::Models::FileObject::Status::TaggedSymbol,
+          purpose: Symbol,
+          status: Symbol,
           expires_at: Integer,
           status_details: String,
           object: Symbol
@@ -131,8 +125,8 @@ module OpenAI
               created_at: Integer,
               filename: String,
               object: Symbol,
-              purpose: OpenAI::Models::FileObject::Purpose::TaggedSymbol,
-              status: OpenAI::Models::FileObject::Status::TaggedSymbol,
+              purpose: Symbol,
+              status: Symbol,
               expires_at: Integer,
               status_details: String
             }
@@ -144,32 +138,30 @@ module OpenAI
       # The intended purpose of the file. Supported values are `assistants`,
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
       #   and `vision`.
-      module Purpose
-        extend OpenAI::Enum
+      class Purpose < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Purpose) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::FileObject::Purpose::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        ASSISTANTS = T.let(:assistants, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        ASSISTANTS_OUTPUT = T.let(:assistants_output, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        BATCH = T.let(:batch, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        BATCH_OUTPUT = T.let(:batch_output, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        FINE_TUNE = T.let(:"fine-tune", OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        FINE_TUNE_RESULTS = T.let(:"fine-tune-results", OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        VISION = T.let(:vision, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
+        ASSISTANTS = :assistants
+        ASSISTANTS_OUTPUT = :assistants_output
+        BATCH = :batch
+        BATCH_OUTPUT = :batch_output
+        FINE_TUNE = :"fine-tune"
+        FINE_TUNE_RESULTS = :"fine-tune-results"
+        VISION = :vision
       end
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
       #   `processed`, or `error`.
-      module Status
-        extend OpenAI::Enum
+      class Status < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Status) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::FileObject::Status::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        UPLOADED = T.let(:uploaded, OpenAI::Models::FileObject::Status::TaggedSymbol)
-        PROCESSED = T.let(:processed, OpenAI::Models::FileObject::Status::TaggedSymbol)
-        ERROR = T.let(:error, OpenAI::Models::FileObject::Status::TaggedSymbol)
+        UPLOADED = :uploaded
+        PROCESSED = :processed
+        ERROR = :error
       end
     end
   end

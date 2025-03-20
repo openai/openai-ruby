@@ -45,9 +45,7 @@ module OpenAI
       | :"gpt-3.5-turbo-0125"
       | :"gpt-3.5-turbo-16k-0613"
 
-    module ChatModel
-      extend OpenAI::Enum
-
+    class ChatModel < OpenAI::Enum
       O3_MINI: :"o3-mini"
       O3_MINI_2025_01_31: :"o3-mini-2025-01-31"
       O1: :o1

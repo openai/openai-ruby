@@ -19,14 +19,11 @@ module OpenAI
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
-        sig { returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol)) }
+        sig { returns(T.any(String, Symbol)) }
         def model
         end
 
-        sig do
-          params(_: T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-        end
+        sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
         def model=(_)
         end
 
@@ -44,14 +41,11 @@ module OpenAI
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
-        sig { returns(T.nilable(OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def response_format
         end
 
-        sig do
-          params(_: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-            .returns(OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def response_format=(_)
         end
 
@@ -71,9 +65,9 @@ module OpenAI
         sig do
           params(
             file: T.any(IO, StringIO),
-            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
+            model: T.any(String, Symbol),
             prompt: String,
-            response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
+            response_format: Symbol,
             temperature: Float,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
@@ -87,9 +81,9 @@ module OpenAI
             .returns(
               {
                 file: T.any(IO, StringIO),
-                model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
+                model: T.any(String, Symbol),
                 prompt: String,
-                response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
+                response_format: Symbol,
                 temperature: Float,
                 request_options: OpenAI::RequestOptions
               }
@@ -100,28 +94,24 @@ module OpenAI
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
-        module Model
-          extend OpenAI::Union
+        class Model < OpenAI::Union
+          abstract!
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::AudioModel::OrSymbol)} }
+          Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
-        module ResponseFormat
-          extend OpenAI::Enum
+        class ResponseFormat < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          JSON = T.let(:json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-          TEXT = T.let(:text, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-          SRT = T.let(:srt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-          VERBOSE_JSON =
-            T.let(:verbose_json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-          VTT = T.let(:vtt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
+          JSON = :json
+          TEXT = :text
+          SRT = :srt
+          VERBOSE_JSON = :verbose_json
+          VTT = :vtt
         end
       end
     end

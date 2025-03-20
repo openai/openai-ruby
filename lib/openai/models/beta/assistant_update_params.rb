@@ -161,14 +161,14 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         #   see all of your available models, or see our
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
-        module Model
-          extend OpenAI::Union
-
+        class Model < OpenAI::Union
           # @!group
 
           O3_MINI = :"o3-mini"

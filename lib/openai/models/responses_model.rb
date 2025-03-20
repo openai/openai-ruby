@@ -2,18 +2,16 @@
 
 module OpenAI
   module Models
-    module ResponsesModel
-      extend OpenAI::Union
-
+    # @abstract
+    class ResponsesModel < OpenAI::Union
       variant String
 
       variant enum: -> { OpenAI::Models::ChatModel }
 
       variant enum: -> { OpenAI::Models::ResponsesModel::UnionMember2 }
 
-      module UnionMember2
-        extend OpenAI::Enum
-
+      # @abstract
+      class UnionMember2 < OpenAI::Enum
         O1_PRO = :"o1-pro"
         O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
         COMPUTER_USE_PREVIEW = :"computer-use-preview"

@@ -39,9 +39,7 @@ module OpenAI
           | :failed_to_download_image
           | :image_file_not_found
 
-        module Code
-          extend OpenAI::Enum
-
+        class Code < OpenAI::Enum
           SERVER_ERROR: :server_error
           RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
           INVALID_PROMPT: :invalid_prompt

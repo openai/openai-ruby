@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     module Audio
-      module TranslationCreateResponse
-        extend OpenAI::Union
+      class TranslationCreateResponse < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) { {fixed: T.any(OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose)} }

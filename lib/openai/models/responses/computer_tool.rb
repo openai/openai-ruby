@@ -41,10 +41,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # The type of computer environment to control.
-        module Environment
-          extend OpenAI::Enum
-
+        class Environment < OpenAI::Enum
           MAC = :mac
           WINDOWS = :windows
           UBUNTU = :ubuntu

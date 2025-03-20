@@ -72,11 +72,11 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
-        module Model
-          extend OpenAI::Union
-
+        class Model < OpenAI::Union
           variant String
 
           # ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.
@@ -89,11 +89,11 @@ module OpenAI
           #   end
         end
 
+        # @abstract
+        #
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
-        module ResponseFormat
-          extend OpenAI::Enum
-
+        class ResponseFormat < OpenAI::Enum
           JSON = :json
           TEXT = :text
           SRT = :srt

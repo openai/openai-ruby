@@ -52,9 +52,7 @@ module OpenAI
 
         type filter = :in_progress | :completed | :failed | :cancelled
 
-        module Filter
-          extend OpenAI::Enum
-
+        class Filter < OpenAI::Enum
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
           FAILED: :failed
@@ -65,9 +63,7 @@ module OpenAI
 
         type order = :asc | :desc
 
-        module Order
-          extend OpenAI::Enum
-
+        class Order < OpenAI::Enum
           ASC: :asc
           DESC: :desc
 

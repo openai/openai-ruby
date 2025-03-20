@@ -59,23 +59,23 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @abstract
+      #
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
-      module CompletionWindow
-        extend OpenAI::Enum
-
+      class CompletionWindow < OpenAI::Enum
         NUMBER_24H = :"24h"
 
         finalize!
       end
 
+      # @abstract
+      #
       # The endpoint to be used for all requests in the batch. Currently
       #   `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions`
       #   are supported. Note that `/v1/embeddings` batches are also restricted to a
       #   maximum of 50,000 embedding inputs across all requests in the batch.
-      module Endpoint
-        extend OpenAI::Enum
-
+      class Endpoint < OpenAI::Enum
         V1_RESPONSES = :"/v1/responses"
         V1_CHAT_COMPLETIONS = :"/v1/chat/completions"
         V1_EMBEDDINGS = :"/v1/embeddings"

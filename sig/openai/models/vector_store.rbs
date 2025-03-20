@@ -91,9 +91,7 @@ module OpenAI
 
       type status = :expired | :in_progress | :completed
 
-      module Status
-        extend OpenAI::Enum
-
+      class Status < OpenAI::Enum
         EXPIRED: :expired
         IN_PROGRESS: :in_progress
         COMPLETED: :completed

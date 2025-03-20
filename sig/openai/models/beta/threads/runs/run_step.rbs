@@ -2,6 +2,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        
         class RunStep = Runs::RunStep
 
         module Runs
@@ -99,9 +100,7 @@ module OpenAI
 
               type code = :server_error | :rate_limit_exceeded
 
-              module Code
-                extend OpenAI::Enum
-
+              class Code < OpenAI::Enum
                 SERVER_ERROR: :server_error
                 RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
 
@@ -112,9 +111,7 @@ module OpenAI
             type status =
               :in_progress | :cancelled | :failed | :completed | :expired
 
-            module Status
-              extend OpenAI::Enum
-
+            class Status < OpenAI::Enum
               IN_PROGRESS: :in_progress
               CANCELLED: :cancelled
               FAILED: :failed
@@ -128,17 +125,13 @@ module OpenAI
               OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails
               | OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
 
-            module StepDetails
-              extend OpenAI::Union
-
+            class StepDetails < OpenAI::Union
               def self.variants: -> [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
             end
 
             type type_ = :message_creation | :tool_calls
 
-            module Type
-              extend OpenAI::Enum
-
+            class Type < OpenAI::Enum
               MESSAGE_CREATION: :message_creation
               TOOL_CALLS: :tool_calls
 

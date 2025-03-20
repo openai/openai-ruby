@@ -3,9 +3,7 @@ module OpenAI
     module Responses
       type tool_choice_options = :none | :auto | :required
 
-      module ToolChoiceOptions
-        extend OpenAI::Enum
-
+      class ToolChoiceOptions < OpenAI::Enum
         NONE: :none
         AUTO: :auto
         REQUIRED: :required

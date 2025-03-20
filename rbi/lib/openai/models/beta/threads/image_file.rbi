@@ -18,39 +18,32 @@ module OpenAI
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
-          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)) }
+          sig { returns(T.nilable(Symbol)) }
           def detail
           end
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-          end
+          sig { params(_: Symbol).returns(Symbol) }
           def detail=(_)
           end
 
-          sig do
-            params(file_id: String, detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-              .returns(T.attached_class)
-          end
+          sig { params(file_id: String, detail: Symbol).returns(T.attached_class) }
           def self.new(file_id:, detail: nil)
           end
 
-          sig { override.returns({file_id: String, detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol}) }
+          sig { override.returns({file_id: String, detail: Symbol}) }
           def to_hash
           end
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
-          module Detail
-            extend OpenAI::Enum
+          class Detail < OpenAI::Enum
+            abstract!
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail) }
-            OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail::TaggedSymbol) }
+            Value = type_template(:out) { {fixed: Symbol} }
 
-            AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-            LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-            HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
+            AUTO = :auto
+            LOW = :low
+            HIGH = :high
           end
         end
       end

@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       # Content item used to generate a response.
-      module ResponseItem
-        extend OpenAI::Union
+      class ResponseItem < OpenAI::Union
+        abstract!
 
         Variants =
           type_template(:out) do

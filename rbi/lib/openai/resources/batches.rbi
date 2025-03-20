@@ -6,8 +6,8 @@ module OpenAI
       # Creates and executes a batch from an uploaded file of requests
       sig do
         params(
-          completion_window: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol,
-          endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
+          completion_window: Symbol,
+          endpoint: Symbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))

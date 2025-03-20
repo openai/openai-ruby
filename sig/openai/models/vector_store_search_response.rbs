@@ -32,9 +32,7 @@ module OpenAI
 
       type attribute = String | Float | bool
 
-      module Attribute
-        extend OpenAI::Union
-
+      class Attribute < OpenAI::Union
         def self.variants: -> [String, Float, bool]
       end
 
@@ -58,9 +56,7 @@ module OpenAI
 
         type type_ = :text
 
-        module Type
-          extend OpenAI::Enum
-
+        class Type < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::VectorStoreSearchResponse::Content::type_]

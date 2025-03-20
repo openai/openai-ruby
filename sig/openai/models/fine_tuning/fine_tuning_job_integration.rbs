@@ -1,8 +1,10 @@
 module OpenAI
   module Models
+    
     class FineTuningJobIntegration = FineTuning::FineTuningJobIntegration
 
     module FineTuning
+      
       class FineTuningJobIntegration = OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject
     end
   end

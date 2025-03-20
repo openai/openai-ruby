@@ -13,9 +13,7 @@ module OpenAI
           | :incomplete
           | :expired
 
-        module RunStatus
-          extend OpenAI::Enum
-
+        class RunStatus < OpenAI::Enum
           QUEUED: :queued
           IN_PROGRESS: :in_progress
           REQUIRES_ACTION: :requires_action

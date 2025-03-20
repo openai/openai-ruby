@@ -28,9 +28,7 @@ module OpenAI
 
       type finish_reason = :stop | :length | :content_filter
 
-      module FinishReason
-        extend OpenAI::Enum
-
+      class FinishReason < OpenAI::Enum
         STOP: :stop
         LENGTH: :length
         CONTENT_FILTER: :content_filter

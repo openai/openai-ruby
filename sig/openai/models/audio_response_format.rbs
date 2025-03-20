@@ -2,9 +2,7 @@ module OpenAI
   module Models
     type audio_response_format = :json | :text | :srt | :verbose_json | :vtt
 
-    module AudioResponseFormat
-      extend OpenAI::Enum
-
+    class AudioResponseFormat < OpenAI::Enum
       JSON: :json
       TEXT: :text
       SRT: :srt

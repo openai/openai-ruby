@@ -6,7 +6,7 @@ module OpenAI
       # Creates a completion for the provided prompt and parameters.
       sig do
         params(
-          model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
+          model: T.any(String, Symbol),
           prompt: T.nilable(
             T.any(
               String,
@@ -149,7 +149,7 @@ module OpenAI
       # Creates a completion for the provided prompt and parameters.
       sig do
         params(
-          model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
+          model: T.any(String, Symbol),
           prompt: T.nilable(
             T.any(
               String,

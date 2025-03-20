@@ -13,9 +13,7 @@ module OpenAI
         | OpenAI::Models::Beta::RunStreamEvent::ThreadRunCancelled
         | OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired
 
-      module RunStreamEvent
-        extend OpenAI::Union
-
+      class RunStreamEvent < OpenAI::Union
         type thread_run_created =
           {
             data: OpenAI::Models::Beta::Threads::Run,

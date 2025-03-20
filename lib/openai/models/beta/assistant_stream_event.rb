@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     module Beta
+      # @abstract
+      #
       # Represents an event emitted when streaming a Run.
       #
       #   Each event in a server-sent events stream has an `event` and `data` property:
@@ -23,9 +25,7 @@ module OpenAI
       #   gracefully in your code. See the
       #   [Assistants API quickstart](https://platform.openai.com/docs/assistants/overview)
       #   to learn how to integrate the Assistants API with streaming.
-      module AssistantStreamEvent
-        extend OpenAI::Union
-
+      class AssistantStreamEvent < OpenAI::Union
         discriminator :event
 
         # Occurs when a new [thread](https://platform.openai.com/docs/api-reference/threads/object) is created.

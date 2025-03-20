@@ -109,7 +109,7 @@ module OpenAI
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
+            model: T.nilable(T.any(String, Symbol)),
             parallel_tool_calls: T::Boolean,
             response_format: T.nilable(
               T.any(
@@ -121,12 +121,7 @@ module OpenAI
             ),
             temperature: T.nilable(Float),
             thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
-            tool_choice: T.nilable(
-              T.any(
-                OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
-              )
-            ),
+            tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
             tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources),
             tools: T.nilable(
               T::Array[
@@ -248,7 +243,7 @@ module OpenAI
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
+            model: T.nilable(T.any(String, Symbol)),
             parallel_tool_calls: T::Boolean,
             response_format: T.nilable(
               T.any(
@@ -260,12 +255,7 @@ module OpenAI
             ),
             temperature: T.nilable(Float),
             thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
-            tool_choice: T.nilable(
-              T.any(
-                OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
-              )
-            ),
+            tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
             tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources),
             tools: T.nilable(
               T::Array[

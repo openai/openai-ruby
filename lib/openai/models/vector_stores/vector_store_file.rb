@@ -129,10 +129,10 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @abstract
+          #
           # One of `server_error` or `rate_limit_exceeded`.
-          module Code
-            extend OpenAI::Enum
-
+          class Code < OpenAI::Enum
             SERVER_ERROR = :server_error
             UNSUPPORTED_FILE = :unsupported_file
             INVALID_FILE = :invalid_file
@@ -141,12 +141,12 @@ module OpenAI
           end
         end
 
+        # @abstract
+        #
         # The status of the vector store file, which can be either `in_progress`,
         #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         #   vector store file is ready for use.
-        module Status
-          extend OpenAI::Enum
-
+        class Status < OpenAI::Enum
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           CANCELLED = :cancelled
@@ -155,9 +155,8 @@ module OpenAI
           finalize!
         end
 
-        module Attribute
-          extend OpenAI::Union
-
+        # @abstract
+        class Attribute < OpenAI::Union
           variant String
 
           variant Float

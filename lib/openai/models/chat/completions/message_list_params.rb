@@ -50,11 +50,11 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @abstract
+          #
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           #   for descending order. Defaults to `asc`.
-          module Order
-            extend OpenAI::Enum
-
+          class Order < OpenAI::Enum
             ASC = :asc
             DESC = :desc
 

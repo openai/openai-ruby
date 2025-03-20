@@ -1,6 +1,7 @@
 module OpenAI
   module Models
-    module ChatCompletionContentPart = Chat::ChatCompletionContentPart
+    
+    class ChatCompletionContentPart = Chat::ChatCompletionContentPart
 
     module Chat
       type chat_completion_content_part =
@@ -9,9 +10,7 @@ module OpenAI
         | OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
         | OpenAI::Models::Chat::ChatCompletionContentPart::File
 
-      module ChatCompletionContentPart
-        extend OpenAI::Union
-
+      class ChatCompletionContentPart < OpenAI::Union
         type file =
           {
             file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File,

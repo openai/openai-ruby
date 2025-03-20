@@ -5,18 +5,14 @@ module OpenAI
       | OpenAI::Models::chat_model
       | OpenAI::Models::AllModels::union_member2
 
-    module AllModels
-      extend OpenAI::Union
-
+    class AllModels < OpenAI::Union
       type union_member2 =
         :"o1-pro"
         | :"o1-pro-2025-03-19"
         | :"computer-use-preview"
         | :"computer-use-preview-2025-03-11"
 
-      module UnionMember2
-        extend OpenAI::Enum
-
+      class UnionMember2 < OpenAI::Enum
         O1_PRO: :"o1-pro"
         O1_PRO_2025_03_19: :"o1-pro-2025-03-19"
         COMPUTER_USE_PREVIEW: :"computer-use-preview"

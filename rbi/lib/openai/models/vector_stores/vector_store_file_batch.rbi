@@ -45,14 +45,11 @@ module OpenAI
 
         # The status of the vector store files batch, which can be either `in_progress`,
         #   `completed`, `cancelled` or `failed`.
-        sig { returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol) }
+        sig { returns(Symbol) }
         def status
         end
 
-        sig do
-          params(_: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def status=(_)
         end
 
@@ -74,7 +71,7 @@ module OpenAI
             id: String,
             created_at: Integer,
             file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
-            status: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol,
+            status: Symbol,
             vector_store_id: String,
             object: Symbol
           )
@@ -91,7 +88,7 @@ module OpenAI
                 created_at: Integer,
                 file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
                 object: Symbol,
-                status: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol,
+                status: Symbol,
                 vector_store_id: String
               }
             )
@@ -174,18 +171,15 @@ module OpenAI
 
         # The status of the vector store files batch, which can be either `in_progress`,
         #   `completed`, `cancelled` or `failed`.
-        module Status
-          extend OpenAI::Enum
+        class Status < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
+          IN_PROGRESS = :in_progress
+          COMPLETED = :completed
+          CANCELLED = :cancelled
+          FAILED = :failed
         end
       end
     end

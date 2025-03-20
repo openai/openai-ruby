@@ -30,11 +30,11 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @abstract
+        #
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
-        module Format
-          extend OpenAI::Enum
-
+        class Format < OpenAI::Enum
           WAV = :wav
           MP3 = :mp3
           FLAC = :flac
@@ -44,11 +44,11 @@ module OpenAI
           finalize!
         end
 
+        # @abstract
+        #
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
-        module Voice
-          extend OpenAI::Enum
-
+        class Voice < OpenAI::Enum
           ALLOY = :alloy
           ASH = :ash
           BALLAD = :ballad

@@ -3,10 +3,10 @@
 module OpenAI
   module Models
     module Responses
+      # @abstract
+      #
       # A text input to the model.
-      module ResponseInputContent
-        extend OpenAI::Union
-
+      class ResponseInputContent < OpenAI::Union
         discriminator :type
 
         # A text input to the model.

@@ -51,14 +51,11 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def status
         end
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def status=(_)
         end
 
@@ -66,14 +63,7 @@ module OpenAI
         #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
         #   for more information.
         sig do
-          params(
-            arguments: String,
-            call_id: String,
-            name: String,
-            id: String,
-            status: OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol,
-            type: Symbol
-          )
+          params(arguments: String, call_id: String, name: String, id: String, status: Symbol, type: Symbol)
             .returns(T.attached_class)
         end
         def self.new(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call)
@@ -81,33 +71,28 @@ module OpenAI
 
         sig do
           override
-            .returns(
-              {
-                arguments: String,
-                call_id: String,
-                name: String,
-                type: Symbol,
-                id: String,
-                status: OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol
-              }
-            )
+            .returns({
+                       arguments: String,
+                       call_id: String,
+                       name: String,
+                       type: Symbol,
+                       id: String,
+                       status: Symbol
+                     })
         end
         def to_hash
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        module Status
-          extend OpenAI::Enum
+        class Status < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)
-          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)
+          IN_PROGRESS = :in_progress
+          COMPLETED = :completed
+          INCOMPLETE = :incomplete
         end
       end
     end

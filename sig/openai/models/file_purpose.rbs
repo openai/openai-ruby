@@ -3,9 +3,7 @@ module OpenAI
     type file_purpose =
       :assistants | :batch | :"fine-tune" | :vision | :user_data | :evals
 
-    module FilePurpose
-      extend OpenAI::Enum
-
+    class FilePurpose < OpenAI::Enum
       ASSISTANTS: :assistants
       BATCH: :batch
       FINE_TUNE: :"fine-tune"

@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     module Responses
+      # @abstract
+      #
       # Specify additional output data to include in the model response. Currently
       #   supported values are:
       #
@@ -11,9 +13,7 @@ module OpenAI
       #   - `message.input_image.image_url`: Include image urls from the input message.
       #   - `computer_call_output.output.image_url`: Include image urls from the computer
       #     call output.
-      module ResponseIncludable
-        extend OpenAI::Enum
-
+      class ResponseIncludable < OpenAI::Enum
         FILE_SEARCH_CALL_RESULTS = :"file_search_call.results"
         MESSAGE_INPUT_IMAGE_IMAGE_URL = :"message.input_image.image_url"
         COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL = :"computer_call_output.output.image_url"

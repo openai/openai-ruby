@@ -1,5 +1,6 @@
 module OpenAI
   module Models
+    
     class VectorStoreFileBatch = VectorStores::VectorStoreFileBatch
 
     module VectorStores
@@ -70,9 +71,7 @@ module OpenAI
 
         type status = :in_progress | :completed | :cancelled | :failed
 
-        module Status
-          extend OpenAI::Enum
-
+        class Status < OpenAI::Enum
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
           CANCELLED: :cancelled

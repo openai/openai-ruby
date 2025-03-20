@@ -128,8 +128,8 @@ module OpenAI
         end
 
         # A citation to a file.
-        module Annotation
-          extend OpenAI::Union
+        class Annotation < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) do

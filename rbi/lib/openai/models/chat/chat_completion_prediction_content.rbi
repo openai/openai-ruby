@@ -52,8 +52,8 @@ module OpenAI
         # The content that should be matched when generating a model response. If
         #   generated tokens would match this content, the entire model response can be
         #   returned much more quickly.
-        module Content
-          extend OpenAI::Union
+        class Content < OpenAI::Union
+          abstract!
 
           Variants =
             type_template(:out) { {fixed: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])} }

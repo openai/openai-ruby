@@ -3,10 +3,10 @@
 module OpenAI
   module Models
     module Responses
+      # @abstract
+      #
       # An output message from the model.
-      module ResponseOutputItem
-        extend OpenAI::Union
-
+      class ResponseOutputItem < OpenAI::Union
         discriminator :type
 
         # An output message from the model.

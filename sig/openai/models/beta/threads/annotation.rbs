@@ -6,9 +6,7 @@ module OpenAI
           OpenAI::Models::Beta::Threads::FileCitationAnnotation
           | OpenAI::Models::Beta::Threads::FilePathAnnotation
 
-        module Annotation
-          extend OpenAI::Union
-
+        class Annotation < OpenAI::Union
           def self.variants: -> [OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation]
         end
       end

@@ -93,11 +93,11 @@ module OpenAI
 
                 # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+                # @abstract
+                #
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
-                module Ranker
-                  extend OpenAI::Enum
-
+                class Ranker < OpenAI::Enum
                   AUTO = :auto
                   DEFAULT_2024_08_21 = :default_2024_08_21
 
@@ -179,10 +179,10 @@ module OpenAI
 
                   # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+                  # @abstract
+                  #
                   # The type of the content.
-                  module Type
-                    extend OpenAI::Enum
-
+                  class Type < OpenAI::Enum
                     TEXT = :text
 
                     finalize!

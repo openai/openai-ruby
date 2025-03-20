@@ -2,10 +2,10 @@
 
 module OpenAI
   module Models
+    # @abstract
+    #
     # The strategy used to chunk the file.
-    module FileChunkingStrategy
-      extend OpenAI::Union
-
+    class FileChunkingStrategy < OpenAI::Union
       discriminator :type
 
       variant :static, -> { OpenAI::Models::StaticFileChunkingStrategyObject }

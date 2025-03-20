@@ -23,14 +23,11 @@ module OpenAI
         end
 
         # The log level of the event.
-        sig { returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol) }
+        sig { returns(Symbol) }
         def level
         end
 
-        sig do
-          params(_: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-            .returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def level=(_)
         end
 
@@ -62,14 +59,11 @@ module OpenAI
         end
 
         # The type of event.
-        sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)) }
+        sig { returns(T.nilable(Symbol)) }
         def type
         end
 
-        sig do
-          params(_: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
-            .returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
-        end
+        sig { params(_: Symbol).returns(Symbol) }
         def type=(_)
         end
 
@@ -78,10 +72,10 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            level: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol,
+            level: Symbol,
             message: String,
             data: T.anything,
-            type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol,
+            type: Symbol,
             object: Symbol
           )
             .returns(T.attached_class)
@@ -95,11 +89,11 @@ module OpenAI
               {
                 id: String,
                 created_at: Integer,
-                level: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol,
+                level: Symbol,
                 message: String,
                 object: Symbol,
                 data: T.anything,
-                type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol
+                type: Symbol
               }
             )
         end
@@ -107,28 +101,24 @@ module OpenAI
         end
 
         # The log level of the event.
-        module Level
-          extend OpenAI::Enum
+        class Level < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          INFO = T.let(:info, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-          WARN = T.let(:warn, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-          ERROR = T.let(:error, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
+          INFO = :info
+          WARN = :warn
+          ERROR = :error
         end
 
         # The type of event.
-        module Type
-          extend OpenAI::Enum
+        class Type < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          MESSAGE = T.let(:message, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
-          METRICS = T.let(:metrics, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
+          MESSAGE = :message
+          METRICS = :metrics
         end
       end
     end

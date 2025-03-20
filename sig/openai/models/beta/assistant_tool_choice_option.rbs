@@ -5,14 +5,10 @@ module OpenAI
         OpenAI::Models::Beta::AssistantToolChoiceOption::auto
         | OpenAI::Models::Beta::AssistantToolChoice
 
-      module AssistantToolChoiceOption
-        extend OpenAI::Union
-
+      class AssistantToolChoiceOption < OpenAI::Union
         type auto = :none | :auto | :required
 
-        module Auto
-          extend OpenAI::Enum
-
+        class Auto < OpenAI::Enum
           NONE: :none
           AUTO: :auto
           REQUIRED: :required

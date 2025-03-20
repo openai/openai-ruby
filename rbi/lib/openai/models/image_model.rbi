@@ -2,14 +2,13 @@
 
 module OpenAI
   module Models
-    module ImageModel
-      extend OpenAI::Enum
+    class ImageModel < OpenAI::Enum
+      abstract!
 
-      TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageModel) }
-      OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageModel::TaggedSymbol) }
+      Value = type_template(:out) { {fixed: Symbol} }
 
-      DALL_E_2 = T.let(:"dall-e-2", OpenAI::Models::ImageModel::OrSymbol)
-      DALL_E_3 = T.let(:"dall-e-3", OpenAI::Models::ImageModel::OrSymbol)
+      DALL_E_2 = :"dall-e-2"
+      DALL_E_3 = :"dall-e-3"
     end
   end
 end

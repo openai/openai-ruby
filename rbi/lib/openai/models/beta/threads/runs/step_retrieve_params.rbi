@@ -32,14 +32,11 @@ module OpenAI
             #   See the
             #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             #   for more information.
-            sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
+            sig { returns(T.nilable(T::Array[Symbol])) }
             def include
             end
 
-            sig do
-              params(_: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-                .returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-            end
+            sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
             def include=(_)
             end
 
@@ -47,7 +44,7 @@ module OpenAI
               params(
                 thread_id: String,
                 run_id: String,
-                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+                include: T::Array[Symbol],
                 request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
               )
                 .returns(T.attached_class)
@@ -61,7 +58,7 @@ module OpenAI
                   {
                     thread_id: String,
                     run_id: String,
-                    include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+                    include: T::Array[Symbol],
                     request_options: OpenAI::RequestOptions
                   }
                 )

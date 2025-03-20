@@ -140,9 +140,7 @@ module OpenAI
 
             type reason = :max_completion_tokens | :max_prompt_tokens
 
-            module Reason
-              extend OpenAI::Enum
-
+            class Reason < OpenAI::Enum
               MAX_COMPLETION_TOKENS: :max_completion_tokens
               MAX_PROMPT_TOKENS: :max_prompt_tokens
 
@@ -170,9 +168,7 @@ module OpenAI
 
             type code = :server_error | :rate_limit_exceeded | :invalid_prompt
 
-            module Code
-              extend OpenAI::Enum
-
+            class Code < OpenAI::Enum
               SERVER_ERROR: :server_error
               RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
               INVALID_PROMPT: :invalid_prompt
@@ -235,9 +231,7 @@ module OpenAI
 
             type type_ = :auto | :last_messages
 
-            module Type
-              extend OpenAI::Enum
-
+            class Type < OpenAI::Enum
               AUTO: :auto
               LAST_MESSAGES: :last_messages
 

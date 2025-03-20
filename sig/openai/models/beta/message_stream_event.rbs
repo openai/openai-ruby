@@ -8,9 +8,7 @@ module OpenAI
         | OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted
         | OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete
 
-      module MessageStreamEvent
-        extend OpenAI::Union
-
+      class MessageStreamEvent < OpenAI::Union
         type thread_message_created =
           {
             data: OpenAI::Models::Beta::Threads::Message,

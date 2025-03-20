@@ -12,32 +12,23 @@ module OpenAI
       #
       #   `none` is the default when no tools are present. `auto` is the default if tools
       #   are present.
-      module ChatCompletionToolChoiceOption
-        extend OpenAI::Union
+      class ChatCompletionToolChoiceOption < OpenAI::Union
+        abstract!
 
         Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionNamedToolChoice
-              )
-            }
-          end
+          type_template(:out) { {fixed: T.any(Symbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice)} }
 
         # `none` means the model will not call any tool and instead generates a message.
         #   `auto` means the model can pick between generating a message or calling one or
         #   more tools. `required` means the model must call one or more tools.
-        module Auto
-          extend OpenAI::Enum
+        class Auto < OpenAI::Enum
+          abstract!
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol) }
+          Value = type_template(:out) { {fixed: Symbol} }
 
-          NONE = T.let(:none, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol)
-          AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol)
-          REQUIRED = T.let(:required, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol)
+          NONE = :none
+          AUTO = :auto
+          REQUIRED = :required
         end
       end
     end

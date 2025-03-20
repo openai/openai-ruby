@@ -7,12 +7,12 @@ module OpenAI
         # Create an assistant with a model and instructions.
         sig do
           params(
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
+            model: T.any(String, Symbol),
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
+            reasoning_effort: T.nilable(Symbol),
             response_format: T.nilable(
               T.any(
                 Symbol,
@@ -129,9 +129,9 @@ module OpenAI
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol),
+            model: T.any(String, Symbol),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
+            reasoning_effort: T.nilable(Symbol),
             response_format: T.nilable(
               T.any(
                 Symbol,
@@ -234,7 +234,7 @@ module OpenAI
             after: String,
             before: String,
             limit: Integer,
-            order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
+            order: Symbol,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::Beta::Assistant])

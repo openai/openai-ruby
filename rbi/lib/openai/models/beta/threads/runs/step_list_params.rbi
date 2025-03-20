@@ -48,14 +48,11 @@ module OpenAI
             #   See the
             #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             #   for more information.
-            sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
+            sig { returns(T.nilable(T::Array[Symbol])) }
             def include
             end
 
-            sig do
-              params(_: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-                .returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-            end
+            sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
             def include=(_)
             end
 
@@ -71,14 +68,11 @@ module OpenAI
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
             #   order and `desc` for descending order.
-            sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol)) }
+            sig { returns(T.nilable(Symbol)) }
             def order
             end
 
-            sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol)
-                .returns(OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol)
-            end
+            sig { params(_: Symbol).returns(Symbol) }
             def order=(_)
             end
 
@@ -87,9 +81,9 @@ module OpenAI
                 thread_id: String,
                 after: String,
                 before: String,
-                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+                include: T::Array[Symbol],
                 limit: Integer,
-                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
+                order: Symbol,
                 request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
               )
                 .returns(T.attached_class)
@@ -104,9 +98,9 @@ module OpenAI
                     thread_id: String,
                     after: String,
                     before: String,
-                    include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+                    include: T::Array[Symbol],
                     limit: Integer,
-                    order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
+                    order: Symbol,
                     request_options: OpenAI::RequestOptions
                   }
                 )
@@ -116,15 +110,13 @@ module OpenAI
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
             #   order and `desc` for descending order.
-            module Order
-              extend OpenAI::Enum
+            class Order < OpenAI::Enum
+              abstract!
 
-              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol) }
+              Value = type_template(:out) { {fixed: Symbol} }
 
-              ASC = T.let(:asc, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol)
-              DESC = T.let(:desc, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol)
+              ASC = :asc
+              DESC = :desc
             end
           end
         end

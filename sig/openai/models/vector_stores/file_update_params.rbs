@@ -26,9 +26,7 @@ module OpenAI
 
         type attribute = String | Float | bool
 
-        module Attribute
-          extend OpenAI::Union
-
+        class Attribute < OpenAI::Union
           def self.variants: -> [String, Float, bool]
         end
       end

@@ -11,18 +11,14 @@ module OpenAI
       #   - `message.input_image.image_url`: Include image urls from the input message.
       #   - `computer_call_output.output.image_url`: Include image urls from the computer
       #     call output.
-      module ResponseIncludable
-        extend OpenAI::Enum
+      class ResponseIncludable < OpenAI::Enum
+        abstract!
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseIncludable) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol) }
+        Value = type_template(:out) { {fixed: Symbol} }
 
-        FILE_SEARCH_CALL_RESULTS =
-          T.let(:"file_search_call.results", OpenAI::Models::Responses::ResponseIncludable::OrSymbol)
-        MESSAGE_INPUT_IMAGE_IMAGE_URL =
-          T.let(:"message.input_image.image_url", OpenAI::Models::Responses::ResponseIncludable::OrSymbol)
-        COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
-          T.let(:"computer_call_output.output.image_url", OpenAI::Models::Responses::ResponseIncludable::OrSymbol)
+        FILE_SEARCH_CALL_RESULTS = :"file_search_call.results"
+        MESSAGE_INPUT_IMAGE_IMAGE_URL = :"message.input_image.image_url"
+        COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL = :"computer_call_output.output.image_url"
       end
     end
   end

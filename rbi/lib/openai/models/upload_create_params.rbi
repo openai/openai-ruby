@@ -40,11 +40,11 @@ module OpenAI
       #
       #   See the
       #   [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
-      sig { returns(OpenAI::Models::FilePurpose::OrSymbol) }
+      sig { returns(Symbol) }
       def purpose
       end
 
-      sig { params(_: OpenAI::Models::FilePurpose::OrSymbol).returns(OpenAI::Models::FilePurpose::OrSymbol) }
+      sig { params(_: Symbol).returns(Symbol) }
       def purpose=(_)
       end
 
@@ -53,7 +53,7 @@ module OpenAI
           bytes: Integer,
           filename: String,
           mime_type: String,
-          purpose: OpenAI::Models::FilePurpose::OrSymbol,
+          purpose: Symbol,
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
         )
           .returns(T.attached_class)
@@ -68,7 +68,7 @@ module OpenAI
               bytes: Integer,
               filename: String,
               mime_type: String,
-              purpose: OpenAI::Models::FilePurpose::OrSymbol,
+              purpose: Symbol,
               request_options: OpenAI::RequestOptions
             }
           )

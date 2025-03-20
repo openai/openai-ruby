@@ -2,11 +2,11 @@
 
 module OpenAI
   module Models
+    # @abstract
+    #
     # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
     #   strategy. Only applicable if `file_ids` is non-empty.
-    module FileChunkingStrategyParam
-      extend OpenAI::Union
-
+    class FileChunkingStrategyParam < OpenAI::Union
       discriminator :type
 
       # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of `800` and `chunk_overlap_tokens` of `400`.

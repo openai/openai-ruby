@@ -153,9 +153,7 @@ module OpenAI
 
         type harassment = :text
 
-        module Harassment
-          extend OpenAI::Enum
-
+        class Harassment < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment]
@@ -163,9 +161,7 @@ module OpenAI
 
         type harassment_threatening = :text
 
-        module HarassmentThreatening
-          extend OpenAI::Enum
-
+        class HarassmentThreatening < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening]
@@ -173,9 +169,7 @@ module OpenAI
 
         type hate = :text
 
-        module Hate
-          extend OpenAI::Enum
-
+        class Hate < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate]
@@ -183,9 +177,7 @@ module OpenAI
 
         type hate_threatening = :text
 
-        module HateThreatening
-          extend OpenAI::Enum
-
+        class HateThreatening < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate_threatening]
@@ -193,9 +185,7 @@ module OpenAI
 
         type illicit = :text
 
-        module Illicit
-          extend OpenAI::Enum
-
+        class Illicit < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit]
@@ -203,9 +193,7 @@ module OpenAI
 
         type illicit_violent = :text
 
-        module IllicitViolent
-          extend OpenAI::Enum
-
+        class IllicitViolent < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit_violent]
@@ -213,9 +201,7 @@ module OpenAI
 
         type self_harm = :text | :image
 
-        module SelfHarm
-          extend OpenAI::Enum
-
+        class SelfHarm < OpenAI::Enum
           TEXT: :text
           IMAGE: :image
 
@@ -224,9 +210,7 @@ module OpenAI
 
         type self_harm_instruction = :text | :image
 
-        module SelfHarmInstruction
-          extend OpenAI::Enum
-
+        class SelfHarmInstruction < OpenAI::Enum
           TEXT: :text
           IMAGE: :image
 
@@ -235,9 +219,7 @@ module OpenAI
 
         type self_harm_intent = :text | :image
 
-        module SelfHarmIntent
-          extend OpenAI::Enum
-
+        class SelfHarmIntent < OpenAI::Enum
           TEXT: :text
           IMAGE: :image
 
@@ -246,9 +228,7 @@ module OpenAI
 
         type sexual = :text | :image
 
-        module Sexual
-          extend OpenAI::Enum
-
+        class Sexual < OpenAI::Enum
           TEXT: :text
           IMAGE: :image
 
@@ -257,9 +237,7 @@ module OpenAI
 
         type sexual_minor = :text
 
-        module SexualMinor
-          extend OpenAI::Enum
-
+        class SexualMinor < OpenAI::Enum
           TEXT: :text
 
           def self.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual_minor]
@@ -267,9 +245,7 @@ module OpenAI
 
         type violence = :text | :image
 
-        module Violence
-          extend OpenAI::Enum
-
+        class Violence < OpenAI::Enum
           TEXT: :text
           IMAGE: :image
 
@@ -278,9 +254,7 @@ module OpenAI
 
         type violence_graphic = :text | :image
 
-        module ViolenceGraphic
-          extend OpenAI::Enum
-
+        class ViolenceGraphic < OpenAI::Enum
           TEXT: :text
           IMAGE: :image
 
