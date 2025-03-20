@@ -6,6 +6,7 @@ module OpenAI
           input: String,
           model: OpenAI::Models::Audio::SpeechCreateParams::model,
           voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
+          instructions: String,
           response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
           speed: Float
         }
@@ -21,6 +22,10 @@ module OpenAI
 
         attr_accessor voice: OpenAI::Models::Audio::SpeechCreateParams::voice
 
+        attr_reader instructions: String?
+
+        def instructions=: (String) -> String
+
         attr_reader response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format?
 
         def response_format=: (
@@ -35,6 +40,7 @@ module OpenAI
           input: String,
           model: OpenAI::Models::Audio::SpeechCreateParams::model,
           voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
+          ?instructions: String,
           ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
           ?speed: Float,
           ?request_options: OpenAI::request_opts

@@ -16,11 +16,26 @@ module OpenAI
         required :file, IO
 
         # @!attribute model
-        #   ID of the model to use. Only `whisper-1` (which is powered by our open source
-        #     Whisper V2 model) is currently available.
+        #   ID of the model to use. The options are `gpt-4o-transcribe`,
+        #     `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
+        #     Whisper V2 model).
         #
         #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Models::Audio::TranscriptionCreateParams::Model }
+
+        # @!attribute [r] include
+        #   Additional information to include in the transcription response. `logprobs` will
+        #     return the log probabilities of the tokens in the response to understand the
+        #     model's confidence in the transcription. `logprobs` only works with
+        #     response_format set to `json` and only with the models `gpt-4o-transcribe` and
+        #     `gpt-4o-mini-transcribe`.
+        #
+        #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>, nil]
+        optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionInclude] }
+
+        # @!parse
+        #   # @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
+        #   attr_writer :include
 
         # @!attribute [r] language
         #   The language of the input audio. Supplying the input language in
@@ -49,7 +64,8 @@ module OpenAI
 
         # @!attribute [r] response_format
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
-        #     `verbose_json`, or `vtt`.
+        #     `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
+        #     the only supported format is `json`.
         #
         #   @return [Symbol, OpenAI::Models::AudioResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Models::AudioResponseFormat }
@@ -90,6 +106,7 @@ module OpenAI
         # @!parse
         #   # @param file [IO, StringIO]
         #   # @param model [String, Symbol, OpenAI::Models::AudioModel]
+        #   # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
         #   # @param language [String]
         #   # @param prompt [String]
         #   # @param response_format [Symbol, OpenAI::Models::AudioResponseFormat]
@@ -100,6 +117,7 @@ module OpenAI
         #   def initialize(
         #     file:,
         #     model:,
+        #     include: nil,
         #     language: nil,
         #     prompt: nil,
         #     response_format: nil,
@@ -115,12 +133,13 @@ module OpenAI
 
         # @abstract
         #
-        # ID of the model to use. Only `whisper-1` (which is powered by our open source
-        #   Whisper V2 model) is currently available.
+        # ID of the model to use. The options are `gpt-4o-transcribe`,
+        #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
+        #   Whisper V2 model).
         class Model < OpenAI::Union
           variant String
 
-          # ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.
+          # ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source Whisper V2 model).
           variant enum: -> { OpenAI::Models::AudioModel }
 
           # @!parse

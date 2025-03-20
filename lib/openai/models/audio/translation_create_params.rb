@@ -39,11 +39,11 @@ module OpenAI
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
         #     `verbose_json`, or `vtt`.
         #
-        #   @return [Symbol, OpenAI::Models::AudioResponseFormat, nil]
-        optional :response_format, enum: -> { OpenAI::Models::AudioResponseFormat }
+        #   @return [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat, nil]
+        optional :response_format, enum: -> { OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat }
 
         # @!parse
-        #   # @return [Symbol, OpenAI::Models::AudioResponseFormat]
+        #   # @return [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat]
         #   attr_writer :response_format
 
         # @!attribute [r] temperature
@@ -64,7 +64,7 @@ module OpenAI
         #   # @param file [IO, StringIO]
         #   # @param model [String, Symbol, OpenAI::Models::AudioModel]
         #   # @param prompt [String]
-        #   # @param response_format [Symbol, OpenAI::Models::AudioResponseFormat]
+        #   # @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat]
         #   # @param temperature [Float]
         #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         #   #
@@ -87,6 +87,20 @@ module OpenAI
           #     # @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
           #     def variants; end
           #   end
+        end
+
+        # @abstract
+        #
+        # The format of the output, in one of these options: `json`, `text`, `srt`,
+        #   `verbose_json`, or `vtt`.
+        class ResponseFormat < OpenAI::Enum
+          JSON = :json
+          TEXT = :text
+          SRT = :srt
+          VERBOSE_JSON = :verbose_json
+          VTT = :vtt
+
+          finalize!
         end
       end
     end
