@@ -216,14 +216,10 @@ module OpenAI
             end
 
           ArrayOfContentPartArray =
-            T.type_alias do
-              T::Array[
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-              )
-              ]
-            end
+            T.let(
+              OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart],
+              OpenAI::Converter
+            )
 
           # Learn about
           #   [text inputs](https://platform.openai.com/docs/guides/text-generation).

@@ -21,7 +21,7 @@ module OpenAI
             training_file: String,
             hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
             integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
             seed: T.nilable(Integer),
             suffix: T.nilable(String),

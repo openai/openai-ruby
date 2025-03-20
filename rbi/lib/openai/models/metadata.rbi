@@ -2,6 +2,6 @@
 
 module OpenAI
   module Models
-    Metadata = T.type_alias { T.nilable(T::Hash[Symbol, String]) }
+    Metadata = T.let(OpenAI::HashOf[String], OpenAI::Converter)
   end
 end

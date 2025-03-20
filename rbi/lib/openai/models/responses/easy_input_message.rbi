@@ -6,13 +6,48 @@ module OpenAI
       class EasyInputMessage < OpenAI::BaseModel
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
-        sig { returns(T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList)) }
+        sig do
+          returns(
+            T.any(
+              String,
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+              ]
+            )
+          )
+        end
         def content
         end
 
         sig do
-          params(_: T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList))
-            .returns(T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList))
+          params(
+            _: T.any(
+              String,
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+              ]
+            )
+          )
+            .returns(
+              T.any(
+                String,
+                T::Array[
+                T.any(
+                  OpenAI::Models::Responses::ResponseInputText,
+                  OpenAI::Models::Responses::ResponseInputImage,
+                  OpenAI::Models::Responses::ResponseInputFile
+                )
+                ]
+              )
+            )
         end
         def content=(_)
         end
@@ -43,7 +78,16 @@ module OpenAI
         #   interactions.
         sig do
           params(
-            content: T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList),
+            content: T.any(
+              String,
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
+              ]
+            ),
             role: Symbol,
             type: Symbol
           )
@@ -55,7 +99,20 @@ module OpenAI
         sig do
           override
             .returns(
-              {content: T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList), role: Symbol, type: Symbol}
+              {
+                content: T.any(
+                  String,
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Responses::ResponseInputText,
+                    OpenAI::Models::Responses::ResponseInputImage,
+                    OpenAI::Models::Responses::ResponseInputFile
+                  )
+                  ]
+                ),
+                role: Symbol,
+                type: Symbol
+              }
             )
         end
         def to_hash
@@ -67,7 +124,20 @@ module OpenAI
           abstract!
 
           Variants =
-            type_template(:out) { {fixed: T.any(String, OpenAI::Models::Responses::ResponseInputMessageContentList)} }
+            type_template(:out) do
+              {
+                fixed: T.any(
+                  String,
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Responses::ResponseInputText,
+                    OpenAI::Models::Responses::ResponseInputImage,
+                    OpenAI::Models::Responses::ResponseInputFile
+                  )
+                  ]
+                )
+              }
+            end
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or

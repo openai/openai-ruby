@@ -141,16 +141,7 @@ module OpenAI
             end
 
           ChatCompletionContentPartArray =
-            T.type_alias do
-              T::Array[
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                OpenAI::Models::Chat::ChatCompletionContentPart::File
-              )
-              ]
-            end
+            T.let(OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionContentPart], OpenAI::Converter)
         end
       end
     end

@@ -46,7 +46,7 @@ module OpenAI
             logprobs: T.nilable(T::Boolean),
             max_completion_tokens: T.nilable(Integer),
             max_tokens: T.nilable(Integer),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             modalities: T.nilable(T::Array[Symbol]),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
@@ -304,7 +304,7 @@ module OpenAI
             logprobs: T.nilable(T::Boolean),
             max_completion_tokens: T.nilable(Integer),
             max_tokens: T.nilable(Integer),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             modalities: T.nilable(T::Array[Symbol]),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
@@ -546,7 +546,7 @@ module OpenAI
         sig do
           params(
             completion_id: String,
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )
             .returns(OpenAI::Models::Chat::ChatCompletion)
@@ -571,7 +571,7 @@ module OpenAI
           params(
             after: String,
             limit: Integer,
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             order: Symbol,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
