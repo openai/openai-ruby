@@ -16,7 +16,7 @@ module OpenAI
 
         # @!attribute model
         #   One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        #     `tts-1` or `tts-1-hd`
+        #     `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         #
         #   @return [String, Symbol, OpenAI::Models::Audio::SpeechModel]
         required :model, union: -> { OpenAI::Models::Audio::SpeechCreateParams::Model }
@@ -29,6 +29,17 @@ module OpenAI
         #
         #   @return [Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         required :voice, enum: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice }
+
+        # @!attribute [r] instructions
+        #   Control the voice of your generated audio with additional instructions. Does not
+        #     work with `tts-1` or `tts-1-hd`.
+        #
+        #   @return [String, nil]
+        optional :instructions, String
+
+        # @!parse
+        #   # @return [String]
+        #   attr_writer :instructions
 
         # @!attribute [r] response_format
         #   The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
@@ -56,22 +67,23 @@ module OpenAI
         #   # @param input [String]
         #   # @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel]
         #   # @param voice [Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
+        #   # @param instructions [String]
         #   # @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat]
         #   # @param speed [Float]
         #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         #   #
-        #   def initialize(input:, model:, voice:, response_format: nil, speed: nil, request_options: {}, **) = super
+        #   def initialize(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {}, **) = super
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # @abstract
         #
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        #   `tts-1` or `tts-1-hd`
+        #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         class Model < OpenAI::Union
           variant String
 
-          # One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1` or `tts-1-hd`
+          # One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
           variant enum: -> { OpenAI::Models::Audio::SpeechModel }
 
           # @!parse

@@ -17,14 +17,28 @@ module OpenAI
         def file=(_)
         end
 
-        # ID of the model to use. Only `whisper-1` (which is powered by our open source
-        #   Whisper V2 model) is currently available.
+        # ID of the model to use. The options are `gpt-4o-transcribe`,
+        #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
+        #   Whisper V2 model).
         sig { returns(T.any(String, Symbol)) }
         def model
         end
 
         sig { params(_: T.any(String, Symbol)).returns(T.any(String, Symbol)) }
         def model=(_)
+        end
+
+        # Additional information to include in the transcription response. `logprobs` will
+        #   return the log probabilities of the tokens in the response to understand the
+        #   model's confidence in the transcription. `logprobs` only works with
+        #   response_format set to `json` and only with the models `gpt-4o-transcribe` and
+        #   `gpt-4o-mini-transcribe`.
+        sig { returns(T.nilable(T::Array[Symbol])) }
+        def include
+        end
+
+        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        def include=(_)
         end
 
         # The language of the input audio. Supplying the input language in
@@ -51,7 +65,8 @@ module OpenAI
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
-        #   `verbose_json`, or `vtt`.
+        #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
+        #   the only supported format is `json`.
         sig { returns(T.nilable(Symbol)) }
         def response_format
         end
@@ -90,6 +105,7 @@ module OpenAI
           params(
             file: T.any(IO, StringIO),
             model: T.any(String, Symbol),
+            include: T::Array[Symbol],
             language: String,
             prompt: String,
             response_format: Symbol,
@@ -102,6 +118,7 @@ module OpenAI
         def self.new(
           file:,
           model:,
+          include: nil,
           language: nil,
           prompt: nil,
           response_format: nil,
@@ -117,6 +134,7 @@ module OpenAI
               {
                 file: T.any(IO, StringIO),
                 model: T.any(String, Symbol),
+                include: T::Array[Symbol],
                 language: String,
                 prompt: String,
                 response_format: Symbol,
@@ -129,8 +147,9 @@ module OpenAI
         def to_hash
         end
 
-        # ID of the model to use. Only `whisper-1` (which is powered by our open source
-        #   Whisper V2 model) is currently available.
+        # ID of the model to use. The options are `gpt-4o-transcribe`,
+        #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
+        #   Whisper V2 model).
         class Model < OpenAI::Union
           abstract!
 

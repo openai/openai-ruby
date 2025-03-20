@@ -5,6 +5,7 @@ module OpenAI
         {
           file: (IO | StringIO),
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          include: ::Array[OpenAI::Models::Audio::transcription_include],
           language: String,
           prompt: String,
           response_format: OpenAI::Models::audio_response_format,
@@ -20,6 +21,12 @@ module OpenAI
         attr_accessor file: IO | StringIO
 
         attr_accessor model: OpenAI::Models::Audio::TranscriptionCreateParams::model
+
+        attr_reader include: ::Array[OpenAI::Models::Audio::transcription_include]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Audio::transcription_include]
+        ) -> ::Array[OpenAI::Models::Audio::transcription_include]
 
         attr_reader language: String?
 
@@ -48,6 +55,7 @@ module OpenAI
         def initialize: (
           file: IO | StringIO,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
+          ?include: ::Array[OpenAI::Models::Audio::transcription_include],
           ?language: String,
           ?prompt: String,
           ?response_format: OpenAI::Models::audio_response_format,

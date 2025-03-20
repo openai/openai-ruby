@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_text_delta_event =
+        {
+          delta: String,
+          type: :"transcript.text.delta",
+          logprobs: ::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob]
+        }
+
+      class TranscriptionTextDeltaEvent < OpenAI::BaseModel
+        attr_accessor delta: String
+
+        attr_accessor type: :"transcript.text.delta"
+
+        attr_reader logprobs: ::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob]?
+
+        def logprobs=: (
+          ::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob]
+        ) -> ::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob]
+
+        def initialize: (
+          delta: String,
+          ?logprobs: ::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob],
+          ?type: :"transcript.text.delta"
+        ) -> void
+
+        def to_hash: -> OpenAI::Models::Audio::transcription_text_delta_event
+
+        type logprob = { token: String, bytes: ::Array[top], logprob: Float }
+
+        class Logprob < OpenAI::BaseModel
+          attr_reader token: String?
+
+          def token=: (String) -> String
+
+          attr_reader bytes: ::Array[top]?
+
+          def bytes=: (::Array[top]) -> ::Array[top]
+
+          attr_reader logprob: Float?
+
+          def logprob=: (Float) -> Float
+
+          def initialize: (
+            ?token: String,
+            ?bytes: ::Array[top],
+            ?logprob: Float
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::Audio::TranscriptionTextDeltaEvent::logprob
+        end
+      end
+    end
+  end
+end
