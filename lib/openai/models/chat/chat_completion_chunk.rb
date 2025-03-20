@@ -55,7 +55,7 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :system_fingerprint
 
-        # @!attribute [r] usage
+        # @!attribute usage
         #   An optional field that will only be present when you set
         #     `stream_options: {"include_usage": true}` in your request. When present, it
         #     contains a null value **except for the last chunk** which contains the token
@@ -65,11 +65,7 @@ module OpenAI
         #     final usage chunk which contains the total token usage for the request.
         #
         #   @return [OpenAI::Models::CompletionUsage, nil]
-        optional :usage, -> { OpenAI::Models::CompletionUsage }
-
-        # @!parse
-        #   # @return [OpenAI::Models::CompletionUsage]
-        #   attr_writer :usage
+        optional :usage, -> { OpenAI::Models::CompletionUsage }, nil?: true
 
         # @!parse
         #   # Represents a streamed chunk of a chat completion response returned by the model,
@@ -82,7 +78,7 @@ module OpenAI
         #   # @param model [String]
         #   # @param service_tier [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier, nil]
         #   # @param system_fingerprint [String]
-        #   # @param usage [OpenAI::Models::CompletionUsage]
+        #   # @param usage [OpenAI::Models::CompletionUsage, nil]
         #   # @param object [Symbol, :"chat.completion.chunk"]
         #   #
         #   def initialize(

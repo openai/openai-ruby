@@ -19,7 +19,7 @@ module OpenAI
         #     [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
         #     should be in English.
         #
-        #   @option params [Symbol, OpenAI::Models::AudioResponseFormat] :response_format The format of the output, in one of these options: `json`, `text`, `srt`,
+        #   @option params [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat] :response_format The format of the output, in one of these options: `json`, `text`, `srt`,
         #     `verbose_json`, or `vtt`.
         #
         #   @option params [Float] :temperature The sampling temperature, between 0 and 1. Higher values like 0.8 will make the

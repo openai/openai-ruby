@@ -6,7 +6,7 @@ module OpenAI
           file: (IO | StringIO),
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
           prompt: String,
-          response_format: OpenAI::Models::audio_response_format,
+          response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
           temperature: Float
         }
         & OpenAI::request_parameters
@@ -23,11 +23,11 @@ module OpenAI
 
         def prompt=: (String) -> String
 
-        attr_reader response_format: OpenAI::Models::audio_response_format?
+        attr_reader response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format?
 
         def response_format=: (
-          OpenAI::Models::audio_response_format
-        ) -> OpenAI::Models::audio_response_format
+          OpenAI::Models::Audio::TranslationCreateParams::response_format
+        ) -> OpenAI::Models::Audio::TranslationCreateParams::response_format
 
         attr_reader temperature: Float?
 
@@ -37,7 +37,7 @@ module OpenAI
           file: IO | StringIO,
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
           ?prompt: String,
-          ?response_format: OpenAI::Models::audio_response_format,
+          ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
           ?temperature: Float,
           ?request_options: OpenAI::request_opts
         ) -> void
@@ -48,6 +48,18 @@ module OpenAI
 
         class Model < OpenAI::Union
           def self.variants: -> [String, OpenAI::Models::audio_model]
+        end
+
+        type response_format = :json | :text | :srt | :verbose_json | :vtt
+
+        class ResponseFormat < OpenAI::Enum
+          JSON: :json
+          TEXT: :text
+          SRT: :srt
+          VERBOSE_JSON: :verbose_json
+          VTT: :vtt
+
+          def self.values: -> ::Array[OpenAI::Models::Audio::TranslationCreateParams::response_format]
         end
       end
     end
