@@ -10,7 +10,7 @@ module OpenAI
             model: T.any(String, Symbol),
             description: T.nilable(String),
             instructions: T.nilable(String),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             name: T.nilable(String),
             reasoning_effort: T.nilable(Symbol),
             response_format: T.nilable(
@@ -128,7 +128,7 @@ module OpenAI
             assistant_id: String,
             description: T.nilable(String),
             instructions: T.nilable(String),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.any(String, Symbol),
             name: T.nilable(String),
             reasoning_effort: T.nilable(Symbol),

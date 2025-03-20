@@ -4,15 +4,7 @@ module OpenAI
   module Models
     module Responses
       ResponseInputMessageContentList =
-        T.type_alias do
-          T::Array[
-          T.any(
-            OpenAI::Models::Responses::ResponseInputText,
-            OpenAI::Models::Responses::ResponseInputImage,
-            OpenAI::Models::Responses::ResponseInputFile
-          )
-          ]
-        end
+        T.let(OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseInputContent], OpenAI::Converter)
     end
   end
 end

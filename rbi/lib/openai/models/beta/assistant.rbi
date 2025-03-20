@@ -47,11 +47,11 @@ module OpenAI
         #
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
-        sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata=(_)
         end
 
@@ -232,7 +232,7 @@ module OpenAI
             created_at: Integer,
             description: T.nilable(String),
             instructions: T.nilable(String),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             name: T.nilable(String),
             tools: T::Array[
@@ -282,7 +282,7 @@ module OpenAI
                 created_at: Integer,
                 description: T.nilable(String),
                 instructions: T.nilable(String),
-                metadata: T.nilable(OpenAI::Models::Metadata),
+                metadata: T.nilable(T::Hash[Symbol, String]),
                 model: String,
                 name: T.nilable(String),
                 object: Symbol,

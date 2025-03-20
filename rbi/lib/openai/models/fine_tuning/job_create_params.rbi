@@ -73,11 +73,11 @@ module OpenAI
         #
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
-        sig { returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata
         end
 
-        sig { params(_: T.nilable(OpenAI::Models::Metadata)).returns(T.nilable(OpenAI::Models::Metadata)) }
+        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
         def metadata=(_)
         end
 
@@ -143,7 +143,7 @@ module OpenAI
             training_file: String,
             hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
             integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
-            metadata: T.nilable(OpenAI::Models::Metadata),
+            metadata: T.nilable(T::Hash[Symbol, String]),
             method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
@@ -174,7 +174,7 @@ module OpenAI
                 training_file: String,
                 hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
                 integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
-                metadata: T.nilable(OpenAI::Models::Metadata),
+                metadata: T.nilable(T::Hash[Symbol, String]),
                 method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
                 seed: T.nilable(Integer),
                 suffix: T.nilable(String),

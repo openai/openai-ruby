@@ -70,7 +70,7 @@ module OpenAI
             type_template(:out) { {fixed: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])} }
 
           ChatCompletionContentPartTextArray =
-            T.type_alias { T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText] }
+            T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Converter)
         end
       end
     end

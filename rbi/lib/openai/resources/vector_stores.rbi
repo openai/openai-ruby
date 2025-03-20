@@ -20,7 +20,7 @@ module OpenAI
           ),
           expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
           file_ids: T::Array[String],
-          metadata: T.nilable(OpenAI::Models::Metadata),
+          metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
@@ -69,7 +69,7 @@ module OpenAI
         params(
           vector_store_id: String,
           expires_after: T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter),
-          metadata: T.nilable(OpenAI::Models::Metadata),
+          metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )
