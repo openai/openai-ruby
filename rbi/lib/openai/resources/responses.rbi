@@ -38,7 +38,7 @@ module OpenAI
             )
             ]
           ),
-          model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
+          model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
           include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
@@ -213,7 +213,7 @@ module OpenAI
             )
             ]
           ),
-          model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
+          model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
           include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),

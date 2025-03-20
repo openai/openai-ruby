@@ -91,21 +91,13 @@ module OpenAI
         #   and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
-        sig do
-          returns(
-            T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
-          )
-        end
+        sig { returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol)) }
         def model
         end
 
         sig do
-          params(
-            _: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
-          )
-            .returns(
-              T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol)
-            )
+          params(_: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol))
+            .returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol))
         end
         def model=(_)
         end
@@ -394,7 +386,7 @@ module OpenAI
               )
               ]
             ),
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
+            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
             include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
@@ -469,7 +461,7 @@ module OpenAI
                   )
                   ]
                 ),
-                model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::UnionMember2::OrSymbol),
+                model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
                 include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
                 instructions: T.nilable(String),
                 max_output_tokens: T.nilable(Integer),
