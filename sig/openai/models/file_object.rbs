@@ -59,7 +59,9 @@ module OpenAI
         | :"fine-tune-results"
         | :vision
 
-      class Purpose < OpenAI::Enum
+      module Purpose
+        extend OpenAI::Enum
+
         ASSISTANTS: :assistants
         ASSISTANTS_OUTPUT: :assistants_output
         BATCH: :batch
@@ -73,7 +75,9 @@ module OpenAI
 
       type status = :uploaded | :processed | :error
 
-      class Status < OpenAI::Enum
+      module Status
+        extend OpenAI::Enum
+
         UPLOADED: :uploaded
         PROCESSED: :processed
         ERROR: :error

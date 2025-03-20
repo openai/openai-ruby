@@ -3,12 +3,12 @@
 module OpenAI
   module Models
     module Chat
-      # @abstract
-      #
       # Developer-provided instructions that the model should follow, regardless of
       #   messages sent by the user. With o1 models and newer, `developer` messages
       #   replace the previous `system` messages.
-      class ChatCompletionMessageParam < OpenAI::Union
+      module ChatCompletionMessageParam
+        extend OpenAI::Union
+
         discriminator :role
 
         # Developer-provided instructions that the model should follow, regardless of

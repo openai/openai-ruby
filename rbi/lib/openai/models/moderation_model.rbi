@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
-    class ModerationModel < OpenAI::Enum
-      abstract!
+    module ModerationModel
+      extend OpenAI::Enum
 
-      Value = type_template(:out) { {fixed: Symbol} }
+      TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ModerationModel) }
+      OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ModerationModel::TaggedSymbol) }
 
-      OMNI_MODERATION_LATEST = :"omni-moderation-latest"
-      OMNI_MODERATION_2024_09_26 = :"omni-moderation-2024-09-26"
-      TEXT_MODERATION_LATEST = :"text-moderation-latest"
-      TEXT_MODERATION_STABLE = :"text-moderation-stable"
+      OMNI_MODERATION_LATEST = T.let(:"omni-moderation-latest", OpenAI::Models::ModerationModel::OrSymbol)
+      OMNI_MODERATION_2024_09_26 =
+        T.let(:"omni-moderation-2024-09-26", OpenAI::Models::ModerationModel::OrSymbol)
+      TEXT_MODERATION_LATEST = T.let(:"text-moderation-latest", OpenAI::Models::ModerationModel::OrSymbol)
+      TEXT_MODERATION_STABLE = T.let(:"text-moderation-stable", OpenAI::Models::ModerationModel::OrSymbol)
     end
   end
 end

@@ -14,11 +14,14 @@ module OpenAI
         end
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol) }
         def format_
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol)
+        end
         def format_=(_)
         end
 
@@ -32,22 +35,36 @@ module OpenAI
         end
 
         # An audio input to the model.
-        sig { params(data: String, format_: Symbol, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+            data: String,
+            format_: OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol,
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(data:, format_:, type: :input_audio)
         end
 
-        sig { override.returns({data: String, format_: Symbol, type: Symbol}) }
+        sig do
+          override
+            .returns(
+              {data: String, format_: OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol, type: Symbol}
+            )
+        end
         def to_hash
         end
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
-        class Format < OpenAI::Enum
-          abstract!
+        module Format
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol) }
 
-          MP3 = :mp3
-          WAV = :wav
+          MP3 = T.let(:mp3, OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol)
+          WAV = T.let(:wav, OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol)
         end
       end
     end

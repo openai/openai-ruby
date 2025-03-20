@@ -76,10 +76,10 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # The status of the Upload.
-      class Status < OpenAI::Enum
+      module Status
+        extend OpenAI::Enum
+
         PENDING = :pending
         COMPLETED = :completed
         CANCELLED = :cancelled

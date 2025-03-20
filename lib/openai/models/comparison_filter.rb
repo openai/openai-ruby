@@ -41,8 +41,6 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
       #   - `eq`: equals
@@ -51,7 +49,9 @@ module OpenAI
       #   - `gte`: greater than or equal
       #   - `lt`: less than
       #   - `lte`: less than or equal
-      class Type < OpenAI::Enum
+      module Type
+        extend OpenAI::Enum
+
         EQ = :eq
         NE = :ne
         GT = :gt
@@ -62,11 +62,11 @@ module OpenAI
         finalize!
       end
 
-      # @abstract
-      #
       # The value to compare against the attribute key; supports string, number, or
       #   boolean types.
-      class Value < OpenAI::Union
+      module Value
+        extend OpenAI::Union
+
         variant String
 
         variant Float

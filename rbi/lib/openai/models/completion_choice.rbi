@@ -7,11 +7,14 @@ module OpenAI
       #   hit a natural stop point or a provided stop sequence, `length` if the maximum
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol) }
       def finish_reason
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig do
+        params(_: OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
+          .returns(OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
+      end
       def finish_reason=(_)
       end
 
@@ -44,7 +47,7 @@ module OpenAI
 
       sig do
         params(
-          finish_reason: Symbol,
+          finish_reason: OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol,
           index: Integer,
           logprobs: T.nilable(OpenAI::Models::CompletionChoice::Logprobs),
           text: String
@@ -58,7 +61,7 @@ module OpenAI
         override
           .returns(
             {
-              finish_reason: Symbol,
+              finish_reason: OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol,
               index: Integer,
               logprobs: T.nilable(OpenAI::Models::CompletionChoice::Logprobs),
               text: String
@@ -72,14 +75,15 @@ module OpenAI
       #   hit a natural stop point or a provided stop sequence, `length` if the maximum
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
-      class FinishReason < OpenAI::Enum
-        abstract!
+      module FinishReason
+        extend OpenAI::Enum
 
-        Value = type_template(:out) { {fixed: Symbol} }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionChoice::FinishReason) }
+        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol) }
 
-        STOP = :stop
-        LENGTH = :length
-        CONTENT_FILTER = :content_filter
+        STOP = T.let(:stop, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
+        LENGTH = T.let(:length, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
+        CONTENT_FILTER = T.let(:content_filter, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
       end
 
       class Logprobs < OpenAI::BaseModel

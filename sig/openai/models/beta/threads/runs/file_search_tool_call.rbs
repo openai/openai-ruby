@@ -71,7 +71,9 @@ module OpenAI
 
                 type ranker = :auto | :default_2024_08_21
 
-                class Ranker < OpenAI::Enum
+                module Ranker
+                  extend OpenAI::Enum
+
                   AUTO: :auto
                   DEFAULT_2024_08_21: :default_2024_08_21
 
@@ -135,7 +137,9 @@ module OpenAI
 
                   type type_ = :text
 
-                  class Type < OpenAI::Enum
+                  module Type
+                    extend OpenAI::Enum
+
                     TEXT: :text
 
                     def self.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_]

@@ -30,10 +30,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The type of the tool. If type is `function`, the function name must be set
-        class Type < OpenAI::Enum
+        module Type
+          extend OpenAI::Enum
+
           FUNCTION = :function
           CODE_INTERPRETER = :code_interpreter
           FILE_SEARCH = :file_search

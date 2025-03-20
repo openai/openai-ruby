@@ -76,11 +76,11 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
-        class Model < OpenAI::Union
+        module Model
+          extend OpenAI::Union
+
           variant String
 
           # One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
@@ -93,13 +93,13 @@ module OpenAI
           #   end
         end
 
-        # @abstract
-        #
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
         #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
         #   voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
-        class Voice < OpenAI::Enum
+        module Voice
+          extend OpenAI::Enum
+
           ALLOY = :alloy
           ASH = :ash
           CORAL = :coral
@@ -113,11 +113,11 @@ module OpenAI
           finalize!
         end
 
-        # @abstract
-        #
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
         #   `wav`, and `pcm`.
-        class ResponseFormat < OpenAI::Enum
+        module ResponseFormat
+          extend OpenAI::Enum
+
           MP3 = :mp3
           OPUS = :opus
           AAC = :aac

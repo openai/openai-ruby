@@ -121,7 +121,9 @@ module OpenAI
               String
               | ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
-            class Content < OpenAI::Union
+            module Content
+              extend OpenAI::Union
+
               type message_content_part_param_array =
                 ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
@@ -132,7 +134,9 @@ module OpenAI
 
             type role = :user | :assistant
 
-            class Role < OpenAI::Enum
+            module Role
+              extend OpenAI::Enum
+
               USER: :user
               ASSISTANT: :assistant
 
@@ -167,7 +171,9 @@ module OpenAI
                 OpenAI::Models::Beta::CodeInterpreterTool
                 | OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
 
-              class Tool < OpenAI::Union
+              module Tool
+                extend OpenAI::Union
+
                 type file_search = { type: :file_search }
 
                 class FileSearch < OpenAI::BaseModel
@@ -185,7 +191,9 @@ module OpenAI
 
           type model = String | OpenAI::Models::chat_model
 
-          class Model < OpenAI::Union
+          module Model
+            extend OpenAI::Union
+
             def self.variants: -> [String, OpenAI::Models::chat_model]
           end
 
@@ -209,7 +217,9 @@ module OpenAI
 
             type type_ = :auto | :last_messages
 
-            class Type < OpenAI::Enum
+            module Type
+              extend OpenAI::Enum
+
               AUTO: :auto
               LAST_MESSAGES: :last_messages
 

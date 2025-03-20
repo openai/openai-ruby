@@ -3,11 +3,11 @@
 module OpenAI
   module Models
     module Chat
-      # @abstract
-      #
       # Learn about
       #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
-      class ChatCompletionContentPart < OpenAI::Union
+      module ChatCompletionContentPart
+        extend OpenAI::Union
+
         discriminator :type
 
         # Learn about [text inputs](https://platform.openai.com/docs/guides/text-generation).

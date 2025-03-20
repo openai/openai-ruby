@@ -233,10 +233,10 @@ module OpenAI
               # def initialize: (Hash | OpenAI::BaseModel) -> void
             end
 
-            # @abstract
-            #
             # The role of the author of this message.
-            class Role < OpenAI::Enum
+            module Role
+              extend OpenAI::Enum
+
               DEVELOPER = :developer
               SYSTEM = :system
               USER = :user
@@ -324,10 +324,10 @@ module OpenAI
                 # def initialize: (Hash | OpenAI::BaseModel) -> void
               end
 
-              # @abstract
-              #
               # The type of the tool. Currently, only `function` is supported.
-              class Type < OpenAI::Enum
+              module Type
+                extend OpenAI::Enum
+
                 FUNCTION = :function
 
                 finalize!
@@ -335,15 +335,15 @@ module OpenAI
             end
           end
 
-          # @abstract
-          #
           # The reason the model stopped generating tokens. This will be `stop` if the model
           #   hit a natural stop point or a provided stop sequence, `length` if the maximum
           #   number of tokens specified in the request was reached, `content_filter` if
           #   content was omitted due to a flag from our content filters, `tool_calls` if the
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
-          class FinishReason < OpenAI::Enum
+          module FinishReason
+            extend OpenAI::Enum
+
             STOP = :stop
             LENGTH = :length
             TOOL_CALLS = :tool_calls
@@ -378,10 +378,10 @@ module OpenAI
           end
         end
 
-        # @abstract
-        #
         # The service tier used for processing the request.
-        class ServiceTier < OpenAI::Enum
+        module ServiceTier
+          extend OpenAI::Enum
+
           SCALE = :scale
           DEFAULT = :default
 

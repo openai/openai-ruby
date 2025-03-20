@@ -12,21 +12,24 @@ module OpenAI
         #   - `file_search`
         #   - `web_search_preview`
         #   - `computer_use_preview`
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol) }
         def type
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+            .returns(OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+        end
         def type=(_)
         end
 
         # Indicates that the model should use a built-in tool to generate a response.
         #   [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
-        sig { params(type: Symbol).returns(T.attached_class) }
+        sig { params(type: OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol).returns(T.attached_class) }
         def self.new(type:)
         end
 
-        sig { override.returns({type: Symbol}) }
+        sig { override.returns({type: OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol}) }
         def to_hash
         end
 
@@ -38,15 +41,19 @@ module OpenAI
         #   - `file_search`
         #   - `web_search_preview`
         #   - `computer_use_preview`
-        class Type < OpenAI::Enum
-          abstract!
+        module Type
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type) }
+          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol) }
 
-          FILE_SEARCH = :file_search
-          WEB_SEARCH_PREVIEW = :web_search_preview
-          COMPUTER_USE_PREVIEW = :computer_use_preview
-          WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
+          FILE_SEARCH = T.let(:file_search, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+          WEB_SEARCH_PREVIEW =
+            T.let(:web_search_preview, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+          COMPUTER_USE_PREVIEW =
+            T.let(:computer_use_preview, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
+          WEB_SEARCH_PREVIEW_2025_03_11 =
+            T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
         end
       end
     end

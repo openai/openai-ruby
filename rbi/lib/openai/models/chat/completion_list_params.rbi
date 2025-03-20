@@ -47,11 +47,14 @@ module OpenAI
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         #   `desc` for descending order. Defaults to `asc`.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol)) }
         def order
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol)
+            .returns(OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol)
+        end
         def order=(_)
         end
 
@@ -61,7 +64,7 @@ module OpenAI
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
-            order: Symbol,
+            order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -77,7 +80,7 @@ module OpenAI
                 limit: Integer,
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 model: String,
-                order: Symbol,
+                order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -87,13 +90,15 @@ module OpenAI
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         #   `desc` for descending order. Defaults to `asc`.
-        class Order < OpenAI::Enum
-          abstract!
+        module Order
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionListParams::Order) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol) }
 
-          ASC = :asc
-          DESC = :desc
+          ASC = T.let(:asc, OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol)
+          DESC = T.let(:desc, OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol)
         end
       end
     end

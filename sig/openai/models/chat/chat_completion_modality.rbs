@@ -1,12 +1,13 @@
 module OpenAI
   module Models
-    
-    class ChatCompletionModality = Chat::ChatCompletionModality
+    module ChatCompletionModality = Chat::ChatCompletionModality
 
     module Chat
       type chat_completion_modality = :text | :audio
 
-      class ChatCompletionModality < OpenAI::Enum
+      module ChatCompletionModality
+        extend OpenAI::Enum
+
         TEXT: :text
         AUDIO: :audio
 
