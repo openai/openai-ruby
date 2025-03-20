@@ -35,7 +35,9 @@ module OpenAI
           OpenAI::Models::Responses::ResponseOutputText
           | OpenAI::Models::Responses::ResponseOutputRefusal
 
-        class Part < OpenAI::Union
+        module Part
+          extend OpenAI::Union
+
           def self.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         end
       end

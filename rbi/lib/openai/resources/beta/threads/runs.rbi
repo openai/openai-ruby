@@ -14,16 +14,16 @@ module OpenAI
             params(
               thread_id: String,
               assistant_id: String,
-              include: T::Array[Symbol],
+              include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
               additional_messages: T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model: T.nilable(T.any(String, Symbol)),
+              model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
-              reasoning_effort: T.nilable(Symbol),
+              reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
               response_format: T.nilable(
                 T.any(
                   Symbol,
@@ -33,7 +33,12 @@ module OpenAI
                 )
               ),
               temperature: T.nilable(Float),
-              tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Models::Beta::AssistantToolChoice
+                )
+              ),
               tools: T.nilable(
                 T::Array[
                 T.any(
@@ -171,16 +176,16 @@ module OpenAI
             params(
               thread_id: String,
               assistant_id: String,
-              include: T::Array[Symbol],
+              include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
               additional_messages: T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model: T.nilable(T.any(String, Symbol)),
+              model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
-              reasoning_effort: T.nilable(Symbol),
+              reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
               response_format: T.nilable(
                 T.any(
                   Symbol,
@@ -190,7 +195,12 @@ module OpenAI
                 )
               ),
               temperature: T.nilable(Float),
-              tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Models::Beta::AssistantToolChoice
+                )
+              ),
               tools: T.nilable(
                 T::Array[
                 T.any(
@@ -405,7 +415,7 @@ module OpenAI
               after: String,
               before: String,
               limit: Integer,
-              order: Symbol,
+              order: OpenAI::Models::Beta::Threads::RunListParams::Order::OrSymbol,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Run])

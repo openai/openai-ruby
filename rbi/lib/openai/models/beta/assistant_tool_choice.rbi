@@ -5,11 +5,14 @@ module OpenAI
     module Beta
       class AssistantToolChoice < OpenAI::BaseModel
         # The type of the tool. If type is `function`, the function name must be set
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol) }
         def type
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
+            .returns(OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
+        end
         def type=(_)
         end
 
@@ -27,24 +30,37 @@ module OpenAI
         # Specifies a tool the model should use. Use to force the model to call a specific
         #   tool.
         sig do
-          params(type: Symbol, function: OpenAI::Models::Beta::AssistantToolChoiceFunction).returns(T.attached_class)
+          params(
+            type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,
+            function: OpenAI::Models::Beta::AssistantToolChoiceFunction
+          )
+            .returns(T.attached_class)
         end
         def self.new(type:, function: nil)
         end
 
-        sig { override.returns({type: Symbol, function: OpenAI::Models::Beta::AssistantToolChoiceFunction}) }
+        sig do
+          override
+            .returns(
+              {
+                type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,
+                function: OpenAI::Models::Beta::AssistantToolChoiceFunction
+              }
+            )
+        end
         def to_hash
         end
 
         # The type of the tool. If type is `function`, the function name must be set
-        class Type < OpenAI::Enum
-          abstract!
+        module Type
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type) }
+          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol) }
 
-          FUNCTION = :function
-          CODE_INTERPRETER = :code_interpreter
-          FILE_SEARCH = :file_search
+          FUNCTION = T.let(:function, OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
+          CODE_INTERPRETER = T.let(:code_interpreter, OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
+          FILE_SEARCH = T.let(:file_search, OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
         end
       end
     end

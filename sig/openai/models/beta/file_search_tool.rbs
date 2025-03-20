@@ -71,7 +71,9 @@ module OpenAI
 
             type ranker = :auto | :default_2024_08_21
 
-            class Ranker < OpenAI::Enum
+            module Ranker
+              extend OpenAI::Enum
+
               AUTO: :auto
               DEFAULT_2024_08_21: :default_2024_08_21
 

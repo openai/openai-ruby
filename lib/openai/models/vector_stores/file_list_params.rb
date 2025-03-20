@@ -78,10 +78,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
-        class Filter < OpenAI::Enum
+        module Filter
+          extend OpenAI::Enum
+
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
           FAILED = :failed
@@ -90,11 +90,11 @@ module OpenAI
           finalize!
         end
 
-        # @abstract
-        #
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
-        class Order < OpenAI::Enum
+        module Order
+          extend OpenAI::Enum
+
           ASC = :asc
           DESC = :desc
 

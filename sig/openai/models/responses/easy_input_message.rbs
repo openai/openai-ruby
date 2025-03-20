@@ -31,13 +31,17 @@ module OpenAI
           String
           | OpenAI::Models::Responses::response_input_message_content_list
 
-        class Content < OpenAI::Union
+        module Content
+          extend OpenAI::Union
+
           def self.variants: -> [String, OpenAI::Models::Responses::response_input_message_content_list]
         end
 
         type role = :user | :assistant | :system | :developer
 
-        class Role < OpenAI::Enum
+        module Role
+          extend OpenAI::Enum
+
           USER: :user
           ASSISTANT: :assistant
           SYSTEM: :system
@@ -48,7 +52,9 @@ module OpenAI
 
         type type_ = :message
 
-        class Type < OpenAI::Enum
+        module Type
+          extend OpenAI::Enum
+
           MESSAGE: :message
 
           def self.values: -> ::Array[OpenAI::Models::Responses::EasyInputMessage::type_]

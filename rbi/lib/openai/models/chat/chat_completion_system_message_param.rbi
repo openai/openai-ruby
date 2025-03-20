@@ -63,8 +63,8 @@ module OpenAI
         end
 
         # The contents of the system message.
-        class Content < OpenAI::Union
-          abstract!
+        module Content
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) { {fixed: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])} }

@@ -5,8 +5,8 @@ module OpenAI
     module Chat
       # Learn about
       #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
-      class ChatCompletionContentPart < OpenAI::Union
-        abstract!
+      module ChatCompletionContentPart
+        extend OpenAI::Union
 
         Variants =
           type_template(:out) do

@@ -14,7 +14,9 @@ module OpenAI
         | OpenAI::Models::Responses::ResponseReasoningItem
         | OpenAI::Models::Responses::ResponseInputItem::ItemReference
 
-      class ResponseInputItem < OpenAI::Union
+      module ResponseInputItem
+        extend OpenAI::Union
+
         type message =
           {
             content: OpenAI::Models::Responses::response_input_message_content_list,
@@ -51,7 +53,9 @@ module OpenAI
 
           type role = :user | :system | :developer
 
-          class Role < OpenAI::Enum
+          module Role
+            extend OpenAI::Enum
+
             USER: :user
             SYSTEM: :system
             DEVELOPER: :developer
@@ -61,7 +65,9 @@ module OpenAI
 
           type status = :in_progress | :completed | :incomplete
 
-          class Status < OpenAI::Enum
+          module Status
+            extend OpenAI::Enum
+
             IN_PROGRESS: :in_progress
             COMPLETED: :completed
             INCOMPLETE: :incomplete
@@ -71,7 +77,9 @@ module OpenAI
 
           type type_ = :message
 
-          class Type < OpenAI::Enum
+          module Type
+            extend OpenAI::Enum
+
             MESSAGE: :message
 
             def self.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::type_]
@@ -139,7 +147,9 @@ module OpenAI
 
           type status = :in_progress | :completed | :incomplete
 
-          class Status < OpenAI::Enum
+          module Status
+            extend OpenAI::Enum
+
             IN_PROGRESS: :in_progress
             COMPLETED: :completed
             INCOMPLETE: :incomplete
@@ -186,7 +196,9 @@ module OpenAI
 
           type status = :in_progress | :completed | :incomplete
 
-          class Status < OpenAI::Enum
+          module Status
+            extend OpenAI::Enum
+
             IN_PROGRESS: :in_progress
             COMPLETED: :completed
             INCOMPLETE: :incomplete

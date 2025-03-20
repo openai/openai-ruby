@@ -2,7 +2,9 @@ module OpenAI
   module Models
     type image_model = :"dall-e-2" | :"dall-e-3"
 
-    class ImageModel < OpenAI::Enum
+    module ImageModel
+      extend OpenAI::Enum
+
       DALL_E_2: :"dall-e-2"
       DALL_E_3: :"dall-e-3"
 

@@ -256,11 +256,14 @@ module OpenAI
           # The status of the run, which can be either `queued`, `in_progress`,
           #   `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
           #   `incomplete`, or `expired`.
-          sig { returns(Symbol) }
+          sig { returns(OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol) }
           def status
           end
 
-          sig { params(_: Symbol).returns(Symbol) }
+          sig do
+            params(_: OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)
+              .returns(OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)
+          end
           def status=(_)
           end
 
@@ -281,13 +284,36 @@ module OpenAI
           #   to the user. Specifying a particular tool like `{"type": "file_search"}` or
           #   `{"type": "function", "function": {"name": "my_function"}}` forces the model to
           #   call that tool.
-          sig { returns(T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice))) }
+          sig do
+            returns(
+              T.nilable(
+                T.any(
+                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
+                  OpenAI::Models::Beta::AssistantToolChoice
+                )
+              )
+            )
+          end
           def tool_choice
           end
 
           sig do
-            params(_: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)))
-              .returns(T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)))
+            params(
+              _: T.nilable(
+                T.any(
+                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
+                  OpenAI::Models::Beta::AssistantToolChoice
+                )
+              )
+            )
+              .returns(
+                T.nilable(
+                  T.any(
+                    OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
+                    OpenAI::Models::Beta::AssistantToolChoice
+                  )
+                )
+              )
           end
           def tool_choice=(_)
           end
@@ -405,9 +431,14 @@ module OpenAI
                 )
               ),
               started_at: T.nilable(Integer),
-              status: Symbol,
+              status: OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol,
               thread_id: String,
-              tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
+              tool_choice: T.nilable(
+                T.any(
+                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
+                  OpenAI::Models::Beta::AssistantToolChoice
+                )
+              ),
               tools: T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
@@ -484,9 +515,14 @@ module OpenAI
                     )
                   ),
                   started_at: T.nilable(Integer),
-                  status: Symbol,
+                  status: OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol,
                   thread_id: String,
-                  tool_choice: T.nilable(T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)),
+                  tool_choice: T.nilable(
+                    T.any(
+                      OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
+                      OpenAI::Models::Beta::AssistantToolChoice
+                    )
+                  ),
                   tools: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
@@ -507,43 +543,57 @@ module OpenAI
           class IncompleteDetails < OpenAI::BaseModel
             # The reason why the run is incomplete. This will point to which specific token
             #   limit was reached over the course of the run.
-            sig { returns(T.nilable(Symbol)) }
+            sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)) }
             def reason
             end
 
-            sig { params(_: Symbol).returns(Symbol) }
+            sig do
+              params(_: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
+                .returns(OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
+            end
             def reason=(_)
             end
 
             # Details on why the run is incomplete. Will be `null` if the run is not
             #   incomplete.
-            sig { params(reason: Symbol).returns(T.attached_class) }
+            sig do
+              params(reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
+                .returns(T.attached_class)
+            end
             def self.new(reason: nil)
             end
 
-            sig { override.returns({reason: Symbol}) }
+            sig { override.returns({reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol}) }
             def to_hash
             end
 
             # The reason why the run is incomplete. This will point to which specific token
             #   limit was reached over the course of the run.
-            class Reason < OpenAI::Enum
-              abstract!
+            module Reason
+              extend OpenAI::Enum
 
-              Value = type_template(:out) { {fixed: Symbol} }
+              TaggedSymbol =
+                T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason) }
+              OrSymbol =
+                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol) }
 
-              MAX_COMPLETION_TOKENS = :max_completion_tokens
-              MAX_PROMPT_TOKENS = :max_prompt_tokens
+              MAX_COMPLETION_TOKENS =
+                T.let(:max_completion_tokens, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
+              MAX_PROMPT_TOKENS =
+                T.let(:max_prompt_tokens, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
             end
           end
 
           class LastError < OpenAI::BaseModel
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
-            sig { returns(Symbol) }
+            sig { returns(OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol) }
             def code
             end
 
-            sig { params(_: Symbol).returns(Symbol) }
+            sig do
+              params(_: OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
+                .returns(OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
+            end
             def code=(_)
             end
 
@@ -557,23 +607,33 @@ module OpenAI
             end
 
             # The last error associated with this run. Will be `null` if there are no errors.
-            sig { params(code: Symbol, message: String).returns(T.attached_class) }
+            sig do
+              params(code: OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol, message: String)
+                .returns(T.attached_class)
+            end
             def self.new(code:, message:)
             end
 
-            sig { override.returns({code: Symbol, message: String}) }
+            sig do
+              override
+                .returns({code: OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol, message: String})
+            end
             def to_hash
             end
 
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
-            class Code < OpenAI::Enum
-              abstract!
+            module Code
+              extend OpenAI::Enum
 
-              Value = type_template(:out) { {fixed: Symbol} }
+              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Run::LastError::Code) }
+              OrSymbol =
+                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol) }
 
-              SERVER_ERROR = :server_error
-              RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
-              INVALID_PROMPT = :invalid_prompt
+              SERVER_ERROR = T.let(:server_error, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
+              RATE_LIMIT_EXCEEDED =
+                T.let(:rate_limit_exceeded, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
+              INVALID_PROMPT =
+                T.let(:invalid_prompt, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
             end
           end
 
@@ -652,11 +712,14 @@ module OpenAI
             #   `last_messages`, the thread will be truncated to the n most recent messages in
             #   the thread. When set to `auto`, messages in the middle of the thread will be
             #   dropped to fit the context length of the model, `max_prompt_tokens`.
-            sig { returns(Symbol) }
+            sig { returns(OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol) }
             def type
             end
 
-            sig { params(_: Symbol).returns(Symbol) }
+            sig do
+              params(_: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
+                .returns(OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
+            end
             def type=(_)
             end
 
@@ -672,11 +735,25 @@ module OpenAI
 
             # Controls for how a thread will be truncated prior to the run. Use this to
             #   control the intial context window of the run.
-            sig { params(type: Symbol, last_messages: T.nilable(Integer)).returns(T.attached_class) }
+            sig do
+              params(
+                type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol,
+                last_messages: T.nilable(Integer)
+              )
+                .returns(T.attached_class)
+            end
             def self.new(type:, last_messages: nil)
             end
 
-            sig { override.returns({type: Symbol, last_messages: T.nilable(Integer)}) }
+            sig do
+              override
+                .returns(
+                  {
+                    type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol,
+                    last_messages: T.nilable(Integer)
+                  }
+                )
+            end
             def to_hash
             end
 
@@ -684,13 +761,17 @@ module OpenAI
             #   `last_messages`, the thread will be truncated to the n most recent messages in
             #   the thread. When set to `auto`, messages in the middle of the thread will be
             #   dropped to fit the context length of the model, `max_prompt_tokens`.
-            class Type < OpenAI::Enum
-              abstract!
+            module Type
+              extend OpenAI::Enum
 
-              Value = type_template(:out) { {fixed: Symbol} }
+              TaggedSymbol =
+                T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type) }
+              OrSymbol =
+                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol) }
 
-              AUTO = :auto
-              LAST_MESSAGES = :last_messages
+              AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
+              LAST_MESSAGES =
+                T.let(:last_messages, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
             end
           end
 

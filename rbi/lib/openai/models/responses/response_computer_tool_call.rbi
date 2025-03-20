@@ -86,20 +86,26 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol) }
         def status
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
+        end
         def status=(_)
         end
 
         # The type of the computer call. Always `computer_call`.
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol) }
         def type
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol)
+        end
         def type=(_)
         end
 
@@ -122,8 +128,8 @@ module OpenAI
             ),
             call_id: String,
             pending_safety_checks: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck],
-            status: Symbol,
-            type: Symbol
+            status: OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol,
+            type: OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol
           )
             .returns(T.attached_class)
         end
@@ -148,8 +154,8 @@ module OpenAI
                 ),
                 call_id: String,
                 pending_safety_checks: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck],
-                status: Symbol,
-                type: Symbol
+                status: OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol,
+                type: OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol
               }
             )
         end
@@ -157,8 +163,8 @@ module OpenAI
         end
 
         # A click action.
-        class Action < OpenAI::Union
-          abstract!
+        module Action
+          extend OpenAI::Union
 
           Variants =
             type_template(:out) do
@@ -180,11 +186,14 @@ module OpenAI
           class Click < OpenAI::BaseModel
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
-            sig { returns(Symbol) }
+            sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol) }
             def button
             end
 
-            sig { params(_: Symbol).returns(Symbol) }
+            sig do
+              params(_: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+                .returns(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+            end
             def button=(_)
             end
 
@@ -217,26 +226,50 @@ module OpenAI
             end
 
             # A click action.
-            sig { params(button: Symbol, x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(
+                button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol,
+                x: Integer,
+                y_: Integer,
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
             def self.new(button:, x:, y_:, type: :click)
             end
 
-            sig { override.returns({button: Symbol, type: Symbol, x: Integer, y_: Integer}) }
+            sig do
+              override
+                .returns(
+                  {
+                    button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol,
+                    type: Symbol,
+                    x: Integer,
+                    y_: Integer
+                  }
+                )
+            end
             def to_hash
             end
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
-            class Button < OpenAI::Enum
-              abstract!
+            module Button
+              extend OpenAI::Enum
 
-              Value = type_template(:out) { {fixed: Symbol} }
+              TaggedSymbol =
+                T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button) }
+              OrSymbol =
+                T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol) }
 
-              LEFT = :left
-              RIGHT = :right
-              WHEEL = :wheel
-              BACK = :back
-              FORWARD = :forward
+              LEFT = T.let(:left, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+              RIGHT =
+                T.let(:right, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+              WHEEL =
+                T.let(:wheel, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+              BACK = T.let(:back, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
+              FORWARD =
+                T.let(:forward, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
             end
           end
 
@@ -605,23 +638,29 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
-        class Status < OpenAI::Enum
-          abstract!
+        module Status
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol) }
 
-          IN_PROGRESS = :in_progress
-          COMPLETED = :completed
-          INCOMPLETE = :incomplete
+          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
+          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
+          INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
         end
 
         # The type of the computer call. Always `computer_call`.
-        class Type < OpenAI::Enum
-          abstract!
+        module Type
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol) }
 
-          COMPUTER_CALL = :computer_call
+          COMPUTER_CALL =
+            T.let(:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol)
         end
       end
     end

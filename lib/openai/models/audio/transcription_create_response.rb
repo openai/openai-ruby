@@ -3,11 +3,11 @@
 module OpenAI
   module Models
     module Audio
-      # @abstract
-      #
       # Represents a transcription response returned by model, based on the provided
       #   input.
-      class TranscriptionCreateResponse < OpenAI::Union
+      module TranscriptionCreateResponse
+        extend OpenAI::Union
+
         # Represents a transcription response returned by model, based on the provided input.
         variant -> { OpenAI::Models::Audio::Transcription }
 

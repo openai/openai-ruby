@@ -12,7 +12,7 @@ module OpenAI
                 step_id: String,
                 thread_id: String,
                 run_id: String,
-                include: T::Array[Symbol],
+                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
                 request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
               )
                 .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
@@ -44,9 +44,9 @@ module OpenAI
                 thread_id: String,
                 after: String,
                 before: String,
-                include: T::Array[Symbol],
+                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
                 limit: Integer,
-                order: Symbol,
+                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
                 request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
               )
                 .returns(OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Runs::RunStep])
