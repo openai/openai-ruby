@@ -7,7 +7,7 @@ module OpenAI
 
       Variants = type_template(:out) { {fixed: T.any(String, Symbol)} }
 
-      class UnionMember4 < OpenAI::Enum
+      class UnionMember2 < OpenAI::Enum
         abstract!
 
         Value = type_template(:out) { {fixed: Symbol} }
