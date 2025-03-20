@@ -8,10 +8,10 @@ module OpenAI
         sig do
           params(
             input: String,
-            model: T.any(String, Symbol),
-            voice: Symbol,
+            model: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol),
+            voice: OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol,
             instructions: String,
-            response_format: Symbol,
+            response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
           )

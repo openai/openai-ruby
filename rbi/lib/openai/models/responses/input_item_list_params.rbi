@@ -39,11 +39,14 @@ module OpenAI
         #
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
-        sig { returns(T.nilable(Symbol)) }
+        sig { returns(T.nilable(OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)) }
         def order
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
+            .returns(OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
+        end
         def order=(_)
         end
 
@@ -52,7 +55,7 @@ module OpenAI
             after: String,
             before: String,
             limit: Integer,
-            order: Symbol,
+            order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
             request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
           )
             .returns(T.attached_class)
@@ -67,7 +70,7 @@ module OpenAI
                 after: String,
                 before: String,
                 limit: Integer,
-                order: Symbol,
+                order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }
             )
@@ -79,13 +82,15 @@ module OpenAI
         #
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
-        class Order < OpenAI::Enum
-          abstract!
+        module Order
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::InputItemListParams::Order) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol) }
 
-          ASC = :asc
-          DESC = :desc
+          ASC = T.let(:asc, OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
+          DESC = T.let(:desc, OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
         end
       end
     end

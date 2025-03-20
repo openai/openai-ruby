@@ -12,7 +12,7 @@ module OpenAI
               completion_id: String,
               after: String,
               limit: Integer,
-              order: Symbol,
+              order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
             )
               .returns(OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage])

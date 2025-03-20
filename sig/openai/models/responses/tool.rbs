@@ -7,7 +7,9 @@ module OpenAI
         | OpenAI::Models::Responses::ComputerTool
         | OpenAI::Models::Responses::WebSearchTool
 
-      class Tool < OpenAI::Union
+      module Tool
+        extend OpenAI::Union
+
         def self.variants: -> [OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool]
       end
     end

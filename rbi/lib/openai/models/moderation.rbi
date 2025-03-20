@@ -265,138 +265,193 @@ module OpenAI
 
       class CategoryAppliedInputTypes < OpenAI::BaseModel
         # The applied input type(s) for the category 'harassment'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol]) }
         def harassment
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
+        end
         def harassment=(_)
         end
 
         # The applied input type(s) for the category 'harassment/threatening'.
-        sig { returns(T::Array[Symbol]) }
+        sig do
+          returns(
+            T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
+          )
+        end
         def harassment_threatening
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(
+            _: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
+          )
+            .returns(
+              T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
+            )
+        end
         def harassment_threatening=(_)
         end
 
         # The applied input type(s) for the category 'hate'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol]) }
         def hate
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol])
+        end
         def hate=(_)
         end
 
         # The applied input type(s) for the category 'hate/threatening'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol]) }
         def hate_threatening
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
+        end
         def hate_threatening=(_)
         end
 
         # The applied input type(s) for the category 'illicit'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol]) }
         def illicit
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol])
+        end
         def illicit=(_)
         end
 
         # The applied input type(s) for the category 'illicit/violent'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol]) }
         def illicit_violent
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
+        end
         def illicit_violent=(_)
         end
 
         # The applied input type(s) for the category 'self-harm'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol]) }
         def self_harm
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol])
+        end
         def self_harm=(_)
         end
 
         # The applied input type(s) for the category 'self-harm/instructions'.
-        sig { returns(T::Array[Symbol]) }
+        sig do
+          returns(
+            T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
+          )
+        end
         def self_harm_instructions
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(
+            _: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
+          )
+            .returns(
+              T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
+            )
+        end
         def self_harm_instructions=(_)
         end
 
         # The applied input type(s) for the category 'self-harm/intent'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol]) }
         def self_harm_intent
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
+        end
         def self_harm_intent=(_)
         end
 
         # The applied input type(s) for the category 'sexual'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol]) }
         def sexual
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol])
+        end
         def sexual=(_)
         end
 
         # The applied input type(s) for the category 'sexual/minors'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol]) }
         def sexual_minors
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
+        end
         def sexual_minors=(_)
         end
 
         # The applied input type(s) for the category 'violence'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol]) }
         def violence
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol])
+        end
         def violence=(_)
         end
 
         # The applied input type(s) for the category 'violence/graphic'.
-        sig { returns(T::Array[Symbol]) }
+        sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol]) }
         def violence_graphic
         end
 
-        sig { params(_: T::Array[Symbol]).returns(T::Array[Symbol]) }
+        sig do
+          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
+            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
+        end
         def violence_graphic=(_)
         end
 
         # A list of the categories along with the input type(s) that the score applies to.
         sig do
           params(
-            harassment: T::Array[Symbol],
-            harassment_threatening: T::Array[Symbol],
-            hate: T::Array[Symbol],
-            hate_threatening: T::Array[Symbol],
-            illicit: T::Array[Symbol],
-            illicit_violent: T::Array[Symbol],
-            self_harm: T::Array[Symbol],
-            self_harm_instructions: T::Array[Symbol],
-            self_harm_intent: T::Array[Symbol],
-            sexual: T::Array[Symbol],
-            sexual_minors: T::Array[Symbol],
-            violence: T::Array[Symbol],
-            violence_graphic: T::Array[Symbol]
+            harassment: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol],
+            harassment_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol],
+            hate: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol],
+            hate_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol],
+            illicit: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol],
+            illicit_violent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol],
+            self_harm: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol],
+            self_harm_instructions: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol],
+            self_harm_intent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol],
+            sexual: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol],
+            sexual_minors: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol],
+            violence: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol],
+            violence_graphic: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol]
           )
             .returns(T.attached_class)
         end
@@ -421,133 +476,177 @@ module OpenAI
           override
             .returns(
               {
-                harassment: T::Array[Symbol],
-                harassment_threatening: T::Array[Symbol],
-                hate: T::Array[Symbol],
-                hate_threatening: T::Array[Symbol],
-                illicit: T::Array[Symbol],
-                illicit_violent: T::Array[Symbol],
-                self_harm: T::Array[Symbol],
-                self_harm_instructions: T::Array[Symbol],
-                self_harm_intent: T::Array[Symbol],
-                sexual: T::Array[Symbol],
-                sexual_minors: T::Array[Symbol],
-                violence: T::Array[Symbol],
-                violence_graphic: T::Array[Symbol]
+                harassment: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol],
+                harassment_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol],
+                hate: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol],
+                hate_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol],
+                illicit: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol],
+                illicit_violent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol],
+                self_harm: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol],
+                self_harm_instructions: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol],
+                self_harm_intent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol],
+                sexual: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol],
+                sexual_minors: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol],
+                violence: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol],
+                violence_graphic: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol]
               }
             )
         end
         def to_hash
         end
 
-        class Harassment < OpenAI::Enum
-          abstract!
+        module Harassment
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol)
         end
 
-        class HarassmentThreatening < OpenAI::Enum
-          abstract!
+        module HarassmentThreatening
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT =
+            T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol)
         end
 
-        class Hate < OpenAI::Enum
-          abstract!
+        module Hate
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol)
         end
 
-        class HateThreatening < OpenAI::Enum
-          abstract!
+        module HateThreatening
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol)
         end
 
-        class Illicit < OpenAI::Enum
-          abstract!
+        module Illicit
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol)
         end
 
-        class IllicitViolent < OpenAI::Enum
-          abstract!
+        module IllicitViolent
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol)
         end
 
-        class SelfHarm < OpenAI::Enum
-          abstract!
+        module SelfHarm
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol) }
 
-          TEXT = :text
-          IMAGE = :image
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
+          IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
         end
 
-        class SelfHarmInstruction < OpenAI::Enum
-          abstract!
+        module SelfHarmInstruction
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol) }
 
-          TEXT = :text
-          IMAGE = :image
+          TEXT =
+            T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol)
+          IMAGE =
+            T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol)
         end
 
-        class SelfHarmIntent < OpenAI::Enum
-          abstract!
+        module SelfHarmIntent
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol) }
 
-          TEXT = :text
-          IMAGE = :image
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol)
+          IMAGE =
+            T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol)
         end
 
-        class Sexual < OpenAI::Enum
-          abstract!
+        module Sexual
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol) }
 
-          TEXT = :text
-          IMAGE = :image
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
+          IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
         end
 
-        class SexualMinor < OpenAI::Enum
-          abstract!
+        module SexualMinor
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol)
         end
 
-        class Violence < OpenAI::Enum
-          abstract!
+        module Violence
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol) }
 
-          TEXT = :text
-          IMAGE = :image
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
+          IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
         end
 
-        class ViolenceGraphic < OpenAI::Enum
-          abstract!
+        module ViolenceGraphic
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol =
+            T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol) }
 
-          TEXT = :text
-          IMAGE = :image
+          TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol)
+          IMAGE =
+            T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol)
         end
       end
 

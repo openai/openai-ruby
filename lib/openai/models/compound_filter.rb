@@ -26,11 +26,11 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-      # @abstract
-      #
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
-      class Filter < OpenAI::Union
+      module Filter
+        extend OpenAI::Union
+
         # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
         variant -> { OpenAI::Models::ComparisonFilter }
 
@@ -43,10 +43,10 @@ module OpenAI
         #   end
       end
 
-      # @abstract
-      #
       # Type of operation: `and` or `or`.
-      class Type < OpenAI::Enum
+      module Type
+        extend OpenAI::Enum
+
         AND = :and
         OR = :or
 

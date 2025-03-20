@@ -7,9 +7,9 @@ module OpenAI
       sig do
         params(
           input: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]),
-          model: T.any(String, Symbol),
+          model: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol),
           dimensions: Integer,
-          encoding_format: Symbol,
+          encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol,
           user: String,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
         )

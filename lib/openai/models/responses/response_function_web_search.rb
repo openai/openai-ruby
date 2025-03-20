@@ -35,10 +35,10 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
-        # @abstract
-        #
         # The status of the web search tool call.
-        class Status < OpenAI::Enum
+        module Status
+          extend OpenAI::Enum
+
           IN_PROGRESS = :in_progress
           SEARCHING = :searching
           COMPLETED = :completed

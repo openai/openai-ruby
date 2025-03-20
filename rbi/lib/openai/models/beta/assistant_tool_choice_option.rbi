@@ -10,23 +10,33 @@ module OpenAI
       #   to the user. Specifying a particular tool like `{"type": "file_search"}` or
       #   `{"type": "function", "function": {"name": "my_function"}}` forces the model to
       #   call that tool.
-      class AssistantToolChoiceOption < OpenAI::Union
-        abstract!
+      module AssistantToolChoiceOption
+        extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoice)} }
+        Variants =
+          type_template(:out) do
+            {
+              fixed: T.any(
+                OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                OpenAI::Models::Beta::AssistantToolChoice
+              )
+            }
+          end
 
         # `none` means the model will not call any tools and instead generates a message.
         #   `auto` means the model can pick between generating a message or calling one or
         #   more tools. `required` means the model must call one or more tools before
         #   responding to the user.
-        class Auto < OpenAI::Enum
-          abstract!
+        module Auto
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol) }
 
-          NONE = :none
-          AUTO = :auto
-          REQUIRED = :required
+          NONE = T.let(:none, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol)
+          REQUIRED = T.let(:required, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol)
         end
       end
     end

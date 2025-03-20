@@ -86,8 +86,8 @@ module OpenAI
       def to_hash
       end
 
-      class Attribute < OpenAI::Union
-        abstract!
+      module Attribute
+        extend OpenAI::Union
 
         Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
       end
@@ -103,29 +103,40 @@ module OpenAI
         end
 
         # The type of content.
-        sig { returns(Symbol) }
+        sig { returns(OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol) }
         def type
         end
 
-        sig { params(_: Symbol).returns(Symbol) }
+        sig do
+          params(_: OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
+            .returns(OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
+        end
         def type=(_)
         end
 
-        sig { params(text: String, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
+            .returns(T.attached_class)
+        end
         def self.new(text:, type:)
         end
 
-        sig { override.returns({text: String, type: Symbol}) }
+        sig do
+          override
+            .returns({text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol})
+        end
         def to_hash
         end
 
         # The type of content.
-        class Type < OpenAI::Enum
-          abstract!
+        module Type
+          extend OpenAI::Enum
 
-          Value = type_template(:out) { {fixed: Symbol} }
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol) }
 
-          TEXT = :text
+          TEXT = T.let(:text, OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
         end
       end
     end

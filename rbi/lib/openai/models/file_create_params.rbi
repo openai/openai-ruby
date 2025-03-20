@@ -19,18 +19,18 @@ module OpenAI
       #   Assistants API - `batch`: Used in the Batch API - `fine-tune`: Used for
       #   fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
       #   Flexible file type for any purpose - `evals`: Used for eval data sets
-      sig { returns(Symbol) }
+      sig { returns(OpenAI::Models::FilePurpose::OrSymbol) }
       def purpose
       end
 
-      sig { params(_: Symbol).returns(Symbol) }
+      sig { params(_: OpenAI::Models::FilePurpose::OrSymbol).returns(OpenAI::Models::FilePurpose::OrSymbol) }
       def purpose=(_)
       end
 
       sig do
         params(
           file: T.any(IO, StringIO),
-          purpose: Symbol,
+          purpose: OpenAI::Models::FilePurpose::OrSymbol,
           request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
         )
           .returns(T.attached_class)
@@ -39,13 +39,14 @@ module OpenAI
       end
 
       sig do
-        override.returns(
-          {
-            file: T.any(IO, StringIO),
-            purpose: Symbol,
-            request_options: OpenAI::RequestOptions
-          }
-        )
+        override
+          .returns(
+            {
+              file: T.any(IO, StringIO),
+              purpose: OpenAI::Models::FilePurpose::OrSymbol,
+              request_options: OpenAI::RequestOptions
+            }
+          )
       end
       def to_hash
       end

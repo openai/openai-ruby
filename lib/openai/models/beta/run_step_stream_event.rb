@@ -3,12 +3,12 @@
 module OpenAI
   module Models
     module Beta
-      # @abstract
-      #
       # Occurs when a
       #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
       #   is created.
-      class RunStepStreamEvent < OpenAI::Union
+      module RunStepStreamEvent
+        extend OpenAI::Union
+
         discriminator :event
 
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) is created.

@@ -16,8 +16,8 @@ module OpenAI
       #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
       #   ensures the message the model generates is valid JSON. Using `json_schema` is
       #   preferred for models that support it.
-      class ResponseFormatTextConfig < OpenAI::Union
-        abstract!
+      module ResponseFormatTextConfig
+        extend OpenAI::Union
 
         Variants =
           type_template(:out) do

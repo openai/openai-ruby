@@ -3,7 +3,9 @@ module OpenAI
     module Responses
       type response_status = :completed | :failed | :in_progress | :incomplete
 
-      class ResponseStatus < OpenAI::Enum
+      module ResponseStatus
+        extend OpenAI::Enum
+
         COMPLETED: :completed
         FAILED: :failed
         IN_PROGRESS: :in_progress

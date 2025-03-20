@@ -1,17 +1,20 @@
 module OpenAI
   module Models
-    
-    class ChatCompletionToolChoiceOption = Chat::ChatCompletionToolChoiceOption
+    module ChatCompletionToolChoiceOption = Chat::ChatCompletionToolChoiceOption
 
     module Chat
       type chat_completion_tool_choice_option =
         OpenAI::Models::Chat::ChatCompletionToolChoiceOption::auto
         | OpenAI::Models::Chat::ChatCompletionNamedToolChoice
 
-      class ChatCompletionToolChoiceOption < OpenAI::Union
+      module ChatCompletionToolChoiceOption
+        extend OpenAI::Union
+
         type auto = :none | :auto | :required
 
-        class Auto < OpenAI::Enum
+        module Auto
+          extend OpenAI::Enum
+
           NONE: :none
           AUTO: :auto
           REQUIRED: :required

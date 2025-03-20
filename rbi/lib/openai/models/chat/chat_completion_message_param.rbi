@@ -6,8 +6,8 @@ module OpenAI
       # Developer-provided instructions that the model should follow, regardless of
       #   messages sent by the user. With o1 models and newer, `developer` messages
       #   replace the previous `system` messages.
-      class ChatCompletionMessageParam < OpenAI::Union
-        abstract!
+      module ChatCompletionMessageParam
+        extend OpenAI::Union
 
         Variants =
           type_template(:out) do
