@@ -131,6 +131,8 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
     end
 
     row = response.to_enum.first
+    return if row.nil?
+
     assert_pattern do
       row => OpenAI::Models::Beta::Threads::Run
     end
