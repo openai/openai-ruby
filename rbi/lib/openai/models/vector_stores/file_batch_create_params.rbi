@@ -53,12 +53,14 @@ module OpenAI
           params(
             _: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             )
           )
             .returns(
               T.any(
                 OpenAI::Models::AutoFileChunkingStrategyParam,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::StaticFileChunkingStrategyObjectParam
               )
             )
@@ -72,6 +74,7 @@ module OpenAI
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
             request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)

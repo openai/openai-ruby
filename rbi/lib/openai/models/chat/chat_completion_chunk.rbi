@@ -102,10 +102,10 @@ module OpenAI
         sig do
           params(
             id: String,
-            choices: T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice],
+            choices: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice, OpenAI::Util::AnyHash)],
             created: Integer,
             model: String,
-            service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol),
+            service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::OrSymbol),
             system_fingerprint: String,
             usage: T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)),
             object: Symbol
@@ -200,7 +200,7 @@ module OpenAI
           sig do
             params(
               delta: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Util::AnyHash),
-              finish_reason: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol),
+              finish_reason: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::OrSymbol),
               index: Integer,
               logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Util::AnyHash))
             )
@@ -265,8 +265,8 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
-                .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
+              params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::OrSymbol)
+                .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::OrSymbol)
             end
             def role=(_)
             end
@@ -276,8 +276,12 @@ module OpenAI
             end
 
             sig do
-              params(_: T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall])
-                .returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall])
+              params(
+                _: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall, OpenAI::Util::AnyHash)]
+              )
+                .returns(
+                  T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall, OpenAI::Util::AnyHash)]
+                )
             end
             def tool_calls=(_)
             end
@@ -288,8 +292,8 @@ module OpenAI
                 content: T.nilable(String),
                 function_call: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall, OpenAI::Util::AnyHash),
                 refusal: T.nilable(String),
-                role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol,
-                tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+                role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::OrSymbol,
+                tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall, OpenAI::Util::AnyHash)]
               )
                 .returns(T.attached_class)
             end
@@ -407,8 +411,8 @@ module OpenAI
               end
 
               sig do
-                params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
-                  .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
+                params(_: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::OrSymbol)
+                  .returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::OrSymbol)
               end
               def type=(_)
               end
@@ -418,7 +422,7 @@ module OpenAI
                   index: Integer,
                   id: String,
                   function: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function, OpenAI::Util::AnyHash),
-                  type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol
+                  type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::OrSymbol
                 )
                   .returns(T.attached_class)
               end
@@ -552,8 +556,8 @@ module OpenAI
             # Log probability information for the choice.
             sig do
               params(
-                content: T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]),
-                refusal: T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob])
+                content: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Util::AnyHash)]),
+                refusal: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Util::AnyHash)])
               )
                 .returns(T.attached_class)
             end

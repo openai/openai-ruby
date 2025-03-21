@@ -101,8 +101,8 @@ module OpenAI
           bytes: Integer,
           created_at: Integer,
           filename: String,
-          purpose: OpenAI::Models::FileObject::Purpose::TaggedSymbol,
-          status: OpenAI::Models::FileObject::Status::TaggedSymbol,
+          purpose: OpenAI::Models::FileObject::Purpose::OrSymbol,
+          status: OpenAI::Models::FileObject::Status::OrSymbol,
           expires_at: Integer,
           status_details: String,
           object: Symbol

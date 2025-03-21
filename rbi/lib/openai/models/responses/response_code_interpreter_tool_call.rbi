@@ -86,10 +86,11 @@ module OpenAI
             results: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
             )
             ],
-            status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,
+            status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::OrSymbol,
             type: Symbol
           )
             .returns(T.attached_class)
@@ -184,7 +185,12 @@ module OpenAI
             # The output of a code interpreter tool call that is a file.
             sig do
               params(
-                files: T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
+                files: T::Array[
+                T.any(
+                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File,
+                  OpenAI::Util::AnyHash
+                )
+                ],
                 type: Symbol
               )
                 .returns(T.attached_class)

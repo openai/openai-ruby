@@ -10,7 +10,7 @@ module OpenAI
           input: T.any(
             String,
             T::Array[String],
-            T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
+            T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Util::AnyHash, OpenAI::Models::ModerationTextInput)]
           ),
           model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
           request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))

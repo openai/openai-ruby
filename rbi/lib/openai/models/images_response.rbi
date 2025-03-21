@@ -19,7 +19,10 @@ module OpenAI
       def data=(_)
       end
 
-      sig { params(created: Integer, data: T::Array[OpenAI::Models::Image]).returns(T.attached_class) }
+      sig do
+        params(created: Integer, data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Util::AnyHash)])
+          .returns(T.attached_class)
+      end
       def self.new(created:, data:)
       end
 

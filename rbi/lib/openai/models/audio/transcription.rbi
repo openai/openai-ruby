@@ -21,8 +21,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Audio::Transcription::Logprob])
-            .returns(T::Array[OpenAI::Models::Audio::Transcription::Logprob])
+          params(_: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)])
         end
         def logprobs=(_)
         end
@@ -30,7 +30,10 @@ module OpenAI
         # Represents a transcription response returned by model, based on the provided
         #   input.
         sig do
-          params(text: String, logprobs: T::Array[OpenAI::Models::Audio::Transcription::Logprob])
+          params(
+            text: String,
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)]
+          )
             .returns(T.attached_class)
         end
         def self.new(text:, logprobs: nil)

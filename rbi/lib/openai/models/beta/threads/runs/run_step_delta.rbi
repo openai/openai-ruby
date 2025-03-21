@@ -24,12 +24,14 @@ module OpenAI
               params(
                 _: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
                 )
               )
                 .returns(
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
                   )
                 )
@@ -42,6 +44,7 @@ module OpenAI
               params(
                 step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
                 )
               )

@@ -36,7 +36,7 @@ module OpenAI
 
         sig do
           params(
-            content: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]),
+            content: T.any(String, T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Util::AnyHash)]),
             tool_call_id: String,
             role: Symbol
           )

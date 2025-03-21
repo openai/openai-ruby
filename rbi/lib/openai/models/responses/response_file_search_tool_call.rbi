@@ -64,7 +64,9 @@ module OpenAI
             id: String,
             queries: T::Array[String],
             status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
-            results: T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]),
+            results: T.nilable(
+              T::Array[T.any(OpenAI::Models::Responses::ResponseFileSearchToolCall::Result, OpenAI::Util::AnyHash)]
+            ),
             type: Symbol
           )
             .returns(T.attached_class)

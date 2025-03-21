@@ -445,19 +445,19 @@ module OpenAI
         # A list of the categories along with the input type(s) that the score applies to.
         sig do
           params(
-            harassment: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol],
-            harassment_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol],
-            hate: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol],
-            hate_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol],
-            illicit: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol],
-            illicit_violent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol],
-            self_harm: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol],
-            self_harm_instructions: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol],
-            self_harm_intent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol],
-            sexual: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol],
-            sexual_minors: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol],
-            violence: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol],
-            violence_graphic: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol]
+            harassment: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::OrSymbol],
+            harassment_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::OrSymbol],
+            hate: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::OrSymbol],
+            hate_threatening: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::OrSymbol],
+            illicit: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::OrSymbol],
+            illicit_violent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::OrSymbol],
+            self_harm: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::OrSymbol],
+            self_harm_instructions: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::OrSymbol],
+            self_harm_intent: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::OrSymbol],
+            sexual: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::OrSymbol],
+            sexual_minors: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::OrSymbol],
+            violence: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::OrSymbol],
+            violence_graphic: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::OrSymbol]
           )
             .returns(T.attached_class)
         end

@@ -39,6 +39,7 @@ module OpenAI
                 _: T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
                   OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
                 )
@@ -48,6 +49,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
                     OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
                   )
@@ -63,6 +65,7 @@ module OpenAI
                 tool_calls: T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
                   OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
                 )

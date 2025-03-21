@@ -14,8 +14,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message])
-            .returns(T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message])
+          params(_: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateParams::Message, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Beta::ThreadCreateParams::Message, OpenAI::Util::AnyHash)])
         end
         def messages=(_)
         end
@@ -53,7 +53,7 @@ module OpenAI
 
         sig do
           params(
-            messages: T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
+            messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateParams::Message, OpenAI::Util::AnyHash)],
             metadata: T.nilable(T::Hash[Symbol, String]),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources, OpenAI::Util::AnyHash)),
             request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
@@ -175,13 +175,16 @@ module OpenAI
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                   OpenAI::Models::Beta::Threads::TextContentBlockParam
                 )
                 ]
               ),
               role: OpenAI::Models::Beta::ThreadCreateParams::Message::Role::OrSymbol,
-              attachments: T.nilable(T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment]),
+              attachments: T.nilable(
+                T::Array[T.any(OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment, OpenAI::Util::AnyHash)]
+              ),
               metadata: T.nilable(T::Hash[Symbol, String])
             )
               .returns(T.attached_class)
@@ -310,6 +313,7 @@ module OpenAI
                 _: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch
                 )
                 ]
@@ -318,6 +322,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch
                   )
                   ]
@@ -332,6 +337,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch
                 )
                 ]
@@ -506,8 +512,22 @@ module OpenAI
             end
 
             sig do
-              params(_: T::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore])
-                .returns(T::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore])
+              params(
+                _: T::Array[
+                T.any(
+                  OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore,
+                  OpenAI::Util::AnyHash
+                )
+                ]
+              )
+                .returns(
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Util::AnyHash
+                  )
+                  ]
+                )
             end
             def vector_stores=(_)
             end
@@ -515,7 +535,12 @@ module OpenAI
             sig do
               params(
                 vector_store_ids: T::Array[String],
-                vector_stores: T::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
+                vector_stores: T::Array[
+                T.any(
+                  OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore,
+                  OpenAI::Util::AnyHash
+                )
+                ]
               )
                 .returns(T.attached_class)
             end
@@ -554,12 +579,14 @@ module OpenAI
                 params(
                   _: T.any(
                     OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                   )
                 )
                   .returns(
                     T.any(
                       OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Util::AnyHash,
                       OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     )
                   )
@@ -598,6 +625,7 @@ module OpenAI
                 params(
                   chunking_strategy: T.any(
                     OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                   ),
                   file_ids: T::Array[String],

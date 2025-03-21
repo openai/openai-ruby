@@ -12,8 +12,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
+            params(_: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::OrSymbol)
+              .returns(OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::OrSymbol)
           end
           def detail=(_)
           end
@@ -30,7 +30,7 @@ module OpenAI
           end
 
           sig do
-            params(detail: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol, file_id: String)
+            params(detail: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::OrSymbol, file_id: String)
               .returns(T.attached_class)
           end
           def self.new(detail: nil, file_id: nil)

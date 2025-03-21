@@ -37,8 +37,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Audio::TranscriptionSegment])
-            .returns(T::Array[OpenAI::Models::Audio::TranscriptionSegment])
+          params(_: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
         end
         def segments=(_)
         end
@@ -49,8 +49,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Audio::TranscriptionWord])
-            .returns(T::Array[OpenAI::Models::Audio::TranscriptionWord])
+          params(_: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)])
         end
         def words=(_)
         end
@@ -62,8 +62,8 @@ module OpenAI
             duration: Float,
             language: String,
             text: String,
-            segments: T::Array[OpenAI::Models::Audio::TranscriptionSegment],
-            words: T::Array[OpenAI::Models::Audio::TranscriptionWord]
+            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)],
+            words: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)]
           )
             .returns(T.attached_class)
         end

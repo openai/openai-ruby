@@ -221,12 +221,14 @@ module OpenAI
             organization_id: String,
             result_files: T::Array[String],
             seed: Integer,
-            status: OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol,
+            status: OpenAI::Models::FineTuning::FineTuningJob::Status::OrSymbol,
             trained_tokens: T.nilable(Integer),
             training_file: String,
             validation_file: T.nilable(String),
             estimated_finish: T.nilable(Integer),
-            integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]),
+            integrations: T.nilable(
+              T::Array[T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject, OpenAI::Util::AnyHash)]
+            ),
             metadata: T.nilable(T::Hash[Symbol, String]),
             method_: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method, OpenAI::Util::AnyHash),
             object: Symbol
@@ -480,8 +482,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)
-              .returns(OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)
+            params(_: OpenAI::Models::FineTuning::FineTuningJob::Method::Type::OrSymbol)
+              .returns(OpenAI::Models::FineTuning::FineTuningJob::Method::Type::OrSymbol)
           end
           def type=(_)
           end
@@ -491,7 +493,7 @@ module OpenAI
             params(
               dpo: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo, OpenAI::Util::AnyHash),
               supervised: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised, OpenAI::Util::AnyHash),
-              type: OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
+              type: OpenAI::Models::FineTuning::FineTuningJob::Method::Type::OrSymbol
             )
               .returns(T.attached_class)
           end

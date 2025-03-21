@@ -61,6 +61,7 @@ module OpenAI
                 tool_calls: T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
                   OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
                 )
