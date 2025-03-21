@@ -6,33 +6,23 @@ module OpenAI
       class ResponseCodeInterpreterCallInProgressEvent < OpenAI::BaseModel
         # A tool call to run code.
         sig { returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall) }
-        def code_interpreter_call
-        end
+        attr_reader :code_interpreter_call
 
         sig do
-          params(_: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash))
+          params(
+            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def code_interpreter_call=(_)
-        end
+        attr_writer :code_interpreter_call
 
         # The index of the output item that the code interpreter call is in progress.
         sig { returns(Integer) }
-        def output_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def output_index=(_)
-        end
+        attr_accessor :output_index
 
         # The type of the event. Always `response.code_interpreter_call.in_progress`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when a code interpreter call is in progress.
         sig do

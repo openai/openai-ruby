@@ -6,12 +6,7 @@ module OpenAI
       class CodeInterpreterTool < OpenAI::BaseModel
         # The type of tool being defined: `code_interpreter`
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         sig { params(type: Symbol).returns(T.attached_class) }
         def self.new(type: :code_interpreter)

@@ -6,49 +6,24 @@ module OpenAI
       class FunctionTool < OpenAI::BaseModel
         # The name of the function to call.
         sig { returns(String) }
-        def name
-        end
-
-        sig { params(_: String).returns(String) }
-        def name=(_)
-        end
+        attr_accessor :name
 
         # A JSON schema object describing the parameters of the function.
         sig { returns(T::Hash[Symbol, T.anything]) }
-        def parameters
-        end
-
-        sig { params(_: T::Hash[Symbol, T.anything]).returns(T::Hash[Symbol, T.anything]) }
-        def parameters=(_)
-        end
+        attr_accessor :parameters
 
         # Whether to enforce strict parameter validation. Default `true`.
         sig { returns(T::Boolean) }
-        def strict
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def strict=(_)
-        end
+        attr_accessor :strict
 
         # The type of the function tool. Always `function`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # A description of the function. Used by the model to determine whether or not to
         #   call the function.
         sig { returns(T.nilable(String)) }
-        def description
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def description=(_)
-        end
+        attr_accessor :description
 
         # Defines a function in your own code the model can choose to call. Learn more
         #   about

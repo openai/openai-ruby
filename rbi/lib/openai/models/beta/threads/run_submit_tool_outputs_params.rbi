@@ -9,24 +9,11 @@ module OpenAI
           include OpenAI::RequestParameters
 
           sig { returns(String) }
-          def thread_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def thread_id=(_)
-          end
+          attr_accessor :thread_id
 
           # A list of tools for which the outputs are being submitted.
           sig { returns(T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]) }
-          def tool_outputs
-          end
-
-          sig do
-            params(_: T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput])
-              .returns(T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput])
-          end
-          def tool_outputs=(_)
-          end
+          attr_accessor :tool_outputs
 
           sig do
             params(
@@ -55,22 +42,18 @@ module OpenAI
           class ToolOutput < OpenAI::BaseModel
             # The output of the tool call to be submitted to continue the run.
             sig { returns(T.nilable(String)) }
-            def output
-            end
+            attr_reader :output
 
-            sig { params(_: String).returns(String) }
-            def output=(_)
-            end
+            sig { params(output: String).void }
+            attr_writer :output
 
             # The ID of the tool call in the `required_action` object within the run object
             #   the output is being submitted for.
             sig { returns(T.nilable(String)) }
-            def tool_call_id
-            end
+            attr_reader :tool_call_id
 
-            sig { params(_: String).returns(String) }
-            def tool_call_id=(_)
-            end
+            sig { params(tool_call_id: String).void }
+            attr_writer :tool_call_id
 
             sig { params(output: String, tool_call_id: String).returns(T.attached_class) }
             def self.new(output: nil, tool_call_id: nil)

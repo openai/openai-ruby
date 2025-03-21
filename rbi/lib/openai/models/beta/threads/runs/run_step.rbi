@@ -8,84 +8,47 @@ module OpenAI
           class RunStep < OpenAI::BaseModel
             # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }
-            def id
-            end
-
-            sig { params(_: String).returns(String) }
-            def id=(_)
-            end
+            attr_accessor :id
 
             # The ID of the
             #   [assistant](https://platform.openai.com/docs/api-reference/assistants)
             #   associated with the run step.
             sig { returns(String) }
-            def assistant_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def assistant_id=(_)
-            end
+            attr_accessor :assistant_id
 
             # The Unix timestamp (in seconds) for when the run step was cancelled.
             sig { returns(T.nilable(Integer)) }
-            def cancelled_at
-            end
-
-            sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-            def cancelled_at=(_)
-            end
+            attr_accessor :cancelled_at
 
             # The Unix timestamp (in seconds) for when the run step completed.
             sig { returns(T.nilable(Integer)) }
-            def completed_at
-            end
-
-            sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-            def completed_at=(_)
-            end
+            attr_accessor :completed_at
 
             # The Unix timestamp (in seconds) for when the run step was created.
             sig { returns(Integer) }
-            def created_at
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def created_at=(_)
-            end
+            attr_accessor :created_at
 
             # The Unix timestamp (in seconds) for when the run step expired. A step is
             #   considered expired if the parent run is expired.
             sig { returns(T.nilable(Integer)) }
-            def expired_at
-            end
-
-            sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-            def expired_at=(_)
-            end
+            attr_accessor :expired_at
 
             # The Unix timestamp (in seconds) for when the run step failed.
             sig { returns(T.nilable(Integer)) }
-            def failed_at
-            end
-
-            sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-            def failed_at=(_)
-            end
+            attr_accessor :failed_at
 
             # The last error associated with this run step. Will be `null` if there are no
             #   errors.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError)) }
-            def last_error
-            end
+            attr_reader :last_error
 
             sig do
               params(
-                _: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash))
+                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash))
               )
-                .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash)))
+                .void
             end
-            def last_error=(_)
-            end
+            attr_writer :last_error
 
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
             #   for storing additional information about the object in a structured format, and
@@ -94,44 +57,21 @@ module OpenAI
             #   Keys are strings with a maximum length of 64 characters. Values are strings with
             #   a maximum length of 512 characters.
             sig { returns(T.nilable(T::Hash[Symbol, String])) }
-            def metadata
-            end
-
-            sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-            def metadata=(_)
-            end
+            attr_accessor :metadata
 
             # The object type, which is always `thread.run.step`.
             sig { returns(Symbol) }
-            def object
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def object=(_)
-            end
+            attr_accessor :object
 
             # The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
             #   this run step is a part of.
             sig { returns(String) }
-            def run_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def run_id=(_)
-            end
+            attr_accessor :run_id
 
             # The status of the run step, which can be either `in_progress`, `cancelled`,
             #   `failed`, `completed`, or `expired`.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol) }
-            def status
-            end
-
-            sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
-                .returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
-            end
-            def status=(_)
-            end
+            attr_accessor :status
 
             # The details of the run step.
             sig do
@@ -142,60 +82,29 @@ module OpenAI
                 )
               )
             end
-            def step_details
-            end
-
-            sig do
-              params(
-                _: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
-                  OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
-                )
-              )
-                .returns(
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
-                    OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
-                  )
-                )
-            end
-            def step_details=(_)
-            end
+            attr_accessor :step_details
 
             # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
             #   that was run.
             sig { returns(String) }
-            def thread_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def thread_id=(_)
-            end
+            attr_accessor :thread_id
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol) }
-            def type
-            end
-
-            sig do
-              params(_: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
-                .returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
-            end
-            def type=(_)
-            end
+            attr_accessor :type
 
             # Usage statistics related to the run step. This value will be `null` while the
             #   run step's status is `in_progress`.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage)) }
-            def usage
-            end
+            attr_reader :usage
 
             sig do
-              params(_: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash)))
-                .returns(T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash)))
+              params(
+                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash))
+              )
+                .void
             end
-            def usage=(_)
-            end
+            attr_writer :usage
 
             # Represents a step in execution of a run.
             sig do
@@ -275,24 +184,11 @@ module OpenAI
             class LastError < OpenAI::BaseModel
               # One of `server_error` or `rate_limit_exceeded`.
               sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol) }
-              def code
-              end
-
-              sig do
-                params(_: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
-                  .returns(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
-              end
-              def code=(_)
-              end
+              attr_accessor :code
 
               # A human-readable description of the error.
               sig { returns(String) }
-              def message
-              end
-
-              sig { params(_: String).returns(String) }
-              def message=(_)
-              end
+              attr_accessor :message
 
               # The last error associated with this run step. Will be `null` if there are no
               #   errors.
@@ -404,30 +300,15 @@ module OpenAI
             class Usage < OpenAI::BaseModel
               # Number of completion tokens used over the course of the run step.
               sig { returns(Integer) }
-              def completion_tokens
-              end
-
-              sig { params(_: Integer).returns(Integer) }
-              def completion_tokens=(_)
-              end
+              attr_accessor :completion_tokens
 
               # Number of prompt tokens used over the course of the run step.
               sig { returns(Integer) }
-              def prompt_tokens
-              end
-
-              sig { params(_: Integer).returns(Integer) }
-              def prompt_tokens=(_)
-              end
+              attr_accessor :prompt_tokens
 
               # Total number of tokens used (prompt + completion).
               sig { returns(Integer) }
-              def total_tokens
-              end
-
-              sig { params(_: Integer).returns(Integer) }
-              def total_tokens=(_)
-              end
+              attr_accessor :total_tokens
 
               # Usage statistics related to the run step. This value will be `null` while the
               #   run step's status is `in_progress`.

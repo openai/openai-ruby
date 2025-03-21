@@ -5,24 +5,14 @@ module OpenAI
     class ModerationImageURLInput < OpenAI::BaseModel
       # Contains either an image URL or a data URL for a base64 encoded image.
       sig { returns(OpenAI::Models::ModerationImageURLInput::ImageURL) }
-      def image_url
-      end
+      attr_reader :image_url
 
-      sig do
-        params(_: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash))
-      end
-      def image_url=(_)
-      end
+      sig { params(image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash)).void }
+      attr_writer :image_url
 
       # Always `image_url`.
       sig { returns(Symbol) }
-      def type
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def type=(_)
-      end
+      attr_accessor :type
 
       # An object describing an image to classify.
       sig do
@@ -42,12 +32,7 @@ module OpenAI
       class ImageURL < OpenAI::BaseModel
         # Either a URL of the image or the base64 encoded image data.
         sig { returns(String) }
-        def url
-        end
-
-        sig { params(_: String).returns(String) }
-        def url=(_)
-        end
+        attr_accessor :url
 
         # Contains either an image URL or a data URL for a base64 encoded image.
         sig { params(url: String).returns(T.attached_class) }

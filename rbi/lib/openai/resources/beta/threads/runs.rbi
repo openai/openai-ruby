@@ -6,8 +6,7 @@ module OpenAI
       class Threads
         class Runs
           sig { returns(OpenAI::Resources::Beta::Threads::Runs::Steps) }
-          def steps
-          end
+          attr_reader :steps
 
           # Create a run.
           sig do

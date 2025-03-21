@@ -6,34 +6,19 @@ module OpenAI
       class ChatCompletionDeveloperMessageParam < OpenAI::BaseModel
         # The contents of the developer message.
         sig { returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])) }
-        def content
-        end
-
-        sig do
-          params(_: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]))
-            .returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]))
-        end
-        def content=(_)
-        end
+        attr_accessor :content
 
         # The role of the messages author, in this case `developer`.
         sig { returns(Symbol) }
-        def role
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def role=(_)
-        end
+        attr_accessor :role
 
         # An optional name for the participant. Provides the model information to
         #   differentiate between participants of the same role.
         sig { returns(T.nilable(String)) }
-        def name
-        end
+        attr_reader :name
 
-        sig { params(_: String).returns(String) }
-        def name=(_)
-        end
+        sig { params(name: String).void }
+        attr_writer :name
 
         # Developer-provided instructions that the model should follow, regardless of
         #   messages sent by the user. With o1 models and newer, `developer` messages

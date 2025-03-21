@@ -6,30 +6,15 @@ module OpenAI
       class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::BaseModel
         # The partial code snippet added by the code interpreter.
         sig { returns(String) }
-        def delta
-        end
-
-        sig { params(_: String).returns(String) }
-        def delta=(_)
-        end
+        attr_accessor :delta
 
         # The index of the output item that the code interpreter call is in progress.
         sig { returns(Integer) }
-        def output_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def output_index=(_)
-        end
+        attr_accessor :output_index
 
         # The type of the event. Always `response.code_interpreter_call.code.delta`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when a partial code snippet is added by the code interpreter.
         sig { params(delta: String, output_index: Integer, type: Symbol).returns(T.attached_class) }

@@ -4,28 +4,13 @@ module OpenAI
   module Models
     class FileDeleted < OpenAI::BaseModel
       sig { returns(String) }
-      def id
-      end
-
-      sig { params(_: String).returns(String) }
-      def id=(_)
-      end
+      attr_accessor :id
 
       sig { returns(T::Boolean) }
-      def deleted
-      end
-
-      sig { params(_: T::Boolean).returns(T::Boolean) }
-      def deleted=(_)
-      end
+      attr_accessor :deleted
 
       sig { returns(Symbol) }
-      def object
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def object=(_)
-      end
+      attr_accessor :object
 
       sig { params(id: String, deleted: T::Boolean, object: Symbol).returns(T.attached_class) }
       def self.new(id:, deleted:, object: :file)

@@ -9,73 +9,43 @@ module OpenAI
 
         # The text to generate audio for. The maximum length is 4096 characters.
         sig { returns(String) }
-        def input
-        end
-
-        sig { params(_: String).returns(String) }
-        def input=(_)
-        end
+        attr_accessor :input
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         sig { returns(T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol)) }
-        def model
-        end
-
-        sig do
-          params(_: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol))
-        end
-        def model=(_)
-        end
+        attr_accessor :model
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
         #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
         #   voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         sig { returns(OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol) }
-        def voice
-        end
-
-        sig do
-          params(_: OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-            .returns(OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)
-        end
-        def voice=(_)
-        end
+        attr_accessor :voice
 
         # Control the voice of your generated audio with additional instructions. Does not
         #   work with `tts-1` or `tts-1-hd`.
         sig { returns(T.nilable(String)) }
-        def instructions
-        end
+        attr_reader :instructions
 
-        sig { params(_: String).returns(String) }
-        def instructions=(_)
-        end
+        sig { params(instructions: String).void }
+        attr_writer :instructions
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
         #   `wav`, and `pcm`.
         sig { returns(T.nilable(OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)) }
-        def response_format
-        end
+        attr_reader :response_format
 
-        sig do
-          params(_: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
-            .returns(OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol)
-        end
-        def response_format=(_)
-        end
+        sig { params(response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol).void }
+        attr_writer :response_format
 
         # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
         #   the default.
         sig { returns(T.nilable(Float)) }
-        def speed
-        end
+        attr_reader :speed
 
-        sig { params(_: Float).returns(Float) }
-        def speed=(_)
-        end
+        sig { params(speed: Float).void }
+        attr_writer :speed
 
         sig do
           params(

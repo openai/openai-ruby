@@ -8,26 +8,19 @@ module OpenAI
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)) }
-          def detail
-          end
+          attr_reader :detail
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::OrSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::OrSymbol)
-          end
-          def detail=(_)
-          end
+          sig { params(detail: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::OrSymbol).void }
+          attr_writer :detail
 
           # The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
           #   in the message content. Set `purpose="vision"` when uploading the File if you
           #   need to later display the file content.
           sig { returns(T.nilable(String)) }
-          def file_id
-          end
+          attr_reader :file_id
 
-          sig { params(_: String).returns(String) }
-          def file_id=(_)
-          end
+          sig { params(file_id: String).void }
+          attr_writer :file_id
 
           sig do
             params(detail: OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::OrSymbol, file_id: String)

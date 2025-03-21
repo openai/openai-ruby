@@ -7,22 +7,12 @@ module OpenAI
       #
       #   Note that the overlap must not exceed half of `max_chunk_size_tokens`.
       sig { returns(Integer) }
-      def chunk_overlap_tokens
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def chunk_overlap_tokens=(_)
-      end
+      attr_accessor :chunk_overlap_tokens
 
       # The maximum number of tokens in each chunk. The default value is `800`. The
       #   minimum value is `100` and the maximum value is `4096`.
       sig { returns(Integer) }
-      def max_chunk_size_tokens
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def max_chunk_size_tokens=(_)
-      end
+      attr_accessor :max_chunk_size_tokens
 
       sig { params(chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer).returns(T.attached_class) }
       def self.new(chunk_overlap_tokens:, max_chunk_size_tokens:)

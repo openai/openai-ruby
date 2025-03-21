@@ -4,16 +4,13 @@ module OpenAI
   module Resources
     class Audio
       sig { returns(OpenAI::Resources::Audio::Transcriptions) }
-      def transcriptions
-      end
+      attr_reader :transcriptions
 
       sig { returns(OpenAI::Resources::Audio::Translations) }
-      def translations
-      end
+      attr_reader :translations
 
       sig { returns(OpenAI::Resources::Audio::Speech) }
-      def speech
-      end
+      attr_reader :speech
 
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:)

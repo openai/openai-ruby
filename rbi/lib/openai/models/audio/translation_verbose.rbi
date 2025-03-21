@@ -6,42 +6,22 @@ module OpenAI
       class TranslationVerbose < OpenAI::BaseModel
         # The duration of the input audio.
         sig { returns(Float) }
-        def duration
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def duration=(_)
-        end
+        attr_accessor :duration
 
         # The language of the output translation (always `english`).
         sig { returns(String) }
-        def language
-        end
-
-        sig { params(_: String).returns(String) }
-        def language=(_)
-        end
+        attr_accessor :language
 
         # The translated text.
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         # Segments of the translated text and their corresponding details.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionSegment])) }
-        def segments
-        end
+        attr_reader :segments
 
-        sig do
-          params(_: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
-            .returns(T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
-        end
-        def segments=(_)
-        end
+        sig { params(segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)]).void }
+        attr_writer :segments
 
         sig do
           params(

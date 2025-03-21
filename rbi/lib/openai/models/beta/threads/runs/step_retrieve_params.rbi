@@ -10,20 +10,10 @@ module OpenAI
             include OpenAI::RequestParameters
 
             sig { returns(String) }
-            def thread_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def thread_id=(_)
-            end
+            attr_accessor :thread_id
 
             sig { returns(String) }
-            def run_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def run_id=(_)
-            end
+            attr_accessor :run_id
 
             # A list of additional fields to include in the response. Currently the only
             #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
@@ -33,15 +23,10 @@ module OpenAI
             #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             #   for more information.
             sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
-            def include
-            end
+            attr_reader :include
 
-            sig do
-              params(_: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-                .returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-            end
-            def include=(_)
-            end
+            sig { params(include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol]).void }
+            attr_writer :include
 
             sig do
               params(

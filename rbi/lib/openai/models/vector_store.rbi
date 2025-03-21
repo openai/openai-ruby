@@ -5,41 +5,21 @@ module OpenAI
     class VectorStore < OpenAI::BaseModel
       # The identifier, which can be referenced in API endpoints.
       sig { returns(String) }
-      def id
-      end
-
-      sig { params(_: String).returns(String) }
-      def id=(_)
-      end
+      attr_accessor :id
 
       # The Unix timestamp (in seconds) for when the vector store was created.
       sig { returns(Integer) }
-      def created_at
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def created_at=(_)
-      end
+      attr_accessor :created_at
 
       sig { returns(OpenAI::Models::VectorStore::FileCounts) }
-      def file_counts
-      end
+      attr_reader :file_counts
 
-      sig do
-        params(_: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash))
-      end
-      def file_counts=(_)
-      end
+      sig { params(file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash)).void }
+      attr_writer :file_counts
 
       # The Unix timestamp (in seconds) for when the vector store was last active.
       sig { returns(T.nilable(Integer)) }
-      def last_active_at
-      end
-
-      sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-      def last_active_at=(_)
-      end
+      attr_accessor :last_active_at
 
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
       #   for storing additional information about the object in a structured format, and
@@ -48,74 +28,36 @@ module OpenAI
       #   Keys are strings with a maximum length of 64 characters. Values are strings with
       #   a maximum length of 512 characters.
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata
-      end
-
-      sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata=(_)
-      end
+      attr_accessor :metadata
 
       # The name of the vector store.
       sig { returns(String) }
-      def name
-      end
-
-      sig { params(_: String).returns(String) }
-      def name=(_)
-      end
+      attr_accessor :name
 
       # The object type, which is always `vector_store`.
       sig { returns(Symbol) }
-      def object
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def object=(_)
-      end
+      attr_accessor :object
 
       # The status of the vector store, which can be either `expired`, `in_progress`, or
       #   `completed`. A status of `completed` indicates that the vector store is ready
       #   for use.
       sig { returns(OpenAI::Models::VectorStore::Status::TaggedSymbol) }
-      def status
-      end
-
-      sig do
-        params(_: OpenAI::Models::VectorStore::Status::TaggedSymbol)
-          .returns(OpenAI::Models::VectorStore::Status::TaggedSymbol)
-      end
-      def status=(_)
-      end
+      attr_accessor :status
 
       # The total number of bytes used by the files in the vector store.
       sig { returns(Integer) }
-      def usage_bytes
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def usage_bytes=(_)
-      end
+      attr_accessor :usage_bytes
 
       # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::Models::VectorStore::ExpiresAfter)) }
-      def expires_after
-      end
+      attr_reader :expires_after
 
-      sig do
-        params(_: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash))
-      end
-      def expires_after=(_)
-      end
+      sig { params(expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash)).void }
+      attr_writer :expires_after
 
       # The Unix timestamp (in seconds) for when the vector store will expire.
       sig { returns(T.nilable(Integer)) }
-      def expires_at
-      end
-
-      sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-      def expires_at=(_)
-      end
+      attr_accessor :expires_at
 
       # A vector store is a collection of processed files can be used by the
       #   `file_search` tool.
@@ -174,48 +116,23 @@ module OpenAI
       class FileCounts < OpenAI::BaseModel
         # The number of files that were cancelled.
         sig { returns(Integer) }
-        def cancelled
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def cancelled=(_)
-        end
+        attr_accessor :cancelled
 
         # The number of files that have been successfully processed.
         sig { returns(Integer) }
-        def completed
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def completed=(_)
-        end
+        attr_accessor :completed
 
         # The number of files that have failed to process.
         sig { returns(Integer) }
-        def failed
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def failed=(_)
-        end
+        attr_accessor :failed
 
         # The number of files that are currently being processed.
         sig { returns(Integer) }
-        def in_progress
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def in_progress=(_)
-        end
+        attr_accessor :in_progress
 
         # The total number of files.
         sig { returns(Integer) }
-        def total
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def total=(_)
-        end
+        attr_accessor :total
 
         sig do
           params(
@@ -268,21 +185,11 @@ module OpenAI
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         #   `last_active_at`.
         sig { returns(Symbol) }
-        def anchor
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def anchor=(_)
-        end
+        attr_accessor :anchor
 
         # The number of days after the anchor time that the vector store will expire.
         sig { returns(Integer) }
-        def days
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def days=(_)
-        end
+        attr_accessor :days
 
         # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }

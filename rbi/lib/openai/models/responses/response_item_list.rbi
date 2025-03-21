@@ -21,77 +21,23 @@ module OpenAI
             ]
           )
         end
-        def data
-        end
-
-        sig do
-          params(
-            _: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseInputMessageItem,
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-              OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-            )
-            ]
-          )
-            .returns(
-              T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputMessageItem,
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-                OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-              )
-              ]
-            )
-        end
-        def data=(_)
-        end
+        attr_accessor :data
 
         # The ID of the first item in the list.
         sig { returns(String) }
-        def first_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def first_id=(_)
-        end
+        attr_accessor :first_id
 
         # Whether there are more items available.
         sig { returns(T::Boolean) }
-        def has_more
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def has_more=(_)
-        end
+        attr_accessor :has_more
 
         # The ID of the last item in the list.
         sig { returns(String) }
-        def last_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def last_id=(_)
-        end
+        attr_accessor :last_id
 
         # The type of object returned, must be `list`.
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # A list of Response items.
         sig do

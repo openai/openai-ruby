@@ -5,12 +5,7 @@ module OpenAI
     module Audio
       class Translation < OpenAI::BaseModel
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         sig { params(text: String).returns(T.attached_class) }
         def self.new(text:)

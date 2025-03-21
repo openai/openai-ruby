@@ -9,102 +9,53 @@ module OpenAI
       # A text description of the desired image(s). The maximum length is 1000
       #   characters for `dall-e-2` and 4000 characters for `dall-e-3`.
       sig { returns(String) }
-      def prompt
-      end
-
-      sig { params(_: String).returns(String) }
-      def prompt=(_)
-      end
+      attr_accessor :prompt
 
       # The model to use for image generation.
       sig { returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol))) }
-      def model
-      end
-
-      sig do
-        params(_: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)))
-          .returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)))
-      end
-      def model=(_)
-      end
+      attr_accessor :model
 
       # The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
       #   `n=1` is supported.
       sig { returns(T.nilable(Integer)) }
-      def n
-      end
-
-      sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-      def n=(_)
-      end
+      attr_accessor :n
 
       # The quality of the image that will be generated. `hd` creates images with finer
       #   details and greater consistency across the image. This param is only supported
       #   for `dall-e-3`.
       sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)) }
-      def quality
-      end
+      attr_reader :quality
 
-      sig do
-        params(_: OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
-          .returns(OpenAI::Models::ImageGenerateParams::Quality::OrSymbol)
-      end
-      def quality=(_)
-      end
+      sig { params(quality: OpenAI::Models::ImageGenerateParams::Quality::OrSymbol).void }
+      attr_writer :quality
 
       # The format in which the generated images are returned. Must be one of `url` or
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
       sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol)) }
-      def response_format
-      end
-
-      sig do
-        params(_: T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol))
-      end
-      def response_format=(_)
-      end
+      attr_accessor :response_format
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or
       #   `1024x1792` for `dall-e-3` models.
       sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol)) }
-      def size
-      end
-
-      sig do
-        params(_: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol))
-      end
-      def size=(_)
-      end
+      attr_accessor :size
 
       # The style of the generated images. Must be one of `vivid` or `natural`. Vivid
       #   causes the model to lean towards generating hyper-real and dramatic images.
       #   Natural causes the model to produce more natural, less hyper-real looking
       #   images. This param is only supported for `dall-e-3`.
       sig { returns(T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol)) }
-      def style
-      end
-
-      sig do
-        params(_: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol))
-      end
-      def style=(_)
-      end
+      attr_accessor :style
 
       # A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
       #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       sig { returns(T.nilable(String)) }
-      def user
-      end
+      attr_reader :user
 
-      sig { params(_: String).returns(String) }
-      def user=(_)
-      end
+      sig { params(user: String).void }
+      attr_writer :user
 
       sig do
         params(

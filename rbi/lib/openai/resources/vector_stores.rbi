@@ -4,12 +4,10 @@ module OpenAI
   module Resources
     class VectorStores
       sig { returns(OpenAI::Resources::VectorStores::Files) }
-      def files
-      end
+      attr_reader :files
 
       sig { returns(OpenAI::Resources::VectorStores::FileBatches) }
-      def file_batches
-      end
+      attr_reader :file_batches
 
       # Create a vector store.
       sig do

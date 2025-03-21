@@ -5,92 +5,44 @@ module OpenAI
     class Upload < OpenAI::BaseModel
       # The Upload unique identifier, which can be referenced in API endpoints.
       sig { returns(String) }
-      def id
-      end
-
-      sig { params(_: String).returns(String) }
-      def id=(_)
-      end
+      attr_accessor :id
 
       # The intended number of bytes to be uploaded.
       sig { returns(Integer) }
-      def bytes
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def bytes=(_)
-      end
+      attr_accessor :bytes
 
       # The Unix timestamp (in seconds) for when the Upload was created.
       sig { returns(Integer) }
-      def created_at
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def created_at=(_)
-      end
+      attr_accessor :created_at
 
       # The Unix timestamp (in seconds) for when the Upload will expire.
       sig { returns(Integer) }
-      def expires_at
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def expires_at=(_)
-      end
+      attr_accessor :expires_at
 
       # The name of the file to be uploaded.
       sig { returns(String) }
-      def filename
-      end
-
-      sig { params(_: String).returns(String) }
-      def filename=(_)
-      end
+      attr_accessor :filename
 
       # The object type, which is always "upload".
       sig { returns(Symbol) }
-      def object
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def object=(_)
-      end
+      attr_accessor :object
 
       # The intended purpose of the file.
       #   [Please refer here](https://platform.openai.com/docs/api-reference/files/object#files/object-purpose)
       #   for acceptable values.
       sig { returns(String) }
-      def purpose
-      end
-
-      sig { params(_: String).returns(String) }
-      def purpose=(_)
-      end
+      attr_accessor :purpose
 
       # The status of the Upload.
       sig { returns(OpenAI::Models::Upload::Status::TaggedSymbol) }
-      def status
-      end
-
-      sig do
-        params(_: OpenAI::Models::Upload::Status::TaggedSymbol)
-          .returns(OpenAI::Models::Upload::Status::TaggedSymbol)
-      end
-      def status=(_)
-      end
+      attr_accessor :status
 
       # The `File` object represents a document that has been uploaded to OpenAI.
       sig { returns(T.nilable(OpenAI::Models::FileObject)) }
-      def file
-      end
+      attr_reader :file
 
-      sig do
-        params(_: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash)))
-          .returns(T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash)))
-      end
-      def file=(_)
-      end
+      sig { params(file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash))).void }
+      attr_writer :file
 
       # The Upload object can accept byte chunks in the form of Parts.
       sig do

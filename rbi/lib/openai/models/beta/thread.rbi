@@ -6,21 +6,11 @@ module OpenAI
       class Thread < OpenAI::BaseModel
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The Unix timestamp (in seconds) for when the thread was created.
         sig { returns(Integer) }
-        def created_at
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def created_at=(_)
-        end
+        attr_accessor :created_at
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -29,36 +19,26 @@ module OpenAI
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata
-        end
-
-        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata=(_)
-        end
+        attr_accessor :metadata
 
         # The object type, which is always `thread`.
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # A set of resources that are made available to the assistant's tools in this
         #   thread. The resources are specific to the type of tool. For example, the
         #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
         #   tool requires a list of vector store IDs.
         sig { returns(T.nilable(OpenAI::Models::Beta::Thread::ToolResources)) }
-        def tool_resources
-        end
+        attr_reader :tool_resources
 
         sig do
-          params(_: T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Util::AnyHash)))
-            .returns(T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Util::AnyHash)))
+          params(
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Util::AnyHash))
+          )
+            .void
         end
-        def tool_resources=(_)
-        end
+        attr_writer :tool_resources
 
         # Represents a thread that contains
         #   [messages](https://platform.openai.com/docs/api-reference/messages).
@@ -92,26 +72,24 @@ module OpenAI
 
         class ToolResources < OpenAI::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter)) }
-          def code_interpreter
-          end
+          attr_reader :code_interpreter
 
           sig do
-            params(_: T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash))
+            params(
+              code_interpreter: T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+            )
+              .void
           end
-          def code_interpreter=(_)
-          end
+          attr_writer :code_interpreter
 
           sig { returns(T.nilable(OpenAI::Models::Beta::Thread::ToolResources::FileSearch)) }
-          def file_search
-          end
+          attr_reader :file_search
 
           sig do
-            params(_: T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Util::AnyHash))
+            params(file_search: T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Util::AnyHash))
+              .void
           end
-          def file_search=(_)
-          end
+          attr_writer :file_search
 
           # A set of resources that are made available to the assistant's tools in this
           #   thread. The resources are specific to the type of tool. For example, the
@@ -144,12 +122,10 @@ module OpenAI
             #   available to the `code_interpreter` tool. There can be a maximum of 20 files
             #   associated with the tool.
             sig { returns(T.nilable(T::Array[String])) }
-            def file_ids
-            end
+            attr_reader :file_ids
 
-            sig { params(_: T::Array[String]).returns(T::Array[String]) }
-            def file_ids=(_)
-            end
+            sig { params(file_ids: T::Array[String]).void }
+            attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
             def self.new(file_ids: nil)
@@ -166,12 +142,10 @@ module OpenAI
             #   attached to this thread. There can be a maximum of 1 vector store attached to
             #   the thread.
             sig { returns(T.nilable(T::Array[String])) }
-            def vector_store_ids
-            end
+            attr_reader :vector_store_ids
 
-            sig { params(_: T::Array[String]).returns(T::Array[String]) }
-            def vector_store_ids=(_)
-            end
+            sig { params(vector_store_ids: T::Array[String]).void }
+            attr_writer :vector_store_ids
 
             sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
             def self.new(vector_store_ids: nil)

@@ -9,30 +9,14 @@ module OpenAI
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
       sig { returns(OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol) }
-      def completion_window
-      end
-
-      sig do
-        params(_: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol)
-          .returns(OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol)
-      end
-      def completion_window=(_)
-      end
+      attr_accessor :completion_window
 
       # The endpoint to be used for all requests in the batch. Currently
       #   `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions`
       #   are supported. Note that `/v1/embeddings` batches are also restricted to a
       #   maximum of 50,000 embedding inputs across all requests in the batch.
       sig { returns(OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol) }
-      def endpoint
-      end
-
-      sig do
-        params(_: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
-          .returns(OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol)
-      end
-      def endpoint=(_)
-      end
+      attr_accessor :endpoint
 
       # The ID of an uploaded file that contains requests for the new batch.
       #
@@ -44,12 +28,7 @@ module OpenAI
       #   and must be uploaded with the purpose `batch`. The file can contain up to 50,000
       #   requests, and can be up to 200 MB in size.
       sig { returns(String) }
-      def input_file_id
-      end
-
-      sig { params(_: String).returns(String) }
-      def input_file_id=(_)
-      end
+      attr_accessor :input_file_id
 
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
       #   for storing additional information about the object in a structured format, and
@@ -58,12 +37,7 @@ module OpenAI
       #   Keys are strings with a maximum length of 64 characters. Values are strings with
       #   a maximum length of 512 characters.
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata
-      end
-
-      sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata=(_)
-      end
+      attr_accessor :metadata
 
       sig do
         params(

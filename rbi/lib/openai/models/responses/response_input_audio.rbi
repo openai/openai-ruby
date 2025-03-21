@@ -6,33 +6,15 @@ module OpenAI
       class ResponseInputAudio < OpenAI::BaseModel
         # Base64-encoded audio data.
         sig { returns(String) }
-        def data
-        end
-
-        sig { params(_: String).returns(String) }
-        def data=(_)
-        end
+        attr_accessor :data
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         sig { returns(OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol) }
-        def format_
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol)
-        end
-        def format_=(_)
-        end
+        attr_accessor :format_
 
         # The type of the input item. Always `input_audio`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # An audio input to the model.
         sig do

@@ -11,72 +11,55 @@ module OpenAI
     DEFAULT_MAX_RETRY_DELAY = T.let(8.0, Float)
 
     sig { returns(String) }
-    def api_key
-    end
+    attr_reader :api_key
 
     sig { returns(T.nilable(String)) }
-    def organization
-    end
+    attr_reader :organization
 
     sig { returns(T.nilable(String)) }
-    def project
-    end
+    attr_reader :project
 
     sig { returns(OpenAI::Resources::Completions) }
-    def completions
-    end
+    attr_reader :completions
 
     sig { returns(OpenAI::Resources::Chat) }
-    def chat
-    end
+    attr_reader :chat
 
     sig { returns(OpenAI::Resources::Embeddings) }
-    def embeddings
-    end
+    attr_reader :embeddings
 
     sig { returns(OpenAI::Resources::Files) }
-    def files
-    end
+    attr_reader :files
 
     sig { returns(OpenAI::Resources::Images) }
-    def images
-    end
+    attr_reader :images
 
     sig { returns(OpenAI::Resources::Audio) }
-    def audio
-    end
+    attr_reader :audio
 
     sig { returns(OpenAI::Resources::Moderations) }
-    def moderations
-    end
+    attr_reader :moderations
 
     sig { returns(OpenAI::Resources::Models) }
-    def models
-    end
+    attr_reader :models
 
     sig { returns(OpenAI::Resources::FineTuning) }
-    def fine_tuning
-    end
+    attr_reader :fine_tuning
 
     sig { returns(OpenAI::Resources::VectorStores) }
-    def vector_stores
-    end
+    attr_reader :vector_stores
 
     sig { returns(OpenAI::Resources::Beta) }
-    def beta
-    end
+    attr_reader :beta
 
     sig { returns(OpenAI::Resources::Batches) }
-    def batches
-    end
+    attr_reader :batches
 
     sig { returns(OpenAI::Resources::Uploads) }
-    def uploads
-    end
+    attr_reader :uploads
 
     sig { returns(OpenAI::Resources::Responses) }
-    def responses
-    end
+    attr_reader :responses
 
     # @api private
     sig { override.returns(T::Hash[String, String]) }

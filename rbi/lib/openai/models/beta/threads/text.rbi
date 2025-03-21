@@ -15,38 +15,11 @@ module OpenAI
               ]
             )
           end
-          def annotations
-          end
-
-          sig do
-            params(
-              _: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                OpenAI::Models::Beta::Threads::FilePathAnnotation
-              )
-              ]
-            )
-              .returns(
-                T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                  OpenAI::Models::Beta::Threads::FilePathAnnotation
-                )
-                ]
-              )
-          end
-          def annotations=(_)
-          end
+          attr_accessor :annotations
 
           # The data that makes up the text.
           sig { returns(String) }
-          def value
-          end
-
-          sig { params(_: String).returns(String) }
-          def value=(_)
-          end
+          attr_accessor :value
 
           sig do
             params(

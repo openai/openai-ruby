@@ -4,8 +4,7 @@ module OpenAI
   module Resources
     class Responses
       sig { returns(OpenAI::Resources::Responses::InputItems) }
-      def input_items
-      end
+      attr_reader :input_items
 
       # Creates a model response. Provide
       #   [text](https://platform.openai.com/docs/guides/text) or

@@ -7,30 +7,21 @@ module OpenAI
         # Specifies the event type. For a computer screenshot, this property is always set
         #   to `computer_screenshot`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The identifier of an uploaded file that contains the screenshot.
         sig { returns(T.nilable(String)) }
-        def file_id
-        end
+        attr_reader :file_id
 
-        sig { params(_: String).returns(String) }
-        def file_id=(_)
-        end
+        sig { params(file_id: String).void }
+        attr_writer :file_id
 
         # The URL of the screenshot image.
         sig { returns(T.nilable(String)) }
-        def image_url
-        end
+        attr_reader :image_url
 
-        sig { params(_: String).returns(String) }
-        def image_url=(_)
-        end
+        sig { params(image_url: String).void }
+        attr_writer :image_url
 
         # A computer screenshot image used with the computer use tool.
         sig { params(file_id: String, image_url: String, type: Symbol).returns(T.attached_class) }

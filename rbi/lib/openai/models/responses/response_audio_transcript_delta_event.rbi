@@ -6,21 +6,11 @@ module OpenAI
       class ResponseAudioTranscriptDeltaEvent < OpenAI::BaseModel
         # The partial transcript of the audio response.
         sig { returns(String) }
-        def delta
-        end
-
-        sig { params(_: String).returns(String) }
-        def delta=(_)
-        end
+        attr_accessor :delta
 
         # The type of the event. Always `response.audio.transcript.delta`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when there is a partial transcript of audio.
         sig { params(delta: String, type: Symbol).returns(T.attached_class) }

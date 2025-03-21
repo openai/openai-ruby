@@ -6,26 +6,13 @@ module OpenAI
       class AssistantToolChoice < OpenAI::BaseModel
         # The type of the tool. If type is `function`, the function name must be set
         sig { returns(OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol) }
-        def type
-        end
-
-        sig do
-          params(_: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
-            .returns(OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol)
-        end
-        def type=(_)
-        end
+        attr_accessor :type
 
         sig { returns(T.nilable(OpenAI::Models::Beta::AssistantToolChoiceFunction)) }
-        def function
-        end
+        attr_reader :function
 
-        sig do
-          params(_: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash))
-        end
-        def function=(_)
-        end
+        sig { params(function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash)).void }
+        attr_writer :function
 
         # Specifies a tool the model should use. Use to force the model to call a specific
         #   tool.

@@ -5,12 +5,7 @@ module OpenAI
     class ResponseFormatText < OpenAI::BaseModel
       # The type of response format being defined. Always `text`.
       sig { returns(Symbol) }
-      def type
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def type=(_)
-      end
+      attr_accessor :type
 
       # Default response format. Used to generate text responses.
       sig { params(type: Symbol).returns(T.attached_class) }

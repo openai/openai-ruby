@@ -6,49 +6,29 @@ module OpenAI
       module Threads
         class FilePathAnnotation < OpenAI::BaseModel
           sig { returns(Integer) }
-          def end_index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def end_index=(_)
-          end
+          attr_accessor :end_index
 
           sig { returns(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath) }
-          def file_path
-          end
+          attr_reader :file_path
 
           sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Util::AnyHash))
+            params(
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Util::AnyHash)
+            )
+              .void
           end
-          def file_path=(_)
-          end
+          attr_writer :file_path
 
           sig { returns(Integer) }
-          def start_index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def start_index=(_)
-          end
+          attr_accessor :start_index
 
           # The text in the message content that needs to be replaced.
           sig { returns(String) }
-          def text
-          end
-
-          sig { params(_: String).returns(String) }
-          def text=(_)
-          end
+          attr_accessor :text
 
           # Always `file_path`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # A URL for the file that's generated when the assistant used the
           #   `code_interpreter` tool to generate a file.
@@ -83,12 +63,7 @@ module OpenAI
           class FilePath < OpenAI::BaseModel
             # The ID of the file that was generated.
             sig { returns(String) }
-            def file_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def file_id=(_)
-            end
+            attr_accessor :file_id
 
             sig { params(file_id: String).returns(T.attached_class) }
             def self.new(file_id:)

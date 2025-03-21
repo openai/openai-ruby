@@ -28,29 +28,20 @@ module OpenAI
             )
           )
         end
-        def format_
-        end
+        attr_reader :format_
 
         sig do
           params(
-            _: T.any(
+            format_: T.any(
               OpenAI::Models::ResponseFormatText,
               OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
               OpenAI::Models::ResponseFormatJSONObject
             )
           )
-            .returns(
-              T.any(
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Util::AnyHash,
-                OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
-                OpenAI::Models::ResponseFormatJSONObject
-              )
-            )
+            .void
         end
-        def format_=(_)
-        end
+        attr_writer :format_
 
         # Configuration options for a text response from the model. Can be plain text or
         #   structured JSON data. Learn more:

@@ -44,68 +44,26 @@ module OpenAI
               ]
             )
           end
-          def content
-          end
-
-          sig do
-            params(
-              _: T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Models::Responses::ResponseInputImage,
-                OpenAI::Models::Responses::ResponseInputFile
-              )
-              ]
-            )
-              .returns(
-                T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseInputText,
-                  OpenAI::Models::Responses::ResponseInputImage,
-                  OpenAI::Models::Responses::ResponseInputFile
-                )
-                ]
-              )
-          end
-          def content=(_)
-          end
+          attr_accessor :content
 
           # The role of the message input. One of `user`, `system`, or `developer`.
           sig { returns(OpenAI::Models::Responses::ResponseInputItem::Message::Role::OrSymbol) }
-          def role
-          end
-
-          sig do
-            params(_: OpenAI::Models::Responses::ResponseInputItem::Message::Role::OrSymbol)
-              .returns(OpenAI::Models::Responses::ResponseInputItem::Message::Role::OrSymbol)
-          end
-          def role=(_)
-          end
+          attr_accessor :role
 
           # The status of item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
           sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputItem::Message::Status::OrSymbol)) }
-          def status
-          end
+          attr_reader :status
 
-          sig do
-            params(_: OpenAI::Models::Responses::ResponseInputItem::Message::Status::OrSymbol)
-              .returns(OpenAI::Models::Responses::ResponseInputItem::Message::Status::OrSymbol)
-          end
-          def status=(_)
-          end
+          sig { params(status: OpenAI::Models::Responses::ResponseInputItem::Message::Status::OrSymbol).void }
+          attr_writer :status
 
           # The type of the message input. Always set to `message`.
           sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputItem::Message::Type::OrSymbol)) }
-          def type
-          end
+          attr_reader :type
 
-          sig do
-            params(_: OpenAI::Models::Responses::ResponseInputItem::Message::Type::OrSymbol)
-              .returns(OpenAI::Models::Responses::ResponseInputItem::Message::Type::OrSymbol)
-          end
-          def type=(_)
-          end
+          sig { params(type: OpenAI::Models::Responses::ResponseInputItem::Message::Type::OrSymbol).void }
+          attr_writer :type
 
           # A message input to the model with a role indicating instruction following
           #   hierarchy. Instructions given with the `developer` or `system` role take
@@ -215,44 +173,30 @@ module OpenAI
         class ComputerCallOutput < OpenAI::BaseModel
           # The ID of the computer tool call that produced the output.
           sig { returns(String) }
-          def call_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def call_id=(_)
-          end
+          attr_accessor :call_id
 
           # A computer screenshot image used with the computer use tool.
           sig { returns(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot) }
-          def output
-          end
+          attr_reader :output
 
           sig do
             params(
-              _: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash)
+              output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash)
             )
-              .returns(T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash))
+              .void
           end
-          def output=(_)
-          end
+          attr_writer :output
 
           # The type of the computer tool call output. Always `computer_call_output`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # The ID of the computer tool call output.
           sig { returns(T.nilable(String)) }
-          def id
-          end
+          attr_reader :id
 
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          sig { params(id: String).void }
+          attr_writer :id
 
           # The safety checks reported by the API that have been acknowledged by the
           #   developer.
@@ -263,42 +207,28 @@ module OpenAI
               )
             )
           end
-          def acknowledged_safety_checks
-          end
+          attr_reader :acknowledged_safety_checks
 
           sig do
             params(
-              _: T::Array[
+              acknowledged_safety_checks: T::Array[
               T.any(
                 OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck,
                 OpenAI::Util::AnyHash
               )
               ]
             )
-              .returns(
-                T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck,
-                  OpenAI::Util::AnyHash
-                )
-                ]
-              )
+              .void
           end
-          def acknowledged_safety_checks=(_)
-          end
+          attr_writer :acknowledged_safety_checks
 
           # The status of the message input. One of `in_progress`, `completed`, or
           #   `incomplete`. Populated when input items are returned via API.
           sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)) }
-          def status
-          end
+          attr_reader :status
 
-          sig do
-            params(_: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)
-              .returns(OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)
-          end
-          def status=(_)
-          end
+          sig { params(status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol).void }
+          attr_writer :status
 
           # The output of a computer tool call.
           sig do
@@ -339,30 +269,15 @@ module OpenAI
           class AcknowledgedSafetyCheck < OpenAI::BaseModel
             # The ID of the pending safety check.
             sig { returns(String) }
-            def id
-            end
-
-            sig { params(_: String).returns(String) }
-            def id=(_)
-            end
+            attr_accessor :id
 
             # The type of the pending safety check.
             sig { returns(String) }
-            def code
-            end
-
-            sig { params(_: String).returns(String) }
-            def code=(_)
-            end
+            attr_accessor :code
 
             # Details about the pending safety check.
             sig { returns(String) }
-            def message
-            end
-
-            sig { params(_: String).returns(String) }
-            def message=(_)
-            end
+            attr_accessor :message
 
             # A pending safety check for the computer call.
             sig { params(id: String, code: String, message: String).returns(T.attached_class) }
@@ -408,53 +323,31 @@ module OpenAI
         class FunctionCallOutput < OpenAI::BaseModel
           # The unique ID of the function tool call generated by the model.
           sig { returns(String) }
-          def call_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def call_id=(_)
-          end
+          attr_accessor :call_id
 
           # A JSON string of the output of the function tool call.
           sig { returns(String) }
-          def output
-          end
-
-          sig { params(_: String).returns(String) }
-          def output=(_)
-          end
+          attr_accessor :output
 
           # The type of the function tool call output. Always `function_call_output`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # The unique ID of the function tool call output. Populated when this item is
           #   returned via API.
           sig { returns(T.nilable(String)) }
-          def id
-          end
+          attr_reader :id
 
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          sig { params(id: String).void }
+          attr_writer :id
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
           sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)) }
-          def status
-          end
+          attr_reader :status
 
-          sig do
-            params(_: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)
-              .returns(OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)
-          end
-          def status=(_)
-          end
+          sig { params(status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol).void }
+          attr_writer :status
 
           # The output of a function tool call.
           sig do
@@ -519,21 +412,11 @@ module OpenAI
         class ItemReference < OpenAI::BaseModel
           # The ID of the item to reference.
           sig { returns(String) }
-          def id
-          end
-
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          attr_accessor :id
 
           # The type of item to reference. Always `item_reference`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # An internal identifier for an item to reference.
           sig { params(id: String, type: Symbol).returns(T.attached_class) }

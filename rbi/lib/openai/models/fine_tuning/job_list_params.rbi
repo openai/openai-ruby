@@ -9,31 +9,22 @@ module OpenAI
 
         # Identifier for the last job from the previous pagination request.
         sig { returns(T.nilable(String)) }
-        def after
-        end
+        attr_reader :after
 
-        sig { params(_: String).returns(String) }
-        def after=(_)
-        end
+        sig { params(after: String).void }
+        attr_writer :after
 
         # Number of fine-tuning jobs to retrieve.
         sig { returns(T.nilable(Integer)) }
-        def limit
-        end
+        attr_reader :limit
 
-        sig { params(_: Integer).returns(Integer) }
-        def limit=(_)
-        end
+        sig { params(limit: Integer).void }
+        attr_writer :limit
 
         # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
         #   Alternatively, set `metadata=null` to indicate no metadata.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata
-        end
-
-        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata=(_)
-        end
+        attr_accessor :metadata
 
         sig do
           params(

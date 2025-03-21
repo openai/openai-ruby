@@ -4,36 +4,16 @@ module OpenAI
   module Models
     class ErrorObject < OpenAI::BaseModel
       sig { returns(T.nilable(String)) }
-      def code
-      end
-
-      sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-      def code=(_)
-      end
+      attr_accessor :code
 
       sig { returns(String) }
-      def message
-      end
-
-      sig { params(_: String).returns(String) }
-      def message=(_)
-      end
+      attr_accessor :message
 
       sig { returns(T.nilable(String)) }
-      def param
-      end
-
-      sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-      def param=(_)
-      end
+      attr_accessor :param
 
       sig { returns(String) }
-      def type
-      end
-
-      sig { params(_: String).returns(String) }
-      def type=(_)
-      end
+      attr_accessor :type
 
       sig do
         params(code: T.nilable(String), message: String, param: T.nilable(String), type: String)

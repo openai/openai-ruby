@@ -5,24 +5,14 @@ module OpenAI
     module Chat
       class ChatCompletionTool < OpenAI::BaseModel
         sig { returns(OpenAI::Models::FunctionDefinition) }
-        def function
-        end
+        attr_reader :function
 
-        sig do
-          params(_: T.any(OpenAI::Models::FunctionDefinition, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::FunctionDefinition, OpenAI::Util::AnyHash))
-        end
-        def function=(_)
-        end
+        sig { params(function: T.any(OpenAI::Models::FunctionDefinition, OpenAI::Util::AnyHash)).void }
+        attr_writer :function
 
         # The type of the tool. Currently, only `function` is supported.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         sig do
           params(function: T.any(OpenAI::Models::FunctionDefinition, OpenAI::Util::AnyHash), type: Symbol)

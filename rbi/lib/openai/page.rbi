@@ -7,20 +7,10 @@ module OpenAI
     Elem = type_member
 
     sig { returns(T.nilable(T::Array[Elem])) }
-    def data
-    end
-
-    sig { params(_: T.nilable(T::Array[Elem])).returns(T.nilable(T::Array[Elem])) }
-    def data=(_)
-    end
+    attr_accessor :data
 
     sig { returns(String) }
-    def object
-    end
-
-    sig { params(_: String).returns(String) }
-    def object=(_)
-    end
+    attr_accessor :object
 
     sig { returns(String) }
     def inspect

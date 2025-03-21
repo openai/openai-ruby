@@ -6,24 +6,14 @@ module OpenAI
       class ResponseInProgressEvent < OpenAI::BaseModel
         # The response that is in progress.
         sig { returns(OpenAI::Models::Responses::Response) }
-        def response
-        end
+        attr_reader :response
 
-        sig do
-          params(_: T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash))
-        end
-        def response=(_)
-        end
+        sig { params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash)).void }
+        attr_writer :response
 
         # The type of the event. Always `response.in_progress`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when the response is in progress.
         sig do

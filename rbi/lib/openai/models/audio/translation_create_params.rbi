@@ -10,50 +10,30 @@ module OpenAI
         # The audio file object (not file name) translate, in one of these formats: flac,
         #   mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         sig { returns(T.any(IO, StringIO)) }
-        def file
-        end
-
-        sig { params(_: T.any(IO, StringIO)).returns(T.any(IO, StringIO)) }
-        def file=(_)
-        end
+        attr_accessor :file
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
         sig { returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol)) }
-        def model
-        end
-
-        sig do
-          params(_: T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-        end
-        def model=(_)
-        end
+        attr_accessor :model
 
         # An optional text to guide the model's style or continue a previous audio
         #   segment. The
         #   [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
         #   should be in English.
         sig { returns(T.nilable(String)) }
-        def prompt
-        end
+        attr_reader :prompt
 
-        sig { params(_: String).returns(String) }
-        def prompt=(_)
-        end
+        sig { params(prompt: String).void }
+        attr_writer :prompt
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
         sig { returns(T.nilable(OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)) }
-        def response_format
-        end
+        attr_reader :response_format
 
-        sig do
-          params(_: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-            .returns(OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol)
-        end
-        def response_format=(_)
-        end
+        sig { params(response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol).void }
+        attr_writer :response_format
 
         # The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
         #   output more random, while lower values like 0.2 will make it more focused and
@@ -61,12 +41,10 @@ module OpenAI
         #   [log probability](https://en.wikipedia.org/wiki/Log_probability) to
         #   automatically increase the temperature until certain thresholds are hit.
         sig { returns(T.nilable(Float)) }
-        def temperature
-        end
+        attr_reader :temperature
 
-        sig { params(_: Float).returns(Float) }
-        def temperature=(_)
-        end
+        sig { params(temperature: Float).void }
+        attr_writer :temperature
 
         sig do
           params(

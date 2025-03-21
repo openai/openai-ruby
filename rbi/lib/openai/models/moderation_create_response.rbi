@@ -5,30 +5,15 @@ module OpenAI
     class ModerationCreateResponse < OpenAI::BaseModel
       # The unique identifier for the moderation request.
       sig { returns(String) }
-      def id
-      end
-
-      sig { params(_: String).returns(String) }
-      def id=(_)
-      end
+      attr_accessor :id
 
       # The model used to generate the moderation results.
       sig { returns(String) }
-      def model
-      end
-
-      sig { params(_: String).returns(String) }
-      def model=(_)
-      end
+      attr_accessor :model
 
       # A list of moderation objects.
       sig { returns(T::Array[OpenAI::Models::Moderation]) }
-      def results
-      end
-
-      sig { params(_: T::Array[OpenAI::Models::Moderation]).returns(T::Array[OpenAI::Models::Moderation]) }
-      def results=(_)
-      end
+      attr_accessor :results
 
       # Represents if a given text input is potentially harmful.
       sig do

@@ -6,33 +6,23 @@ module OpenAI
       class ChatCompletionMessageToolCall < OpenAI::BaseModel
         # The ID of the tool call.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The function that the model called.
         sig { returns(OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function) }
-        def function
-        end
+        attr_reader :function
 
         sig do
-          params(_: T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function, OpenAI::Util::AnyHash))
+          params(
+            function: T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def function=(_)
-        end
+        attr_writer :function
 
         # The type of the tool. Currently, only `function` is supported.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         sig do
           params(
@@ -60,21 +50,11 @@ module OpenAI
           #   hallucinate parameters not defined by your function schema. Validate the
           #   arguments in your code before calling your function.
           sig { returns(String) }
-          def arguments
-          end
-
-          sig { params(_: String).returns(String) }
-          def arguments=(_)
-          end
+          attr_accessor :arguments
 
           # The name of the function to call.
           sig { returns(String) }
-          def name
-          end
-
-          sig { params(_: String).returns(String) }
-          def name=(_)
-          end
+          attr_accessor :name
 
           # The function that the model called.
           sig { params(arguments: String, name: String).returns(T.attached_class) }

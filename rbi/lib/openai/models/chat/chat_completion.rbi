@@ -6,88 +6,45 @@ module OpenAI
       class ChatCompletion < OpenAI::BaseModel
         # A unique identifier for the chat completion.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # A list of chat completion choices. Can be more than one if `n` is greater
         #   than 1.
         sig { returns(T::Array[OpenAI::Models::Chat::ChatCompletion::Choice]) }
-        def choices
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Chat::ChatCompletion::Choice])
-            .returns(T::Array[OpenAI::Models::Chat::ChatCompletion::Choice])
-        end
-        def choices=(_)
-        end
+        attr_accessor :choices
 
         # The Unix timestamp (in seconds) of when the chat completion was created.
         sig { returns(Integer) }
-        def created
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def created=(_)
-        end
+        attr_accessor :created
 
         # The model used for the chat completion.
         sig { returns(String) }
-        def model
-        end
-
-        sig { params(_: String).returns(String) }
-        def model=(_)
-        end
+        attr_accessor :model
 
         # The object type, which is always `chat.completion`.
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # The service tier used for processing the request.
         sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)) }
-        def service_tier
-        end
-
-        sig do
-          params(_: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol))
-            .returns(T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol))
-        end
-        def service_tier=(_)
-        end
+        attr_accessor :service_tier
 
         # This fingerprint represents the backend configuration that the model runs with.
         #
         #   Can be used in conjunction with the `seed` request parameter to understand when
         #   backend changes have been made that might impact determinism.
         sig { returns(T.nilable(String)) }
-        def system_fingerprint
-        end
+        attr_reader :system_fingerprint
 
-        sig { params(_: String).returns(String) }
-        def system_fingerprint=(_)
-        end
+        sig { params(system_fingerprint: String).void }
+        attr_writer :system_fingerprint
 
         # Usage statistics for the completion request.
         sig { returns(T.nilable(OpenAI::Models::CompletionUsage)) }
-        def usage
-        end
+        attr_reader :usage
 
-        sig do
-          params(_: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
-        end
-        def usage=(_)
-        end
+        sig { params(usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)).void }
+        attr_writer :usage
 
         # Represents a chat completion response returned by model, based on the provided
         #   input.
@@ -142,48 +99,30 @@ module OpenAI
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
           sig { returns(OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol) }
-          def finish_reason
-          end
-
-          sig do
-            params(_: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
-              .returns(OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
-          end
-          def finish_reason=(_)
-          end
+          attr_accessor :finish_reason
 
           # The index of the choice in the list of choices.
           sig { returns(Integer) }
-          def index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def index=(_)
-          end
+          attr_accessor :index
 
           # Log probability information for the choice.
           sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs)) }
-          def logprobs
-          end
+          attr_reader :logprobs
 
           sig do
-            params(_: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Util::AnyHash)))
-              .returns(T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Util::AnyHash)))
+            params(
+              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Util::AnyHash))
+            )
+              .void
           end
-          def logprobs=(_)
-          end
+          attr_writer :logprobs
 
           # A chat completion message generated by the model.
           sig { returns(OpenAI::Models::Chat::ChatCompletionMessage) }
-          def message
-          end
+          attr_reader :message
 
-          sig do
-            params(_: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Util::AnyHash))
-          end
-          def message=(_)
-          end
+          sig { params(message: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Util::AnyHash)).void }
+          attr_writer :message
 
           sig do
             params(
@@ -242,27 +181,11 @@ module OpenAI
           class Logprobs < OpenAI::BaseModel
             # A list of message content tokens with log probability information.
             sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob])) }
-            def content
-            end
-
-            sig do
-              params(_: T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]))
-                .returns(T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]))
-            end
-            def content=(_)
-            end
+            attr_accessor :content
 
             # A list of message refusal tokens with log probability information.
             sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob])) }
-            def refusal
-            end
-
-            sig do
-              params(_: T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]))
-                .returns(T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]))
-            end
-            def refusal=(_)
-            end
+            attr_accessor :refusal
 
             # Log probability information for the choice.
             sig do

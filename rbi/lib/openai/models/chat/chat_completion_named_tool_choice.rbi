@@ -5,24 +5,19 @@ module OpenAI
     module Chat
       class ChatCompletionNamedToolChoice < OpenAI::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function) }
-        def function
-        end
+        attr_reader :function
 
         sig do
-          params(_: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash))
+          params(
+            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def function=(_)
-        end
+        attr_writer :function
 
         # The type of the tool. Currently, only `function` is supported.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Specifies a tool the model should use. Use to force the model to call a specific
         #   function.
@@ -43,12 +38,7 @@ module OpenAI
         class Function < OpenAI::BaseModel
           # The name of the function to call.
           sig { returns(String) }
-          def name
-          end
-
-          sig { params(_: String).returns(String) }
-          def name=(_)
-          end
+          attr_accessor :name
 
           sig { params(name: String).returns(T.attached_class) }
           def self.new(name:)

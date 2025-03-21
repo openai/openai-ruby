@@ -5,8 +5,7 @@ module OpenAI
     class FineTuning
       class Jobs
         sig { returns(OpenAI::Resources::FineTuning::Jobs::Checkpoints) }
-        def checkpoints
-        end
+        attr_reader :checkpoints
 
         # Creates a fine-tuning job which begins the process of creating a new model from
         #   a given dataset.

@@ -5,12 +5,7 @@ module OpenAI
     class ResponseFormatJSONObject < OpenAI::BaseModel
       # The type of response format being defined. Always `json_object`.
       sig { returns(Symbol) }
-      def type
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def type=(_)
-      end
+      attr_accessor :type
 
       # JSON object response format. An older method of generating JSON responses. Using
       #   `json_schema` is recommended for models that support it. Note that the model

@@ -7,32 +7,17 @@ module OpenAI
         class ImageURLDeltaBlock < OpenAI::BaseModel
           # The index of the content part in the message.
           sig { returns(Integer) }
-          def index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def index=(_)
-          end
+          attr_accessor :index
 
           # Always `image_url`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageURLDelta)) }
-          def image_url
-          end
+          attr_reader :image_url
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Util::AnyHash))
-          end
-          def image_url=(_)
-          end
+          sig { params(image_url: T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Util::AnyHash)).void }
+          attr_writer :image_url
 
           # References an image URL in the content of a message.
           sig do
