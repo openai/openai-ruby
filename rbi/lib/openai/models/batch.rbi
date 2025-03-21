@@ -206,7 +206,7 @@ module OpenAI
           cancelling_at: Integer,
           completed_at: Integer,
           error_file_id: String,
-          errors: OpenAI::Models::Batch::Errors,
+          errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash),
           expired_at: Integer,
           expires_at: Integer,
           failed_at: Integer,
@@ -214,7 +214,7 @@ module OpenAI
           in_progress_at: Integer,
           metadata: T.nilable(T::Hash[Symbol, String]),
           output_file_id: String,
-          request_counts: OpenAI::Models::BatchRequestCounts,
+          request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash),
           object: Symbol
         )
           .returns(T.attached_class)

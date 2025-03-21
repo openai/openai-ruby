@@ -31,7 +31,7 @@ module OpenAI
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::Completion)
       end
@@ -174,7 +174,7 @@ module OpenAI
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Stream[OpenAI::Models::Completion])
       end

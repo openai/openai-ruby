@@ -335,14 +335,14 @@ module OpenAI
               )
             ),
             temperature: T.nilable(Float),
-            thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
+            thread: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Util::AnyHash),
             tool_choice: T.nilable(
               T.any(
                 OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
                 OpenAI::Models::Beta::AssistantToolChoice
               )
             ),
-            tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Util::AnyHash)),
             tools: T.nilable(
               T::Array[
               T.any(
@@ -353,8 +353,10 @@ module OpenAI
               ]
             ),
             top_p: T.nilable(Float),
-            truncation_strategy: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy),
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            truncation_strategy: T.nilable(
+              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Util::AnyHash)
+            ),
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -497,7 +499,9 @@ module OpenAI
             params(
               messages: T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message],
               metadata: T.nilable(T::Hash[Symbol, String]),
-              tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources)
+              tool_resources: T.nilable(
+                T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, OpenAI::Util::AnyHash)
+              )
             )
               .returns(T.attached_class)
           end
@@ -900,8 +904,14 @@ module OpenAI
             #   tool requires a list of vector store IDs.
             sig do
               params(
-                code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
-                file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch
+                code_interpreter: T.any(
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
+                  OpenAI::Util::AnyHash
+                ),
+                file_search: T.any(
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch,
+                  OpenAI::Util::AnyHash
+                )
               )
                 .returns(T.attached_class)
             end
@@ -1164,7 +1174,10 @@ module OpenAI
 
                     sig do
                       params(
-                        static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                        static: T.any(
+                          OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                          OpenAI::Util::AnyHash
+                        ),
                         type: Symbol
                       )
                         .returns(T.attached_class)
@@ -1282,8 +1295,11 @@ module OpenAI
           #   IDs.
           sig do
             params(
-              code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
-              file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch
+              code_interpreter: T.any(
+                OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
+                OpenAI::Util::AnyHash
+              ),
+              file_search: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

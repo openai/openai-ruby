@@ -26,7 +26,10 @@ module OpenAI
           end
 
           # References an image URL in the content of a message.
-          sig { params(image_url: OpenAI::Models::Beta::Threads::ImageURL, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(image_url: T.any(OpenAI::Models::Beta::Threads::ImageURL, OpenAI::Util::AnyHash), type: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(image_url:, type: :image_url)
           end
 

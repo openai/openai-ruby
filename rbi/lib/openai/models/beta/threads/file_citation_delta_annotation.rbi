@@ -70,7 +70,7 @@ module OpenAI
             params(
               index: Integer,
               end_index: Integer,
-              file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation, OpenAI::Util::AnyHash),
               start_index: Integer,
               text: String,
               type: Symbol

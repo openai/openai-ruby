@@ -48,7 +48,10 @@ module OpenAI
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is created.
-          sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.step.created")
           end
 
@@ -81,7 +84,10 @@ module OpenAI
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   moves to an `in_progress` state.
-          sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.step.in_progress")
           end
 
@@ -116,7 +122,10 @@ module OpenAI
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   are being streamed.
           sig do
-            params(data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.step.delta")
@@ -151,7 +160,10 @@ module OpenAI
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is completed.
-          sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.step.completed")
           end
 
@@ -184,7 +196,10 @@ module OpenAI
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   fails.
-          sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.step.failed")
           end
 
@@ -217,7 +232,10 @@ module OpenAI
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is cancelled.
-          sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.step.cancelled")
           end
 
@@ -250,7 +268,10 @@ module OpenAI
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   expires.
-          sig { params(data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.step.expired")
           end
 

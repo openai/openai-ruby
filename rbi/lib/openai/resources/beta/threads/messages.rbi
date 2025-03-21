@@ -22,7 +22,7 @@ module OpenAI
               role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
               attachments: T.nilable(T::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment]),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)
           end
@@ -57,7 +57,7 @@ module OpenAI
             params(
               message_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)
           end
@@ -77,7 +77,7 @@ module OpenAI
               message_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)
           end
@@ -106,7 +106,7 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::MessageListParams::Order::OrSymbol,
               run_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Message])
           end
@@ -141,7 +141,7 @@ module OpenAI
             params(
               message_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::MessageDeleted)
           end

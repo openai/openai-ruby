@@ -208,7 +208,7 @@ module OpenAI
               ],
               created_at: Integer,
               incomplete_at: T.nilable(Integer),
-              incomplete_details: T.nilable(OpenAI::Models::Beta::Threads::Message::IncompleteDetails),
+              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash)),
               metadata: T.nilable(T::Hash[Symbol, String]),
               role: OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol,
               run_id: T.nilable(String),

@@ -48,7 +48,7 @@ module OpenAI
                 thread_id: String,
                 run_id: String,
                 include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
-                request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+                request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
               )
                 .returns(T.attached_class)
             end

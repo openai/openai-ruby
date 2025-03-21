@@ -35,7 +35,11 @@ module OpenAI
         end
 
         sig do
-          params(id: String, function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function, type: Symbol)
+          params(
+            id: String,
+            function: T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function, OpenAI::Util::AnyHash),
+            type: Symbol
+          )
             .returns(T.attached_class)
         end
         def self.new(id:, function:, type: :function)

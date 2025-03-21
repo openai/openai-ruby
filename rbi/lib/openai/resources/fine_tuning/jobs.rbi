@@ -26,7 +26,7 @@ module OpenAI
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
             validation_file: T.nilable(String),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::FineTuning::FineTuningJob)
         end
@@ -99,7 +99,7 @@ module OpenAI
         sig do
           params(
             fine_tuning_job_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::FineTuning::FineTuningJob)
         end
@@ -116,7 +116,7 @@ module OpenAI
             after: String,
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJob])
         end
@@ -136,7 +136,7 @@ module OpenAI
         sig do
           params(
             fine_tuning_job_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::FineTuning::FineTuningJob)
         end
@@ -153,7 +153,7 @@ module OpenAI
             fine_tuning_job_id: String,
             after: String,
             limit: Integer,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::FineTuning::FineTuningJobEvent])
         end

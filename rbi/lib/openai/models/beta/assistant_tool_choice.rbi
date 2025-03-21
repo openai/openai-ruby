@@ -32,7 +32,7 @@ module OpenAI
         sig do
           params(
             type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,
-            function: OpenAI::Models::Beta::AssistantToolChoiceFunction
+            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

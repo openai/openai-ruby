@@ -12,7 +12,7 @@ module OpenAI
             prompt: String,
             response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(T.any(OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose))
         end

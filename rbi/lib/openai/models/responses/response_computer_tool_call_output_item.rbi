@@ -83,7 +83,7 @@ module OpenAI
           params(
             id: String,
             call_id: String,
-            output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+            output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash),
             acknowledged_safety_checks: T::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
             status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol,
             type: Symbol

@@ -8,7 +8,12 @@ module OpenAI
       sig do
         params(
           model: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(
+            T.any(
+              OpenAI::RequestOptions,
+              OpenAI::Util::AnyHash
+            )
+          )
         )
           .returns(OpenAI::Models::Model)
       end
@@ -22,7 +27,7 @@ module OpenAI
       # Lists the currently available models, and provides basic information about each
       #   one such as the owner and availability.
       sig do
-        params(request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])))
+        params(request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)))
           .returns(OpenAI::Page[OpenAI::Models::Model])
       end
       def list(request_options: {})
@@ -33,7 +38,12 @@ module OpenAI
       sig do
         params(
           model: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(
+            T.any(
+              OpenAI::RequestOptions,
+              OpenAI::Util::AnyHash
+            )
+          )
         )
           .returns(OpenAI::Models::ModelDeleted)
       end

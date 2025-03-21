@@ -393,10 +393,10 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
-            reasoning: T.nilable(OpenAI::Models::Reasoning),
+            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)),
             store: T.nilable(T::Boolean),
             temperature: T.nilable(Float),
-            text: OpenAI::Models::Responses::ResponseTextConfig,
+            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash),
             tool_choice: T.any(
               OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
               OpenAI::Models::Responses::ToolChoiceTypes,
@@ -413,7 +413,7 @@ module OpenAI
             top_p: T.nilable(Float),
             truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
             user: String,
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

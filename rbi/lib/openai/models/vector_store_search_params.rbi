@@ -63,9 +63,9 @@ module OpenAI
           query: T.any(String, T::Array[String]),
           filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter),
           max_num_results: Integer,
-          ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash),
           rewrite_query: T::Boolean,
-          request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

@@ -413,15 +413,15 @@ module OpenAI
               created_at: Integer,
               expires_at: T.nilable(Integer),
               failed_at: T.nilable(Integer),
-              incomplete_details: T.nilable(OpenAI::Models::Beta::Threads::Run::IncompleteDetails),
+              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::IncompleteDetails, OpenAI::Util::AnyHash)),
               instructions: String,
-              last_error: T.nilable(OpenAI::Models::Beta::Threads::Run::LastError),
+              last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::LastError, OpenAI::Util::AnyHash)),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
               model: String,
               parallel_tool_calls: T::Boolean,
-              required_action: T.nilable(OpenAI::Models::Beta::Threads::Run::RequiredAction),
+              required_action: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction, OpenAI::Util::AnyHash)),
               response_format: T.nilable(
                 T.any(
                   Symbol,
@@ -446,8 +446,8 @@ module OpenAI
                 OpenAI::Models::Beta::FunctionTool
               )
               ],
-              truncation_strategy: T.nilable(OpenAI::Models::Beta::Threads::Run::TruncationStrategy),
-              usage: T.nilable(OpenAI::Models::Beta::Threads::Run::Usage),
+              truncation_strategy: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Util::AnyHash)),
+              usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Util::AnyHash)),
               temperature: T.nilable(Float),
               top_p: T.nilable(Float),
               object: Symbol
@@ -679,7 +679,7 @@ module OpenAI
             #   is required.
             sig do
               params(
-                submit_tool_outputs: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
+                submit_tool_outputs: T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs, OpenAI::Util::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)
