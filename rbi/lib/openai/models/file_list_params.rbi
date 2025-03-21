@@ -56,7 +56,7 @@ module OpenAI
           limit: Integer,
           order: OpenAI::Models::FileListParams::Order::OrSymbol,
           purpose: String,
-          request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

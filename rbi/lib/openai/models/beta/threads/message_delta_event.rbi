@@ -38,7 +38,11 @@ module OpenAI
           # Represents a message delta i.e. any changed fields on a message during
           #   streaming.
           sig do
-            params(id: String, delta: OpenAI::Models::Beta::Threads::MessageDelta, object: Symbol)
+            params(
+              id: String,
+              delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Util::AnyHash),
+              object: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(id:, delta:, object: :"thread.message.delta")

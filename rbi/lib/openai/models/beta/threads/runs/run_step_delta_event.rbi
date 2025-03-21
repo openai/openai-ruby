@@ -39,7 +39,11 @@ module OpenAI
             # Represents a run step delta i.e. any changed fields on a run step during
             #   streaming.
             sig do
-              params(id: String, delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta, object: Symbol)
+              params(
+                id: String,
+                delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Util::AnyHash),
+                object: Symbol
+              )
                 .returns(T.attached_class)
             end
             def self.new(id:, delta:, object: :"thread.run.step.delta")

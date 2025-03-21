@@ -31,7 +31,7 @@ module OpenAI
         params(
           file: T.any(IO, StringIO),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

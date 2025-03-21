@@ -42,7 +42,7 @@ module OpenAI
             sig do
               params(
                 id: String,
-                file_search: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
+                file_search: T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Util::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -97,7 +97,10 @@ module OpenAI
               # For now, this is always going to be an empty object.
               sig do
                 params(
-                  ranking_options: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                  ranking_options: T.any(
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                    OpenAI::Util::AnyHash
+                  ),
                   results: T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
                 )
                   .returns(T.attached_class)

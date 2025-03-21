@@ -41,8 +41,8 @@ module OpenAI
         sig do
           params(
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources: T.nilable(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources),
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Util::AnyHash)),
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -97,8 +97,8 @@ module OpenAI
           #   tool requires a list of vector store IDs.
           sig do
             params(
-              code_interpreter: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-              file_search: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
+              code_interpreter: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash),
+              file_search: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

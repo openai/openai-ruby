@@ -24,7 +24,10 @@ module OpenAI
         def type=(_)
         end
 
-        sig { params(function: OpenAI::Models::FunctionDefinition, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(function: T.any(OpenAI::Models::FunctionDefinition, OpenAI::Util::AnyHash), type: Symbol)
+            .returns(T.attached_class)
+        end
         def self.new(function:, type: :function)
         end
 

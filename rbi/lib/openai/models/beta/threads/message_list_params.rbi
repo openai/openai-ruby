@@ -71,7 +71,7 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::MessageListParams::Order::OrSymbol,
               run_id: String,
-              request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

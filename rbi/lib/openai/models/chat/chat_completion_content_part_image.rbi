@@ -26,7 +26,10 @@ module OpenAI
 
         # Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
         sig do
-          params(image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, type: Symbol)
+          params(
+            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash),
+            type: Symbol
+          )
             .returns(T.attached_class)
         end
         def self.new(image_url:, type: :image_url)

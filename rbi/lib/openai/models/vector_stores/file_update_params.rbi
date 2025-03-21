@@ -35,7 +35,7 @@ module OpenAI
           params(
             vector_store_id: String,
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

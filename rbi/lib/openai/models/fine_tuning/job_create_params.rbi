@@ -144,14 +144,14 @@ module OpenAI
           params(
             model: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol),
             training_file: String,
-            hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
+            hyperparameters: T.any(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, OpenAI::Util::AnyHash),
             integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
+            method_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Util::AnyHash),
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
             validation_file: T.nilable(String),
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -340,7 +340,10 @@ module OpenAI
           end
 
           sig do
-            params(wandb: OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb, type: Symbol)
+            params(
+              wandb: T.any(OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb, OpenAI::Util::AnyHash),
+              type: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(wandb:, type: :wandb)
@@ -462,8 +465,8 @@ module OpenAI
           # The method used for fine-tuning.
           sig do
             params(
-              dpo: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo,
-              supervised: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised,
+              dpo: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo, OpenAI::Util::AnyHash),
+              supervised: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised, OpenAI::Util::AnyHash),
               type: OpenAI::Models::FineTuning::JobCreateParams::Method::Type::OrSymbol
             )
               .returns(T.attached_class)
@@ -503,7 +506,9 @@ module OpenAI
 
             # Configuration for the DPO fine-tuning method.
             sig do
-              params(hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters)
+              params(
+                hyperparameters: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters, OpenAI::Util::AnyHash)
+              )
                 .returns(T.attached_class)
             end
             def self.new(hyperparameters: nil)
@@ -667,7 +672,12 @@ module OpenAI
 
             # Configuration for the supervised fine-tuning method.
             sig do
-              params(hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters)
+              params(
+                hyperparameters: T.any(
+                  OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters,
+                  OpenAI::Util::AnyHash
+                )
+              )
                 .returns(T.attached_class)
             end
             def self.new(hyperparameters: nil)

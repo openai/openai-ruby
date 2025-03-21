@@ -40,7 +40,7 @@ module OpenAI
             sig do
               params(
                 id: String,
-                function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function,
+                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, OpenAI::Util::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)

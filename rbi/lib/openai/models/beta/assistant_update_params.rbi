@@ -244,7 +244,7 @@ module OpenAI
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Util::AnyHash)),
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
@@ -253,7 +253,7 @@ module OpenAI
             )
             ],
             top_p: T.nilable(Float),
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -417,8 +417,8 @@ module OpenAI
           #   IDs.
           sig do
             params(
-              code_interpreter: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
-              file_search: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch
+              code_interpreter: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash),
+              file_search: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

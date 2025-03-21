@@ -394,8 +394,8 @@ module OpenAI
           params(
             id: String,
             created_at: Float,
-            error: T.nilable(OpenAI::Models::Responses::ResponseError),
-            incomplete_details: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails),
+            error: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Util::AnyHash)),
+            incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Util::AnyHash)),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol),
@@ -427,11 +427,11 @@ module OpenAI
             top_p: T.nilable(Float),
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
-            reasoning: T.nilable(OpenAI::Models::Reasoning),
+            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)),
             status: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol,
-            text: OpenAI::Models::Responses::ResponseTextConfig,
+            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash),
             truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol),
-            usage: OpenAI::Models::Responses::ResponseUsage,
+            usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Util::AnyHash),
             user: String,
             object: Symbol
           )

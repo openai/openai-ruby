@@ -10,7 +10,7 @@ module OpenAI
           endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::Batch)
       end
@@ -48,7 +48,12 @@ module OpenAI
       sig do
         params(
           batch_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(
+            T.any(
+              OpenAI::RequestOptions,
+              OpenAI::Util::AnyHash
+            )
+          )
         )
           .returns(OpenAI::Models::Batch)
       end
@@ -64,7 +69,7 @@ module OpenAI
         params(
           after: String,
           limit: Integer,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::CursorPage[OpenAI::Models::Batch])
       end
@@ -87,7 +92,12 @@ module OpenAI
       sig do
         params(
           batch_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(
+            T.any(
+              OpenAI::RequestOptions,
+              OpenAI::Util::AnyHash
+            )
+          )
         )
           .returns(OpenAI::Models::Batch)
       end

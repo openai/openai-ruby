@@ -60,9 +60,9 @@ module OpenAI
         sig do
           params(
             input_tokens: Integer,
-            input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
+            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash),
             output_tokens: Integer,
-            output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
+            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash),
             total_tokens: Integer
           )
             .returns(T.attached_class)

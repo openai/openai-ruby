@@ -207,7 +207,7 @@ module OpenAI
                 created_at: Integer,
                 expired_at: T.nilable(Integer),
                 failed_at: T.nilable(Integer),
-                last_error: T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError),
+                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash)),
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 run_id: String,
                 status: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol,
@@ -217,7 +217,7 @@ module OpenAI
                 ),
                 thread_id: String,
                 type: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol,
-                usage: T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage),
+                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash)),
                 object: Symbol
               )
                 .returns(T.attached_class)

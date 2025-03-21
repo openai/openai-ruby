@@ -50,9 +50,9 @@ module OpenAI
 
       sig do
         params(
-          categories: OpenAI::Models::Moderation::Categories,
-          category_applied_input_types: OpenAI::Models::Moderation::CategoryAppliedInputTypes,
-          category_scores: OpenAI::Models::Moderation::CategoryScores,
+          categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash),
+          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash),
+          category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash),
           flagged: T::Boolean
         )
           .returns(T.attached_class)

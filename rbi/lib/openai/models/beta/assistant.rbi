@@ -251,7 +251,7 @@ module OpenAI
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(OpenAI::Models::Beta::Assistant::ToolResources),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Util::AnyHash)),
             top_p: T.nilable(Float),
             object: Symbol
           )
@@ -339,8 +339,8 @@ module OpenAI
           #   IDs.
           sig do
             params(
-              code_interpreter: OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter,
-              file_search: OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
+              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash),
+              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

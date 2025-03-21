@@ -37,7 +37,14 @@ module OpenAI
         # Occurs when a new
         #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
         #   created.
-        sig { params(data: OpenAI::Models::Beta::Thread, enabled: T::Boolean, event: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+            data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash),
+            enabled: T::Boolean,
+            event: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(data:, enabled: nil, event: :"thread.created")
         end
 

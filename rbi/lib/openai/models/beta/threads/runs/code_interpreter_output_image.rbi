@@ -42,7 +42,7 @@ module OpenAI
             sig do
               params(
                 index: Integer,
-                image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
+                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)

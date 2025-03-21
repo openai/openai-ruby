@@ -89,8 +89,8 @@ module OpenAI
             content: T.nilable(String),
             refusal: T.nilable(String),
             annotations: T::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation],
-            audio: T.nilable(OpenAI::Models::Chat::ChatCompletionAudio),
-            function_call: OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall,
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Util::AnyHash)),
+            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Util::AnyHash),
             tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
             role: Symbol
           )
@@ -144,7 +144,10 @@ module OpenAI
 
           # A URL citation when using web search.
           sig do
-            params(url_citation: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, type: Symbol)
+            params(
+              url_citation: T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, OpenAI::Util::AnyHash),
+              type: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(url_citation:, type: :url_citation)

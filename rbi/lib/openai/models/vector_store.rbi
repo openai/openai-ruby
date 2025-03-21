@@ -123,13 +123,13 @@ module OpenAI
         params(
           id: String,
           created_at: Integer,
-          file_counts: OpenAI::Models::VectorStore::FileCounts,
+          file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash),
           last_active_at: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
           status: OpenAI::Models::VectorStore::Status::TaggedSymbol,
           usage_bytes: Integer,
-          expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
+          expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash),
           expires_at: T.nilable(Integer),
           object: Symbol
         )

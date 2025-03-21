@@ -136,7 +136,7 @@ module OpenAI
         # Messages sent by the model in response to user messages.
         sig do
           params(
-            audio: T.nilable(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio),
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio, OpenAI::Util::AnyHash)),
             content: T.nilable(
               T.any(
                 String,
@@ -148,7 +148,9 @@ module OpenAI
                 ]
               )
             ),
-            function_call: T.nilable(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall),
+            function_call: T.nilable(
+              T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall, OpenAI::Util::AnyHash)
+            ),
             name: String,
             refusal: T.nilable(String),
             tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],

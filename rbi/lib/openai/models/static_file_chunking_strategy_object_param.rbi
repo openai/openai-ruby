@@ -24,7 +24,10 @@ module OpenAI
       end
 
       # Customize your own chunking strategy by setting chunk size and chunk overlap.
-      sig { params(static: OpenAI::Models::StaticFileChunkingStrategy, type: Symbol).returns(T.attached_class) }
+      sig do
+        params(static: T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Util::AnyHash), type: Symbol)
+          .returns(T.attached_class)
+      end
       def self.new(static:, type: :static)
       end
 

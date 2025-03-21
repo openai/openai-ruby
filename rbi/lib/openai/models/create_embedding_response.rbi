@@ -46,7 +46,7 @@ module OpenAI
         params(
           data: T::Array[OpenAI::Models::Embedding],
           model: String,
-          usage: OpenAI::Models::CreateEmbeddingResponse::Usage,
+          usage: T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Util::AnyHash),
           object: Symbol
         )
           .returns(T.attached_class)

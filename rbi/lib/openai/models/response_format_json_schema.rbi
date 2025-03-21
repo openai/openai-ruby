@@ -28,7 +28,10 @@ module OpenAI
       #   more about
       #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
       sig do
-        params(json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, type: Symbol)
+        params(
+          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Util::AnyHash),
+          type: Symbol
+        )
           .returns(T.attached_class)
       end
       def self.new(json_schema:, type: :json_schema)

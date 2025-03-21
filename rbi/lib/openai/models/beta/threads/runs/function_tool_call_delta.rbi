@@ -54,7 +54,7 @@ module OpenAI
               params(
                 index: Integer,
                 id: String,
-                function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
+                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function, OpenAI::Util::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)

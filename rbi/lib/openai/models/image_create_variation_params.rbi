@@ -85,7 +85,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
           size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

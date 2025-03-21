@@ -102,7 +102,7 @@ module OpenAI
           filename: String,
           purpose: String,
           status: OpenAI::Models::Upload::Status::TaggedSymbol,
-          file: T.nilable(OpenAI::Models::FileObject),
+          file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash)),
           object: Symbol
         )
           .returns(T.attached_class)

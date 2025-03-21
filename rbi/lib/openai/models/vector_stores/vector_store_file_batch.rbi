@@ -73,7 +73,7 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
+            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash),
             status: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol,
             vector_store_id: String,
             object: Symbol
