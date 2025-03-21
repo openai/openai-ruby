@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+# We already ship the preferred sorbet manifests in the package itself.
+# `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
+if defined?(:Tapioca) && caller_locations.any? { _1.path.end_with?("tapioca/cli.rb") }
+  Warning.warn(
+    <<~WARN
+      \n
+      ⚠️ skipped loading of "openai" gem under `tapioca`.
+
+      This message is normal and expected if you are running a `tapioca` command, and does not impact `.rbi` generation.
+      \n
+    WARN
+  )
+  return
+end
+
 # Standard libraries.
 require "cgi"
 require "date"
