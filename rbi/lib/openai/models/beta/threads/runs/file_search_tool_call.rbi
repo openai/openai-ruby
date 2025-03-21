@@ -88,8 +88,12 @@ module OpenAI
               end
 
               sig do
-                params(_: T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result])
-                  .returns(T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result])
+                params(
+                  _: T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
+                )
+                  .returns(
+                    T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
+                  )
               end
               def results=(_)
               end
@@ -101,7 +105,7 @@ module OpenAI
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
                     OpenAI::Util::AnyHash
                   ),
-                  results: T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                  results: T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
                 )
                   .returns(T.attached_class)
               end
@@ -155,7 +159,7 @@ module OpenAI
                 # The ranking options for the file search.
                 sig do
                   params(
-                    ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol,
+                    ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::OrSymbol,
                     score_threshold: Float
                   )
                     .returns(T.attached_class)
@@ -254,8 +258,22 @@ module OpenAI
                 end
 
                 sig do
-                  params(_: T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content])
-                    .returns(T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content])
+                  params(
+                    _: T::Array[
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
+                      OpenAI::Util::AnyHash
+                    )
+                    ]
+                  )
+                    .returns(
+                      T::Array[
+                      T.any(
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
+                        OpenAI::Util::AnyHash
+                      )
+                      ]
+                    )
                 end
                 def content=(_)
                 end
@@ -266,7 +284,12 @@ module OpenAI
                     file_id: String,
                     file_name: String,
                     score: Float,
-                    content: T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                    content: T::Array[
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
+                      OpenAI::Util::AnyHash
+                    )
+                    ]
                   )
                     .returns(T.attached_class)
                 end
@@ -310,10 +333,10 @@ module OpenAI
 
                   sig do
                     params(
-                      _: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                      _: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
                     )
                       .returns(
-                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
                       )
                   end
                   def type=(_)
@@ -322,7 +345,7 @@ module OpenAI
                   sig do
                     params(
                       text: String,
-                      type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                      type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
                     )
                       .returns(T.attached_class)
                   end

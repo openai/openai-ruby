@@ -61,7 +61,7 @@ module OpenAI
       sig do
         params(
           attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-          content: T::Array[OpenAI::Models::VectorStoreSearchResponse::Content],
+          content: T::Array[T.any(OpenAI::Models::VectorStoreSearchResponse::Content, OpenAI::Util::AnyHash)],
           file_id: String,
           filename: String,
           score: Float
@@ -121,7 +121,7 @@ module OpenAI
         end
 
         sig do
-          params(text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
+          params(text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::OrSymbol)
             .returns(T.attached_class)
         end
         def self.new(text:, type:)

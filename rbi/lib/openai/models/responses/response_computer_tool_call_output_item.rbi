@@ -59,9 +59,21 @@ module OpenAI
 
         sig do
           params(
-            _: T::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
+            _: T::Array[
+            T.any(
+              OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
+              OpenAI::Util::AnyHash
+            )
+            ]
           )
-            .returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck])
+            .returns(
+              T::Array[
+              T.any(
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
+                OpenAI::Util::AnyHash
+              )
+              ]
+            )
         end
         def acknowledged_safety_checks=(_)
         end
@@ -73,8 +85,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)
+          params(_: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol)
         end
         def status=(_)
         end
@@ -84,8 +96,13 @@ module OpenAI
             id: String,
             call_id: String,
             output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash),
-            acknowledged_safety_checks: T::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
-            status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol,
+            acknowledged_safety_checks: T::Array[
+            T.any(
+              OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
+              OpenAI::Util::AnyHash
+            )
+            ],
+            status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol,
             type: Symbol
           )
             .returns(T.attached_class)

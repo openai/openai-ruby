@@ -145,7 +145,9 @@ module OpenAI
             model: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol),
             training_file: String,
             hyperparameters: T.any(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, OpenAI::Util::AnyHash),
-            integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
+            integrations: T.nilable(
+              T::Array[T.any(OpenAI::Models::FineTuning::JobCreateParams::Integration, OpenAI::Util::AnyHash)]
+            ),
             metadata: T.nilable(T::Hash[Symbol, String]),
             method_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Util::AnyHash),
             seed: T.nilable(Integer),

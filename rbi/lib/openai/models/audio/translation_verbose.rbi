@@ -37,8 +37,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Audio::TranscriptionSegment])
-            .returns(T::Array[OpenAI::Models::Audio::TranscriptionSegment])
+          params(_: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
         end
         def segments=(_)
         end
@@ -48,7 +48,7 @@ module OpenAI
             duration: Float,
             language: String,
             text: String,
-            segments: T::Array[OpenAI::Models::Audio::TranscriptionSegment]
+            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)]
           )
             .returns(T.attached_class)
         end

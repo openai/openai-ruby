@@ -131,13 +131,15 @@ module OpenAI
           params(
             _: T.any(
               OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionFunctionCallOption
+              OpenAI::Models::Chat::ChatCompletionFunctionCallOption,
+              OpenAI::Util::AnyHash
             )
           )
             .returns(
               T.any(
                 OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionFunctionCallOption
+                OpenAI::Models::Chat::ChatCompletionFunctionCallOption,
+                OpenAI::Util::AnyHash
               )
             )
         end
@@ -152,8 +154,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Chat::CompletionCreateParams::Function])
-            .returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Function])
+          params(_: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Util::AnyHash)])
         end
         def functions=(_)
         end
@@ -337,6 +339,7 @@ module OpenAI
           params(
             _: T.any(
               OpenAI::Models::ResponseFormatText,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::ResponseFormatJSONSchema,
               OpenAI::Models::ResponseFormatJSONObject
             )
@@ -344,6 +347,7 @@ module OpenAI
             .returns(
               T.any(
                 OpenAI::Models::ResponseFormatText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::ResponseFormatJSONSchema,
                 OpenAI::Models::ResponseFormatJSONObject
               )
@@ -470,13 +474,15 @@ module OpenAI
           params(
             _: T.any(
               OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionNamedToolChoice
+              OpenAI::Models::Chat::ChatCompletionNamedToolChoice,
+              OpenAI::Util::AnyHash
             )
           )
             .returns(
               T.any(
                 OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionNamedToolChoice
+                OpenAI::Models::Chat::ChatCompletionNamedToolChoice,
+                OpenAI::Util::AnyHash
               )
             )
         end
@@ -491,8 +497,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Chat::ChatCompletionTool])
-            .returns(T::Array[OpenAI::Models::Chat::ChatCompletionTool])
+          params(_: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Util::AnyHash)])
         end
         def tools=(_)
         end
@@ -551,6 +557,7 @@ module OpenAI
             messages: T::Array[
             T.any(
               OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
               OpenAI::Models::Chat::ChatCompletionUserMessageParam,
               OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
@@ -563,9 +570,10 @@ module OpenAI
             frequency_penalty: T.nilable(Float),
             function_call: T.any(
               OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionFunctionCallOption
+              OpenAI::Models::Chat::ChatCompletionFunctionCallOption,
+              OpenAI::Util::AnyHash
             ),
-            functions: T::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
+            functions: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Util::AnyHash)],
             logit_bias: T.nilable(T::Hash[Symbol, Integer]),
             logprobs: T.nilable(T::Boolean),
             max_completion_tokens: T.nilable(Integer),
@@ -579,6 +587,7 @@ module OpenAI
             reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
             response_format: T.any(
               OpenAI::Models::ResponseFormatText,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::ResponseFormatJSONSchema,
               OpenAI::Models::ResponseFormatJSONObject
             ),
@@ -590,9 +599,10 @@ module OpenAI
             temperature: T.nilable(Float),
             tool_choice: T.any(
               OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionNamedToolChoice
+              OpenAI::Models::Chat::ChatCompletionNamedToolChoice,
+              OpenAI::Util::AnyHash
             ),
-            tools: T::Array[OpenAI::Models::Chat::ChatCompletionTool],
+            tools: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Util::AnyHash)],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,

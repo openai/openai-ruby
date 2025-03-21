@@ -19,10 +19,12 @@ module OpenAI
           params(
             model: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol),
             training_file: String,
-            hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters,
-            integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Integration]),
+            hyperparameters: T.any(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, OpenAI::Util::AnyHash),
+            integrations: T.nilable(
+              T::Array[T.any(OpenAI::Models::FineTuning::JobCreateParams::Integration, OpenAI::Util::AnyHash)]
+            ),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            method_: OpenAI::Models::FineTuning::JobCreateParams::Method,
+            method_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Util::AnyHash),
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
             validation_file: T.nilable(String),

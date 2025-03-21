@@ -31,7 +31,14 @@ module OpenAI
       end
 
       # Represents if a given text input is potentially harmful.
-      sig { params(id: String, model: String, results: T::Array[OpenAI::Models::Moderation]).returns(T.attached_class) }
+      sig do
+        params(
+          id: String,
+          model: String,
+          results: T::Array[T.any(OpenAI::Models::Moderation, OpenAI::Util::AnyHash)]
+        )
+          .returns(T.attached_class)
+      end
       def self.new(id:, model:, results:)
       end
 

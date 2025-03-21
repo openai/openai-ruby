@@ -53,6 +53,7 @@ module OpenAI
               annotations: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::FileCitationAnnotation,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::FilePathAnnotation
               )
               ],

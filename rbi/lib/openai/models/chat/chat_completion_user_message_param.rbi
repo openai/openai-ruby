@@ -82,6 +82,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Chat::ChatCompletionContentPartText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Chat::ChatCompletionContentPartImage,
                 OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
                 OpenAI::Models::Chat::ChatCompletionContentPart::File

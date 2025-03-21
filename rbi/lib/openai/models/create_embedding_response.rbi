@@ -44,7 +44,7 @@ module OpenAI
 
       sig do
         params(
-          data: T::Array[OpenAI::Models::Embedding],
+          data: T::Array[T.any(OpenAI::Models::Embedding, OpenAI::Util::AnyHash)],
           model: String,
           usage: T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Util::AnyHash),
           object: Symbol

@@ -68,7 +68,13 @@ module OpenAI
         sig do
           params(
             id: String,
-            content: T::Array[T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)],
+            content: T::Array[
+            T.any(
+              OpenAI::Models::Responses::ResponseOutputText,
+              OpenAI::Util::AnyHash,
+              OpenAI::Models::Responses::ResponseOutputRefusal
+            )
+            ],
             status: OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol,
             role: Symbol,
             type: Symbol

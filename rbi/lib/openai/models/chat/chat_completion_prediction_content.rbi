@@ -32,7 +32,7 @@ module OpenAI
         #   being regenerated.
         sig do
           params(
-            content: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]),
+            content: T.any(String, T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Util::AnyHash)]),
             type: Symbol
           )
             .returns(T.attached_class)

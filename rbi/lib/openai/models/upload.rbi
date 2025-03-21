@@ -101,7 +101,7 @@ module OpenAI
           expires_at: Integer,
           filename: String,
           purpose: String,
-          status: OpenAI::Models::Upload::Status::TaggedSymbol,
+          status: OpenAI::Models::Upload::Status::OrSymbol,
           file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash)),
           object: Symbol
         )
