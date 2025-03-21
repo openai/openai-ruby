@@ -210,13 +210,14 @@ module OpenAI
                 last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash)),
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 run_id: String,
-                status: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol,
+                status: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::OrSymbol,
                 step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
                 ),
                 thread_id: String,
-                type: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol,
+                type: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::OrSymbol,
                 usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash)),
                 object: Symbol
               )
@@ -296,7 +297,7 @@ module OpenAI
               # The last error associated with this run step. Will be `null` if there are no
               #   errors.
               sig do
-                params(code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol, message: String)
+                params(code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::OrSymbol, message: String)
                   .returns(T.attached_class)
               end
               def self.new(code:, message:)

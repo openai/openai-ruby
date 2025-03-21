@@ -47,8 +47,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol)
+          params(_: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status::OrSymbol)
         end
         def status=(_)
         end
@@ -58,7 +58,7 @@ module OpenAI
             id: String,
             call_id: String,
             output: String,
-            status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol,
+            status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status::OrSymbol,
             type: Symbol
           )
             .returns(T.attached_class)

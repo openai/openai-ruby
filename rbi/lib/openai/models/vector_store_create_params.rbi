@@ -25,12 +25,14 @@ module OpenAI
         params(
           _: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
+            OpenAI::Util::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           )
         )
           .returns(
             T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             )
           )
@@ -88,6 +90,7 @@ module OpenAI
         params(
           chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
+            OpenAI::Util::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           ),
           expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash),

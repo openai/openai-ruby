@@ -38,8 +38,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation])
-            .returns(T::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation])
+          params(_: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Util::AnyHash)])
         end
         def annotations=(_)
         end
@@ -77,8 +77,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall])
-            .returns(T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall])
+          params(_: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)])
         end
         def tool_calls=(_)
         end
@@ -88,10 +88,10 @@ module OpenAI
           params(
             content: T.nilable(String),
             refusal: T.nilable(String),
-            annotations: T::Array[OpenAI::Models::Chat::ChatCompletionMessage::Annotation],
+            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Util::AnyHash)],
             audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Util::AnyHash)),
             function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Util::AnyHash),
-            tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)],
             role: Symbol
           )
             .returns(T.attached_class)

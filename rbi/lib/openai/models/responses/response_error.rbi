@@ -27,7 +27,7 @@ module OpenAI
 
         # An error object returned when the model fails to generate a Response.
         sig do
-          params(code: OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol, message: String)
+          params(code: OpenAI::Models::Responses::ResponseError::Code::OrSymbol, message: String)
             .returns(T.attached_class)
         end
         def self.new(code:, message:)

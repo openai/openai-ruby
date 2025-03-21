@@ -201,7 +201,7 @@ module OpenAI
           created_at: Integer,
           endpoint: String,
           input_file_id: String,
-          status: OpenAI::Models::Batch::Status::TaggedSymbol,
+          status: OpenAI::Models::Batch::Status::OrSymbol,
           cancelled_at: Integer,
           cancelling_at: Integer,
           completed_at: Integer,
@@ -301,7 +301,10 @@ module OpenAI
         def data
         end
 
-        sig { params(_: T::Array[OpenAI::Models::BatchError]).returns(T::Array[OpenAI::Models::BatchError]) }
+        sig do
+          params(_: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)])
+        end
         def data=(_)
         end
 
@@ -314,7 +317,10 @@ module OpenAI
         def object=(_)
         end
 
-        sig { params(data: T::Array[OpenAI::Models::BatchError], object: String).returns(T.attached_class) }
+        sig do
+          params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)], object: String)
+            .returns(T.attached_class)
+        end
         def self.new(data: nil, object: nil)
         end
 

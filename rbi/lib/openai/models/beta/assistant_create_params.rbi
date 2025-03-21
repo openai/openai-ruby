@@ -196,6 +196,7 @@ module OpenAI
             _: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
@@ -205,6 +206,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::FileSearchTool,
                 OpenAI::Models::Beta::FunctionTool
               )
@@ -239,6 +241,7 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
@@ -248,6 +251,7 @@ module OpenAI
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
@@ -429,8 +433,22 @@ module OpenAI
             end
 
             sig do
-              params(_: T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore])
-                .returns(T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore])
+              params(
+                _: T::Array[
+                T.any(
+                  OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
+                  OpenAI::Util::AnyHash
+                )
+                ]
+              )
+                .returns(
+                  T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Util::AnyHash
+                  )
+                  ]
+                )
             end
             def vector_stores=(_)
             end
@@ -438,7 +456,12 @@ module OpenAI
             sig do
               params(
                 vector_store_ids: T::Array[String],
-                vector_stores: T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]
+                vector_stores: T::Array[
+                T.any(
+                  OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
+                  OpenAI::Util::AnyHash
+                )
+                ]
               )
                 .returns(T.attached_class)
             end
@@ -477,12 +500,14 @@ module OpenAI
                 params(
                   _: T.any(
                     OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                   )
                 )
                   .returns(
                     T.any(
                       OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Util::AnyHash,
                       OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     )
                   )
@@ -521,6 +546,7 @@ module OpenAI
                 params(
                   chunking_strategy: T.any(
                     OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                   ),
                   file_ids: T::Array[String],

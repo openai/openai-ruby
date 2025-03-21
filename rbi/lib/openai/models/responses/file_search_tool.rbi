@@ -28,8 +28,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))
-            .returns(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))
+          params(_: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter))
+            .returns(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter))
         end
         def filters=(_)
         end
@@ -62,7 +62,7 @@ module OpenAI
         sig do
           params(
             vector_store_ids: T::Array[String],
-            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter),
+            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter),
             max_num_results: Integer,
             ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash),
             type: Symbol

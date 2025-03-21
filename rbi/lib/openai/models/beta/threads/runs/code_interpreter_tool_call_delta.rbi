@@ -119,6 +119,7 @@ module OpenAI
                   _: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
                   )
                   ]
@@ -127,6 +128,7 @@ module OpenAI
                     T::Array[
                     T.any(
                       OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
+                      OpenAI::Util::AnyHash,
                       OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
                     )
                     ]
@@ -142,6 +144,7 @@ module OpenAI
                   outputs: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
                   )
                   ]

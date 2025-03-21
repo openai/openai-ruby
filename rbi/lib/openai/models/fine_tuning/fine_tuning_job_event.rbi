@@ -67,8 +67,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
-            .returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
+          params(_: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol)
+            .returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol)
         end
         def type=(_)
         end
@@ -78,10 +78,10 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            level: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol,
+            level: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::OrSymbol,
             message: String,
             data: T.anything,
-            type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol,
+            type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol,
             object: Symbol
           )
             .returns(T.attached_class)

@@ -117,6 +117,7 @@ module OpenAI
             id: String,
             action: T.any(
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
@@ -127,7 +128,7 @@ module OpenAI
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
             ),
             call_id: String,
-            pending_safety_checks: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck],
+            pending_safety_checks: T::Array[T.any(OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck, OpenAI::Util::AnyHash)],
             status: OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol,
             type: OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol
           )
@@ -359,7 +360,7 @@ module OpenAI
             # A drag action.
             sig do
               params(
-                path: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path],
+                path: T::Array[T.any(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path, OpenAI::Util::AnyHash)],
                 type: Symbol
               )
                 .returns(T.attached_class)
