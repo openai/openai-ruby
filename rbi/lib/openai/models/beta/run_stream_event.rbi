@@ -50,7 +50,10 @@ module OpenAI
 
           # Occurs when a new
           #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.created")
           end
 
@@ -83,7 +86,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `queued` status.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.queued")
           end
 
@@ -116,7 +122,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to an `in_progress` status.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.in_progress")
           end
 
@@ -149,7 +158,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `requires_action` status.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.requires_action")
           end
 
@@ -182,7 +194,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is completed.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.completed")
           end
 
@@ -215,7 +230,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   ends with status `incomplete`.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.incomplete")
           end
 
@@ -248,7 +266,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   fails.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.failed")
           end
 
@@ -281,7 +302,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `cancelling` status.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.cancelling")
           end
 
@@ -314,7 +338,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is cancelled.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.cancelled")
           end
 
@@ -347,7 +374,10 @@ module OpenAI
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   expires.
-          sig { params(data: OpenAI::Models::Beta::Threads::Run, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.run.expired")
           end
 

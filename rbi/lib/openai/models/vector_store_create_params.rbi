@@ -90,11 +90,11 @@ module OpenAI
             OpenAI::Models::AutoFileChunkingStrategyParam,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           ),
-          expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
+          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash),
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

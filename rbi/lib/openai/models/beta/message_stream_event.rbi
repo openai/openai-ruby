@@ -47,7 +47,10 @@ module OpenAI
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
           #   created.
-          sig { params(data: OpenAI::Models::Beta::Threads::Message, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.message.created")
           end
 
@@ -81,7 +84,10 @@ module OpenAI
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
           #   to an `in_progress` state.
-          sig { params(data: OpenAI::Models::Beta::Threads::Message, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.message.in_progress")
           end
 
@@ -115,7 +121,13 @@ module OpenAI
           # Occurs when parts of a
           #   [Message](https://platform.openai.com/docs/api-reference/messages/object) are
           #   being streamed.
-          sig { params(data: OpenAI::Models::Beta::Threads::MessageDeltaEvent, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash),
+              event: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.message.delta")
           end
 
@@ -149,7 +161,10 @@ module OpenAI
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
           #   completed.
-          sig { params(data: OpenAI::Models::Beta::Threads::Message, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.message.completed")
           end
 
@@ -183,7 +198,10 @@ module OpenAI
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
           #   before it is completed.
-          sig { params(data: OpenAI::Models::Beta::Threads::Message, event: Symbol).returns(T.attached_class) }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(data:, event: :"thread.message.incomplete")
           end
 

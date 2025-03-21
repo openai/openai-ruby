@@ -60,8 +60,8 @@ module OpenAI
           completion_tokens: Integer,
           prompt_tokens: Integer,
           total_tokens: Integer,
-          completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
-          prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
+          completion_tokens_details: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Util::AnyHash),
+          prompt_tokens_details: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

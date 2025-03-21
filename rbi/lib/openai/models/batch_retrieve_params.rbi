@@ -7,8 +7,12 @@ module OpenAI
       include OpenAI::RequestParameters
 
       sig do
-        params(request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
-          .returns(T.attached_class)
+        params(
+          request_options: T.any(
+            OpenAI::RequestOptions,
+            OpenAI::Util::AnyHash
+          )
+        ).returns(T.attached_class)
       end
       def self.new(request_options: {})
       end

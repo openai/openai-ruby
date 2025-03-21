@@ -113,7 +113,7 @@ module OpenAI
               role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
               attachments: T.nilable(T::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment]),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

@@ -61,7 +61,10 @@ module OpenAI
               params(
                 index: Integer,
                 id: String,
-                code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                code_interpreter: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                  OpenAI::Util::AnyHash
+                ),
                 type: Symbol
               )
                 .returns(T.attached_class)

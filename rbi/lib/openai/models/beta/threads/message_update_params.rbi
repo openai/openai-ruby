@@ -34,7 +34,7 @@ module OpenAI
             params(
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

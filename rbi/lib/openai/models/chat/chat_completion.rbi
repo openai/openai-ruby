@@ -99,7 +99,7 @@ module OpenAI
             model: String,
             service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol),
             system_fingerprint: String,
-            usage: OpenAI::Models::CompletionUsage,
+            usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash),
             object: Symbol
           )
             .returns(T.attached_class)
@@ -189,8 +189,8 @@ module OpenAI
             params(
               finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol,
               index: Integer,
-              logprobs: T.nilable(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs),
-              message: OpenAI::Models::Chat::ChatCompletionMessage
+              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Util::AnyHash)),
+              message: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

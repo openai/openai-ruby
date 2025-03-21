@@ -17,13 +17,7 @@ module OpenAI
           end
 
           sig do
-            params(
-              thread_id: String,
-              request_options: T.any(
-                OpenAI::RequestOptions,
-                T::Hash[Symbol, T.anything]
-              )
-            )
+            params(thread_id: String, request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
               .returns(T.attached_class)
           end
           def self.new(thread_id:, request_options: {})

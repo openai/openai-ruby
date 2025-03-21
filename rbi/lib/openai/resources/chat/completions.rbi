@@ -77,7 +77,7 @@ module OpenAI
             user: String,
             web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Chat::ChatCompletion)
         end
@@ -341,7 +341,7 @@ module OpenAI
             user: String,
             web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Stream[OpenAI::Models::Chat::ChatCompletionChunk])
         end
@@ -541,7 +541,7 @@ module OpenAI
         sig do
           params(
             completion_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Chat::ChatCompletion)
         end
@@ -559,7 +559,7 @@ module OpenAI
           params(
             completion_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Chat::ChatCompletion)
         end
@@ -586,7 +586,7 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletion])
         end
@@ -613,7 +613,7 @@ module OpenAI
         sig do
           params(
             completion_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Chat::ChatCompletionDeleted)
         end

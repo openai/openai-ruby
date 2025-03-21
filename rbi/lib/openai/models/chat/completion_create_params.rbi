@@ -559,7 +559,7 @@ module OpenAI
             )
             ],
             model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
-            audio: T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam),
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Util::AnyHash)),
             frequency_penalty: T.nilable(Float),
             function_call: T.any(
               OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
@@ -574,7 +574,7 @@ module OpenAI
             modalities: T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
-            prediction: T.nilable(OpenAI::Models::Chat::ChatCompletionPredictionContent),
+            prediction: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Util::AnyHash)),
             presence_penalty: T.nilable(Float),
             reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
             response_format: T.any(
@@ -586,7 +586,7 @@ module OpenAI
             service_tier: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol),
             stop: T.nilable(T.any(String, T::Array[String])),
             store: T.nilable(T::Boolean),
-            stream_options: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions),
+            stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)),
             temperature: T.nilable(Float),
             tool_choice: T.any(
               OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
@@ -596,8 +596,8 @@ module OpenAI
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
-            web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Util::AnyHash),
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -974,7 +974,9 @@ module OpenAI
           sig do
             params(
               search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
-              user_location: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)
+              user_location: T.nilable(
+                T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, OpenAI::Util::AnyHash)
+              )
             )
               .returns(T.attached_class)
           end
@@ -1071,7 +1073,10 @@ module OpenAI
             # Approximate location parameters for the search.
             sig do
               params(
-                approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+                approximate: T.any(
+                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+                  OpenAI::Util::AnyHash
+                ),
                 type: Symbol
               )
                 .returns(T.attached_class)

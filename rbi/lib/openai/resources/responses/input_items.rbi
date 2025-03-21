@@ -12,7 +12,7 @@ module OpenAI
             before: String,
             limit: Integer,
             order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(
               OpenAI::CursorPage[

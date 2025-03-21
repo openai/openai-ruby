@@ -44,7 +44,7 @@ module OpenAI
               after: String,
               limit: Integer,
               order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol,
-              request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

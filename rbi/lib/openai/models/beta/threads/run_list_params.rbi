@@ -61,7 +61,7 @@ module OpenAI
               before: String,
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::RunListParams::Order::OrSymbol,
-              request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

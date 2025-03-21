@@ -14,7 +14,7 @@ module OpenAI
               OpenAI::Models::AutoFileChunkingStrategyParam,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
@@ -43,7 +43,7 @@ module OpenAI
           params(
             batch_id: String,
             vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
@@ -62,7 +62,7 @@ module OpenAI
           params(
             batch_id: String,
             vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
@@ -85,7 +85,7 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
         end

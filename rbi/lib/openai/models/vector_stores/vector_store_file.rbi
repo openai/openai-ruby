@@ -125,7 +125,7 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            last_error: T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError),
+            last_error: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash)),
             status: OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol,
             usage_bytes: Integer,
             vector_store_id: String,

@@ -27,7 +27,10 @@ module OpenAI
         # Specifies a tool the model should use. Use to force the model to call a specific
         #   function.
         sig do
-          params(function: OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, type: Symbol)
+          params(
+            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash),
+            type: Symbol
+          )
             .returns(T.attached_class)
         end
         def self.new(function:, type: :function)

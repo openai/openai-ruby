@@ -22,7 +22,7 @@ module OpenAI
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -53,7 +53,7 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -71,7 +71,7 @@ module OpenAI
           expires_after: T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -100,7 +100,7 @@ module OpenAI
           before: String,
           limit: Integer,
           order: OpenAI::Models::VectorStoreListParams::Order::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::CursorPage[OpenAI::Models::VectorStore])
       end
@@ -129,7 +129,7 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStoreDeleted)
       end
@@ -150,7 +150,7 @@ module OpenAI
           max_num_results: Integer,
           ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
           rewrite_query: T::Boolean,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Page[OpenAI::Models::VectorStoreSearchResponse])
       end
