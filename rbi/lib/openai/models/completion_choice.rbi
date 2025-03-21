@@ -49,7 +49,7 @@ module OpenAI
         params(
           finish_reason: OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol,
           index: Integer,
-          logprobs: T.nilable(OpenAI::Models::CompletionChoice::Logprobs),
+          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash)),
           text: String
         )
           .returns(T.attached_class)

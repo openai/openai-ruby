@@ -26,7 +26,10 @@ module OpenAI
         end
 
         sig do
-          params(file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch, type: Symbol)
+          params(
+            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash),
+            type: Symbol
+          )
             .returns(T.attached_class)
         end
         def self.new(file_search: nil, type: :file_search)
@@ -74,7 +77,7 @@ module OpenAI
           sig do
             params(
               max_num_results: Integer,
-              ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
+              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

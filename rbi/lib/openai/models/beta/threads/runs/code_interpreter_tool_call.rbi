@@ -51,7 +51,10 @@ module OpenAI
             sig do
               params(
                 id: String,
-                code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+                code_interpreter: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+                  OpenAI::Util::AnyHash
+                ),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -232,7 +235,10 @@ module OpenAI
 
                   sig do
                     params(
-                      image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                      image: T.any(
+                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                        OpenAI::Util::AnyHash
+                      ),
                       type: Symbol
                     )
                       .returns(T.attached_class)

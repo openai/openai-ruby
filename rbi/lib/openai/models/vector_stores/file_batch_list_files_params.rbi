@@ -82,7 +82,7 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

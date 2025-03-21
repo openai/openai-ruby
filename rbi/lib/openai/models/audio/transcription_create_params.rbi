@@ -127,7 +127,7 @@ module OpenAI
             response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
             temperature: Float,
             timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
-            request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

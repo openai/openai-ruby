@@ -293,7 +293,7 @@ module OpenAI
           sig do
             params(
               call_id: String,
-              output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+              output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash),
               id: String,
               acknowledged_safety_checks: T::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
               status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol,

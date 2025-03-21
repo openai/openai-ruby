@@ -26,7 +26,10 @@ module OpenAI
 
       # An object describing an image to classify.
       sig do
-        params(image_url: OpenAI::Models::ModerationImageURLInput::ImageURL, type: Symbol)
+        params(
+          image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash),
+          type: Symbol
+        )
           .returns(T.attached_class)
       end
       def self.new(image_url:, type: :image_url)

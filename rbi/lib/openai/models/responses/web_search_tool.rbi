@@ -50,7 +50,7 @@ module OpenAI
           params(
             type: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol,
             search_context_size: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol,
-            user_location: T.nilable(OpenAI::Models::Responses::WebSearchTool::UserLocation)
+            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash))
           )
             .returns(T.attached_class)
         end

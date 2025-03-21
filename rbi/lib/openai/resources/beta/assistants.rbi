@@ -31,7 +31,7 @@ module OpenAI
             )
             ],
             top_p: T.nilable(Float),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -111,7 +111,7 @@ module OpenAI
         sig do
           params(
             assistant_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -150,7 +150,7 @@ module OpenAI
             )
             ],
             top_p: T.nilable(Float),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -235,7 +235,7 @@ module OpenAI
             before: String,
             limit: Integer,
             order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::CursorPage[OpenAI::Models::Beta::Assistant])
         end
@@ -264,7 +264,7 @@ module OpenAI
         sig do
           params(
             assistant_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Beta::AssistantDeleted)
         end

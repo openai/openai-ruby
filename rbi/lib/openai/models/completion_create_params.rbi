@@ -269,12 +269,12 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions),
+          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

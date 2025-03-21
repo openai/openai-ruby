@@ -32,7 +32,7 @@ module OpenAI
           filename: String,
           mime_type: String,
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::Upload)
       end
@@ -59,7 +59,7 @@ module OpenAI
       sig do
         params(
           upload_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::Upload)
       end
@@ -88,7 +88,7 @@ module OpenAI
           upload_id: String,
           part_ids: T::Array[String],
           md5: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::Upload)
       end

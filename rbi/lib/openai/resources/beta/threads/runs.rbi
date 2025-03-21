@@ -51,7 +51,7 @@ module OpenAI
               top_p: T.nilable(Float),
               truncation_strategy: T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy),
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -213,7 +213,7 @@ module OpenAI
               top_p: T.nilable(Float),
               truncation_strategy: T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy),
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(
                 OpenAI::Stream[
@@ -367,7 +367,7 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -387,7 +387,7 @@ module OpenAI
               run_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -416,7 +416,7 @@ module OpenAI
               before: String,
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::RunListParams::Order::OrSymbol,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Run])
           end
@@ -448,7 +448,7 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -471,7 +471,7 @@ module OpenAI
               thread_id: String,
               tool_outputs: T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -502,7 +502,7 @@ module OpenAI
               thread_id: String,
               tool_outputs: T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
             )
               .returns(
                 OpenAI::Stream[

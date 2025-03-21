@@ -36,7 +36,11 @@ module OpenAI
 
           # The text content that is part of a message.
           sig do
-            params(index: Integer, text: OpenAI::Models::Beta::Threads::TextDelta, type: Symbol)
+            params(
+              index: Integer,
+              text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash),
+              type: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(index:, text: nil, type: :text)

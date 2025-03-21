@@ -81,7 +81,7 @@ module OpenAI
           created: Integer,
           model: String,
           system_fingerprint: String,
-          usage: OpenAI::Models::CompletionUsage,
+          usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash),
           object: Symbol
         )
           .returns(T.attached_class)

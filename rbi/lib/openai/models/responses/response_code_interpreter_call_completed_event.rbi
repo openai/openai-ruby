@@ -37,7 +37,7 @@ module OpenAI
         # Emitted when the code interpreter call is completed.
         sig do
           params(
-            code_interpreter_call: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall,
+            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash),
             output_index: Integer,
             type: Symbol
           )

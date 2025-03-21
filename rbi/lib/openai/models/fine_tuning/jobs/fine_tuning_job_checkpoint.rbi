@@ -81,7 +81,7 @@ module OpenAI
               created_at: Integer,
               fine_tuned_model_checkpoint: String,
               fine_tuning_job_id: String,
-              metrics: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash),
               step_number: Integer,
               object: Symbol
             )

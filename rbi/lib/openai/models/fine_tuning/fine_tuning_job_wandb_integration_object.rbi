@@ -29,7 +29,10 @@ module OpenAI
         end
 
         sig do
-          params(wandb: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, type: Symbol)
+          params(
+            wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Util::AnyHash),
+            type: Symbol
+          )
             .returns(T.attached_class)
         end
         def self.new(wandb:, type: :wandb)

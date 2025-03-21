@@ -26,7 +26,10 @@ module OpenAI
           end
 
           # The text content that is part of a message.
-          sig { params(text: OpenAI::Models::Beta::Threads::Text, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Util::AnyHash), type: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(text:, type: :text)
           end
 

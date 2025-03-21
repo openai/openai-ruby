@@ -39,7 +39,10 @@ module OpenAI
             # Details of the message creation by the run step.
             sig do
               params(
-                message_creation: OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
+                message_creation: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
+                  OpenAI::Util::AnyHash
+                ),
                 type: Symbol
               )
                 .returns(T.attached_class)

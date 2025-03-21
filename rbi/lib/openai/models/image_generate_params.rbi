@@ -116,7 +116,7 @@ module OpenAI
           size: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol),
           style: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

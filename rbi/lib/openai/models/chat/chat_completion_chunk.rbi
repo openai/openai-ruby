@@ -107,7 +107,7 @@ module OpenAI
             model: String,
             service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol),
             system_fingerprint: String,
-            usage: T.nilable(OpenAI::Models::CompletionUsage),
+            usage: T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)),
             object: Symbol
           )
             .returns(T.attached_class)
@@ -199,10 +199,10 @@ module OpenAI
 
           sig do
             params(
-              delta: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta,
+              delta: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Util::AnyHash),
               finish_reason: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol),
               index: Integer,
-              logprobs: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs)
+              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Util::AnyHash))
             )
               .returns(T.attached_class)
           end
@@ -286,7 +286,7 @@ module OpenAI
             sig do
               params(
                 content: T.nilable(String),
-                function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+                function_call: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall, OpenAI::Util::AnyHash),
                 refusal: T.nilable(String),
                 role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol,
                 tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
@@ -417,7 +417,7 @@ module OpenAI
                 params(
                   index: Integer,
                   id: String,
-                  function: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                  function: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function, OpenAI::Util::AnyHash),
                   type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol
                 )
                   .returns(T.attached_class)

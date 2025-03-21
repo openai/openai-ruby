@@ -64,7 +64,7 @@ module OpenAI
             vector_store_ids: T::Array[String],
             filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter),
             max_num_results: Integer,
-            ranking_options: OpenAI::Models::Responses::FileSearchTool::RankingOptions,
+            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)

@@ -44,7 +44,10 @@ module OpenAI
           # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
           #   generation.
           sig do
-            params(file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File, type: Symbol)
+            params(
+              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash),
+              type: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(file:, type: :file)

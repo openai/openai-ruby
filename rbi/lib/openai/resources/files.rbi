@@ -28,7 +28,7 @@ module OpenAI
         params(
           file: T.any(IO, StringIO),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::Models::FileObject)
       end
@@ -48,7 +48,12 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(
+            T.any(
+              OpenAI::RequestOptions,
+              OpenAI::Util::AnyHash
+            )
+          )
         )
           .returns(OpenAI::Models::FileObject)
       end
@@ -66,7 +71,7 @@ module OpenAI
           limit: Integer,
           order: OpenAI::Models::FileListParams::Order::OrSymbol,
           purpose: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )
           .returns(OpenAI::CursorPage[OpenAI::Models::FileObject])
       end
@@ -92,7 +97,12 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(
+            T.any(
+              OpenAI::RequestOptions,
+              OpenAI::Util::AnyHash
+            )
+          )
         )
           .returns(OpenAI::Models::FileDeleted)
       end
@@ -107,7 +117,12 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          request_options: T.nilable(
+            T.any(
+              OpenAI::RequestOptions,
+              OpenAI::Util::AnyHash
+            )
+          )
         )
           .returns(T.anything)
       end

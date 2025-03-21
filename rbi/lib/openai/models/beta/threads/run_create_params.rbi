@@ -383,8 +383,10 @@ module OpenAI
                 ]
               ),
               top_p: T.nilable(Float),
-              truncation_strategy: T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy),
-              request_options: T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything])
+              truncation_strategy: T.nilable(
+                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
+              ),
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

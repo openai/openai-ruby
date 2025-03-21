@@ -27,7 +27,10 @@ module OpenAI
 
           # References an image [File](https://platform.openai.com/docs/api-reference/files)
           #   in the content of a message.
-          sig { params(image_file: OpenAI::Models::Beta::Threads::ImageFile, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Util::AnyHash), type: Symbol)
+              .returns(T.attached_class)
+          end
           def self.new(image_file:, type: :image_file)
           end
 

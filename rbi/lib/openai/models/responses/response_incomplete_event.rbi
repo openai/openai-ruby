@@ -26,7 +26,10 @@ module OpenAI
         end
 
         # An event that is emitted when a response finishes as incomplete.
-        sig { params(response: OpenAI::Models::Responses::Response, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash), type: Symbol)
+            .returns(T.attached_class)
+        end
         def self.new(response:, type: :"response.incomplete")
         end
 

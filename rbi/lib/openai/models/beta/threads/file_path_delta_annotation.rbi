@@ -65,7 +65,7 @@ module OpenAI
             params(
               index: Integer,
               end_index: Integer,
-              file_path: OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath,
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Util::AnyHash),
               start_index: Integer,
               text: String,
               type: Symbol

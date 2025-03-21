@@ -26,7 +26,7 @@ module OpenAI
           page: T.nilable(T::Class[OpenAI::BasePage[OpenAI::BaseModel]]),
           stream: T.nilable(T::Class[OpenAI::BaseStream[T.anything, OpenAI::BaseModel]]),
           model: T.nilable(OpenAI::Converter::Input),
-          options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+          options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         }
       end
 
@@ -129,7 +129,7 @@ module OpenAI
     # @api private
     sig do
       overridable
-        .params(req: OpenAI::BaseClient::RequestComponentsShape, opts: T::Hash[Symbol, T.anything])
+        .params(req: OpenAI::BaseClient::RequestComponentsShape, opts: OpenAI::Util::AnyHash)
         .returns(OpenAI::BaseClient::RequestInputShape)
     end
     private def build_request(req, opts)
@@ -175,7 +175,7 @@ module OpenAI
         page: T.nilable(T::Class[OpenAI::BasePage[OpenAI::BaseModel]]),
         stream: T.nilable(T::Class[OpenAI::BaseStream[T.anything, OpenAI::BaseModel]]),
         model: T.nilable(OpenAI::Converter::Input),
-        options: T.nilable(T.any(OpenAI::RequestOptions, T::Hash[Symbol, T.anything]))
+        options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
       )
         .returns(T.anything)
     end
