@@ -6,39 +6,19 @@ module OpenAI
       class UploadPart < OpenAI::BaseModel
         # The upload Part unique identifier, which can be referenced in API endpoints.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The Unix timestamp (in seconds) for when the Part was created.
         sig { returns(Integer) }
-        def created_at
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def created_at=(_)
-        end
+        attr_accessor :created_at
 
         # The object type, which is always `upload.part`.
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # The ID of the Upload object that this Part was added to.
         sig { returns(String) }
-        def upload_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def upload_id=(_)
-        end
+        attr_accessor :upload_id
 
         # The upload Part represents a chunk of bytes we can add to an Upload object.
         sig do

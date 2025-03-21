@@ -6,33 +6,15 @@ module OpenAI
       class ChatCompletionToolMessageParam < OpenAI::BaseModel
         # The contents of the tool message.
         sig { returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])) }
-        def content
-        end
-
-        sig do
-          params(_: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]))
-            .returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]))
-        end
-        def content=(_)
-        end
+        attr_accessor :content
 
         # The role of the messages author, in this case `tool`.
         sig { returns(Symbol) }
-        def role
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def role=(_)
-        end
+        attr_accessor :role
 
         # Tool call that this message is responding to.
         sig { returns(String) }
-        def tool_call_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def tool_call_id=(_)
-        end
+        attr_accessor :tool_call_id
 
         sig do
           params(

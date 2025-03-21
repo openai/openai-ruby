@@ -7,28 +7,12 @@ module OpenAI
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
         sig { returns(OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol) }
-        def format_
-        end
-
-        sig do
-          params(_: OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol)
-            .returns(OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol)
-        end
-        def format_=(_)
-        end
+        attr_accessor :format_
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         sig { returns(OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol) }
-        def voice
-        end
-
-        sig do
-          params(_: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-            .returns(OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
-        end
-        def voice=(_)
-        end
+        attr_accessor :voice
 
         # Parameters for audio output. Required when audio output is requested with
         #   `modalities: ["audio"]`.

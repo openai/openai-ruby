@@ -17,51 +17,15 @@ module OpenAI
             )
           )
         end
-        def item
-        end
-
-        sig do
-          params(
-            _: T.any(
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseFunctionToolCall,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseReasoningItem
-            )
-          )
-            .returns(
-              T.any(
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseFunctionToolCall,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseReasoningItem
-              )
-            )
-        end
-        def item=(_)
-        end
+        attr_accessor :item
 
         # The index of the output item that was marked done.
         sig { returns(Integer) }
-        def output_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def output_index=(_)
-        end
+        attr_accessor :output_index
 
         # The type of the event. Always `response.output_item.done`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when an output item is marked done.
         sig do

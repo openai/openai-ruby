@@ -20,62 +20,19 @@ module OpenAI
             )
           )
         end
-        def content
-        end
-
-        sig do
-          params(
-            _: T.any(
-              String,
-              T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Models::Responses::ResponseInputImage,
-                OpenAI::Models::Responses::ResponseInputFile
-              )
-              ]
-            )
-          )
-            .returns(
-              T.any(
-                String,
-                T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseInputText,
-                  OpenAI::Models::Responses::ResponseInputImage,
-                  OpenAI::Models::Responses::ResponseInputFile
-                )
-                ]
-              )
-            )
-        end
-        def content=(_)
-        end
+        attr_accessor :content
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
         #   `developer`.
         sig { returns(OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol) }
-        def role
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-            .returns(OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol)
-        end
-        def role=(_)
-        end
+        attr_accessor :role
 
         # The type of the message input. Always `message`.
         sig { returns(T.nilable(OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)) }
-        def type
-        end
+        attr_reader :type
 
-        sig do
-          params(_: OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)
-            .returns(OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol)
-        end
-        def type=(_)
-        end
+        sig { params(type: OpenAI::Models::Responses::EasyInputMessage::Type::OrSymbol).void }
+        attr_writer :type
 
         # A message input to the model with a role indicating instruction following
         #   hierarchy. Instructions given with the `developer` or `system` role take

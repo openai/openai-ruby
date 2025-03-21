@@ -7,57 +7,41 @@ module OpenAI
         class FilePathDeltaAnnotation < OpenAI::BaseModel
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
-          def index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def index=(_)
-          end
+          attr_accessor :index
 
           # Always `file_path`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           sig { returns(T.nilable(Integer)) }
-          def end_index
-          end
+          attr_reader :end_index
 
-          sig { params(_: Integer).returns(Integer) }
-          def end_index=(_)
-          end
+          sig { params(end_index: Integer).void }
+          attr_writer :end_index
 
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath)) }
-          def file_path
-          end
+          attr_reader :file_path
 
           sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Util::AnyHash))
+            params(
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Util::AnyHash)
+            )
+              .void
           end
-          def file_path=(_)
-          end
+          attr_writer :file_path
 
           sig { returns(T.nilable(Integer)) }
-          def start_index
-          end
+          attr_reader :start_index
 
-          sig { params(_: Integer).returns(Integer) }
-          def start_index=(_)
-          end
+          sig { params(start_index: Integer).void }
+          attr_writer :start_index
 
           # The text in the message content that needs to be replaced.
           sig { returns(T.nilable(String)) }
-          def text
-          end
+          attr_reader :text
 
-          sig { params(_: String).returns(String) }
-          def text=(_)
-          end
+          sig { params(text: String).void }
+          attr_writer :text
 
           # A URL for the file that's generated when the assistant used the
           #   `code_interpreter` tool to generate a file.
@@ -94,12 +78,10 @@ module OpenAI
           class FilePath < OpenAI::BaseModel
             # The ID of the file that was generated.
             sig { returns(T.nilable(String)) }
-            def file_id
-            end
+            attr_reader :file_id
 
-            sig { params(_: String).returns(String) }
-            def file_id=(_)
-            end
+            sig { params(file_id: String).void }
+            attr_writer :file_id
 
             sig { params(file_id: String).returns(T.attached_class) }
             def self.new(file_id: nil)

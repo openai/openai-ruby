@@ -8,44 +8,27 @@ module OpenAI
           class CodeInterpreterToolCall < OpenAI::BaseModel
             # The ID of the tool call.
             sig { returns(String) }
-            def id
-            end
-
-            sig { params(_: String).returns(String) }
-            def id=(_)
-            end
+            attr_accessor :id
 
             # The Code Interpreter tool call definition.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter) }
-            def code_interpreter
-            end
+            attr_reader :code_interpreter
 
             sig do
               params(
-                _: T.any(
+                code_interpreter: T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
                   OpenAI::Util::AnyHash
                 )
               )
-                .returns(
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-                    OpenAI::Util::AnyHash
-                  )
-                )
+                .void
             end
-            def code_interpreter=(_)
-            end
+            attr_writer :code_interpreter
 
             # The type of tool call. This is always going to be `code_interpreter` for this
             #   type of tool call.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # Details of the Code Interpreter tool call the run step was involved in.
             sig do
@@ -78,12 +61,7 @@ module OpenAI
             class CodeInterpreter < OpenAI::BaseModel
               # The input to the Code Interpreter tool call.
               sig { returns(String) }
-              def input
-              end
-
-              sig { params(_: String).returns(String) }
-              def input=(_)
-              end
+              attr_accessor :input
 
               # The outputs from the Code Interpreter tool call. Code Interpreter can output one
               #   or more items, including text (`logs`) or images (`image`). Each of these are
@@ -98,29 +76,7 @@ module OpenAI
                   ]
                 )
               end
-              def outputs
-              end
-
-              sig do
-                params(
-                  _: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                  )
-                  ]
-                )
-                  .returns(
-                    T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                    )
-                    ]
-                  )
-              end
-              def outputs=(_)
-              end
+              attr_accessor :outputs
 
               # The Code Interpreter tool call definition.
               sig do
@@ -173,21 +129,11 @@ module OpenAI
                 class Logs < OpenAI::BaseModel
                   # The text output from the Code Interpreter tool call.
                   sig { returns(String) }
-                  def logs
-                  end
-
-                  sig { params(_: String).returns(String) }
-                  def logs=(_)
-                  end
+                  attr_accessor :logs
 
                   # Always `logs`.
                   sig { returns(Symbol) }
-                  def type
-                  end
-
-                  sig { params(_: Symbol).returns(Symbol) }
-                  def type=(_)
-                  end
+                  attr_accessor :type
 
                   # Text output from the Code Interpreter tool call as part of a run step.
                   sig { params(logs: String, type: Symbol).returns(T.attached_class) }
@@ -205,34 +151,22 @@ module OpenAI
                       OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
                     )
                   end
-                  def image
-                  end
+                  attr_reader :image
 
                   sig do
                     params(
-                      _: T.any(
+                      image: T.any(
                         OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
                         OpenAI::Util::AnyHash
                       )
                     )
-                      .returns(
-                        T.any(
-                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                          OpenAI::Util::AnyHash
-                        )
-                      )
+                      .void
                   end
-                  def image=(_)
-                  end
+                  attr_writer :image
 
                   # Always `image`.
                   sig { returns(Symbol) }
-                  def type
-                  end
-
-                  sig { params(_: Symbol).returns(Symbol) }
-                  def type=(_)
-                  end
+                  attr_accessor :type
 
                   sig do
                     params(
@@ -263,12 +197,7 @@ module OpenAI
                     # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
                     #   image.
                     sig { returns(String) }
-                    def file_id
-                    end
-
-                    sig { params(_: String).returns(String) }
-                    def file_id=(_)
-                    end
+                    attr_accessor :file_id
 
                     sig { params(file_id: String).returns(T.attached_class) }
                     def self.new(file_id:)

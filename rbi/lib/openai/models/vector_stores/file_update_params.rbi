@@ -8,12 +8,7 @@ module OpenAI
         include OpenAI::RequestParameters
 
         sig { returns(String) }
-        def vector_store_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def vector_store_id=(_)
-        end
+        attr_accessor :vector_store_id
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -21,15 +16,7 @@ module OpenAI
         #   length of 64 characters. Values are strings with a maximum length of 512
         #   characters, booleans, or numbers.
         sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
-        def attributes
-        end
-
-        sig do
-          params(_: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-            .returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-        end
-        def attributes=(_)
-        end
+        attr_accessor :attributes
 
         sig do
           params(

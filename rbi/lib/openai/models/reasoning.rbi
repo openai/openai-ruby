@@ -10,15 +10,7 @@ module OpenAI
       #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
       #   result in faster responses and fewer tokens used on reasoning in a response.
       sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
-      def effort
-      end
-
-      sig do
-        params(_: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-      end
-      def effort=(_)
-      end
+      attr_accessor :effort
 
       # **computer_use_preview only**
       #
@@ -26,15 +18,7 @@ module OpenAI
       #   debugging and understanding the model's reasoning process. One of `concise` or
       #   `detailed`.
       sig { returns(T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)) }
-      def generate_summary
-      end
-
-      sig do
-        params(_: T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol))
-          .returns(T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol))
-      end
-      def generate_summary=(_)
-      end
+      attr_accessor :generate_summary
 
       # **o-series models only**
       #

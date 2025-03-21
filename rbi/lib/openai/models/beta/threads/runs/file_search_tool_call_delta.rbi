@@ -8,40 +8,23 @@ module OpenAI
           class FileSearchToolCallDelta < OpenAI::BaseModel
             # For now, this is always going to be an empty object.
             sig { returns(T.anything) }
-            def file_search
-            end
-
-            sig { params(_: T.anything).returns(T.anything) }
-            def file_search=(_)
-            end
+            attr_accessor :file_search
 
             # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
-            def index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def index=(_)
-            end
+            attr_accessor :index
 
             # The type of tool call. This is always going to be `file_search` for this type of
             #   tool call.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The ID of the tool call object.
             sig { returns(T.nilable(String)) }
-            def id
-            end
+            attr_reader :id
 
-            sig { params(_: String).returns(String) }
-            def id=(_)
-            end
+            sig { params(id: String).void }
+            attr_writer :id
 
             sig do
               params(

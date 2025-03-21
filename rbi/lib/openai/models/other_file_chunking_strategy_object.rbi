@@ -5,12 +5,7 @@ module OpenAI
     class OtherFileChunkingStrategyObject < OpenAI::BaseModel
       # Always `other`.
       sig { returns(Symbol) }
-      def type
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def type=(_)
-      end
+      attr_accessor :type
 
       # This is returned when the chunking strategy is unknown. Typically, this is
       #   because the file was indexed before the `chunking_strategy` concept was

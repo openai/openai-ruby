@@ -6,26 +6,19 @@ module OpenAI
       class Transcription < OpenAI::BaseModel
         # The transcribed text.
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         # The log probabilities of the tokens in the transcription. Only returned with the
         #   models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
         #   to the `include` array.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::Transcription::Logprob])) }
-        def logprobs
-        end
+        attr_reader :logprobs
 
         sig do
-          params(_: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)])
-            .returns(T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)])
+          params(logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)])
+            .void
         end
-        def logprobs=(_)
-        end
+        attr_writer :logprobs
 
         # Represents a transcription response returned by model, based on the provided
         #   input.
@@ -46,30 +39,24 @@ module OpenAI
         class Logprob < OpenAI::BaseModel
           # The token in the transcription.
           sig { returns(T.nilable(String)) }
-          def token
-          end
+          attr_reader :token
 
-          sig { params(_: String).returns(String) }
-          def token=(_)
-          end
+          sig { params(token: String).void }
+          attr_writer :token
 
           # The bytes of the token.
           sig { returns(T.nilable(T::Array[Float])) }
-          def bytes
-          end
+          attr_reader :bytes
 
-          sig { params(_: T::Array[Float]).returns(T::Array[Float]) }
-          def bytes=(_)
-          end
+          sig { params(bytes: T::Array[Float]).void }
+          attr_writer :bytes
 
           # The log probability of the token.
           sig { returns(T.nilable(Float)) }
-          def logprob
-          end
+          attr_reader :logprob
 
-          sig { params(_: Float).returns(Float) }
-          def logprob=(_)
-          end
+          sig { params(logprob: Float).void }
+          attr_writer :logprob
 
           sig { params(token: String, bytes: T::Array[Float], logprob: Float).returns(T.attached_class) }
           def self.new(token: nil, bytes: nil, logprob: nil)

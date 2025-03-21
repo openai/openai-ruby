@@ -6,24 +6,11 @@ module OpenAI
       class ResponseError < OpenAI::BaseModel
         # The error code for the response.
         sig { returns(OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol) }
-        def code
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol)
-        end
-        def code=(_)
-        end
+        attr_accessor :code
 
         # A human-readable description of the error.
         sig { returns(String) }
-        def message
-        end
-
-        sig { params(_: String).returns(String) }
-        def message=(_)
-        end
+        attr_accessor :message
 
         # An error object returned when the model fails to generate a Response.
         sig do

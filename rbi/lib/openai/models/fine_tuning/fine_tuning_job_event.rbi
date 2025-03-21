@@ -6,72 +6,37 @@ module OpenAI
       class FineTuningJobEvent < OpenAI::BaseModel
         # The object identifier.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The Unix timestamp (in seconds) for when the fine-tuning job was created.
         sig { returns(Integer) }
-        def created_at
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def created_at=(_)
-        end
+        attr_accessor :created_at
 
         # The log level of the event.
         sig { returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol) }
-        def level
-        end
-
-        sig do
-          params(_: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-            .returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-        end
-        def level=(_)
-        end
+        attr_accessor :level
 
         # The message of the event.
         sig { returns(String) }
-        def message
-        end
-
-        sig { params(_: String).returns(String) }
-        def message=(_)
-        end
+        attr_accessor :message
 
         # The object type, which is always "fine_tuning.job.event".
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # The data associated with the event.
         sig { returns(T.nilable(T.anything)) }
-        def data
-        end
+        attr_reader :data
 
-        sig { params(_: T.anything).returns(T.anything) }
-        def data=(_)
-        end
+        sig { params(data: T.anything).void }
+        attr_writer :data
 
         # The type of event.
         sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)) }
-        def type
-        end
+        attr_reader :type
 
-        sig do
-          params(_: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol)
-            .returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol)
-        end
-        def type=(_)
-        end
+        sig { params(type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol).void }
+        attr_writer :type
 
         # Fine-tuning job event object
         sig do

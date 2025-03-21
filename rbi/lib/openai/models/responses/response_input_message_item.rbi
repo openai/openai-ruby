@@ -6,12 +6,7 @@ module OpenAI
       class ResponseInputMessageItem < OpenAI::BaseModel
         # The unique ID of the message input.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # A list of one or many input items to the model, containing different content
         #   types.
@@ -26,68 +21,26 @@ module OpenAI
             ]
           )
         end
-        def content
-        end
-
-        sig do
-          params(
-            _: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseInputText,
-              OpenAI::Models::Responses::ResponseInputImage,
-              OpenAI::Models::Responses::ResponseInputFile
-            )
-            ]
-          )
-            .returns(
-              T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Models::Responses::ResponseInputImage,
-                OpenAI::Models::Responses::ResponseInputFile
-              )
-              ]
-            )
-        end
-        def content=(_)
-        end
+        attr_accessor :content
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         sig { returns(OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol) }
-        def role
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-        end
-        def role=(_)
-        end
+        attr_accessor :role
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)) }
-        def status
-        end
+        attr_reader :status
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol)
-        end
-        def status=(_)
-        end
+        sig { params(status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol).void }
+        attr_writer :status
 
         # The type of the message input. Always set to `message`.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)) }
-        def type
-        end
+        attr_reader :type
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol)
-        end
-        def type=(_)
-        end
+        sig { params(type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol).void }
+        attr_writer :type
 
         sig do
           params(

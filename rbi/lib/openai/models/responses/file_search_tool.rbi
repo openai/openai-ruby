@@ -6,55 +6,43 @@ module OpenAI
       class FileSearchTool < OpenAI::BaseModel
         # The type of the file search tool. Always `file_search`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The IDs of the vector stores to search.
         sig { returns(T::Array[String]) }
-        def vector_store_ids
-        end
-
-        sig { params(_: T::Array[String]).returns(T::Array[String]) }
-        def vector_store_ids=(_)
-        end
+        attr_accessor :vector_store_ids
 
         # A filter to apply based on file attributes.
         sig { returns(T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))) }
-        def filters
-        end
+        attr_reader :filters
 
         sig do
-          params(_: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter))
-            .returns(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter))
+          params(
+            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter)
+          )
+            .void
         end
-        def filters=(_)
-        end
+        attr_writer :filters
 
         # The maximum number of results to return. This number should be between 1 and 50
         #   inclusive.
         sig { returns(T.nilable(Integer)) }
-        def max_num_results
-        end
+        attr_reader :max_num_results
 
-        sig { params(_: Integer).returns(Integer) }
-        def max_num_results=(_)
-        end
+        sig { params(max_num_results: Integer).void }
+        attr_writer :max_num_results
 
         # Ranking options for search.
         sig { returns(T.nilable(OpenAI::Models::Responses::FileSearchTool::RankingOptions)) }
-        def ranking_options
-        end
+        attr_reader :ranking_options
 
         sig do
-          params(_: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash))
+          params(
+            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def ranking_options=(_)
-        end
+        attr_writer :ranking_options
 
         # A tool that searches for relevant content from uploaded files. Learn more about
         #   the
@@ -104,26 +92,19 @@ module OpenAI
         class RankingOptions < OpenAI::BaseModel
           # The ranker to use for the file search.
           sig { returns(T.nilable(OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)) }
-          def ranker
-          end
+          attr_reader :ranker
 
-          sig do
-            params(_: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
-              .returns(OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)
-          end
-          def ranker=(_)
-          end
+          sig { params(ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol).void }
+          attr_writer :ranker
 
           # The score threshold for the file search, a number between 0 and 1. Numbers
           #   closer to 1 will attempt to return only the most relevant results, but may
           #   return fewer results.
           sig { returns(T.nilable(Float)) }
-          def score_threshold
-          end
+          attr_reader :score_threshold
 
-          sig { params(_: Float).returns(Float) }
-          def score_threshold=(_)
-          end
+          sig { params(score_threshold: Float).void }
+          attr_writer :score_threshold
 
           # Ranking options for search.
           sig do

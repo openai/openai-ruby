@@ -6,12 +6,7 @@ module OpenAI
       class ChatCompletionFunctionCallOption < OpenAI::BaseModel
         # The name of the function to call.
         sig { returns(String) }
-        def name
-        end
-
-        sig { params(_: String).returns(String) }
-        def name=(_)
-        end
+        attr_accessor :name
 
         # Specifying a particular function via `{"name": "my_function"}` forces the model
         #   to call that function.

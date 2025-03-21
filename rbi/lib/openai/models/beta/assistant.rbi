@@ -6,40 +6,20 @@ module OpenAI
       class Assistant < OpenAI::BaseModel
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The Unix timestamp (in seconds) for when the assistant was created.
         sig { returns(Integer) }
-        def created_at
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def created_at=(_)
-        end
+        attr_accessor :created_at
 
         # The description of the assistant. The maximum length is 512 characters.
         sig { returns(T.nilable(String)) }
-        def description
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def description=(_)
-        end
+        attr_accessor :description
 
         # The system instructions that the assistant uses. The maximum length is 256,000
         #   characters.
         sig { returns(T.nilable(String)) }
-        def instructions
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def instructions=(_)
-        end
+        attr_accessor :instructions
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -48,12 +28,7 @@ module OpenAI
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata
-        end
-
-        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata=(_)
-        end
+        attr_accessor :metadata
 
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -61,30 +36,15 @@ module OpenAI
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
         sig { returns(String) }
-        def model
-        end
-
-        sig { params(_: String).returns(String) }
-        def model=(_)
-        end
+        attr_accessor :model
 
         # The name of the assistant. The maximum length is 256 characters.
         sig { returns(T.nilable(String)) }
-        def name
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def name=(_)
-        end
+        attr_accessor :name
 
         # The object type, which is always `assistant`.
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # A list of tool enabled on the assistant. There can be a maximum of 128 tools per
         #   assistant. Tools can be of types `code_interpreter`, `file_search`, or
@@ -100,31 +60,7 @@ module OpenAI
             ]
           )
         end
-        def tools
-        end
-
-        sig do
-          params(
-            _: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
-            ]
-          )
-            .returns(
-              T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-              ]
-            )
-        end
-        def tools=(_)
-        end
+        attr_accessor :tools
 
         # Specifies the format that the model must output. Compatible with
         #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
@@ -158,59 +94,28 @@ module OpenAI
             )
           )
         end
-        def response_format
-        end
-
-        sig do
-          params(
-            _: T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
-              )
-            )
-          )
-            .returns(
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Models::ResponseFormatJSONObject,
-                  OpenAI::Models::ResponseFormatJSONSchema
-                )
-              )
-            )
-        end
-        def response_format=(_)
-        end
+        attr_accessor :response_format
 
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
         #   make the output more random, while lower values like 0.2 will make it more
         #   focused and deterministic.
         sig { returns(T.nilable(Float)) }
-        def temperature
-        end
-
-        sig { params(_: T.nilable(Float)).returns(T.nilable(Float)) }
-        def temperature=(_)
-        end
+        attr_accessor :temperature
 
         # A set of resources that are used by the assistant's tools. The resources are
         #   specific to the type of tool. For example, the `code_interpreter` tool requires
         #   a list of file IDs, while the `file_search` tool requires a list of vector store
         #   IDs.
         sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources)) }
-        def tool_resources
-        end
+        attr_reader :tool_resources
 
         sig do
-          params(_: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Util::AnyHash)))
-            .returns(T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Util::AnyHash)))
+          params(
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Util::AnyHash))
+          )
+            .void
         end
-        def tool_resources=(_)
-        end
+        attr_writer :tool_resources
 
         # An alternative to sampling with temperature, called nucleus sampling, where the
         #   model considers the results of the tokens with top_p probability mass. So 0.1
@@ -218,12 +123,7 @@ module OpenAI
         #
         #   We generally recommend altering this or temperature but not both.
         sig { returns(T.nilable(Float)) }
-        def top_p
-        end
-
-        sig { params(_: T.nilable(Float)).returns(T.nilable(Float)) }
-        def top_p=(_)
-        end
+        attr_accessor :top_p
 
         # Represents an `assistant` that can call the model and use tools.
         sig do
@@ -314,26 +214,26 @@ module OpenAI
 
         class ToolResources < OpenAI::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter)) }
-          def code_interpreter
-          end
+          attr_reader :code_interpreter
 
           sig do
-            params(_: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash))
+            params(
+              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+            )
+              .void
           end
-          def code_interpreter=(_)
-          end
+          attr_writer :code_interpreter
 
           sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch)) }
-          def file_search
-          end
+          attr_reader :file_search
 
           sig do
-            params(_: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Util::AnyHash))
+            params(
+              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+            )
+              .void
           end
-          def file_search=(_)
-          end
+          attr_writer :file_search
 
           # A set of resources that are used by the assistant's tools. The resources are
           #   specific to the type of tool. For example, the `code_interpreter` tool requires
@@ -366,12 +266,10 @@ module OpenAI
             #   available to the `code_interpreter`` tool. There can be a maximum of 20 files
             #   associated with the tool.
             sig { returns(T.nilable(T::Array[String])) }
-            def file_ids
-            end
+            attr_reader :file_ids
 
-            sig { params(_: T::Array[String]).returns(T::Array[String]) }
-            def file_ids=(_)
-            end
+            sig { params(file_ids: T::Array[String]).void }
+            attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
             def self.new(file_ids: nil)
@@ -388,12 +286,10 @@ module OpenAI
             #   attached to this assistant. There can be a maximum of 1 vector store attached to
             #   the assistant.
             sig { returns(T.nilable(T::Array[String])) }
-            def vector_store_ids
-            end
+            attr_reader :vector_store_ids
 
-            sig { params(_: T::Array[String]).returns(T::Array[String]) }
-            def vector_store_ids=(_)
-            end
+            sig { params(vector_store_ids: T::Array[String]).void }
+            attr_writer :vector_store_ids
 
             sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
             def self.new(vector_store_ids: nil)

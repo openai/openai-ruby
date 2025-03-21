@@ -9,25 +9,15 @@ module OpenAI
           #   in the message content. Set `purpose="vision"` when uploading the File if you
           #   need to later display the file content.
           sig { returns(String) }
-          def file_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def file_id=(_)
-          end
+          attr_accessor :file_id
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)) }
-          def detail
-          end
+          attr_reader :detail
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
-          end
-          def detail=(_)
-          end
+          sig { params(detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol).void }
+          attr_writer :detail
 
           sig do
             params(file_id: String, detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)

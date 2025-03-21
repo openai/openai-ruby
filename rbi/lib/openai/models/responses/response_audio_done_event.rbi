@@ -6,12 +6,7 @@ module OpenAI
       class ResponseAudioDoneEvent < OpenAI::BaseModel
         # The type of the event. Always `response.audio.done`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when the audio response is complete.
         sig { params(type: Symbol).returns(T.attached_class) }

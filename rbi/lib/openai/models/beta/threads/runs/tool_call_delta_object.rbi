@@ -8,12 +8,7 @@ module OpenAI
           class ToolCallDeltaObject < OpenAI::BaseModel
             # Always `tool_calls`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # An array of tool calls the run step was involved in. These can be associated
             #   with one of three types of tools: `code_interpreter`, `file_search`, or
@@ -31,12 +26,11 @@ module OpenAI
                 )
               )
             end
-            def tool_calls
-            end
+            attr_reader :tool_calls
 
             sig do
               params(
-                _: T::Array[
+                tool_calls: T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
                   OpenAI::Util::AnyHash,
@@ -45,19 +39,9 @@ module OpenAI
                 )
                 ]
               )
-                .returns(
-                  T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                    OpenAI::Util::AnyHash,
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
-                  )
-                  ]
-                )
+                .void
             end
-            def tool_calls=(_)
-            end
+            attr_writer :tool_calls
 
             # Details of the tool call.
             sig do

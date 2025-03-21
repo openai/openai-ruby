@@ -13,34 +13,16 @@ module OpenAI
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
         sig { returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol)) }
-        def model
-        end
-
-        sig do
-          params(_: T.any(String, OpenAI::Models::ChatModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol))
-        end
-        def model=(_)
-        end
+        attr_accessor :model
 
         # The description of the assistant. The maximum length is 512 characters.
         sig { returns(T.nilable(String)) }
-        def description
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def description=(_)
-        end
+        attr_accessor :description
 
         # The system instructions that the assistant uses. The maximum length is 256,000
         #   characters.
         sig { returns(T.nilable(String)) }
-        def instructions
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def instructions=(_)
-        end
+        attr_accessor :instructions
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -49,21 +31,11 @@ module OpenAI
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata
-        end
-
-        sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-        def metadata=(_)
-        end
+        attr_accessor :metadata
 
         # The name of the assistant. The maximum length is 256 characters.
         sig { returns(T.nilable(String)) }
-        def name
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def name=(_)
-        end
+        attr_accessor :name
 
         # **o-series models only**
         #
@@ -72,15 +44,7 @@ module OpenAI
         #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #   result in faster responses and fewer tokens used on reasoning in a response.
         sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
-        def reasoning_effort
-        end
-
-        sig do
-          params(_: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-            .returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-        end
-        def reasoning_effort=(_)
-        end
+        attr_accessor :reasoning_effort
 
         # Specifies the format that the model must output. Compatible with
         #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
@@ -114,63 +78,28 @@ module OpenAI
             )
           )
         end
-        def response_format
-        end
-
-        sig do
-          params(
-            _: T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
-              )
-            )
-          )
-            .returns(
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Models::ResponseFormatJSONObject,
-                  OpenAI::Models::ResponseFormatJSONSchema
-                )
-              )
-            )
-        end
-        def response_format=(_)
-        end
+        attr_accessor :response_format
 
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
         #   make the output more random, while lower values like 0.2 will make it more
         #   focused and deterministic.
         sig { returns(T.nilable(Float)) }
-        def temperature
-        end
-
-        sig { params(_: T.nilable(Float)).returns(T.nilable(Float)) }
-        def temperature=(_)
-        end
+        attr_accessor :temperature
 
         # A set of resources that are used by the assistant's tools. The resources are
         #   specific to the type of tool. For example, the `code_interpreter` tool requires
         #   a list of file IDs, while the `file_search` tool requires a list of vector store
         #   IDs.
         sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources)) }
-        def tool_resources
-        end
+        attr_reader :tool_resources
 
         sig do
           params(
-            _: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Util::AnyHash))
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Util::AnyHash))
           )
-            .returns(
-              T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Util::AnyHash))
-            )
+            .void
         end
-        def tool_resources=(_)
-        end
+        attr_writer :tool_resources
 
         # A list of tool enabled on the assistant. There can be a maximum of 128 tools per
         #   assistant. Tools can be of types `code_interpreter`, `file_search`, or
@@ -188,12 +117,11 @@ module OpenAI
             )
           )
         end
-        def tools
-        end
+        attr_reader :tools
 
         sig do
           params(
-            _: T::Array[
+            tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
               OpenAI::Util::AnyHash,
@@ -202,19 +130,9 @@ module OpenAI
             )
             ]
           )
-            .returns(
-              T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Util::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-              ]
-            )
+            .void
         end
-        def tools=(_)
-        end
+        attr_writer :tools
 
         # An alternative to sampling with temperature, called nucleus sampling, where the
         #   model considers the results of the tokens with top_p probability mass. So 0.1
@@ -222,12 +140,7 @@ module OpenAI
         #
         #   We generally recommend altering this or temperature but not both.
         sig { returns(T.nilable(Float)) }
-        def top_p
-        end
-
-        sig { params(_: T.nilable(Float)).returns(T.nilable(Float)) }
-        def top_p=(_)
-        end
+        attr_accessor :top_p
 
         sig do
           params(
@@ -331,34 +244,26 @@ module OpenAI
 
         class ToolResources < OpenAI::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter)) }
-          def code_interpreter
-          end
+          attr_reader :code_interpreter
 
           sig do
             params(
-              _: T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+              code_interpreter: T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
             )
-              .returns(
-                T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
-              )
+              .void
           end
-          def code_interpreter=(_)
-          end
+          attr_writer :code_interpreter
 
           sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch)) }
-          def file_search
-          end
+          attr_reader :file_search
 
           sig do
             params(
-              _: T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+              file_search: T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
             )
-              .returns(
-                T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
-              )
+              .void
           end
-          def file_search=(_)
-          end
+          attr_writer :file_search
 
           # A set of resources that are used by the assistant's tools. The resources are
           #   specific to the type of tool. For example, the `code_interpreter` tool requires
@@ -391,12 +296,10 @@ module OpenAI
             #   available to the `code_interpreter` tool. There can be a maximum of 20 files
             #   associated with the tool.
             sig { returns(T.nilable(T::Array[String])) }
-            def file_ids
-            end
+            attr_reader :file_ids
 
-            sig { params(_: T::Array[String]).returns(T::Array[String]) }
-            def file_ids=(_)
-            end
+            sig { params(file_ids: T::Array[String]).void }
+            attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
             def self.new(file_ids: nil)
@@ -413,12 +316,10 @@ module OpenAI
             #   attached to this assistant. There can be a maximum of 1 vector store attached to
             #   the assistant.
             sig { returns(T.nilable(T::Array[String])) }
-            def vector_store_ids
-            end
+            attr_reader :vector_store_ids
 
-            sig { params(_: T::Array[String]).returns(T::Array[String]) }
-            def vector_store_ids=(_)
-            end
+            sig { params(vector_store_ids: T::Array[String]).void }
+            attr_writer :vector_store_ids
 
             # A helper to create a
             #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -429,29 +330,20 @@ module OpenAI
                 T.nilable(T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore])
               )
             end
-            def vector_stores
-            end
+            attr_reader :vector_stores
 
             sig do
               params(
-                _: T::Array[
+                vector_stores: T::Array[
                 T.any(
                   OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
                   OpenAI::Util::AnyHash
                 )
                 ]
               )
-                .returns(
-                  T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
-                    OpenAI::Util::AnyHash
-                  )
-                  ]
-                )
+                .void
             end
-            def vector_stores=(_)
-            end
+            attr_writer :vector_stores
 
             sig do
               params(
@@ -493,38 +385,28 @@ module OpenAI
                   )
                 )
               end
-              def chunking_strategy
-              end
+              attr_reader :chunking_strategy
 
               sig do
                 params(
-                  _: T.any(
+                  chunking_strategy: T.any(
                     OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
                     OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                   )
                 )
-                  .returns(
-                    T.any(
-                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                      OpenAI::Util::AnyHash,
-                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
-                    )
-                  )
+                  .void
               end
-              def chunking_strategy=(_)
-              end
+              attr_writer :chunking_strategy
 
               # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
               #   add to the vector store. There can be a maximum of 10000 files in a vector
               #   store.
               sig { returns(T.nilable(T::Array[String])) }
-              def file_ids
-              end
+              attr_reader :file_ids
 
-              sig { params(_: T::Array[String]).returns(T::Array[String]) }
-              def file_ids=(_)
-              end
+              sig { params(file_ids: T::Array[String]).void }
+              attr_writer :file_ids
 
               # Set of 16 key-value pairs that can be attached to an object. This can be useful
               #   for storing additional information about the object in a structured format, and
@@ -533,14 +415,7 @@ module OpenAI
               #   Keys are strings with a maximum length of 64 characters. Values are strings with
               #   a maximum length of 512 characters.
               sig { returns(T.nilable(T::Hash[Symbol, String])) }
-              def metadata
-              end
-
-              sig do
-                params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String]))
-              end
-              def metadata=(_)
-              end
+              attr_accessor :metadata
 
               sig do
                 params(
@@ -591,12 +466,7 @@ module OpenAI
                 class Auto < OpenAI::BaseModel
                   # Always `auto`.
                   sig { returns(Symbol) }
-                  def type
-                  end
-
-                  sig { params(_: Symbol).returns(Symbol) }
-                  def type=(_)
-                  end
+                  attr_accessor :type
 
                   # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
                   #   `800` and `chunk_overlap_tokens` of `400`.
@@ -615,34 +485,22 @@ module OpenAI
                       OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
                     )
                   end
-                  def static
-                  end
+                  attr_reader :static
 
                   sig do
                     params(
-                      _: T.any(
+                      static: T.any(
                         OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
                         OpenAI::Util::AnyHash
                       )
                     )
-                      .returns(
-                        T.any(
-                          OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                          OpenAI::Util::AnyHash
-                        )
-                      )
+                      .void
                   end
-                  def static=(_)
-                  end
+                  attr_writer :static
 
                   # Always `static`.
                   sig { returns(Symbol) }
-                  def type
-                  end
-
-                  sig { params(_: Symbol).returns(Symbol) }
-                  def type=(_)
-                  end
+                  attr_accessor :type
 
                   sig do
                     params(
@@ -674,22 +532,12 @@ module OpenAI
                     #
                     #   Note that the overlap must not exceed half of `max_chunk_size_tokens`.
                     sig { returns(Integer) }
-                    def chunk_overlap_tokens
-                    end
-
-                    sig { params(_: Integer).returns(Integer) }
-                    def chunk_overlap_tokens=(_)
-                    end
+                    attr_accessor :chunk_overlap_tokens
 
                     # The maximum number of tokens in each chunk. The default value is `800`. The
                     #   minimum value is `100` and the maximum value is `4096`.
                     sig { returns(Integer) }
-                    def max_chunk_size_tokens
-                    end
-
-                    sig { params(_: Integer).returns(Integer) }
-                    def max_chunk_size_tokens=(_)
-                    end
+                    attr_accessor :max_chunk_size_tokens
 
                     sig do
                       params(

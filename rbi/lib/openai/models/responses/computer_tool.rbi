@@ -6,42 +6,19 @@ module OpenAI
       class ComputerTool < OpenAI::BaseModel
         # The height of the computer display.
         sig { returns(Float) }
-        def display_height
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def display_height=(_)
-        end
+        attr_accessor :display_height
 
         # The width of the computer display.
         sig { returns(Float) }
-        def display_width
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def display_width=(_)
-        end
+        attr_accessor :display_width
 
         # The type of computer environment to control.
         sig { returns(OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol) }
-        def environment
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol)
-            .returns(OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol)
-        end
-        def environment=(_)
-        end
+        attr_accessor :environment
 
         # The type of the computer use tool. Always `computer_use_preview`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # A tool that controls a virtual computer. Learn more about the
         #   [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).

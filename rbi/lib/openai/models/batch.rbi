@@ -4,160 +4,100 @@ module OpenAI
   module Models
     class Batch < OpenAI::BaseModel
       sig { returns(String) }
-      def id
-      end
-
-      sig { params(_: String).returns(String) }
-      def id=(_)
-      end
+      attr_accessor :id
 
       # The time frame within which the batch should be processed.
       sig { returns(String) }
-      def completion_window
-      end
-
-      sig { params(_: String).returns(String) }
-      def completion_window=(_)
-      end
+      attr_accessor :completion_window
 
       # The Unix timestamp (in seconds) for when the batch was created.
       sig { returns(Integer) }
-      def created_at
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def created_at=(_)
-      end
+      attr_accessor :created_at
 
       # The OpenAI API endpoint used by the batch.
       sig { returns(String) }
-      def endpoint
-      end
-
-      sig { params(_: String).returns(String) }
-      def endpoint=(_)
-      end
+      attr_accessor :endpoint
 
       # The ID of the input file for the batch.
       sig { returns(String) }
-      def input_file_id
-      end
-
-      sig { params(_: String).returns(String) }
-      def input_file_id=(_)
-      end
+      attr_accessor :input_file_id
 
       # The object type, which is always `batch`.
       sig { returns(Symbol) }
-      def object
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def object=(_)
-      end
+      attr_accessor :object
 
       # The current status of the batch.
       sig { returns(OpenAI::Models::Batch::Status::TaggedSymbol) }
-      def status
-      end
-
-      sig do
-        params(_: OpenAI::Models::Batch::Status::TaggedSymbol).returns(OpenAI::Models::Batch::Status::TaggedSymbol)
-      end
-      def status=(_)
-      end
+      attr_accessor :status
 
       # The Unix timestamp (in seconds) for when the batch was cancelled.
       sig { returns(T.nilable(Integer)) }
-      def cancelled_at
-      end
+      attr_reader :cancelled_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def cancelled_at=(_)
-      end
+      sig { params(cancelled_at: Integer).void }
+      attr_writer :cancelled_at
 
       # The Unix timestamp (in seconds) for when the batch started cancelling.
       sig { returns(T.nilable(Integer)) }
-      def cancelling_at
-      end
+      attr_reader :cancelling_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def cancelling_at=(_)
-      end
+      sig { params(cancelling_at: Integer).void }
+      attr_writer :cancelling_at
 
       # The Unix timestamp (in seconds) for when the batch was completed.
       sig { returns(T.nilable(Integer)) }
-      def completed_at
-      end
+      attr_reader :completed_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def completed_at=(_)
-      end
+      sig { params(completed_at: Integer).void }
+      attr_writer :completed_at
 
       # The ID of the file containing the outputs of requests with errors.
       sig { returns(T.nilable(String)) }
-      def error_file_id
-      end
+      attr_reader :error_file_id
 
-      sig { params(_: String).returns(String) }
-      def error_file_id=(_)
-      end
+      sig { params(error_file_id: String).void }
+      attr_writer :error_file_id
 
       sig { returns(T.nilable(OpenAI::Models::Batch::Errors)) }
-      def errors
-      end
+      attr_reader :errors
 
-      sig do
-        params(_: T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash))
-      end
-      def errors=(_)
-      end
+      sig { params(errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash)).void }
+      attr_writer :errors
 
       # The Unix timestamp (in seconds) for when the batch expired.
       sig { returns(T.nilable(Integer)) }
-      def expired_at
-      end
+      attr_reader :expired_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def expired_at=(_)
-      end
+      sig { params(expired_at: Integer).void }
+      attr_writer :expired_at
 
       # The Unix timestamp (in seconds) for when the batch will expire.
       sig { returns(T.nilable(Integer)) }
-      def expires_at
-      end
+      attr_reader :expires_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def expires_at=(_)
-      end
+      sig { params(expires_at: Integer).void }
+      attr_writer :expires_at
 
       # The Unix timestamp (in seconds) for when the batch failed.
       sig { returns(T.nilable(Integer)) }
-      def failed_at
-      end
+      attr_reader :failed_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def failed_at=(_)
-      end
+      sig { params(failed_at: Integer).void }
+      attr_writer :failed_at
 
       # The Unix timestamp (in seconds) for when the batch started finalizing.
       sig { returns(T.nilable(Integer)) }
-      def finalizing_at
-      end
+      attr_reader :finalizing_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def finalizing_at=(_)
-      end
+      sig { params(finalizing_at: Integer).void }
+      attr_writer :finalizing_at
 
       # The Unix timestamp (in seconds) for when the batch started processing.
       sig { returns(T.nilable(Integer)) }
-      def in_progress_at
-      end
+      attr_reader :in_progress_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def in_progress_at=(_)
-      end
+      sig { params(in_progress_at: Integer).void }
+      attr_writer :in_progress_at
 
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
       #   for storing additional information about the object in a structured format, and
@@ -166,33 +106,21 @@ module OpenAI
       #   Keys are strings with a maximum length of 64 characters. Values are strings with
       #   a maximum length of 512 characters.
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata
-      end
-
-      sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata=(_)
-      end
+      attr_accessor :metadata
 
       # The ID of the file containing the outputs of successfully executed requests.
       sig { returns(T.nilable(String)) }
-      def output_file_id
-      end
+      attr_reader :output_file_id
 
-      sig { params(_: String).returns(String) }
-      def output_file_id=(_)
-      end
+      sig { params(output_file_id: String).void }
+      attr_writer :output_file_id
 
       # The request counts for different statuses within the batch.
       sig { returns(T.nilable(OpenAI::Models::BatchRequestCounts)) }
-      def request_counts
-      end
+      attr_reader :request_counts
 
-      sig do
-        params(_: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash))
-      end
-      def request_counts=(_)
-      end
+      sig { params(request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash)).void }
+      attr_writer :request_counts
 
       sig do
         params(
@@ -298,24 +226,17 @@ module OpenAI
 
       class Errors < OpenAI::BaseModel
         sig { returns(T.nilable(T::Array[OpenAI::Models::BatchError])) }
-        def data
-        end
+        attr_reader :data
 
-        sig do
-          params(_: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)])
-            .returns(T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)])
-        end
-        def data=(_)
-        end
+        sig { params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)]).void }
+        attr_writer :data
 
         # The object type, which is always `list`.
         sig { returns(T.nilable(String)) }
-        def object
-        end
+        attr_reader :object
 
-        sig { params(_: String).returns(String) }
-        def object=(_)
-        end
+        sig { params(object: String).void }
+        attr_writer :object
 
         sig do
           params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)], object: String)

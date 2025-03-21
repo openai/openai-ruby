@@ -10,26 +10,13 @@ module OpenAI
         # The audio file object (not file name) to transcribe, in one of these formats:
         #   flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         sig { returns(T.any(IO, StringIO)) }
-        def file
-        end
-
-        sig { params(_: T.any(IO, StringIO)).returns(T.any(IO, StringIO)) }
-        def file=(_)
-        end
+        attr_accessor :file
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         #   Whisper V2 model).
         sig { returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol)) }
-        def model
-        end
-
-        sig do
-          params(_: T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-            .returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol))
-        end
-        def model=(_)
-        end
+        attr_accessor :model
 
         # Additional information to include in the transcription response. `logprobs` will
         #   return the log probabilities of the tokens in the response to understand the
@@ -37,52 +24,38 @@ module OpenAI
         #   response_format set to `json` and only with the models `gpt-4o-transcribe` and
         #   `gpt-4o-mini-transcribe`.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol])) }
-        def include
-        end
+        attr_reader :include
 
-        sig do
-          params(_: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol])
-            .returns(T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol])
-        end
-        def include=(_)
-        end
+        sig { params(include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol]).void }
+        attr_writer :include
 
         # The language of the input audio. Supplying the input language in
         #   [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
         #   format will improve accuracy and latency.
         sig { returns(T.nilable(String)) }
-        def language
-        end
+        attr_reader :language
 
-        sig { params(_: String).returns(String) }
-        def language=(_)
-        end
+        sig { params(language: String).void }
+        attr_writer :language
 
         # An optional text to guide the model's style or continue a previous audio
         #   segment. The
         #   [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
         #   should match the audio language.
         sig { returns(T.nilable(String)) }
-        def prompt
-        end
+        attr_reader :prompt
 
-        sig { params(_: String).returns(String) }
-        def prompt=(_)
-        end
+        sig { params(prompt: String).void }
+        attr_writer :prompt
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
         #   the only supported format is `json`.
         sig { returns(T.nilable(OpenAI::Models::AudioResponseFormat::OrSymbol)) }
-        def response_format
-        end
+        attr_reader :response_format
 
-        sig do
-          params(_: OpenAI::Models::AudioResponseFormat::OrSymbol)
-            .returns(OpenAI::Models::AudioResponseFormat::OrSymbol)
-        end
-        def response_format=(_)
-        end
+        sig { params(response_format: OpenAI::Models::AudioResponseFormat::OrSymbol).void }
+        attr_writer :response_format
 
         # The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
         #   output more random, while lower values like 0.2 will make it more focused and
@@ -90,12 +63,10 @@ module OpenAI
         #   [log probability](https://en.wikipedia.org/wiki/Log_probability) to
         #   automatically increase the temperature until certain thresholds are hit.
         sig { returns(T.nilable(Float)) }
-        def temperature
-        end
+        attr_reader :temperature
 
-        sig { params(_: Float).returns(Float) }
-        def temperature=(_)
-        end
+        sig { params(temperature: Float).void }
+        attr_writer :temperature
 
         # The timestamp granularities to populate for this transcription.
         #   `response_format` must be set `verbose_json` to use timestamp granularities.
@@ -107,15 +78,15 @@ module OpenAI
             T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol])
           )
         end
-        def timestamp_granularities
-        end
+        attr_reader :timestamp_granularities
 
         sig do
-          params(_: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol])
-            .returns(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol])
+          params(
+            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol]
+          )
+            .void
         end
-        def timestamp_granularities=(_)
-        end
+        attr_writer :timestamp_granularities
 
         sig do
           params(

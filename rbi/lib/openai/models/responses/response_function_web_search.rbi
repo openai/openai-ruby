@@ -6,33 +6,15 @@ module OpenAI
       class ResponseFunctionWebSearch < OpenAI::BaseModel
         # The unique ID of the web search tool call.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The status of the web search tool call.
         sig { returns(OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol) }
-        def status
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol)
-        end
-        def status=(_)
-        end
+        attr_accessor :status
 
         # The type of the web search tool call. Always `web_search_call`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The results of a web search tool call. See the
         #   [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for

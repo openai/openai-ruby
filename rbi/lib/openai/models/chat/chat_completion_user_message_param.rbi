@@ -20,58 +20,19 @@ module OpenAI
             )
           )
         end
-        def content
-        end
-
-        sig do
-          params(
-            _: T.any(
-              String,
-              T::Array[
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                OpenAI::Models::Chat::ChatCompletionContentPart::File
-              )
-              ]
-            )
-          )
-            .returns(
-              T.any(
-                String,
-                T::Array[
-                T.any(
-                  OpenAI::Models::Chat::ChatCompletionContentPartText,
-                  OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                  OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                  OpenAI::Models::Chat::ChatCompletionContentPart::File
-                )
-                ]
-              )
-            )
-        end
-        def content=(_)
-        end
+        attr_accessor :content
 
         # The role of the messages author, in this case `user`.
         sig { returns(Symbol) }
-        def role
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def role=(_)
-        end
+        attr_accessor :role
 
         # An optional name for the participant. Provides the model information to
         #   differentiate between participants of the same role.
         sig { returns(T.nilable(String)) }
-        def name
-        end
+        attr_reader :name
 
-        sig { params(_: String).returns(String) }
-        def name=(_)
-        end
+        sig { params(name: String).void }
+        attr_writer :name
 
         # Messages sent by an end user, containing prompts or additional context
         #   information.

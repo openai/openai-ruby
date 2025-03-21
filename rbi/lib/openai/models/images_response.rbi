@@ -4,20 +4,10 @@ module OpenAI
   module Models
     class ImagesResponse < OpenAI::BaseModel
       sig { returns(Integer) }
-      def created
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def created=(_)
-      end
+      attr_accessor :created
 
       sig { returns(T::Array[OpenAI::Models::Image]) }
-      def data
-      end
-
-      sig { params(_: T::Array[OpenAI::Models::Image]).returns(T::Array[OpenAI::Models::Image]) }
-      def data=(_)
-      end
+      attr_accessor :data
 
       sig do
         params(created: Integer, data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Util::AnyHash)])

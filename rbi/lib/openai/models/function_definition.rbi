@@ -6,22 +6,15 @@ module OpenAI
       # The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
       #   underscores and dashes, with a maximum length of 64.
       sig { returns(String) }
-      def name
-      end
-
-      sig { params(_: String).returns(String) }
-      def name=(_)
-      end
+      attr_accessor :name
 
       # A description of what the function does, used by the model to choose when and
       #   how to call the function.
       sig { returns(T.nilable(String)) }
-      def description
-      end
+      attr_reader :description
 
-      sig { params(_: String).returns(String) }
-      def description=(_)
-      end
+      sig { params(description: String).void }
+      attr_writer :description
 
       # The parameters the functions accepts, described as a JSON Schema object. See the
       #   [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
@@ -31,12 +24,10 @@ module OpenAI
       #
       #   Omitting `parameters` defines a function with an empty parameter list.
       sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
-      def parameters
-      end
+      attr_reader :parameters
 
-      sig { params(_: T::Hash[Symbol, T.anything]).returns(T::Hash[Symbol, T.anything]) }
-      def parameters=(_)
-      end
+      sig { params(parameters: T::Hash[Symbol, T.anything]).void }
+      attr_writer :parameters
 
       # Whether to enable strict schema adherence when generating the function call. If
       #   set to true, the model will follow the exact schema defined in the `parameters`
@@ -44,12 +35,7 @@ module OpenAI
       #   more about Structured Outputs in the
       #   [function calling guide](docs/guides/function-calling).
       sig { returns(T.nilable(T::Boolean)) }
-      def strict
-      end
-
-      sig { params(_: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
-      def strict=(_)
-      end
+      attr_accessor :strict
 
       sig do
         params(

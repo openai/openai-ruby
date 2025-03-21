@@ -10,15 +10,10 @@ module OpenAI
         # Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])) }
-        def include
-        end
+        attr_reader :include
 
-        sig do
-          params(_: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])
-            .returns(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])
-        end
-        def include=(_)
-        end
+        sig { params(include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]).void }
+        attr_writer :include
 
         sig do
           params(

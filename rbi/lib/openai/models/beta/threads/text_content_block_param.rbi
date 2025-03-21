@@ -7,21 +7,11 @@ module OpenAI
         class TextContentBlockParam < OpenAI::BaseModel
           # Text content to be sent to the model
           sig { returns(String) }
-          def text
-          end
-
-          sig { params(_: String).returns(String) }
-          def text=(_)
-          end
+          attr_accessor :text
 
           # Always `text`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # The text content that is part of a message.
           sig { params(text: String, type: Symbol).returns(T.attached_class) }

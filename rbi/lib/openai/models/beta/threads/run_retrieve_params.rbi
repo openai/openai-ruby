@@ -9,12 +9,7 @@ module OpenAI
           include OpenAI::RequestParameters
 
           sig { returns(String) }
-          def thread_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def thread_id=(_)
-          end
+          attr_accessor :thread_id
 
           sig do
             params(thread_id: String, request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))

@@ -6,12 +6,7 @@ module OpenAI
       class AssistantToolChoiceFunction < OpenAI::BaseModel
         # The name of the function to call.
         sig { returns(String) }
-        def name
-        end
-
-        sig { params(_: String).returns(String) }
-        def name=(_)
-        end
+        attr_accessor :name
 
         sig { params(name: String).returns(T.attached_class) }
         def self.new(name:)

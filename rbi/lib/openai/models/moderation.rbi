@@ -5,48 +5,33 @@ module OpenAI
     class Moderation < OpenAI::BaseModel
       # A list of the categories, and whether they are flagged or not.
       sig { returns(OpenAI::Models::Moderation::Categories) }
-      def categories
-      end
+      attr_reader :categories
 
-      sig do
-        params(_: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash))
-      end
-      def categories=(_)
-      end
+      sig { params(categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash)).void }
+      attr_writer :categories
 
       # A list of the categories along with the input type(s) that the score applies to.
       sig { returns(OpenAI::Models::Moderation::CategoryAppliedInputTypes) }
-      def category_applied_input_types
-      end
+      attr_reader :category_applied_input_types
 
       sig do
-        params(_: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash))
+        params(
+          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash)
+        )
+          .void
       end
-      def category_applied_input_types=(_)
-      end
+      attr_writer :category_applied_input_types
 
       # A list of the categories along with their scores as predicted by model.
       sig { returns(OpenAI::Models::Moderation::CategoryScores) }
-      def category_scores
-      end
+      attr_reader :category_scores
 
-      sig do
-        params(_: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash))
-      end
-      def category_scores=(_)
-      end
+      sig { params(category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash)).void }
+      attr_writer :category_scores
 
       # Whether any of the below categories are flagged.
       sig { returns(T::Boolean) }
-      def flagged
-      end
-
-      sig { params(_: T::Boolean).returns(T::Boolean) }
-      def flagged=(_)
-      end
+      attr_accessor :flagged
 
       sig do
         params(
@@ -78,136 +63,71 @@ module OpenAI
         # Content that expresses, incites, or promotes harassing language towards any
         #   target.
         sig { returns(T::Boolean) }
-        def harassment
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def harassment=(_)
-        end
+        attr_accessor :harassment
 
         # Harassment content that also includes violence or serious harm towards any
         #   target.
         sig { returns(T::Boolean) }
-        def harassment_threatening
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def harassment_threatening=(_)
-        end
+        attr_accessor :harassment_threatening
 
         # Content that expresses, incites, or promotes hate based on race, gender,
         #   ethnicity, religion, nationality, sexual orientation, disability status, or
         #   caste. Hateful content aimed at non-protected groups (e.g., chess players) is
         #   harassment.
         sig { returns(T::Boolean) }
-        def hate
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def hate=(_)
-        end
+        attr_accessor :hate
 
         # Hateful content that also includes violence or serious harm towards the targeted
         #   group based on race, gender, ethnicity, religion, nationality, sexual
         #   orientation, disability status, or caste.
         sig { returns(T::Boolean) }
-        def hate_threatening
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def hate_threatening=(_)
-        end
+        attr_accessor :hate_threatening
 
         # Content that includes instructions or advice that facilitate the planning or
         #   execution of wrongdoing, or that gives advice or instruction on how to commit
         #   illicit acts. For example, "how to shoplift" would fit this category.
         sig { returns(T.nilable(T::Boolean)) }
-        def illicit
-        end
-
-        sig { params(_: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
-        def illicit=(_)
-        end
+        attr_accessor :illicit
 
         # Content that includes instructions or advice that facilitate the planning or
         #   execution of wrongdoing that also includes violence, or that gives advice or
         #   instruction on the procurement of any weapon.
         sig { returns(T.nilable(T::Boolean)) }
-        def illicit_violent
-        end
-
-        sig { params(_: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
-        def illicit_violent=(_)
-        end
+        attr_accessor :illicit_violent
 
         # Content that promotes, encourages, or depicts acts of self-harm, such as
         #   suicide, cutting, and eating disorders.
         sig { returns(T::Boolean) }
-        def self_harm
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def self_harm=(_)
-        end
+        attr_accessor :self_harm
 
         # Content that encourages performing acts of self-harm, such as suicide, cutting,
         #   and eating disorders, or that gives instructions or advice on how to commit such
         #   acts.
         sig { returns(T::Boolean) }
-        def self_harm_instructions
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def self_harm_instructions=(_)
-        end
+        attr_accessor :self_harm_instructions
 
         # Content where the speaker expresses that they are engaging or intend to engage
         #   in acts of self-harm, such as suicide, cutting, and eating disorders.
         sig { returns(T::Boolean) }
-        def self_harm_intent
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def self_harm_intent=(_)
-        end
+        attr_accessor :self_harm_intent
 
         # Content meant to arouse sexual excitement, such as the description of sexual
         #   activity, or that promotes sexual services (excluding sex education and
         #   wellness).
         sig { returns(T::Boolean) }
-        def sexual
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def sexual=(_)
-        end
+        attr_accessor :sexual
 
         # Sexual content that includes an individual who is under 18 years old.
         sig { returns(T::Boolean) }
-        def sexual_minors
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def sexual_minors=(_)
-        end
+        attr_accessor :sexual_minors
 
         # Content that depicts death, violence, or physical injury.
         sig { returns(T::Boolean) }
-        def violence
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def violence=(_)
-        end
+        attr_accessor :violence
 
         # Content that depicts death, violence, or physical injury in graphic detail.
         sig { returns(T::Boolean) }
-        def violence_graphic
-        end
-
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def violence_graphic=(_)
-        end
+        attr_accessor :violence_graphic
 
         # A list of the categories, and whether they are flagged or not.
         sig do
@@ -272,15 +192,7 @@ module OpenAI
       class CategoryAppliedInputTypes < OpenAI::BaseModel
         # The applied input type(s) for the category 'harassment'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol]) }
-        def harassment
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
-        end
-        def harassment=(_)
-        end
+        attr_accessor :harassment
 
         # The applied input type(s) for the category 'harassment/threatening'.
         sig do
@@ -288,79 +200,27 @@ module OpenAI
             T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
           )
         end
-        def harassment_threatening
-        end
-
-        sig do
-          params(
-            _: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
-          )
-            .returns(
-              T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
-            )
-        end
-        def harassment_threatening=(_)
-        end
+        attr_accessor :harassment_threatening
 
         # The applied input type(s) for the category 'hate'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol]) }
-        def hate
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol])
-        end
-        def hate=(_)
-        end
+        attr_accessor :hate
 
         # The applied input type(s) for the category 'hate/threatening'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol]) }
-        def hate_threatening
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
-        end
-        def hate_threatening=(_)
-        end
+        attr_accessor :hate_threatening
 
         # The applied input type(s) for the category 'illicit'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol]) }
-        def illicit
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol])
-        end
-        def illicit=(_)
-        end
+        attr_accessor :illicit
 
         # The applied input type(s) for the category 'illicit/violent'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol]) }
-        def illicit_violent
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
-        end
-        def illicit_violent=(_)
-        end
+        attr_accessor :illicit_violent
 
         # The applied input type(s) for the category 'self-harm'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol]) }
-        def self_harm
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol])
-        end
-        def self_harm=(_)
-        end
+        attr_accessor :self_harm
 
         # The applied input type(s) for the category 'self-harm/instructions'.
         sig do
@@ -368,79 +228,27 @@ module OpenAI
             T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
           )
         end
-        def self_harm_instructions
-        end
-
-        sig do
-          params(
-            _: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
-          )
-            .returns(
-              T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
-            )
-        end
-        def self_harm_instructions=(_)
-        end
+        attr_accessor :self_harm_instructions
 
         # The applied input type(s) for the category 'self-harm/intent'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol]) }
-        def self_harm_intent
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
-        end
-        def self_harm_intent=(_)
-        end
+        attr_accessor :self_harm_intent
 
         # The applied input type(s) for the category 'sexual'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol]) }
-        def sexual
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol])
-        end
-        def sexual=(_)
-        end
+        attr_accessor :sexual
 
         # The applied input type(s) for the category 'sexual/minors'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol]) }
-        def sexual_minors
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
-        end
-        def sexual_minors=(_)
-        end
+        attr_accessor :sexual_minors
 
         # The applied input type(s) for the category 'violence'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol]) }
-        def violence
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol])
-        end
-        def violence=(_)
-        end
+        attr_accessor :violence
 
         # The applied input type(s) for the category 'violence/graphic'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol]) }
-        def violence_graphic
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
-            .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
-        end
-        def violence_graphic=(_)
-        end
+        attr_accessor :violence_graphic
 
         # A list of the categories along with the input type(s) that the score applies to.
         sig do
@@ -764,120 +572,55 @@ module OpenAI
       class CategoryScores < OpenAI::BaseModel
         # The score for the category 'harassment'.
         sig { returns(Float) }
-        def harassment
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def harassment=(_)
-        end
+        attr_accessor :harassment
 
         # The score for the category 'harassment/threatening'.
         sig { returns(Float) }
-        def harassment_threatening
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def harassment_threatening=(_)
-        end
+        attr_accessor :harassment_threatening
 
         # The score for the category 'hate'.
         sig { returns(Float) }
-        def hate
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def hate=(_)
-        end
+        attr_accessor :hate
 
         # The score for the category 'hate/threatening'.
         sig { returns(Float) }
-        def hate_threatening
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def hate_threatening=(_)
-        end
+        attr_accessor :hate_threatening
 
         # The score for the category 'illicit'.
         sig { returns(Float) }
-        def illicit
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def illicit=(_)
-        end
+        attr_accessor :illicit
 
         # The score for the category 'illicit/violent'.
         sig { returns(Float) }
-        def illicit_violent
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def illicit_violent=(_)
-        end
+        attr_accessor :illicit_violent
 
         # The score for the category 'self-harm'.
         sig { returns(Float) }
-        def self_harm
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def self_harm=(_)
-        end
+        attr_accessor :self_harm
 
         # The score for the category 'self-harm/instructions'.
         sig { returns(Float) }
-        def self_harm_instructions
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def self_harm_instructions=(_)
-        end
+        attr_accessor :self_harm_instructions
 
         # The score for the category 'self-harm/intent'.
         sig { returns(Float) }
-        def self_harm_intent
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def self_harm_intent=(_)
-        end
+        attr_accessor :self_harm_intent
 
         # The score for the category 'sexual'.
         sig { returns(Float) }
-        def sexual
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def sexual=(_)
-        end
+        attr_accessor :sexual
 
         # The score for the category 'sexual/minors'.
         sig { returns(Float) }
-        def sexual_minors
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def sexual_minors=(_)
-        end
+        attr_accessor :sexual_minors
 
         # The score for the category 'violence'.
         sig { returns(Float) }
-        def violence
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def violence=(_)
-        end
+        attr_accessor :violence
 
         # The score for the category 'violence/graphic'.
         sig { returns(Float) }
-        def violence_graphic
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def violence_graphic=(_)
-        end
+        attr_accessor :violence_graphic
 
         # A list of the categories along with their scores as predicted by model.
         sig do

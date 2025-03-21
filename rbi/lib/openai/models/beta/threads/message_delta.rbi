@@ -20,12 +20,11 @@ module OpenAI
               )
             )
           end
-          def content
-          end
+          attr_reader :content
 
           sig do
             params(
-              _: T::Array[
+              content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
                 OpenAI::Util::AnyHash,
@@ -35,32 +34,16 @@ module OpenAI
               )
               ]
             )
-              .returns(
-                T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                  OpenAI::Util::AnyHash,
-                  OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                  OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
-                )
-                ]
-              )
+              .void
           end
-          def content=(_)
-          end
+          attr_writer :content
 
           # The entity that produced the message. One of `user` or `assistant`.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)) }
-          def role
-          end
+          attr_reader :role
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol)
-              .returns(OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol)
-          end
-          def role=(_)
-          end
+          sig { params(role: OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol).void }
+          attr_writer :role
 
           # The delta containing the fields that have changed on the Message.
           sig do

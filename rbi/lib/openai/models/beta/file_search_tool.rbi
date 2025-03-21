@@ -6,24 +6,14 @@ module OpenAI
       class FileSearchTool < OpenAI::BaseModel
         # The type of tool being defined: `file_search`
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Overrides for the file search tool.
         sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch)) }
-        def file_search
-        end
+        attr_reader :file_search
 
-        sig do
-          params(_: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash))
-        end
-        def file_search=(_)
-        end
+        sig { params(file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash)).void }
+        attr_writer :file_search
 
         sig do
           params(
@@ -49,12 +39,10 @@ module OpenAI
           #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
           #   for more information.
           sig { returns(T.nilable(Integer)) }
-          def max_num_results
-          end
+          attr_reader :max_num_results
 
-          sig { params(_: Integer).returns(Integer) }
-          def max_num_results=(_)
-          end
+          sig { params(max_num_results: Integer).void }
+          attr_writer :max_num_results
 
           # The ranking options for the file search. If not specified, the file search tool
           #   will use the `auto` ranker and a score_threshold of 0.
@@ -63,15 +51,15 @@ module OpenAI
           #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
           #   for more information.
           sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions)) }
-          def ranking_options
-          end
+          attr_reader :ranking_options
 
           sig do
-            params(_: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash))
+            params(
+              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash)
+            )
+              .void
           end
-          def ranking_options=(_)
-          end
+          attr_writer :ranking_options
 
           # Overrides for the file search tool.
           sig do
@@ -97,25 +85,15 @@ module OpenAI
             # The score threshold for the file search. All values must be a floating point
             #   number between 0 and 1.
             sig { returns(Float) }
-            def score_threshold
-            end
-
-            sig { params(_: Float).returns(Float) }
-            def score_threshold=(_)
-            end
+            attr_accessor :score_threshold
 
             # The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
             sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)) }
-            def ranker
-            end
+            attr_reader :ranker
 
-            sig do
-              params(_: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)
-                .returns(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)
-            end
-            def ranker=(_)
-            end
+            sig { params(ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol).void }
+            attr_writer :ranker
 
             # The ranking options for the file search. If not specified, the file search tool
             #   will use the `auto` ranker and a score_threshold of 0.

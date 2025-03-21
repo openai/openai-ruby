@@ -7,71 +7,39 @@ module OpenAI
         class FineTuningJobCheckpoint < OpenAI::BaseModel
           # The checkpoint identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
-          def id
-          end
-
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          attr_accessor :id
 
           # The Unix timestamp (in seconds) for when the checkpoint was created.
           sig { returns(Integer) }
-          def created_at
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def created_at=(_)
-          end
+          attr_accessor :created_at
 
           # The name of the fine-tuned checkpoint model that is created.
           sig { returns(String) }
-          def fine_tuned_model_checkpoint
-          end
-
-          sig { params(_: String).returns(String) }
-          def fine_tuned_model_checkpoint=(_)
-          end
+          attr_accessor :fine_tuned_model_checkpoint
 
           # The name of the fine-tuning job that this checkpoint was created from.
           sig { returns(String) }
-          def fine_tuning_job_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def fine_tuning_job_id=(_)
-          end
+          attr_accessor :fine_tuning_job_id
 
           # Metrics at the step number during the fine-tuning job.
           sig { returns(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics) }
-          def metrics
-          end
+          attr_reader :metrics
 
           sig do
             params(
-              _: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash)
+              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash)
             )
-              .returns(T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash))
+              .void
           end
-          def metrics=(_)
-          end
+          attr_writer :metrics
 
           # The object type, which is always "fine_tuning.job.checkpoint".
           sig { returns(Symbol) }
-          def object
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def object=(_)
-          end
+          attr_accessor :object
 
           # The step number that the checkpoint was created at.
           sig { returns(Integer) }
-          def step_number
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def step_number=(_)
-          end
+          attr_accessor :step_number
 
           # The `fine_tuning.job.checkpoint` object represents a model checkpoint for a
           #   fine-tuning job that is ready to use.
@@ -117,60 +85,46 @@ module OpenAI
 
           class Metrics < OpenAI::BaseModel
             sig { returns(T.nilable(Float)) }
-            def full_valid_loss
-            end
+            attr_reader :full_valid_loss
 
-            sig { params(_: Float).returns(Float) }
-            def full_valid_loss=(_)
-            end
+            sig { params(full_valid_loss: Float).void }
+            attr_writer :full_valid_loss
 
             sig { returns(T.nilable(Float)) }
-            def full_valid_mean_token_accuracy
-            end
+            attr_reader :full_valid_mean_token_accuracy
 
-            sig { params(_: Float).returns(Float) }
-            def full_valid_mean_token_accuracy=(_)
-            end
+            sig { params(full_valid_mean_token_accuracy: Float).void }
+            attr_writer :full_valid_mean_token_accuracy
 
             sig { returns(T.nilable(Float)) }
-            def step
-            end
+            attr_reader :step
 
-            sig { params(_: Float).returns(Float) }
-            def step=(_)
-            end
+            sig { params(step: Float).void }
+            attr_writer :step
 
             sig { returns(T.nilable(Float)) }
-            def train_loss
-            end
+            attr_reader :train_loss
 
-            sig { params(_: Float).returns(Float) }
-            def train_loss=(_)
-            end
+            sig { params(train_loss: Float).void }
+            attr_writer :train_loss
 
             sig { returns(T.nilable(Float)) }
-            def train_mean_token_accuracy
-            end
+            attr_reader :train_mean_token_accuracy
 
-            sig { params(_: Float).returns(Float) }
-            def train_mean_token_accuracy=(_)
-            end
+            sig { params(train_mean_token_accuracy: Float).void }
+            attr_writer :train_mean_token_accuracy
 
             sig { returns(T.nilable(Float)) }
-            def valid_loss
-            end
+            attr_reader :valid_loss
 
-            sig { params(_: Float).returns(Float) }
-            def valid_loss=(_)
-            end
+            sig { params(valid_loss: Float).void }
+            attr_writer :valid_loss
 
             sig { returns(T.nilable(Float)) }
-            def valid_mean_token_accuracy
-            end
+            attr_reader :valid_mean_token_accuracy
 
-            sig { params(_: Float).returns(Float) }
-            def valid_mean_token_accuracy=(_)
-            end
+            sig { params(valid_mean_token_accuracy: Float).void }
+            attr_writer :valid_mean_token_accuracy
 
             # Metrics at the step number during the fine-tuning job.
             sig do

@@ -8,25 +8,15 @@ module OpenAI
           # The external URL of the image, must be a supported image types: jpeg, jpg, png,
           #   gif, webp.
           sig { returns(String) }
-          def url
-          end
-
-          sig { params(_: String).returns(String) }
-          def url=(_)
-          end
+          attr_accessor :url
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`. Default value is `auto`
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)) }
-          def detail
-          end
+          attr_reader :detail
 
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
-          end
-          def detail=(_)
-          end
+          sig { params(detail: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol).void }
+          attr_writer :detail
 
           sig do
             params(url: String, detail: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)

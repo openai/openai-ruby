@@ -7,32 +7,20 @@ module OpenAI
         # Represents a thread that contains
         #   [messages](https://platform.openai.com/docs/api-reference/messages).
         sig { returns(OpenAI::Models::Beta::Thread) }
-        def data
-        end
+        attr_reader :data
 
-        sig do
-          params(_: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash))
-        end
-        def data=(_)
-        end
+        sig { params(data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash)).void }
+        attr_writer :data
 
         sig { returns(Symbol) }
-        def event
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def event=(_)
-        end
+        attr_accessor :event
 
         # Whether to enable input audio transcription.
         sig { returns(T.nilable(T::Boolean)) }
-        def enabled
-        end
+        attr_reader :enabled
 
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def enabled=(_)
-        end
+        sig { params(enabled: T::Boolean).void }
+        attr_writer :enabled
 
         # Occurs when a new
         #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is

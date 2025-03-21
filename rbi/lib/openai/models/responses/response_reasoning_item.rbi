@@ -6,46 +6,23 @@ module OpenAI
       class ResponseReasoningItem < OpenAI::BaseModel
         # The unique identifier of the reasoning content.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # Reasoning text contents.
         sig { returns(T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary]) }
-        def summary
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary])
-            .returns(T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary])
-        end
-        def summary=(_)
-        end
+        attr_accessor :summary
 
         # The type of the object. Always `reasoning`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)) }
-        def status
-        end
+        attr_reader :status
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)
-        end
-        def status=(_)
-        end
+        sig { params(status: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol).void }
+        attr_writer :status
 
         # A description of the chain of thought used by a reasoning model while generating
         #   a response.
@@ -78,21 +55,11 @@ module OpenAI
         class Summary < OpenAI::BaseModel
           # A short summary of the reasoning used by the model when generating the response.
           sig { returns(String) }
-          def text
-          end
-
-          sig { params(_: String).returns(String) }
-          def text=(_)
-          end
+          attr_accessor :text
 
           # The type of the object. Always `summary_text`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
           def self.new(text:, type: :summary_text)

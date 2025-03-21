@@ -8,36 +8,24 @@ module OpenAI
           class FileSearchToolCall < OpenAI::BaseModel
             # The ID of the tool call object.
             sig { returns(String) }
-            def id
-            end
-
-            sig { params(_: String).returns(String) }
-            def id=(_)
-            end
+            attr_accessor :id
 
             # For now, this is always going to be an empty object.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch) }
-            def file_search
-            end
+            attr_reader :file_search
 
             sig do
               params(
-                _: T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Util::AnyHash)
+                file_search: T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Util::AnyHash)
               )
-                .returns(T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Util::AnyHash))
+                .void
             end
-            def file_search=(_)
-            end
+            attr_writer :file_search
 
             # The type of tool call. This is always going to be `file_search` for this type of
             #   tool call.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             sig do
               params(
@@ -62,41 +50,30 @@ module OpenAI
             class FileSearch < OpenAI::BaseModel
               # The ranking options for the file search.
               sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions)) }
-              def ranking_options
-              end
+              attr_reader :ranking_options
 
               sig do
                 params(
-                  _: T.any(
+                  ranking_options: T.any(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
                     OpenAI::Util::AnyHash
                   )
                 )
-                  .returns(
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                      OpenAI::Util::AnyHash
-                    )
-                  )
+                  .void
               end
-              def ranking_options=(_)
-              end
+              attr_writer :ranking_options
 
               # The results of the file search.
               sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result])) }
-              def results
-              end
+              attr_reader :results
 
               sig do
                 params(
-                  _: T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
+                  results: T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
                 )
-                  .returns(
-                    T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
-                  )
+                  .void
               end
-              def results=(_)
-              end
+              attr_writer :results
 
               # For now, this is always going to be an empty object.
               sig do
@@ -132,29 +109,12 @@ module OpenAI
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
                   )
                 end
-                def ranker
-                end
-
-                sig do
-                  params(
-                    _: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
-                  )
-                    .returns(
-                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
-                    )
-                end
-                def ranker=(_)
-                end
+                attr_accessor :ranker
 
                 # The score threshold for the file search. All values must be a floating point
                 #   number between 0 and 1.
                 sig { returns(Float) }
-                def score_threshold
-                end
-
-                sig { params(_: Float).returns(Float) }
-                def score_threshold=(_)
-                end
+                attr_accessor :score_threshold
 
                 # The ranking options for the file search.
                 sig do
@@ -221,31 +181,16 @@ module OpenAI
               class Result < OpenAI::BaseModel
                 # The ID of the file that result was found in.
                 sig { returns(String) }
-                def file_id
-                end
-
-                sig { params(_: String).returns(String) }
-                def file_id=(_)
-                end
+                attr_accessor :file_id
 
                 # The name of the file that result was found in.
                 sig { returns(String) }
-                def file_name
-                end
-
-                sig { params(_: String).returns(String) }
-                def file_name=(_)
-                end
+                attr_accessor :file_name
 
                 # The score of the result. All values must be a floating point number between 0
                 #   and 1.
                 sig { returns(Float) }
-                def score
-                end
-
-                sig { params(_: Float).returns(Float) }
-                def score=(_)
-                end
+                attr_accessor :score
 
                 # The content of the result that was found. The content is only included if
                 #   requested via the include query parameter.
@@ -254,29 +199,20 @@ module OpenAI
                     T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content])
                   )
                 end
-                def content
-                end
+                attr_reader :content
 
                 sig do
                   params(
-                    _: T::Array[
+                    content: T::Array[
                     T.any(
                       OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
                       OpenAI::Util::AnyHash
                     )
                     ]
                   )
-                    .returns(
-                      T::Array[
-                      T.any(
-                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                        OpenAI::Util::AnyHash
-                      )
-                      ]
-                    )
+                    .void
                 end
-                def content=(_)
-                end
+                attr_writer :content
 
                 # A result instance of the file search.
                 sig do
@@ -313,12 +249,10 @@ module OpenAI
                 class Content < OpenAI::BaseModel
                   # The text content of the file.
                   sig { returns(T.nilable(String)) }
-                  def text
-                  end
+                  attr_reader :text
 
-                  sig { params(_: String).returns(String) }
-                  def text=(_)
-                  end
+                  sig { params(text: String).void }
+                  attr_writer :text
 
                   # The type of the content.
                   sig do
@@ -328,19 +262,15 @@ module OpenAI
                       )
                     )
                   end
-                  def type
-                  end
+                  attr_reader :type
 
                   sig do
                     params(
-                      _: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
+                      type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
                     )
-                      .returns(
-                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
-                      )
+                      .void
                   end
-                  def type=(_)
-                  end
+                  attr_writer :type
 
                   sig do
                     params(
