@@ -5,28 +5,19 @@ module OpenAI
     module Chat
       class ChatCompletionContentPartInputAudio < OpenAI::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio) }
-        def input_audio
-        end
+        attr_reader :input_audio
 
         sig do
           params(
-            _: T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Util::AnyHash)
+            input_audio: T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Util::AnyHash)
           )
-            .returns(
-              T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Util::AnyHash)
-            )
+            .void
         end
-        def input_audio=(_)
-        end
+        attr_writer :input_audio
 
         # The type of the content part. Always `input_audio`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
         sig do
@@ -51,24 +42,11 @@ module OpenAI
         class InputAudio < OpenAI::BaseModel
           # Base64 encoded audio data.
           sig { returns(String) }
-          def data
-          end
-
-          sig { params(_: String).returns(String) }
-          def data=(_)
-          end
+          attr_accessor :data
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
           sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol) }
-          def format_
-          end
-
-          sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol)
-              .returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::OrSymbol)
-          end
-          def format_=(_)
-          end
+          attr_accessor :format_
 
           sig do
             params(

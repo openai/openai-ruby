@@ -6,21 +6,17 @@ module OpenAI
       class FileContentResponse < OpenAI::BaseModel
         # The text content
         sig { returns(T.nilable(String)) }
-        def text
-        end
+        attr_reader :text
 
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        sig { params(text: String).void }
+        attr_writer :text
 
         # The content type (currently only `"text"`)
         sig { returns(T.nilable(String)) }
-        def type
-        end
+        attr_reader :type
 
-        sig { params(_: String).returns(String) }
-        def type=(_)
-        end
+        sig { params(type: String).void }
+        attr_writer :type
 
         sig { params(text: String, type: String).returns(T.attached_class) }
         def self.new(text: nil, type: nil)

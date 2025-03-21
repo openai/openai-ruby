@@ -26,23 +26,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
@@ -63,23 +53,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
@@ -100,23 +80,13 @@ module OpenAI
           # Represents a message delta i.e. any changed fields on a message during
           #   streaming.
           sig { returns(OpenAI::Models::Beta::Threads::MessageDeltaEvent) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when parts of a
           #   [Message](https://platform.openai.com/docs/api-reference/messages/object) are
@@ -140,23 +110,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
@@ -177,23 +137,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends

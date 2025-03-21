@@ -6,54 +6,39 @@ module OpenAI
       class ResponseUsage < OpenAI::BaseModel
         # The number of input tokens.
         sig { returns(Integer) }
-        def input_tokens
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def input_tokens=(_)
-        end
+        attr_accessor :input_tokens
 
         # A detailed breakdown of the input tokens.
         sig { returns(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails) }
-        def input_tokens_details
-        end
+        attr_reader :input_tokens_details
 
         sig do
-          params(_: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash))
+          params(
+            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def input_tokens_details=(_)
-        end
+        attr_writer :input_tokens_details
 
         # The number of output tokens.
         sig { returns(Integer) }
-        def output_tokens
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def output_tokens=(_)
-        end
+        attr_accessor :output_tokens
 
         # A detailed breakdown of the output tokens.
         sig { returns(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails) }
-        def output_tokens_details
-        end
+        attr_reader :output_tokens_details
 
         sig do
-          params(_: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash))
+          params(
+            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def output_tokens_details=(_)
-        end
+        attr_writer :output_tokens_details
 
         # The total number of tokens used.
         sig { returns(Integer) }
-        def total_tokens
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def total_tokens=(_)
-        end
+        attr_accessor :total_tokens
 
         # Represents token usage details including input tokens, output tokens, a
         #   breakdown of output tokens, and the total tokens used.
@@ -89,12 +74,7 @@ module OpenAI
           # The number of tokens that were retrieved from the cache.
           #   [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
           sig { returns(Integer) }
-          def cached_tokens
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def cached_tokens=(_)
-          end
+          attr_accessor :cached_tokens
 
           # A detailed breakdown of the input tokens.
           sig { params(cached_tokens: Integer).returns(T.attached_class) }
@@ -109,12 +89,7 @@ module OpenAI
         class OutputTokensDetails < OpenAI::BaseModel
           # The number of reasoning tokens.
           sig { returns(Integer) }
-          def reasoning_tokens
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def reasoning_tokens=(_)
-          end
+          attr_accessor :reasoning_tokens
 
           # A detailed breakdown of the output tokens.
           sig { params(reasoning_tokens: Integer).returns(T.attached_class) }

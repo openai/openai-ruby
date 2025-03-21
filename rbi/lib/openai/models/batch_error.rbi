@@ -5,39 +5,25 @@ module OpenAI
     class BatchError < OpenAI::BaseModel
       # An error code identifying the error type.
       sig { returns(T.nilable(String)) }
-      def code
-      end
+      attr_reader :code
 
-      sig { params(_: String).returns(String) }
-      def code=(_)
-      end
+      sig { params(code: String).void }
+      attr_writer :code
 
       # The line number of the input file where the error occurred, if applicable.
       sig { returns(T.nilable(Integer)) }
-      def line
-      end
-
-      sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-      def line=(_)
-      end
+      attr_accessor :line
 
       # A human-readable message providing more details about the error.
       sig { returns(T.nilable(String)) }
-      def message
-      end
+      attr_reader :message
 
-      sig { params(_: String).returns(String) }
-      def message=(_)
-      end
+      sig { params(message: String).void }
+      attr_writer :message
 
       # The name of the parameter that caused the error, if applicable.
       sig { returns(T.nilable(String)) }
-      def param
-      end
-
-      sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-      def param=(_)
-      end
+      attr_accessor :param
 
       sig do
         params(code: String, line: T.nilable(Integer), message: String, param: T.nilable(String))

@@ -11,22 +11,18 @@ module OpenAI
       #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
       #   fetch the next page of the list.
       sig { returns(T.nilable(String)) }
-      def after
-      end
+      attr_reader :after
 
-      sig { params(_: String).returns(String) }
-      def after=(_)
-      end
+      sig { params(after: String).void }
+      attr_writer :after
 
       # A limit on the number of objects to be returned. Limit can range between 1 and
       #   100, and the default is 20.
       sig { returns(T.nilable(Integer)) }
-      def limit
-      end
+      attr_reader :limit
 
-      sig { params(_: Integer).returns(Integer) }
-      def limit=(_)
-      end
+      sig { params(limit: Integer).void }
+      attr_writer :limit
 
       sig do
         params(

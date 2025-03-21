@@ -6,38 +6,18 @@ module OpenAI
       class ResponseFunctionCallArgumentsDoneEvent < OpenAI::BaseModel
         # The function-call arguments.
         sig { returns(String) }
-        def arguments
-        end
-
-        sig { params(_: String).returns(String) }
-        def arguments=(_)
-        end
+        attr_accessor :arguments
 
         # The ID of the item.
         sig { returns(String) }
-        def item_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def item_id=(_)
-        end
+        attr_accessor :item_id
 
         # The index of the output item.
         sig { returns(Integer) }
-        def output_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def output_index=(_)
-        end
+        attr_accessor :output_index
 
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when function-call arguments are finalized.
         sig do

@@ -10,38 +10,24 @@ module OpenAI
           #   [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
           #   endpoint.
           sig { returns(String) }
-          def id
-          end
-
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          attr_accessor :id
 
           # The function definition.
           sig { returns(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function) }
-          def function
-          end
+          attr_reader :function
 
           sig do
             params(
-              _: T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Util::AnyHash)
+              function: T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Util::AnyHash)
             )
-              .returns(
-                T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Util::AnyHash)
-              )
+              .void
           end
-          def function=(_)
-          end
+          attr_writer :function
 
           # The type of tool call the output is required for. For now, this is always
           #   `function`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # Tool call objects
           sig do
@@ -67,21 +53,11 @@ module OpenAI
           class Function < OpenAI::BaseModel
             # The arguments that the model expects you to pass to the function.
             sig { returns(String) }
-            def arguments
-            end
-
-            sig { params(_: String).returns(String) }
-            def arguments=(_)
-            end
+            attr_accessor :arguments
 
             # The name of the function.
             sig { returns(String) }
-            def name
-            end
-
-            sig { params(_: String).returns(String) }
-            def name=(_)
-            end
+            attr_accessor :name
 
             # The function definition.
             sig { params(arguments: String, name: String).returns(T.attached_class) }

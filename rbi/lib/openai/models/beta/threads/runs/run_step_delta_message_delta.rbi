@@ -8,33 +8,21 @@ module OpenAI
           class RunStepDeltaMessageDelta < OpenAI::BaseModel
             # Always `message_creation`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation)) }
-            def message_creation
-            end
+            attr_reader :message_creation
 
             sig do
               params(
-                _: T.any(
+                message_creation: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
                   OpenAI::Util::AnyHash
                 )
               )
-                .returns(
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                    OpenAI::Util::AnyHash
-                  )
-                )
+                .void
             end
-            def message_creation=(_)
-            end
+            attr_writer :message_creation
 
             # Details of the message creation by the run step.
             sig do
@@ -65,12 +53,10 @@ module OpenAI
             class MessageCreation < OpenAI::BaseModel
               # The ID of the message that was created by this run step.
               sig { returns(T.nilable(String)) }
-              def message_id
-              end
+              attr_reader :message_id
 
-              sig { params(_: String).returns(String) }
-              def message_id=(_)
-              end
+              sig { params(message_id: String).void }
+              attr_writer :message_id
 
               sig { params(message_id: String).returns(T.attached_class) }
               def self.new(message_id: nil)

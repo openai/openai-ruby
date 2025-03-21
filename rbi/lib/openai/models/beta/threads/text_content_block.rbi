@@ -6,24 +6,14 @@ module OpenAI
       module Threads
         class TextContentBlock < OpenAI::BaseModel
           sig { returns(OpenAI::Models::Beta::Threads::Text) }
-          def text
-          end
+          attr_reader :text
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Util::AnyHash))
-          end
-          def text=(_)
-          end
+          sig { params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Util::AnyHash)).void }
+          attr_writer :text
 
           # Always `text`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # The text content that is part of a message.
           sig do

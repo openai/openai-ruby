@@ -6,48 +6,23 @@ module OpenAI
       class ResponseTextDoneEvent < OpenAI::BaseModel
         # The index of the content part that the text content is finalized.
         sig { returns(Integer) }
-        def content_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def content_index=(_)
-        end
+        attr_accessor :content_index
 
         # The ID of the output item that the text content is finalized.
         sig { returns(String) }
-        def item_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def item_id=(_)
-        end
+        attr_accessor :item_id
 
         # The index of the output item that the text content is finalized.
         sig { returns(Integer) }
-        def output_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def output_index=(_)
-        end
+        attr_accessor :output_index
 
         # The text content that is finalized.
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         # The type of the event. Always `response.output_text.done`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when text content is finalized.
         sig do

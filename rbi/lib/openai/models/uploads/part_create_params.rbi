@@ -9,12 +9,7 @@ module OpenAI
 
         # The chunk of bytes for this Part.
         sig { returns(T.any(IO, StringIO)) }
-        def data
-        end
-
-        sig { params(_: T.any(IO, StringIO)).returns(T.any(IO, StringIO)) }
-        def data=(_)
-        end
+        attr_accessor :data
 
         sig do
           params(

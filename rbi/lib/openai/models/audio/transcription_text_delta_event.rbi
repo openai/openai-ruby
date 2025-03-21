@@ -6,39 +6,25 @@ module OpenAI
       class TranscriptionTextDeltaEvent < OpenAI::BaseModel
         # The text delta that was additionally transcribed.
         sig { returns(String) }
-        def delta
-        end
-
-        sig { params(_: String).returns(String) }
-        def delta=(_)
-        end
+        attr_accessor :delta
 
         # The type of the event. Always `transcript.text.delta`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The log probabilities of the delta. Only included if you
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `include[]` parameter set to `logprobs`.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob])) }
-        def logprobs
-        end
+        attr_reader :logprobs
 
         sig do
           params(
-            _: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Util::AnyHash)]
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Util::AnyHash)]
           )
-            .returns(
-              T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Util::AnyHash)]
-            )
+            .void
         end
-        def logprobs=(_)
-        end
+        attr_writer :logprobs
 
         # Emitted when there is an additional text delta. This is also the first event
         #   emitted when the transcription starts. Only emitted when you
@@ -67,30 +53,24 @@ module OpenAI
         class Logprob < OpenAI::BaseModel
           # The token that was used to generate the log probability.
           sig { returns(T.nilable(String)) }
-          def token
-          end
+          attr_reader :token
 
-          sig { params(_: String).returns(String) }
-          def token=(_)
-          end
+          sig { params(token: String).void }
+          attr_writer :token
 
           # The bytes that were used to generate the log probability.
           sig { returns(T.nilable(T::Array[T.anything])) }
-          def bytes
-          end
+          attr_reader :bytes
 
-          sig { params(_: T::Array[T.anything]).returns(T::Array[T.anything]) }
-          def bytes=(_)
-          end
+          sig { params(bytes: T::Array[T.anything]).void }
+          attr_writer :bytes
 
           # The log probability of the token.
           sig { returns(T.nilable(Float)) }
-          def logprob
-          end
+          attr_reader :logprob
 
-          sig { params(_: Float).returns(Float) }
-          def logprob=(_)
-          end
+          sig { params(logprob: Float).void }
+          attr_writer :logprob
 
           sig { params(token: String, bytes: T::Array[T.anything], logprob: Float).returns(T.attached_class) }
           def self.new(token: nil, bytes: nil, logprob: nil)

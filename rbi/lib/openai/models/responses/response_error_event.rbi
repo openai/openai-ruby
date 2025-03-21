@@ -6,39 +6,19 @@ module OpenAI
       class ResponseErrorEvent < OpenAI::BaseModel
         # The error code.
         sig { returns(T.nilable(String)) }
-        def code
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def code=(_)
-        end
+        attr_accessor :code
 
         # The error message.
         sig { returns(String) }
-        def message
-        end
-
-        sig { params(_: String).returns(String) }
-        def message=(_)
-        end
+        attr_accessor :message
 
         # The error parameter.
         sig { returns(T.nilable(String)) }
-        def param
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def param=(_)
-        end
+        attr_accessor :param
 
         # The type of the event. Always `error`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when an error occurs.
         sig do

@@ -12,12 +12,7 @@ module OpenAI
           #   [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
           #   execute this run.
           sig { returns(String) }
-          def assistant_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def assistant_id=(_)
-          end
+          attr_accessor :assistant_id
 
           # A list of additional fields to include in the response. Currently the only
           #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
@@ -27,49 +22,26 @@ module OpenAI
           #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
           #   for more information.
           sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
-          def include
-          end
+          attr_reader :include
 
-          sig do
-            params(_: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-              .returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])
-          end
-          def include=(_)
-          end
+          sig { params(include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol]).void }
+          attr_writer :include
 
           # Appends additional instructions at the end of the instructions for the run. This
           #   is useful for modifying the behavior on a per-run basis without overriding other
           #   instructions.
           sig { returns(T.nilable(String)) }
-          def additional_instructions
-          end
-
-          sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-          def additional_instructions=(_)
-          end
+          attr_accessor :additional_instructions
 
           # Adds additional messages to the thread before creating the run.
           sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage])) }
-          def additional_messages
-          end
-
-          sig do
-            params(_: T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]))
-              .returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]))
-          end
-          def additional_messages=(_)
-          end
+          attr_accessor :additional_messages
 
           # Overrides the
           #   [instructions](https://platform.openai.com/docs/api-reference/assistants/createAssistant)
           #   of the assistant. This is useful for modifying the behavior on a per-run basis.
           sig { returns(T.nilable(String)) }
-          def instructions
-          end
-
-          sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-          def instructions=(_)
-          end
+          attr_accessor :instructions
 
           # The maximum number of completion tokens that may be used over the course of the
           #   run. The run will make a best effort to use only the number of completion tokens
@@ -77,12 +49,7 @@ module OpenAI
           #   completion tokens specified, the run will end with status `incomplete`. See
           #   `incomplete_details` for more info.
           sig { returns(T.nilable(Integer)) }
-          def max_completion_tokens
-          end
-
-          sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-          def max_completion_tokens=(_)
-          end
+          attr_accessor :max_completion_tokens
 
           # The maximum number of prompt tokens that may be used over the course of the run.
           #   The run will make a best effort to use only the number of prompt tokens
@@ -90,12 +57,7 @@ module OpenAI
           #   prompt tokens specified, the run will end with status `incomplete`. See
           #   `incomplete_details` for more info.
           sig { returns(T.nilable(Integer)) }
-          def max_prompt_tokens
-          end
-
-          sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-          def max_prompt_tokens=(_)
-          end
+          attr_accessor :max_prompt_tokens
 
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           #   for storing additional information about the object in a structured format, and
@@ -104,38 +66,23 @@ module OpenAI
           #   Keys are strings with a maximum length of 64 characters. Values are strings with
           #   a maximum length of 512 characters.
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
-          def metadata
-          end
-
-          sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-          def metadata=(_)
-          end
+          attr_accessor :metadata
 
           # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
           #   be used to execute this run. If a value is provided here, it will override the
           #   model associated with the assistant. If not, the model associated with the
           #   assistant will be used.
           sig { returns(T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol))) }
-          def model
-          end
-
-          sig do
-            params(_: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)))
-              .returns(T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)))
-          end
-          def model=(_)
-          end
+          attr_accessor :model
 
           # Whether to enable
           #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
           #   during tool use.
           sig { returns(T.nilable(T::Boolean)) }
-          def parallel_tool_calls
-          end
+          attr_reader :parallel_tool_calls
 
-          sig { params(_: T::Boolean).returns(T::Boolean) }
-          def parallel_tool_calls=(_)
-          end
+          sig { params(parallel_tool_calls: T::Boolean).void }
+          attr_writer :parallel_tool_calls
 
           # **o-series models only**
           #
@@ -144,15 +91,7 @@ module OpenAI
           #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
           #   result in faster responses and fewer tokens used on reasoning in a response.
           sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
-          def reasoning_effort
-          end
-
-          sig do
-            params(_: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-              .returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol))
-          end
-          def reasoning_effort=(_)
-          end
+          attr_accessor :reasoning_effort
 
           # Specifies the format that the model must output. Compatible with
           #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
@@ -186,44 +125,13 @@ module OpenAI
               )
             )
           end
-          def response_format
-          end
-
-          sig do
-            params(
-              _: T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Models::ResponseFormatJSONObject,
-                  OpenAI::Models::ResponseFormatJSONSchema
-                )
-              )
-            )
-              .returns(
-                T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::Models::ResponseFormatText,
-                    OpenAI::Models::ResponseFormatJSONObject,
-                    OpenAI::Models::ResponseFormatJSONSchema
-                  )
-                )
-              )
-          end
-          def response_format=(_)
-          end
+          attr_accessor :response_format
 
           # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
           #   make the output more random, while lower values like 0.2 will make it more
           #   focused and deterministic.
           sig { returns(T.nilable(Float)) }
-          def temperature
-          end
-
-          sig { params(_: T.nilable(Float)).returns(T.nilable(Float)) }
-          def temperature=(_)
-          end
+          attr_accessor :temperature
 
           # Controls which (if any) tool is called by the model. `none` means the model will
           #   not call any tools and instead generates a message. `auto` is the default value
@@ -242,29 +150,7 @@ module OpenAI
               )
             )
           end
-          def tool_choice
-          end
-
-          sig do
-            params(
-              _: T.nilable(
-                T.any(
-                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Models::Beta::AssistantToolChoice
-                )
-              )
-            )
-              .returns(
-                T.nilable(
-                  T.any(
-                    OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                    OpenAI::Models::Beta::AssistantToolChoice
-                  )
-                )
-              )
-          end
-          def tool_choice=(_)
-          end
+          attr_accessor :tool_choice
 
           # Override the tools the assistant can use for this run. This is useful for
           #   modifying the behavior on a per-run basis.
@@ -281,35 +167,7 @@ module OpenAI
               )
             )
           end
-          def tools
-          end
-
-          sig do
-            params(
-              _: T.nilable(
-                T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
-                )
-                ]
-              )
-            )
-              .returns(
-                T.nilable(
-                  T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Models::Beta::FileSearchTool,
-                    OpenAI::Models::Beta::FunctionTool
-                  )
-                  ]
-                )
-              )
-          end
-          def tools=(_)
-          end
+          attr_accessor :tools
 
           # An alternative to sampling with temperature, called nucleus sampling, where the
           #   model considers the results of the tokens with top_p probability mass. So 0.1
@@ -317,33 +175,22 @@ module OpenAI
           #
           #   We generally recommend altering this or temperature but not both.
           sig { returns(T.nilable(Float)) }
-          def top_p
-          end
-
-          sig { params(_: T.nilable(Float)).returns(T.nilable(Float)) }
-          def top_p=(_)
-          end
+          attr_accessor :top_p
 
           # Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy)) }
-          def truncation_strategy
-          end
+          attr_reader :truncation_strategy
 
           sig do
             params(
-              _: T.nilable(
+              truncation_strategy: T.nilable(
                 T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
               )
             )
-              .returns(
-                T.nilable(
-                  T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
-                )
-              )
+              .void
           end
-          def truncation_strategy=(_)
-          end
+          attr_writer :truncation_strategy
 
           sig do
             params(
@@ -481,37 +328,7 @@ module OpenAI
                 )
               )
             end
-            def content
-            end
-
-            sig do
-              params(
-                _: T.any(
-                  String,
-                  T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                    OpenAI::Models::Beta::Threads::TextContentBlockParam
-                  )
-                  ]
-                )
-              )
-                .returns(
-                  T.any(
-                    String,
-                    T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                      OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                      OpenAI::Models::Beta::Threads::TextContentBlockParam
-                    )
-                    ]
-                  )
-                )
-            end
-            def content=(_)
-            end
+            attr_accessor :content
 
             # The role of the entity that is creating the message. Allowed values include:
             #
@@ -520,15 +337,7 @@ module OpenAI
             #   - `assistant`: Indicates the message is generated by the assistant. Use this
             #     value to insert messages from the assistant into the conversation.
             sig { returns(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol) }
-            def role
-            end
-
-            sig do
-              params(_: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol)
-                .returns(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol)
-            end
-            def role=(_)
-            end
+            attr_accessor :role
 
             # A list of files attached to the message, and the tools they should be added to.
             sig do
@@ -536,19 +345,7 @@ module OpenAI
                 T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment])
               )
             end
-            def attachments
-            end
-
-            sig do
-              params(
-                _: T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment])
-              )
-                .returns(
-                  T.nilable(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment])
-                )
-            end
-            def attachments=(_)
-            end
+            attr_accessor :attachments
 
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
             #   for storing additional information about the object in a structured format, and
@@ -557,12 +354,7 @@ module OpenAI
             #   Keys are strings with a maximum length of 64 characters. Values are strings with
             #   a maximum length of 512 characters.
             sig { returns(T.nilable(T::Hash[Symbol, String])) }
-            def metadata
-            end
-
-            sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-            def metadata=(_)
-            end
+            attr_accessor :metadata
 
             sig do
               params(
@@ -692,12 +484,10 @@ module OpenAI
             class Attachment < OpenAI::BaseModel
               # The ID of the file to attach to the message.
               sig { returns(T.nilable(String)) }
-              def file_id
-              end
+              attr_reader :file_id
 
-              sig { params(_: String).returns(String) }
-              def file_id=(_)
-              end
+              sig { params(file_id: String).void }
+              attr_writer :file_id
 
               # The tools to add this file to.
               sig do
@@ -712,12 +502,11 @@ module OpenAI
                   )
                 )
               end
-              def tools
-              end
+              attr_reader :tools
 
               sig do
                 params(
-                  _: T::Array[
+                  tools: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
                     OpenAI::Util::AnyHash,
@@ -725,18 +514,9 @@ module OpenAI
                   )
                   ]
                 )
-                  .returns(
-                    T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::CodeInterpreterTool,
-                      OpenAI::Util::AnyHash,
-                      OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                    )
-                    ]
-                  )
+                  .void
               end
-              def tools=(_)
-              end
+              attr_writer :tools
 
               sig do
                 params(
@@ -787,12 +567,7 @@ module OpenAI
                 class FileSearch < OpenAI::BaseModel
                   # The type of tool being defined: `file_search`
                   sig { returns(Symbol) }
-                  def type
-                  end
-
-                  sig { params(_: Symbol).returns(Symbol) }
-                  def type=(_)
-                  end
+                  attr_accessor :type
 
                   sig { params(type: Symbol).returns(T.attached_class) }
                   def self.new(type: :file_search)
@@ -839,25 +614,12 @@ module OpenAI
             #   the thread. When set to `auto`, messages in the middle of the thread will be
             #   dropped to fit the context length of the model, `max_prompt_tokens`.
             sig { returns(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol) }
-            def type
-            end
-
-            sig do
-              params(_: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol)
-                .returns(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::OrSymbol)
-            end
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The number of most recent messages from the thread when constructing the context
             #   for the run.
             sig { returns(T.nilable(Integer)) }
-            def last_messages
-            end
-
-            sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-            def last_messages=(_)
-            end
+            attr_accessor :last_messages
 
             # Controls for how a thread will be truncated prior to the run. Use this to
             #   control the intial context window of the run.

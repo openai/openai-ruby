@@ -8,36 +8,22 @@ module OpenAI
           class CodeInterpreterOutputImage < OpenAI::BaseModel
             # The index of the output in the outputs array.
             sig { returns(Integer) }
-            def index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def index=(_)
-            end
+            attr_accessor :index
 
             # Always `image`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image)) }
-            def image
-            end
+            attr_reader :image
 
             sig do
               params(
-                _: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash)
+                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash)
               )
-                .returns(
-                  T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash)
-                )
+                .void
             end
-            def image=(_)
-            end
+            attr_writer :image
 
             sig do
               params(
@@ -63,12 +49,10 @@ module OpenAI
               # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
               #   image.
               sig { returns(T.nilable(String)) }
-              def file_id
-              end
+              attr_reader :file_id
 
-              sig { params(_: String).returns(String) }
-              def file_id=(_)
-              end
+              sig { params(file_id: String).void }
+              attr_writer :file_id
 
               sig { params(file_id: String).returns(T.attached_class) }
               def self.new(file_id: nil)

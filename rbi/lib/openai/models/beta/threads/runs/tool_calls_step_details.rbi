@@ -20,40 +20,11 @@ module OpenAI
                 ]
               )
             end
-            def tool_calls
-            end
-
-            sig do
-              params(
-                _: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
-                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
-                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
-                )
-                ]
-              )
-                .returns(
-                  T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
-                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
-                  )
-                  ]
-                )
-            end
-            def tool_calls=(_)
-            end
+            attr_accessor :tool_calls
 
             # Always `tool_calls`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # Details of the tool call.
             sig do

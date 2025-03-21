@@ -6,24 +6,14 @@ module OpenAI
       module Threads
         class ImageURLContentBlock < OpenAI::BaseModel
           sig { returns(OpenAI::Models::Beta::Threads::ImageURL) }
-          def image_url
-          end
+          attr_reader :image_url
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::ImageURL, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::ImageURL, OpenAI::Util::AnyHash))
-          end
-          def image_url=(_)
-          end
+          sig { params(image_url: T.any(OpenAI::Models::Beta::Threads::ImageURL, OpenAI::Util::AnyHash)).void }
+          attr_writer :image_url
 
           # The type of the content part.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # References an image URL in the content of a message.
           sig do

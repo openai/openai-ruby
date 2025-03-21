@@ -5,12 +5,7 @@ module OpenAI
     class ComparisonFilter < OpenAI::BaseModel
       # The key to compare against the value.
       sig { returns(String) }
-      def key
-      end
-
-      sig { params(_: String).returns(String) }
-      def key=(_)
-      end
+      attr_accessor :key
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
@@ -21,25 +16,12 @@ module OpenAI
       #   - `lt`: less than
       #   - `lte`: less than or equal
       sig { returns(OpenAI::Models::ComparisonFilter::Type::OrSymbol) }
-      def type
-      end
-
-      sig do
-        params(_: OpenAI::Models::ComparisonFilter::Type::OrSymbol)
-          .returns(OpenAI::Models::ComparisonFilter::Type::OrSymbol)
-      end
-      def type=(_)
-      end
+      attr_accessor :type
 
       # The value to compare against the attribute key; supports string, number, or
       #   boolean types.
       sig { returns(T.any(String, Float, T::Boolean)) }
-      def value
-      end
-
-      sig { params(_: T.any(String, Float, T::Boolean)).returns(T.any(String, Float, T::Boolean)) }
-      def value=(_)
-      end
+      attr_accessor :value
 
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.

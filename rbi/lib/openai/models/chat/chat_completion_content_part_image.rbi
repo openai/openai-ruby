@@ -5,24 +5,19 @@ module OpenAI
     module Chat
       class ChatCompletionContentPartImage < OpenAI::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL) }
-        def image_url
-        end
+        attr_reader :image_url
 
         sig do
-          params(_: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash))
+          params(
+            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def image_url=(_)
-        end
+        attr_writer :image_url
 
         # The type of the content part.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
         sig do
@@ -44,25 +39,15 @@ module OpenAI
         class ImageURL < OpenAI::BaseModel
           # Either a URL of the image or the base64 encoded image data.
           sig { returns(String) }
-          def url
-          end
-
-          sig { params(_: String).returns(String) }
-          def url=(_)
-          end
+          attr_accessor :url
 
           # Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)) }
-          def detail
-          end
+          attr_reader :detail
 
-          sig do
-            params(_: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-              .returns(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)
-          end
-          def detail=(_)
-          end
+          sig { params(detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol).void }
+          attr_writer :detail
 
           sig do
             params(

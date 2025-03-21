@@ -12,47 +12,36 @@ module OpenAI
         #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
         #   fetch the next page of the list.
         sig { returns(T.nilable(String)) }
-        def after
-        end
+        attr_reader :after
 
-        sig { params(_: String).returns(String) }
-        def after=(_)
-        end
+        sig { params(after: String).void }
+        attr_writer :after
 
         # A cursor for use in pagination. `before` is an object ID that defines your place
         #   in the list. For instance, if you make a list request and receive 100 objects,
         #   starting with obj_foo, your subsequent call can include before=obj_foo in order
         #   to fetch the previous page of the list.
         sig { returns(T.nilable(String)) }
-        def before
-        end
+        attr_reader :before
 
-        sig { params(_: String).returns(String) }
-        def before=(_)
-        end
+        sig { params(before: String).void }
+        attr_writer :before
 
         # A limit on the number of objects to be returned. Limit can range between 1 and
         #   100, and the default is 20.
         sig { returns(T.nilable(Integer)) }
-        def limit
-        end
+        attr_reader :limit
 
-        sig { params(_: Integer).returns(Integer) }
-        def limit=(_)
-        end
+        sig { params(limit: Integer).void }
+        attr_writer :limit
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
         sig { returns(T.nilable(OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)) }
-        def order
-        end
+        attr_reader :order
 
-        sig do
-          params(_: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)
-            .returns(OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol)
-        end
-        def order=(_)
-        end
+        sig { params(order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol).void }
+        attr_writer :order
 
         sig do
           params(

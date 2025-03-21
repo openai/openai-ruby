@@ -6,51 +6,29 @@ module OpenAI
       module Threads
         class FileCitationAnnotation < OpenAI::BaseModel
           sig { returns(Integer) }
-          def end_index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def end_index=(_)
-          end
+          attr_accessor :end_index
 
           sig { returns(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation) }
-          def file_citation
-          end
+          attr_reader :file_citation
 
           sig do
             params(
-              _: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Util::AnyHash)
+              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Util::AnyHash)
             )
-              .returns(T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Util::AnyHash))
+              .void
           end
-          def file_citation=(_)
-          end
+          attr_writer :file_citation
 
           sig { returns(Integer) }
-          def start_index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def start_index=(_)
-          end
+          attr_accessor :start_index
 
           # The text in the message content that needs to be replaced.
           sig { returns(String) }
-          def text
-          end
-
-          sig { params(_: String).returns(String) }
-          def text=(_)
-          end
+          attr_accessor :text
 
           # Always `file_citation`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # A citation within the message that points to a specific quote from a specific
           #   File associated with the assistant or the message. Generated when the assistant
@@ -86,12 +64,7 @@ module OpenAI
           class FileCitation < OpenAI::BaseModel
             # The ID of the specific File the citation is from.
             sig { returns(String) }
-            def file_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def file_id=(_)
-            end
+            attr_accessor :file_id
 
             sig { params(file_id: String).returns(T.attached_class) }
             def self.new(file_id:)

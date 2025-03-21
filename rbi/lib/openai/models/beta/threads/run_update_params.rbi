@@ -9,12 +9,7 @@ module OpenAI
           include OpenAI::RequestParameters
 
           sig { returns(String) }
-          def thread_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def thread_id=(_)
-          end
+          attr_accessor :thread_id
 
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           #   for storing additional information about the object in a structured format, and
@@ -23,12 +18,7 @@ module OpenAI
           #   Keys are strings with a maximum length of 64 characters. Values are strings with
           #   a maximum length of 512 characters.
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
-          def metadata
-          end
-
-          sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-          def metadata=(_)
-          end
+          attr_accessor :metadata
 
           sig do
             params(

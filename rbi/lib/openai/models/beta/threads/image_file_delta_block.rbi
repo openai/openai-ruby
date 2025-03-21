@@ -7,32 +7,17 @@ module OpenAI
         class ImageFileDeltaBlock < OpenAI::BaseModel
           # The index of the content part in the message.
           sig { returns(Integer) }
-          def index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def index=(_)
-          end
+          attr_accessor :index
 
           # Always `image_file`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFileDelta)) }
-          def image_file
-          end
+          attr_reader :image_file
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Util::AnyHash))
-          end
-          def image_file=(_)
-          end
+          sig { params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Util::AnyHash)).void }
+          attr_writer :image_file
 
           # References an image [File](https://platform.openai.com/docs/api-reference/files)
           #   in the content of a message.

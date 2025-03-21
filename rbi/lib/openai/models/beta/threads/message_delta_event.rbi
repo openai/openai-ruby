@@ -7,33 +7,18 @@ module OpenAI
         class MessageDeltaEvent < OpenAI::BaseModel
           # The identifier of the message, which can be referenced in API endpoints.
           sig { returns(String) }
-          def id
-          end
-
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          attr_accessor :id
 
           # The delta containing the fields that have changed on the Message.
           sig { returns(OpenAI::Models::Beta::Threads::MessageDelta) }
-          def delta
-          end
+          attr_reader :delta
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Util::AnyHash))
-          end
-          def delta=(_)
-          end
+          sig { params(delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Util::AnyHash)).void }
+          attr_writer :delta
 
           # The object type, which is always `thread.message.delta`.
           sig { returns(Symbol) }
-          def object
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def object=(_)
-          end
+          attr_accessor :object
 
           # Represents a message delta i.e. any changed fields on a message during
           #   streaming.

@@ -6,27 +6,11 @@ module OpenAI
       # Array of filters to combine. Items can be `ComparisonFilter` or
       #   `CompoundFilter`.
       sig { returns(T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)]) }
-      def filters
-      end
-
-      sig do
-        params(_: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)])
-          .returns(T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)])
-      end
-      def filters=(_)
-      end
+      attr_accessor :filters
 
       # Type of operation: `and` or `or`.
       sig { returns(OpenAI::Models::CompoundFilter::Type::OrSymbol) }
-      def type
-      end
-
-      sig do
-        params(_: OpenAI::Models::CompoundFilter::Type::OrSymbol)
-          .returns(OpenAI::Models::CompoundFilter::Type::OrSymbol)
-      end
-      def type=(_)
-      end
+      attr_accessor :type
 
       # Combine multiple filters using `and` or `or`.
       sig do

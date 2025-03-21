@@ -7,43 +7,20 @@ module OpenAI
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
         sig { returns(OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol) }
-        def detail
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol)
-        end
-        def detail=(_)
-        end
+        attr_accessor :detail
 
         # The type of the input item. Always `input_image`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The ID of the file to be sent to the model.
         sig { returns(T.nilable(String)) }
-        def file_id
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def file_id=(_)
-        end
+        attr_accessor :file_id
 
         # The URL of the image to be sent to the model. A fully qualified URL or base64
         #   encoded image in a data URL.
         sig { returns(T.nilable(String)) }
-        def image_url
-        end
-
-        sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-        def image_url=(_)
-        end
+        attr_accessor :image_url
 
         # An image input to the model. Learn about
         #   [image inputs](https://platform.openai.com/docs/guides/vision).

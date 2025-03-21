@@ -6,54 +6,29 @@ module OpenAI
       class TranscriptionVerbose < OpenAI::BaseModel
         # The duration of the input audio.
         sig { returns(Float) }
-        def duration
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def duration=(_)
-        end
+        attr_accessor :duration
 
         # The language of the input audio.
         sig { returns(String) }
-        def language
-        end
-
-        sig { params(_: String).returns(String) }
-        def language=(_)
-        end
+        attr_accessor :language
 
         # The transcribed text.
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         # Segments of the transcribed text and their corresponding details.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionSegment])) }
-        def segments
-        end
+        attr_reader :segments
 
-        sig do
-          params(_: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
-            .returns(T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)])
-        end
-        def segments=(_)
-        end
+        sig { params(segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)]).void }
+        attr_writer :segments
 
         # Extracted words and their corresponding timestamps.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionWord])) }
-        def words
-        end
+        attr_reader :words
 
-        sig do
-          params(_: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)])
-            .returns(T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)])
-        end
-        def words=(_)
-        end
+        sig { params(words: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)]).void }
+        attr_writer :words
 
         # Represents a verbose json transcription response returned by model, based on the
         #   provided input.

@@ -6,12 +6,7 @@ module OpenAI
       class ResponseComputerToolCall < OpenAI::BaseModel
         # The unique ID of the computer call.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # A click action.
         sig do
@@ -29,85 +24,24 @@ module OpenAI
             )
           )
         end
-        def action
-        end
-
-        sig do
-          params(
-            _: T.any(
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type,
-              OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
-            )
-          )
-            .returns(
-              T.any(
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type,
-                OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
-              )
-            )
-        end
-        def action=(_)
-        end
+        attr_accessor :action
 
         # An identifier used when responding to the tool call with output.
         sig { returns(String) }
-        def call_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def call_id=(_)
-        end
+        attr_accessor :call_id
 
         # The pending safety checks for the computer call.
         sig { returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck]) }
-        def pending_safety_checks
-        end
-
-        sig do
-          params(_: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck])
-            .returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck])
-        end
-        def pending_safety_checks=(_)
-        end
+        attr_accessor :pending_safety_checks
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol) }
-        def status
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol)
-        end
-        def status=(_)
-        end
+        attr_accessor :status
 
         # The type of the computer call. Always `computer_call`.
         sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol) }
-        def type
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol)
-        end
-        def type=(_)
-        end
+        attr_accessor :type
 
         # A tool call to a computer use tool. See the
         #   [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
@@ -188,43 +122,20 @@ module OpenAI
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
             sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol) }
-            def button
-            end
-
-            sig do
-              params(_: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
-                .returns(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol)
-            end
-            def button=(_)
-            end
+            attr_accessor :button
 
             # Specifies the event type. For a click action, this property is always set to
             #   `click`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The x-coordinate where the click occurred.
             sig { returns(Integer) }
-            def x
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def x=(_)
-            end
+            attr_accessor :x
 
             # The y-coordinate where the click occurred.
             sig { returns(Integer) }
-            def y_
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def y_=(_)
-            end
+            attr_accessor :y_
 
             # A click action.
             sig do
@@ -291,30 +202,15 @@ module OpenAI
             # Specifies the event type. For a double click action, this property is always set
             #   to `double_click`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The x-coordinate where the double click occurred.
             sig { returns(Integer) }
-            def x
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def x=(_)
-            end
+            attr_accessor :x
 
             # The y-coordinate where the double click occurred.
             sig { returns(Integer) }
-            def y_
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def y_=(_)
-            end
+            attr_accessor :y_
 
             # A double click action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
@@ -337,25 +233,12 @@ module OpenAI
             #   ]
             #   ```
             sig { returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path]) }
-            def path
-            end
-
-            sig do
-              params(_: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path])
-                .returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path])
-            end
-            def path=(_)
-            end
+            attr_accessor :path
 
             # Specifies the event type. For a drag action, this property is always set to
             #   `drag`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # A drag action.
             sig do
@@ -380,21 +263,11 @@ module OpenAI
             class Path < OpenAI::BaseModel
               # The x-coordinate.
               sig { returns(Integer) }
-              def x
-              end
-
-              sig { params(_: Integer).returns(Integer) }
-              def x=(_)
-              end
+              attr_accessor :x
 
               # The y-coordinate.
               sig { returns(Integer) }
-              def y_
-              end
-
-              sig { params(_: Integer).returns(Integer) }
-              def y_=(_)
-              end
+              attr_accessor :y_
 
               # A series of x/y coordinate pairs in the drag path.
               sig { params(x: Integer, y_: Integer).returns(T.attached_class) }
@@ -411,22 +284,12 @@ module OpenAI
             # The combination of keys the model is requesting to be pressed. This is an array
             #   of strings, each representing a key.
             sig { returns(T::Array[String]) }
-            def keys
-            end
-
-            sig { params(_: T::Array[String]).returns(T::Array[String]) }
-            def keys=(_)
-            end
+            attr_accessor :keys
 
             # Specifies the event type. For a keypress action, this property is always set to
             #   `keypress`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # A collection of keypresses the model would like to perform.
             sig { params(keys: T::Array[String], type: Symbol).returns(T.attached_class) }
@@ -442,30 +305,15 @@ module OpenAI
             # Specifies the event type. For a move action, this property is always set to
             #   `move`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The x-coordinate to move to.
             sig { returns(Integer) }
-            def x
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def x=(_)
-            end
+            attr_accessor :x
 
             # The y-coordinate to move to.
             sig { returns(Integer) }
-            def y_
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def y_=(_)
-            end
+            attr_accessor :y_
 
             # A mouse move action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
@@ -481,12 +329,7 @@ module OpenAI
             # Specifies the event type. For a screenshot action, this property is always set
             #   to `screenshot`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # A screenshot action.
             sig { params(type: Symbol).returns(T.attached_class) }
@@ -501,49 +344,24 @@ module OpenAI
           class Scroll < OpenAI::BaseModel
             # The horizontal scroll distance.
             sig { returns(Integer) }
-            def scroll_x
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def scroll_x=(_)
-            end
+            attr_accessor :scroll_x
 
             # The vertical scroll distance.
             sig { returns(Integer) }
-            def scroll_y
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def scroll_y=(_)
-            end
+            attr_accessor :scroll_y
 
             # Specifies the event type. For a scroll action, this property is always set to
             #   `scroll`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The x-coordinate where the scroll occurred.
             sig { returns(Integer) }
-            def x
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def x=(_)
-            end
+            attr_accessor :x
 
             # The y-coordinate where the scroll occurred.
             sig { returns(Integer) }
-            def y_
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def y_=(_)
-            end
+            attr_accessor :y_
 
             # A scroll action.
             sig do
@@ -563,22 +381,12 @@ module OpenAI
           class Type < OpenAI::BaseModel
             # The text to type.
             sig { returns(String) }
-            def text
-            end
-
-            sig { params(_: String).returns(String) }
-            def text=(_)
-            end
+            attr_accessor :text
 
             # Specifies the event type. For a type action, this property is always set to
             #   `type`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # An action to type in text.
             sig { params(text: String, type: Symbol).returns(T.attached_class) }
@@ -594,12 +402,7 @@ module OpenAI
             # Specifies the event type. For a wait action, this property is always set to
             #   `wait`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # A wait action.
             sig { params(type: Symbol).returns(T.attached_class) }
@@ -626,30 +429,15 @@ module OpenAI
         class PendingSafetyCheck < OpenAI::BaseModel
           # The ID of the pending safety check.
           sig { returns(String) }
-          def id
-          end
-
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          attr_accessor :id
 
           # The type of the pending safety check.
           sig { returns(String) }
-          def code
-          end
-
-          sig { params(_: String).returns(String) }
-          def code=(_)
-          end
+          attr_accessor :code
 
           # Details about the pending safety check.
           sig { returns(String) }
-          def message
-          end
-
-          sig { params(_: String).returns(String) }
-          def message=(_)
-          end
+          attr_accessor :message
 
           # A pending safety check for the computer call.
           sig { params(id: String, code: String, message: String).returns(T.attached_class) }

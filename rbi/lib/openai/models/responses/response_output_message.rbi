@@ -6,12 +6,7 @@ module OpenAI
       class ResponseOutputMessage < OpenAI::BaseModel
         # The unique ID of the output message.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The content of the output message.
         sig do
@@ -19,50 +14,20 @@ module OpenAI
             T::Array[T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
           )
         end
-        def content
-        end
-
-        sig do
-          params(
-            _: T::Array[T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
-          )
-            .returns(
-              T::Array[T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
-            )
-        end
-        def content=(_)
-        end
+        attr_accessor :content
 
         # The role of the output message. Always `assistant`.
         sig { returns(Symbol) }
-        def role
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def role=(_)
-        end
+        attr_accessor :role
 
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         sig { returns(OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol) }
-        def status
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol)
-        end
-        def status=(_)
-        end
+        attr_accessor :status
 
         # The type of the output message. Always `message`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # An output message from the model.
         sig do

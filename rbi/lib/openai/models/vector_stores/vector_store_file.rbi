@@ -6,81 +6,46 @@ module OpenAI
       class VectorStoreFile < OpenAI::BaseModel
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The Unix timestamp (in seconds) for when the vector store file was created.
         sig { returns(Integer) }
-        def created_at
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def created_at=(_)
-        end
+        attr_accessor :created_at
 
         # The last error associated with this vector store file. Will be `null` if there
         #   are no errors.
         sig { returns(T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError)) }
-        def last_error
-        end
+        attr_reader :last_error
 
         sig do
           params(
-            _: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash))
+            last_error: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash))
           )
-            .returns(T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash)))
+            .void
         end
-        def last_error=(_)
-        end
+        attr_writer :last_error
 
         # The object type, which is always `vector_store.file`.
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # The status of the vector store file, which can be either `in_progress`,
         #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         #   vector store file is ready for use.
         sig { returns(OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
-        def status
-        end
-
-        sig do
-          params(_: OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-        end
-        def status=(_)
-        end
+        attr_accessor :status
 
         # The total vector store usage in bytes. Note that this may be different from the
         #   original file size.
         sig { returns(Integer) }
-        def usage_bytes
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def usage_bytes=(_)
-        end
+        attr_accessor :usage_bytes
 
         # The ID of the
         #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
         #   that the [File](https://platform.openai.com/docs/api-reference/files) is
         #   attached to.
         sig { returns(String) }
-        def vector_store_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def vector_store_id=(_)
-        end
+        attr_accessor :vector_store_id
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -88,15 +53,7 @@ module OpenAI
         #   length of 64 characters. Values are strings with a maximum length of 512
         #   characters, booleans, or numbers.
         sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
-        def attributes
-        end
-
-        sig do
-          params(_: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-            .returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-        end
-        def attributes=(_)
-        end
+        attr_accessor :attributes
 
         # The strategy used to chunk the file.
         sig do
@@ -106,27 +63,19 @@ module OpenAI
             )
           )
         end
-        def chunking_strategy
-        end
+        attr_reader :chunking_strategy
 
         sig do
           params(
-            _: T.any(
+            chunking_strategy: T.any(
               OpenAI::Models::StaticFileChunkingStrategyObject,
               OpenAI::Util::AnyHash,
               OpenAI::Models::OtherFileChunkingStrategyObject
             )
           )
-            .returns(
-              T.any(
-                OpenAI::Models::StaticFileChunkingStrategyObject,
-                OpenAI::Util::AnyHash,
-                OpenAI::Models::OtherFileChunkingStrategyObject
-              )
-            )
+            .void
         end
-        def chunking_strategy=(_)
-        end
+        attr_writer :chunking_strategy
 
         # A list of files attached to a vector store.
         sig do
@@ -182,24 +131,11 @@ module OpenAI
         class LastError < OpenAI::BaseModel
           # One of `server_error` or `rate_limit_exceeded`.
           sig { returns(OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol) }
-          def code
-          end
-
-          sig do
-            params(_: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
-              .returns(OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
-          end
-          def code=(_)
-          end
+          attr_accessor :code
 
           # A human-readable description of the error.
           sig { returns(String) }
-          def message
-          end
-
-          sig { params(_: String).returns(String) }
-          def message=(_)
-          end
+          attr_accessor :message
 
           # The last error associated with this vector store file. Will be `null` if there
           #   are no errors.

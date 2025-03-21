@@ -62,32 +62,20 @@ module OpenAI
           # Represents a thread that contains
           #   [messages](https://platform.openai.com/docs/api-reference/messages).
           sig { returns(OpenAI::Models::Beta::Thread) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Whether to enable input audio transcription.
           sig { returns(T.nilable(T::Boolean)) }
-          def enabled
-          end
+          attr_reader :enabled
 
-          sig { params(_: T::Boolean).returns(T::Boolean) }
-          def enabled=(_)
-          end
+          sig { params(enabled: T::Boolean).void }
+          attr_writer :enabled
 
           # Occurs when a new
           #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
@@ -112,23 +100,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a new
           #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
@@ -148,23 +126,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `queued` status.
@@ -184,23 +152,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to an `in_progress` status.
@@ -220,23 +178,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `requires_action` status.
@@ -256,23 +204,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is completed.
@@ -292,23 +230,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   ends with status `incomplete`.
@@ -328,23 +256,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   fails.
@@ -364,23 +282,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `cancelling` status.
@@ -400,23 +308,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is cancelled.
@@ -436,23 +334,13 @@ module OpenAI
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   expires.
@@ -471,23 +359,13 @@ module OpenAI
         class ThreadRunStepCreated < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -507,23 +385,13 @@ module OpenAI
         class ThreadRunStepInProgress < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -544,23 +412,13 @@ module OpenAI
           # Represents a run step delta i.e. any changed fields on a run step during
           #   streaming.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when parts of a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -583,23 +441,13 @@ module OpenAI
         class ThreadRunStepCompleted < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -619,23 +467,13 @@ module OpenAI
         class ThreadRunStepFailed < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -655,23 +493,13 @@ module OpenAI
         class ThreadRunStepCancelled < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -691,23 +519,13 @@ module OpenAI
         class ThreadRunStepExpired < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -728,23 +546,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
@@ -765,23 +573,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
@@ -802,23 +600,13 @@ module OpenAI
           # Represents a message delta i.e. any changed fields on a message during
           #   streaming.
           sig { returns(OpenAI::Models::Beta::Threads::MessageDeltaEvent) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when parts of a
           #   [Message](https://platform.openai.com/docs/api-reference/messages/object) are
@@ -842,23 +630,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
@@ -879,23 +657,13 @@ module OpenAI
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
@@ -914,23 +682,13 @@ module OpenAI
 
         class ErrorEvent < OpenAI::BaseModel
           sig { returns(OpenAI::Models::ErrorObject) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::ErrorObject, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::ErrorObject, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::ErrorObject, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when an
           #   [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs.

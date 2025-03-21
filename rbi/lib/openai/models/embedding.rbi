@@ -7,30 +7,15 @@ module OpenAI
       #   the model as listed in the
       #   [embedding guide](https://platform.openai.com/docs/guides/embeddings).
       sig { returns(T::Array[Float]) }
-      def embedding
-      end
-
-      sig { params(_: T::Array[Float]).returns(T::Array[Float]) }
-      def embedding=(_)
-      end
+      attr_accessor :embedding
 
       # The index of the embedding in the list of embeddings.
       sig { returns(Integer) }
-      def index
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def index=(_)
-      end
+      attr_accessor :index
 
       # The object type, which is always "embedding".
       sig { returns(Symbol) }
-      def object
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def object=(_)
-      end
+      attr_accessor :object
 
       # Represents an embedding vector returned by embedding endpoint.
       sig { params(embedding: T::Array[Float], index: Integer, object: Symbol).returns(T.attached_class) }

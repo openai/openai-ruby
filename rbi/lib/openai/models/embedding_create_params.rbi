@@ -15,15 +15,7 @@ module OpenAI
       #   for counting tokens. Some models may also impose a limit on total number of
       #   tokens summed across inputs.
       sig { returns(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])) }
-      def input
-      end
-
-      sig do
-        params(_: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]))
-          .returns(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]))
-      end
-      def input=(_)
-      end
+      attr_accessor :input
 
       # ID of the model to use. You can use the
       #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -31,49 +23,32 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       sig { returns(T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol)) }
-      def model
-      end
-
-      sig do
-        params(_: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol))
-          .returns(T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol))
-      end
-      def model=(_)
-      end
+      attr_accessor :model
 
       # The number of dimensions the resulting output embeddings should have. Only
       #   supported in `text-embedding-3` and later models.
       sig { returns(T.nilable(Integer)) }
-      def dimensions
-      end
+      attr_reader :dimensions
 
-      sig { params(_: Integer).returns(Integer) }
-      def dimensions=(_)
-      end
+      sig { params(dimensions: Integer).void }
+      attr_writer :dimensions
 
       # The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
       sig { returns(T.nilable(OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)) }
-      def encoding_format
-      end
+      attr_reader :encoding_format
 
-      sig do
-        params(_: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
-          .returns(OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol)
-      end
-      def encoding_format=(_)
-      end
+      sig { params(encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol).void }
+      attr_writer :encoding_format
 
       # A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
       #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       sig { returns(T.nilable(String)) }
-      def user
-      end
+      attr_reader :user
 
-      sig { params(_: String).returns(String) }
-      def user=(_)
-      end
+      sig { params(user: String).void }
+      attr_writer :user
 
       sig do
         params(

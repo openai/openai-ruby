@@ -8,25 +8,12 @@ module OpenAI
         #   generated tokens would match this content, the entire model response can be
         #   returned much more quickly.
         sig { returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])) }
-        def content
-        end
-
-        sig do
-          params(_: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]))
-            .returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]))
-        end
-        def content=(_)
-        end
+        attr_accessor :content
 
         # The type of the predicted content you want to provide. This type is currently
         #   always `content`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Static predicted output content, such as the content of a text file that is
         #   being regenerated.

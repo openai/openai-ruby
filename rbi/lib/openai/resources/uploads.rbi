@@ -4,8 +4,7 @@ module OpenAI
   module Resources
     class Uploads
       sig { returns(OpenAI::Resources::Uploads::Parts) }
-      def parts
-      end
+      attr_reader :parts
 
       # Creates an intermediate
       #   [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object

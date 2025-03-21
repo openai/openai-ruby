@@ -6,21 +6,11 @@ module OpenAI
       class ResponseCodeInterpreterToolCall < OpenAI::BaseModel
         # The unique ID of the code interpreter tool call.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The code to run.
         sig { returns(String) }
-        def code
-        end
-
-        sig { params(_: String).returns(String) }
-        def code=(_)
-        end
+        attr_accessor :code
 
         # The results of the code interpreter tool call.
         sig do
@@ -33,50 +23,15 @@ module OpenAI
             ]
           )
         end
-        def results
-        end
-
-        sig do
-          params(
-            _: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-              OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
-            )
-            ]
-          )
-            .returns(
-              T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
-              )
-              ]
-            )
-        end
-        def results=(_)
-        end
+        attr_accessor :results
 
         # The status of the code interpreter tool call.
         sig { returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol) }
-        def status
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
-        end
-        def status=(_)
-        end
+        attr_accessor :status
 
         # The type of the code interpreter tool call. Always `code_interpreter_call`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # A tool call to run code.
         sig do
@@ -135,21 +90,11 @@ module OpenAI
           class Logs < OpenAI::BaseModel
             # The logs of the code interpreter tool call.
             sig { returns(String) }
-            def logs
-            end
-
-            sig { params(_: String).returns(String) }
-            def logs=(_)
-            end
+            attr_accessor :logs
 
             # The type of the code interpreter text output. Always `logs`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The output of a code interpreter tool call that is text.
             sig { params(logs: String, type: Symbol).returns(T.attached_class) }
@@ -163,24 +108,11 @@ module OpenAI
 
           class Files < OpenAI::BaseModel
             sig { returns(T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File]) }
-            def files
-            end
-
-            sig do
-              params(_: T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File])
-                .returns(T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File])
-            end
-            def files=(_)
-            end
+            attr_accessor :files
 
             # The type of the code interpreter file output. Always `files`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The output of a code interpreter tool call that is a file.
             sig do
@@ -213,21 +145,11 @@ module OpenAI
             class File < OpenAI::BaseModel
               # The ID of the file.
               sig { returns(String) }
-              def file_id
-              end
-
-              sig { params(_: String).returns(String) }
-              def file_id=(_)
-              end
+              attr_accessor :file_id
 
               # The MIME type of the file.
               sig { returns(String) }
-              def mime_type
-              end
-
-              sig { params(_: String).returns(String) }
-              def mime_type=(_)
-              end
+              attr_accessor :mime_type
 
               sig { params(file_id: String, mime_type: String).returns(T.attached_class) }
               def self.new(file_id:, mime_type:)

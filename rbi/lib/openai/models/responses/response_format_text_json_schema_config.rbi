@@ -7,41 +7,27 @@ module OpenAI
         # The schema for the response format, described as a JSON Schema object. Learn how
         #   to build JSON schemas [here](https://json-schema.org/).
         sig { returns(T::Hash[Symbol, T.anything]) }
-        def schema
-        end
-
-        sig { params(_: T::Hash[Symbol, T.anything]).returns(T::Hash[Symbol, T.anything]) }
-        def schema=(_)
-        end
+        attr_accessor :schema
 
         # The type of response format being defined. Always `json_schema`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # A description of what the response format is for, used by the model to determine
         #   how to respond in the format.
         sig { returns(T.nilable(String)) }
-        def description
-        end
+        attr_reader :description
 
-        sig { params(_: String).returns(String) }
-        def description=(_)
-        end
+        sig { params(description: String).void }
+        attr_writer :description
 
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         #   and dashes, with a maximum length of 64.
         sig { returns(T.nilable(String)) }
-        def name
-        end
+        attr_reader :name
 
-        sig { params(_: String).returns(String) }
-        def name=(_)
-        end
+        sig { params(name: String).void }
+        attr_writer :name
 
         # Whether to enable strict schema adherence when generating the output. If set to
         #   true, the model will always follow the exact schema defined in the `schema`
@@ -49,12 +35,7 @@ module OpenAI
         #   learn more, read the
         #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         sig { returns(T.nilable(T::Boolean)) }
-        def strict
-        end
-
-        sig { params(_: T.nilable(T::Boolean)).returns(T.nilable(T::Boolean)) }
-        def strict=(_)
-        end
+        attr_accessor :strict
 
         # JSON Schema response format. Used to generate structured JSON responses. Learn
         #   more about

@@ -10,34 +10,25 @@ module OpenAI
 
           # Identifier for the last message from the previous pagination request.
           sig { returns(T.nilable(String)) }
-          def after
-          end
+          attr_reader :after
 
-          sig { params(_: String).returns(String) }
-          def after=(_)
-          end
+          sig { params(after: String).void }
+          attr_writer :after
 
           # Number of messages to retrieve.
           sig { returns(T.nilable(Integer)) }
-          def limit
-          end
+          attr_reader :limit
 
-          sig { params(_: Integer).returns(Integer) }
-          def limit=(_)
-          end
+          sig { params(limit: Integer).void }
+          attr_writer :limit
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           #   for descending order. Defaults to `asc`.
           sig { returns(T.nilable(OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)) }
-          def order
-          end
+          attr_reader :order
 
-          sig do
-            params(_: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
-              .returns(OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)
-          end
-          def order=(_)
-          end
+          sig { params(order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol).void }
+          attr_writer :order
 
           sig do
             params(

@@ -8,55 +8,46 @@ module OpenAI
 
       # A query string for a search
       sig { returns(T.any(String, T::Array[String])) }
-      def query
-      end
-
-      sig { params(_: T.any(String, T::Array[String])).returns(T.any(String, T::Array[String])) }
-      def query=(_)
-      end
+      attr_accessor :query
 
       # A filter to apply based on file attributes.
       sig { returns(T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))) }
-      def filters
-      end
+      attr_reader :filters
 
       sig do
-        params(_: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter))
-          .returns(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter))
+        params(
+          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter)
+        )
+          .void
       end
-      def filters=(_)
-      end
+      attr_writer :filters
 
       # The maximum number of results to return. This number should be between 1 and 50
       #   inclusive.
       sig { returns(T.nilable(Integer)) }
-      def max_num_results
-      end
+      attr_reader :max_num_results
 
-      sig { params(_: Integer).returns(Integer) }
-      def max_num_results=(_)
-      end
+      sig { params(max_num_results: Integer).void }
+      attr_writer :max_num_results
 
       # Ranking options for search.
       sig { returns(T.nilable(OpenAI::Models::VectorStoreSearchParams::RankingOptions)) }
-      def ranking_options
-      end
+      attr_reader :ranking_options
 
       sig do
-        params(_: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash))
+        params(
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash)
+        )
+          .void
       end
-      def ranking_options=(_)
-      end
+      attr_writer :ranking_options
 
       # Whether to rewrite the natural language query for vector search.
       sig { returns(T.nilable(T::Boolean)) }
-      def rewrite_query
-      end
+      attr_reader :rewrite_query
 
-      sig { params(_: T::Boolean).returns(T::Boolean) }
-      def rewrite_query=(_)
-      end
+      sig { params(rewrite_query: T::Boolean).void }
+      attr_writer :rewrite_query
 
       sig do
         params(
@@ -119,23 +110,16 @@ module OpenAI
 
       class RankingOptions < OpenAI::BaseModel
         sig { returns(T.nilable(OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol)) }
-        def ranker
-        end
+        attr_reader :ranker
 
-        sig do
-          params(_: OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol)
-            .returns(OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol)
-        end
-        def ranker=(_)
-        end
+        sig { params(ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol).void }
+        attr_writer :ranker
 
         sig { returns(T.nilable(Float)) }
-        def score_threshold
-        end
+        attr_reader :score_threshold
 
-        sig { params(_: Float).returns(Float) }
-        def score_threshold=(_)
-        end
+        sig { params(score_threshold: Float).void }
+        attr_writer :score_threshold
 
         # Ranking options for search.
         sig do

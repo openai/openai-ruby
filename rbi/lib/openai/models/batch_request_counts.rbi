@@ -5,30 +5,15 @@ module OpenAI
     class BatchRequestCounts < OpenAI::BaseModel
       # Number of requests that have been completed successfully.
       sig { returns(Integer) }
-      def completed
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def completed=(_)
-      end
+      attr_accessor :completed
 
       # Number of requests that have failed.
       sig { returns(Integer) }
-      def failed
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def failed=(_)
-      end
+      attr_accessor :failed
 
       # Total number of requests in the batch.
       sig { returns(Integer) }
-      def total
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def total=(_)
-      end
+      attr_accessor :total
 
       # The request counts for different statuses within the batch.
       sig { params(completed: Integer, failed: Integer, total: Integer).returns(T.attached_class) }
