@@ -9,29 +9,13 @@ module OpenAI
       module ChatCompletionMessageParam
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-              )
-            }
-          end
-
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
-              )
-          end
-          def variants
-          end
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
+            )
+        end
+        def self.variants
         end
       end
     end

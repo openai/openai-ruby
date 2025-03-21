@@ -54,10 +54,8 @@ module OpenAI
           COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol)
           FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol]) }
+          def self.values
           end
         end
       end

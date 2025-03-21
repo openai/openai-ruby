@@ -84,10 +84,8 @@ module OpenAI
           ASC = T.let(:asc, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol)
           DESC = T.let(:desc, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol]) }
+          def self.values
           end
         end
       end

@@ -27,10 +27,8 @@ module OpenAI
       variant const: OpenAI::Models::ResponsesModel::COMPUTER_USE_PREVIEW_2025_03_11
 
       # @!parse
-      #   class << self
-      #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol)]
-      #     def variants; end
-      #   end
+      #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol)]
+      #   def self.variants; end
     end
   end
 end

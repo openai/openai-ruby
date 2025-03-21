@@ -72,10 +72,8 @@ module OpenAI
           WEB_SEARCH_PREVIEW_2025_03_11 =
             T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -93,10 +91,8 @@ module OpenAI
           MEDIUM = T.let(:medium, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)
           HIGH = T.let(:high, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol]) }
+          def self.values
           end
         end
 

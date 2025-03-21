@@ -16,10 +16,8 @@ module OpenAI
       variant :static, -> { OpenAI::Models::StaticFileChunkingStrategyObjectParam }
 
       # @!parse
-      #   class << self
-      #     # @return [Array(OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam)]
-      #     def variants; end
-      #   end
+      #   # @return [Array(OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam)]
+      #   def self.variants; end
     end
   end
 end

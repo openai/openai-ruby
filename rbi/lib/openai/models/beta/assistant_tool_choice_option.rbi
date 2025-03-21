@@ -13,16 +13,6 @@ module OpenAI
       module AssistantToolChoiceOption
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
-              )
-            }
-          end
-
         # `none` means the model will not call any tools and instead generates a message.
         #   `auto` means the model can pick between generating a message or calling one or
         #   more tools. `required` means the model must call one or more tools before
@@ -38,22 +28,18 @@ module OpenAI
           AUTO = T.let(:auto, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
           REQUIRED = T.let(:required, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol]) }
+          def self.values
           end
         end
 
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Beta::AssistantToolChoice]
-              )
-          end
-          def variants
-          end
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Beta::AssistantToolChoice]
+            )
+        end
+        def self.variants
         end
       end
     end

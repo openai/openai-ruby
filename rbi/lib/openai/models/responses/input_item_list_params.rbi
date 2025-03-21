@@ -81,10 +81,8 @@ module OpenAI
           ASC = T.let(:asc, OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol)
           DESC = T.let(:desc, OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::InputItemListParams::Order::TaggedSymbol]) }
+          def self.values
           end
         end
       end

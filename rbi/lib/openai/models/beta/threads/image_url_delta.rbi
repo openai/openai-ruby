@@ -47,10 +47,8 @@ module OpenAI
             LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
             HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol]) }
+            def self.values
             end
           end
         end

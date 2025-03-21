@@ -17,10 +17,8 @@ module OpenAI
       VERBOSE_JSON = T.let(:verbose_json, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
       VTT = T.let(:vtt, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
 
-      class << self
-        sig { override.returns(T::Array[OpenAI::Models::AudioResponseFormat::TaggedSymbol]) }
-        def values
-        end
+      sig { override.returns(T::Array[OpenAI::Models::AudioResponseFormat::TaggedSymbol]) }
+      def self.values
       end
     end
   end

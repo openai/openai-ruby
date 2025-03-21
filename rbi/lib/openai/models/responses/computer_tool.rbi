@@ -61,10 +61,8 @@ module OpenAI
           UBUNTU = T.let(:ubuntu, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
           BROWSER = T.let(:browser, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol]) }
+          def self.values
           end
         end
       end

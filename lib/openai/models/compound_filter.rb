@@ -37,10 +37,8 @@ module OpenAI
         variant OpenAI::Unknown
 
         # @!parse
-        #   class << self
-        #     # @return [Array(OpenAI::Models::ComparisonFilter, Object)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(OpenAI::Models::ComparisonFilter, Object)]
+        #   def self.variants; end
       end
 
       # Type of operation: `and` or `or`.
@@ -52,11 +50,9 @@ module OpenAI
 
         finalize!
 
-        class << self
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def values; end
-        end
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
       end
     end
   end

@@ -174,10 +174,8 @@ module OpenAI
         IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStore::Status::TaggedSymbol)
         COMPLETED = T.let(:completed, OpenAI::Models::VectorStore::Status::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::VectorStore::Status::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::VectorStore::Status::TaggedSymbol]) }
+        def self.values
         end
       end
 

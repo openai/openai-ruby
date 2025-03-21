@@ -93,10 +93,8 @@ module OpenAI
           FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
           CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -112,10 +110,8 @@ module OpenAI
           ASC = T.let(:asc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
           DESC = T.let(:desc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol]) }
+          def self.values
           end
         end
       end

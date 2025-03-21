@@ -23,10 +23,8 @@ module OpenAI
         variant -> { OpenAI::Models::Responses::ResponseOutputRefusal }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+        #   def self.variants; end
       end
     end
   end

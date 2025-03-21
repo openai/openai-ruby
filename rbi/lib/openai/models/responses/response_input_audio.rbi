@@ -48,10 +48,8 @@ module OpenAI
           MP3 = T.let(:mp3, OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol)
           WAV = T.let(:wav, OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol]) }
+          def self.values
           end
         end
       end

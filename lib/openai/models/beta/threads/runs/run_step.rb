@@ -192,11 +192,9 @@ module OpenAI
 
                 finalize!
 
-                class << self
-                  # @!parse
-                  #   # @return [Array<Symbol>]
-                  #   def values; end
-                end
+                # @!parse
+                #   # @return [Array<Symbol>]
+                #   def self.values; end
               end
             end
 
@@ -213,11 +211,9 @@ module OpenAI
 
               finalize!
 
-              class << self
-                # @!parse
-                #   # @return [Array<Symbol>]
-                #   def values; end
-              end
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def self.values; end
             end
 
             # The details of the run step.
@@ -233,10 +229,8 @@ module OpenAI
               variant :tool_calls, -> { OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails }
 
               # @!parse
-              #   class << self
-              #     # @return [Array(OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails)]
-              #     def variants; end
-              #   end
+              #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails)]
+              #   def self.variants; end
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
@@ -248,11 +242,9 @@ module OpenAI
 
               finalize!
 
-              class << self
-                # @!parse
-                #   # @return [Array<Symbol>]
-                #   def values; end
-              end
+              # @!parse
+              #   # @return [Array<Symbol>]
+              #   def self.values; end
             end
 
             class Usage < OpenAI::BaseModel

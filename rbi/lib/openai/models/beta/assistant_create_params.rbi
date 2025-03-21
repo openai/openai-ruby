@@ -233,12 +233,8 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
-
-          class << self
-            sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
-            def variants
-            end
+          sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+          def self.variants
           end
         end
 
@@ -453,16 +449,6 @@ module OpenAI
               module ChunkingStrategy
                 extend OpenAI::Union
 
-                Variants =
-                  type_template(:out) do
-                    {
-                      fixed: T.any(
-                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
-                      )
-                    }
-                  end
-
                 class Auto < OpenAI::BaseModel
                   # Always `auto`.
                   sig { returns(Symbol) }
@@ -554,15 +540,13 @@ module OpenAI
                   end
                 end
 
-                class << self
-                  sig do
-                    override
-                      .returns(
-                        [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-                      )
-                  end
-                  def variants
-                  end
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+                    )
+                end
+                def self.variants
                 end
               end
             end

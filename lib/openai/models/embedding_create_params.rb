@@ -106,10 +106,8 @@ module OpenAI
         variant OpenAI::Models::EmbeddingCreateParams::Input::ArrayOfToken2DArray
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
+        #   def self.variants; end
       end
 
       # ID of the model to use. You can use the
@@ -126,10 +124,8 @@ module OpenAI
         variant enum: -> { OpenAI::Models::EmbeddingModel }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Symbol, OpenAI::Models::EmbeddingModel)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Symbol, OpenAI::Models::EmbeddingModel)]
+        #   def self.variants; end
       end
 
       # The format to return the embeddings in. Can be either `float` or
@@ -142,11 +138,9 @@ module OpenAI
 
         finalize!
 
-        class << self
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def values; end
-        end
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
       end
     end
   end

@@ -98,10 +98,8 @@ module OpenAI
                 variant :image, -> { OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage }
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage)]
+                #   def self.variants; end
               end
             end
           end

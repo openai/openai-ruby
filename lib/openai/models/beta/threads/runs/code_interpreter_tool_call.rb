@@ -139,10 +139,8 @@ module OpenAI
                 end
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image)]
+                #   def self.variants; end
               end
             end
           end

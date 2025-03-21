@@ -141,13 +141,11 @@ module OpenAI
                   OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol
                 )
 
-              class << self
-                sig do
-                  override
-                    .returns(T::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol])
-                end
-                def values
-                end
+              sig do
+                override
+                  .returns(T::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol])
+              end
+              def self.values
               end
             end
           end

@@ -50,10 +50,8 @@ module OpenAI
             T.let(:code_interpreter, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
           FILE_SEARCH = T.let(:file_search, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol]) }
+          def self.values
           end
         end
       end

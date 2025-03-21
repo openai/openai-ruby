@@ -412,43 +412,25 @@ module OpenAI
             module Content
               extend OpenAI::Union
 
-              Variants =
-                type_template(:out) do
-                  {
-                    fixed: T.any(
-                      String,
-                      T::Array[
-                      T.any(
-                        OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                        OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                        OpenAI::Models::Beta::Threads::TextContentBlockParam
-                      )
-                      ]
-                    )
-                  }
-                end
-
               MessageContentPartParamArray =
                 T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
 
-              class << self
-                sig do
-                  override
-                    .returns(
-                      [
-                        String,
-                        T::Array[
-                                              T.any(
-                                                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                                                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                                                OpenAI::Models::Beta::Threads::TextContentBlockParam
-                                              )
-                                              ]
-                      ]
-                    )
-                end
-                def variants
-                end
+              sig do
+                override
+                  .returns(
+                    [
+                      String,
+                      T::Array[
+                                          T.any(
+                                            OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                                            OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                                            OpenAI::Models::Beta::Threads::TextContentBlockParam
+                                          )
+                                          ]
+                    ]
+                  )
+              end
+              def self.variants
               end
             end
 
@@ -471,13 +453,11 @@ module OpenAI
               ASSISTANT =
                 T.let(:assistant, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol)
 
-              class << self
-                sig do
-                  override
-                    .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol])
-                end
-                def values
-                end
+              sig do
+                override
+                  .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol])
+              end
+              def self.values
               end
             end
 
@@ -554,16 +534,6 @@ module OpenAI
               module Tool
                 extend OpenAI::Union
 
-                Variants =
-                  type_template(:out) do
-                    {
-                      fixed: T.any(
-                        OpenAI::Models::Beta::CodeInterpreterTool,
-                        OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                      )
-                    }
-                  end
-
                 class FileSearch < OpenAI::BaseModel
                   # The type of tool being defined: `file_search`
                   sig { returns(Symbol) }
@@ -578,15 +548,13 @@ module OpenAI
                   end
                 end
 
-                class << self
-                  sig do
-                    override
-                      .returns(
-                        [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
-                      )
-                  end
-                  def variants
-                  end
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
+                    )
+                end
+                def self.variants
                 end
               end
             end
@@ -599,12 +567,8 @@ module OpenAI
           module Model
             extend OpenAI::Union
 
-            Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
-
-            class << self
-              sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
-              def variants
-              end
+            sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+            def self.variants
             end
           end
 
@@ -665,13 +629,11 @@ module OpenAI
                   OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol
                 )
 
-              class << self
-                sig do
-                  override
-                    .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol])
-                end
-                def values
-                end
+              sig do
+                override
+                  .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol])
+              end
+              def self.values
               end
             end
           end

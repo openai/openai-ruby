@@ -319,12 +319,10 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol)
 
-          class << self
-            sig do
-              override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
+          end
+          def self.values
           end
         end
 
@@ -339,15 +337,13 @@ module OpenAI
           TEXT =
             T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(
-                  T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
-                )
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(
+                T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
+              )
+          end
+          def self.values
           end
         end
 
@@ -361,10 +357,8 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -378,13 +372,11 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
+          end
+          def self.values
           end
         end
 
@@ -398,10 +390,8 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -415,13 +405,11 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
+          end
+          def self.values
           end
         end
 
@@ -436,10 +424,8 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -456,15 +442,13 @@ module OpenAI
           IMAGE =
             T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(
-                  T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
-                )
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(
+                T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
+              )
+          end
+          def self.values
           end
         end
 
@@ -480,13 +464,11 @@ module OpenAI
           IMAGE =
             T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
+          end
+          def self.values
           end
         end
 
@@ -501,10 +483,8 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -518,13 +498,11 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
+          end
+          def self.values
           end
         end
 
@@ -539,10 +517,8 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -558,13 +534,11 @@ module OpenAI
           IMAGE =
             T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
+          end
+          def self.values
           end
         end
       end

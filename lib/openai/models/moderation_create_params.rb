@@ -55,10 +55,8 @@ module OpenAI
         variant OpenAI::Models::ModerationCreateParams::Input::ModerationMultiModalInputArray
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
+        #   def self.variants; end
       end
 
       # The content moderation model you would like to use. Learn more in
@@ -76,10 +74,8 @@ module OpenAI
         variant enum: -> { OpenAI::Models::ModerationModel }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Symbol, OpenAI::Models::ModerationModel)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Symbol, OpenAI::Models::ModerationModel)]
+        #   def self.variants; end
       end
     end
   end

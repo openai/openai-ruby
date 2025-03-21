@@ -8,18 +8,6 @@ module OpenAI
       module ChatCompletionContentPart
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                OpenAI::Models::Chat::ChatCompletionContentPart::File
-              )
-            }
-          end
-
         class File < OpenAI::BaseModel
           sig { returns(OpenAI::Models::Chat::ChatCompletionContentPart::File::File) }
           attr_reader :file
@@ -83,15 +71,13 @@ module OpenAI
           end
         end
 
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
-              )
-          end
-          def variants
-          end
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
+            )
+        end
+        def self.variants
         end
       end
     end

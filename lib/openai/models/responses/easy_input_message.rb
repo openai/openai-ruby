@@ -56,10 +56,8 @@ module OpenAI
           variant -> { OpenAI::Models::Responses::ResponseInputMessageContentList }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>)]
+          #   def self.variants; end
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -74,11 +72,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         # The type of the message input. Always `message`.
@@ -89,11 +85,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
       end
     end

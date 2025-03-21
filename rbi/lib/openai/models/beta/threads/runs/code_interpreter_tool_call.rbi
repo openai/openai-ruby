@@ -116,16 +116,6 @@ module OpenAI
               module Output
                 extend OpenAI::Union
 
-                Variants =
-                  type_template(:out) do
-                    {
-                      fixed: T.any(
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                      )
-                    }
-                  end
-
                 class Logs < OpenAI::BaseModel
                   # The text output from the Code Interpreter tool call.
                   sig { returns(String) }
@@ -209,15 +199,13 @@ module OpenAI
                   end
                 end
 
-                class << self
-                  sig do
-                    override
-                      .returns(
-                        [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image]
-                      )
-                  end
-                  def variants
-                  end
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image]
+                    )
+                end
+                def self.variants
                 end
               end
             end

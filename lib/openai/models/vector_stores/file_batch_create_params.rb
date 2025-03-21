@@ -59,10 +59,8 @@ module OpenAI
           variant OpenAI::BooleanModel
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Float, Boolean)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Float, Boolean)]
+          #   def self.variants; end
         end
       end
     end
