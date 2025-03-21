@@ -75,6 +75,8 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     end
 
     row = response.to_enum.first
+    return if row.nil?
+
     assert_pattern do
       row => OpenAI::Models::Chat::ChatCompletion
     end

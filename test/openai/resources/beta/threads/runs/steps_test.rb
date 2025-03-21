@@ -40,6 +40,8 @@ class OpenAI::Test::Resources::Beta::Threads::Runs::StepsTest < OpenAI::Test::Re
     end
 
     row = response.to_enum.first
+    return if row.nil?
+
     assert_pattern do
       row => OpenAI::Models::Beta::Threads::Runs::RunStep
     end

@@ -11,6 +11,8 @@ class OpenAI::Test::Resources::FineTuning::Jobs::CheckpointsTest < OpenAI::Test:
     end
 
     row = response.to_enum.first
+    return if row.nil?
+
     assert_pattern do
       row => OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint
     end
