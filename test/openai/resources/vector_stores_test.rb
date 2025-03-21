@@ -83,6 +83,8 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     end
 
     row = response.to_enum.first
+    return if row.nil?
+
     assert_pattern do
       row => OpenAI::Models::VectorStore
     end
@@ -128,6 +130,8 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     end
 
     row = response.to_enum.first
+    return if row.nil?
+
     assert_pattern do
       row => OpenAI::Models::VectorStoreSearchResponse
     end

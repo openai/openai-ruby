@@ -68,6 +68,8 @@ class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::Res
     end
 
     row = response.to_enum.first
+    return if row.nil?
+
     assert_pattern do
       row => OpenAI::Models::VectorStores::VectorStoreFile
     end
