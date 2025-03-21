@@ -62,10 +62,8 @@ module OpenAI
         LENGTH = T.let(:length, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
         CONTENT_FILTER = T.let(:content_filter, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol]) }
+        def self.values
         end
       end
 

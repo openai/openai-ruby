@@ -14,10 +14,8 @@ module OpenAI
       variant :other, -> { OpenAI::Models::OtherFileChunkingStrategyObject }
 
       # @!parse
-      #   class << self
-      #     # @return [Array(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)]
-      #     def variants; end
-      #   end
+      #   # @return [Array(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)]
+      #   def self.variants; end
     end
   end
 end

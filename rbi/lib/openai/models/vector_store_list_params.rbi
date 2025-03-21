@@ -81,10 +81,8 @@ module OpenAI
         ASC = T.let(:asc, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol)
         DESC = T.let(:desc, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol]) }
+        def self.values
         end
       end
     end

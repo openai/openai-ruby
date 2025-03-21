@@ -171,10 +171,8 @@ module OpenAI
             INVALID_FILE =
               T.let(:invalid_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol]) }
+            def self.values
             end
           end
         end
@@ -194,22 +192,16 @@ module OpenAI
           CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
           FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol]) }
+          def self.values
           end
         end
 
         module Attribute
           extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
-
-          class << self
-            sig { override.returns([String, Float, T::Boolean]) }
-            def variants
-            end
+          sig { override.returns([String, Float, T::Boolean]) }
+          def self.variants
           end
         end
       end

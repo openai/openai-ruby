@@ -14,10 +14,8 @@ module OpenAI
       TEXT_MODERATION_LATEST = T.let(:"text-moderation-latest", OpenAI::Models::ModerationModel::TaggedSymbol)
       TEXT_MODERATION_STABLE = T.let(:"text-moderation-stable", OpenAI::Models::ModerationModel::TaggedSymbol)
 
-      class << self
-        sig { override.returns(T::Array[OpenAI::Models::ModerationModel::TaggedSymbol]) }
-        def values
-        end
+      sig { override.returns(T::Array[OpenAI::Models::ModerationModel::TaggedSymbol]) }
+      def self.values
       end
     end
   end

@@ -19,10 +19,8 @@ module OpenAI
         variant :"transcript.text.done", -> { OpenAI::Models::Audio::TranscriptionTextDoneEvent }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent)]
+        #   def self.variants; end
       end
     end
   end

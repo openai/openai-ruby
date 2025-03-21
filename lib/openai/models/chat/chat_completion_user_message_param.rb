@@ -53,10 +53,8 @@ module OpenAI
           variant OpenAI::Models::Chat::ChatCompletionUserMessageParam::Content::ChatCompletionContentPartArray
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
+          #   def self.variants; end
         end
       end
     end

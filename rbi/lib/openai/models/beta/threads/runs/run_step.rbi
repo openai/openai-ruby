@@ -222,10 +222,8 @@ module OpenAI
                 RATE_LIMIT_EXCEEDED =
                   T.let(:rate_limit_exceeded, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
 
-                class << self
-                  sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol]) }
-                  def values
-                  end
+                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol]) }
+                def self.values
                 end
               end
             end
@@ -245,10 +243,8 @@ module OpenAI
               COMPLETED = T.let(:completed, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
               EXPIRED = T.let(:expired, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
 
-              class << self
-                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol]) }
-                def values
-                end
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol]) }
+              def self.values
               end
             end
 
@@ -256,25 +252,13 @@ module OpenAI
             module StepDetails
               extend OpenAI::Union
 
-              Variants =
-                type_template(:out) do
-                  {
-                    fixed: T.any(
-                      OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
-                      OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
-                    )
-                  }
-                end
-
-              class << self
-                sig do
-                  override
-                    .returns(
-                      [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
-                    )
-                end
-                def variants
-                end
+              sig do
+                override
+                  .returns(
+                    [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
+                  )
+              end
+              def self.variants
               end
             end
 
@@ -290,10 +274,8 @@ module OpenAI
                 T.let(:message_creation, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
               TOOL_CALLS = T.let(:tool_calls, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
 
-              class << self
-                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol]) }
-                def values
-                end
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol]) }
+              def self.values
               end
             end
 

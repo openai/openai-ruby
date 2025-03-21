@@ -83,10 +83,8 @@ module OpenAI
           variant enum: -> { OpenAI::Models::AudioModel }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
+          #   def self.variants; end
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
@@ -102,11 +100,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
       end
     end

@@ -65,20 +65,11 @@ module OpenAI
         module Part
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
+          end
+          def self.variants
           end
         end
       end

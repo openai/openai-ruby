@@ -78,10 +78,8 @@ module OpenAI
 
         NUMBER_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol]) }
+        def self.values
         end
       end
 
@@ -101,10 +99,8 @@ module OpenAI
         V1_EMBEDDINGS = T.let(:"/v1/embeddings", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
         V1_COMPLETIONS = T.let(:"/v1/completions", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol]) }
+        def self.values
         end
       end
     end

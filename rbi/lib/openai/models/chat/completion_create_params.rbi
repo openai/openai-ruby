@@ -534,12 +534,8 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ChatModel::OrSymbol)} }
-
-          class << self
-            sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
-            def variants
-            end
+          sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+          def self.variants
           end
         end
 
@@ -560,16 +556,6 @@ module OpenAI
         module FunctionCall
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                  OpenAI::Models::Chat::ChatCompletionFunctionCallOption
-                )
-              }
-            end
-
           # `none` means the model will not call a function and instead generates a message.
           #   `auto` means the model can pick between generating a message or calling a
           #   function.
@@ -586,27 +572,23 @@ module OpenAI
             AUTO =
               T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol)
 
-            class << self
-              sig do
-                override
-                  .returns(
-                    T::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol]
-                  )
-              end
-              def values
-              end
-            end
-          end
-
-          class << self
             sig do
               override
                 .returns(
-                  [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+                  T::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol]
                 )
             end
-            def variants
+            def self.values
             end
+          end
+
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -661,10 +643,8 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
           AUDIO = T.let(:audio, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -681,26 +661,13 @@ module OpenAI
         module ResponseFormat
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Models::ResponseFormatJSONSchema,
-                  OpenAI::Models::ResponseFormatJSONObject
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -728,10 +695,8 @@ module OpenAI
           AUTO = T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -740,14 +705,10 @@ module OpenAI
         module Stop
           extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
-
           StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
-          class << self
-            sig { override.returns([String, T::Array[String]]) }
-            def variants
-            end
+          sig { override.returns([String, T::Array[String]]) }
+          def self.variants
           end
         end
 
@@ -841,15 +802,13 @@ module OpenAI
                 OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
               )
 
-            class << self
-              sig do
-                override
-                  .returns(
-                    T::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol]
-                  )
-              end
-              def values
-              end
+            sig do
+              override
+                .returns(
+                  T::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol]
+                )
+            end
+            def self.values
             end
           end
 

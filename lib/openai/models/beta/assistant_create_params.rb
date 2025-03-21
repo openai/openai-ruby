@@ -171,10 +171,8 @@ module OpenAI
           variant enum: -> { OpenAI::Models::ChatModel }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
+          #   def self.variants; end
         end
 
         class ToolResources < OpenAI::BaseModel
@@ -392,10 +390,8 @@ module OpenAI
                 end
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
+                #   def self.variants; end
               end
             end
           end

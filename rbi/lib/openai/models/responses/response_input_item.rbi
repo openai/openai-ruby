@@ -11,25 +11,6 @@ module OpenAI
       module ResponseInputItem
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Responses::EasyInputMessage,
-                OpenAI::Models::Responses::ResponseInputItem::Message,
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCall,
-                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                OpenAI::Models::Responses::ResponseReasoningItem,
-                OpenAI::Models::Responses::ResponseInputItem::ItemReference
-              )
-            }
-          end
-
         class Message < OpenAI::BaseModel
           # A list of one or many input items to the model, containing different content
           #   types.
@@ -120,10 +101,8 @@ module OpenAI
             SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
             DEVELOPER = T.let(:developer, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol]) }
+            def self.values
             end
           end
 
@@ -144,10 +123,8 @@ module OpenAI
             INCOMPLETE =
               T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol]) }
+            def self.values
             end
           end
 
@@ -162,10 +139,8 @@ module OpenAI
 
             MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol]) }
+            def self.values
             end
           end
         end
@@ -309,13 +284,11 @@ module OpenAI
             INCOMPLETE =
               T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol)
 
-            class << self
-              sig do
-                override
-                  .returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol])
-              end
-              def values
-              end
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol])
+            end
+            def self.values
             end
           end
         end
@@ -398,13 +371,11 @@ module OpenAI
             INCOMPLETE =
               T.let(:incomplete, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol)
 
-            class << self
-              sig do
-                override
-                  .returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol])
-              end
-              def values
-              end
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol])
+            end
+            def self.values
             end
           end
         end
@@ -428,15 +399,13 @@ module OpenAI
           end
         end
 
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
-              )
-          end
-          def variants
-          end
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
+            )
+        end
+        def self.variants
         end
       end
     end

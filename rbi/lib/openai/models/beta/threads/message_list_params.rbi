@@ -93,10 +93,8 @@ module OpenAI
             ASC = T.let(:asc, OpenAI::Models::Beta::Threads::MessageListParams::Order::TaggedSymbol)
             DESC = T.let(:desc, OpenAI::Models::Beta::Threads::MessageListParams::Order::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::MessageListParams::Order::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::MessageListParams::Order::TaggedSymbol]) }
+            def self.values
             end
           end
         end

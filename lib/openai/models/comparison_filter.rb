@@ -61,11 +61,9 @@ module OpenAI
 
         finalize!
 
-        class << self
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def values; end
-        end
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
       end
 
       # The value to compare against the attribute key; supports string, number, or
@@ -80,10 +78,8 @@ module OpenAI
         variant OpenAI::BooleanModel
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Float, Boolean)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Float, Boolean)]
+        #   def self.variants; end
       end
     end
   end

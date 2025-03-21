@@ -84,12 +84,8 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol)} }
-
-          class << self
-            sig { override.returns([String, OpenAI::Models::Audio::SpeechModel::OrSymbol]) }
-            def variants
-            end
+          sig { override.returns([String, OpenAI::Models::Audio::SpeechModel::OrSymbol]) }
+          def self.variants
           end
         end
 
@@ -113,10 +109,8 @@ module OpenAI
           SAGE = T.let(:sage, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           SHIMMER = T.let(:shimmer, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -136,10 +130,8 @@ module OpenAI
           WAV = T.let(:wav, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
           PCM = T.let(:pcm, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol]) }
+          def self.values
           end
         end
       end

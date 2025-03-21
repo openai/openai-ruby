@@ -12,10 +12,8 @@ module OpenAI
       GPT_4O_TRANSCRIBE = T.let(:"gpt-4o-transcribe", OpenAI::Models::AudioModel::TaggedSymbol)
       GPT_4O_MINI_TRANSCRIBE = T.let(:"gpt-4o-mini-transcribe", OpenAI::Models::AudioModel::TaggedSymbol)
 
-      class << self
-        sig { override.returns(T::Array[OpenAI::Models::AudioModel::TaggedSymbol]) }
-        def values
-        end
+      sig { override.returns(T::Array[OpenAI::Models::AudioModel::TaggedSymbol]) }
+      def self.values
       end
     end
   end

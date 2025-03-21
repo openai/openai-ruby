@@ -82,13 +82,11 @@ module OpenAI
             LOW = T.let(:low, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
             HIGH = T.let(:high, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol)
 
-            class << self
-              sig do
-                override
-                  .returns(T::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol])
-              end
-              def values
-              end
+            sig do
+              override
+                .returns(T::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol])
+            end
+            def self.values
             end
           end
         end

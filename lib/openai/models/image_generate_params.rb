@@ -114,10 +114,8 @@ module OpenAI
         variant enum: -> { OpenAI::Models::ImageModel }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
+        #   def self.variants; end
       end
 
       # The quality of the image that will be generated. `hd` creates images with finer
@@ -131,11 +129,9 @@ module OpenAI
 
         finalize!
 
-        class << self
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def values; end
-        end
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -149,11 +145,9 @@ module OpenAI
 
         finalize!
 
-        class << self
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def values; end
-        end
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -170,11 +164,9 @@ module OpenAI
 
         finalize!
 
-        class << self
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def values; end
-        end
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
       end
 
       # The style of the generated images. Must be one of `vivid` or `natural`. Vivid
@@ -189,11 +181,9 @@ module OpenAI
 
         finalize!
 
-        class << self
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def values; end
-        end
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
       end
     end
   end

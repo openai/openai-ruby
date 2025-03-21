@@ -110,10 +110,8 @@ module OpenAI
             variant OpenAI::Models::Beta::ThreadCreateParams::Message::Content::MessageContentPartParamArray
 
             # @!parse
-            #   class << self
-            #     # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
-            #     def variants; end
-            #   end
+            #   # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
+            #   def self.variants; end
           end
 
           # The role of the entity that is creating the message. Allowed values include:
@@ -130,11 +128,9 @@ module OpenAI
 
             finalize!
 
-            class << self
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def values; end
-            end
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def self.values; end
           end
 
           class Attachment < OpenAI::BaseModel
@@ -193,10 +189,8 @@ module OpenAI
               end
 
               # @!parse
-              #   class << self
-              #     # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch)]
-              #     def variants; end
-              #   end
+              #   # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch)]
+              #   def self.variants; end
             end
           end
         end
@@ -416,10 +410,8 @@ module OpenAI
                 end
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
+                #   def self.variants; end
               end
             end
           end

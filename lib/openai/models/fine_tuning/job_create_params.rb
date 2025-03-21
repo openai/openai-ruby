@@ -167,10 +167,8 @@ module OpenAI
           variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_4O_MINI
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Symbol)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Symbol)]
+          #   def self.variants; end
         end
 
         # @deprecated
@@ -232,10 +230,8 @@ module OpenAI
             variant Integer
 
             # @!parse
-            #   class << self
-            #     # @return [Array(Symbol, :auto, Integer)]
-            #     def variants; end
-            #   end
+            #   # @return [Array(Symbol, :auto, Integer)]
+            #   def self.variants; end
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -248,10 +244,8 @@ module OpenAI
             variant Float
 
             # @!parse
-            #   class << self
-            #     # @return [Array(Symbol, :auto, Float)]
-            #     def variants; end
-            #   end
+            #   # @return [Array(Symbol, :auto, Float)]
+            #   def self.variants; end
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -264,10 +258,8 @@ module OpenAI
             variant Integer
 
             # @!parse
-            #   class << self
-            #     # @return [Array(Symbol, :auto, Integer)]
-            #     def variants; end
-            #   end
+            #   # @return [Array(Symbol, :auto, Integer)]
+            #   def self.variants; end
           end
         end
 
@@ -481,10 +473,8 @@ module OpenAI
                 variant Integer
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(Symbol, :auto, Integer)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(Symbol, :auto, Integer)]
+                #   def self.variants; end
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
@@ -497,10 +487,8 @@ module OpenAI
                 variant Float
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(Symbol, :auto, Float)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(Symbol, :auto, Float)]
+                #   def self.variants; end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -513,10 +501,8 @@ module OpenAI
                 variant Float
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(Symbol, :auto, Float)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(Symbol, :auto, Float)]
+                #   def self.variants; end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -529,10 +515,8 @@ module OpenAI
                 variant Integer
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(Symbol, :auto, Integer)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(Symbol, :auto, Integer)]
+                #   def self.variants; end
               end
             end
           end
@@ -616,10 +600,8 @@ module OpenAI
                 variant Integer
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(Symbol, :auto, Integer)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(Symbol, :auto, Integer)]
+                #   def self.variants; end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -632,10 +614,8 @@ module OpenAI
                 variant Float
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(Symbol, :auto, Float)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(Symbol, :auto, Float)]
+                #   def self.variants; end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -648,10 +628,8 @@ module OpenAI
                 variant Integer
 
                 # @!parse
-                #   class << self
-                #     # @return [Array(Symbol, :auto, Integer)]
-                #     def variants; end
-                #   end
+                #   # @return [Array(Symbol, :auto, Integer)]
+                #   def self.variants; end
               end
             end
           end
@@ -665,11 +643,9 @@ module OpenAI
 
             finalize!
 
-            class << self
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def values; end
-            end
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def self.values; end
           end
         end
       end

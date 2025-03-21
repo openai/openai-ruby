@@ -113,10 +113,8 @@ module OpenAI
         FINE_TUNE_RESULTS = T.let(:"fine-tune-results", OpenAI::Models::FileObject::Purpose::TaggedSymbol)
         VISION = T.let(:vision, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::FileObject::Purpose::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::FileObject::Purpose::TaggedSymbol]) }
+        def self.values
         end
       end
 
@@ -132,10 +130,8 @@ module OpenAI
         PROCESSED = T.let(:processed, OpenAI::Models::FileObject::Status::TaggedSymbol)
         ERROR = T.let(:error, OpenAI::Models::FileObject::Status::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::FileObject::Status::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::FileObject::Status::TaggedSymbol]) }
+        def self.values
         end
       end
     end

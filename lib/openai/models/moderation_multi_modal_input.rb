@@ -15,10 +15,8 @@ module OpenAI
       variant :text, -> { OpenAI::Models::ModerationTextInput }
 
       # @!parse
-      #   class << self
-      #     # @return [Array(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
-      #     def variants; end
-      #   end
+      #   # @return [Array(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
+      #   def self.variants; end
     end
   end
 end
