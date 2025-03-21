@@ -5,12 +5,10 @@ module OpenAI
     class Beta
       class Threads
         sig { returns(OpenAI::Resources::Beta::Threads::Runs) }
-        def runs
-        end
+        attr_reader :runs
 
         sig { returns(OpenAI::Resources::Beta::Threads::Messages) }
-        def messages
-        end
+        attr_reader :messages
 
         # Create a thread.
         sig do

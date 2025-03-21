@@ -22,24 +22,17 @@ module OpenAI
 
         class File < OpenAI::BaseModel
           sig { returns(OpenAI::Models::Chat::ChatCompletionContentPart::File::File) }
-          def file
-          end
+          attr_reader :file
 
           sig do
-            params(_: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash))
+            params(file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash))
+              .void
           end
-          def file=(_)
-          end
+          attr_writer :file
 
           # The type of the content part. Always `file`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
           #   generation.
@@ -61,30 +54,24 @@ module OpenAI
             # The base64 encoded file data, used when passing the file to the model as a
             #   string.
             sig { returns(T.nilable(String)) }
-            def file_data
-            end
+            attr_reader :file_data
 
-            sig { params(_: String).returns(String) }
-            def file_data=(_)
-            end
+            sig { params(file_data: String).void }
+            attr_writer :file_data
 
             # The ID of an uploaded file to use as input.
             sig { returns(T.nilable(String)) }
-            def file_id
-            end
+            attr_reader :file_id
 
-            sig { params(_: String).returns(String) }
-            def file_id=(_)
-            end
+            sig { params(file_id: String).void }
+            attr_writer :file_id
 
             # The name of the file, used when passing the file to the model as a string.
             sig { returns(T.nilable(String)) }
-            def filename
-            end
+            attr_reader :filename
 
-            sig { params(_: String).returns(String) }
-            def filename=(_)
-            end
+            sig { params(filename: String).void }
+            attr_writer :filename
 
             sig { params(file_data: String, file_id: String, filename: String).returns(T.attached_class) }
             def self.new(file_data: nil, file_id: nil, filename: nil)

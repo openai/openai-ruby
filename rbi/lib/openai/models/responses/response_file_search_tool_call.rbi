@@ -6,55 +6,24 @@ module OpenAI
       class ResponseFileSearchToolCall < OpenAI::BaseModel
         # The unique ID of the file search tool call.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The queries used to search for files.
         sig { returns(T::Array[String]) }
-        def queries
-        end
-
-        sig { params(_: T::Array[String]).returns(T::Array[String]) }
-        def queries=(_)
-        end
+        attr_accessor :queries
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
         sig { returns(OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol) }
-        def status
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol)
-        end
-        def status=(_)
-        end
+        attr_accessor :status
 
         # The type of the file search tool call. Always `file_search_call`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The results of the file search tool call.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result])) }
-        def results
-        end
-
-        sig do
-          params(_: T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]))
-            .returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]))
-        end
-        def results=(_)
-        end
+        attr_accessor :results
 
         # The results of a file search tool call. See the
         #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
@@ -123,51 +92,35 @@ module OpenAI
           #   length of 64 characters. Values are strings with a maximum length of 512
           #   characters, booleans, or numbers.
           sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
-          def attributes
-          end
-
-          sig do
-            params(_: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-              .returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-          end
-          def attributes=(_)
-          end
+          attr_accessor :attributes
 
           # The unique ID of the file.
           sig { returns(T.nilable(String)) }
-          def file_id
-          end
+          attr_reader :file_id
 
-          sig { params(_: String).returns(String) }
-          def file_id=(_)
-          end
+          sig { params(file_id: String).void }
+          attr_writer :file_id
 
           # The name of the file.
           sig { returns(T.nilable(String)) }
-          def filename
-          end
+          attr_reader :filename
 
-          sig { params(_: String).returns(String) }
-          def filename=(_)
-          end
+          sig { params(filename: String).void }
+          attr_writer :filename
 
           # The relevance score of the file - a value between 0 and 1.
           sig { returns(T.nilable(Float)) }
-          def score
-          end
+          attr_reader :score
 
-          sig { params(_: Float).returns(Float) }
-          def score=(_)
-          end
+          sig { params(score: Float).void }
+          attr_writer :score
 
           # The text that was retrieved from the file.
           sig { returns(T.nilable(String)) }
-          def text
-          end
+          attr_reader :text
 
-          sig { params(_: String).returns(String) }
-          def text=(_)
-          end
+          sig { params(text: String).void }
+          attr_writer :text
 
           sig do
             params(

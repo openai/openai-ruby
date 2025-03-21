@@ -7,29 +7,17 @@ module OpenAI
         class RefusalDeltaBlock < OpenAI::BaseModel
           # The index of the refusal part in the message.
           sig { returns(Integer) }
-          def index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def index=(_)
-          end
+          attr_accessor :index
 
           # Always `refusal`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           sig { returns(T.nilable(String)) }
-          def refusal
-          end
+          attr_reader :refusal
 
-          sig { params(_: String).returns(String) }
-          def refusal=(_)
-          end
+          sig { params(refusal: String).void }
+          attr_writer :refusal
 
           # The refusal content that is part of a message.
           sig { params(index: Integer, refusal: String, type: Symbol).returns(T.attached_class) }

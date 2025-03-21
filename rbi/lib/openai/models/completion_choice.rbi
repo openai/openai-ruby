@@ -8,42 +8,19 @@ module OpenAI
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
       sig { returns(OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol) }
-      def finish_reason
-      end
-
-      sig do
-        params(_: OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
-          .returns(OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
-      end
-      def finish_reason=(_)
-      end
+      attr_accessor :finish_reason
 
       sig { returns(Integer) }
-      def index
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def index=(_)
-      end
+      attr_accessor :index
 
       sig { returns(T.nilable(OpenAI::Models::CompletionChoice::Logprobs)) }
-      def logprobs
-      end
+      attr_reader :logprobs
 
-      sig do
-        params(_: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash)))
-          .returns(T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash)))
-      end
-      def logprobs=(_)
-      end
+      sig { params(logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash))).void }
+      attr_writer :logprobs
 
       sig { returns(String) }
-      def text
-      end
-
-      sig { params(_: String).returns(String) }
-      def text=(_)
-      end
+      attr_accessor :text
 
       sig do
         params(
@@ -94,36 +71,28 @@ module OpenAI
 
       class Logprobs < OpenAI::BaseModel
         sig { returns(T.nilable(T::Array[Integer])) }
-        def text_offset
-        end
+        attr_reader :text_offset
 
-        sig { params(_: T::Array[Integer]).returns(T::Array[Integer]) }
-        def text_offset=(_)
-        end
+        sig { params(text_offset: T::Array[Integer]).void }
+        attr_writer :text_offset
 
         sig { returns(T.nilable(T::Array[Float])) }
-        def token_logprobs
-        end
+        attr_reader :token_logprobs
 
-        sig { params(_: T::Array[Float]).returns(T::Array[Float]) }
-        def token_logprobs=(_)
-        end
+        sig { params(token_logprobs: T::Array[Float]).void }
+        attr_writer :token_logprobs
 
         sig { returns(T.nilable(T::Array[String])) }
-        def tokens
-        end
+        attr_reader :tokens
 
-        sig { params(_: T::Array[String]).returns(T::Array[String]) }
-        def tokens=(_)
-        end
+        sig { params(tokens: T::Array[String]).void }
+        attr_writer :tokens
 
         sig { returns(T.nilable(T::Array[T::Hash[Symbol, Float]])) }
-        def top_logprobs
-        end
+        attr_reader :top_logprobs
 
-        sig { params(_: T::Array[T::Hash[Symbol, Float]]).returns(T::Array[T::Hash[Symbol, Float]]) }
-        def top_logprobs=(_)
-        end
+        sig { params(top_logprobs: T::Array[T::Hash[Symbol, Float]]).void }
+        attr_writer :top_logprobs
 
         sig do
           params(

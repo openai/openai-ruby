@@ -7,32 +7,17 @@ module OpenAI
         class TextDeltaBlock < OpenAI::BaseModel
           # The index of the content part in the message.
           sig { returns(Integer) }
-          def index
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def index=(_)
-          end
+          attr_accessor :index
 
           # Always `text`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::TextDelta)) }
-          def text
-          end
+          attr_reader :text
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash))
-          end
-          def text=(_)
-          end
+          sig { params(text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash)).void }
+          attr_writer :text
 
           # The text content that is part of a message.
           sig do

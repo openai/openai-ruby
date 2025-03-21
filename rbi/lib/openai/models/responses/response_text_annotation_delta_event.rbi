@@ -14,72 +14,27 @@ module OpenAI
             )
           )
         end
-        def annotation
-        end
-
-        sig do
-          params(
-            _: T.any(
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
-            )
-          )
-            .returns(
-              T.any(
-                OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-                OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
-                OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
-              )
-            )
-        end
-        def annotation=(_)
-        end
+        attr_accessor :annotation
 
         # The index of the annotation that was added.
         sig { returns(Integer) }
-        def annotation_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def annotation_index=(_)
-        end
+        attr_accessor :annotation_index
 
         # The index of the content part that the text annotation was added to.
         sig { returns(Integer) }
-        def content_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def content_index=(_)
-        end
+        attr_accessor :content_index
 
         # The ID of the output item that the text annotation was added to.
         sig { returns(String) }
-        def item_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def item_id=(_)
-        end
+        attr_accessor :item_id
 
         # The index of the output item that the text annotation was added to.
         sig { returns(Integer) }
-        def output_index
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def output_index=(_)
-        end
+        attr_accessor :output_index
 
         # The type of the event. Always `response.output_text.annotation.added`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Emitted when a text annotation is added.
         sig do
@@ -146,30 +101,15 @@ module OpenAI
           class FileCitation < OpenAI::BaseModel
             # The ID of the file.
             sig { returns(String) }
-            def file_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def file_id=(_)
-            end
+            attr_accessor :file_id
 
             # The index of the file in the list of files.
             sig { returns(Integer) }
-            def index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def index=(_)
-            end
+            attr_accessor :index
 
             # The type of the file citation. Always `file_citation`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # A citation to a file.
             sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
@@ -184,48 +124,23 @@ module OpenAI
           class URLCitation < OpenAI::BaseModel
             # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
-            def end_index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def end_index=(_)
-            end
+            attr_accessor :end_index
 
             # The index of the first character of the URL citation in the message.
             sig { returns(Integer) }
-            def start_index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def start_index=(_)
-            end
+            attr_accessor :start_index
 
             # The title of the web resource.
             sig { returns(String) }
-            def title
-            end
-
-            sig { params(_: String).returns(String) }
-            def title=(_)
-            end
+            attr_accessor :title
 
             # The type of the URL citation. Always `url_citation`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The URL of the web resource.
             sig { returns(String) }
-            def url
-            end
-
-            sig { params(_: String).returns(String) }
-            def url=(_)
-            end
+            attr_accessor :url
 
             # A citation for a web resource used to generate a model response.
             sig do
@@ -253,30 +168,15 @@ module OpenAI
           class FilePath < OpenAI::BaseModel
             # The ID of the file.
             sig { returns(String) }
-            def file_id
-            end
-
-            sig { params(_: String).returns(String) }
-            def file_id=(_)
-            end
+            attr_accessor :file_id
 
             # The index of the file in the list of files.
             sig { returns(Integer) }
-            def index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def index=(_)
-            end
+            attr_accessor :index
 
             # The type of the file path. Always `file_path`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # A path to a file.
             sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }

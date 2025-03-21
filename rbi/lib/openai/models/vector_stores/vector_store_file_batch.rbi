@@ -6,67 +6,39 @@ module OpenAI
       class VectorStoreFileBatch < OpenAI::BaseModel
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The Unix timestamp (in seconds) for when the vector store files batch was
         #   created.
         sig { returns(Integer) }
-        def created_at
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def created_at=(_)
-        end
+        attr_accessor :created_at
 
         sig { returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts) }
-        def file_counts
-        end
+        attr_reader :file_counts
 
         sig do
-          params(_: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash))
-            .returns(T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash))
+          params(
+            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash)
+          )
+            .void
         end
-        def file_counts=(_)
-        end
+        attr_writer :file_counts
 
         # The object type, which is always `vector_store.file_batch`.
         sig { returns(Symbol) }
-        def object
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def object=(_)
-        end
+        attr_accessor :object
 
         # The status of the vector store files batch, which can be either `in_progress`,
         #   `completed`, `cancelled` or `failed`.
         sig { returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol) }
-        def status
-        end
-
-        sig do
-          params(_: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-        end
-        def status=(_)
-        end
+        attr_accessor :status
 
         # The ID of the
         #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
         #   that the [File](https://platform.openai.com/docs/api-reference/files) is
         #   attached to.
         sig { returns(String) }
-        def vector_store_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def vector_store_id=(_)
-        end
+        attr_accessor :vector_store_id
 
         # A batch of files attached to a vector store.
         sig do
@@ -102,48 +74,23 @@ module OpenAI
         class FileCounts < OpenAI::BaseModel
           # The number of files that where cancelled.
           sig { returns(Integer) }
-          def cancelled
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def cancelled=(_)
-          end
+          attr_accessor :cancelled
 
           # The number of files that have been processed.
           sig { returns(Integer) }
-          def completed
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def completed=(_)
-          end
+          attr_accessor :completed
 
           # The number of files that have failed to process.
           sig { returns(Integer) }
-          def failed
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def failed=(_)
-          end
+          attr_accessor :failed
 
           # The number of files that are currently being processed.
           sig { returns(Integer) }
-          def in_progress
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def in_progress=(_)
-          end
+          attr_accessor :in_progress
 
           # The total number of files.
           sig { returns(Integer) }
-          def total
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def total=(_)
-          end
+          attr_accessor :total
 
           sig do
             params(

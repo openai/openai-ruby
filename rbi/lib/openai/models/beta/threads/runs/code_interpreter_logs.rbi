@@ -8,30 +8,18 @@ module OpenAI
           class CodeInterpreterLogs < OpenAI::BaseModel
             # The index of the output in the outputs array.
             sig { returns(Integer) }
-            def index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def index=(_)
-            end
+            attr_accessor :index
 
             # Always `logs`.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The text output from the Code Interpreter tool call.
             sig { returns(T.nilable(String)) }
-            def logs
-            end
+            attr_reader :logs
 
-            sig { params(_: String).returns(String) }
-            def logs=(_)
-            end
+            sig { params(logs: String).void }
+            attr_writer :logs
 
             # Text output from the Code Interpreter tool call as part of a run step.
             sig { params(index: Integer, logs: String, type: Symbol).returns(T.attached_class) }

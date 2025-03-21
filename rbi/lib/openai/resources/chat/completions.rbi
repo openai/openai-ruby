@@ -5,8 +5,7 @@ module OpenAI
     class Chat
       class Completions
         sig { returns(OpenAI::Resources::Chat::Completions::Messages) }
-        def messages
-        end
+        attr_reader :messages
 
         # **Starting a new project?** We recommend trying
         #   [Responses](https://platform.openai.com/docs/api-reference/responses) to take

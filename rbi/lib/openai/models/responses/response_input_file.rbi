@@ -6,39 +6,28 @@ module OpenAI
       class ResponseInputFile < OpenAI::BaseModel
         # The type of the input item. Always `input_file`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The content of the file to be sent to the model.
         sig { returns(T.nilable(String)) }
-        def file_data
-        end
+        attr_reader :file_data
 
-        sig { params(_: String).returns(String) }
-        def file_data=(_)
-        end
+        sig { params(file_data: String).void }
+        attr_writer :file_data
 
         # The ID of the file to be sent to the model.
         sig { returns(T.nilable(String)) }
-        def file_id
-        end
+        attr_reader :file_id
 
-        sig { params(_: String).returns(String) }
-        def file_id=(_)
-        end
+        sig { params(file_id: String).void }
+        attr_writer :file_id
 
         # The name of the file to be sent to the model.
         sig { returns(T.nilable(String)) }
-        def filename
-        end
+        attr_reader :filename
 
-        sig { params(_: String).returns(String) }
-        def filename=(_)
-        end
+        sig { params(filename: String).void }
+        attr_writer :filename
 
         # A file input to the model.
         sig do

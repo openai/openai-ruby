@@ -18,50 +18,38 @@ module OpenAI
           )
         )
       end
-      def chunking_strategy
-      end
+      attr_reader :chunking_strategy
 
       sig do
         params(
-          _: T.any(
+          chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
             OpenAI::Util::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           )
         )
-          .returns(
-            T.any(
-              OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Util::AnyHash,
-              OpenAI::Models::StaticFileChunkingStrategyObjectParam
-            )
-          )
+          .void
       end
-      def chunking_strategy=(_)
-      end
+      attr_writer :chunking_strategy
 
       # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter)) }
-      def expires_after
-      end
+      attr_reader :expires_after
 
       sig do
-        params(_: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash))
+        params(expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash))
+          .void
       end
-      def expires_after=(_)
-      end
+      attr_writer :expires_after
 
       # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
       #   the vector store should use. Useful for tools like `file_search` that can access
       #   files.
       sig { returns(T.nilable(T::Array[String])) }
-      def file_ids
-      end
+      attr_reader :file_ids
 
-      sig { params(_: T::Array[String]).returns(T::Array[String]) }
-      def file_ids=(_)
-      end
+      sig { params(file_ids: T::Array[String]).void }
+      attr_writer :file_ids
 
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
       #   for storing additional information about the object in a structured format, and
@@ -70,21 +58,14 @@ module OpenAI
       #   Keys are strings with a maximum length of 64 characters. Values are strings with
       #   a maximum length of 512 characters.
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata
-      end
-
-      sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-      def metadata=(_)
-      end
+      attr_accessor :metadata
 
       # The name of the vector store.
       sig { returns(T.nilable(String)) }
-      def name
-      end
+      attr_reader :name
 
-      sig { params(_: String).returns(String) }
-      def name=(_)
-      end
+      sig { params(name: String).void }
+      attr_writer :name
 
       sig do
         params(
@@ -127,21 +108,11 @@ module OpenAI
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         #   `last_active_at`.
         sig { returns(Symbol) }
-        def anchor
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def anchor=(_)
-        end
+        attr_accessor :anchor
 
         # The number of days after the anchor time that the vector store will expire.
         sig { returns(Integer) }
-        def days
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def days=(_)
-        end
+        attr_accessor :days
 
         # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }

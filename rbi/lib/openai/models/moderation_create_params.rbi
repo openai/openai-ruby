@@ -17,42 +17,17 @@ module OpenAI
           )
         )
       end
-      def input
-      end
-
-      sig do
-        params(
-          _: T.any(
-            String,
-            T::Array[String],
-            T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
-          )
-        )
-          .returns(
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
-            )
-          )
-      end
-      def input=(_)
-      end
+      attr_accessor :input
 
       # The content moderation model you would like to use. Learn more in
       #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
       #   learn about available models
       #   [here](https://platform.openai.com/docs/models#moderation).
       sig { returns(T.nilable(T.any(String, OpenAI::Models::ModerationModel::OrSymbol))) }
-      def model
-      end
+      attr_reader :model
 
-      sig do
-        params(_: T.any(String, OpenAI::Models::ModerationModel::OrSymbol))
-          .returns(T.any(String, OpenAI::Models::ModerationModel::OrSymbol))
-      end
-      def model=(_)
-      end
+      sig { params(model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol)).void }
+      attr_writer :model
 
       sig do
         params(

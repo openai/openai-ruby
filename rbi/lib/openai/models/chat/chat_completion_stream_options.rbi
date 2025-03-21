@@ -12,12 +12,10 @@ module OpenAI
         #   **NOTE:** If the stream is interrupted, you may not receive the final usage
         #   chunk which contains the total token usage for the request.
         sig { returns(T.nilable(T::Boolean)) }
-        def include_usage
-        end
+        attr_reader :include_usage
 
-        sig { params(_: T::Boolean).returns(T::Boolean) }
-        def include_usage=(_)
-        end
+        sig { params(include_usage: T::Boolean).void }
+        attr_writer :include_usage
 
         # Options for streaming response. Only set this when you set `stream: true`.
         sig { params(include_usage: T::Boolean).returns(T.attached_class) }

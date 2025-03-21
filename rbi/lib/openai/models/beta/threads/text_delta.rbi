@@ -17,12 +17,11 @@ module OpenAI
               )
             )
           end
-          def annotations
-          end
+          attr_reader :annotations
 
           sig do
             params(
-              _: T::Array[
+              annotations: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
                 OpenAI::Util::AnyHash,
@@ -30,27 +29,16 @@ module OpenAI
               )
               ]
             )
-              .returns(
-                T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                  OpenAI::Util::AnyHash,
-                  OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-                )
-                ]
-              )
+              .void
           end
-          def annotations=(_)
-          end
+          attr_writer :annotations
 
           # The data that makes up the text.
           sig { returns(T.nilable(String)) }
-          def value
-          end
+          attr_reader :value
 
-          sig { params(_: String).returns(String) }
-          def value=(_)
-          end
+          sig { params(value: String).void }
+          attr_writer :value
 
           sig do
             params(

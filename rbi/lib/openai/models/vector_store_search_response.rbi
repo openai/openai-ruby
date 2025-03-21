@@ -9,54 +9,23 @@ module OpenAI
       #   length of 64 characters. Values are strings with a maximum length of 512
       #   characters, booleans, or numbers.
       sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
-      def attributes
-      end
-
-      sig do
-        params(_: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-          .returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
-      end
-      def attributes=(_)
-      end
+      attr_accessor :attributes
 
       # Content chunks from the file.
       sig { returns(T::Array[OpenAI::Models::VectorStoreSearchResponse::Content]) }
-      def content
-      end
-
-      sig do
-        params(_: T::Array[OpenAI::Models::VectorStoreSearchResponse::Content])
-          .returns(T::Array[OpenAI::Models::VectorStoreSearchResponse::Content])
-      end
-      def content=(_)
-      end
+      attr_accessor :content
 
       # The ID of the vector store file.
       sig { returns(String) }
-      def file_id
-      end
-
-      sig { params(_: String).returns(String) }
-      def file_id=(_)
-      end
+      attr_accessor :file_id
 
       # The name of the vector store file.
       sig { returns(String) }
-      def filename
-      end
-
-      sig { params(_: String).returns(String) }
-      def filename=(_)
-      end
+      attr_accessor :filename
 
       # The similarity score for the result.
       sig { returns(Float) }
-      def score
-      end
-
-      sig { params(_: Float).returns(Float) }
-      def score=(_)
-      end
+      attr_accessor :score
 
       sig do
         params(
@@ -101,24 +70,11 @@ module OpenAI
       class Content < OpenAI::BaseModel
         # The text content returned from search.
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         # The type of content.
         sig { returns(OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol) }
-        def type
-        end
-
-        sig do
-          params(_: OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
-            .returns(OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
-        end
-        def type=(_)
-        end
+        attr_accessor :type
 
         sig do
           params(text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::OrSymbol)

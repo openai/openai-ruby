@@ -8,71 +8,50 @@ module OpenAI
         include OpenAI::RequestParameters
 
         sig { returns(String) }
-        def vector_store_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def vector_store_id=(_)
-        end
+        attr_accessor :vector_store_id
 
         # A cursor for use in pagination. `after` is an object ID that defines your place
         #   in the list. For instance, if you make a list request and receive 100 objects,
         #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
         #   fetch the next page of the list.
         sig { returns(T.nilable(String)) }
-        def after
-        end
+        attr_reader :after
 
-        sig { params(_: String).returns(String) }
-        def after=(_)
-        end
+        sig { params(after: String).void }
+        attr_writer :after
 
         # A cursor for use in pagination. `before` is an object ID that defines your place
         #   in the list. For instance, if you make a list request and receive 100 objects,
         #   starting with obj_foo, your subsequent call can include before=obj_foo in order
         #   to fetch the previous page of the list.
         sig { returns(T.nilable(String)) }
-        def before
-        end
+        attr_reader :before
 
-        sig { params(_: String).returns(String) }
-        def before=(_)
-        end
+        sig { params(before: String).void }
+        attr_writer :before
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         sig { returns(T.nilable(OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)) }
-        def filter
-        end
+        attr_reader :filter
 
-        sig do
-          params(_: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
-            .returns(OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol)
-        end
-        def filter=(_)
-        end
+        sig { params(filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol).void }
+        attr_writer :filter
 
         # A limit on the number of objects to be returned. Limit can range between 1 and
         #   100, and the default is 20.
         sig { returns(T.nilable(Integer)) }
-        def limit
-        end
+        attr_reader :limit
 
-        sig { params(_: Integer).returns(Integer) }
-        def limit=(_)
-        end
+        sig { params(limit: Integer).void }
+        attr_writer :limit
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
         sig { returns(T.nilable(OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)) }
-        def order
-        end
+        attr_reader :order
 
-        sig do
-          params(_: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
-            .returns(OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol)
-        end
-        def order=(_)
-        end
+        sig { params(order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol).void }
+        attr_writer :order
 
         sig do
           params(

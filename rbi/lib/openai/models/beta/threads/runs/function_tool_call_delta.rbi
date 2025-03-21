@@ -8,47 +8,31 @@ module OpenAI
           class FunctionToolCallDelta < OpenAI::BaseModel
             # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
-            def index
-            end
-
-            sig { params(_: Integer).returns(Integer) }
-            def index=(_)
-            end
+            attr_accessor :index
 
             # The type of tool call. This is always going to be `function` for this type of
             #   tool call.
             sig { returns(Symbol) }
-            def type
-            end
-
-            sig { params(_: Symbol).returns(Symbol) }
-            def type=(_)
-            end
+            attr_accessor :type
 
             # The ID of the tool call object.
             sig { returns(T.nilable(String)) }
-            def id
-            end
+            attr_reader :id
 
-            sig { params(_: String).returns(String) }
-            def id=(_)
-            end
+            sig { params(id: String).void }
+            attr_writer :id
 
             # The definition of the function that was called.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function)) }
-            def function
-            end
+            attr_reader :function
 
             sig do
               params(
-                _: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function, OpenAI::Util::AnyHash)
+                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function, OpenAI::Util::AnyHash)
               )
-                .returns(
-                  T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function, OpenAI::Util::AnyHash)
-                )
+                .void
             end
-            def function=(_)
-            end
+            attr_writer :function
 
             sig do
               params(
@@ -79,32 +63,23 @@ module OpenAI
             class Function < OpenAI::BaseModel
               # The arguments passed to the function.
               sig { returns(T.nilable(String)) }
-              def arguments
-              end
+              attr_reader :arguments
 
-              sig { params(_: String).returns(String) }
-              def arguments=(_)
-              end
+              sig { params(arguments: String).void }
+              attr_writer :arguments
 
               # The name of the function.
               sig { returns(T.nilable(String)) }
-              def name
-              end
+              attr_reader :name
 
-              sig { params(_: String).returns(String) }
-              def name=(_)
-              end
+              sig { params(name: String).void }
+              attr_writer :name
 
               # The output of the function. This will be `null` if the outputs have not been
               #   [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
               #   yet.
               sig { returns(T.nilable(String)) }
-              def output
-              end
-
-              sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-              def output=(_)
-              end
+              attr_accessor :output
 
               # The definition of the function that was called.
               sig do

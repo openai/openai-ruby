@@ -9,46 +9,35 @@ module OpenAI
 
         # An item ID to list items after, used in pagination.
         sig { returns(T.nilable(String)) }
-        def after
-        end
+        attr_reader :after
 
-        sig { params(_: String).returns(String) }
-        def after=(_)
-        end
+        sig { params(after: String).void }
+        attr_writer :after
 
         # An item ID to list items before, used in pagination.
         sig { returns(T.nilable(String)) }
-        def before
-        end
+        attr_reader :before
 
-        sig { params(_: String).returns(String) }
-        def before=(_)
-        end
+        sig { params(before: String).void }
+        attr_writer :before
 
         # A limit on the number of objects to be returned. Limit can range between 1 and
         #   100, and the default is 20.
         sig { returns(T.nilable(Integer)) }
-        def limit
-        end
+        attr_reader :limit
 
-        sig { params(_: Integer).returns(Integer) }
-        def limit=(_)
-        end
+        sig { params(limit: Integer).void }
+        attr_writer :limit
 
         # The order to return the input items in. Default is `asc`.
         #
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
         sig { returns(T.nilable(OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)) }
-        def order
-        end
+        attr_reader :order
 
-        sig do
-          params(_: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
-            .returns(OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)
-        end
-        def order=(_)
-        end
+        sig { params(order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol).void }
+        attr_writer :order
 
         sig do
           params(

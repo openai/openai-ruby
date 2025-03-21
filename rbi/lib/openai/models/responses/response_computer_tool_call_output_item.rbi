@@ -6,44 +6,27 @@ module OpenAI
       class ResponseComputerToolCallOutputItem < OpenAI::BaseModel
         # The unique ID of the computer call tool output.
         sig { returns(String) }
-        def id
-        end
-
-        sig { params(_: String).returns(String) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # The ID of the computer tool call that produced the output.
         sig { returns(String) }
-        def call_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def call_id=(_)
-        end
+        attr_accessor :call_id
 
         # A computer screenshot image used with the computer use tool.
         sig { returns(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot) }
-        def output
-        end
+        attr_reader :output
 
         sig do
           params(
-            _: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash)
+            output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash)
           )
-            .returns(T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash))
+            .void
         end
-        def output=(_)
-        end
+        attr_writer :output
 
         # The type of the computer tool call output. Always `computer_call_output`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # The safety checks reported by the API that have been acknowledged by the
         #   developer.
@@ -54,42 +37,28 @@ module OpenAI
             )
           )
         end
-        def acknowledged_safety_checks
-        end
+        attr_reader :acknowledged_safety_checks
 
         sig do
           params(
-            _: T::Array[
+            acknowledged_safety_checks: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
               OpenAI::Util::AnyHash
             )
             ]
           )
-            .returns(
-              T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
-                OpenAI::Util::AnyHash
-              )
-              ]
-            )
+            .void
         end
-        def acknowledged_safety_checks=(_)
-        end
+        attr_writer :acknowledged_safety_checks
 
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)) }
-        def status
-        end
+        attr_reader :status
 
-        sig do
-          params(_: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol)
-            .returns(OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol)
-        end
-        def status=(_)
-        end
+        sig { params(status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol).void }
+        attr_writer :status
 
         sig do
           params(
@@ -129,30 +98,15 @@ module OpenAI
         class AcknowledgedSafetyCheck < OpenAI::BaseModel
           # The ID of the pending safety check.
           sig { returns(String) }
-          def id
-          end
-
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          attr_accessor :id
 
           # The type of the pending safety check.
           sig { returns(String) }
-          def code
-          end
-
-          sig { params(_: String).returns(String) }
-          def code=(_)
-          end
+          attr_accessor :code
 
           # Details about the pending safety check.
           sig { returns(String) }
-          def message
-          end
-
-          sig { params(_: String).returns(String) }
-          def message=(_)
-          end
+          attr_accessor :message
 
           # A pending safety check for the computer call.
           sig { params(id: String, code: String, message: String).returns(T.attached_class) }

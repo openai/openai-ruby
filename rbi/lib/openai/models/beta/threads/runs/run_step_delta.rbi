@@ -17,27 +17,19 @@ module OpenAI
                 )
               )
             end
-            def step_details
-            end
+            attr_reader :step_details
 
             sig do
               params(
-                _: T.any(
+                step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
                   OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
                 )
               )
-                .returns(
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                    OpenAI::Util::AnyHash,
-                    OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
-                  )
-                )
+                .void
             end
-            def step_details=(_)
-            end
+            attr_writer :step_details
 
             # The delta containing the fields that have changed on the run step.
             sig do

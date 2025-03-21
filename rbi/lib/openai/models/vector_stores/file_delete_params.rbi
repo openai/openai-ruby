@@ -8,12 +8,7 @@ module OpenAI
         include OpenAI::RequestParameters
 
         sig { returns(String) }
-        def vector_store_id
-        end
-
-        sig { params(_: String).returns(String) }
-        def vector_store_id=(_)
-        end
+        attr_accessor :vector_store_id
 
         sig do
           params(

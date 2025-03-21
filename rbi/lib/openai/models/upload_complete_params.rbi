@@ -8,22 +8,15 @@ module OpenAI
 
       # The ordered list of Part IDs.
       sig { returns(T::Array[String]) }
-      def part_ids
-      end
-
-      sig { params(_: T::Array[String]).returns(T::Array[String]) }
-      def part_ids=(_)
-      end
+      attr_accessor :part_ids
 
       # The optional md5 checksum for the file contents to verify if the bytes uploaded
       #   matches what you expect.
       sig { returns(T.nilable(String)) }
-      def md5
-      end
+      attr_reader :md5
 
-      sig { params(_: String).returns(String) }
-      def md5=(_)
-      end
+      sig { params(md5: String).void }
+      attr_writer :md5
 
       sig do
         params(

@@ -5,94 +5,49 @@ module OpenAI
     class FileObject < OpenAI::BaseModel
       # The file identifier, which can be referenced in the API endpoints.
       sig { returns(String) }
-      def id
-      end
-
-      sig { params(_: String).returns(String) }
-      def id=(_)
-      end
+      attr_accessor :id
 
       # The size of the file, in bytes.
       sig { returns(Integer) }
-      def bytes
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def bytes=(_)
-      end
+      attr_accessor :bytes
 
       # The Unix timestamp (in seconds) for when the file was created.
       sig { returns(Integer) }
-      def created_at
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def created_at=(_)
-      end
+      attr_accessor :created_at
 
       # The name of the file.
       sig { returns(String) }
-      def filename
-      end
-
-      sig { params(_: String).returns(String) }
-      def filename=(_)
-      end
+      attr_accessor :filename
 
       # The object type, which is always `file`.
       sig { returns(Symbol) }
-      def object
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def object=(_)
-      end
+      attr_accessor :object
 
       # The intended purpose of the file. Supported values are `assistants`,
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
       #   and `vision`.
       sig { returns(OpenAI::Models::FileObject::Purpose::TaggedSymbol) }
-      def purpose
-      end
-
-      sig do
-        params(_: OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-          .returns(OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-      end
-      def purpose=(_)
-      end
+      attr_accessor :purpose
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
       #   `processed`, or `error`.
       sig { returns(OpenAI::Models::FileObject::Status::TaggedSymbol) }
-      def status
-      end
-
-      sig do
-        params(_: OpenAI::Models::FileObject::Status::TaggedSymbol)
-          .returns(OpenAI::Models::FileObject::Status::TaggedSymbol)
-      end
-      def status=(_)
-      end
+      attr_accessor :status
 
       # The Unix timestamp (in seconds) for when the file will expire.
       sig { returns(T.nilable(Integer)) }
-      def expires_at
-      end
+      attr_reader :expires_at
 
-      sig { params(_: Integer).returns(Integer) }
-      def expires_at=(_)
-      end
+      sig { params(expires_at: Integer).void }
+      attr_writer :expires_at
 
       # Deprecated. For details on why a fine-tuning training file failed validation,
       #   see the `error` field on `fine_tuning.job`.
       sig { returns(T.nilable(String)) }
-      def status_details
-      end
+      attr_reader :status_details
 
-      sig { params(_: String).returns(String) }
-      def status_details=(_)
-      end
+      sig { params(status_details: String).void }
+      attr_writer :status_details
 
       # The `File` object represents a document that has been uploaded to OpenAI.
       sig do

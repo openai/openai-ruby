@@ -13,15 +13,7 @@ module OpenAI
         #   - `web_search_preview`
         #   - `computer_use_preview`
         sig { returns(OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol) }
-        def type
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
-            .returns(OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol)
-        end
-        def type=(_)
-        end
+        attr_accessor :type
 
         # Indicates that the model should use a built-in tool to generate a response.
         #   [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).

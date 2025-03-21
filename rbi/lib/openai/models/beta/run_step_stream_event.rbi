@@ -27,23 +27,13 @@ module OpenAI
         class ThreadRunStepCreated < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -63,23 +53,13 @@ module OpenAI
         class ThreadRunStepInProgress < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -100,23 +80,13 @@ module OpenAI
           # Represents a run step delta i.e. any changed fields on a run step during
           #   streaming.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when parts of a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -139,23 +109,13 @@ module OpenAI
         class ThreadRunStepCompleted < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -175,23 +135,13 @@ module OpenAI
         class ThreadRunStepFailed < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -211,23 +161,13 @@ module OpenAI
         class ThreadRunStepCancelled < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
@@ -247,23 +187,13 @@ module OpenAI
         class ThreadRunStepExpired < OpenAI::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
-          def data
-          end
+          attr_reader :data
 
-          sig do
-            params(_: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-              .returns(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash))
-          end
-          def data=(_)
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          attr_writer :data
 
           sig { returns(Symbol) }
-          def event
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def event=(_)
-          end
+          attr_accessor :event
 
           # Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)

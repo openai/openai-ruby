@@ -6,30 +6,15 @@ module OpenAI
       class TranscriptionWord < OpenAI::BaseModel
         # End time of the word in seconds.
         sig { returns(Float) }
-        def end_
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def end_=(_)
-        end
+        attr_accessor :end_
 
         # Start time of the word in seconds.
         sig { returns(Float) }
-        def start
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def start=(_)
-        end
+        attr_accessor :start
 
         # The text content of the word.
         sig { returns(String) }
-        def word
-        end
-
-        sig { params(_: String).returns(String) }
-        def word=(_)
-        end
+        attr_accessor :word
 
         sig { params(end_: Float, start: Float, word: String).returns(T.attached_class) }
         def self.new(end_:, start:, word:)

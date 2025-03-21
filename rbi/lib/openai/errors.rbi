@@ -3,12 +3,7 @@
 module OpenAI
   class Error < StandardError
     sig { returns(T.nilable(StandardError)) }
-    def cause
-    end
-
-    sig { params(_: T.nilable(StandardError)).returns(T.nilable(StandardError)) }
-    def cause=(_)
-    end
+    attr_accessor :cause
   end
 
   class ConversionError < OpenAI::Error
@@ -16,52 +11,22 @@ module OpenAI
 
   class APIError < OpenAI::Error
     sig { returns(URI::Generic) }
-    def url
-    end
-
-    sig { params(_: URI::Generic).returns(URI::Generic) }
-    def url=(_)
-    end
+    attr_accessor :url
 
     sig { returns(T.nilable(Integer)) }
-    def status
-    end
-
-    sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-    def status=(_)
-    end
+    attr_accessor :status
 
     sig { returns(T.nilable(T.anything)) }
-    def body
-    end
-
-    sig { params(_: T.nilable(T.anything)).returns(T.nilable(T.anything)) }
-    def body=(_)
-    end
+    attr_accessor :body
 
     sig { returns(T.nilable(String)) }
-    def code
-    end
-
-    sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-    def code=(_)
-    end
+    attr_accessor :code
 
     sig { returns(T.nilable(String)) }
-    def param
-    end
-
-    sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-    def param=(_)
-    end
+    attr_accessor :param
 
     sig { returns(T.nilable(String)) }
-    def type
-    end
-
-    sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-    def type=(_)
-    end
+    attr_accessor :type
 
     # @api private
     sig do
@@ -81,44 +46,19 @@ module OpenAI
 
   class APIConnectionError < OpenAI::APIError
     sig { void }
-    def status
-    end
-
-    sig { params(_: NilClass).void }
-    def status=(_)
-    end
+    attr_accessor :status
 
     sig { void }
-    def body
-    end
-
-    sig { params(_: NilClass).void }
-    def body=(_)
-    end
+    attr_accessor :body
 
     sig { void }
-    def code
-    end
-
-    sig { params(_: NilClass).void }
-    def code=(_)
-    end
+    attr_accessor :code
 
     sig { void }
-    def param
-    end
-
-    sig { params(_: NilClass).void }
-    def param=(_)
-    end
+    attr_accessor :param
 
     sig { void }
-    def type
-    end
-
-    sig { params(_: NilClass).void }
-    def type=(_)
-    end
+    attr_accessor :type
 
     # @api private
     sig do
@@ -170,36 +110,16 @@ module OpenAI
     end
 
     sig { returns(Integer) }
-    def status
-    end
-
-    sig { params(_: Integer).returns(Integer) }
-    def status=(_)
-    end
+    attr_accessor :status
 
     sig { returns(T.nilable(String)) }
-    def code
-    end
-
-    sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-    def code=(_)
-    end
+    attr_accessor :code
 
     sig { returns(T.nilable(String)) }
-    def param
-    end
-
-    sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-    def param=(_)
-    end
+    attr_accessor :param
 
     sig { returns(T.nilable(String)) }
-    def type
-    end
-
-    sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-    def type=(_)
-    end
+    attr_accessor :type
 
     # @api private
     sig do

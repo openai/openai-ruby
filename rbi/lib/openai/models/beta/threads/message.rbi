@@ -7,44 +7,21 @@ module OpenAI
         class Message < OpenAI::BaseModel
           # The identifier, which can be referenced in API endpoints.
           sig { returns(String) }
-          def id
-          end
-
-          sig { params(_: String).returns(String) }
-          def id=(_)
-          end
+          attr_accessor :id
 
           # If applicable, the ID of the
           #   [assistant](https://platform.openai.com/docs/api-reference/assistants) that
           #   authored this message.
           sig { returns(T.nilable(String)) }
-          def assistant_id
-          end
-
-          sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-          def assistant_id=(_)
-          end
+          attr_accessor :assistant_id
 
           # A list of files attached to the message, and the tools they were added to.
           sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Message::Attachment])) }
-          def attachments
-          end
-
-          sig do
-            params(_: T.nilable(T::Array[OpenAI::Models::Beta::Threads::Message::Attachment]))
-              .returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Message::Attachment]))
-          end
-          def attachments=(_)
-          end
+          attr_accessor :attachments
 
           # The Unix timestamp (in seconds) for when the message was completed.
           sig { returns(T.nilable(Integer)) }
-          def completed_at
-          end
-
-          sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-          def completed_at=(_)
-          end
+          attr_accessor :completed_at
 
           # The content of the message in array of text and/or images.
           sig do
@@ -59,67 +36,27 @@ module OpenAI
               ]
             )
           end
-          def content
-          end
-
-          sig do
-            params(
-              _: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                OpenAI::Models::Beta::Threads::TextContentBlock,
-                OpenAI::Models::Beta::Threads::RefusalContentBlock
-              )
-              ]
-            )
-              .returns(
-                T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                  OpenAI::Models::Beta::Threads::TextContentBlock,
-                  OpenAI::Models::Beta::Threads::RefusalContentBlock
-                )
-                ]
-              )
-          end
-          def content=(_)
-          end
+          attr_accessor :content
 
           # The Unix timestamp (in seconds) for when the message was created.
           sig { returns(Integer) }
-          def created_at
-          end
-
-          sig { params(_: Integer).returns(Integer) }
-          def created_at=(_)
-          end
+          attr_accessor :created_at
 
           # The Unix timestamp (in seconds) for when the message was marked as incomplete.
           sig { returns(T.nilable(Integer)) }
-          def incomplete_at
-          end
-
-          sig { params(_: T.nilable(Integer)).returns(T.nilable(Integer)) }
-          def incomplete_at=(_)
-          end
+          attr_accessor :incomplete_at
 
           # On an incomplete message, details about why the message is incomplete.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Message::IncompleteDetails)) }
-          def incomplete_details
-          end
+          attr_reader :incomplete_details
 
           sig do
             params(
-              _: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash))
+              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash))
             )
-              .returns(
-                T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash))
-              )
+              .void
           end
-          def incomplete_details=(_)
-          end
+          attr_writer :incomplete_details
 
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           #   for storing additional information about the object in a structured format, and
@@ -128,67 +65,31 @@ module OpenAI
           #   Keys are strings with a maximum length of 64 characters. Values are strings with
           #   a maximum length of 512 characters.
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
-          def metadata
-          end
-
-          sig { params(_: T.nilable(T::Hash[Symbol, String])).returns(T.nilable(T::Hash[Symbol, String])) }
-          def metadata=(_)
-          end
+          attr_accessor :metadata
 
           # The object type, which is always `thread.message`.
           sig { returns(Symbol) }
-          def object
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def object=(_)
-          end
+          attr_accessor :object
 
           # The entity that produced the message. One of `user` or `assistant`.
           sig { returns(OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol) }
-          def role
-          end
-
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
-          end
-          def role=(_)
-          end
+          attr_accessor :role
 
           # The ID of the [run](https://platform.openai.com/docs/api-reference/runs)
           #   associated with the creation of this message. Value is `null` when messages are
           #   created manually using the create message or create thread endpoints.
           sig { returns(T.nilable(String)) }
-          def run_id
-          end
-
-          sig { params(_: T.nilable(String)).returns(T.nilable(String)) }
-          def run_id=(_)
-          end
+          attr_accessor :run_id
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
           #   `completed`.
           sig { returns(OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol) }
-          def status
-          end
-
-          sig do
-            params(_: OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
-          end
-          def status=(_)
-          end
+          attr_accessor :status
 
           # The [thread](https://platform.openai.com/docs/api-reference/threads) ID that
           #   this message belongs to.
           sig { returns(String) }
-          def thread_id
-          end
-
-          sig { params(_: String).returns(String) }
-          def thread_id=(_)
-          end
+          attr_accessor :thread_id
 
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -271,12 +172,10 @@ module OpenAI
           class Attachment < OpenAI::BaseModel
             # The ID of the file to attach to the message.
             sig { returns(T.nilable(String)) }
-            def file_id
-            end
+            attr_reader :file_id
 
-            sig { params(_: String).returns(String) }
-            def file_id=(_)
-            end
+            sig { params(file_id: String).void }
+            attr_writer :file_id
 
             # The tools to add this file to.
             sig do
@@ -291,12 +190,11 @@ module OpenAI
                 )
               )
             end
-            def tools
-            end
+            attr_reader :tools
 
             sig do
               params(
-                _: T::Array[
+                tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
                   OpenAI::Util::AnyHash,
@@ -304,18 +202,9 @@ module OpenAI
                 )
                 ]
               )
-                .returns(
-                  T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Util::AnyHash,
-                    OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                  )
-                  ]
-                )
+                .void
             end
-            def tools=(_)
-            end
+            attr_writer :tools
 
             sig do
               params(
@@ -366,12 +255,7 @@ module OpenAI
               class AssistantToolsFileSearchTypeOnly < OpenAI::BaseModel
                 # The type of tool being defined: `file_search`
                 sig { returns(Symbol) }
-                def type
-                end
-
-                sig { params(_: Symbol).returns(Symbol) }
-                def type=(_)
-                end
+                attr_accessor :type
 
                 sig { params(type: Symbol).returns(T.attached_class) }
                 def self.new(type: :file_search)
@@ -398,15 +282,7 @@ module OpenAI
           class IncompleteDetails < OpenAI::BaseModel
             # The reason the message is incomplete.
             sig { returns(OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol) }
-            def reason
-            end
-
-            sig do
-              params(_: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-                .returns(OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
-            end
-            def reason=(_)
-            end
+            attr_accessor :reason
 
             # On an incomplete message, details about why the message is incomplete.
             sig do

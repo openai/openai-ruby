@@ -9,39 +9,26 @@ module OpenAI
         #   - `web_search_preview`
         #   - `web_search_preview_2025_03_11`
         sig { returns(OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol) }
-        def type
-        end
-
-        sig do
-          params(_: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
-            .returns(OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol)
-        end
-        def type=(_)
-        end
+        attr_accessor :type
 
         # High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         sig { returns(T.nilable(OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)) }
-        def search_context_size
-        end
+        attr_reader :search_context_size
 
-        sig do
-          params(_: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
-            .returns(OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)
-        end
-        def search_context_size=(_)
-        end
+        sig { params(search_context_size: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol).void }
+        attr_writer :search_context_size
 
         sig { returns(T.nilable(OpenAI::Models::Responses::WebSearchTool::UserLocation)) }
-        def user_location
-        end
+        attr_reader :user_location
 
         sig do
-          params(_: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash)))
-            .returns(T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash)))
+          params(
+            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash))
+          )
+            .void
         end
-        def user_location=(_)
-        end
+        attr_writer :user_location
 
         # This tool searches the web for relevant results to use in a response. Learn more
         #   about the
@@ -116,50 +103,37 @@ module OpenAI
         class UserLocation < OpenAI::BaseModel
           # The type of location approximation. Always `approximate`.
           sig { returns(Symbol) }
-          def type
-          end
-
-          sig { params(_: Symbol).returns(Symbol) }
-          def type=(_)
-          end
+          attr_accessor :type
 
           # Free text input for the city of the user, e.g. `San Francisco`.
           sig { returns(T.nilable(String)) }
-          def city
-          end
+          attr_reader :city
 
-          sig { params(_: String).returns(String) }
-          def city=(_)
-          end
+          sig { params(city: String).void }
+          attr_writer :city
 
           # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
           #   the user, e.g. `US`.
           sig { returns(T.nilable(String)) }
-          def country
-          end
+          attr_reader :country
 
-          sig { params(_: String).returns(String) }
-          def country=(_)
-          end
+          sig { params(country: String).void }
+          attr_writer :country
 
           # Free text input for the region of the user, e.g. `California`.
           sig { returns(T.nilable(String)) }
-          def region
-          end
+          attr_reader :region
 
-          sig { params(_: String).returns(String) }
-          def region=(_)
-          end
+          sig { params(region: String).void }
+          attr_writer :region
 
           # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
           #   user, e.g. `America/Los_Angeles`.
           sig { returns(T.nilable(String)) }
-          def timezone
-          end
+          attr_reader :timezone
 
-          sig { params(_: String).returns(String) }
-          def timezone=(_)
-          end
+          sig { params(timezone: String).void }
+          attr_writer :timezone
 
           sig do
             params(city: String, country: String, region: String, timezone: String, type: Symbol)

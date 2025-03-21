@@ -11,44 +11,33 @@ module OpenAI
       #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
       #   fetch the next page of the list.
       sig { returns(T.nilable(String)) }
-      def after
-      end
+      attr_reader :after
 
-      sig { params(_: String).returns(String) }
-      def after=(_)
-      end
+      sig { params(after: String).void }
+      attr_writer :after
 
       # A limit on the number of objects to be returned. Limit can range between 1 and
       #   10,000, and the default is 10,000.
       sig { returns(T.nilable(Integer)) }
-      def limit
-      end
+      attr_reader :limit
 
-      sig { params(_: Integer).returns(Integer) }
-      def limit=(_)
-      end
+      sig { params(limit: Integer).void }
+      attr_writer :limit
 
       # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
       #   order and `desc` for descending order.
       sig { returns(T.nilable(OpenAI::Models::FileListParams::Order::OrSymbol)) }
-      def order
-      end
+      attr_reader :order
 
-      sig do
-        params(_: OpenAI::Models::FileListParams::Order::OrSymbol)
-          .returns(OpenAI::Models::FileListParams::Order::OrSymbol)
-      end
-      def order=(_)
-      end
+      sig { params(order: OpenAI::Models::FileListParams::Order::OrSymbol).void }
+      attr_writer :order
 
       # Only return files with the given purpose.
       sig { returns(T.nilable(String)) }
-      def purpose
-      end
+      attr_reader :purpose
 
-      sig { params(_: String).returns(String) }
-      def purpose=(_)
-      end
+      sig { params(purpose: String).void }
+      attr_writer :purpose
 
       sig do
         params(

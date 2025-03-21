@@ -6,96 +6,46 @@ module OpenAI
       class TranscriptionSegment < OpenAI::BaseModel
         # Unique identifier of the segment.
         sig { returns(Integer) }
-        def id
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def id=(_)
-        end
+        attr_accessor :id
 
         # Average logprob of the segment. If the value is lower than -1, consider the
         #   logprobs failed.
         sig { returns(Float) }
-        def avg_logprob
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def avg_logprob=(_)
-        end
+        attr_accessor :avg_logprob
 
         # Compression ratio of the segment. If the value is greater than 2.4, consider the
         #   compression failed.
         sig { returns(Float) }
-        def compression_ratio
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def compression_ratio=(_)
-        end
+        attr_accessor :compression_ratio
 
         # End time of the segment in seconds.
         sig { returns(Float) }
-        def end_
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def end_=(_)
-        end
+        attr_accessor :end_
 
         # Probability of no speech in the segment. If the value is higher than 1.0 and the
         #   `avg_logprob` is below -1, consider this segment silent.
         sig { returns(Float) }
-        def no_speech_prob
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def no_speech_prob=(_)
-        end
+        attr_accessor :no_speech_prob
 
         # Seek offset of the segment.
         sig { returns(Integer) }
-        def seek
-        end
-
-        sig { params(_: Integer).returns(Integer) }
-        def seek=(_)
-        end
+        attr_accessor :seek
 
         # Start time of the segment in seconds.
         sig { returns(Float) }
-        def start
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def start=(_)
-        end
+        attr_accessor :start
 
         # Temperature parameter used for generating the segment.
         sig { returns(Float) }
-        def temperature
-        end
-
-        sig { params(_: Float).returns(Float) }
-        def temperature=(_)
-        end
+        attr_accessor :temperature
 
         # Text content of the segment.
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         # Array of token IDs for the text content.
         sig { returns(T::Array[Integer]) }
-        def tokens
-        end
-
-        sig { params(_: T::Array[Integer]).returns(T::Array[Integer]) }
-        def tokens=(_)
-        end
+        attr_accessor :tokens
 
         sig do
           params(

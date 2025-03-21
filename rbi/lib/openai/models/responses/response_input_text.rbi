@@ -6,21 +6,11 @@ module OpenAI
       class ResponseInputText < OpenAI::BaseModel
         # The text input to the model.
         sig { returns(String) }
-        def text
-        end
-
-        sig { params(_: String).returns(String) }
-        def text=(_)
-        end
+        attr_accessor :text
 
         # The type of the input item. Always `input_text`.
         sig { returns(Symbol) }
-        def type
-        end
-
-        sig { params(_: Symbol).returns(Symbol) }
-        def type=(_)
-        end
+        attr_accessor :type
 
         # A text input to the model.
         sig { params(text: String, type: Symbol).returns(T.attached_class) }

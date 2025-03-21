@@ -5,72 +5,40 @@ module OpenAI
     class Completion < OpenAI::BaseModel
       # A unique identifier for the completion.
       sig { returns(String) }
-      def id
-      end
-
-      sig { params(_: String).returns(String) }
-      def id=(_)
-      end
+      attr_accessor :id
 
       # The list of completion choices the model generated for the input prompt.
       sig { returns(T::Array[OpenAI::Models::CompletionChoice]) }
-      def choices
-      end
-
-      sig { params(_: T::Array[OpenAI::Models::CompletionChoice]).returns(T::Array[OpenAI::Models::CompletionChoice]) }
-      def choices=(_)
-      end
+      attr_accessor :choices
 
       # The Unix timestamp (in seconds) of when the completion was created.
       sig { returns(Integer) }
-      def created
-      end
-
-      sig { params(_: Integer).returns(Integer) }
-      def created=(_)
-      end
+      attr_accessor :created
 
       # The model used for completion.
       sig { returns(String) }
-      def model
-      end
-
-      sig { params(_: String).returns(String) }
-      def model=(_)
-      end
+      attr_accessor :model
 
       # The object type, which is always "text_completion"
       sig { returns(Symbol) }
-      def object
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def object=(_)
-      end
+      attr_accessor :object
 
       # This fingerprint represents the backend configuration that the model runs with.
       #
       #   Can be used in conjunction with the `seed` request parameter to understand when
       #   backend changes have been made that might impact determinism.
       sig { returns(T.nilable(String)) }
-      def system_fingerprint
-      end
+      attr_reader :system_fingerprint
 
-      sig { params(_: String).returns(String) }
-      def system_fingerprint=(_)
-      end
+      sig { params(system_fingerprint: String).void }
+      attr_writer :system_fingerprint
 
       # Usage statistics for the completion request.
       sig { returns(T.nilable(OpenAI::Models::CompletionUsage)) }
-      def usage
-      end
+      attr_reader :usage
 
-      sig do
-        params(_: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
-          .returns(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))
-      end
-      def usage=(_)
-      end
+      sig { params(usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)).void }
+      attr_writer :usage
 
       # Represents a completion response from the API. Note: both the streamed and
       #   non-streamed response objects share the same shape (unlike the chat endpoint).

@@ -5,21 +5,11 @@ module OpenAI
     class ModerationTextInput < OpenAI::BaseModel
       # A string of text to classify.
       sig { returns(String) }
-      def text
-      end
-
-      sig { params(_: String).returns(String) }
-      def text=(_)
-      end
+      attr_accessor :text
 
       # Always `text`.
       sig { returns(Symbol) }
-      def type
-      end
-
-      sig { params(_: Symbol).returns(Symbol) }
-      def type=(_)
-      end
+      attr_accessor :type
 
       # An object describing text to classify.
       sig { params(text: String, type: Symbol).returns(T.attached_class) }
