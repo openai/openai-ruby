@@ -15,9 +15,9 @@ module OpenAI
         # Create a thread.
         sig do
           params(
-            messages: T::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
+            messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateParams::Message, OpenAI::Util::AnyHash)],
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateParams::ToolResources),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources, OpenAI::Util::AnyHash)),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Thread)
@@ -62,7 +62,7 @@ module OpenAI
           params(
             thread_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources: T.nilable(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Util::AnyHash)),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Thread)
@@ -115,30 +115,35 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
             ),
             temperature: T.nilable(Float),
-            thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
+            thread: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Util::AnyHash),
             tool_choice: T.nilable(
               T.any(
                 OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
+                OpenAI::Models::Beta::AssistantToolChoice,
+                OpenAI::Util::AnyHash
               )
             ),
-            tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Util::AnyHash)),
             tools: T.nilable(
               T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::FileSearchTool,
                 OpenAI::Models::Beta::FunctionTool
               )
               ]
             ),
             top_p: T.nilable(Float),
-            truncation_strategy: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy),
+            truncation_strategy: T.nilable(
+              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Util::AnyHash)
+            ),
             stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
@@ -254,30 +259,35 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
             ),
             temperature: T.nilable(Float),
-            thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
+            thread: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Util::AnyHash),
             tool_choice: T.nilable(
               T.any(
                 OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
+                OpenAI::Models::Beta::AssistantToolChoice,
+                OpenAI::Util::AnyHash
               )
             ),
-            tool_resources: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Util::AnyHash)),
             tools: T.nilable(
               T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::FileSearchTool,
                 OpenAI::Models::Beta::FunctionTool
               )
               ]
             ),
             top_p: T.nilable(Float),
-            truncation_strategy: T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy),
+            truncation_strategy: T.nilable(
+              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Util::AnyHash)
+            ),
             stream: T.noreturn,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )

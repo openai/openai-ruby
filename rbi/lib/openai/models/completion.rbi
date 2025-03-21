@@ -77,7 +77,7 @@ module OpenAI
       sig do
         params(
           id: String,
-          choices: T::Array[OpenAI::Models::CompletionChoice],
+          choices: T::Array[T.any(OpenAI::Models::CompletionChoice, OpenAI::Util::AnyHash)],
           created: Integer,
           model: String,
           system_fingerprint: String,

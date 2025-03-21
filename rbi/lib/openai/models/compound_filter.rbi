@@ -31,7 +31,7 @@ module OpenAI
       # Combine multiple filters using `and` or `or`.
       sig do
         params(
-          filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)],
+          filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, T.anything)],
           type: OpenAI::Models::CompoundFilter::Type::OrSymbol
         )
           .returns(T.attached_class)

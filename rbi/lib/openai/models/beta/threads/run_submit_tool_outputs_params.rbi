@@ -31,7 +31,7 @@ module OpenAI
           sig do
             params(
               thread_id: String,
-              tool_outputs: T::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+              tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Util::AnyHash)],
               request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
               .returns(T.attached_class)

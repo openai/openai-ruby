@@ -105,13 +105,16 @@ module OpenAI
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                   OpenAI::Models::Beta::Threads::TextContentBlockParam
                 )
                 ]
               ),
               role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
-              attachments: T.nilable(T::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment]),
+              attachments: T.nilable(
+                T::Array[T.any(OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment, OpenAI::Util::AnyHash)]
+              ),
               metadata: T.nilable(T::Hash[Symbol, String]),
               request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
             )
@@ -242,6 +245,7 @@ module OpenAI
                 _: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
                 )
                 ]
@@ -250,6 +254,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
                   )
                   ]
@@ -264,6 +269,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
                 )
                 ]

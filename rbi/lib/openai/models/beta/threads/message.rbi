@@ -196,11 +196,12 @@ module OpenAI
             params(
               id: String,
               assistant_id: T.nilable(String),
-              attachments: T.nilable(T::Array[OpenAI::Models::Beta::Threads::Message::Attachment]),
+              attachments: T.nilable(T::Array[T.any(OpenAI::Models::Beta::Threads::Message::Attachment, OpenAI::Util::AnyHash)]),
               completed_at: T.nilable(Integer),
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                 OpenAI::Models::Beta::Threads::TextContentBlock,
                 OpenAI::Models::Beta::Threads::RefusalContentBlock
@@ -210,9 +211,9 @@ module OpenAI
               incomplete_at: T.nilable(Integer),
               incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash)),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              role: OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol,
+              role: OpenAI::Models::Beta::Threads::Message::Role::OrSymbol,
               run_id: T.nilable(String),
-              status: OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol,
+              status: OpenAI::Models::Beta::Threads::Message::Status::OrSymbol,
               thread_id: String,
               object: Symbol
             )
@@ -298,6 +299,7 @@ module OpenAI
                 _: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
                 )
                 ]
@@ -306,6 +308,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
                   )
                   ]
@@ -320,6 +323,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
                 )
                 ]
@@ -406,7 +410,7 @@ module OpenAI
 
             # On an incomplete message, details about why the message is incomplete.
             sig do
-              params(reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
+              params(reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::OrSymbol)
                 .returns(T.attached_class)
             end
             def self.new(reason:)

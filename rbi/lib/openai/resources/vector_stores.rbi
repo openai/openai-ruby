@@ -16,9 +16,10 @@ module OpenAI
         params(
           chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
+            OpenAI::Util::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           ),
-          expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
+          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash),
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
@@ -68,7 +69,7 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          expires_after: T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter),
+          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Util::AnyHash)),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
           request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
@@ -146,9 +147,9 @@ module OpenAI
         params(
           vector_store_id: String,
           query: T.any(String, T::Array[String]),
-          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter),
+          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter),
           max_num_results: Integer,
-          ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash),
           rewrite_query: T::Boolean,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
         )

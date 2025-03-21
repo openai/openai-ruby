@@ -254,6 +254,7 @@ module OpenAI
             _: T.any(
               OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
               OpenAI::Models::Responses::ToolChoiceTypes,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ToolChoiceFunction
             )
           )
@@ -261,6 +262,7 @@ module OpenAI
               T.any(
                 OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
                 OpenAI::Models::Responses::ToolChoiceTypes,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Responses::ToolChoiceFunction
               )
             )
@@ -304,6 +306,7 @@ module OpenAI
             _: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::FunctionTool,
               OpenAI::Models::Responses::ComputerTool,
               OpenAI::Models::Responses::WebSearchTool
@@ -314,6 +317,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Responses::FileSearchTool,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Responses::FunctionTool,
                 OpenAI::Models::Responses::ComputerTool,
                 OpenAI::Models::Responses::WebSearchTool
@@ -373,6 +377,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Responses::EasyInputMessage,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Responses::ResponseInputItem::Message,
                 OpenAI::Models::Responses::ResponseOutputMessage,
                 OpenAI::Models::Responses::ResponseFileSearchToolCall,
@@ -400,11 +405,13 @@ module OpenAI
             tool_choice: T.any(
               OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
               OpenAI::Models::Responses::ToolChoiceTypes,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ToolChoiceFunction
             ),
             tools: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::FunctionTool,
               OpenAI::Models::Responses::ComputerTool,
               OpenAI::Models::Responses::WebSearchTool

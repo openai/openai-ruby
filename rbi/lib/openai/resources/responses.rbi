@@ -25,6 +25,7 @@ module OpenAI
             T::Array[
             T.any(
               OpenAI::Models::Responses::EasyInputMessage,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseInputItem::Message,
               OpenAI::Models::Responses::ResponseOutputMessage,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
@@ -45,18 +46,20 @@ module OpenAI
           metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
-          reasoning: T.nilable(OpenAI::Models::Reasoning),
+          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: OpenAI::Models::Responses::ResponseTextConfig,
+          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash),
           tool_choice: T.any(
             OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
             OpenAI::Models::Responses::ToolChoiceTypes,
+            OpenAI::Util::AnyHash,
             OpenAI::Models::Responses::ToolChoiceFunction
           ),
           tools: T::Array[
           T.any(
             OpenAI::Models::Responses::FileSearchTool,
+            OpenAI::Util::AnyHash,
             OpenAI::Models::Responses::FunctionTool,
             OpenAI::Models::Responses::ComputerTool,
             OpenAI::Models::Responses::WebSearchTool
@@ -200,6 +203,7 @@ module OpenAI
             T::Array[
             T.any(
               OpenAI::Models::Responses::EasyInputMessage,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseInputItem::Message,
               OpenAI::Models::Responses::ResponseOutputMessage,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
@@ -220,18 +224,20 @@ module OpenAI
           metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
-          reasoning: T.nilable(OpenAI::Models::Reasoning),
+          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: OpenAI::Models::Responses::ResponseTextConfig,
+          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash),
           tool_choice: T.any(
             OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
             OpenAI::Models::Responses::ToolChoiceTypes,
+            OpenAI::Util::AnyHash,
             OpenAI::Models::Responses::ToolChoiceFunction
           ),
           tools: T::Array[
           T.any(
             OpenAI::Models::Responses::FileSearchTool,
+            OpenAI::Util::AnyHash,
             OpenAI::Models::Responses::FunctionTool,
             OpenAI::Models::Responses::ComputerTool,
             OpenAI::Models::Responses::WebSearchTool

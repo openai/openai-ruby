@@ -14,6 +14,7 @@ module OpenAI
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))

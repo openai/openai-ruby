@@ -35,6 +35,7 @@ module OpenAI
           params(
             _: T.any(
               OpenAI::Models::ResponseFormatText,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
               OpenAI::Models::ResponseFormatJSONObject
             )
@@ -42,6 +43,7 @@ module OpenAI
             .returns(
               T.any(
                 OpenAI::Models::ResponseFormatText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
                 OpenAI::Models::ResponseFormatJSONObject
               )
@@ -59,6 +61,7 @@ module OpenAI
           params(
             format_: T.any(
               OpenAI::Models::ResponseFormatText,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
               OpenAI::Models::ResponseFormatJSONObject
             )

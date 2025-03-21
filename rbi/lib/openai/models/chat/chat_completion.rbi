@@ -94,10 +94,10 @@ module OpenAI
         sig do
           params(
             id: String,
-            choices: T::Array[OpenAI::Models::Chat::ChatCompletion::Choice],
+            choices: T::Array[T.any(OpenAI::Models::Chat::ChatCompletion::Choice, OpenAI::Util::AnyHash)],
             created: Integer,
             model: String,
-            service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol),
+            service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::OrSymbol),
             system_fingerprint: String,
             usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash),
             object: Symbol
@@ -187,7 +187,7 @@ module OpenAI
 
           sig do
             params(
-              finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol,
+              finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::OrSymbol,
               index: Integer,
               logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Util::AnyHash)),
               message: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Util::AnyHash)
@@ -267,8 +267,8 @@ module OpenAI
             # Log probability information for the choice.
             sig do
               params(
-                content: T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]),
-                refusal: T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob])
+                content: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Util::AnyHash)]),
+                refusal: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Util::AnyHash)])
               )
                 .returns(T.attached_class)
             end

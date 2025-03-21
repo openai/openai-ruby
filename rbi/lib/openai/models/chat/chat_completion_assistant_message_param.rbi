@@ -127,8 +127,8 @@ module OpenAI
         end
 
         sig do
-          params(_: T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall])
-            .returns(T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall])
+          params(_: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)])
+            .returns(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)])
         end
         def tool_calls=(_)
         end
@@ -143,6 +143,7 @@ module OpenAI
                 T::Array[
                 T.any(
                   OpenAI::Models::Chat::ChatCompletionContentPartText,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Chat::ChatCompletionContentPartRefusal
                 )
                 ]
@@ -153,7 +154,7 @@ module OpenAI
             ),
             name: String,
             refusal: T.nilable(String),
-            tool_calls: T::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)],
             role: Symbol
           )
             .returns(T.attached_class)

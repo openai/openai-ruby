@@ -66,7 +66,11 @@ module OpenAI
             content_index: Integer,
             item_id: String,
             output_index: Integer,
-            part: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal),
+            part: T.any(
+              OpenAI::Models::Responses::ResponseOutputText,
+              OpenAI::Util::AnyHash,
+              OpenAI::Models::Responses::ResponseOutputRefusal
+            ),
             type: Symbol
           )
             .returns(T.attached_class)

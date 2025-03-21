@@ -111,10 +111,18 @@ module OpenAI
 
         sig do
           params(
-            _: T.any(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)
+            _: T.any(
+              OpenAI::Models::StaticFileChunkingStrategyObject,
+              OpenAI::Util::AnyHash,
+              OpenAI::Models::OtherFileChunkingStrategyObject
+            )
           )
             .returns(
-              T.any(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)
+              T.any(
+                OpenAI::Models::StaticFileChunkingStrategyObject,
+                OpenAI::Util::AnyHash,
+                OpenAI::Models::OtherFileChunkingStrategyObject
+              )
             )
         end
         def chunking_strategy=(_)
@@ -126,11 +134,15 @@ module OpenAI
             id: String,
             created_at: Integer,
             last_error: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash)),
-            status: OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol,
+            status: OpenAI::Models::VectorStores::VectorStoreFile::Status::OrSymbol,
             usage_bytes: Integer,
             vector_store_id: String,
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            chunking_strategy: T.any(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject),
+            chunking_strategy: T.any(
+              OpenAI::Models::StaticFileChunkingStrategyObject,
+              OpenAI::Util::AnyHash,
+              OpenAI::Models::OtherFileChunkingStrategyObject
+            ),
             object: Symbol
           )
             .returns(T.attached_class)
@@ -192,10 +204,7 @@ module OpenAI
           # The last error associated with this vector store file. Will be `null` if there
           #   are no errors.
           sig do
-            params(
-              code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol,
-              message: String
-            )
+            params(code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::OrSymbol, message: String)
               .returns(T.attached_class)
           end
           def self.new(code:, message:)

@@ -28,6 +28,7 @@ module OpenAI
               _: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::TextDeltaBlock,
                 OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
@@ -38,6 +39,7 @@ module OpenAI
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::TextDeltaBlock,
                   OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
                   OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
@@ -54,8 +56,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
+            params(_: OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol)
+              .returns(OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol)
           end
           def role=(_)
           end
@@ -66,12 +68,13 @@ module OpenAI
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::TextDeltaBlock,
                 OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
               )
               ],
-              role: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol
+              role: OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol
             )
               .returns(T.attached_class)
           end

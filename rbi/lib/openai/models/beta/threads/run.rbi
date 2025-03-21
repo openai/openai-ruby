@@ -426,22 +426,25 @@ module OpenAI
                 T.any(
                   Symbol,
                   OpenAI::Models::ResponseFormatText,
+                  OpenAI::Util::AnyHash,
                   OpenAI::Models::ResponseFormatJSONObject,
                   OpenAI::Models::ResponseFormatJSONSchema
                 )
               ),
               started_at: T.nilable(Integer),
-              status: OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol,
+              status: OpenAI::Models::Beta::Threads::RunStatus::OrSymbol,
               thread_id: String,
               tool_choice: T.nilable(
                 T.any(
-                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
-                  OpenAI::Models::Beta::AssistantToolChoice
+                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Models::Beta::AssistantToolChoice,
+                  OpenAI::Util::AnyHash
                 )
               ),
               tools: T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::FileSearchTool,
                 OpenAI::Models::Beta::FunctionTool
               )
@@ -548,8 +551,8 @@ module OpenAI
             end
 
             sig do
-              params(_: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
-                .returns(OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
+              params(_: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol)
+                .returns(OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol)
             end
             def reason=(_)
             end
@@ -557,7 +560,7 @@ module OpenAI
             # Details on why the run is incomplete. Will be `null` if the run is not
             #   incomplete.
             sig do
-              params(reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
+              params(reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol)
                 .returns(T.attached_class)
             end
             def self.new(reason: nil)
@@ -614,7 +617,7 @@ module OpenAI
 
             # The last error associated with this run. Will be `null` if there are no errors.
             sig do
-              params(code: OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol, message: String)
+              params(code: OpenAI::Models::Beta::Threads::Run::LastError::Code::OrSymbol, message: String)
                 .returns(T.attached_class)
             end
             def self.new(code:, message:)
@@ -711,7 +714,9 @@ module OpenAI
 
               # Details on the tool outputs needed for this run to continue.
               sig do
-                params(tool_calls: T::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall])
+                params(
+                  tool_calls: T::Array[T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall, OpenAI::Util::AnyHash)]
+                )
                   .returns(T.attached_class)
               end
               def self.new(tool_calls:)
@@ -753,7 +758,7 @@ module OpenAI
             #   control the intial context window of the run.
             sig do
               params(
-                type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol,
+                type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::OrSymbol,
                 last_messages: T.nilable(Integer)
               )
                 .returns(T.attached_class)

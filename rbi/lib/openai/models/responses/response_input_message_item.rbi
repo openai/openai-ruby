@@ -71,8 +71,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
+          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol)
         end
         def status=(_)
         end
@@ -83,8 +83,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
+          params(_: OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol)
         end
         def type=(_)
         end
@@ -95,13 +95,14 @@ module OpenAI
             content: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseInputText,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseInputImage,
               OpenAI::Models::Responses::ResponseInputFile
             )
             ],
-            role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
-            status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol,
-            type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+            role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::OrSymbol,
+            status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol,
+            type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol
           )
             .returns(T.attached_class)
         end

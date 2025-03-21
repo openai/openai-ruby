@@ -326,8 +326,8 @@ module OpenAI
         end
 
         sig do
-          params(_: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
-            .returns(OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
+          params(_: OpenAI::Models::Responses::ResponseStatus::OrSymbol)
+            .returns(OpenAI::Models::Responses::ResponseStatus::OrSymbol)
         end
         def status=(_)
         end
@@ -398,10 +398,11 @@ module OpenAI
             incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Util::AnyHash)),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol),
+            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
             output: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputMessage,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
               OpenAI::Models::Responses::ResponseFunctionToolCall,
               OpenAI::Models::Responses::ResponseFunctionWebSearch,
@@ -412,13 +413,15 @@ module OpenAI
             parallel_tool_calls: T::Boolean,
             temperature: T.nilable(Float),
             tool_choice: T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
+              OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
               OpenAI::Models::Responses::ToolChoiceTypes,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::ToolChoiceFunction
             ),
             tools: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Responses::FunctionTool,
               OpenAI::Models::Responses::ComputerTool,
               OpenAI::Models::Responses::WebSearchTool
@@ -428,9 +431,9 @@ module OpenAI
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)),
-            status: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol,
+            status: OpenAI::Models::Responses::ResponseStatus::OrSymbol,
             text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash),
-            truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol),
+            truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::OrSymbol),
             usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Util::AnyHash),
             user: String,
             object: Symbol
@@ -522,15 +525,15 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
-              .returns(OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
+            params(_: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::OrSymbol)
+              .returns(OpenAI::Models::Responses::Response::IncompleteDetails::Reason::OrSymbol)
           end
           def reason=(_)
           end
 
           # Details about why the response is incomplete.
           sig do
-            params(reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
+            params(reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::OrSymbol)
               .returns(T.attached_class)
           end
           def self.new(reason: nil)

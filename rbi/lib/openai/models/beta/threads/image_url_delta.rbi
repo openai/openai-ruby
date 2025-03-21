@@ -12,8 +12,8 @@ module OpenAI
           end
 
           sig do
-            params(_: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
-              .returns(OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
+            params(_: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::OrSymbol)
+              .returns(OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::OrSymbol)
           end
           def detail=(_)
           end
@@ -29,7 +29,7 @@ module OpenAI
           end
 
           sig do
-            params(detail: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol, url: String)
+            params(detail: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::OrSymbol, url: String)
               .returns(T.attached_class)
           end
           def self.new(detail: nil, url: nil)

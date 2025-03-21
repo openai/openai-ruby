@@ -47,7 +47,7 @@ module OpenAI
 
       sig do
         params(
-          finish_reason: OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol,
+          finish_reason: OpenAI::Models::CompletionChoice::FinishReason::OrSymbol,
           index: Integer,
           logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash)),
           text: String

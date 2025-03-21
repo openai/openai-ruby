@@ -330,6 +330,7 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
@@ -339,7 +340,8 @@ module OpenAI
             tool_choice: T.nilable(
               T.any(
                 OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Beta::AssistantToolChoice
+                OpenAI::Models::Beta::AssistantToolChoice,
+                OpenAI::Util::AnyHash
               )
             ),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Util::AnyHash)),
@@ -347,6 +349,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::Beta::FileSearchTool,
                 OpenAI::Models::Beta::FunctionTool
               )
@@ -450,8 +453,12 @@ module OpenAI
           end
 
           sig do
-            params(_: T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message])
-              .returns(T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message])
+            params(
+              _: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message, OpenAI::Util::AnyHash)]
+            )
+              .returns(
+                T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message, OpenAI::Util::AnyHash)]
+              )
           end
           def messages=(_)
           end
@@ -497,7 +504,7 @@ module OpenAI
           #   an empty thread will be created.
           sig do
             params(
-              messages: T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message],
+              messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message, OpenAI::Util::AnyHash)],
               metadata: T.nilable(T::Hash[Symbol, String]),
               tool_resources: T.nilable(
                 T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, OpenAI::Util::AnyHash)
@@ -621,13 +628,16 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                     OpenAI::Models::Beta::Threads::TextContentBlockParam
                   )
                   ]
                 ),
                 role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol,
-                attachments: T.nilable(T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment]),
+                attachments: T.nilable(
+                  T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment, OpenAI::Util::AnyHash)]
+                ),
                 metadata: T.nilable(T::Hash[Symbol, String])
               )
                 .returns(T.attached_class)
@@ -761,6 +771,7 @@ module OpenAI
                   _: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch
                   )
                   ]
@@ -769,6 +780,7 @@ module OpenAI
                     T::Array[
                     T.any(
                       OpenAI::Models::Beta::CodeInterpreterTool,
+                      OpenAI::Util::AnyHash,
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch
                     )
                     ]
@@ -783,6 +795,7 @@ module OpenAI
                   tools: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Util::AnyHash,
                     OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch
                   )
                   ]
@@ -980,10 +993,20 @@ module OpenAI
 
               sig do
                 params(
-                  _: T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
+                  _: T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Util::AnyHash
+                  )
+                  ]
                 )
                   .returns(
-                    T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
+                    T::Array[
+                    T.any(
+                      OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore,
+                      OpenAI::Util::AnyHash
+                    )
+                    ]
                   )
               end
               def vector_stores=(_)
@@ -992,7 +1015,12 @@ module OpenAI
               sig do
                 params(
                   vector_store_ids: T::Array[String],
-                  vector_stores: T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
+                  vector_stores: T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Util::AnyHash
+                  )
+                  ]
                 )
                   .returns(T.attached_class)
               end
@@ -1031,12 +1059,14 @@ module OpenAI
                   params(
                     _: T.any(
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Util::AnyHash,
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     )
                   )
                     .returns(
                       T.any(
                         OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Util::AnyHash,
                         OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                       )
                     )
@@ -1075,6 +1105,7 @@ module OpenAI
                   params(
                     chunking_strategy: T.any(
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Util::AnyHash,
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     ),
                     file_ids: T::Array[String],

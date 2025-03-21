@@ -238,6 +238,7 @@ module OpenAI
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
+              OpenAI::Util::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
@@ -246,6 +247,7 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
+                OpenAI::Util::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
