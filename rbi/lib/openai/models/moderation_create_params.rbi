@@ -66,31 +66,18 @@ module OpenAI
       module Input
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                String,
-                T::Array[String],
-                T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
-              )
-            }
-          end
-
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
         ModerationMultiModalInputArray =
           T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Converter)
 
-        class << self
-          sig do
-            override
-              .returns(
-                [String, T::Array[String], T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]
-              )
-          end
-          def variants
-          end
+        sig do
+          override
+            .returns(
+              [String, T::Array[String], T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]
+            )
+        end
+        def self.variants
         end
       end
 
@@ -101,12 +88,8 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ModerationModel::OrSymbol)} }
-
-        class << self
-          sig { override.returns([String, OpenAI::Models::ModerationModel::OrSymbol]) }
-          def variants
-          end
+        sig { override.returns([String, OpenAI::Models::ModerationModel::OrSymbol]) }
+        def self.variants
         end
       end
     end

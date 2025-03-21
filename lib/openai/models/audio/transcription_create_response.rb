@@ -15,10 +15,8 @@ module OpenAI
         variant -> { OpenAI::Models::Audio::TranscriptionVerbose }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)]
+        #   def self.variants; end
       end
     end
   end

@@ -165,15 +165,13 @@ module OpenAI
                       OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
                     )
 
-                  class << self
-                    sig do
-                      override
-                        .returns(
-                          T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol]
-                        )
-                    end
-                    def values
-                    end
+                  sig do
+                    override
+                      .returns(
+                        T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol]
+                      )
+                  end
+                  def self.values
                   end
                 end
               end
@@ -314,15 +312,13 @@ module OpenAI
                         OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
                       )
 
-                    class << self
-                      sig do
-                        override
-                          .returns(
-                            T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol]
-                          )
-                      end
-                      def values
-                      end
+                    sig do
+                      override
+                        .returns(
+                          T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol]
+                        )
+                    end
+                    def self.values
                     end
                   end
                 end

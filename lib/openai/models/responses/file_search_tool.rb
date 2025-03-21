@@ -73,10 +73,8 @@ module OpenAI
           variant -> { OpenAI::Models::CompoundFilter }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
+          #   def self.variants; end
         end
 
         class RankingOptions < OpenAI::BaseModel
@@ -121,11 +119,9 @@ module OpenAI
 
             finalize!
 
-            class << self
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def values; end
-            end
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def self.values; end
           end
         end
       end

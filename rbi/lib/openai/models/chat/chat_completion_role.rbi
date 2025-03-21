@@ -17,10 +17,8 @@ module OpenAI
         TOOL = T.let(:tool, OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol)
         FUNCTION = T.let(:function, OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol]) }
+        def self.values
         end
       end
     end

@@ -77,16 +77,6 @@ module OpenAI
         module Result
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
-                )
-              }
-            end
-
           class Logs < OpenAI::BaseModel
             # The logs of the code interpreter tool call.
             sig { returns(String) }
@@ -161,15 +151,13 @@ module OpenAI
             end
           end
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -189,13 +177,11 @@ module OpenAI
           COMPLETED =
             T.let(:completed, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol])
+          end
+          def self.values
           end
         end
       end

@@ -371,56 +371,30 @@ module OpenAI
         module Input
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
+          sig do
+            override
+              .returns(
+                [
                   String,
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Responses::EasyInputMessage,
-                    OpenAI::Models::Responses::ResponseInputItem::Message,
-                    OpenAI::Models::Responses::ResponseOutputMessage,
-                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                    OpenAI::Models::Responses::ResponseComputerToolCall,
-                    OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                    OpenAI::Models::Responses::ResponseFunctionToolCall,
-                    OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                    OpenAI::Models::Responses::ResponseReasoningItem,
-                    OpenAI::Models::Responses::ResponseInputItem::ItemReference
-                  )
-                  ]
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [
-                    String,
-                    T::Array[
-                                      T.any(
-                                        OpenAI::Models::Responses::EasyInputMessage,
-                                        OpenAI::Models::Responses::ResponseInputItem::Message,
-                                        OpenAI::Models::Responses::ResponseOutputMessage,
-                                        OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                                        OpenAI::Models::Responses::ResponseComputerToolCall,
-                                        OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                                        OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                                        OpenAI::Models::Responses::ResponseFunctionToolCall,
-                                        OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                                        OpenAI::Models::Responses::ResponseReasoningItem,
-                                        OpenAI::Models::Responses::ResponseInputItem::ItemReference
-                                      )
-                                      ]
-                  ]
-                )
-            end
-            def variants
-            end
+                                  T.any(
+                                    OpenAI::Models::Responses::EasyInputMessage,
+                                    OpenAI::Models::Responses::ResponseInputItem::Message,
+                                    OpenAI::Models::Responses::ResponseOutputMessage,
+                                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                                    OpenAI::Models::Responses::ResponseComputerToolCall,
+                                    OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
+                                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                                    OpenAI::Models::Responses::ResponseFunctionToolCall,
+                                    OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
+                                    OpenAI::Models::Responses::ResponseReasoningItem,
+                                    OpenAI::Models::Responses::ResponseInputItem::ItemReference
+                                  )
+                                  ]
+                ]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -430,26 +404,13 @@ module OpenAI
         module ToolChoice
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-                  OpenAI::Models::Responses::ToolChoiceTypes,
-                  OpenAI::Models::Responses::ToolChoiceFunction
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -471,10 +432,8 @@ module OpenAI
           AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)
           DISABLED = T.let(:disabled, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol]) }
+          def self.values
           end
         end
       end

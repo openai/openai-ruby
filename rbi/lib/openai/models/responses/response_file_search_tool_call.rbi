@@ -78,10 +78,8 @@ module OpenAI
             T.let(:incomplete, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
           FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -153,12 +151,8 @@ module OpenAI
           module Attribute
             extend OpenAI::Union
 
-            Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
-
-            class << self
-              sig { override.returns([String, Float, T::Boolean]) }
-              def variants
-              end
+            sig { override.returns([String, Float, T::Boolean]) }
+            def self.variants
             end
           end
         end

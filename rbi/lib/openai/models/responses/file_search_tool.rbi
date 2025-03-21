@@ -79,13 +79,8 @@ module OpenAI
         module Filters
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
-
-          class << self
-            sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
-            def variants
-            end
+          sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
+          def self.variants
           end
         end
 
@@ -142,12 +137,10 @@ module OpenAI
                 OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
               )
 
-            class << self
-              sig do
-                override.returns(T::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol])
-              end
-              def values
-              end
+            sig do
+              override.returns(T::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol])
+            end
+            def self.values
             end
           end
         end

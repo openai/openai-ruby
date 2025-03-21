@@ -101,23 +101,6 @@ module OpenAI
         module Action
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type,
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
-                )
-              }
-            end
-
           class Click < OpenAI::BaseModel
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
@@ -185,15 +168,13 @@ module OpenAI
               FORWARD =
                 T.let(:forward, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
 
-              class << self
-                sig do
-                  override
-                    .returns(
-                      T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol]
-                    )
-                end
-                def values
-                end
+              sig do
+                override
+                  .returns(
+                    T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol]
+                  )
+              end
+              def self.values
               end
             end
           end
@@ -414,15 +395,13 @@ module OpenAI
             end
           end
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -465,10 +444,8 @@ module OpenAI
           INCOMPLETE =
             T.let(:incomplete, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -483,10 +460,8 @@ module OpenAI
           COMPUTER_CALL =
             T.let(:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol]) }
+          def self.values
           end
         end
       end

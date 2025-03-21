@@ -66,10 +66,8 @@ module OpenAI
         LT = T.let(:lt, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
         LTE = T.let(:lte, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::ComparisonFilter::Type::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::ComparisonFilter::Type::TaggedSymbol]) }
+        def self.values
         end
       end
 
@@ -78,12 +76,8 @@ module OpenAI
       module Value
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
-
-        class << self
-          sig { override.returns([String, Float, T::Boolean]) }
-          def variants
-          end
+        sig { override.returns([String, Float, T::Boolean]) }
+        def self.variants
         end
       end
     end

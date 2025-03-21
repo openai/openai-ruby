@@ -12,10 +12,8 @@ module OpenAI
         TEXT = T.let(:text, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol)
         AUDIO = T.let(:audio, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol]) }
+        def self.values
         end
       end
     end

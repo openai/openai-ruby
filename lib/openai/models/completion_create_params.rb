@@ -253,10 +253,8 @@ module OpenAI
         variant const: OpenAI::Models::CompletionCreateParams::Model::BABBAGE_002
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Symbol)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Symbol)]
+        #   def self.variants; end
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -283,10 +281,8 @@ module OpenAI
         variant OpenAI::Models::CompletionCreateParams::Prompt::ArrayOfToken2DArray
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
+        #   def self.variants; end
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -301,10 +297,8 @@ module OpenAI
         variant OpenAI::Models::CompletionCreateParams::Stop::StringArray
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Array<String>)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Array<String>)]
+        #   def self.variants; end
       end
     end
   end

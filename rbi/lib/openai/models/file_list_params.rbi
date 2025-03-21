@@ -78,10 +78,8 @@ module OpenAI
         ASC = T.let(:asc, OpenAI::Models::FileListParams::Order::TaggedSymbol)
         DESC = T.let(:desc, OpenAI::Models::FileListParams::Order::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::FileListParams::Order::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::FileListParams::Order::TaggedSymbol]) }
+        def self.values
         end
       end
     end

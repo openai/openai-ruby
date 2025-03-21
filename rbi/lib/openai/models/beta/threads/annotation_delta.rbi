@@ -10,25 +10,13 @@ module OpenAI
         module AnnotationDelta
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                  OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation]
+              )
+          end
+          def self.variants
           end
         end
       end

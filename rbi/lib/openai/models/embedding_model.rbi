@@ -12,10 +12,8 @@ module OpenAI
       TEXT_EMBEDDING_3_SMALL = T.let(:"text-embedding-3-small", OpenAI::Models::EmbeddingModel::TaggedSymbol)
       TEXT_EMBEDDING_3_LARGE = T.let(:"text-embedding-3-large", OpenAI::Models::EmbeddingModel::TaggedSymbol)
 
-      class << self
-        sig { override.returns(T::Array[OpenAI::Models::EmbeddingModel::TaggedSymbol]) }
-        def values
-        end
+      sig { override.returns(T::Array[OpenAI::Models::EmbeddingModel::TaggedSymbol]) }
+      def self.values
       end
     end
   end

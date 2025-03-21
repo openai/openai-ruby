@@ -251,9 +251,6 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) { {fixed: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol)} }
-
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionCreateParams::Model) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol) }
 
@@ -262,10 +259,8 @@ module OpenAI
         DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
         BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
 
-        class << self
-          sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
-          def variants
-          end
+        sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
+        def self.variants
         end
       end
 
@@ -278,21 +273,14 @@ module OpenAI
       module Prompt
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {fixed: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])}
-          end
-
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
         IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
 
         ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
 
-        class << self
-          sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-          def variants
-          end
+        sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
+        def self.variants
         end
       end
 
@@ -301,14 +289,10 @@ module OpenAI
       module Stop
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.nilable(T.any(String, T::Array[String]))} }
-
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
-        class << self
-          sig { override.returns([String, T::Array[String]]) }
-          def variants
-          end
+        sig { override.returns([String, T::Array[String]]) }
+        def self.variants
         end
       end
     end

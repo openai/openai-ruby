@@ -171,10 +171,8 @@ module OpenAI
             FUNCTION_CALL =
               T.let(:function_call, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol]) }
+            def self.values
             end
           end
 
@@ -223,10 +221,8 @@ module OpenAI
           SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol]) }
+          def self.values
           end
         end
       end

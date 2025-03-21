@@ -28,10 +28,8 @@ module OpenAI
         variant -> { OpenAI::Models::Responses::WebSearchTool }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool)]
+        #   def self.variants; end
       end
     end
   end

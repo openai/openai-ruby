@@ -16,10 +16,8 @@ module OpenAI
         IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
         INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseStatus::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseStatus::TaggedSymbol]) }
+        def self.values
         end
       end
     end

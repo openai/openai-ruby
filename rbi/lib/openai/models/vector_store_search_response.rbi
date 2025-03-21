@@ -58,12 +58,8 @@ module OpenAI
       module Attribute
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(String, Float, T::Boolean)} }
-
-        class << self
-          sig { override.returns([String, Float, T::Boolean]) }
-          def variants
-          end
+        sig { override.returns([String, Float, T::Boolean]) }
+        def self.variants
         end
       end
 
@@ -100,10 +96,8 @@ module OpenAI
 
           TEXT = T.let(:text, OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol]) }
+          def self.values
           end
         end
       end

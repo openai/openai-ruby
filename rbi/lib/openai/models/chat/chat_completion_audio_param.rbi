@@ -54,10 +54,8 @@ module OpenAI
           OPUS = T.let(:opus, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
           PCM16 = T.let(:pcm16, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -79,10 +77,8 @@ module OpenAI
           SHIMMER = T.let(:shimmer, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           VERSE = T.let(:verse, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol]) }
+          def self.values
           end
         end
       end

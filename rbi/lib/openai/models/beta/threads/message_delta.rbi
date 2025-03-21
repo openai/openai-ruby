@@ -94,10 +94,8 @@ module OpenAI
             USER = T.let(:user, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
             ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol]) }
+            def self.values
             end
           end
         end

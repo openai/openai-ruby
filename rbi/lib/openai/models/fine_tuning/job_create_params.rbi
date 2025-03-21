@@ -150,9 +150,6 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) { {fixed: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol)} }
-
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model) }
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol) }
@@ -162,10 +159,8 @@ module OpenAI
           GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
           GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
 
-          class << self
-            sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol]) }
-            def variants
-            end
+          sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol]) }
+          def self.variants
           end
         end
 
@@ -225,12 +220,8 @@ module OpenAI
           module BatchSize
             extend OpenAI::Union
 
-            Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
-
-            class << self
-              sig { override.returns([Symbol, Integer]) }
-              def variants
-              end
+            sig { override.returns([Symbol, Integer]) }
+            def self.variants
             end
           end
 
@@ -239,12 +230,8 @@ module OpenAI
           module LearningRateMultiplier
             extend OpenAI::Union
 
-            Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
-
-            class << self
-              sig { override.returns([Symbol, Float]) }
-              def variants
-              end
+            sig { override.returns([Symbol, Float]) }
+            def self.variants
             end
           end
 
@@ -253,12 +240,8 @@ module OpenAI
           module NEpochs
             extend OpenAI::Union
 
-            Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
-
-            class << self
-              sig { override.returns([Symbol, Integer]) }
-              def variants
-              end
+            sig { override.returns([Symbol, Integer]) }
+            def self.variants
             end
           end
         end
@@ -500,12 +483,8 @@ module OpenAI
               module BatchSize
                 extend OpenAI::Union
 
-                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
-
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
+                sig { override.returns([Symbol, Integer]) }
+                def self.variants
                 end
               end
 
@@ -514,12 +493,8 @@ module OpenAI
               module Beta
                 extend OpenAI::Union
 
-                Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
-
-                class << self
-                  sig { override.returns([Symbol, Float]) }
-                  def variants
-                  end
+                sig { override.returns([Symbol, Float]) }
+                def self.variants
                 end
               end
 
@@ -528,12 +503,8 @@ module OpenAI
               module LearningRateMultiplier
                 extend OpenAI::Union
 
-                Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
-
-                class << self
-                  sig { override.returns([Symbol, Float]) }
-                  def variants
-                  end
+                sig { override.returns([Symbol, Float]) }
+                def self.variants
                 end
               end
 
@@ -542,12 +513,8 @@ module OpenAI
               module NEpochs
                 extend OpenAI::Union
 
-                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
-
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
+                sig { override.returns([Symbol, Integer]) }
+                def self.variants
                 end
               end
             end
@@ -646,12 +613,8 @@ module OpenAI
               module BatchSize
                 extend OpenAI::Union
 
-                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
-
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
+                sig { override.returns([Symbol, Integer]) }
+                def self.variants
                 end
               end
 
@@ -660,12 +623,8 @@ module OpenAI
               module LearningRateMultiplier
                 extend OpenAI::Union
 
-                Variants = type_template(:out) { {fixed: T.any(Symbol, Float)} }
-
-                class << self
-                  sig { override.returns([Symbol, Float]) }
-                  def variants
-                  end
+                sig { override.returns([Symbol, Float]) }
+                def self.variants
                 end
               end
 
@@ -674,12 +633,8 @@ module OpenAI
               module NEpochs
                 extend OpenAI::Union
 
-                Variants = type_template(:out) { {fixed: T.any(Symbol, Integer)} }
-
-                class << self
-                  sig { override.returns([Symbol, Integer]) }
-                  def variants
-                  end
+                sig { override.returns([Symbol, Integer]) }
+                def self.variants
                 end
               end
             end
@@ -696,10 +651,8 @@ module OpenAI
             SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)
             DPO = T.let(:dpo, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol]) }
+            def self.values
             end
           end
         end

@@ -2,7 +2,7 @@
 
 # We already ship the preferred sorbet manifests in the package itself.
 # `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
-if defined?(:Tapioca) && caller_locations.any? { _1.path.end_with?("tapioca/cli.rb") }
+if Object.const_defined?(:Tapioca) && caller_locations.any? { _1.path.end_with?("tapioca/cli.rb") }
   Warning.warn(
     <<~WARN
       \n

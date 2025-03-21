@@ -58,10 +58,8 @@ module OpenAI
       GPT_3_5_TURBO_0125 = T.let(:"gpt-3.5-turbo-0125", OpenAI::Models::ChatModel::TaggedSymbol)
       GPT_3_5_TURBO_16K_0613 = T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Models::ChatModel::TaggedSymbol)
 
-      class << self
-        sig { override.returns(T::Array[OpenAI::Models::ChatModel::TaggedSymbol]) }
-        def values
-        end
+      sig { override.returns(T::Array[OpenAI::Models::ChatModel::TaggedSymbol]) }
+      def self.values
       end
     end
   end

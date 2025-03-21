@@ -9,19 +9,6 @@ module OpenAI
       module MessageStreamEvent
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated,
-                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress,
-                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta,
-                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted,
-                OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete
-              )
-            }
-          end
-
         class ThreadMessageCreated < OpenAI::BaseModel
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -160,15 +147,13 @@ module OpenAI
           end
         end
 
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete]
-              )
-          end
-          def variants
-          end
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete]
+            )
+        end
+        def self.variants
         end
       end
     end

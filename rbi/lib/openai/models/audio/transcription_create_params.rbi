@@ -140,12 +140,8 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::AudioModel::OrSymbol)} }
-
-          class << self
-            sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
-            def variants
-            end
+          sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
+          def self.variants
           end
         end
 
@@ -161,13 +157,11 @@ module OpenAI
           SEGMENT =
             T.let(:segment, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol)
 
-          class << self
-            sig do
-              override
-                .returns(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol])
-            end
-            def values
-            end
+          sig do
+            override
+              .returns(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol])
+          end
+          def self.values
           end
         end
       end

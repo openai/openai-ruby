@@ -9,26 +9,13 @@ module OpenAI
           module ToolCall
             extend OpenAI::Union
 
-            Variants =
-              type_template(:out) do
-                {
-                  fixed: T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
-                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
-                  )
-                }
-              end
-
-            class << self
-              sig do
-                override
-                  .returns(
-                    [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall]
-                  )
-              end
-              def variants
-              end
+            sig do
+              override
+                .returns(
+                  [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall]
+                )
+            end
+            def self.variants
             end
           end
         end

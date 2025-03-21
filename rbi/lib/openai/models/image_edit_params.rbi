@@ -105,12 +105,8 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::ImageModel::OrSymbol)} }
-
-        class << self
-          sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
-          def variants
-          end
+        sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
+        def self.variants
         end
       end
 
@@ -126,10 +122,8 @@ module OpenAI
         URL = T.let(:url, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol)
         B64_JSON = T.let(:b64_json, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol]) }
+        def self.values
         end
       end
 
@@ -145,10 +139,8 @@ module OpenAI
         NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
         NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::Size::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::Size::TaggedSymbol]) }
+        def self.values
         end
       end
     end

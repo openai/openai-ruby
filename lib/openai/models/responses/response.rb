@@ -298,11 +298,9 @@ module OpenAI
 
             finalize!
 
-            class << self
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def values; end
-            end
+            # @!parse
+            #   # @return [Array<Symbol>]
+            #   def self.values; end
           end
         end
 
@@ -330,10 +328,8 @@ module OpenAI
           variant -> { OpenAI::Models::Responses::ToolChoiceFunction }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
+          #   def self.variants; end
         end
 
         # The truncation strategy to use for the model response.
@@ -351,11 +347,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
       end
     end

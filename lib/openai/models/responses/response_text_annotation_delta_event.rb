@@ -191,10 +191,8 @@ module OpenAI
           end
 
           # @!parse
-          #   class << self
-          #     # @return [Array(OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath)]
+          #   def self.variants; end
         end
       end
     end

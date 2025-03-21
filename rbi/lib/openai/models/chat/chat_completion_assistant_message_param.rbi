@@ -156,21 +156,6 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  String,
-                  T::Array[
-                  T.any(
-                    OpenAI::Models::Chat::ChatCompletionContentPartText,
-                    OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-                  )
-                  ]
-                )
-              }
-            end
-
           ArrayOfContentPartArray =
             T.let(
               OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart],
@@ -182,45 +167,31 @@ module OpenAI
           module ArrayOfContentPart
             extend OpenAI::Union
 
-            Variants =
-              type_template(:out) do
-                {
-                  fixed: T.any(
-                    OpenAI::Models::Chat::ChatCompletionContentPartText,
-                    OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-                  )
-                }
-              end
-
-            class << self
-              sig do
-                override
-                  .returns(
-                    [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
-                  )
-              end
-              def variants
-              end
-            end
-          end
-
-          class << self
             sig do
               override
                 .returns(
-                  [
-                    String,
-                    T::Array[
-                                      T.any(
-                                        OpenAI::Models::Chat::ChatCompletionContentPartText,
-                                        OpenAI::Models::Chat::ChatCompletionContentPartRefusal
-                                      )
-                                      ]
-                  ]
+                  [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
                 )
             end
-            def variants
+            def self.variants
             end
+          end
+
+          sig do
+            override
+              .returns(
+                [
+                  String,
+                  T::Array[
+                                  T.any(
+                                    OpenAI::Models::Chat::ChatCompletionContentPartText,
+                                    OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+                                  )
+                                  ]
+                ]
+              )
+          end
+          def self.variants
           end
         end
 

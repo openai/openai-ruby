@@ -47,10 +47,8 @@ module OpenAI
           WEB_SEARCH_PREVIEW_2025_03_11 =
             T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol]) }
+          def self.values
           end
         end
       end
