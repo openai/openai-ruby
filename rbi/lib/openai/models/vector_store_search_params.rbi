@@ -83,14 +83,10 @@ module OpenAI
       module Query
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(String, T::Array[String])} }
-
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
-        class << self
-          sig { override.returns([String, T::Array[String]]) }
-          def variants
-          end
+        sig { override.returns([String, T::Array[String]]) }
+        def self.variants
         end
       end
 
@@ -98,13 +94,8 @@ module OpenAI
       module Filters
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)} }
-
-        class << self
-          sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
-          def variants
-          end
+        sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
+        def self.variants
         end
       end
 
@@ -156,10 +147,8 @@ module OpenAI
               OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
             )
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol]) }
+          def self.values
           end
         end
       end

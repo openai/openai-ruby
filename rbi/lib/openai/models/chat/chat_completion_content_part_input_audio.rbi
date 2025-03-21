@@ -84,15 +84,13 @@ module OpenAI
             MP3 =
               T.let(:mp3, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol)
 
-            class << self
-              sig do
-                override
-                  .returns(
-                    T::Array[OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol]
-                  )
-              end
-              def values
-              end
+            sig do
+              override
+                .returns(
+                  T::Array[OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol]
+                )
+            end
+            def self.values
             end
           end
         end

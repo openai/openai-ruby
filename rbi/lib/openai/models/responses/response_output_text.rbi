@@ -68,17 +68,6 @@ module OpenAI
         module Annotation
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
-                  OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
-                  OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
-                )
-              }
-            end
-
           class FileCitation < OpenAI::BaseModel
             # The ID of the file.
             sig { returns(String) }
@@ -169,15 +158,13 @@ module OpenAI
             end
           end
 
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath]
+              )
+          end
+          def self.variants
           end
         end
       end

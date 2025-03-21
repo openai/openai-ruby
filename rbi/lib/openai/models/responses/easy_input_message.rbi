@@ -87,40 +87,22 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
+          sig do
+            override
+              .returns(
+                [
                   String,
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Responses::ResponseInputText,
-                    OpenAI::Models::Responses::ResponseInputImage,
-                    OpenAI::Models::Responses::ResponseInputFile
-                  )
-                  ]
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [
-                    String,
-                    T::Array[
-                                      T.any(
-                                        OpenAI::Models::Responses::ResponseInputText,
-                                        OpenAI::Models::Responses::ResponseInputImage,
-                                        OpenAI::Models::Responses::ResponseInputFile
-                                      )
-                                      ]
-                  ]
-                )
-            end
-            def variants
-            end
+                                  T.any(
+                                    OpenAI::Models::Responses::ResponseInputText,
+                                    OpenAI::Models::Responses::ResponseInputImage,
+                                    OpenAI::Models::Responses::ResponseInputFile
+                                  )
+                                  ]
+                ]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -138,10 +120,8 @@ module OpenAI
           SYSTEM = T.let(:system, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
           DEVELOPER = T.let(:developer, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol]) }
+          def self.values
           end
         end
 
@@ -155,10 +135,8 @@ module OpenAI
 
           MESSAGE = T.let(:message, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol]) }
+          def self.values
           end
         end
       end

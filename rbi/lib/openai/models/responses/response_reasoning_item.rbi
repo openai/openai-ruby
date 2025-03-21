@@ -83,10 +83,8 @@ module OpenAI
           COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol)
           INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol]) }
+          def self.values
           end
         end
       end

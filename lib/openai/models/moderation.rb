@@ -316,11 +316,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module HarassmentThreatening
@@ -330,11 +328,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module Hate
@@ -344,11 +340,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module HateThreatening
@@ -358,11 +352,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module Illicit
@@ -372,11 +364,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module IllicitViolent
@@ -386,11 +376,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module SelfHarm
@@ -401,11 +389,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module SelfHarmInstruction
@@ -416,11 +402,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module SelfHarmIntent
@@ -431,11 +415,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module Sexual
@@ -446,11 +428,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module SexualMinor
@@ -460,11 +440,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module Violence
@@ -475,11 +453,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         module ViolenceGraphic
@@ -490,11 +466,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
       end
 

@@ -21,10 +21,8 @@ module OpenAI
           variant :text, -> { OpenAI::Models::Beta::Threads::TextContentBlockParam }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam)]
+          #   def self.variants; end
         end
       end
     end

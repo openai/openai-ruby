@@ -87,10 +87,8 @@ module OpenAI
         variant OpenAI::Models::VectorStoreSearchParams::Query::StringArray
 
         # @!parse
-        #   class << self
-        #     # @return [Array(String, Array<String>)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(String, Array<String>)]
+        #   def self.variants; end
       end
 
       # A filter to apply based on file attributes.
@@ -104,10 +102,8 @@ module OpenAI
         variant -> { OpenAI::Models::CompoundFilter }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
+        #   def self.variants; end
       end
 
       class RankingOptions < OpenAI::BaseModel
@@ -147,11 +143,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
       end
     end

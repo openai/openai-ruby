@@ -33,10 +33,8 @@ module OpenAI
         variant :reasoning, -> { OpenAI::Models::Responses::ResponseReasoningItem }
 
         # @!parse
-        #   class << self
-        #     # @return [Array(OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem)]
-        #     def variants; end
-        #   end
+        #   # @return [Array(OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem)]
+        #   def self.variants; end
       end
     end
   end

@@ -144,25 +144,13 @@ module OpenAI
               module Output
                 extend OpenAI::Union
 
-                Variants =
-                  type_template(:out) do
-                    {
-                      fixed: T.any(
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
-                      )
-                    }
-                  end
-
-                class << self
-                  sig do
-                    override
-                      .returns(
-                        [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
-                      )
-                  end
-                  def variants
-                  end
+                sig do
+                  override
+                    .returns(
+                      [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
+                    )
+                end
+                def self.variants
                 end
               end
             end

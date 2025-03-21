@@ -40,12 +40,8 @@ module OpenAI
       module Filter
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(OpenAI::Models::ComparisonFilter, T.anything)} }
-
-        class << self
-          sig { override.returns([OpenAI::Models::ComparisonFilter, T.anything]) }
-          def variants
-          end
+        sig { override.returns([OpenAI::Models::ComparisonFilter, T.anything]) }
+        def self.variants
         end
       end
 
@@ -59,10 +55,8 @@ module OpenAI
         AND = T.let(:and, OpenAI::Models::CompoundFilter::Type::TaggedSymbol)
         OR = T.let(:or, OpenAI::Models::CompoundFilter::Type::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::CompoundFilter::Type::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::CompoundFilter::Type::TaggedSymbol]) }
+        def self.values
         end
       end
     end

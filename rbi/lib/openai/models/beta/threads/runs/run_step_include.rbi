@@ -18,10 +18,8 @@ module OpenAI
                 OpenAI::Models::Beta::Threads::Runs::RunStepInclude::TaggedSymbol
               )
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::TaggedSymbol]) }
+            def self.values
             end
           end
         end

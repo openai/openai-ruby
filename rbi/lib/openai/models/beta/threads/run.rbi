@@ -403,10 +403,8 @@ module OpenAI
               MAX_PROMPT_TOKENS =
                 T.let(:max_prompt_tokens, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
 
-              class << self
-                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol]) }
-                def values
-                end
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol]) }
+              def self.values
               end
             end
           end
@@ -449,10 +447,8 @@ module OpenAI
               INVALID_PROMPT =
                 T.let(:invalid_prompt, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
 
-              class << self
-                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol]) }
-                def values
-                end
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol]) }
+              def self.values
               end
             end
           end
@@ -569,10 +565,8 @@ module OpenAI
               LAST_MESSAGES =
                 T.let(:last_messages, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
 
-              class << self
-                sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol]) }
-                def values
-                end
+              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol]) }
+              def self.values
               end
             end
           end

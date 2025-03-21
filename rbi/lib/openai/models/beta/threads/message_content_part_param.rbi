@@ -9,26 +9,13 @@ module OpenAI
         module MessageContentPartParam
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                  OpenAI::Models::Beta::Threads::TextContentBlockParam
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam]
+              )
+          end
+          def self.variants
           end
         end
       end

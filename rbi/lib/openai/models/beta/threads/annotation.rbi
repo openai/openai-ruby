@@ -10,25 +10,13 @@ module OpenAI
         module Annotation
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                  OpenAI::Models::Beta::Threads::FilePathAnnotation
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation]
+              )
+          end
+          def self.variants
           end
         end
       end

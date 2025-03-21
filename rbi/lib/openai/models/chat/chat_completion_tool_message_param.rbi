@@ -44,16 +44,11 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) { {fixed: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])} }
-
           ChatCompletionContentPartTextArray =
             T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Converter)
 
-          class << self
-            sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
-            def variants
-            end
+          sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
+          def self.variants
           end
         end
       end

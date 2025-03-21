@@ -81,12 +81,8 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
-          Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::AudioModel::OrSymbol)} }
-
-          class << self
-            sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
-            def variants
-            end
+          sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
+          def self.variants
           end
         end
 
@@ -107,10 +103,8 @@ module OpenAI
             T.let(:verbose_json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
           VTT = T.let(:vtt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol]) }
+          def self.values
           end
         end
       end

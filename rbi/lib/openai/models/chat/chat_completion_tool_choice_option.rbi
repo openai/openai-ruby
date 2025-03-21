@@ -15,16 +15,6 @@ module OpenAI
       module ChatCompletionToolChoiceOption
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {
-              fixed: T.any(
-                OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionNamedToolChoice
-              )
-            }
-          end
-
         # `none` means the model will not call any tool and instead generates a message.
         #   `auto` means the model can pick between generating a message or calling one or
         #   more tools. `required` means the model must call one or more tools.
@@ -39,22 +29,18 @@ module OpenAI
           AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
           REQUIRED = T.let(:required, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol]) }
+          def self.values
           end
         end
 
-        class << self
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
-              )
-          end
-          def variants
-          end
+        sig do
+          override
+            .returns(
+              [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
+            )
+        end
+        def self.variants
         end
       end
     end

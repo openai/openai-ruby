@@ -273,10 +273,8 @@ module OpenAI
                 T.let(:assistant, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
               TOOL = T.let(:tool, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
 
-              class << self
-                sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol]) }
-                def values
-                end
+              sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol]) }
+              def self.values
               end
             end
 
@@ -374,13 +372,11 @@ module OpenAI
                 FUNCTION =
                   T.let(:function, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
 
-                class << self
-                  sig do
-                    override
-                      .returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol])
-                  end
-                  def values
-                  end
+                sig do
+                  override
+                    .returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol])
+                end
+                def self.values
                 end
               end
             end
@@ -409,10 +405,8 @@ module OpenAI
             FUNCTION_CALL =
               T.let(:function_call, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol]) }
+            def self.values
             end
           end
 
@@ -461,10 +455,8 @@ module OpenAI
           SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol]) }
+          def self.values
           end
         end
       end

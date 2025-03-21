@@ -24,10 +24,8 @@ module OpenAI
           variant :refusal, -> { OpenAI::Models::Beta::Threads::RefusalContentBlock }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock)]
+          #   def self.variants; end
         end
       end
     end

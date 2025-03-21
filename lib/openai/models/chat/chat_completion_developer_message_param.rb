@@ -54,10 +54,8 @@ module OpenAI
           variant OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::Content::ChatCompletionContentPartTextArray
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
+          #   def self.variants; end
         end
       end
     end

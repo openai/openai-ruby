@@ -263,10 +263,8 @@ module OpenAI
           variant -> { OpenAI::Models::Responses::ResponseInput }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
+          #   def self.variants; end
         end
 
         # How the model should select which tool (or tools) to use when generating a
@@ -293,10 +291,8 @@ module OpenAI
           variant -> { OpenAI::Models::Responses::ToolChoiceFunction }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
+          #   def self.variants; end
         end
 
         # The truncation strategy to use for the model response.
@@ -314,11 +310,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
       end
     end

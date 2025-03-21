@@ -87,10 +87,8 @@ module OpenAI
           variant enum: -> { OpenAI::Models::Audio::SpeechModel }
 
           # @!parse
-          #   class << self
-          #     # @return [Array(String, Symbol, OpenAI::Models::Audio::SpeechModel)]
-          #     def variants; end
-          #   end
+          #   # @return [Array(String, Symbol, OpenAI::Models::Audio::SpeechModel)]
+          #   def self.variants; end
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
@@ -112,11 +110,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
@@ -133,11 +129,9 @@ module OpenAI
 
           finalize!
 
-          class << self
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def values; end
-          end
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
       end
     end

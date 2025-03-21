@@ -91,21 +91,14 @@ module OpenAI
       module Input
         extend OpenAI::Union
 
-        Variants =
-          type_template(:out) do
-            {fixed: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])}
-          end
-
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
         IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
 
         ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
 
-        class << self
-          sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-          def variants
-          end
+        sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
+        def self.variants
         end
       end
 
@@ -117,12 +110,8 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
-        Variants = type_template(:out) { {fixed: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol)} }
-
-        class << self
-          sig { override.returns([String, OpenAI::Models::EmbeddingModel::OrSymbol]) }
-          def variants
-          end
+        sig { override.returns([String, OpenAI::Models::EmbeddingModel::OrSymbol]) }
+        def self.variants
         end
       end
 
@@ -138,10 +127,8 @@ module OpenAI
         FLOAT = T.let(:float, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
         BASE64 = T.let(:base64, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
 
-        class << self
-          sig { override.returns(T::Array[OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol]) }
-          def values
-          end
+        sig { override.returns(T::Array[OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol]) }
+        def self.values
         end
       end
     end

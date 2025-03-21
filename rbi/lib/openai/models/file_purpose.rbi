@@ -19,10 +19,8 @@ module OpenAI
       USER_DATA = T.let(:user_data, OpenAI::Models::FilePurpose::TaggedSymbol)
       EVALS = T.let(:evals, OpenAI::Models::FilePurpose::TaggedSymbol)
 
-      class << self
-        sig { override.returns(T::Array[OpenAI::Models::FilePurpose::TaggedSymbol]) }
-        def values
-        end
+      sig { override.returns(T::Array[OpenAI::Models::FilePurpose::TaggedSymbol]) }
+      def self.values
       end
     end
   end

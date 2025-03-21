@@ -379,10 +379,8 @@ module OpenAI
             CONTENT_FILTER =
               T.let(:content_filter, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
 
-            class << self
-              sig { override.returns(T::Array[OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol]) }
-              def values
-              end
+            sig { override.returns(T::Array[OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol]) }
+            def self.values
             end
           end
         end
@@ -393,26 +391,13 @@ module OpenAI
         module ToolChoice
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(
-                  OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-                  OpenAI::Models::Responses::ToolChoiceTypes,
-                  OpenAI::Models::Responses::ToolChoiceFunction
-                )
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
-                )
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns(
+                [OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+              )
+          end
+          def self.variants
           end
         end
 
@@ -432,10 +417,8 @@ module OpenAI
           AUTO = T.let(:auto, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
           DISABLED = T.let(:disabled, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::Response::Truncation::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::Response::Truncation::TaggedSymbol]) }
+          def self.values
           end
         end
       end

@@ -68,20 +68,11 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          Variants =
-            type_template(:out) do
-              {
-                fixed: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
-              }
-            end
-
-          class << self
-            sig do
-              override
-                .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
-            end
-            def variants
-            end
+          sig do
+            override
+              .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
+          end
+          def self.variants
           end
         end
 
@@ -98,10 +89,8 @@ module OpenAI
           COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol)
           INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol)
 
-          class << self
-            sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol]) }
-            def values
-            end
+          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol]) }
+          def self.values
           end
         end
       end
