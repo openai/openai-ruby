@@ -1,20 +1,25 @@
 # frozen_string_literal: true
 
+require "securerandom"
+require "shellwords"
+
 require "minitest/test_task"
 require "rake/clean"
 require "rubocop/rake_task"
-require "securerandom"
-require "shellwords"
 
 CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/])
 
 xargs = %w[xargs --no-run-if-empty --null --max-procs=0 --max-args=300 --]
 
-task(default: [:test, :format])
+task(default: [:test])
 
-Minitest::TestTask.create do |t|
-  t.libs = %w[.]
-  t.test_globs = ENV.fetch("TEST", "./test/**/*_test.rb")
+multitask(:test) do
+  rb = 
+    FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
+    .map { "require_relative(#{_1.dump});" }
+    .join
+
+  ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
 end
 
 RuboCop::RakeTask.new(:rubocop) do |t|
