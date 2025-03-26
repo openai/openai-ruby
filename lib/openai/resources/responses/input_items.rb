@@ -14,6 +14,9 @@ module OpenAI
         #
         #   @option params [String] :before An item ID to list items before, used in pagination.
         #
+        #   @option params [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] :include Additional fields to include in the response. See the `include` parameter for
+        #     Response creation above for more information.
+        #
         #   @option params [Integer] :limit A limit on the number of objects to be returned. Limit can range between 1 and
         #     100, and the default is 20.
         #

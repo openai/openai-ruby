@@ -21,6 +21,14 @@ module OpenAI
         sig { params(before: String).void }
         attr_writer :before
 
+        # Additional fields to include in the response. See the `include` parameter for
+        #   Response creation above for more information.
+        sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])) }
+        attr_reader :include
+
+        sig { params(include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]).void }
+        attr_writer :include
+
         # A limit on the number of objects to be returned. Limit can range between 1 and
         #   100, and the default is 20.
         sig { returns(T.nilable(Integer)) }
@@ -43,13 +51,14 @@ module OpenAI
           params(
             after: String,
             before: String,
+            include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
             order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
             request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
-        def self.new(after: nil, before: nil, limit: nil, order: nil, request_options: {})
+        def self.new(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
         end
 
         sig do
@@ -58,6 +67,7 @@ module OpenAI
               {
                 after: String,
                 before: String,
+                include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
                 limit: Integer,
                 order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions

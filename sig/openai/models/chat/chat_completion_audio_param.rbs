@@ -36,21 +36,45 @@ module OpenAI
         end
 
         type voice =
-          :alloy | :ash | :ballad | :coral | :echo | :sage | :shimmer | :verse
+          String
+          | :alloy
+          | :ash
+          | :ballad
+          | :coral
+          | :echo
+          | :fable
+          | :onyx
+          | :nova
+          | :sage
+          | :shimmer
+          | :verse
 
         module Voice
-          extend OpenAI::Enum
+          extend OpenAI::Union
 
           ALLOY: :alloy
           ASH: :ash
           BALLAD: :ballad
           CORAL: :coral
           ECHO: :echo
+          FABLE: :fable
+          ONYX: :onyx
+          NOVA: :nova
           SAGE: :sage
           SHIMMER: :shimmer
           VERSE: :verse
 
-          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::voice]
+          def self?.variants: -> [String, (:alloy
+          | :ash
+          | :ballad
+          | :coral
+          | :echo
+          | :fable
+          | :onyx
+          | :nova
+          | :sage
+          | :shimmer
+          | :verse)]
         end
       end
     end

@@ -11,7 +11,7 @@ module OpenAI
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
-        sig { returns(OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol) }
+        sig { returns(T.any(String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)) }
         attr_accessor :voice
 
         # Parameters for audio output. Required when audio output is requested with
@@ -20,7 +20,7 @@ module OpenAI
         sig do
           params(
             format_: OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol,
-            voice: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol
+            voice: T.any(String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
           )
             .returns(T.attached_class)
         end
@@ -32,7 +32,7 @@ module OpenAI
             .returns(
               {
                 format_: OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol,
-                voice: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol
+                voice: T.any(String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)
               }
             )
         end
@@ -62,7 +62,7 @@ module OpenAI
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         module Voice
-          extend OpenAI::Enum
+          extend OpenAI::Union
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice) }
           OrSymbol =
@@ -73,12 +73,15 @@ module OpenAI
           BALLAD = T.let(:ballad, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           CORAL = T.let(:coral, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           ECHO = T.let(:echo, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          FABLE = T.let(:fable, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          ONYX = T.let(:onyx, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
+          NOVA = T.let(:nova, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           SAGE = T.let(:sage, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           SHIMMER = T.let(:shimmer, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           VERSE = T.let(:verse, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
 
-          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol]) }
-          def self.values
+          sig { override.returns([String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol]) }
+          def self.variants
           end
         end
       end

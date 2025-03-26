@@ -57,8 +57,10 @@ module OpenAI
         end
 
         type voice =
-          :alloy
+          String
+          | :alloy
           | :ash
+          | :ballad
           | :coral
           | :echo
           | :fable
@@ -66,12 +68,14 @@ module OpenAI
           | :nova
           | :sage
           | :shimmer
+          | :verse
 
         module Voice
-          extend OpenAI::Enum
+          extend OpenAI::Union
 
           ALLOY: :alloy
           ASH: :ash
+          BALLAD: :ballad
           CORAL: :coral
           ECHO: :echo
           FABLE: :fable
@@ -79,8 +83,19 @@ module OpenAI
           NOVA: :nova
           SAGE: :sage
           SHIMMER: :shimmer
+          VERSE: :verse
 
-          def self?.values: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::voice]
+          def self?.variants: -> [String, (:alloy
+          | :ash
+          | :ballad
+          | :coral
+          | :echo
+          | :fable
+          | :onyx
+          | :nova
+          | :sage
+          | :shimmer
+          | :verse)]
         end
 
         type response_format = :mp3 | :opus | :aac | :flac | :wav | :pcm

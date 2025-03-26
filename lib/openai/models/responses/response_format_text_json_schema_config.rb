@@ -4,6 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseFormatTextJSONSchemaConfig < OpenAI::BaseModel
+        # @!attribute name
+        #   The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
+        #     and dashes, with a maximum length of 64.
+        #
+        #   @return [String]
+        required :name, String
+
         # @!attribute schema
         #   The schema for the response format, described as a JSON Schema object. Learn how
         #     to build JSON schemas [here](https://json-schema.org/).
@@ -28,17 +35,6 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :description
 
-        # @!attribute [r] name
-        #   The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
-        #     and dashes, with a maximum length of 64.
-        #
-        #   @return [String, nil]
-        optional :name, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :name
-
         # @!attribute strict
         #   Whether to enable strict schema adherence when generating the output. If set to
         #     true, the model will always follow the exact schema defined in the `schema`
@@ -54,13 +50,13 @@ module OpenAI
         #   #   more about
         #   #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         #   #
+        #   # @param name [String]
         #   # @param schema [Hash{Symbol=>Object}]
         #   # @param description [String]
-        #   # @param name [String]
         #   # @param strict [Boolean, nil]
         #   # @param type [Symbol, :json_schema]
         #   #
-        #   def initialize(schema:, description: nil, name: nil, strict: nil, type: :json_schema, **) = super
+        #   def initialize(name:, schema:, description: nil, strict: nil, type: :json_schema, **) = super
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
       end

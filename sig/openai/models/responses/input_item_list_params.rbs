@@ -5,6 +5,7 @@ module OpenAI
         {
           after: String,
           before: String,
+          include: ::Array[OpenAI::Models::Responses::response_includable],
           limit: Integer,
           order: OpenAI::Models::Responses::InputItemListParams::order
         }
@@ -22,6 +23,12 @@ module OpenAI
 
         def before=: (String) -> String
 
+        attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Responses::response_includable]
+        ) -> ::Array[OpenAI::Models::Responses::response_includable]
+
         attr_reader limit: Integer?
 
         def limit=: (Integer) -> Integer
@@ -35,6 +42,7 @@ module OpenAI
         def initialize: (
           ?after: String,
           ?before: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
           ?limit: Integer,
           ?order: OpenAI::Models::Responses::InputItemListParams::order,
           ?request_options: OpenAI::request_opts

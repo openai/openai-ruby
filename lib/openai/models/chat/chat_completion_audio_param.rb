@@ -15,8 +15,8 @@ module OpenAI
         #   The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #     `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         #
-        #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
-        required :voice, enum: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
+        #   @return [String, Symbol]
+        required :voice, union: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
 
         # @!parse
         #   # Parameters for audio output. Required when audio output is requested with
@@ -24,7 +24,7 @@ module OpenAI
         #   #   [Learn more](https://platform.openai.com/docs/guides/audio).
         #   #
         #   # @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
-        #   # @param voice [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
+        #   # @param voice [String, Symbol]
         #   #
         #   def initialize(format_:, voice:, **) = super
 
@@ -51,22 +51,51 @@ module OpenAI
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         module Voice
-          extend OpenAI::Enum
+          extend OpenAI::Union
+
+          # @!group
 
           ALLOY = :alloy
           ASH = :ash
           BALLAD = :ballad
           CORAL = :coral
           ECHO = :echo
+          FABLE = :fable
+          ONYX = :onyx
+          NOVA = :nova
           SAGE = :sage
           SHIMMER = :shimmer
           VERSE = :verse
 
-          finalize!
+          # @!endgroup
+
+          variant String
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ALLOY
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ASH
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::BALLAD
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::CORAL
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ECHO
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::FABLE
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ONYX
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::NOVA
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::SAGE
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::SHIMMER
+
+          variant const: OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::VERSE
 
           # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          #   # @return [Array(String, Symbol)]
+          #   def self.variants; end
         end
       end
     end
