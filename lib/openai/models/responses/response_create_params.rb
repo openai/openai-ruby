@@ -50,8 +50,8 @@ module OpenAI
         #     context.
         #
         #     When using along with `previous_response_id`, the instructions from a previous
-        #     response will be not be carried over to the next response. This makes it simple
-        #     to swap out system (or developer) messages in new responses.
+        #     response will not be carried over to the next response. This makes it simple to
+        #     swap out system (or developer) messages in new responses.
         #
         #   @return [String, nil]
         optional :instructions, String, nil?: true
