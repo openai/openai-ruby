@@ -17,10 +17,10 @@ module OpenAI
         attr_accessor :model
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
-        #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
-        #   voices are available in the
+        #   `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
+        #   `verse`. Previews of the voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
-        sig { returns(OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol) }
+        sig { returns(T.any(String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol)) }
         attr_accessor :voice
 
         # Control the voice of your generated audio with additional instructions. Does not
@@ -51,7 +51,7 @@ module OpenAI
           params(
             input: String,
             model: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol),
-            voice: OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol,
+            voice: T.any(String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol),
             instructions: String,
             response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
@@ -68,7 +68,7 @@ module OpenAI
               {
                 input: String,
                 model: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol),
-                voice: OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol,
+                voice: T.any(String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol),
                 instructions: String,
                 response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
                 speed: Float,
@@ -90,17 +90,18 @@ module OpenAI
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
-        #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
-        #   voices are available in the
+        #   `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
+        #   `verse`. Previews of the voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         module Voice
-          extend OpenAI::Enum
+          extend OpenAI::Union
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice) }
           OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
 
           ALLOY = T.let(:alloy, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           ASH = T.let(:ash, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          BALLAD = T.let(:ballad, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           CORAL = T.let(:coral, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           ECHO = T.let(:echo, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           FABLE = T.let(:fable, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
@@ -108,9 +109,10 @@ module OpenAI
           NOVA = T.let(:nova, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           SAGE = T.let(:sage, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           SHIMMER = T.let(:shimmer, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
+          VERSE = T.let(:verse, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
 
-          sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol]) }
-          def self.values
+          sig { override.returns([String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol]) }
+          def self.variants
           end
         end
 

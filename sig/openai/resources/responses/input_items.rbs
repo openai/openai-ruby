@@ -6,6 +6,7 @@ module OpenAI
           String response_id,
           ?after: String,
           ?before: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
           ?limit: Integer,
           ?order: OpenAI::Models::Responses::InputItemListParams::order,
           ?request_options: OpenAI::request_opts
