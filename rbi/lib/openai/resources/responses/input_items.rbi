@@ -10,6 +10,7 @@ module OpenAI
             response_id: String,
             after: String,
             before: String,
+            include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
             order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
@@ -36,6 +37,9 @@ module OpenAI
           after: nil,
           # An item ID to list items before, used in pagination.
           before: nil,
+          # Additional fields to include in the response. See the `include` parameter for
+          #   Response creation above for more information.
+          include: nil,
           # A limit on the number of objects to be returned. Limit can range between 1 and
           #   100, and the default is 20.
           limit: nil,

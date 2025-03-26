@@ -23,12 +23,12 @@ module OpenAI
 
         # @!attribute voice
         #   The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
-        #     `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
-        #     voices are available in the
+        #     `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
+        #     `verse`. Previews of the voices are available in the
         #     [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         #
-        #   @return [Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
-        required :voice, enum: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice }
+        #   @return [String, Symbol]
+        required :voice, union: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice }
 
         # @!attribute [r] instructions
         #   Control the voice of your generated audio with additional instructions. Does not
@@ -66,7 +66,7 @@ module OpenAI
         # @!parse
         #   # @param input [String]
         #   # @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel]
-        #   # @param voice [Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
+        #   # @param voice [String, Symbol]
         #   # @param instructions [String]
         #   # @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat]
         #   # @param speed [Float]
@@ -92,14 +92,17 @@ module OpenAI
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
-        #   `coral`, `echo`, `fable`, `onyx`, `nova`, `sage` and `shimmer`. Previews of the
-        #   voices are available in the
+        #   `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
+        #   `verse`. Previews of the voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         module Voice
-          extend OpenAI::Enum
+          extend OpenAI::Union
+
+          # @!group
 
           ALLOY = :alloy
           ASH = :ash
+          BALLAD = :ballad
           CORAL = :coral
           ECHO = :echo
           FABLE = :fable
@@ -107,12 +110,37 @@ module OpenAI
           NOVA = :nova
           SAGE = :sage
           SHIMMER = :shimmer
+          VERSE = :verse
 
-          finalize!
+          # @!endgroup
+
+          variant String
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ALLOY
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ASH
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::BALLAD
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::CORAL
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ECHO
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::FABLE
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ONYX
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::NOVA
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::SAGE
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::SHIMMER
+
+          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::VERSE
 
           # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          #   # @return [Array(String, Symbol)]
+          #   def self.variants; end
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,

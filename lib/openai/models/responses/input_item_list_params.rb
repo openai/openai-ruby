@@ -28,6 +28,17 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :before
 
+        # @!attribute [r] include
+        #   Additional fields to include in the response. See the `include` parameter for
+        #     Response creation above for more information.
+        #
+        #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
+        optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
+
+        # @!parse
+        #   # @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   attr_writer :include
+
         # @!attribute [r] limit
         #   A limit on the number of objects to be returned. Limit can range between 1 and
         #     100, and the default is 20.
@@ -55,11 +66,12 @@ module OpenAI
         # @!parse
         #   # @param after [String]
         #   # @param before [String]
+        #   # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
         #   # @param limit [Integer]
         #   # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
         #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         #   #
-        #   def initialize(after: nil, before: nil, limit: nil, order: nil, request_options: {}, **) = super
+        #   def initialize(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {}, **) = super
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
