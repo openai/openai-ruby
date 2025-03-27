@@ -251,6 +251,10 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
+        sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
+        def self.variants
+        end
+
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionCreateParams::Model) }
         OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol) }
 
@@ -258,10 +262,6 @@ module OpenAI
           T.let(:"gpt-3.5-turbo-instruct", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
         DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
         BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
-
-        sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
-        def self.variants
-        end
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -273,15 +273,15 @@ module OpenAI
       module Prompt
         extend OpenAI::Union
 
+        sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
+        def self.variants
+        end
+
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
         IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
 
         ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
-
-        sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-        def self.variants
-        end
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -289,11 +289,11 @@ module OpenAI
       module Stop
         extend OpenAI::Union
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
-
         sig { override.returns([String, T::Array[String]]) }
         def self.variants
         end
+
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
       end
     end
   end

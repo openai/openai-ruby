@@ -27,12 +27,12 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
+          def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
+
           type chat_completion_content_part_text_array =
             ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
 
           ChatCompletionContentPartTextArray: chat_completion_content_part_text_array
-
-          def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
         end
       end
     end

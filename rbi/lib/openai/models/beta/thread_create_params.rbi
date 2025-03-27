@@ -161,9 +161,6 @@ module OpenAI
           module Content
             extend OpenAI::Union
 
-            MessageContentPartParamArray =
-              T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
-
             sig do
               override
                 .returns(
@@ -181,6 +178,9 @@ module OpenAI
             end
             def self.variants
             end
+
+            MessageContentPartParamArray =
+              T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
           end
 
           # The role of the entity that is creating the message. Allowed values include:

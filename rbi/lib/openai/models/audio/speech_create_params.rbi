@@ -96,6 +96,10 @@ module OpenAI
         module Voice
           extend OpenAI::Union
 
+          sig { override.returns([String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol]) }
+          def self.variants
+          end
+
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice) }
           OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
 
@@ -110,10 +114,6 @@ module OpenAI
           SAGE = T.let(:sage, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           SHIMMER = T.let(:shimmer, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           VERSE = T.let(:verse, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
-
-          sig { override.returns([String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol]) }
-          def self.variants
-          end
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,

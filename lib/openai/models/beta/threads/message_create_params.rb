@@ -60,18 +60,18 @@ module OpenAI
           module Content
             extend OpenAI::Union
 
-            MessageContentPartParamArray =
-              OpenAI::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
-
             # The text contents of the message.
             variant String
 
             # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
-            variant OpenAI::Models::Beta::Threads::MessageCreateParams::Content::MessageContentPartParamArray
+            variant -> { OpenAI::Models::Beta::Threads::MessageCreateParams::Content::MessageContentPartParamArray }
 
             # @!parse
             #   # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
             #   def self.variants; end
+
+            MessageContentPartParamArray =
+              OpenAI::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
           end
 
           # The role of the entity that is creating the message. Allowed values include:

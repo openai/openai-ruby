@@ -64,6 +64,10 @@ module OpenAI
         module Voice
           extend OpenAI::Union
 
+          sig { override.returns([String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol]) }
+          def self.variants
+          end
+
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice) }
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
@@ -79,10 +83,6 @@ module OpenAI
           SAGE = T.let(:sage, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           SHIMMER = T.let(:shimmer, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           VERSE = T.let(:verse, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
-
-          sig { override.returns([String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol]) }
-          def self.variants
-          end
         end
       end
     end

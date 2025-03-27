@@ -606,15 +606,15 @@ module OpenAI
         module Stop
           extend OpenAI::Union
 
-          StringArray = OpenAI::ArrayOf[String]
-
           variant String
 
-          variant OpenAI::Models::Chat::CompletionCreateParams::Stop::StringArray
+          variant -> { OpenAI::Models::Chat::CompletionCreateParams::Stop::StringArray }
 
           # @!parse
           #   # @return [Array(String, Array<String>)]
           #   def self.variants; end
+
+          StringArray = OpenAI::ArrayOf[String]
         end
 
         class WebSearchOptions < OpenAI::BaseModel
