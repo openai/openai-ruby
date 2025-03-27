@@ -98,6 +98,34 @@ module OpenAI
         module Voice
           extend OpenAI::Union
 
+          variant String
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ALLOY }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ASH }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::BALLAD }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::CORAL }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ECHO }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::FABLE }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::ONYX }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::NOVA }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::SAGE }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::SHIMMER }
+
+          variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::VERSE }
+
+          # @!parse
+          #   # @return [Array(String, Symbol)]
+          #   def self.variants; end
+
           # @!group
 
           ALLOY = :alloy
@@ -113,34 +141,6 @@ module OpenAI
           VERSE = :verse
 
           # @!endgroup
-
-          variant String
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ALLOY
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ASH
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::BALLAD
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::CORAL
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ECHO
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::FABLE
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::ONYX
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::NOVA
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::SAGE
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::SHIMMER
-
-          variant const: OpenAI::Models::Audio::SpeechCreateParams::Voice::VERSE
-
-          # @!parse
-          #   # @return [Array(String, Symbol)]
-          #   def self.variants; end
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,

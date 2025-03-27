@@ -80,15 +80,15 @@ module OpenAI
       module Query
         extend OpenAI::Union
 
-        StringArray = OpenAI::ArrayOf[String]
-
         variant String
 
-        variant OpenAI::Models::VectorStoreSearchParams::Query::StringArray
+        variant -> { OpenAI::Models::VectorStoreSearchParams::Query::StringArray }
 
         # @!parse
         #   # @return [Array(String, Array<String>)]
         #   def self.variants; end
+
+        StringArray = OpenAI::ArrayOf[String]
       end
 
       # A filter to apply based on file attributes.

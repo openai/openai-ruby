@@ -42,12 +42,12 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          ChatCompletionContentPartTextArray =
-            T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Converter)
-
           sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
           def self.variants
           end
+
+          ChatCompletionContentPartTextArray =
+            T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Converter)
         end
       end
     end

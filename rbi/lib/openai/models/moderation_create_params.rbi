@@ -66,11 +66,6 @@ module OpenAI
       module Input
         extend OpenAI::Union
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
-
-        ModerationMultiModalInputArray =
-          T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Converter)
-
         sig do
           override
             .returns(
@@ -79,6 +74,11 @@ module OpenAI
         end
         def self.variants
         end
+
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+
+        ModerationMultiModalInputArray =
+          T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Converter)
       end
 
       # The content moderation model you would like to use. Learn more in

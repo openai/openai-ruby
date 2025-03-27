@@ -52,18 +52,6 @@ module OpenAI
         module Voice
           extend OpenAI::Union
 
-          ALLOY: :alloy
-          ASH: :ash
-          BALLAD: :ballad
-          CORAL: :coral
-          ECHO: :echo
-          FABLE: :fable
-          ONYX: :onyx
-          NOVA: :nova
-          SAGE: :sage
-          SHIMMER: :shimmer
-          VERSE: :verse
-
           def self?.variants: -> [String, (:alloy
           | :ash
           | :ballad
@@ -75,6 +63,18 @@ module OpenAI
           | :sage
           | :shimmer
           | :verse)]
+
+          ALLOY: :alloy
+          ASH: :ash
+          BALLAD: :ballad
+          CORAL: :coral
+          ECHO: :echo
+          FABLE: :fable
+          ONYX: :onyx
+          NOVA: :nova
+          SAGE: :sage
+          SHIMMER: :shimmer
+          VERSE: :verse
         end
       end
     end

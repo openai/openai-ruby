@@ -83,11 +83,11 @@ module OpenAI
       module Query
         extend OpenAI::Union
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
-
         sig { override.returns([String, T::Array[String]]) }
         def self.variants
         end
+
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
       end
 
       # A filter to apply based on file attributes.

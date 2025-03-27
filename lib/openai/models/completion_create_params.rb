@@ -236,6 +236,18 @@ module OpenAI
       module Model
         extend OpenAI::Union
 
+        variant String
+
+        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::GPT_3_5_TURBO_INSTRUCT }
+
+        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::DAVINCI_002 }
+
+        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::BABBAGE_002 }
+
+        # @!parse
+        #   # @return [Array(String, Symbol)]
+        #   def self.variants; end
+
         # @!group
 
         GPT_3_5_TURBO_INSTRUCT = :"gpt-3.5-turbo-instruct"
@@ -243,18 +255,6 @@ module OpenAI
         BABBAGE_002 = :"babbage-002"
 
         # @!endgroup
-
-        variant String
-
-        variant const: OpenAI::Models::CompletionCreateParams::Model::GPT_3_5_TURBO_INSTRUCT
-
-        variant const: OpenAI::Models::CompletionCreateParams::Model::DAVINCI_002
-
-        variant const: OpenAI::Models::CompletionCreateParams::Model::BABBAGE_002
-
-        # @!parse
-        #   # @return [Array(String, Symbol)]
-        #   def self.variants; end
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -266,23 +266,23 @@ module OpenAI
       module Prompt
         extend OpenAI::Union
 
+        variant String
+
+        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::StringArray }
+
+        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::IntegerArray }
+
+        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::ArrayOfToken2DArray }
+
+        # @!parse
+        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
+        #   def self.variants; end
+
         StringArray = OpenAI::ArrayOf[String]
 
         IntegerArray = OpenAI::ArrayOf[Integer]
 
         ArrayOfToken2DArray = OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]]
-
-        variant String
-
-        variant OpenAI::Models::CompletionCreateParams::Prompt::StringArray
-
-        variant OpenAI::Models::CompletionCreateParams::Prompt::IntegerArray
-
-        variant OpenAI::Models::CompletionCreateParams::Prompt::ArrayOfToken2DArray
-
-        # @!parse
-        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
-        #   def self.variants; end
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -290,15 +290,15 @@ module OpenAI
       module Stop
         extend OpenAI::Union
 
-        StringArray = OpenAI::ArrayOf[String]
-
         variant String
 
-        variant OpenAI::Models::CompletionCreateParams::Stop::StringArray
+        variant -> { OpenAI::Models::CompletionCreateParams::Stop::StringArray }
 
         # @!parse
         #   # @return [Array(String, Array<String>)]
         #   def self.variants; end
+
+        StringArray = OpenAI::ArrayOf[String]
       end
     end
   end

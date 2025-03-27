@@ -124,12 +124,12 @@ module OpenAI
             module Content
               extend OpenAI::Union
 
+              def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
+
               type message_content_part_param_array =
                 ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
               MessageContentPartParamArray: message_content_part_param_array
-
-              def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
             end
 
             type role = :user | :assistant
