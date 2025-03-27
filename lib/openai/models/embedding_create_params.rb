@@ -87,27 +87,27 @@ module OpenAI
       module Input
         extend OpenAI::Union
 
+        # The string that will be turned into an embedding.
+        variant String
+
+        # The array of strings that will be turned into an embedding.
+        variant -> { OpenAI::Models::EmbeddingCreateParams::Input::StringArray }
+
+        # The array of integers that will be turned into an embedding.
+        variant -> { OpenAI::Models::EmbeddingCreateParams::Input::IntegerArray }
+
+        # The array of arrays containing integers that will be turned into an embedding.
+        variant -> { OpenAI::Models::EmbeddingCreateParams::Input::ArrayOfToken2DArray }
+
+        # @!parse
+        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
+        #   def self.variants; end
+
         StringArray = OpenAI::ArrayOf[String]
 
         IntegerArray = OpenAI::ArrayOf[Integer]
 
         ArrayOfToken2DArray = OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]]
-
-        # The string that will be turned into an embedding.
-        variant String
-
-        # The array of strings that will be turned into an embedding.
-        variant OpenAI::Models::EmbeddingCreateParams::Input::StringArray
-
-        # The array of integers that will be turned into an embedding.
-        variant OpenAI::Models::EmbeddingCreateParams::Input::IntegerArray
-
-        # The array of arrays containing integers that will be turned into an embedding.
-        variant OpenAI::Models::EmbeddingCreateParams::Input::ArrayOfToken2DArray
-
-        # @!parse
-        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
-        #   def self.variants; end
       end
 
       # ID of the model to use. You can use the

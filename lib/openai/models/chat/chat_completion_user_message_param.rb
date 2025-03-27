@@ -43,18 +43,18 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          ChatCompletionContentPartArray =
-            OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionContentPart }]
-
           # The text contents of the message.
           variant String
 
           # An array of content parts with a defined type. Supported options differ based on the [model](https://platform.openai.com/docs/models) being used to generate the response. Can contain text, image, or audio inputs.
-          variant OpenAI::Models::Chat::ChatCompletionUserMessageParam::Content::ChatCompletionContentPartArray
+          variant -> { OpenAI::Models::Chat::ChatCompletionUserMessageParam::Content::ChatCompletionContentPartArray }
 
           # @!parse
           #   # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
           #   def self.variants; end
+
+          ChatCompletionContentPartArray =
+            OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionContentPart }]
         end
       end
     end

@@ -41,22 +41,22 @@ module OpenAI
       module Input
         extend OpenAI::Union
 
-        StringArray = OpenAI::ArrayOf[String]
-
-        ModerationMultiModalInputArray = OpenAI::ArrayOf[union: -> { OpenAI::Models::ModerationMultiModalInput }]
-
         # A string of text to classify for moderation.
         variant String
 
         # An array of strings to classify for moderation.
-        variant OpenAI::Models::ModerationCreateParams::Input::StringArray
+        variant -> { OpenAI::Models::ModerationCreateParams::Input::StringArray }
 
         # An array of multi-modal inputs to the moderation model.
-        variant OpenAI::Models::ModerationCreateParams::Input::ModerationMultiModalInputArray
+        variant -> { OpenAI::Models::ModerationCreateParams::Input::ModerationMultiModalInputArray }
 
         # @!parse
         #   # @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
         #   def self.variants; end
+
+        StringArray = OpenAI::ArrayOf[String]
+
+        ModerationMultiModalInputArray = OpenAI::ArrayOf[union: -> { OpenAI::Models::ModerationMultiModalInput }]
       end
 
       # The content moderation model you would like to use. Learn more in

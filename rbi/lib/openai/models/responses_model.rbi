@@ -5,6 +5,10 @@ module OpenAI
     module ResponsesModel
       extend OpenAI::Union
 
+      sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol]) }
+      def self.variants
+      end
+
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ResponsesModel) }
       OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ResponsesModel::TaggedSymbol) }
 
@@ -13,10 +17,6 @@ module OpenAI
       COMPUTER_USE_PREVIEW = T.let(:"computer-use-preview", OpenAI::Models::ResponsesModel::TaggedSymbol)
       COMPUTER_USE_PREVIEW_2025_03_11 =
         T.let(:"computer-use-preview-2025-03-11", OpenAI::Models::ResponsesModel::TaggedSymbol)
-
-      sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol]) }
-      def self.variants
-      end
     end
   end
 end

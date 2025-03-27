@@ -150,6 +150,10 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
+          sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol]) }
+          def self.variants
+          end
+
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model) }
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol) }
@@ -158,10 +162,6 @@ module OpenAI
           DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
           GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
-
-          sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol]) }
-          def self.variants
-          end
         end
 
         class Hyperparameters < OpenAI::BaseModel
