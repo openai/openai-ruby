@@ -260,11 +260,11 @@ module OpenAI
         module Stop
           extend OpenAI::Union
 
+          def self?.variants: -> [String, ::Array[String]]
+
           type string_array = ::Array[String]
 
           StringArray: string_array
-
-          def self?.variants: -> [String, ::Array[String]]
         end
 
         type web_search_options =

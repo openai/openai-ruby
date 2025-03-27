@@ -236,6 +236,10 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
+          sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol]) }
+          def self.variants
+          end
+
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model) }
           OrSymbol =
             T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol) }
@@ -289,10 +293,6 @@ module OpenAI
             T.let(:"gpt-3.5-turbo-0125", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO_16K_0613 =
             T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-
-          sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol]) }
-          def self.variants
-          end
         end
 
         class ToolResources < OpenAI::BaseModel

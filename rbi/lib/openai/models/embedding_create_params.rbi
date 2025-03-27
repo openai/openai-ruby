@@ -91,15 +91,15 @@ module OpenAI
       module Input
         extend OpenAI::Union
 
+        sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
+        def self.variants
+        end
+
         StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
 
         IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
 
         ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
-
-        sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-        def self.variants
-        end
       end
 
       # ID of the model to use. You can use the

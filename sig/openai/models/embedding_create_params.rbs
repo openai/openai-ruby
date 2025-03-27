@@ -49,6 +49,8 @@ module OpenAI
       module Input
         extend OpenAI::Union
 
+        def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
+
         type string_array = ::Array[String]
 
         StringArray: string_array
@@ -60,8 +62,6 @@ module OpenAI
         type array_of_token2_d_array = ::Array[::Array[Integer]]
 
         ArrayOfToken2DArray: array_of_token2_d_array
-
-        def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
       end
 
       type model = String | OpenAI::Models::embedding_model

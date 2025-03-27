@@ -156,12 +156,6 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          ArrayOfContentPartArray =
-            T.let(
-              OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart],
-              OpenAI::Converter
-            )
-
           # Learn about
           #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
           module ArrayOfContentPart
@@ -193,6 +187,12 @@ module OpenAI
           end
           def self.variants
           end
+
+          ArrayOfContentPartArray =
+            T.let(
+              OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart],
+              OpenAI::Converter
+            )
         end
 
         class FunctionCall < OpenAI::BaseModel

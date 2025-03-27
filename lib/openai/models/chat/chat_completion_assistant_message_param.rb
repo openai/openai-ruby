@@ -111,14 +111,11 @@ module OpenAI
         module Content
           extend OpenAI::Union
 
-          ArrayOfContentPartArray =
-            OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart }]
-
           # The contents of the assistant message.
           variant String
 
           # An array of content parts with a defined type. Can be one or more of type `text`, or exactly one of type `refusal`.
-          variant OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPartArray
+          variant -> { OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPartArray }
 
           # Learn about
           #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
@@ -140,6 +137,9 @@ module OpenAI
           # @!parse
           #   # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal>)]
           #   def self.variants; end
+
+          ArrayOfContentPartArray =
+            OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart }]
         end
 
         # @deprecated

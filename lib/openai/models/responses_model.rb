@@ -5,6 +5,22 @@ module OpenAI
     module ResponsesModel
       extend OpenAI::Union
 
+      variant String
+
+      variant enum: -> { OpenAI::Models::ChatModel }
+
+      variant const: -> { OpenAI::Models::ResponsesModel::O1_PRO }
+
+      variant const: -> { OpenAI::Models::ResponsesModel::O1_PRO_2025_03_19 }
+
+      variant const: -> { OpenAI::Models::ResponsesModel::COMPUTER_USE_PREVIEW }
+
+      variant const: -> { OpenAI::Models::ResponsesModel::COMPUTER_USE_PREVIEW_2025_03_11 }
+
+      # @!parse
+      #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol)]
+      #   def self.variants; end
+
       # @!group
 
       O1_PRO = :"o1-pro"
@@ -13,22 +29,6 @@ module OpenAI
       COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
 
       # @!endgroup
-
-      variant String
-
-      variant enum: -> { OpenAI::Models::ChatModel }
-
-      variant const: OpenAI::Models::ResponsesModel::O1_PRO
-
-      variant const: OpenAI::Models::ResponsesModel::O1_PRO_2025_03_19
-
-      variant const: OpenAI::Models::ResponsesModel::COMPUTER_USE_PREVIEW
-
-      variant const: OpenAI::Models::ResponsesModel::COMPUTER_USE_PREVIEW_2025_03_11
-
-      # @!parse
-      #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol)]
-      #   def self.variants; end
     end
   end
 end

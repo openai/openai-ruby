@@ -147,6 +147,20 @@ module OpenAI
         module Model
           extend OpenAI::Union
 
+          variant String
+
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::BABBAGE_002 }
+
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::DAVINCI_002 }
+
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_3_5_TURBO }
+
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_4O_MINI }
+
+          # @!parse
+          #   # @return [Array(String, Symbol)]
+          #   def self.variants; end
+
           # @!group
 
           BABBAGE_002 = :"babbage-002"
@@ -155,20 +169,6 @@ module OpenAI
           GPT_4O_MINI = :"gpt-4o-mini"
 
           # @!endgroup
-
-          variant String
-
-          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::BABBAGE_002
-
-          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::DAVINCI_002
-
-          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_3_5_TURBO
-
-          variant const: OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_4O_MINI
-
-          # @!parse
-          #   # @return [Array(String, Symbol)]
-          #   def self.variants; end
         end
 
         # @deprecated
