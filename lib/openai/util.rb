@@ -75,7 +75,7 @@ module OpenAI
       def coerce_boolean(input)
         case input.is_a?(String) ? input.downcase : input
         in Numeric
-          !input.zero?
+          input.nonzero?
         in "true"
           true
         in "false"
@@ -165,14 +165,12 @@ module OpenAI
       private def deep_merge_lr(lhs, rhs, concat: false)
         case [lhs, rhs, concat]
         in [Hash, Hash, _]
-          # rubocop:disable Style/YodaCondition
-          rhs_cleaned = rhs.reject { |_, val| OMIT == val }
+          rhs_cleaned = rhs.reject { _2 == OpenAI::Util::OMIT }
           lhs
-            .reject { |key, _| OMIT == rhs[key] }
+            .reject { |key, _| rhs[key] == OpenAI::Util::OMIT }
             .merge(rhs_cleaned) do |_, old_val, new_val|
               deep_merge_lr(old_val, new_val, concat: concat)
             end
-          # rubocop:enable Style/YodaCondition
         in [Array, Array, true]
           lhs.concat(rhs)
         else
