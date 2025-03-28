@@ -2,380 +2,576 @@
 
 require_relative "test_helper"
 
-class OpenAI::Test::BaseModelTest < Minitest::Test
+class OpenAI::Test::PrimitiveModelTest < Minitest::Test
+  A = OpenAI::ArrayOf[-> { Integer }]
+  H = OpenAI::HashOf[-> { Integer }, nil?: true]
+
+  module E
+    extend OpenAI::Enum
+  end
+
+  module U
+    extend OpenAI::Union
+  end
+
+  class B < OpenAI::BaseModel
+    optional :a, Integer
+    optional :b, B
+  end
+
+  def test_typing
+    converters = [
+      OpenAI::Unknown,
+      OpenAI::BooleanModel,
+      A,
+      H,
+      E,
+      U,
+      B
+    ]
+
+    converters.each do |conv|
+      assert_pattern do
+        conv => OpenAI::Converter
+      end
+    end
+  end
+
+  def test_coerce
+    cases = {
+      [OpenAI::Unknown, :a] => [{yes: 1}, :a],
+      [NilClass, :a] => [{maybe: 1}, nil],
+      [NilClass, nil] => [{yes: 1}, nil],
+      [OpenAI::BooleanModel, true] => [{yes: 1}, true],
+      [OpenAI::BooleanModel, "true"] => [{no: 1}, "true"],
+      [Integer, 1] => [{yes: 1}, 1],
+      [Integer, 1.0] => [{maybe: 1}, 1],
+      [Integer, "1"] => [{maybe: 1}, 1],
+      [Integer, "one"] => [{no: 1}, "one"],
+      [Float, 1] => [{yes: 1}, 1.0],
+      [Float, "1"] => [{maybe: 1}, 1.0],
+      [Float, :one] => [{no: 1}, :one],
+      [String, :str] => [{yes: 1}, "str"],
+      [String, "str"] => [{yes: 1}, "str"],
+      [String, 1] => [{maybe: 1}, "1"],
+      [:a, "a"] => [{yes: 1}, :a],
+      [Date, "1990-09-19"] => [{yes: 1}, Date.new(1990, 9, 19)],
+      [Date, Date.new(1990, 9, 19)] => [{yes: 1}, Date.new(1990, 9, 19)],
+      [Date, "one"] => [{no: 1}, "one"],
+      [Time, "1990-09-19"] => [{yes: 1}, Time.new(1990, 9, 19)],
+      [Time, Time.new(1990, 9, 19)] => [{yes: 1}, Time.new(1990, 9, 19)],
+      [Time, "one"] => [{no: 1}, "one"]
+    }
+
+    cases.each do |lhs, rhs|
+      target, input = lhs
+      exactness, expect = rhs
+      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      assert_pattern do
+        OpenAI::Converter.coerce(target, input, state: state) => ^expect
+        state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
+      end
+    end
+  end
+
+  def test_dump
+    cases = {
+      [OpenAI::Unknown, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [A, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [H, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [E, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [U, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [B, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [String, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [:b, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [nil, B.new(a: "one", b: B.new(a: 1.0))] => {a: "one", b: {a: 1}},
+      [OpenAI::BooleanModel, true] => true,
+      [OpenAI::BooleanModel, "true"] => "true",
+      [Integer, "1"] => "1",
+      [Float, 1] => 1,
+      [String, "one"] => "one",
+      [String, :one] => :one,
+      [:a, :b] => :b,
+      [:a, "a"] => "a"
+    }
+
+    cases.each do
+      target, input = _1
+      expect = _2
+      assert_pattern do
+        OpenAI::Converter.dump(target, input) => ^expect
+      end
+    end
+  end
+
+  def test_coerce_errors
+    cases = {
+      [Integer, "one"] => TypeError,
+      [Float, "one"] => TypeError,
+      [String, Time] => TypeError,
+      [:a, "one"] => ArgumentError,
+      [Date, "one"] => ArgumentError,
+      [Time, "one"] => ArgumentError
+    }
+
+    cases.each do
+      target, input = _1
+      state = {strictness: :strong, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      assert_raises(_2) do
+        OpenAI::Converter.coerce(target, input, state: state)
+      end
+    end
+  end
+end
+
+class OpenAI::Test::EnumModelTest < Minitest::Test
   module E1
     extend OpenAI::Enum
 
-    A = :a
-    B = :b
-  end
-
-  A1 = OpenAI::ArrayOf[-> { Integer }]
-  A2 = OpenAI::ArrayOf[enum: -> { E1 }]
-
-  def test_basic
-    assert(E1.is_a?(OpenAI::Converter))
-    assert(A1.is_a?(OpenAI::Converter))
-  end
-
-  def test_basic_coerce
-    assert_pattern do
-      OpenAI::Converter.coerce(A1, [1.0, 2.0, 3.0]) => [1, 2, 3]
-    end
-
-    assert_pattern do
-      OpenAI::Converter.coerce(A2, %w[a b c]) => [:a, :b, "c"]
-    end
-  end
-
-  def test_basic_dump
-    assert_pattern do
-      OpenAI::Converter.dump(A1, [1.0, 2.0, 3.0]) => [1, 2, 3]
-    end
-
-    assert_pattern do
-      OpenAI::Converter.dump(A2, %w[a b c]) => %w[a b c]
-    end
-  end
-
-  def test_primitive_try_strict_coerce
-    d_now = Date.today
-    t_now = Time.now
-
-    cases = {
-      [NilClass, :a] => [true, nil, 0],
-      [NilClass, nil] => [true, nil, 1],
-      [Integer, 1.0] => [true, 1, 1],
-      [Float, 1] => [true, 1.0, 1],
-      [Date, d_now] => [true, d_now, 1],
-      [Time, t_now] => [true, t_now, 1]
-    }
-
-    cases.each do |test, expect|
-      type, input = test
-      assert_pattern do
-        OpenAI::Converter.try_strict_coerce(type, input) => ^expect
-      end
-    end
-  end
-
-  def test_basic_enum_try_strict_coerce
-    cases = {
-      :a => [true, :a, 1],
-      "a" => [true, :a, 1],
-      :c => [false, true, 0],
-      1 => [false, false, 0]
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.try_strict_coerce(E1, input) => ^expect
-      end
-    end
-  end
-
-  def test_basic_array_try_strict_coerce
-    cases = {
-      [] => [true, [], 0],
-      nil => [false, false, 0],
-      [1, 2, 3] => [true, [1, 2, 3], 3],
-      [1.0, 2.0, 3.0] => [true, [1, 2, 3], 3],
-      [1, nil, 3] => [true, [1, nil, 3], 2],
-      [1, nil, nil] => [true, [1, nil, nil], 1],
-      [1, "two", 3] => [false, true, 2]
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.try_strict_coerce(A1, input) => ^expect
-      end
-    end
-  end
-
-  def test_nested_array_try_strict_coerce
-    cases = {
-      %w[a b] => [true, [:a, :b], 2],
-      %w[a b c] => [false, true, 2]
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.try_strict_coerce(A2, input) => ^expect
-      end
-    end
-  end
-
-  class M1 < OpenAI::BaseModel
-    required :a, Time
-    optional :b, E1, api_name: :renamed
-    required :c, A1
-
-    request_only do
-      required :w, Integer
-      optional :x, String
-    end
-
-    response_only do
-      required :y, Integer
-      optional :z, String
-    end
-  end
-
-  class M2 < M1
-    required :c, M1
-  end
-
-  def test_model_accessors
-    now = Time.now.round(0)
-    model = M2.new(a: now.to_s, b: "b", renamed: "a", c: [1.0, 2.0, 3.0], w: 1, y: 1)
-
-    cases = [
-      [model.a, now],
-      [model.b, :a],
-      [model.c, [1, 2, 3]],
-      [model.w, 1],
-      [model.y, 1]
-    ]
-
-    cases.each do |input, expect|
-      assert_pattern do
-        input => ^expect
-      end
-    end
-  end
-
-  def test_model_conversion_accessor
-    model = M2.new(c: {})
-    assert_pattern do
-      model.c => M1
-    end
-  end
-
-  def test_model_equality
-    now = Time.now
-    model1 = M2.new(a: now, b: "b", renamed: "a", c: M1.new, w: 1, y: 1)
-    model2 = M2.new(a: now, b: "b", renamed: "a", c: M1.new, w: 1, y: 1)
-
-    assert_pattern do
-      model2 => ^model1
-    end
-  end
-
-  def test_basic_model_coerce
-    cases = {
-      {} => M2.new,
-      {a: nil, b: :a, c: [1.0, 2.0, 3.0], w: 1} => M2.new(a: nil, b: :a, c: [1.0, 2.0, 3.0], w: 1)
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.coerce(M2, input) => ^expect
-      end
-    end
-  end
-
-  def test_basic_model_dump
-    cases = {
-      nil => nil,
-      {} => {},
-      {w: 1, x: "x", y: 1, z: "z"} => {w: 1, x: "x"},
-      [1, 2, 3] => [1, 2, 3]
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.dump(M2, input) => ^expect
-      end
-    end
-  end
-
-  def test_basic_model_try_strict_coerce
-    raw = {a: Time.now, c: [2], y: 1}
-    addn = {x: "x", n: "n"}
-    expect_exact = M1.new(raw)
-    expect_addn = M1.new(**raw, **addn)
-
-    cases = {
-      {} => [false, true, 0],
-      raw => [true, expect_exact, 3],
-      {**raw, **addn} => [true, expect_addn, 4]
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.try_strict_coerce(M1, input) => ^expect
-      end
-    end
-  end
-
-  def test_nested_model_dump
-    now = Time.now
-    models = [M1, M2]
-    inputs = [
-      M1.new(a: now, b: "a", c: [1.0, 2.0, 3.0], y: 1),
-      {a: now, b: "a", c: [1.0, 2.0, 3.0], y: 1},
-      {"a" => now, b: "", "b" => "a", "c" => [], :c => [1.0, 2.0, 3.0], "y" => 1}
-    ]
-
-    models.product(inputs).each do |model, input|
-      assert_pattern do
-        OpenAI::Converter.dump(model, input) => {a: now, renamed: "a", c: [1, 2, 3]}
-      end
-    end
-  end
-
-  class M4 < M2
-    required :c, M1
-    required :d, OpenAI::ArrayOf[M4]
-    required :e, M2, api_name: :f
-  end
-
-  def test_model_to_h
-    model = M4.new(a: "wow", c: {}, d: [{}, 2, {c: {}}], f: {})
-    assert_pattern do
-      model.to_h => {a: "wow", c: M1, d: [M4, 2, M4 => child], f: M2}
-      assert_equal({c: M1.new}, child.to_h)
-    end
-  end
-
-  A3 = OpenAI::ArrayOf[A1]
-
-  class M3 < M1
-    optional :b, E1, api_name: :renamed_again
-  end
-
-  module U1
-    extend OpenAI::Union
-
-    discriminator :type
-    variant :a, M1
-    variant :b, M3
-  end
-
-  module U2
-    extend OpenAI::Union
-
-    variant A1
-    variant A3
-  end
-
-  def test_basic_union
-    assert(U1.is_a?(OpenAI::Converter))
-
-    assert_pattern do
-      M1.new => U1
-      M3.new => U1
-    end
-  end
-
-  def test_basic_discriminated_union_coerce
-    common = {a: Time.now, c: [], w: 1}
-    cases = {
-      nil => nil,
-      {type: "a", **common} => M1.new(type: "a", **common),
-      {type: :b, **common} => M3.new(type: :b, **common),
-      {type: :c, xyz: 1} => {type: :c, xyz: 1}
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.coerce(U1, input) => ^expect
-      end
-    end
-  end
-
-  def test_basic_discriminated_union_dump
-    now = Time.now
-    cases = {
-      nil => nil,
-      M1.new(a: now, b: :a, c: [1.0, 2.0, 3.0], y: 1) => {a: now, renamed: :a, c: [1, 2, 3]},
-      M3.new(b: "a", y: 1) => {renamed_again: "a"},
-      {type: :a, b: "a", y: 1} => {type: :a, renamed: "a"},
-      {type: "b", b: "a", y: 1} => {type: "b", renamed_again: "a"},
-      {type: :c, xyz: 1} => {type: :c, xyz: 1}
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.dump(U1, input) => ^expect
-      end
-    end
-  end
-
-  def test_basic_undifferentiated_union_try_strict_coerce
-    cases = {
-      [] => [true, [], 0],
-      [[]] => [true, [[]], 0],
-      # [nil] => [false, true, 0],
-      [1, 2, 3] => [true, [1, 2, 3], 3],
-      [[1, 2, 3], [4, 5, 6]] => [true, [[1, 2, 3], [4, 5, 6]], 6]
-    }
-
-    cases.each do |input, expect|
-      assert_pattern do
-        OpenAI::Converter.try_strict_coerce(U2, input) => ^expect
-      end
-    end
-  end
-
-  class C1 < OpenAI::BaseModel
-    required :a, const: :a
-    required :b, const: :b, nil?: true
-    optional :c, const: :c
-  end
-
-  def test_basic_const
-    assert_pattern do
-      C1.dump(C1.new) => {a: :a}
-      C1.new => {a: :a}
-      C1.new(a: "a") => {a: :a}
-      C1.new(b: 2) => {b: 2}
-      C1.new.a => :a
-      C1.new.b => nil
-      C1.new.c => nil
-    end
+    TRUE = true
   end
 
   module E2
     extend OpenAI::Enum
 
-    A = :a
-    B = :b
+    ONE = 1
+    TWO = 2
+  end
+
+  module E3
+    extend OpenAI::Enum
+
+    ONE = 1.0
+    TWO = 2.0
+  end
+
+  module E4
+    extend OpenAI::Enum
+
+    ONE = :one
+    TWO = :two
+  end
+
+  def test_coerce
+    cases = {
+      [E1, true] => [{yes: 1}, true],
+      [E1, false] => [{no: 1}, false],
+      [E1, :true] => [{no: 1}, :true],
+
+      [E2, 1] => [{yes: 1}, 1],
+      [E2, 1.0] => [{yes: 1}, 1],
+      [E2, 1.2] => [{no: 1}, 1.2],
+      [E2, "1"] => [{no: 1}, "1"],
+
+      [E3, 1.0] => [{yes: 1}, 1.0],
+      [E3, 1] => [{yes: 1}, 1.0],
+      [E3, "one"] => [{no: 1}, "one"],
+
+      [E4, :one] => [{yes: 1}, :one],
+      [E4, "one"] => [{yes: 1}, :one],
+      [E4, "1"] => [{maybe: 1}, "1"],
+      [E4, :"1"] => [{maybe: 1}, :"1"],
+      [E4, 1] => [{no: 1}, 1]
+    }
+
+    cases.each do |lhs, rhs|
+      target, input = lhs
+      exactness, expect = rhs
+      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      assert_pattern do
+        OpenAI::Converter.coerce(target, input, state: state) => ^expect
+        state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
+      end
+    end
+  end
+
+  def test_dump
+    cases = {
+      [E1, true] => true,
+      [E1, "true"] => "true",
+
+      [E2, 1.0] => 1.0,
+      [E2, 3] => 3,
+      [E2, "1.0"] => "1.0",
+
+      [E3, 1.0] => 1.0,
+      [E3, 3] => 3,
+      [E3, "1.0"] => "1.0",
+
+      [E4, :one] => :one,
+      [E4, "one"] => "one",
+      [E4, "1.0"] => "1.0"
+    }
+
+    cases.each do
+      target, input = _1
+      expect = _2
+      assert_pattern do
+        OpenAI::Converter.dump(target, input) => ^expect
+      end
+    end
+  end
+end
+
+class OpenAI::Test::CollectionModelTest < Minitest::Test
+  A1 = OpenAI::ArrayOf[-> { Integer }]
+  H1 = OpenAI::HashOf[Integer]
+
+  A2 = OpenAI::ArrayOf[H1]
+  H2 = OpenAI::HashOf[-> { A1 }]
+
+  A3 = OpenAI::ArrayOf[Integer, nil?: true]
+  H3 = OpenAI::HashOf[Integer, nil?: true]
+
+  def test_coerce
+    cases = {
+      [A1, []] => [{yes: 1}, []],
+      [A1, {}] => [{no: 1}, {}],
+      [A1, [1, 2.0]] => [{yes: 2, maybe: 1}, [1, 2]],
+      [A1, ["1", 2.0]] => [{yes: 1, maybe: 2}, [1, 2]],
+      [H1, {}] => [{yes: 1}, {}],
+      [H1, []] => [{no: 1}, []],
+      [H1, {a: 1, b: 2}] => [{yes: 3}, {a: 1, b: 2}],
+      [H1, {"a" => 1, "b" => 2}] => [{yes: 3}, {a: 1, b: 2}],
+      [H1, {[] => 1}] => [{yes: 2, no: 1}, {[] => 1}],
+      [H1, {a: 1.5}] => [{yes: 1, maybe: 1}, {a: 1}],
+
+      [A2, [{}, {"a" => 1}]] => [{yes: 4}, [{}, {a: 1}]],
+      [A2, [{"a" => "1"}]] => [{yes: 2, maybe: 1}, [{a: 1}]],
+      [H2, {a: [1, 2]}] => [{yes: 4}, {a: [1, 2]}],
+      [H2, {"a" => ["1", 2]}] => [{yes: 3, maybe: 1}, {a: [1, 2]}],
+      [H2, {"a" => ["one", 2]}] => [{yes: 3, no: 1}, {a: ["one", 2]}],
+
+      [A3, [nil, 1]] => [{yes: 3}, [nil, 1]],
+      [A3, [nil, "1"]] => [{yes: 2, maybe: 1}, [nil, 1]],
+      [H3, {a: nil, b: "1"}] => [{yes: 2, maybe: 1}, {a: nil, b: 1}],
+      [H3, {a: nil}] => [{yes: 2}, {a: nil}]
+    }
+
+    cases.each do |lhs, rhs|
+      target, input = lhs
+      exactness, expect = rhs
+      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      assert_pattern do
+        OpenAI::Converter.coerce(target, input, state: state) => ^expect
+        state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
+      end
+    end
+  end
+end
+
+class OpenAI::Test::BaseModelTest < Minitest::Test
+  class M1 < OpenAI::BaseModel
+    required :a, Integer
+  end
+
+  class M2 < M1
+    required :a, Time
+    required :b, Integer, nil?: true
+    optional :c, String
+  end
+
+  class M3 < OpenAI::BaseModel
+    optional :c, const: :c
+    required :d, const: :d
+  end
+
+  class M4 < M1
+    request_only do
+      required :a, Integer
+      optional :b, String
+    end
+
+    response_only do
+      required :c, Integer
+      optional :d, String
+    end
+  end
+
+  class M5 < OpenAI::BaseModel
+    request_only do
+      required :c, const: :c
+    end
+
+    response_only do
+      required :d, const: :d
+    end
+  end
+
+  class M6 < M1
+    required :a, OpenAI::ArrayOf[M6]
+  end
+
+  def test_coerce
+    cases = {
+      [M1, {}] => [{yes: 1, no: 1}, {}],
+      [M1, :m1] => [{no: 1}, :m1],
+
+      [M2, {}] => [{yes: 2, no: 1, maybe: 1}, {}],
+      [M2, {a: "1990-09-19", b: nil}] => [{yes: 4}, {a: "1990-09-19", b: nil}],
+      [M2, {a: "1990-09-19", b: "1"}] => [{yes: 3, maybe: 1}, {a: "1990-09-19", b: "1"}],
+      [M2, {a: "1990-09-19"}] => [{yes: 3, maybe: 1}, {a: "1990-09-19"}],
+      [M2, {a: "1990-09-19", c: nil}] => [{yes: 2, maybe: 2}, {a: "1990-09-19", c: nil}],
+
+      [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: :c, d: :d}],
+      [M3, {c: "d", d: "c"}] => [{yes: 1, no: 2}, {c: "d", d: "c"}],
+
+      [M4, {c: 2}] => [{yes: 5}, {c: 2}],
+      [M4, {a: "1", c: 2}] => [{yes: 4, maybe: 1}, {a: "1", c: 2}],
+      [M4, {b: nil, c: 2}] => [{yes: 4, maybe: 1}, {b: nil, c: 2}],
+
+      [M5, {}] => [{yes: 3}, {}],
+      [M5, {c: "c"}] => [{yes: 3}, {c: :c}],
+      [M5, {d: "d"}] => [{yes: 3}, {d: :d}],
+      [M5, {d: nil}] => [{yes: 2, no: 1}, {d: nil}],
+
+      [M6, {a: [{a: []}]}] => [{yes: 4}, -> { _1 in {a: [M6]} }]
+    }
+
+    cases.each do |lhs, rhs|
+      target, input = lhs
+      exactness, expect = rhs
+      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      assert_pattern do
+        coerced = OpenAI::Converter.coerce(target, input, state: state)
+        assert_equal(coerced, coerced)
+        if coerced.is_a?(OpenAI::BaseModel)
+          coerced.to_h => ^expect
+        else
+          coerced => ^expect
+        end
+        state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
+      end
+    end
+  end
+
+  def test_dump
+    cases = {
+      [M3, M3.new] => {d: :d},
+      [M3, {}] => {d: :d},
+      [M3, {d: 1}] => {d: 1},
+
+      [M4, M4.new(a: 1, b: "b", c: 2, d: "d")] => {a: 1, b: "b"},
+      [M4, {a: 1, b: "b", c: 2, d: "d"}] => {a: 1, b: "b"},
+
+      [M5, M5.new] => {c: :c},
+      [M5, {}] => {c: :c},
+      [M5, {c: 1}] => {c: 1}
+    }
+
+    cases.each do
+      target, input = _1
+      expect = _2
+      assert_pattern do
+        OpenAI::Converter.dump(target, input) => ^expect
+      end
+    end
+  end
+
+  def test_accessors
+    cases = {
+      M2.new({a: "1990-09-19", b: "1"}) => {a: Time.new(1990, 9, 19), b: TypeError},
+      M2.new(a: "one", b: "one") => {a: ArgumentError, b: TypeError},
+      M2.new(a: nil, b: 2.0) => {a: TypeError, b: TypeError},
+
+      M3.new => {d: :d},
+      M3.new(d: 1) => {d: ArgumentError},
+
+      M5.new => {c: :c, d: :d}
+    }
+
+    cases.each do
+      target = _1
+      _2.each do |accessor, expect|
+        case expect
+        in Class if expect <= StandardError
+          tap do
+            target.public_send(accessor)
+            flunk
+          rescue OpenAI::ConversionError => e
+            assert_kind_of(expect, e.cause)
+          end
+        else
+          assert_pattern { target.public_send(accessor) => ^expect }
+        end
+      end
+    end
+  end
+end
+
+class OpenAI::Test::UnionTest < Minitest::Test
+  module U0
+    extend OpenAI::Union
+  end
+
+  module U1
+    extend OpenAI::Union
+    variant const: :a
+    variant const: 2
+  end
+
+  class M1 < OpenAI::BaseModel
+    required :t, const: :a, api_name: :type
+    optional :c, String
+  end
+
+  class M2 < OpenAI::BaseModel
+    required :type, const: :b
+    optional :c, String
+  end
+
+  module U2
+    extend OpenAI::Union
+    discriminator :type
+
+    variant :a, M1
+    variant :b, M2
   end
 
   module U3
     extend OpenAI::Union
-
     discriminator :type
+
     variant :a, M1
-    variant :b, M3
-  end
-
-  def test_basic_eql
-    assert_equal(OpenAI::Unknown, OpenAI::Unknown)
-    refute_equal(OpenAI::Unknown, OpenAI::BooleanModel)
-    assert_equal(OpenAI::BooleanModel, OpenAI::BooleanModel)
-
-    assert_equal(E1, E2)
-    assert_equal(E1, E2)
-
-    refute_equal(U1, U2)
-    assert_equal(U1, U3)
+    variant String
   end
 
   module U4
     extend OpenAI::Union
+    discriminator :type
 
-    variant :a, const: :a
-    variant :b, const: :b
+    variant String
+    variant :a, M1
   end
 
-  def test_basic_const_union
-    assert_pattern do
-      U4.coerce(nil) => nil
-      U4.coerce("") => ""
-      U4.coerce(:a) => :a
-      U4.coerce("a") => :a
+  class M3 < OpenAI::BaseModel
+    optional :recur, -> { U5 }
+    required :a, Integer
+  end
+
+  class M4 < OpenAI::BaseModel
+    optional :recur, -> { U5 }
+    required :a, OpenAI::ArrayOf[-> { U5 }]
+  end
+
+  class M5 < OpenAI::BaseModel
+    optional :recur, -> { U5 }
+    required :b, OpenAI::ArrayOf[-> { U5 }]
+  end
+
+  module U5
+    extend OpenAI::Union
+
+    variant -> { M3 }
+    variant -> { M4 }
+  end
+
+  module U6
+    extend OpenAI::Union
+
+    variant -> { M3 }
+    variant -> { M5 }
+  end
+
+  def test_accessors
+    model = M3.new(recur: [])
+    tap do
+      model.recur
+      flunk
+    rescue OpenAI::ConversionError => e
+      assert_kind_of(ArgumentError, e.cause)
+    end
+  end
+
+  def test_coerce
+    cases = {
+      [U0, :""] => [{no: 1}, 0, :""],
+
+      [U1, "a"] => [{yes: 1}, 1, :a],
+      [U1, "2"] => [{maybe: 1}, 2, 2],
+      [U1, :b] => [{no: 1}, 2, :b],
+
+      [U2, {type: :a}] => [{yes: 3}, 0, {t: :a}],
+      [U2, {type: "b"}] => [{yes: 3}, 0, {type: :b}],
+
+      [U3, "one"] => [{yes: 1}, 2, "one"],
+      [U4, "one"] => [{yes: 1}, 1, "one"],
+
+      [U5, {a: []}] => [{yes: 3}, 2, {a: []}],
+      [U6, {b: []}] => [{yes: 3}, 2, {b: []}],
+
+      [U5, {a: [{a: []}]}] => [{yes: 6}, 4, {a: [M4.new(a: [])]}],
+      [U5, {a: [{a: [{a: []}]}]}] => [{yes: 9}, 6, {a: [M4.new(a: [M4.new(a: [])])]}]
+    }
+
+    cases.each do |lhs, rhs|
+      target, input = lhs
+      exactness, branched, expect = rhs
+      state = {strictness: true, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
+      assert_pattern do
+        coerced = OpenAI::Converter.coerce(target, input, state: state)
+        assert_equal(coerced, coerced)
+        if coerced.is_a?(OpenAI::BaseModel)
+          coerced.to_h => ^expect
+        else
+          coerced => ^expect
+        end
+        state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
+        state => {branched: ^branched}
+      end
+    end
+  end
+end
+
+class OpenAI::Test::BaseModelQoLTest < Minitest::Test
+  module E1
+    extend OpenAI::Enum
+
+    A = 1
+  end
+
+  module E2
+    extend OpenAI::Enum
+
+    A = 1
+  end
+
+  module E3
+    extend OpenAI::Enum
+
+    A = 2
+    B = 3
+  end
+
+  class M1 < OpenAI::BaseModel
+    required :a, Integer
+  end
+
+  class M2 < OpenAI::BaseModel
+    required :a, Integer, nil?: true
+  end
+
+  class M3 < M2
+    required :a, Integer
+  end
+
+  def test_equality
+    cases = {
+      [OpenAI::Unknown, OpenAI::Unknown] => true,
+      [OpenAI::BooleanModel, OpenAI::BooleanModel] => true,
+      [OpenAI::Unknown, OpenAI::BooleanModel] => false,
+      [E1, E2] => true,
+      [E1, E3] => false,
+      [M1, M2] => false,
+      [M1, M3] => true
+    }
+
+    cases.each do
+      if _2
+        assert_equal(*_1)
+      else
+        refute_equal(*_1)
+      end
     end
   end
 end
