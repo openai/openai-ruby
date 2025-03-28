@@ -2,13 +2,16 @@ module OpenAI
   module Converter
     type input = OpenAI::Converter | Class
 
-    def coerce: (top value) -> top
+    type state =
+      {
+        strictness: bool | :strong,
+        exactness: { yes: Integer, no: Integer, maybe: Integer },
+        branched: Integer
+      }
+
+    def coerce: (top value, state: OpenAI::Converter::state) -> top
 
     def dump: (top value) -> top
-
-    def try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
 
     def self.type_info: (
       {
@@ -20,14 +23,13 @@ module OpenAI
       | OpenAI::Converter::input spec
     ) -> (^-> top)
 
-    def self.coerce: (OpenAI::Converter::input target, top value) -> top
+    def self.coerce: (
+      OpenAI::Converter::input target,
+      top value,
+      ?state: OpenAI::Converter::state
+    ) -> top
 
     def self.dump: (OpenAI::Converter::input target, top value) -> top
-
-    def self.try_strict_coerce: (
-      OpenAI::Converter::input target,
-      top value
-    ) -> top
   end
 
   class Unknown
@@ -37,13 +39,9 @@ module OpenAI
 
     def self.==: (top other) -> bool
 
-    def self.coerce: (top value) -> top
+    def self.coerce: (top value, state: OpenAI::Converter::state) -> top
 
     def self.dump: (top value) -> top
-
-    def self.try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
   end
 
   class BooleanModel
@@ -53,13 +51,12 @@ module OpenAI
 
     def self.==: (top other) -> bool
 
-    def self.coerce: (bool | top value) -> (bool | top)
+    def self.coerce: (
+      bool | top value,
+      state: OpenAI::Converter::state
+    ) -> (bool | top)
 
     def self.dump: (bool | top value) -> (bool | top)
-
-    def self.try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
   end
 
   module Enum
@@ -73,13 +70,12 @@ module OpenAI
 
     def ==: (top other) -> bool
 
-    def coerce: (String | Symbol | top value) -> (Symbol | top)
+    def coerce: (
+      String | Symbol | top value,
+      state: OpenAI::Converter::state
+    ) -> (Symbol | top)
 
     def dump: (Symbol | top value) -> (Symbol | top)
-
-    def try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
   end
 
   module Union
@@ -109,13 +105,9 @@ module OpenAI
 
     def ==: (top other) -> bool
 
-    def coerce: (top value) -> top
+    def coerce: (top value, state: OpenAI::Converter::state) -> top
 
     def dump: (top value) -> top
-
-    def try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
   end
 
   class ArrayOf
@@ -132,15 +124,16 @@ module OpenAI
 
     def ==: (top other) -> bool
 
-    def coerce: (Enumerable[top] | top value) -> (::Array[top] | top)
+    def coerce: (
+      Enumerable[top] | top value,
+      state: OpenAI::Converter::state
+    ) -> (::Array[top] | top)
 
     def dump: (Enumerable[top] | top value) -> (::Array[top] | top)
 
-    def try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
-
     def item_type: -> top
+
+    def nilable?: -> bool
 
     def initialize: (
       ::Hash[Symbol, top]
@@ -164,15 +157,16 @@ module OpenAI
 
     def ==: (top other) -> bool
 
-    def coerce: (::Hash[top, top] | top value) -> (::Hash[Symbol, top] | top)
+    def coerce: (
+      ::Hash[top, top] | top value,
+      state: OpenAI::Converter::state
+    ) -> (::Hash[Symbol, top] | top)
 
     def dump: (::Hash[top, top] | top value) -> (::Hash[Symbol, top] | top)
 
-    def try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
-
     def item_type: -> top
+
+    def nilable?: -> bool
 
     def initialize: (
       ::Hash[Symbol, top]
@@ -185,17 +179,14 @@ module OpenAI
   class BaseModel
     extend OpenAI::Converter
 
-    type known_field = { mode: (:coerce | :dump)?, required: bool }
+    type known_field =
+      { mode: (:coerce | :dump)?, required: bool, nilable: bool }
 
     def self.known_fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
     & { type_fn: (^-> OpenAI::Converter::input) })]
 
-    def self.reverse_map: -> ::Hash[Symbol, Symbol]
-
     def self.fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
     & { type: OpenAI::Converter::input })]
-
-    def self.defaults: -> ::Hash[Symbol, (^-> Class)]
 
     private def self.add_field: (
       Symbol name_sym,
@@ -231,17 +222,16 @@ module OpenAI
 
     private def self.response_only: { -> void } -> void
 
+    def self.==: (top other) -> bool
+
     def ==: (top other) -> bool
 
     def self.coerce: (
-      OpenAI::BaseModel | ::Hash[top, top] | top value
+      OpenAI::BaseModel | ::Hash[top, top] | top value,
+      state: OpenAI::Converter::state
     ) -> (instance | top)
 
     def self.dump: (instance | top value) -> (::Hash[top, top] | top)
-
-    def self.try_strict_coerce: (
-      top value
-    ) -> ([true, top, nil] | [false, bool, Integer])
 
     def []: (Symbol key) -> top?
 
