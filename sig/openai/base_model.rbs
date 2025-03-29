@@ -243,8 +243,6 @@ module OpenAI
 
     def initialize: (?::Hash[Symbol, top] | self data) -> void
 
-    def to_s: -> String
-
     def inspect: -> String
   end
 end
