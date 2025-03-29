@@ -84,7 +84,7 @@ module OpenAI
     end
 
     # @api private
-    sig { returns(T.anything) }
+    sig { returns(OpenAI::PooledNetRequester) }
     attr_accessor :requester
 
     # @api private

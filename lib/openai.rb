@@ -36,7 +36,6 @@ require "connection_pool"
 # Package files.
 require_relative "openai/version"
 require_relative "openai/util"
-require_relative "openai/extern"
 require_relative "openai/base_model"
 require_relative "openai/base_page"
 require_relative "openai/base_stream"
