@@ -1,4 +1,0 @@
-module OpenAI
-  module Extern
-  end
-end
