@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class VectorStoreCreateParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # The chunking strategy used to chunk the file(s). If not set, will use the `auto`

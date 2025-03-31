@@ -23,7 +23,7 @@ module OpenAI
   #
   #   models => Array
   class Page
-    include OpenAI::BasePage
+    include OpenAI::Type::BasePage
 
     # @return [Array<Object>, nil]
     attr_accessor :data
@@ -33,7 +33,7 @@ module OpenAI
 
     # @api private
     #
-    # @param client [OpenAI::BaseClient]
+    # @param client [OpenAI::Transport::BaseClient]
     # @param req [Hash{Symbol=>Object}]
     # @param headers [Hash{String=>String}, Net::HTTPHeader]
     # @param page_data [Array<Object>]
@@ -43,7 +43,7 @@ module OpenAI
 
       case page_data
       in {data: Array | nil => data}
-        @data = data&.map { OpenAI::Converter.coerce(model, _1) }
+        @data = data&.map { OpenAI::Type::Converter.coerce(model, _1) }
       else
       end
 

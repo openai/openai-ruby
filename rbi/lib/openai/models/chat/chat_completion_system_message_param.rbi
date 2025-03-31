@@ -56,7 +56,7 @@ module OpenAI
           end
 
           ChatCompletionContentPartTextArray =
-            T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Converter)
+            T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Type::Converter)
         end
       end
     end

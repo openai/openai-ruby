@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       class CompletionListParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # Identifier for the last chat completion from the previous pagination request.

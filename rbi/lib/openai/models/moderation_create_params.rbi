@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class ModerationCreateParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
@@ -75,10 +75,10 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
 
         ModerationMultiModalInputArray =
-          T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Converter)
+          T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Type::Converter)
       end
 
       # The content moderation model you would like to use. Learn more in

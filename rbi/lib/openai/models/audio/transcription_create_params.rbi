@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # The audio file object (not file name) to transcribe, in one of these formats:

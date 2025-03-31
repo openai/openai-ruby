@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class BatchRetrieveParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       sig do

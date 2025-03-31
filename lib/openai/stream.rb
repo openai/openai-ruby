@@ -17,7 +17,7 @@ module OpenAI
   #
   #   events => Array
   class Stream
-    include OpenAI::BaseStream
+    include OpenAI::Type::BaseStream
 
     # @api private
     #
@@ -55,7 +55,7 @@ module OpenAI
                 message: message
               )
             in decoded
-              y << OpenAI::Converter.coerce(@model, decoded)
+              y << OpenAI::Type::Converter.coerce(@model, decoded)
             end
           else
           end

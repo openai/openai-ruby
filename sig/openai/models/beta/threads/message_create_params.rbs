@@ -12,7 +12,7 @@ module OpenAI
           & OpenAI::request_parameters
 
         class MessageCreateParams < OpenAI::BaseModel
-          extend OpenAI::RequestParameters::Converter
+          extend OpenAI::Type::RequestParameters::Converter
           include OpenAI::RequestParameters
 
           attr_accessor content: OpenAI::Models::Beta::Threads::MessageCreateParams::content

@@ -4,7 +4,7 @@ module OpenAI
       type thread_retrieve_params = {  } & OpenAI::request_parameters
 
       class ThreadRetrieveParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         def initialize: (?request_options: OpenAI::request_opts) -> void

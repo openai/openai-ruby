@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class BatchCreateParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # The time frame within which the batch should be processed. Currently only `24h`

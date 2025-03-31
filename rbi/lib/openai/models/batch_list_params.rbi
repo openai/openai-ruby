@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class BatchListParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # A cursor for use in pagination. `after` is an object ID that defines your place

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Uploads
       class PartCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # The chunk of bytes for this Part.
