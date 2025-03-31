@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class ImageGenerateParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # A text description of the desired image(s). The maximum length is 1000

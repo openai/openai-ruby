@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       class AssistantCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # ID of the model to use. You can use the

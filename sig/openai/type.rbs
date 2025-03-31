@@ -1,0 +1,22 @@
+module OpenAI
+  class Unknown = OpenAI::Type::Unknown
+
+  class BooleanModel = OpenAI::Type::BooleanModel
+
+  module Enum = OpenAI::Type::Enum
+
+  module Union = OpenAI::Type::Union
+
+  class ArrayOf = OpenAI::Type::ArrayOf
+
+  class HashOf = OpenAI::Type::HashOf
+
+  class BaseModel = OpenAI::Type::BaseModel
+
+  type request_parameters = OpenAI::Type::request_parameters
+
+  module RequestParameters = OpenAI::Type::RequestParameters
+
+  module Type
+  end
+end

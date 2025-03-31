@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       class JobCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # The name of the model to fine-tune. You can select one of the

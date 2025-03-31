@@ -4,7 +4,7 @@ module OpenAI
   module Models
     class FileDeleteParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::RequestParameters::Converter
+      #   extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # @!parse

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class RunCancelParams < OpenAI::BaseModel
-          extend OpenAI::RequestParameters::Converter
+          extend OpenAI::Type::RequestParameters::Converter
           include OpenAI::RequestParameters
 
           sig { returns(String) }

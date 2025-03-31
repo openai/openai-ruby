@@ -191,7 +191,7 @@ module OpenAI
           ArrayOfContentPartArray =
             T.let(
               OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart],
-              OpenAI::Converter
+              OpenAI::Type::Converter
             )
         end
 

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Audio
       class SpeechCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # The text to generate audio for. The maximum length is 4096 characters.

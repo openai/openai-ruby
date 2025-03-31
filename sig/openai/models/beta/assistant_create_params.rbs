@@ -18,7 +18,7 @@ module OpenAI
         & OpenAI::request_parameters
 
       class AssistantCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         attr_accessor model: OpenAI::Models::Beta::AssistantCreateParams::model

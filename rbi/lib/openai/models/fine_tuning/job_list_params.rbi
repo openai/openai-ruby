@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       class JobListParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # Identifier for the last job from the previous pagination request.

@@ -2,7 +2,7 @@
 
 module OpenAI
   class CursorPage
-    include OpenAI::BasePage
+    include OpenAI::Type::BasePage
 
     Elem = type_member
 

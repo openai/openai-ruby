@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class VectorStoreSearchParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # A query string for a search
@@ -87,7 +87,7 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
       end
 
       # A filter to apply based on file attributes.

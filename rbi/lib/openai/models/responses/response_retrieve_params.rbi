@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseRetrieveParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # Additional fields to include in the response. See the `include` parameter for
