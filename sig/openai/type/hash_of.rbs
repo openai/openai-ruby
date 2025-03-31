@@ -1,6 +1,6 @@
 module OpenAI
   module Type
-    class HashOf
+    class HashOf[Elem]
       include OpenAI::Type::Converter
 
       def self.[]: (
@@ -21,7 +21,7 @@ module OpenAI
 
       def dump: (::Hash[top, top] | top value) -> (::Hash[Symbol, top] | top)
 
-      def item_type: -> top
+      def item_type: -> Elem
 
       def nilable?: -> bool
 
