@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         module Runs
           class StepRetrieveParams < OpenAI::BaseModel
-            extend OpenAI::RequestParameters::Converter
+            extend OpenAI::Type::RequestParameters::Converter
             include OpenAI::RequestParameters
 
             sig { returns(String) }

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # Text, image, or file inputs to the model, used to generate a response.

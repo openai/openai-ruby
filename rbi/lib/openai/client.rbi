@@ -1,7 +1,7 @@
 # typed: strong
 
 module OpenAI
-  class Client < OpenAI::BaseClient
+  class Client < OpenAI::Transport::BaseClient
     DEFAULT_MAX_RETRIES = 2
 
     DEFAULT_TIMEOUT_IN_SECONDS = T.let(600.0, Float)

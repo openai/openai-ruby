@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         class RunCreateParams < OpenAI::BaseModel
-          extend OpenAI::RequestParameters::Converter
+          extend OpenAI::Type::RequestParameters::Converter
           include OpenAI::RequestParameters
 
           # The ID of the
@@ -431,7 +431,10 @@ module OpenAI
               end
 
               MessageContentPartParamArray =
-                T.let(OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam], OpenAI::Converter)
+                T.let(
+                  OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam],
+                  OpenAI::Type::Converter
+                )
             end
 
             # The role of the entity that is creating the message. Allowed values include:

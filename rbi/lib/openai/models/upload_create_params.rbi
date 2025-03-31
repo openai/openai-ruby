@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class UploadCreateParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # The number of bytes in the file you are uploading.

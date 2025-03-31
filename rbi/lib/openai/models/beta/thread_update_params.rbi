@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       class ThreadUpdateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful

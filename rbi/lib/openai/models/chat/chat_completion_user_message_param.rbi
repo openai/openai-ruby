@@ -105,7 +105,7 @@ module OpenAI
           end
 
           ChatCompletionContentPartArray =
-            T.let(OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionContentPart], OpenAI::Converter)
+            T.let(OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionContentPart], OpenAI::Type::Converter)
         end
       end
     end

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class ImageCreateVariationParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # The image to use as the basis for the variation(s). Must be a valid PNG file,

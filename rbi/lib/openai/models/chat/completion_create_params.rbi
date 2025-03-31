@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       class CompletionCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # A list of messages comprising the conversation so far. Depending on the
@@ -709,7 +709,7 @@ module OpenAI
           def self.variants
           end
 
-          StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+          StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
         end
 
         class WebSearchOptions < OpenAI::BaseModel

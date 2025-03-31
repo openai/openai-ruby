@@ -1,6 +1,6 @@
 module OpenAI
   class CursorPage[Elem]
-    include OpenAI::BasePage[Elem]
+    include OpenAI::Type::BasePage[Elem]
 
     attr_accessor data: ::Array[Elem]?
 

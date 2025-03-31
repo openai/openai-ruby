@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Responses
       class InputItemListParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # An item ID to list items after, used in pagination.

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class ImageEditParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask

@@ -1,0 +1,18 @@
+module OpenAI
+  module Type
+    class BooleanModel
+      extend OpenAI::Type::Converter
+
+      def self.===: (top other) -> bool
+
+      def self.==: (top other) -> bool
+
+      def self.coerce: (
+        bool | top value,
+        state: OpenAI::Type::Converter::state
+      ) -> (bool | top)
+
+      def self.dump: (bool | top value) -> (bool | top)
+    end
+  end
+end

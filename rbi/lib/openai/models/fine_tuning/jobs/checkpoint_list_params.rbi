@@ -5,7 +5,7 @@ module OpenAI
     module FineTuning
       module Jobs
         class CheckpointListParams < OpenAI::BaseModel
-          extend OpenAI::RequestParameters::Converter
+          extend OpenAI::Type::RequestParameters::Converter
           include OpenAI::RequestParameters
 
           # Identifier for the last checkpoint ID from the previous pagination request.

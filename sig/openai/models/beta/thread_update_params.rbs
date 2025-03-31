@@ -9,7 +9,7 @@ module OpenAI
         & OpenAI::request_parameters
 
       class ThreadUpdateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         attr_accessor metadata: OpenAI::Models::metadata?
