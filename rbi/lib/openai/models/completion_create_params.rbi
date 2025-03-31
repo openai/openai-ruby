@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class CompletionCreateParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # ID of the model to use. You can use the
@@ -277,11 +277,11 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
 
-        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Converter)
+        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Type::Converter)
 
-        ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Converter)
+        ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Type::Converter)
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -293,7 +293,7 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
       end
     end
   end

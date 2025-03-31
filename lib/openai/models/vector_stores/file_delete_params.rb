@@ -5,7 +5,7 @@ module OpenAI
     module VectorStores
       class FileDeleteParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::RequestParameters::Converter
+        #   extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # @!attribute vector_store_id

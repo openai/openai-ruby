@@ -5,7 +5,7 @@ module OpenAI
     module Audio
       class SpeechCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::RequestParameters::Converter
+        #   extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # @!attribute input

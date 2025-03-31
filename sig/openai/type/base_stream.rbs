@@ -1,0 +1,25 @@
+module OpenAI
+  module Type
+    module BaseStream[Message, Elem]
+      include Enumerable[Elem]
+
+      def close: -> void
+
+      private def iterator: -> Enumerable[Elem]
+
+      def each: { (Elem arg0) -> void } -> void
+
+      def to_enum: -> Enumerator[Elem]
+
+      alias enum_for to_enum
+
+      def initialize: (
+        model: Class | OpenAI::Type::Converter,
+        url: URI::Generic,
+        status: Integer,
+        response: top,
+        stream: Enumerable[Message]
+      ) -> void
+    end
+  end
+end

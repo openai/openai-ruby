@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         class RunRetrieveParams < OpenAI::BaseModel
           # @!parse
-          #   extend OpenAI::RequestParameters::Converter
+          #   extend OpenAI::Type::RequestParameters::Converter
           include OpenAI::RequestParameters
 
           # @!attribute thread_id

@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       class ResponseRetrieveParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::RequestParameters::Converter
+        #   extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # @!attribute [r] include

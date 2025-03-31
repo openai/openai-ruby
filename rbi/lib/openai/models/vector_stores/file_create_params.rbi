@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       class FileCreateParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         # A [File](https://platform.openai.com/docs/api-reference/files) ID that the

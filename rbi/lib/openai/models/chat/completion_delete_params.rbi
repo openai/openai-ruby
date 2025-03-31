@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       class CompletionDeleteParams < OpenAI::BaseModel
-        extend OpenAI::RequestParameters::Converter
+        extend OpenAI::Type::RequestParameters::Converter
         include OpenAI::RequestParameters
 
         sig do

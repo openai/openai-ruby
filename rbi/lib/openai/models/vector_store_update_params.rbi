@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class VectorStoreUpdateParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       # The expiration policy for a vector store.

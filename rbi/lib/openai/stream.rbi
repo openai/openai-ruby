@@ -2,7 +2,7 @@
 
 module OpenAI
   class Stream
-    include OpenAI::BaseStream
+    include OpenAI::Type::BaseStream
 
     Message = type_member(:in) { {fixed: OpenAI::Util::ServerSentEvent} }
     Elem = type_member(:out)

@@ -4,7 +4,7 @@ module OpenAI
       { part_ids: ::Array[String], :md5 => String } & OpenAI::request_parameters
 
     class UploadCompleteParams < OpenAI::BaseModel
-      extend OpenAI::RequestParameters::Converter
+      extend OpenAI::Type::RequestParameters::Converter
       include OpenAI::RequestParameters
 
       attr_accessor part_ids: ::Array[String]
