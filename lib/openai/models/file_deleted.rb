@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Files#delete
     class FileDeleted < OpenAI::BaseModel
       # @!attribute id
       #

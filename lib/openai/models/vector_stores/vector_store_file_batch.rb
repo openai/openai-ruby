@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
+      # @see OpenAI::Resources::VectorStores::FileBatches#create
       class VectorStoreFileBatch < OpenAI::BaseModel
         # @!attribute id
         #   The identifier, which can be referenced in API endpoints.

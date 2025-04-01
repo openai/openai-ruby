@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
+          # @see OpenAI::Resources::Beta::Threads::Runs::Steps#retrieve
           class RunStep < OpenAI::BaseModel
             # @!attribute id
             #   The identifier of the run step, which can be referenced in API endpoints.

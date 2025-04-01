@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Beta
+      # @see OpenAI::Resources::Beta::Threads#create
       class Thread < OpenAI::BaseModel
         # @!attribute id
         #   The identifier, which can be referenced in API endpoints.

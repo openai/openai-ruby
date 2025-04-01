@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Moderations#create
     class ModerationCreateResponse < OpenAI::BaseModel
       # @!attribute id
       #   The unique identifier for the moderation request.

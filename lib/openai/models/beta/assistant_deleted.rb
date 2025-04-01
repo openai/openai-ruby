@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Beta
+      # @see OpenAI::Resources::Beta::Assistants#delete
       class AssistantDeleted < OpenAI::BaseModel
         # @!attribute id
         #
