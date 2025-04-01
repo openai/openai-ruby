@@ -1,21 +1,7 @@
 # frozen_string_literal: true
 
-# We already ship the preferred sorbet manifests in the package itself.
-# `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
-if Object.const_defined?(:Tapioca) && caller.chain([$0]).chain(ARGV).grep(/tapioca/)
-  Warning.warn(
-    <<~WARN
-      \n
-      ⚠️ skipped loading of "openai" gem under `tapioca`.
-
-      This message is normal and expected if you are running a `tapioca` command, and does not impact `.rbi` generation.
-      \n
-    WARN
-  )
-  return
-end
-
 # Standard libraries.
+require "English"
 require "cgi"
 require "date"
 require "erb"
@@ -29,6 +15,21 @@ require "set"
 require "stringio"
 require "time"
 require "uri"
+
+# We already ship the preferred sorbet manifests in the package itself.
+# `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
+if Object.const_defined?(:Tapioca) && caller.chain([$PROGRAM_NAME]).chain(ARGV).grep(/tapioca/)
+  Warning.warn(
+    <<~WARN
+      \n
+      ⚠️ skipped loading of "openai" gem under `tapioca`.
+
+      This message is normal and expected if you are running a `tapioca` command, and does not impact `.rbi` generation.
+      \n
+    WARN
+  )
+  return
+end
 
 # Gems.
 require "connection_pool"

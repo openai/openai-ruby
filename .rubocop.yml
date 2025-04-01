@@ -118,9 +118,9 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+# Need to preserve block identifier for documentation.
 Naming/BlockForwarding:
-  Exclude:
-    - "**/*.rbi"
+  Enabled: false
 
 Naming/ClassAndModuleCamelCase:
   Exclude:
@@ -152,6 +152,9 @@ Style/Alias:
 # And/or have confusing precedence, avoid them.
 Style/AndOr:
   EnforcedStyle: always
+
+Style/ArgumentsForwarding:
+  Enabled: false
 
 Style/BisectedAttrAccessor:
   Exclude:
