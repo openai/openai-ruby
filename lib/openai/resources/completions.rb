@@ -32,7 +32,7 @@ module OpenAI
       def create(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
         if parsed[:stream]
-          message = "Please use `#create_streaming` for the streaming use case."
+          message = "Please use `#stream_raw` for the streaming use case."
           raise ArgumentError.new(message)
         end
         @client.request(
@@ -46,7 +46,7 @@ module OpenAI
 
       # Creates a completion for the provided prompt and parameters.
       #
-      # @overload create_streaming(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
+      # @overload stream_raw(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #
       # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
       # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
@@ -70,7 +70,7 @@ module OpenAI
       # @return [OpenAI::Stream<OpenAI::Models::Completion>]
       #
       # @see OpenAI::Models::CompletionCreateParams
-      def create_streaming(params)
+      def stream_raw(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
         unless parsed.fetch(:stream, true)
           message = "Please use `#create` for the non-streaming use case."

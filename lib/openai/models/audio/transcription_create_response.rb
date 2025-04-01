@@ -8,7 +8,7 @@ module OpenAI
       #
       # @see OpenAI::Resources::Audio::Transcriptions#create
       #
-      # @see OpenAI::Resources::Audio::Transcriptions#create_streaming
+      # @see OpenAI::Resources::Audio::Transcriptions#stream_raw
       module TranscriptionCreateResponse
         extend OpenAI::Union
 

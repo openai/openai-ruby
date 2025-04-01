@@ -38,7 +38,7 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Chat::ChatCompletion
 
-        def create_streaming: (
+        def stream_raw: (
           messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param],
           model: OpenAI::Models::Chat::CompletionCreateParams::model,
           ?audio: OpenAI::Models::Chat::ChatCompletionAudioParam?,

@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs
         #
-        # @see OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_streaming
+        # @see OpenAI::Resources::Beta::Threads::Runs#stream_raw
         class RunSubmitToolOutputsParams < OpenAI::BaseModel
           # @!parse
           #   extend OpenAI::Type::RequestParameters::Converter
