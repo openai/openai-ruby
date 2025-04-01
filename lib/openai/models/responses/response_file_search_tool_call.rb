@@ -54,6 +54,8 @@ module OpenAI
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
+        #
+        # @see OpenAI::Models::Responses::ResponseFileSearchToolCall#status
         module Status
           extend OpenAI::Enum
 

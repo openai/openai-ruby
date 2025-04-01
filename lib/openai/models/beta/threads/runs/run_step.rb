@@ -159,6 +159,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#last_error
             class LastError < OpenAI::BaseModel
               # @!attribute code
               #   One of `server_error` or `rate_limit_exceeded`.
@@ -184,6 +185,8 @@ module OpenAI
               # def initialize: (Hash | OpenAI::BaseModel) -> void
 
               # One of `server_error` or `rate_limit_exceeded`.
+              #
+              # @see OpenAI::Models::Beta::Threads::Runs::RunStep::LastError#code
               module Code
                 extend OpenAI::Enum
 
@@ -200,6 +203,8 @@ module OpenAI
 
             # The status of the run step, which can be either `in_progress`, `cancelled`,
             #   `failed`, `completed`, or `expired`.
+            #
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#status
             module Status
               extend OpenAI::Enum
 
@@ -217,6 +222,8 @@ module OpenAI
             end
 
             # The details of the run step.
+            #
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#step_details
             module StepDetails
               extend OpenAI::Union
 
@@ -234,6 +241,8 @@ module OpenAI
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
+            #
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#type
             module Type
               extend OpenAI::Enum
 
@@ -247,6 +256,7 @@ module OpenAI
               #   def self.values; end
             end
 
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStep#usage
             class Usage < OpenAI::BaseModel
               # @!attribute completion_tokens
               #   Number of completion tokens used over the course of the run step.

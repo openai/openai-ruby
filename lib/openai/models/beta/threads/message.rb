@@ -200,6 +200,7 @@ module OpenAI
             end
           end
 
+          # @see OpenAI::Models::Beta::Threads::Message#incomplete_details
           class IncompleteDetails < OpenAI::BaseModel
             # @!attribute reason
             #   The reason the message is incomplete.
@@ -217,6 +218,8 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
             # The reason the message is incomplete.
+            #
+            # @see OpenAI::Models::Beta::Threads::Message::IncompleteDetails#reason
             module Reason
               extend OpenAI::Enum
 
@@ -235,6 +238,8 @@ module OpenAI
           end
 
           # The entity that produced the message. One of `user` or `assistant`.
+          #
+          # @see OpenAI::Models::Beta::Threads::Message#role
           module Role
             extend OpenAI::Enum
 
@@ -250,6 +255,8 @@ module OpenAI
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
           #   `completed`.
+          #
+          # @see OpenAI::Models::Beta::Threads::Message#status
           module Status
             extend OpenAI::Enum
 

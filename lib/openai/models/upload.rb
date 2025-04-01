@@ -77,6 +77,8 @@ module OpenAI
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
       # The status of the Upload.
+      #
+      # @see OpenAI::Models::Upload#status
       module Status
         extend OpenAI::Enum
 

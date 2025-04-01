@@ -70,6 +70,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The log level of the event.
+        #
+        # @see OpenAI::Models::FineTuning::FineTuningJobEvent#level
         module Level
           extend OpenAI::Enum
 
@@ -85,6 +87,8 @@ module OpenAI
         end
 
         # The type of event.
+        #
+        # @see OpenAI::Models::FineTuning::FineTuningJobEvent#type
         module Type
           extend OpenAI::Enum
 

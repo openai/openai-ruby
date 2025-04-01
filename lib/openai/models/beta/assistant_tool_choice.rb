@@ -31,6 +31,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The type of the tool. If type is `function`, the function name must be set
+        #
+        # @see OpenAI::Models::Beta::AssistantToolChoice#type
         module Type
           extend OpenAI::Enum
 

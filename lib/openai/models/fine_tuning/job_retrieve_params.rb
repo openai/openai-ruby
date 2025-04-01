@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
+      # @see OpenAI::Resources::FineTuning::Jobs#retrieve
       class JobRetrieveParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

@@ -36,6 +36,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage#image
             class Image < OpenAI::BaseModel
               # @!attribute [r] file_id
               #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the

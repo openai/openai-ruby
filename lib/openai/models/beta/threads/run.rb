@@ -283,6 +283,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::Threads::Run#incomplete_details
           class IncompleteDetails < OpenAI::BaseModel
             # @!attribute [r] reason
             #   The reason why the run is incomplete. This will point to which specific token
@@ -307,6 +308,8 @@ module OpenAI
 
             # The reason why the run is incomplete. This will point to which specific token
             #   limit was reached over the course of the run.
+            #
+            # @see OpenAI::Models::Beta::Threads::Run::IncompleteDetails#reason
             module Reason
               extend OpenAI::Enum
 
@@ -321,6 +324,7 @@ module OpenAI
             end
           end
 
+          # @see OpenAI::Models::Beta::Threads::Run#last_error
           class LastError < OpenAI::BaseModel
             # @!attribute code
             #   One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
@@ -345,6 +349,8 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
+            #
+            # @see OpenAI::Models::Beta::Threads::Run::LastError#code
             module Code
               extend OpenAI::Enum
 
@@ -360,6 +366,7 @@ module OpenAI
             end
           end
 
+          # @see OpenAI::Models::Beta::Threads::Run#required_action
           class RequiredAction < OpenAI::BaseModel
             # @!attribute submit_tool_outputs
             #   Details on the tool outputs needed for this run to continue.
@@ -385,6 +392,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::Beta::Threads::Run::RequiredAction#submit_tool_outputs
             class SubmitToolOutputs < OpenAI::BaseModel
               # @!attribute tool_calls
               #   A list of the relevant tool calls.
@@ -404,6 +412,7 @@ module OpenAI
             end
           end
 
+          # @see OpenAI::Models::Beta::Threads::Run#truncation_strategy
           class TruncationStrategy < OpenAI::BaseModel
             # @!attribute type
             #   The truncation strategy to use for the thread. The default is `auto`. If set to
@@ -436,6 +445,8 @@ module OpenAI
             #   `last_messages`, the thread will be truncated to the n most recent messages in
             #   the thread. When set to `auto`, messages in the middle of the thread will be
             #   dropped to fit the context length of the model, `max_prompt_tokens`.
+            #
+            # @see OpenAI::Models::Beta::Threads::Run::TruncationStrategy#type
             module Type
               extend OpenAI::Enum
 
@@ -450,6 +461,7 @@ module OpenAI
             end
           end
 
+          # @see OpenAI::Models::Beta::Threads::Run#usage
           class Usage < OpenAI::BaseModel
             # @!attribute completion_tokens
             #   Number of completion tokens used over the course of the run.

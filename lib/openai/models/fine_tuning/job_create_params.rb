@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
+      # @see OpenAI::Resources::FineTuning::Jobs#create
       class JobCreateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter
@@ -222,6 +223,8 @@ module OpenAI
 
           # Number of examples in each batch. A larger batch size means that model
           #   parameters are updated less frequently, but with lower variance.
+          #
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#batch_size
           module BatchSize
             extend OpenAI::Union
 
@@ -236,6 +239,8 @@ module OpenAI
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           #   avoid overfitting.
+          #
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#learning_rate_multiplier
           module LearningRateMultiplier
             extend OpenAI::Union
 
@@ -250,6 +255,8 @@ module OpenAI
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
           #   through the training dataset.
+          #
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#n_epochs
           module NEpochs
             extend OpenAI::Union
 
@@ -288,6 +295,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Integration#wandb
           class Wandb < OpenAI::BaseModel
             # @!attribute project
             #   The name of the project that the new run will be created under.
@@ -381,6 +389,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Method#dpo
           class Dpo < OpenAI::BaseModel
             # @!attribute [r] hyperparameters
             #   The hyperparameters used for the fine-tuning job.
@@ -402,6 +411,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo#hyperparameters
             class Hyperparameters < OpenAI::BaseModel
               # @!attribute [r] batch_size
               #   Number of examples in each batch. A larger batch size means that model
@@ -465,6 +475,8 @@ module OpenAI
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
+              #
+              # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#batch_size
               module BatchSize
                 extend OpenAI::Union
 
@@ -479,6 +491,8 @@ module OpenAI
 
               # The beta value for the DPO method. A higher beta value will increase the weight
               #   of the penalty between the policy and reference model.
+              #
+              # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#beta
               module Beta
                 extend OpenAI::Union
 
@@ -493,6 +507,8 @@ module OpenAI
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
+              #
+              # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#learning_rate_multiplier
               module LearningRateMultiplier
                 extend OpenAI::Union
 
@@ -507,6 +523,8 @@ module OpenAI
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
+              #
+              # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#n_epochs
               module NEpochs
                 extend OpenAI::Union
 
@@ -521,6 +539,7 @@ module OpenAI
             end
           end
 
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Method#supervised
           class Supervised < OpenAI::BaseModel
             # @!attribute [r] hyperparameters
             #   The hyperparameters used for the fine-tuning job.
@@ -542,6 +561,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised#hyperparameters
             class Hyperparameters < OpenAI::BaseModel
               # @!attribute [r] batch_size
               #   Number of examples in each batch. A larger batch size means that model
@@ -592,6 +612,8 @@ module OpenAI
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
+              #
+              # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters#batch_size
               module BatchSize
                 extend OpenAI::Union
 
@@ -606,6 +628,8 @@ module OpenAI
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
+              #
+              # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters#learning_rate_multiplier
               module LearningRateMultiplier
                 extend OpenAI::Union
 
@@ -620,6 +644,8 @@ module OpenAI
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
+              #
+              # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters#n_epochs
               module NEpochs
                 extend OpenAI::Union
 
@@ -635,6 +661,8 @@ module OpenAI
           end
 
           # The type of method. Is either `supervised` or `dpo`.
+          #
+          # @see OpenAI::Models::FineTuning::JobCreateParams::Method#type
           module Type
             extend OpenAI::Enum
 

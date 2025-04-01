@@ -26,6 +26,7 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @see OpenAI::Models::Chat::ChatCompletionNamedToolChoice#function
         class Function < OpenAI::BaseModel
           # @!attribute name
           #   The name of the function to call.

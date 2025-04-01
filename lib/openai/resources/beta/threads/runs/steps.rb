@@ -28,6 +28,8 @@ module OpenAI
             #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
             #
             # @return [OpenAI::Models::Beta::Threads::Runs::RunStep]
+            #
+            # @see OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams
             def retrieve(step_id, params)
               parsed, options = OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams.dump_request(params)
               thread_id =
@@ -83,6 +85,8 @@ module OpenAI
             #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
             #
             # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Threads::Runs::RunStep>]
+            #
+            # @see OpenAI::Models::Beta::Threads::Runs::StepListParams
             def list(run_id, params)
               parsed, options = OpenAI::Models::Beta::Threads::Runs::StepListParams.dump_request(params)
               thread_id =
@@ -99,6 +103,8 @@ module OpenAI
               )
             end
 
+            # @api private
+            #
             # @param client [OpenAI::Client]
             def initialize(client:)
               @client = client

@@ -66,6 +66,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # A citation to a file.
+        #
+        # @see OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent#annotation
         module Annotation
           extend OpenAI::Union
 

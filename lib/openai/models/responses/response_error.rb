@@ -27,6 +27,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The error code for the response.
+        #
+        # @see OpenAI::Models::Responses::ResponseError#code
         module Code
           extend OpenAI::Enum
 

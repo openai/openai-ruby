@@ -213,6 +213,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletion]
+        #
+        # @see OpenAI::Models::Chat::CompletionCreateParams
         def create(params)
           parsed, options = OpenAI::Models::Chat::CompletionCreateParams.dump_request(params)
           if parsed[:stream]
@@ -434,6 +436,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Stream<OpenAI::Models::Chat::ChatCompletionChunk>]
+        #
+        # @see OpenAI::Models::Chat::CompletionCreateParams
         def create_streaming(params)
           parsed, options = OpenAI::Models::Chat::CompletionCreateParams.dump_request(params)
           unless parsed.fetch(:stream, true)
@@ -462,6 +466,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletion]
+        #
+        # @see OpenAI::Models::Chat::CompletionRetrieveParams
         def retrieve(completion_id, params = {})
           @client.request(
             method: :get,
@@ -489,6 +495,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletion]
+        #
+        # @see OpenAI::Models::Chat::CompletionUpdateParams
         def update(completion_id, params)
           parsed, options = OpenAI::Models::Chat::CompletionUpdateParams.dump_request(params)
           @client.request(
@@ -521,6 +529,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::Chat::ChatCompletion>]
+        #
+        # @see OpenAI::Models::Chat::CompletionListParams
         def list(params = {})
           parsed, options = OpenAI::Models::Chat::CompletionListParams.dump_request(params)
           @client.request(
@@ -543,6 +553,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Chat::ChatCompletionDeleted]
+        #
+        # @see OpenAI::Models::Chat::CompletionDeleteParams
         def delete(completion_id, params = {})
           @client.request(
             method: :delete,
@@ -552,6 +564,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

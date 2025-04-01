@@ -59,6 +59,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # A click action.
+        #
+        # @see OpenAI::Models::Responses::ResponseComputerToolCall#action
         module Action
           extend OpenAI::Union
 
@@ -132,6 +134,8 @@ module OpenAI
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
+            #
+            # @see OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click#button
             module Button
               extend OpenAI::Enum
 
@@ -442,6 +446,8 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
+        #
+        # @see OpenAI::Models::Responses::ResponseComputerToolCall#status
         module Status
           extend OpenAI::Enum
 
@@ -457,6 +463,8 @@ module OpenAI
         end
 
         # The type of the computer call. Always `computer_call`.
+        #
+        # @see OpenAI::Models::Responses::ResponseComputerToolCall#type
         module Type
           extend OpenAI::Enum
 

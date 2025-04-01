@@ -41,6 +41,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The contents of the developer message.
+        #
+        # @see OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam#content
         module Content
           extend OpenAI::Union
 

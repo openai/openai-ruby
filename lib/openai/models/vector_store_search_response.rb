@@ -86,6 +86,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The type of content.
+        #
+        # @see OpenAI::Models::VectorStoreSearchResponse::Content#type
         module Type
           extend OpenAI::Enum
 

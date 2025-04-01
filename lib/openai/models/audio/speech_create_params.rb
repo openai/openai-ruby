@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Audio
+      # @see OpenAI::Resources::Audio::Speech#create
       class SpeechCreateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

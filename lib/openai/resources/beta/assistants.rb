@@ -78,6 +78,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::Assistant]
+        #
+        # @see OpenAI::Models::Beta::AssistantCreateParams
         def create(params)
           parsed, options = OpenAI::Models::Beta::AssistantCreateParams.dump_request(params)
           @client.request(
@@ -98,6 +100,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::Assistant]
+        #
+        # @see OpenAI::Models::Beta::AssistantRetrieveParams
         def retrieve(assistant_id, params = {})
           @client.request(
             method: :get,
@@ -183,6 +187,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::Assistant]
+        #
+        # @see OpenAI::Models::Beta::AssistantUpdateParams
         def update(assistant_id, params = {})
           parsed, options = OpenAI::Models::Beta::AssistantUpdateParams.dump_request(params)
           @client.request(
@@ -217,6 +223,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Assistant>]
+        #
+        # @see OpenAI::Models::Beta::AssistantListParams
         def list(params = {})
           parsed, options = OpenAI::Models::Beta::AssistantListParams.dump_request(params)
           @client.request(
@@ -238,6 +246,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Beta::AssistantDeleted]
+        #
+        # @see OpenAI::Models::Beta::AssistantDeleteParams
         def delete(assistant_id, params = {})
           @client.request(
             method: :delete,
@@ -247,6 +257,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

@@ -123,6 +123,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Run]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunCreateParams
           def create(thread_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunCreateParams.dump_request(params)
             if parsed[:stream]
@@ -255,6 +257,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunCreateParams
           def create_streaming(thread_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunCreateParams.dump_request(params)
             unless parsed.fetch(:stream, true)
@@ -287,6 +291,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Run]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunRetrieveParams
           def retrieve(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunRetrieveParams.dump_request(params)
             thread_id =
@@ -320,6 +326,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Run]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunUpdateParams
           def update(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunUpdateParams.dump_request(params)
             thread_id =
@@ -360,6 +368,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Threads::Run>]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunListParams
           def list(thread_id, params = {})
             parsed, options = OpenAI::Models::Beta::Threads::RunListParams.dump_request(params)
             @client.request(
@@ -383,6 +393,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Run]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunCancelParams
           def cancel(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunCancelParams.dump_request(params)
             thread_id =
@@ -415,6 +427,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Run]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams
           def submit_tool_outputs(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams.dump_request(params)
             if parsed[:stream]
@@ -452,6 +466,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
+          #
+          # @see OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams
           def submit_tool_outputs_streaming(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams.dump_request(params)
             unless parsed.fetch(:stream, true)
@@ -474,6 +490,8 @@ module OpenAI
             )
           end
 
+          # @api private
+          #
           # @param client [OpenAI::Client]
           def initialize(client:)
             @client = client

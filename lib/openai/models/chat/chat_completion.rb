@@ -139,6 +139,8 @@ module OpenAI
           #   content was omitted due to a flag from our content filters, `tool_calls` if the
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
+          #
+          # @see OpenAI::Models::Chat::ChatCompletion::Choice#finish_reason
           module FinishReason
             extend OpenAI::Enum
 
@@ -155,6 +157,7 @@ module OpenAI
             #   def self.values; end
           end
 
+          # @see OpenAI::Models::Chat::ChatCompletion::Choice#logprobs
           class Logprobs < OpenAI::BaseModel
             # @!attribute content
             #   A list of message content tokens with log probability information.
@@ -181,6 +184,8 @@ module OpenAI
         end
 
         # The service tier used for processing the request.
+        #
+        # @see OpenAI::Models::Chat::ChatCompletion#service_tier
         module ServiceTier
           extend OpenAI::Enum
 

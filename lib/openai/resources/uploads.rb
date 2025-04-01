@@ -45,6 +45,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Upload]
+      #
+      # @see OpenAI::Models::UploadCreateParams
       def create(params)
         parsed, options = OpenAI::Models::UploadCreateParams.dump_request(params)
         @client.request(
@@ -65,6 +67,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Upload]
+      #
+      # @see OpenAI::Models::UploadCancelParams
       def cancel(upload_id, params = {})
         @client.request(
           method: :post,
@@ -100,6 +104,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Upload]
+      #
+      # @see OpenAI::Models::UploadCompleteParams
       def complete(upload_id, params)
         parsed, options = OpenAI::Models::UploadCompleteParams.dump_request(params)
         @client.request(
@@ -111,6 +117,8 @@ module OpenAI
         )
       end
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client

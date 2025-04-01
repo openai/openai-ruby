@@ -48,6 +48,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The content part that is done.
+        #
+        # @see OpenAI::Models::Responses::ResponseContentPartDoneEvent#part
         module Part
           extend OpenAI::Union
 

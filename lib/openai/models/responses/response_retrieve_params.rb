@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Responses
+      # @see OpenAI::Resources::Responses#retrieve
       class ResponseRetrieveParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

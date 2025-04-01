@@ -269,6 +269,7 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @see OpenAI::Models::Responses::Response#incomplete_details
         class IncompleteDetails < OpenAI::BaseModel
           # @!attribute [r] reason
           #   The reason why the response is incomplete.
@@ -290,6 +291,8 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
           # The reason why the response is incomplete.
+          #
+          # @see OpenAI::Models::Responses::Response::IncompleteDetails#reason
           module Reason
             extend OpenAI::Enum
 
@@ -307,6 +310,8 @@ module OpenAI
         # How the model should select which tool (or tools) to use when generating a
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
+        #
+        # @see OpenAI::Models::Responses::Response#tool_choice
         module ToolChoice
           extend OpenAI::Union
 
@@ -339,6 +344,8 @@ module OpenAI
         #     window by dropping input items in the middle of the conversation.
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
+        #
+        # @see OpenAI::Models::Responses::Response#truncation
         module Truncation
           extend OpenAI::Enum
 
