@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Uploads#create
     class Upload < OpenAI::BaseModel
       # @!attribute id
       #   The Upload unique identifier, which can be referenced in API endpoints.

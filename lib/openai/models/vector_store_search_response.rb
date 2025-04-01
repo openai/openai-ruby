@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::VectorStores#search
     class VectorStoreSearchResponse < OpenAI::BaseModel
       # @!attribute attributes
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
