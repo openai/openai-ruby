@@ -117,7 +117,12 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(accepted_prediction_tokens: nil, audio_tokens: nil, reasoning_tokens: nil, rejected_prediction_tokens: nil)
+        def self.new(
+          accepted_prediction_tokens: nil,
+          audio_tokens: nil,
+          reasoning_tokens: nil,
+          rejected_prediction_tokens: nil
+        )
         end
 
         sig do

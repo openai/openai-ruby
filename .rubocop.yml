@@ -235,6 +235,10 @@ Style/RegexpLiteral:
 Style/SafeNavigation:
   Enabled: false
 
+Style/SignalException:
+  Exclude:
+    - Rakefile
+
 # We use these sparingly, where we anticipate future branches for the
 # inner conditional.
 Style/SoleNestedConditional:

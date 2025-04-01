@@ -60,7 +60,14 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
+      def self.new(
+        query:,
+        filters: nil,
+        max_num_results: nil,
+        ranking_options: nil,
+        rewrite_query: nil,
+        request_options: {}
+      )
       end
 
       sig do

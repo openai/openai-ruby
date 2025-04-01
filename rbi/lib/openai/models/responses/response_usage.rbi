@@ -52,7 +52,13 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:)
+        def self.new(
+          input_tokens:,
+          input_tokens_details:,
+          output_tokens:,
+          output_tokens_details:,
+          total_tokens:
+        )
         end
 
         sig do
