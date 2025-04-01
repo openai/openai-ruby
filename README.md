@@ -171,7 +171,7 @@ Due to limitations with the Sorbet type system, where a method otherwise can tak
 Please follow Sorbet's [setup guides](https://sorbet.org/docs/adopting) for best experience.
 
 ```ruby
-model = CompletionCreateParams.new(
+model = OpenAI::Models::Chat::CompletionCreateParams.new(
   messages: [{
     role: "user",
     content: "Say this is a test"
