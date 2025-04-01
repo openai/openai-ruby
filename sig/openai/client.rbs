@@ -45,10 +45,10 @@ module OpenAI
     private def auth_headers: -> ::Hash[String, String]
 
     def initialize: (
-      ?base_url: String?,
       ?api_key: String?,
       ?organization: String?,
       ?project: String?,
+      ?base_url: String?,
       ?max_retries: Integer,
       ?timeout: Float,
       ?initial_retry_delay: Float,
