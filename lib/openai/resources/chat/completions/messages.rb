@@ -8,18 +8,13 @@ module OpenAI
           # Get the messages in a stored chat completion. Only Chat Completions that have
           #   been created with the `store` parameter set to `true` will be returned.
           #
-          # @param completion_id [String] The ID of the chat completion to retrieve messages from.
+          # @overload list(completion_id, after: nil, limit: nil, order: nil, request_options: {})
           #
-          # @param params [OpenAI::Models::Chat::Completions::MessageListParams, Hash{Symbol=>Object}] .
-          #
-          #   @option params [String] :after Identifier for the last message from the previous pagination request.
-          #
-          #   @option params [Integer] :limit Number of messages to retrieve.
-          #
-          #   @option params [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order] :order Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
-          #     for descending order. Defaults to `asc`.
-          #
-          #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+          # @param completion_id [String]
+          # @param after [String]
+          # @param limit [Integer]
+          # @param order [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order]
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::CursorPage<OpenAI::Models::Chat::ChatCompletionStoreMessage>]
           #

@@ -16,13 +16,11 @@ module OpenAI
         #   order of the Parts when you
         #   [complete the Upload](https://platform.openai.com/docs/api-reference/uploads/complete).
         #
-        # @param upload_id [String] The ID of the Upload.
+        # @overload create(upload_id, data:, request_options: {})
         #
-        # @param params [OpenAI::Models::Uploads::PartCreateParams, Hash{Symbol=>Object}] .
-        #
-        #   @option params [IO, StringIO] :data The chunk of bytes for this Part.
-        #
-        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        # @param upload_id [String]
+        # @param data [IO, StringIO]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::Uploads::UploadPart]
         #
