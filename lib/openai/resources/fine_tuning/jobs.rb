@@ -15,67 +15,18 @@ module OpenAI
         #
         #   [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
         #
-        # @param params [OpenAI::Models::FineTuning::JobCreateParams, Hash{Symbol=>Object}] .
+        # @overload create(model:, training_file:, hyperparameters: nil, integrations: nil, metadata: nil, method_: nil, seed: nil, suffix: nil, validation_file: nil, request_options: {})
         #
-        #   @option params [String, Symbol] :model The name of the model to fine-tune. You can select one of the
-        #     [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
-        #
-        #   @option params [String] :training_file The ID of an uploaded file that contains training data.
-        #
-        #     See [upload file](https://platform.openai.com/docs/api-reference/files/create)
-        #     for how to upload a file.
-        #
-        #     Your dataset must be formatted as a JSONL file. Additionally, you must upload
-        #     your file with the purpose `fine-tune`.
-        #
-        #     The contents of the file should differ depending on if the model uses the
-        #     [chat](https://platform.openai.com/docs/api-reference/fine-tuning/chat-input),
-        #     [completions](https://platform.openai.com/docs/api-reference/fine-tuning/completions-input)
-        #     format, or if the fine-tuning method uses the
-        #     [preference](https://platform.openai.com/docs/api-reference/fine-tuning/preference-input)
-        #     format.
-        #
-        #     See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
-        #     for more details.
-        #
-        #   @option params [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters] :hyperparameters The hyperparameters used for the fine-tuning job. This value is now deprecated
-        #     in favor of `method`, and should be passed in under the `method` parameter.
-        #
-        #   @option params [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil] :integrations A list of integrations to enable for your fine-tuning job.
-        #
-        #   @option params [Hash{Symbol=>String}, nil] :metadata Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #     for storing additional information about the object in a structured format, and
-        #     querying for objects via API or the dashboard.
-        #
-        #     Keys are strings with a maximum length of 64 characters. Values are strings with
-        #     a maximum length of 512 characters.
-        #
-        #   @option params [OpenAI::Models::FineTuning::JobCreateParams::Method] :method_ The method used for fine-tuning.
-        #
-        #   @option params [Integer, nil] :seed The seed controls the reproducibility of the job. Passing in the same seed and
-        #     job parameters should produce the same results, but may differ in rare cases. If
-        #     a seed is not specified, one will be generated for you.
-        #
-        #   @option params [String, nil] :suffix A string of up to 64 characters that will be added to your fine-tuned model
-        #     name.
-        #
-        #     For example, a `suffix` of "custom-model-name" would produce a model name like
-        #     `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
-        #
-        #   @option params [String, nil] :validation_file The ID of an uploaded file that contains validation data.
-        #
-        #     If you provide this file, the data is used to generate validation metrics
-        #     periodically during fine-tuning. These metrics can be viewed in the fine-tuning
-        #     results file. The same data should not be present in both train and validation
-        #     files.
-        #
-        #     Your dataset must be formatted as a JSONL file. You must upload your file with
-        #     the purpose `fine-tune`.
-        #
-        #     See the [fine-tuning guide](https://platform.openai.com/docs/guides/fine-tuning)
-        #     for more details.
-        #
-        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        # @param model [String, Symbol]
+        # @param training_file [String]
+        # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters]
+        # @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
+        # @param metadata [Hash{Symbol=>String}, nil]
+        # @param method_ [OpenAI::Models::FineTuning::JobCreateParams::Method]
+        # @param seed [Integer, nil]
+        # @param suffix [String, nil]
+        # @param validation_file [String, nil]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
@@ -95,11 +46,10 @@ module OpenAI
         #
         #   [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
         #
-        # @param fine_tuning_job_id [String] The ID of the fine-tuning job.
+        # @overload retrieve(fine_tuning_job_id, request_options: {})
         #
-        # @param params [OpenAI::Models::FineTuning::JobRetrieveParams, Hash{Symbol=>Object}] .
-        #
-        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        # @param fine_tuning_job_id [String]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
@@ -115,16 +65,12 @@ module OpenAI
 
         # List your organization's fine-tuning jobs
         #
-        # @param params [OpenAI::Models::FineTuning::JobListParams, Hash{Symbol=>Object}] .
+        # @overload list(after: nil, limit: nil, metadata: nil, request_options: {})
         #
-        #   @option params [String] :after Identifier for the last job from the previous pagination request.
-        #
-        #   @option params [Integer] :limit Number of fine-tuning jobs to retrieve.
-        #
-        #   @option params [Hash{Symbol=>String}, nil] :metadata Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
-        #     Alternatively, set `metadata=null` to indicate no metadata.
-        #
-        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        # @param after [String]
+        # @param limit [Integer]
+        # @param metadata [Hash{Symbol=>String}, nil]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJob>]
         #
@@ -143,11 +89,10 @@ module OpenAI
 
         # Immediately cancel a fine-tune job.
         #
-        # @param fine_tuning_job_id [String] The ID of the fine-tuning job to cancel.
+        # @overload cancel(fine_tuning_job_id, request_options: {})
         #
-        # @param params [OpenAI::Models::FineTuning::JobCancelParams, Hash{Symbol=>Object}] .
-        #
-        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        # @param fine_tuning_job_id [String]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
         #
@@ -163,15 +108,12 @@ module OpenAI
 
         # Get status updates for a fine-tuning job.
         #
-        # @param fine_tuning_job_id [String] The ID of the fine-tuning job to get events for.
+        # @overload list_events(fine_tuning_job_id, after: nil, limit: nil, request_options: {})
         #
-        # @param params [OpenAI::Models::FineTuning::JobListEventsParams, Hash{Symbol=>Object}] .
-        #
-        #   @option params [String] :after Identifier for the last event from the previous pagination request.
-        #
-        #   @option params [Integer] :limit Number of events to retrieve.
-        #
-        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        # @param fine_tuning_job_id [String]
+        # @param after [String]
+        # @param limit [Integer]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJobEvent>]
         #

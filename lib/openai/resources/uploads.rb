@@ -26,23 +26,13 @@ module OpenAI
       #   the documentation on
       #   [creating a File](https://platform.openai.com/docs/api-reference/files/create).
       #
-      # @param params [OpenAI::Models::UploadCreateParams, Hash{Symbol=>Object}] .
+      # @overload create(bytes:, filename:, mime_type:, purpose:, request_options: {})
       #
-      #   @option params [Integer] :bytes The number of bytes in the file you are uploading.
-      #
-      #   @option params [String] :filename The name of the file to upload.
-      #
-      #   @option params [String] :mime_type The MIME type of the file.
-      #
-      #     This must fall within the supported MIME types for your file purpose. See the
-      #     supported MIME types for assistants and vision.
-      #
-      #   @option params [Symbol, OpenAI::Models::FilePurpose] :purpose The intended purpose of the uploaded file.
-      #
-      #     See the
-      #     [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param bytes [Integer]
+      # @param filename [String]
+      # @param mime_type [String]
+      # @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Upload]
       #
@@ -60,11 +50,10 @@ module OpenAI
 
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
       #
-      # @param upload_id [String] The ID of the Upload.
+      # @overload cancel(upload_id, request_options: {})
       #
-      # @param params [OpenAI::Models::UploadCancelParams, Hash{Symbol=>Object}] .
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param upload_id [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Upload]
       #
@@ -92,16 +81,12 @@ module OpenAI
       #   initially specified when creating the Upload object. No Parts may be added after
       #   an Upload is completed.
       #
-      # @param upload_id [String] The ID of the Upload.
+      # @overload complete(upload_id, part_ids:, md5: nil, request_options: {})
       #
-      # @param params [OpenAI::Models::UploadCompleteParams, Hash{Symbol=>Object}] .
-      #
-      #   @option params [Array<String>] :part_ids The ordered list of Part IDs.
-      #
-      #   @option params [String] :md5 The optional md5 checksum for the file contents to verify if the bytes uploaded
-      #     matches what you expect.
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param upload_id [String]
+      # @param part_ids [Array<String>]
+      # @param md5 [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Upload]
       #
