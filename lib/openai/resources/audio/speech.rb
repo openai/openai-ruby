@@ -30,6 +30,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [StringIO]
+        #
+        # @see OpenAI::Models::Audio::SpeechCreateParams
         def create(params)
           parsed, options = OpenAI::Models::Audio::SpeechCreateParams.dump_request(params)
           @client.request(
@@ -42,6 +44,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

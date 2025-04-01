@@ -67,6 +67,8 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
+        #
+        # @see OpenAI::Models::Responses::ResponseFunctionToolCall#status
         module Status
           extend OpenAI::Enum
 

@@ -6,6 +6,8 @@ module OpenAI
       # @return [OpenAI::Resources::FineTuning::Jobs]
       attr_reader :jobs
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client

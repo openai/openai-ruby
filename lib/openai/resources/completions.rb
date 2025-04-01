@@ -113,6 +113,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Completion]
+      #
+      # @see OpenAI::Models::CompletionCreateParams
       def create(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
         if parsed[:stream]
@@ -238,6 +240,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Stream<OpenAI::Models::Completion>]
+      #
+      # @see OpenAI::Models::CompletionCreateParams
       def create_streaming(params)
         parsed, options = OpenAI::Models::CompletionCreateParams.dump_request(params)
         unless parsed.fetch(:stream, true)
@@ -256,6 +260,8 @@ module OpenAI
         )
       end
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client

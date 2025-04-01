@@ -30,6 +30,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::ImagesResponse]
+      #
+      # @see OpenAI::Models::ImageCreateVariationParams
       def create_variation(params)
         parsed, options = OpenAI::Models::ImageCreateVariationParams.dump_request(params)
         @client.request(
@@ -75,6 +77,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::ImagesResponse]
+      #
+      # @see OpenAI::Models::ImageEditParams
       def edit(params)
         parsed, options = OpenAI::Models::ImageEditParams.dump_request(params)
         @client.request(
@@ -123,6 +127,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::ImagesResponse]
+      #
+      # @see OpenAI::Models::ImageGenerateParams
       def generate(params)
         parsed, options = OpenAI::Models::ImageGenerateParams.dump_request(params)
         @client.request(
@@ -134,6 +140,8 @@ module OpenAI
         )
       end
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client

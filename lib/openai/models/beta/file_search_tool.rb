@@ -28,6 +28,7 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @see OpenAI::Models::Beta::FileSearchTool#file_search
         class FileSearch < OpenAI::BaseModel
           # @!attribute [r] max_num_results
           #   The maximum number of results the file search tool should output. The default is
@@ -71,6 +72,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::FileSearchTool::FileSearch#ranking_options
           class RankingOptions < OpenAI::BaseModel
             # @!attribute score_threshold
             #   The score threshold for the file search. All values must be a floating point
@@ -107,6 +109,8 @@ module OpenAI
 
             # The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
+            #
+            # @see OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions#ranker
             module Ranker
               extend OpenAI::Enum
 

@@ -2,6 +2,9 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Completions#create
+    #
+    # @see OpenAI::Resources::Completions#create_streaming
     class CompletionCreateParams < OpenAI::BaseModel
       # @!parse
       #   extend OpenAI::Type::RequestParameters::Converter

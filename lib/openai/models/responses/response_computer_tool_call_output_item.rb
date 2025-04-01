@@ -96,6 +96,8 @@ module OpenAI
 
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
+        #
+        # @see OpenAI::Models::Responses::ResponseComputerToolCallOutputItem#status
         module Status
           extend OpenAI::Enum
 

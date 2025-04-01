@@ -46,6 +46,8 @@ module OpenAI
         #
         #   - `web_search_preview`
         #   - `web_search_preview_2025_03_11`
+        #
+        # @see OpenAI::Models::Responses::WebSearchTool#type
         module Type
           extend OpenAI::Enum
 
@@ -61,6 +63,8 @@ module OpenAI
 
         # High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
+        #
+        # @see OpenAI::Models::Responses::WebSearchTool#search_context_size
         module SearchContextSize
           extend OpenAI::Enum
 
@@ -75,6 +79,7 @@ module OpenAI
           #   def self.values; end
         end
 
+        # @see OpenAI::Models::Responses::WebSearchTool#user_location
         class UserLocation < OpenAI::BaseModel
           # @!attribute type
           #   The type of location approximation. Always `approximate`.

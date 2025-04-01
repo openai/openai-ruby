@@ -45,6 +45,8 @@ module OpenAI
 
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
+        #
+        # @see OpenAI::Models::Responses::EasyInputMessage#content
         module Content
           extend OpenAI::Union
 
@@ -62,6 +64,8 @@ module OpenAI
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
         #   `developer`.
+        #
+        # @see OpenAI::Models::Responses::EasyInputMessage#role
         module Role
           extend OpenAI::Enum
 
@@ -78,6 +82,8 @@ module OpenAI
         end
 
         # The type of the message input. Always `message`.
+        #
+        # @see OpenAI::Models::Responses::EasyInputMessage#type
         module Type
           extend OpenAI::Enum
 

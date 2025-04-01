@@ -40,6 +40,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The contents of the user message.
+        #
+        # @see OpenAI::Models::Chat::ChatCompletionUserMessageParam#content
         module Content
           extend OpenAI::Union
 

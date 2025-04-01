@@ -3,6 +3,9 @@
 module OpenAI
   module Models
     module Responses
+      # @see OpenAI::Resources::Responses#create
+      #
+      # @see OpenAI::Resources::Responses#create_streaming
       class ResponseCreateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

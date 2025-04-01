@@ -38,6 +38,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall#function
           class Function < OpenAI::BaseModel
             # @!attribute arguments
             #   The arguments that the model expects you to pass to the function.

@@ -9,6 +9,8 @@ module OpenAI
       # @return [OpenAI::Resources::Beta::Threads]
       attr_reader :threads
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client

@@ -41,6 +41,8 @@ module OpenAI
       #   hit a natural stop point or a provided stop sequence, `length` if the maximum
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
+      #
+      # @see OpenAI::Models::CompletionChoice#finish_reason
       module FinishReason
         extend OpenAI::Enum
 
@@ -55,6 +57,7 @@ module OpenAI
         #   def self.values; end
       end
 
+      # @see OpenAI::Models::CompletionChoice#logprobs
       class Logprobs < OpenAI::BaseModel
         # @!attribute [r] text_offset
         #

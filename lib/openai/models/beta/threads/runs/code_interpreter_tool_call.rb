@@ -37,6 +37,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall#code_interpreter
             class CodeInterpreter < OpenAI::BaseModel
               # @!attribute input
               #   The input to the Code Interpreter tool call.
@@ -121,6 +122,7 @@ module OpenAI
 
                   # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+                  # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image#image
                   class Image < OpenAI::BaseModel
                     # @!attribute file_id
                     #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the

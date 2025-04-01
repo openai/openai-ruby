@@ -35,6 +35,8 @@ module OpenAI
         #   - `file_search`
         #   - `web_search_preview`
         #   - `computer_use_preview`
+        #
+        # @see OpenAI::Models::Responses::ToolChoiceTypes#type
         module Type
           extend OpenAI::Enum
 

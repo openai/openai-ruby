@@ -42,6 +42,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The type of computer environment to control.
+        #
+        # @see OpenAI::Models::Responses::ComputerTool#environment
         module Environment
           extend OpenAI::Enum
 

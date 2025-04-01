@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Beta
+      # @see OpenAI::Resources::Beta::Threads#update
       class ThreadUpdateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter
@@ -70,6 +71,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::ThreadUpdateParams::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::BaseModel
             # @!attribute [r] file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
@@ -91,6 +93,7 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end
 
+          # @see OpenAI::Models::Beta::ThreadUpdateParams::ToolResources#file_search
           class FileSearch < OpenAI::BaseModel
             # @!attribute [r] vector_store_ids
             #   The

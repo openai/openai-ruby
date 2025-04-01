@@ -25,6 +25,7 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @see OpenAI::Models::ModerationImageURLInput#image_url
       class ImageURL < OpenAI::BaseModel
         # @!attribute url
         #   Either a URL of the image or the base64 encoded image data.

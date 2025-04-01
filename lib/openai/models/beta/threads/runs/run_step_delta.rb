@@ -26,6 +26,8 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
             # The details of the run step.
+            #
+            # @see OpenAI::Models::Beta::Threads::Runs::RunStepDelta#step_details
             module StepDetails
               extend OpenAI::Union
 

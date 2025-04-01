@@ -34,6 +34,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
+        #
+        # @see OpenAI::Models::Responses::ResponseInputAudio#format_
         module Format
           extend OpenAI::Enum
 
