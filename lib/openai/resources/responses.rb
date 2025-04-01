@@ -297,7 +297,7 @@ module OpenAI
         parsed, options = OpenAI::Models::Responses::ResponseRetrieveParams.dump_request(params)
         @client.request(
           method: :get,
-          path: ["responses/%0s", response_id],
+          path: ["responses/%1$s", response_id],
           query: parsed,
           model: OpenAI::Models::Responses::Response,
           options: options
@@ -316,7 +316,7 @@ module OpenAI
       def delete(response_id, params = {})
         @client.request(
           method: :delete,
-          path: ["responses/%0s", response_id],
+          path: ["responses/%1$s", response_id],
           model: NilClass,
           options: params[:request_options]
         )

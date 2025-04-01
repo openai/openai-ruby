@@ -57,7 +57,7 @@ module OpenAI
       def retrieve(vector_store_id, params = {})
         @client.request(
           method: :get,
-          path: ["vector_stores/%0s", vector_store_id],
+          path: ["vector_stores/%1$s", vector_store_id],
           model: OpenAI::Models::VectorStore,
           options: params[:request_options]
         )
@@ -87,7 +87,7 @@ module OpenAI
         parsed, options = OpenAI::Models::VectorStoreUpdateParams.dump_request(params)
         @client.request(
           method: :post,
-          path: ["vector_stores/%0s", vector_store_id],
+          path: ["vector_stores/%1$s", vector_store_id],
           body: parsed,
           model: OpenAI::Models::VectorStore,
           options: options
@@ -141,7 +141,7 @@ module OpenAI
       def delete(vector_store_id, params = {})
         @client.request(
           method: :delete,
-          path: ["vector_stores/%0s", vector_store_id],
+          path: ["vector_stores/%1$s", vector_store_id],
           model: OpenAI::Models::VectorStoreDeleted,
           options: params[:request_options]
         )
@@ -172,7 +172,7 @@ module OpenAI
         parsed, options = OpenAI::Models::VectorStoreSearchParams.dump_request(params)
         @client.request(
           method: :post,
-          path: ["vector_stores/%0s/search", vector_store_id],
+          path: ["vector_stores/%1$s/search", vector_store_id],
           body: parsed,
           page: OpenAI::Page,
           model: OpenAI::Models::VectorStoreSearchResponse,
