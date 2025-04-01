@@ -103,7 +103,7 @@ module OpenAI
         def retrieve(fine_tuning_job_id, params = {})
           @client.request(
             method: :get,
-            path: ["fine_tuning/jobs/%0s", fine_tuning_job_id],
+            path: ["fine_tuning/jobs/%1$s", fine_tuning_job_id],
             model: OpenAI::Models::FineTuning::FineTuningJob,
             options: params[:request_options]
           )
@@ -147,7 +147,7 @@ module OpenAI
         def cancel(fine_tuning_job_id, params = {})
           @client.request(
             method: :post,
-            path: ["fine_tuning/jobs/%0s/cancel", fine_tuning_job_id],
+            path: ["fine_tuning/jobs/%1$s/cancel", fine_tuning_job_id],
             model: OpenAI::Models::FineTuning::FineTuningJob,
             options: params[:request_options]
           )
@@ -170,7 +170,7 @@ module OpenAI
           parsed, options = OpenAI::Models::FineTuning::JobListEventsParams.dump_request(params)
           @client.request(
             method: :get,
-            path: ["fine_tuning/jobs/%0s/events", fine_tuning_job_id],
+            path: ["fine_tuning/jobs/%1$s/events", fine_tuning_job_id],
             query: parsed,
             page: OpenAI::CursorPage,
             model: OpenAI::Models::FineTuning::FineTuningJobEvent,

@@ -465,7 +465,7 @@ module OpenAI
         def retrieve(completion_id, params = {})
           @client.request(
             method: :get,
-            path: ["chat/completions/%0s", completion_id],
+            path: ["chat/completions/%1$s", completion_id],
             model: OpenAI::Models::Chat::ChatCompletion,
             options: params[:request_options]
           )
@@ -493,7 +493,7 @@ module OpenAI
           parsed, options = OpenAI::Models::Chat::CompletionUpdateParams.dump_request(params)
           @client.request(
             method: :post,
-            path: ["chat/completions/%0s", completion_id],
+            path: ["chat/completions/%1$s", completion_id],
             body: parsed,
             model: OpenAI::Models::Chat::ChatCompletion,
             options: options
@@ -546,7 +546,7 @@ module OpenAI
         def delete(completion_id, params = {})
           @client.request(
             method: :delete,
-            path: ["chat/completions/%0s", completion_id],
+            path: ["chat/completions/%1$s", completion_id],
             model: OpenAI::Models::Chat::ChatCompletionDeleted,
             options: params[:request_options]
           )

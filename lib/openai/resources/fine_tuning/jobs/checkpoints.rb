@@ -22,7 +22,7 @@ module OpenAI
             parsed, options = OpenAI::Models::FineTuning::Jobs::CheckpointListParams.dump_request(params)
             @client.request(
               method: :get,
-              path: ["fine_tuning/jobs/%0s/checkpoints", fine_tuning_job_id],
+              path: ["fine_tuning/jobs/%1$s/checkpoints", fine_tuning_job_id],
               query: parsed,
               page: OpenAI::CursorPage,
               model: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint,

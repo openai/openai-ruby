@@ -68,7 +68,7 @@ module OpenAI
       def cancel(upload_id, params = {})
         @client.request(
           method: :post,
-          path: ["uploads/%0s/cancel", upload_id],
+          path: ["uploads/%1$s/cancel", upload_id],
           model: OpenAI::Models::Upload,
           options: params[:request_options]
         )
@@ -104,7 +104,7 @@ module OpenAI
         parsed, options = OpenAI::Models::UploadCompleteParams.dump_request(params)
         @client.request(
           method: :post,
-          path: ["uploads/%0s/complete", upload_id],
+          path: ["uploads/%1$s/complete", upload_id],
           body: parsed,
           model: OpenAI::Models::Upload,
           options: options

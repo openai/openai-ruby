@@ -30,7 +30,7 @@ module OpenAI
           parsed, options = OpenAI::Models::VectorStores::FileBatchCreateParams.dump_request(params)
           @client.request(
             method: :post,
-            path: ["vector_stores/%0s/file_batches", vector_store_id],
+            path: ["vector_stores/%1$s/file_batches", vector_store_id],
             body: parsed,
             model: OpenAI::Models::VectorStores::VectorStoreFileBatch,
             options: options
@@ -56,7 +56,7 @@ module OpenAI
             end
           @client.request(
             method: :get,
-            path: ["vector_stores/%0s/file_batches/%1s", vector_store_id, batch_id],
+            path: ["vector_stores/%1$s/file_batches/%2$s", vector_store_id, batch_id],
             model: OpenAI::Models::VectorStores::VectorStoreFileBatch,
             options: options
           )
@@ -82,7 +82,7 @@ module OpenAI
             end
           @client.request(
             method: :post,
-            path: ["vector_stores/%0s/file_batches/%1s/cancel", vector_store_id, batch_id],
+            path: ["vector_stores/%1$s/file_batches/%2$s/cancel", vector_store_id, batch_id],
             model: OpenAI::Models::VectorStores::VectorStoreFileBatch,
             options: options
           )
@@ -126,7 +126,7 @@ module OpenAI
             end
           @client.request(
             method: :get,
-            path: ["vector_stores/%0s/file_batches/%1s/files", vector_store_id, batch_id],
+            path: ["vector_stores/%1$s/file_batches/%2$s/files", vector_store_id, batch_id],
             query: parsed,
             page: OpenAI::CursorPage,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
