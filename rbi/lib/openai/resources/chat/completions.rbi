@@ -268,8 +268,8 @@ module OpenAI
           #   about the
           #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           web_search_options: nil,
-          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
-          #   `#create` for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
+          #   for streaming and non-streaming use cases, respectively.
           stream: false,
           request_options: {}
         )
@@ -352,7 +352,7 @@ module OpenAI
           )
             .returns(OpenAI::Stream[OpenAI::Models::Chat::ChatCompletionChunk])
         end
-        def create_streaming(
+        def stream_raw(
           # A list of messages comprising the conversation so far. Depending on the
           #   [model](https://platform.openai.com/docs/models) you use, different message
           #   types (modalities) are supported, like
@@ -536,8 +536,8 @@ module OpenAI
           #   about the
           #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           web_search_options: nil,
-          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
-          #   `#create` for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
+          #   for streaming and non-streaming use cases, respectively.
           stream: true,
           request_options: {}
         )

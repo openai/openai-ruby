@@ -24,7 +24,7 @@ module OpenAI
         def create(params)
           parsed, options = OpenAI::Models::Audio::TranscriptionCreateParams.dump_request(params)
           if parsed[:stream]
-            message = "Please use `#create_streaming` for the streaming use case."
+            message = "Please use `#stream_raw` for the streaming use case."
             raise ArgumentError.new(message)
           end
           @client.request(
@@ -39,7 +39,7 @@ module OpenAI
 
         # Transcribes audio into the input language.
         #
-        # @overload create_streaming(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        # @overload stream_raw(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
         # @param file [IO, StringIO]
         # @param model [String, Symbol, OpenAI::Models::AudioModel]
@@ -54,7 +54,7 @@ module OpenAI
         # @return [OpenAI::Stream<OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent>]
         #
         # @see OpenAI::Models::Audio::TranscriptionCreateParams
-        def create_streaming(params)
+        def stream_raw(params)
           parsed, options = OpenAI::Models::Audio::TranscriptionCreateParams.dump_request(params)
           unless parsed.fetch(:stream, true)
             message = "Please use `#create` for the non-streaming use case."

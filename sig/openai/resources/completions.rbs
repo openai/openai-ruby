@@ -22,7 +22,7 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Models::Completion
 
-      def create_streaming: (
+      def stream_raw: (
         model: OpenAI::Models::CompletionCreateParams::model,
         prompt: OpenAI::Models::CompletionCreateParams::prompt?,
         ?best_of: Integer?,
