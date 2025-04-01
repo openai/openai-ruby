@@ -13,7 +13,7 @@ The underlying REST API documentation can be found on [platform.openai.com](http
 To use this gem, install via Bundler by adding the following to your application's `Gemfile`:
 
 ```ruby
-gem "openai", "~> 0.1.0.pre.alpha.2"
+gem "openai", "~> 0.1.0.pre.alpha.3"
 ```
 
 To fetch an initial copy of the gem:
