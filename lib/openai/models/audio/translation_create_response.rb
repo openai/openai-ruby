@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Audio
+      # @see OpenAI::Resources::Audio::Translations#create
       module TranslationCreateResponse
         extend OpenAI::Union
 

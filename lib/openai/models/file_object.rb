@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Files#create
     class FileObject < OpenAI::BaseModel
       # @!attribute id
       #   The file identifier, which can be referenced in the API endpoints.

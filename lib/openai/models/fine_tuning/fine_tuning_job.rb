@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
+      # @see OpenAI::Resources::FineTuning::Jobs#create
       class FineTuningJob < OpenAI::BaseModel
         # @!attribute id
         #   The object identifier, which can be referenced in the API endpoints.

@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Images#create_variation
     class ImagesResponse < OpenAI::BaseModel
       # @!attribute created
       #

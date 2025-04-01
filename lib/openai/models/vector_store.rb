@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::VectorStores#create
     class VectorStore < OpenAI::BaseModel
       # @!attribute id
       #   The identifier, which can be referenced in API endpoints.

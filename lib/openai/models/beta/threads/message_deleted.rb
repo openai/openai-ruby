@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        # @see OpenAI::Resources::Beta::Threads::Messages#delete
         class MessageDeleted < OpenAI::BaseModel
           # @!attribute id
           #

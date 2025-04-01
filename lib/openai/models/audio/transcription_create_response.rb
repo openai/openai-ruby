@@ -5,6 +5,10 @@ module OpenAI
     module Audio
       # Represents a transcription response returned by model, based on the provided
       #   input.
+      #
+      # @see OpenAI::Resources::Audio::Transcriptions#create
+      #
+      # @see OpenAI::Resources::Audio::Transcriptions#create_streaming
       module TranscriptionCreateResponse
         extend OpenAI::Union
 

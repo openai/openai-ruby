@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
+      # @see OpenAI::Resources::VectorStores::Files#content
       class FileContentResponse < OpenAI::BaseModel
         # @!attribute [r] text
         #   The text content

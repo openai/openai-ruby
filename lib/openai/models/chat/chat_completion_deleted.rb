@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Chat
+      # @see OpenAI::Resources::Chat::Completions#delete
       class ChatCompletionDeleted < OpenAI::BaseModel
         # @!attribute id
         #   The ID of the chat completion that was deleted.
