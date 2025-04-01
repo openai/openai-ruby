@@ -15,7 +15,7 @@ module OpenAI
             speed: Float,
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
           )
-            .returns(T.anything)
+            .returns(StringIO)
         end
         def create(
           # The text to generate audio for. The maximum length is 4096 characters.

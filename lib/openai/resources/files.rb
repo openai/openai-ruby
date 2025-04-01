@@ -125,13 +125,13 @@ module OpenAI
       #
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
-      # @return [Object]
+      # @return [StringIO]
       def content(file_id, params = {})
         @client.request(
           method: :get,
           path: ["files/%0s/content", file_id],
           headers: {"accept" => "application/binary"},
-          model: OpenAI::Unknown,
+          model: StringIO,
           options: params[:request_options]
         )
       end

@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::Audio::SpeechTest < OpenAI::Test::ResourceTest
     response = @openai.audio.speech.create(input: "input", model: :"tts-1", voice: :alloy)
 
     assert_pattern do
-      response => OpenAI::Unknown
+      response => StringIO
     end
   end
 end

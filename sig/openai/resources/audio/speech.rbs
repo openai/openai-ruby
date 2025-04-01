@@ -10,7 +10,7 @@ module OpenAI
           ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
           ?speed: Float,
           ?request_options: OpenAI::request_opts
-        ) -> top
+        ) -> StringIO
 
         def initialize: (client: OpenAI::Client) -> void
       end

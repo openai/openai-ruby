@@ -29,7 +29,7 @@ module OpenAI
         #
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
-        # @return [Object]
+        # @return [StringIO]
         def create(params)
           parsed, options = OpenAI::Models::Audio::SpeechCreateParams.dump_request(params)
           @client.request(
@@ -37,7 +37,7 @@ module OpenAI
             path: "audio/speech",
             headers: {"accept" => "application/octet-stream"},
             body: parsed,
-            model: OpenAI::Unknown,
+            model: StringIO,
             options: options
           )
         end

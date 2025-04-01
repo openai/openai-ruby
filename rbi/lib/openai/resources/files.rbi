@@ -124,7 +124,7 @@ module OpenAI
             )
           )
         )
-          .returns(T.anything)
+          .returns(StringIO)
       end
       def content(
         # The ID of the file to use for this request.
