@@ -36,7 +36,7 @@ module OpenAI
       # @param blk [Proc]
       #
       # @return [void]
-      def auto_paging_each(&) = (raise NotImplementedError)
+      def auto_paging_each(&blk) = (raise NotImplementedError)
 
       # @return [Enumerable]
       def to_enum = super(:auto_paging_each)

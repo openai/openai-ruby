@@ -14,7 +14,7 @@ xargs = %w[xargs --no-run-if-empty --null --max-procs=0 --max-args=300 --]
 multitask(default: [:test])
 
 multitask(:test) do
-  rb = 
+  rb =
     FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
     .map { "require_relative(#{_1.dump});" }
     .join
