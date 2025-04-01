@@ -7,15 +7,12 @@ module OpenAI
         class Checkpoints
           # List checkpoints for a fine-tuning job.
           #
-          # @param fine_tuning_job_id [String] The ID of the fine-tuning job to get checkpoints for.
+          # @overload list(fine_tuning_job_id, after: nil, limit: nil, request_options: {})
           #
-          # @param params [OpenAI::Models::FineTuning::Jobs::CheckpointListParams, Hash{Symbol=>Object}] .
-          #
-          #   @option params [String] :after Identifier for the last checkpoint ID from the previous pagination request.
-          #
-          #   @option params [Integer] :limit Number of checkpoints to retrieve.
-          #
-          #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+          # @param fine_tuning_job_id [String]
+          # @param after [String]
+          # @param limit [Integer]
+          # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint>]
           #

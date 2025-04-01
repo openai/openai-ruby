@@ -25,16 +25,11 @@ module OpenAI
       #   Please [contact us](https://help.openai.com/) if you need to increase these
       #   storage limits.
       #
-      # @param params [OpenAI::Models::FileCreateParams, Hash{Symbol=>Object}] .
+      # @overload create(file:, purpose:, request_options: {})
       #
-      #   @option params [IO, StringIO] :file The File object (not file name) to be uploaded.
-      #
-      #   @option params [Symbol, OpenAI::Models::FilePurpose] :purpose The intended purpose of the uploaded file. One of: - `assistants`: Used in the
-      #     Assistants API - `batch`: Used in the Batch API - `fine-tune`: Used for
-      #     fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
-      #     Flexible file type for any purpose - `evals`: Used for eval data sets
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param file [IO, StringIO]
+      # @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::FileObject]
       #
@@ -53,11 +48,10 @@ module OpenAI
 
       # Returns information about a specific file.
       #
-      # @param file_id [String] The ID of the file to use for this request.
+      # @overload retrieve(file_id, request_options: {})
       #
-      # @param params [OpenAI::Models::FileRetrieveParams, Hash{Symbol=>Object}] .
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param file_id [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::FileObject]
       #
@@ -73,22 +67,13 @@ module OpenAI
 
       # Returns a list of files.
       #
-      # @param params [OpenAI::Models::FileListParams, Hash{Symbol=>Object}] .
+      # @overload list(after: nil, limit: nil, order: nil, purpose: nil, request_options: {})
       #
-      #   @option params [String] :after A cursor for use in pagination. `after` is an object ID that defines your place
-      #     in the list. For instance, if you make a list request and receive 100 objects,
-      #     ending with obj_foo, your subsequent call can include after=obj_foo in order to
-      #     fetch the next page of the list.
-      #
-      #   @option params [Integer] :limit A limit on the number of objects to be returned. Limit can range between 1 and
-      #     10,000, and the default is 10,000.
-      #
-      #   @option params [Symbol, OpenAI::Models::FileListParams::Order] :order Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-      #     order and `desc` for descending order.
-      #
-      #   @option params [String] :purpose Only return files with the given purpose.
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param after [String]
+      # @param limit [Integer]
+      # @param order [Symbol, OpenAI::Models::FileListParams::Order]
+      # @param purpose [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::CursorPage<OpenAI::Models::FileObject>]
       #
@@ -107,11 +92,10 @@ module OpenAI
 
       # Delete a file.
       #
-      # @param file_id [String] The ID of the file to use for this request.
+      # @overload delete(file_id, request_options: {})
       #
-      # @param params [OpenAI::Models::FileDeleteParams, Hash{Symbol=>Object}] .
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param file_id [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::FileDeleted]
       #
@@ -127,11 +111,10 @@ module OpenAI
 
       # Returns the contents of the specified file.
       #
-      # @param file_id [String] The ID of the file to use for this request.
+      # @overload content(file_id, request_options: {})
       #
-      # @param params [OpenAI::Models::FileContentParams, Hash{Symbol=>Object}] .
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param file_id [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [StringIO]
       #

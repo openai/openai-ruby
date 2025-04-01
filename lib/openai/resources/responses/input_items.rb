@@ -6,26 +6,15 @@ module OpenAI
       class InputItems
         # Returns a list of input items for a given response.
         #
-        # @param response_id [String] The ID of the response to retrieve input items for.
+        # @overload list(response_id, after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
         #
-        # @param params [OpenAI::Models::Responses::InputItemListParams, Hash{Symbol=>Object}] .
-        #
-        #   @option params [String] :after An item ID to list items after, used in pagination.
-        #
-        #   @option params [String] :before An item ID to list items before, used in pagination.
-        #
-        #   @option params [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] :include Additional fields to include in the response. See the `include` parameter for
-        #     Response creation above for more information.
-        #
-        #   @option params [Integer] :limit A limit on the number of objects to be returned. Limit can range between 1 and
-        #     100, and the default is 20.
-        #
-        #   @option params [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] :order The order to return the input items in. Default is `asc`.
-        #
-        #     - `asc`: Return the input items in ascending order.
-        #     - `desc`: Return the input items in descending order.
-        #
-        #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+        # @param response_id [String]
+        # @param after [String]
+        # @param before [String]
+        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        # @param limit [Integer]
+        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
         #

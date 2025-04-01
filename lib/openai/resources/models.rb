@@ -6,11 +6,10 @@ module OpenAI
       # Retrieves a model instance, providing basic information about the model such as
       #   the owner and permissioning.
       #
-      # @param model [String] The ID of the model to use for this request
+      # @overload retrieve(model, request_options: {})
       #
-      # @param params [OpenAI::Models::ModelRetrieveParams, Hash{Symbol=>Object}] .
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param model [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Model]
       #
@@ -27,9 +26,9 @@ module OpenAI
       # Lists the currently available models, and provides basic information about each
       #   one such as the owner and availability.
       #
-      # @param params [OpenAI::Models::ModelListParams, Hash{Symbol=>Object}] .
+      # @overload list(request_options: {})
       #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Page<OpenAI::Models::Model>]
       #
@@ -47,11 +46,10 @@ module OpenAI
       # Delete a fine-tuned model. You must have the Owner role in your organization to
       #   delete a model.
       #
-      # @param model [String] The model to delete
+      # @overload delete(model, request_options: {})
       #
-      # @param params [OpenAI::Models::ModelDeleteParams, Hash{Symbol=>Object}] .
-      #
-      #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
+      # @param model [String]
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::ModelDeleted]
       #
