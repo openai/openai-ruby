@@ -62,7 +62,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, avg_logprob:, compression_ratio:, end_:, no_speech_prob:, seek:, start:, temperature:, text:, tokens:)
+        def self.new(
+          id:,
+          avg_logprob:,
+          compression_ratio:,
+          end_:,
+          no_speech_prob:,
+          seek:,
+          start:,
+          temperature:,
+          text:,
+          tokens:
+        )
         end
 
         sig do

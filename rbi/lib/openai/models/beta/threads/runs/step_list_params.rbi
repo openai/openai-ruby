@@ -73,7 +73,15 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(thread_id:, after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
+            def self.new(
+              thread_id:,
+              after: nil,
+              before: nil,
+              include: nil,
+              limit: nil,
+              order: nil,
+              request_options: {}
+            )
             end
 
             sig do

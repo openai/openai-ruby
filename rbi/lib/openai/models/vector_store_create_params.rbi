@@ -82,7 +82,14 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(chunking_strategy: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
+      def self.new(
+        chunking_strategy: nil,
+        expires_after: nil,
+        file_ids: nil,
+        metadata: nil,
+        name: nil,
+        request_options: {}
+      )
       end
 
       sig do

@@ -52,7 +52,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch")
+        def self.new(
+          id:,
+          created_at:,
+          file_counts:,
+          status:,
+          vector_store_id:,
+          object: :"vector_store.files_batch"
+        )
         end
 
         sig do

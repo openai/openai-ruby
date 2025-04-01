@@ -54,7 +54,15 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(id:, choices:, created:, model:, system_fingerprint: nil, usage: nil, object: :text_completion)
+      def self.new(
+        id:,
+        choices:,
+        created:,
+        model:,
+        system_fingerprint: nil,
+        usage: nil,
+        object: :text_completion
+      )
       end
 
       sig do

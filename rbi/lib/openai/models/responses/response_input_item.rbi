@@ -222,7 +222,14 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
+          def self.new(
+            call_id:,
+            output:,
+            id: nil,
+            acknowledged_safety_checks: nil,
+            status: nil,
+            type: :computer_call_output
+          )
           end
 
           sig do
