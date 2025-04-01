@@ -33,6 +33,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Message]
+          #
+          # @see OpenAI::Models::Beta::Threads::MessageCreateParams
           def create(thread_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageCreateParams.dump_request(params)
             @client.request(
@@ -56,6 +58,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Message]
+          #
+          # @see OpenAI::Models::Beta::Threads::MessageRetrieveParams
           def retrieve(message_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageRetrieveParams.dump_request(params)
             thread_id =
@@ -88,6 +92,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::Message]
+          #
+          # @see OpenAI::Models::Beta::Threads::MessageUpdateParams
           def update(message_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageUpdateParams.dump_request(params)
             thread_id =
@@ -131,6 +137,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Threads::Message>]
+          #
+          # @see OpenAI::Models::Beta::Threads::MessageListParams
           def list(thread_id, params = {})
             parsed, options = OpenAI::Models::Beta::Threads::MessageListParams.dump_request(params)
             @client.request(
@@ -154,6 +162,8 @@ module OpenAI
           #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
           #
           # @return [OpenAI::Models::Beta::Threads::MessageDeleted]
+          #
+          # @see OpenAI::Models::Beta::Threads::MessageDeleteParams
           def delete(message_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::MessageDeleteParams.dump_request(params)
             thread_id =
@@ -168,6 +178,8 @@ module OpenAI
             )
           end
 
+          # @api private
+          #
           # @param client [OpenAI::Client]
           def initialize(client:)
             @client = client

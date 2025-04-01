@@ -5,6 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
+          # @see OpenAI::Resources::Beta::Threads::Runs::Steps#retrieve
           class StepRetrieveParams < OpenAI::BaseModel
             # @!parse
             #   extend OpenAI::Type::RequestParameters::Converter

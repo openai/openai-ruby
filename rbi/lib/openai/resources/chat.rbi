@@ -6,6 +6,7 @@ module OpenAI
       sig { returns(OpenAI::Resources::Chat::Completions) }
       attr_reader :completions
 
+      # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:)
       end

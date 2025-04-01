@@ -56,6 +56,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The role of the message input. One of `user`, `system`, or `developer`.
+        #
+        # @see OpenAI::Models::Responses::ResponseInputMessageItem#role
         module Role
           extend OpenAI::Enum
 
@@ -72,6 +74,8 @@ module OpenAI
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
+        #
+        # @see OpenAI::Models::Responses::ResponseInputMessageItem#status
         module Status
           extend OpenAI::Enum
 
@@ -87,6 +91,8 @@ module OpenAI
         end
 
         # The type of the message input. Always set to `message`.
+        #
+        # @see OpenAI::Models::Responses::ResponseInputMessageItem#type
         module Type
           extend OpenAI::Enum
 

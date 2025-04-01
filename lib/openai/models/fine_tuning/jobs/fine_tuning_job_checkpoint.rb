@@ -74,6 +74,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
           class Metrics < OpenAI::BaseModel
             # @!attribute [r] full_valid_loss
             #

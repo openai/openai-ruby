@@ -52,6 +52,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta#code_interpreter
             class CodeInterpreter < OpenAI::BaseModel
               # @!attribute [r] input
               #   The input to the Code Interpreter tool call.

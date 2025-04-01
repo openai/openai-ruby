@@ -34,6 +34,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall#file_search
             class FileSearch < OpenAI::BaseModel
               # @!attribute [r] ranking_options
               #   The ranking options for the file search.
@@ -67,6 +68,7 @@ module OpenAI
 
               # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+              # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch#ranking_options
               class RankingOptions < OpenAI::BaseModel
                 # @!attribute ranker
                 #   The ranker to use for the file search. If not specified will use the `auto`
@@ -95,6 +97,8 @@ module OpenAI
 
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
+                #
+                # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions#ranker
                 module Ranker
                   extend OpenAI::Enum
 
@@ -184,6 +188,8 @@ module OpenAI
                   # def initialize: (Hash | OpenAI::BaseModel) -> void
 
                   # The type of the content.
+                  #
+                  # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content#type
                   module Type
                     extend OpenAI::Enum
 

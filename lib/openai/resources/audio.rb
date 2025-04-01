@@ -12,6 +12,8 @@ module OpenAI
       # @return [OpenAI::Resources::Audio::Speech]
       attr_reader :speech
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client

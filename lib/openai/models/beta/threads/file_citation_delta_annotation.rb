@@ -70,6 +70,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation#file_citation
           class FileCitation < OpenAI::BaseModel
             # @!attribute [r] file_id
             #   The ID of the specific File the citation is from.

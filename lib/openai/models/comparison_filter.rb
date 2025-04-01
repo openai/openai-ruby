@@ -49,6 +49,8 @@ module OpenAI
       #   - `gte`: greater than or equal
       #   - `lt`: less than
       #   - `lte`: less than or equal
+      #
+      # @see OpenAI::Models::ComparisonFilter#type
       module Type
         extend OpenAI::Enum
 
@@ -68,6 +70,8 @@ module OpenAI
 
       # The value to compare against the attribute key; supports string, number, or
       #   boolean types.
+      #
+      # @see OpenAI::Models::ComparisonFilter#value
       module Value
         extend OpenAI::Union
 

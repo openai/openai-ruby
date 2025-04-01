@@ -46,6 +46,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::Threads::FilePathAnnotation#file_path
           class FilePath < OpenAI::BaseModel
             # @!attribute file_id
             #   The ID of the file that was generated.

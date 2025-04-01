@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Beta
+      # @see OpenAI::Resources::Beta::Assistants#update
       class AssistantUpdateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter
@@ -304,6 +305,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::BaseModel
             # @!attribute [r] file_ids
             #   Overrides the list of
@@ -326,6 +328,7 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end
 
+          # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#file_search
           class FileSearch < OpenAI::BaseModel
             # @!attribute [r] vector_store_ids
             #   Overrides the

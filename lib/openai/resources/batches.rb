@@ -35,6 +35,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Batch]
+      #
+      # @see OpenAI::Models::BatchCreateParams
       def create(params)
         parsed, options = OpenAI::Models::BatchCreateParams.dump_request(params)
         @client.request(
@@ -55,6 +57,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Batch]
+      #
+      # @see OpenAI::Models::BatchRetrieveParams
       def retrieve(batch_id, params = {})
         @client.request(
           method: :get,
@@ -79,6 +83,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::CursorPage<OpenAI::Models::Batch>]
+      #
+      # @see OpenAI::Models::BatchListParams
       def list(params = {})
         parsed, options = OpenAI::Models::BatchListParams.dump_request(params)
         @client.request(
@@ -102,6 +108,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::Batch]
+      #
+      # @see OpenAI::Models::BatchCancelParams
       def cancel(batch_id, params = {})
         @client.request(
           method: :post,
@@ -111,6 +119,8 @@ module OpenAI
         )
       end
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client

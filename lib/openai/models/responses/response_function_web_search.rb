@@ -36,6 +36,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # The status of the web search tool call.
+        #
+        # @see OpenAI::Models::Responses::ResponseFunctionWebSearch#status
         module Status
           extend OpenAI::Enum
 

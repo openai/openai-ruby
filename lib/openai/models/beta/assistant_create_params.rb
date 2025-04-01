@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Beta
+      # @see OpenAI::Resources::Beta::Assistants#create
       class AssistantCreateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter
@@ -208,6 +209,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Beta::AssistantCreateParams::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::BaseModel
             # @!attribute [r] file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
@@ -229,6 +231,7 @@ module OpenAI
             # def initialize: (Hash | OpenAI::BaseModel) -> void
           end
 
+          # @see OpenAI::Models::Beta::AssistantCreateParams::ToolResources#file_search
           class FileSearch < OpenAI::BaseModel
             # @!attribute [r] vector_store_ids
             #   The
@@ -312,6 +315,8 @@ module OpenAI
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               #   strategy.
+              #
+              # @see OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore#chunking_strategy
               module ChunkingStrategy
                 extend OpenAI::Union
 
@@ -363,6 +368,7 @@ module OpenAI
 
                   # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+                  # @see OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static#static
                   class Static < OpenAI::BaseModel
                     # @!attribute chunk_overlap_tokens
                     #   The number of tokens that overlap between chunks. The default value is `400`.

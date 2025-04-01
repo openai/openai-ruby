@@ -63,6 +63,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
         # A filter to apply based on file attributes.
+        #
+        # @see OpenAI::Models::Responses::FileSearchTool#filters
         module Filters
           extend OpenAI::Union
 
@@ -77,6 +79,7 @@ module OpenAI
           #   def self.variants; end
         end
 
+        # @see OpenAI::Models::Responses::FileSearchTool#ranking_options
         class RankingOptions < OpenAI::BaseModel
           # @!attribute [r] ranker
           #   The ranker to use for the file search.
@@ -111,6 +114,8 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
           # The ranker to use for the file search.
+          #
+          # @see OpenAI::Models::Responses::FileSearchTool::RankingOptions#ranker
           module Ranker
             extend OpenAI::Enum
 

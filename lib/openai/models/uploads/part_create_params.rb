@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Uploads
+      # @see OpenAI::Resources::Uploads::Parts#create
       class PartCreateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

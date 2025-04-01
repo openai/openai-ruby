@@ -102,6 +102,8 @@ module OpenAI
       # The intended purpose of the file. Supported values are `assistants`,
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
       #   and `vision`.
+      #
+      # @see OpenAI::Models::FileObject#purpose
       module Purpose
         extend OpenAI::Enum
 
@@ -124,6 +126,8 @@ module OpenAI
       #
       # Deprecated. The current status of the file, which can be either `uploaded`,
       #   `processed`, or `error`.
+      #
+      # @see OpenAI::Models::FileObject#status
       module Status
         extend OpenAI::Enum
 

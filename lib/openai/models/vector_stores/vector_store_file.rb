@@ -105,6 +105,7 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @see OpenAI::Models::VectorStores::VectorStoreFile#last_error
         class LastError < OpenAI::BaseModel
           # @!attribute code
           #   One of `server_error` or `rate_limit_exceeded`.
@@ -130,6 +131,8 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
           # One of `server_error` or `rate_limit_exceeded`.
+          #
+          # @see OpenAI::Models::VectorStores::VectorStoreFile::LastError#code
           module Code
             extend OpenAI::Enum
 
@@ -148,6 +151,8 @@ module OpenAI
         # The status of the vector store file, which can be either `in_progress`,
         #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         #   vector store file is ready for use.
+        #
+        # @see OpenAI::Models::VectorStores::VectorStoreFile#status
         module Status
           extend OpenAI::Enum
 

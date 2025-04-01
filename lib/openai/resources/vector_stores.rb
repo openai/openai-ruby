@@ -34,6 +34,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStore]
+      #
+      # @see OpenAI::Models::VectorStoreCreateParams
       def create(params = {})
         parsed, options = OpenAI::Models::VectorStoreCreateParams.dump_request(params)
         @client.request(
@@ -54,6 +56,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStore]
+      #
+      # @see OpenAI::Models::VectorStoreRetrieveParams
       def retrieve(vector_store_id, params = {})
         @client.request(
           method: :get,
@@ -83,6 +87,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStore]
+      #
+      # @see OpenAI::Models::VectorStoreUpdateParams
       def update(vector_store_id, params = {})
         parsed, options = OpenAI::Models::VectorStoreUpdateParams.dump_request(params)
         @client.request(
@@ -117,6 +123,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::CursorPage<OpenAI::Models::VectorStore>]
+      #
+      # @see OpenAI::Models::VectorStoreListParams
       def list(params = {})
         parsed, options = OpenAI::Models::VectorStoreListParams.dump_request(params)
         @client.request(
@@ -138,6 +146,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Models::VectorStoreDeleted]
+      #
+      # @see OpenAI::Models::VectorStoreDeleteParams
       def delete(vector_store_id, params = {})
         @client.request(
           method: :delete,
@@ -168,6 +178,8 @@ module OpenAI
       #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
       #
       # @return [OpenAI::Page<OpenAI::Models::VectorStoreSearchResponse>]
+      #
+      # @see OpenAI::Models::VectorStoreSearchParams
       def search(vector_store_id, params)
         parsed, options = OpenAI::Models::VectorStoreSearchParams.dump_request(params)
         @client.request(
@@ -180,6 +192,8 @@ module OpenAI
         )
       end
 
+      # @api private
+      #
       # @param client [OpenAI::Client]
       def initialize(client:)
         @client = client
