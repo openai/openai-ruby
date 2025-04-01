@@ -32,7 +32,7 @@ module OpenAI
           parsed, options = OpenAI::Models::VectorStores::FileCreateParams.dump_request(params)
           @client.request(
             method: :post,
-            path: ["vector_stores/%0s/files", vector_store_id],
+            path: ["vector_stores/%1$s/files", vector_store_id],
             body: parsed,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
             options: options
@@ -58,7 +58,7 @@ module OpenAI
             end
           @client.request(
             method: :get,
-            path: ["vector_stores/%0s/files/%1s", vector_store_id, file_id],
+            path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             model: OpenAI::Models::VectorStores::VectorStoreFile,
             options: options
           )
@@ -89,7 +89,7 @@ module OpenAI
             end
           @client.request(
             method: :post,
-            path: ["vector_stores/%0s/files/%1s", vector_store_id, file_id],
+            path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             body: parsed,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
             options: options
@@ -127,7 +127,7 @@ module OpenAI
           parsed, options = OpenAI::Models::VectorStores::FileListParams.dump_request(params)
           @client.request(
             method: :get,
-            path: ["vector_stores/%0s/files", vector_store_id],
+            path: ["vector_stores/%1$s/files", vector_store_id],
             query: parsed,
             page: OpenAI::CursorPage,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
@@ -157,7 +157,7 @@ module OpenAI
             end
           @client.request(
             method: :delete,
-            path: ["vector_stores/%0s/files/%1s", vector_store_id, file_id],
+            path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             model: OpenAI::Models::VectorStores::VectorStoreFileDeleted,
             options: options
           )
@@ -182,7 +182,7 @@ module OpenAI
             end
           @client.request(
             method: :get,
-            path: ["vector_stores/%0s/files/%1s/content", vector_store_id, file_id],
+            path: ["vector_stores/%1$s/files/%2$s/content", vector_store_id, file_id],
             page: OpenAI::Page,
             model: OpenAI::Models::VectorStores::FileContentResponse,
             options: options

@@ -40,7 +40,7 @@ module OpenAI
                 end
               @client.request(
                 method: :get,
-                path: ["threads/%0s/runs/%1s/steps/%2s", thread_id, run_id, step_id],
+                path: ["threads/%1$s/runs/%2$s/steps/%3$s", thread_id, run_id, step_id],
                 query: parsed,
                 model: OpenAI::Models::Beta::Threads::Runs::RunStep,
                 options: options
@@ -91,7 +91,7 @@ module OpenAI
                 end
               @client.request(
                 method: :get,
-                path: ["threads/%0s/runs/%1s/steps", thread_id, run_id],
+                path: ["threads/%1$s/runs/%2$s/steps", thread_id, run_id],
                 query: parsed,
                 page: OpenAI::CursorPage,
                 model: OpenAI::Models::Beta::Threads::Runs::RunStep,

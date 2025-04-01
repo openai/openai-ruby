@@ -37,7 +37,7 @@ module OpenAI
             parsed, options = OpenAI::Models::Beta::Threads::MessageCreateParams.dump_request(params)
             @client.request(
               method: :post,
-              path: ["threads/%0s/messages", thread_id],
+              path: ["threads/%1$s/messages", thread_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Message,
               options: options
@@ -64,7 +64,7 @@ module OpenAI
               end
             @client.request(
               method: :get,
-              path: ["threads/%0s/messages/%1s", thread_id, message_id],
+              path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               model: OpenAI::Models::Beta::Threads::Message,
               options: options
             )
@@ -96,7 +96,7 @@ module OpenAI
               end
             @client.request(
               method: :post,
-              path: ["threads/%0s/messages/%1s", thread_id, message_id],
+              path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Message,
               options: options
@@ -135,7 +135,7 @@ module OpenAI
             parsed, options = OpenAI::Models::Beta::Threads::MessageListParams.dump_request(params)
             @client.request(
               method: :get,
-              path: ["threads/%0s/messages", thread_id],
+              path: ["threads/%1$s/messages", thread_id],
               query: parsed,
               page: OpenAI::CursorPage,
               model: OpenAI::Models::Beta::Threads::Message,
@@ -162,7 +162,7 @@ module OpenAI
               end
             @client.request(
               method: :delete,
-              path: ["threads/%0s/messages/%1s", thread_id, message_id],
+              path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               model: OpenAI::Models::Beta::Threads::MessageDeleted,
               options: options
             )

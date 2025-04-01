@@ -26,7 +26,7 @@ module OpenAI
             parsed, options = OpenAI::Models::Chat::Completions::MessageListParams.dump_request(params)
             @client.request(
               method: :get,
-              path: ["chat/completions/%0s/messages", completion_id],
+              path: ["chat/completions/%1$s/messages", completion_id],
               query: parsed,
               page: OpenAI::CursorPage,
               model: OpenAI::Models::Chat::ChatCompletionStoreMessage,

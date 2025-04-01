@@ -58,7 +58,7 @@ module OpenAI
       def retrieve(batch_id, params = {})
         @client.request(
           method: :get,
-          path: ["batches/%0s", batch_id],
+          path: ["batches/%1$s", batch_id],
           model: OpenAI::Models::Batch,
           options: params[:request_options]
         )
@@ -105,7 +105,7 @@ module OpenAI
       def cancel(batch_id, params = {})
         @client.request(
           method: :post,
-          path: ["batches/%0s/cancel", batch_id],
+          path: ["batches/%1$s/cancel", batch_id],
           model: OpenAI::Models::Batch,
           options: params[:request_options]
         )

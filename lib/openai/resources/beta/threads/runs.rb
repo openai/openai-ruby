@@ -132,7 +132,7 @@ module OpenAI
             query_params = [:include]
             @client.request(
               method: :post,
-              path: ["threads/%0s/runs", thread_id],
+              path: ["threads/%1$s/runs", thread_id],
               query: parsed.slice(*query_params),
               body: parsed.except(*query_params),
               model: OpenAI::Models::Beta::Threads::Run,
@@ -265,7 +265,7 @@ module OpenAI
             query_params = [:include]
             @client.request(
               method: :post,
-              path: ["threads/%0s/runs", thread_id],
+              path: ["threads/%1$s/runs", thread_id],
               query: parsed.slice(*query_params),
               headers: {"accept" => "text/event-stream"},
               body: parsed.except(*query_params),
@@ -295,7 +295,7 @@ module OpenAI
               end
             @client.request(
               method: :get,
-              path: ["threads/%0s/runs/%1s", thread_id, run_id],
+              path: ["threads/%1$s/runs/%2$s", thread_id, run_id],
               model: OpenAI::Models::Beta::Threads::Run,
               options: options
             )
@@ -328,7 +328,7 @@ module OpenAI
               end
             @client.request(
               method: :post,
-              path: ["threads/%0s/runs/%1s", thread_id, run_id],
+              path: ["threads/%1$s/runs/%2$s", thread_id, run_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Run,
               options: options
@@ -364,7 +364,7 @@ module OpenAI
             parsed, options = OpenAI::Models::Beta::Threads::RunListParams.dump_request(params)
             @client.request(
               method: :get,
-              path: ["threads/%0s/runs", thread_id],
+              path: ["threads/%1$s/runs", thread_id],
               query: parsed,
               page: OpenAI::CursorPage,
               model: OpenAI::Models::Beta::Threads::Run,
@@ -391,7 +391,7 @@ module OpenAI
               end
             @client.request(
               method: :post,
-              path: ["threads/%0s/runs/%1s/cancel", thread_id, run_id],
+              path: ["threads/%1$s/runs/%2$s/cancel", thread_id, run_id],
               model: OpenAI::Models::Beta::Threads::Run,
               options: options
             )
@@ -427,7 +427,7 @@ module OpenAI
               end
             @client.request(
               method: :post,
-              path: ["threads/%0s/runs/%1s/submit_tool_outputs", thread_id, run_id],
+              path: ["threads/%1$s/runs/%2$s/submit_tool_outputs", thread_id, run_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Run,
               options: options
@@ -465,7 +465,7 @@ module OpenAI
               end
             @client.request(
               method: :post,
-              path: ["threads/%0s/runs/%1s/submit_tool_outputs", thread_id, run_id],
+              path: ["threads/%1$s/runs/%2$s/submit_tool_outputs", thread_id, run_id],
               headers: {"accept" => "text/event-stream"},
               body: parsed,
               stream: OpenAI::Stream,
