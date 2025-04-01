@@ -133,7 +133,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol) }
 
           IN_PROGRESS =
             T.let(:in_progress, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)

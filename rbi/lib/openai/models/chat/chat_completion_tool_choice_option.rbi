@@ -23,7 +23,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol) }
 
           NONE = T.let(:none, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
           AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)

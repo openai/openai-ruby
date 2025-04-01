@@ -43,7 +43,7 @@ module OpenAI
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol) }
 
             AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)
             LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)

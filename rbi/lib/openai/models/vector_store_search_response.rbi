@@ -92,7 +92,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
 

@@ -7,7 +7,8 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionModality) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol) }
 
         TEXT = T.let(:text, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol)
         AUDIO = T.let(:audio, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol)

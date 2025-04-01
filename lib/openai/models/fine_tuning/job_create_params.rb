@@ -13,7 +13,7 @@ module OpenAI
         #   The name of the model to fine-tune. You can select one of the
         #     [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         #
-        #   @return [String, Symbol]
+        #   @return [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model]
         required :model, union: -> { OpenAI::Models::FineTuning::JobCreateParams::Model }
 
         # @!attribute training_file
@@ -114,7 +114,7 @@ module OpenAI
         optional :validation_file, String, nil?: true
 
         # @!parse
-        #   # @param model [String, Symbol]
+        #   # @param model [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model]
         #   # @param training_file [String]
         #   # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters]
         #   # @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]

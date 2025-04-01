@@ -293,7 +293,7 @@ module OpenAI
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason) }
               OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol) }
+                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol) }
 
               CONTENT_FILTER =
                 T.let(:content_filter, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol)
@@ -319,7 +319,8 @@ module OpenAI
             extend OpenAI::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::Role) }
-            OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol) }
+            OrSymbol =
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol) }
 
             USER = T.let(:user, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
             ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
@@ -335,7 +336,8 @@ module OpenAI
             extend OpenAI::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::Status) }
-            OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol) }
+            OrSymbol =
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol) }
 
             IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
             INCOMPLETE = T.let(:incomplete, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)

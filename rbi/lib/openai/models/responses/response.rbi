@@ -372,7 +372,7 @@ module OpenAI
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol) }
 
             MAX_OUTPUT_TOKENS =
               T.let(:max_output_tokens, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
@@ -412,7 +412,8 @@ module OpenAI
           extend OpenAI::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::Truncation) }
-          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol) }
 
           AUTO = T.let(:auto, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
           DISABLED = T.let(:disabled, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)

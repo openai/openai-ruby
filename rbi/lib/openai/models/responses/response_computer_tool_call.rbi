@@ -155,7 +155,13 @@ module OpenAI
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button) }
               OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol) }
+                T.type_alias do
+                  T.any(
+                    Symbol,
+                    String,
+                    OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol
+                  )
+                end
 
               LEFT =
                 T.let(:left, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol)
@@ -436,7 +442,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol) }
 
           IN_PROGRESS =
             T.let(:in_progress, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
@@ -455,7 +461,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol) }
 
           COMPUTER_CALL =
             T.let(:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol)

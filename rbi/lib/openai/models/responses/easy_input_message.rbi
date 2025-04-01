@@ -113,7 +113,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::EasyInputMessage::Role) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol) }
 
           USER = T.let(:user, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
           ASSISTANT = T.let(:assistant, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
@@ -131,7 +131,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::EasyInputMessage::Type) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol) }
 
           MESSAGE = T.let(:message, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol)
 

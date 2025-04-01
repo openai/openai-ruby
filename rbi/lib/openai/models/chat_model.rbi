@@ -6,7 +6,7 @@ module OpenAI
       extend OpenAI::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ChatModel) }
-      OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ChatModel::TaggedSymbol) }
+      OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ChatModel::TaggedSymbol) }
 
       O3_MINI = T.let(:"o3-mini", OpenAI::Models::ChatModel::TaggedSymbol)
       O3_MINI_2025_01_31 = T.let(:"o3-mini-2025-01-31", OpenAI::Models::ChatModel::TaggedSymbol)

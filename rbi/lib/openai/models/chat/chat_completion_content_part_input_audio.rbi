@@ -77,7 +77,13 @@ module OpenAI
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol) }
+              T.type_alias do
+                T.any(
+                  Symbol,
+                  String,
+                  OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol
+                )
+              end
 
             WAV =
               T.let(:wav, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol)

@@ -10,7 +10,7 @@ module OpenAI
       end
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::AllModels) }
-      OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::AllModels::TaggedSymbol) }
+      OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::AllModels::TaggedSymbol) }
 
       O1_PRO = T.let(:"o1-pro", OpenAI::Models::AllModels::TaggedSymbol)
       O1_PRO_2025_03_19 = T.let(:"o1-pro-2025-03-19", OpenAI::Models::AllModels::TaggedSymbol)

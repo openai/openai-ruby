@@ -17,7 +17,7 @@ module OpenAI
         #
         # @overload create(model:, training_file:, hyperparameters: nil, integrations: nil, metadata: nil, method_: nil, seed: nil, suffix: nil, validation_file: nil, request_options: {})
         #
-        # @param model [String, Symbol]
+        # @param model [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model]
         # @param training_file [String]
         # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters]
         # @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
