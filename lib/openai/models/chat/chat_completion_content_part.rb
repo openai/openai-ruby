@@ -45,6 +45,7 @@ module OpenAI
 
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+          # @see OpenAI::Models::Chat::ChatCompletionContentPart::File#file
           class File < OpenAI::BaseModel
             # @!attribute [r] file_data
             #   The base64 encoded file data, used when passing the file to the model as a

@@ -48,6 +48,7 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @see OpenAI::Models::Responses::ResponseUsage#input_tokens_details
         class InputTokensDetails < OpenAI::BaseModel
           # @!attribute cached_tokens
           #   The number of tokens that were retrieved from the cache.
@@ -66,6 +67,7 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
         end
 
+        # @see OpenAI::Models::Responses::ResponseUsage#output_tokens_details
         class OutputTokensDetails < OpenAI::BaseModel
           # @!attribute reasoning_tokens
           #   The number of reasoning tokens.

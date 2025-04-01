@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Chat
+      # @see OpenAI::Resources::Chat::Completions#delete
       class CompletionDeleteParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

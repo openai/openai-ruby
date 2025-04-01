@@ -45,6 +45,8 @@ module OpenAI
 
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
+        #
+        # @see OpenAI::Models::Responses::ResponseInputImage#detail
         module Detail
           extend OpenAI::Enum
 

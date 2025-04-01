@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Responses
+      # @see OpenAI::Resources::Responses::InputItems#list
       class InputItemListParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

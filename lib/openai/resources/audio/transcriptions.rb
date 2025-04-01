@@ -49,6 +49,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]
+        #
+        # @see OpenAI::Models::Audio::TranscriptionCreateParams
         def create(params)
           parsed, options = OpenAI::Models::Audio::TranscriptionCreateParams.dump_request(params)
           if parsed[:stream]
@@ -110,6 +112,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Stream<OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent>]
+        #
+        # @see OpenAI::Models::Audio::TranscriptionCreateParams
         def create_streaming(params)
           parsed, options = OpenAI::Models::Audio::TranscriptionCreateParams.dump_request(params)
           unless parsed.fetch(:stream, true)
@@ -128,6 +132,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

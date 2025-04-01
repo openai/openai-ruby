@@ -36,6 +36,8 @@ module OpenAI
           # def initialize: (Hash | OpenAI::BaseModel) -> void
 
           # The entity that produced the message. One of `user` or `assistant`.
+          #
+          # @see OpenAI::Models::Beta::Threads::MessageDelta#role
           module Role
             extend OpenAI::Enum
 

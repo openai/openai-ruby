@@ -78,6 +78,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
+        #
+        # @see OpenAI::Models::FineTuning::JobCreateParams
         def create(params)
           parsed, options = OpenAI::Models::FineTuning::JobCreateParams.dump_request(params)
           @client.request(
@@ -100,6 +102,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
+        #
+        # @see OpenAI::Models::FineTuning::JobRetrieveParams
         def retrieve(fine_tuning_job_id, params = {})
           @client.request(
             method: :get,
@@ -123,6 +127,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJob>]
+        #
+        # @see OpenAI::Models::FineTuning::JobListParams
         def list(params = {})
           parsed, options = OpenAI::Models::FineTuning::JobListParams.dump_request(params)
           @client.request(
@@ -144,6 +150,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::FineTuning::FineTuningJob]
+        #
+        # @see OpenAI::Models::FineTuning::JobCancelParams
         def cancel(fine_tuning_job_id, params = {})
           @client.request(
             method: :post,
@@ -166,6 +174,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJobEvent>]
+        #
+        # @see OpenAI::Models::FineTuning::JobListEventsParams
         def list_events(fine_tuning_job_id, params = {})
           parsed, options = OpenAI::Models::FineTuning::JobListEventsParams.dump_request(params)
           @client.request(
@@ -178,6 +188,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

@@ -136,6 +136,8 @@ module OpenAI
         end
 
         # The status of the code interpreter tool call.
+        #
+        # @see OpenAI::Models::Responses::ResponseCodeInterpreterToolCall#status
         module Status
           extend OpenAI::Enum
 

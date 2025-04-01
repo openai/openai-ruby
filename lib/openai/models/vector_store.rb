@@ -114,6 +114,7 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @see OpenAI::Models::VectorStore#file_counts
       class FileCounts < OpenAI::BaseModel
         # @!attribute cancelled
         #   The number of files that were cancelled.
@@ -160,6 +161,8 @@ module OpenAI
       # The status of the vector store, which can be either `expired`, `in_progress`, or
       #   `completed`. A status of `completed` indicates that the vector store is ready
       #   for use.
+      #
+      # @see OpenAI::Models::VectorStore#status
       module Status
         extend OpenAI::Enum
 
@@ -174,6 +177,7 @@ module OpenAI
         #   def self.values; end
       end
 
+      # @see OpenAI::Models::VectorStore#expires_after
       class ExpiresAfter < OpenAI::BaseModel
         # @!attribute anchor
         #   Anchor timestamp after which the expiration policy applies. Supported anchors:

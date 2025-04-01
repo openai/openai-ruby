@@ -3,6 +3,9 @@
 module OpenAI
   module Models
     module Chat
+      # @see OpenAI::Resources::Chat::Completions#create
+      #
+      # @see OpenAI::Resources::Chat::Completions#create_streaming
       class CompletionCreateParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter
@@ -652,6 +655,8 @@ module OpenAI
 
           # High level guidance for the amount of context window space to use for the
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
+          #
+          # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions#search_context_size
           module SearchContextSize
             extend OpenAI::Enum
 
@@ -666,6 +671,7 @@ module OpenAI
             #   def self.values; end
           end
 
+          # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions#user_location
           class UserLocation < OpenAI::BaseModel
             # @!attribute approximate
             #   Approximate location parameters for the search.
@@ -690,6 +696,7 @@ module OpenAI
 
             # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+            # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation#approximate
             class Approximate < OpenAI::BaseModel
               # @!attribute [r] city
               #   Free text input for the city of the user, e.g. `San Francisco`.

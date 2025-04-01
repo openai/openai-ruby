@@ -37,6 +37,7 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @see OpenAI::Models::CreateEmbeddingResponse#usage
       class Usage < OpenAI::BaseModel
         # @!attribute prompt_tokens
         #   The number of tokens used by the prompt.

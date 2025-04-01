@@ -32,6 +32,8 @@ module OpenAI
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
+        #
+        # @see OpenAI::Models::Chat::ChatCompletionAudioParam#format_
         module Format
           extend OpenAI::Enum
 
@@ -50,6 +52,8 @@ module OpenAI
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        #
+        # @see OpenAI::Models::Chat::ChatCompletionAudioParam#voice
         module Voice
           extend OpenAI::Union
 

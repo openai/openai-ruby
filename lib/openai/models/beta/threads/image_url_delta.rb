@@ -37,6 +37,8 @@ module OpenAI
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`.
+          #
+          # @see OpenAI::Models::Beta::Threads::ImageURLDelta#detail
           module Detail
             extend OpenAI::Enum
 

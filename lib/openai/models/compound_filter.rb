@@ -42,6 +42,8 @@ module OpenAI
       end
 
       # Type of operation: `and` or `or`.
+      #
+      # @see OpenAI::Models::CompoundFilter#type
       module Type
         extend OpenAI::Enum
 

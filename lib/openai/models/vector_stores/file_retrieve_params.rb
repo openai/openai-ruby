@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
+      # @see OpenAI::Resources::VectorStores::Files#retrieve
       class FileRetrieveParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

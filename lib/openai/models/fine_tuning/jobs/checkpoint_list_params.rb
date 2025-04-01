@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       module Jobs
+        # @see OpenAI::Resources::FineTuning::Jobs::Checkpoints#list
         class CheckpointListParams < OpenAI::BaseModel
           # @!parse
           #   extend OpenAI::Type::RequestParameters::Converter

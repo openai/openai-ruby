@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Beta
+      # @see OpenAI::Resources::Beta::Assistants#list
       class AssistantListParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

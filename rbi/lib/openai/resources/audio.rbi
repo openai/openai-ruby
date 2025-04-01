@@ -12,6 +12,7 @@ module OpenAI
       sig { returns(OpenAI::Resources::Audio::Speech) }
       attr_reader :speech
 
+      # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:)
       end

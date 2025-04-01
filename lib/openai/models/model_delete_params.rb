@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Models#delete
     class ModelDeleteParams < OpenAI::BaseModel
       # @!parse
       #   extend OpenAI::Type::RequestParameters::Converter

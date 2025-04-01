@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Images#create_variation
     class ImageCreateVariationParams < OpenAI::BaseModel
       # @!parse
       #   extend OpenAI::Type::RequestParameters::Converter

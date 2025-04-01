@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Moderations#create
     class ModerationCreateParams < OpenAI::BaseModel
       # @!parse
       #   extend OpenAI::Type::RequestParameters::Converter

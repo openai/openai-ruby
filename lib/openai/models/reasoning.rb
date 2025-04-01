@@ -42,6 +42,8 @@ module OpenAI
       #   A summary of the reasoning performed by the model. This can be useful for
       #   debugging and understanding the model's reasoning process. One of `concise` or
       #   `detailed`.
+      #
+      # @see OpenAI::Models::Reasoning#generate_summary
       module GenerateSummary
         extend OpenAI::Enum
 

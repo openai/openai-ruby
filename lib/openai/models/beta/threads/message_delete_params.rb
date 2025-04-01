@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        # @see OpenAI::Resources::Beta::Threads::Messages#delete
         class MessageDeleteParams < OpenAI::BaseModel
           # @!parse
           #   extend OpenAI::Type::RequestParameters::Converter

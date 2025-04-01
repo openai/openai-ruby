@@ -28,6 +28,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFile]
+        #
+        # @see OpenAI::Models::VectorStores::FileCreateParams
         def create(vector_store_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileCreateParams.dump_request(params)
           @client.request(
@@ -50,6 +52,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFile]
+        #
+        # @see OpenAI::Models::VectorStores::FileRetrieveParams
         def retrieve(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileRetrieveParams.dump_request(params)
           vector_store_id =
@@ -81,6 +85,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFile]
+        #
+        # @see OpenAI::Models::VectorStores::FileUpdateParams
         def update(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileUpdateParams.dump_request(params)
           vector_store_id =
@@ -123,6 +129,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
+        #
+        # @see OpenAI::Models::VectorStores::FileListParams
         def list(vector_store_id, params = {})
           parsed, options = OpenAI::Models::VectorStores::FileListParams.dump_request(params)
           @client.request(
@@ -149,6 +157,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileDeleted]
+        #
+        # @see OpenAI::Models::VectorStores::FileDeleteParams
         def delete(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileDeleteParams.dump_request(params)
           vector_store_id =
@@ -174,6 +184,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Page<OpenAI::Models::VectorStores::FileContentResponse>]
+        #
+        # @see OpenAI::Models::VectorStores::FileContentParams
         def content(file_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileContentParams.dump_request(params)
           vector_store_id =
@@ -189,6 +201,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

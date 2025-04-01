@@ -27,6 +27,7 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @see OpenAI::Models::ResponseFormatJSONSchema#json_schema
       class JSONSchema < OpenAI::BaseModel
         # @!attribute name
         #   The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores

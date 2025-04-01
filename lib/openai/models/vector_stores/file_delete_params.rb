@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
+      # @see OpenAI::Resources::VectorStores::Files#delete
       class FileDeleteParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

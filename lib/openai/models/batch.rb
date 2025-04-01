@@ -225,6 +225,8 @@ module OpenAI
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
       # The current status of the batch.
+      #
+      # @see OpenAI::Models::Batch#status
       module Status
         extend OpenAI::Enum
 
@@ -244,6 +246,7 @@ module OpenAI
         #   def self.values; end
       end
 
+      # @see OpenAI::Models::Batch#errors
       class Errors < OpenAI::BaseModel
         # @!attribute [r] data
         #

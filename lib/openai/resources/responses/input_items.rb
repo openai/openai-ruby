@@ -28,6 +28,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
+        #
+        # @see OpenAI::Models::Responses::InputItemListParams
         def list(response_id, params = {})
           parsed, options = OpenAI::Models::Responses::InputItemListParams.dump_request(params)
           @client.request(
@@ -40,6 +42,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

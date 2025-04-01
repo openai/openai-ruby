@@ -58,6 +58,7 @@ module OpenAI
 
         # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+        # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#file_counts
         class FileCounts < OpenAI::BaseModel
           # @!attribute cancelled
           #   The number of files that where cancelled.
@@ -103,6 +104,8 @@ module OpenAI
 
         # The status of the vector store files batch, which can be either `in_progress`,
         #   `completed`, `cancelled` or `failed`.
+        #
+        # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#status
         module Status
           extend OpenAI::Enum
 

@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Batches#retrieve
     class BatchRetrieveParams < OpenAI::BaseModel
       # @!parse
       #   extend OpenAI::Type::RequestParameters::Converter

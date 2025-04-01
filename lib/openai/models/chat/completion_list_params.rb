@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Chat
+      # @see OpenAI::Resources::Chat::Completions#list
       class CompletionListParams < OpenAI::BaseModel
         # @!parse
         #   extend OpenAI::Type::RequestParameters::Converter

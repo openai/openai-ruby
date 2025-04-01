@@ -26,6 +26,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
+        #
+        # @see OpenAI::Models::VectorStores::FileBatchCreateParams
         def create(vector_store_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchCreateParams.dump_request(params)
           @client.request(
@@ -48,6 +50,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
+        #
+        # @see OpenAI::Models::VectorStores::FileBatchRetrieveParams
         def retrieve(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchRetrieveParams.dump_request(params)
           vector_store_id =
@@ -74,6 +78,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::Models::VectorStores::VectorStoreFileBatch]
+        #
+        # @see OpenAI::Models::VectorStores::FileBatchCancelParams
         def cancel(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchCancelParams.dump_request(params)
           vector_store_id =
@@ -118,6 +124,8 @@ module OpenAI
         #   @option params [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :request_options
         #
         # @return [OpenAI::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
+        #
+        # @see OpenAI::Models::VectorStores::FileBatchListFilesParams
         def list_files(batch_id, params)
           parsed, options = OpenAI::Models::VectorStores::FileBatchListFilesParams.dump_request(params)
           vector_store_id =
@@ -134,6 +142,8 @@ module OpenAI
           )
         end
 
+        # @api private
+        #
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client

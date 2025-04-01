@@ -37,6 +37,7 @@ module OpenAI
 
       # def initialize: (Hash | OpenAI::BaseModel) -> void
 
+      # @see OpenAI::Models::Moderation#categories
       class Categories < OpenAI::BaseModel
         # @!attribute harassment
         #   Content that expresses, incites, or promotes harassing language towards any
@@ -172,6 +173,7 @@ module OpenAI
         # def initialize: (Hash | OpenAI::BaseModel) -> void
       end
 
+      # @see OpenAI::Models::Moderation#category_applied_input_types
       class CategoryAppliedInputTypes < OpenAI::BaseModel
         # @!attribute harassment
         #   The applied input type(s) for the category 'harassment'.
@@ -472,6 +474,7 @@ module OpenAI
         end
       end
 
+      # @see OpenAI::Models::Moderation#category_scores
       class CategoryScores < OpenAI::BaseModel
         # @!attribute harassment
         #   The score for the category 'harassment'.
