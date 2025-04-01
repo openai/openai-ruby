@@ -236,8 +236,8 @@ module OpenAI
           # Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           truncation_strategy: nil,
-          # There is no need to provide `stream:`. Instead, use `#create_and_run_streaming`
-          #   or `#create_and_run` for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#stream_raw` or
+          #   `#create_and_run` for streaming and non-streaming use cases, respectively.
           stream: false,
           request_options: {}
         )
@@ -320,7 +320,7 @@ module OpenAI
               ]
             )
         end
-        def create_and_run_streaming(
+        def stream_raw(
           # The ID of the
           #   [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
           #   execute this run.
@@ -409,8 +409,8 @@ module OpenAI
           # Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           truncation_strategy: nil,
-          # There is no need to provide `stream:`. Instead, use `#create_and_run_streaming`
-          #   or `#create_and_run` for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#stream_raw` or
+          #   `#create_and_run` for streaming and non-streaming use cases, respectively.
           stream: true,
           request_options: {}
         )

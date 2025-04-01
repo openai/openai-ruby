@@ -177,8 +177,8 @@ module OpenAI
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#create_streaming` or
-        #   `#create` for streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
+        #   for streaming and non-streaming use cases, respectively.
         stream: false,
         request_options: {}
       )
@@ -287,7 +287,7 @@ module OpenAI
             ]
           )
       end
-      def create_streaming(
+      def stream_raw(
         # Text, image, or file inputs to the model, used to generate a response.
         #
         #   Learn more:
@@ -392,8 +392,8 @@ module OpenAI
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#create_streaming` or
-        #   `#create` for streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
+        #   for streaming and non-streaming use cases, respectively.
         stream: true,
         request_options: {}
       )
