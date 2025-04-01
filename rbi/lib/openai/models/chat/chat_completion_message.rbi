@@ -76,7 +76,15 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, refusal:, annotations: nil, audio: nil, function_call: nil, tool_calls: nil, role: :assistant)
+        def self.new(
+          content:,
+          refusal:,
+          annotations: nil,
+          audio: nil,
+          function_call: nil,
+          tool_calls: nil,
+          role: :assistant
+        )
         end
 
         sig do

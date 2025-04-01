@@ -33,7 +33,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.in_progress")
+        def self.new(
+          code_interpreter_call:,
+          output_index:,
+          type: :"response.code_interpreter_call.in_progress"
+        )
         end
 
         sig do

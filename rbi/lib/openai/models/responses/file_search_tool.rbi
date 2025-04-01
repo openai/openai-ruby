@@ -57,7 +57,13 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(vector_store_ids:, filters: nil, max_num_results: nil, ranking_options: nil, type: :file_search)
+        def self.new(
+          vector_store_ids:,
+          filters: nil,
+          max_num_results: nil,
+          ranking_options: nil,
+          type: :file_search
+        )
         end
 
         sig do
