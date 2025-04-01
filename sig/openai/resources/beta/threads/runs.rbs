@@ -84,7 +84,7 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Threads::Run
 
-          def stream_raw: (
+          def submit_stream_raw: (
             String run_id,
             thread_id: String,
             tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
