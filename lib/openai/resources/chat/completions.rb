@@ -65,7 +65,7 @@ module OpenAI
         def create(params)
           parsed, options = OpenAI::Models::Chat::CompletionCreateParams.dump_request(params)
           if parsed[:stream]
-            message = "Please use `#create_streaming` for the streaming use case."
+            message = "Please use `#stream_raw` for the streaming use case."
             raise ArgumentError.new(message)
           end
           @client.request(
@@ -95,7 +95,7 @@ module OpenAI
         #   unsupported parameters in reasoning models,
         #   [refer to the reasoning guide](https://platform.openai.com/docs/guides/reasoning).
         #
-        # @overload create_streaming(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, reasoning_effort: nil, response_format: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
+        # @overload stream_raw(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, reasoning_effort: nil, response_format: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
         #
         # @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
         # @param model [String, Symbol, OpenAI::Models::ChatModel]
@@ -132,7 +132,7 @@ module OpenAI
         # @return [OpenAI::Stream<OpenAI::Models::Chat::ChatCompletionChunk>]
         #
         # @see OpenAI::Models::Chat::CompletionCreateParams
-        def create_streaming(params)
+        def stream_raw(params)
           parsed, options = OpenAI::Models::Chat::CompletionCreateParams.dump_request(params)
           unless parsed.fetch(:stream, true)
             message = "Please use `#create` for the non-streaming use case."
