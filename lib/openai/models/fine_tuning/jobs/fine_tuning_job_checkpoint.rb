@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       module Jobs
+        # @see OpenAI::Resources::FineTuning::Jobs::Checkpoints#list
         class FineTuningJobCheckpoint < OpenAI::BaseModel
           # @!attribute id
           #   The checkpoint identifier, which can be referenced in the API endpoints.

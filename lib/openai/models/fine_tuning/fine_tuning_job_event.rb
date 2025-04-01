@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
+      # @see OpenAI::Resources::FineTuning::Jobs#list_events
       class FineTuningJobEvent < OpenAI::BaseModel
         # @!attribute id
         #   The object identifier.

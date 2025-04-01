@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::VectorStores#delete
     class VectorStoreDeleted < OpenAI::BaseModel
       # @!attribute id
       #

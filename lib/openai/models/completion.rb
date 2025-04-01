@@ -2,6 +2,9 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Completions#create
+    #
+    # @see OpenAI::Resources::Completions#create_streaming
     class Completion < OpenAI::BaseModel
       # @!attribute id
       #   A unique identifier for the completion.

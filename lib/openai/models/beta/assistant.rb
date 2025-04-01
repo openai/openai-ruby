@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Beta
+      # @see OpenAI::Resources::Beta::Assistants#create
       class Assistant < OpenAI::BaseModel
         # @!attribute id
         #   The identifier, which can be referenced in API endpoints.

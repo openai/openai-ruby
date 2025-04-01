@@ -4,6 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        # @see OpenAI::Resources::Beta::Threads::Messages#create
         class Message < OpenAI::BaseModel
           # @!attribute id
           #   The identifier, which can be referenced in API endpoints.

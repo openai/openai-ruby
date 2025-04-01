@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Batches#create
     class Batch < OpenAI::BaseModel
       # @!attribute id
       #

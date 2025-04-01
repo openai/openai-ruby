@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+    # @see OpenAI::Resources::Models#retrieve
     class Model < OpenAI::BaseModel
       # @!attribute id
       #   The model identifier, which can be referenced in the API endpoints.

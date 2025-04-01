@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Uploads
+      # @see OpenAI::Resources::Uploads::Parts#create
       class UploadPart < OpenAI::BaseModel
         # @!attribute id
         #   The upload Part unique identifier, which can be referenced in API endpoints.
