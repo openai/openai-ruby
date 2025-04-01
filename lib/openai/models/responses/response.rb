@@ -60,7 +60,7 @@ module OpenAI
         #     [model guide](https://platform.openai.com/docs/models) to browse and compare
         #     available models.
         #
-        #   @return [String, Symbol, OpenAI::Models::ChatModel]
+        #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel]
         required :model, union: -> { OpenAI::Models::ResponsesModel }
 
         # @!attribute object
@@ -225,7 +225,7 @@ module OpenAI
         #   # @param incomplete_details [OpenAI::Models::Responses::Response::IncompleteDetails, nil]
         #   # @param instructions [String, nil]
         #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String, Symbol, OpenAI::Models::ChatModel]
+        #   # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel]
         #   # @param output [Array<OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem>]
         #   # @param parallel_tool_calls [Boolean]
         #   # @param temperature [Float, nil]

@@ -74,7 +74,7 @@ module OpenAI
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow) }
         OrSymbol =
-          T.type_alias { T.any(Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol) }
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol) }
 
         NUMBER_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol)
 
@@ -91,7 +91,8 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::Endpoint) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol) }
 
         V1_RESPONSES = T.let(:"/v1/responses", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
         V1_CHAT_COMPLETIONS =

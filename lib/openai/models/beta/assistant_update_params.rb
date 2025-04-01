@@ -40,11 +40,11 @@ module OpenAI
         #     [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #     them.
         #
-        #   @return [String, Symbol, nil]
+        #   @return [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model, nil]
         optional :model, union: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model }
 
         # @!parse
-        #   # @return [String, Symbol]
+        #   # @return [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model]
         #   attr_writer :model
 
         # @!attribute name
@@ -132,7 +132,7 @@ module OpenAI
         #   # @param description [String, nil]
         #   # @param instructions [String, nil]
         #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String, Symbol]
+        #   # @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model]
         #   # @param name [String, nil]
         #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
         #   # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]

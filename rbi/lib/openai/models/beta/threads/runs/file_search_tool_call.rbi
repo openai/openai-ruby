@@ -150,6 +150,7 @@ module OpenAI
                     T.type_alias do
                       T.any(
                         Symbol,
+                        String,
                         OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
                       )
                     end
@@ -302,6 +303,7 @@ module OpenAI
                       T.type_alias do
                         T.any(
                           Symbol,
+                          String,
                           OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
                         )
                       end

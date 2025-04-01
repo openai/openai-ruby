@@ -151,7 +151,13 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol) }
+            T.type_alias do
+              T.any(
+                Symbol,
+                String,
+                OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol
+              )
+            end
 
           WORD = T.let(:word, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol)
           SEGMENT =

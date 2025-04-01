@@ -263,7 +263,7 @@ module OpenAI
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role) }
               OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol) }
+                T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol) }
 
               DEVELOPER =
                 T.let(:developer, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::TaggedSymbol)
@@ -367,7 +367,13 @@ module OpenAI
                 TaggedSymbol =
                   T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type) }
                 OrSymbol =
-                  T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol) }
+                  T.type_alias do
+                    T.any(
+                      Symbol,
+                      String,
+                      OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol
+                    )
+                  end
 
                 FUNCTION =
                   T.let(:function, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::TaggedSymbol)
@@ -394,7 +400,7 @@ module OpenAI
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol) }
 
             STOP = T.let(:stop, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
             LENGTH = T.let(:length, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)
@@ -450,7 +456,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol) }
 
           SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)

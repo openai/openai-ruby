@@ -7,7 +7,7 @@ module OpenAI
       #
       # @overload create(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #
-      # @param model [String, Symbol]
+      # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
       # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
       # @param best_of [Integer, nil]
       # @param echo [Boolean, nil]
@@ -48,7 +48,7 @@ module OpenAI
       #
       # @overload create_streaming(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #
-      # @param model [String, Symbol]
+      # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
       # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
       # @param best_of [Integer, nil]
       # @param echo [Boolean, nil]

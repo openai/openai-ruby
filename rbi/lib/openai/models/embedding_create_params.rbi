@@ -122,7 +122,7 @@ module OpenAI
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat) }
         OrSymbol =
-          T.type_alias { T.any(Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol) }
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol) }
 
         FLOAT = T.let(:float, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
         BASE64 = T.let(:base64, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)

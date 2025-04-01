@@ -29,7 +29,8 @@ module OpenAI
           extend OpenAI::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseError::Code) }
-          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol) }
 
           SERVER_ERROR = T.let(:server_error, OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol)
           RATE_LIMIT_EXCEEDED =

@@ -12,7 +12,7 @@ module OpenAI
       extend OpenAI::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ReasoningEffort) }
-      OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ReasoningEffort::TaggedSymbol) }
+      OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ReasoningEffort::TaggedSymbol) }
 
       LOW = T.let(:low, OpenAI::Models::ReasoningEffort::TaggedSymbol)
       MEDIUM = T.let(:medium, OpenAI::Models::ReasoningEffort::TaggedSymbol)

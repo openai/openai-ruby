@@ -28,7 +28,7 @@ module OpenAI
         #     `verse`. Previews of the voices are available in the
         #     [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         #
-        #   @return [String, Symbol]
+        #   @return [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         required :voice, union: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice }
 
         # @!attribute [r] instructions
@@ -67,7 +67,7 @@ module OpenAI
         # @!parse
         #   # @param input [String]
         #   # @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel]
-        #   # @param voice [String, Symbol]
+        #   # @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         #   # @param instructions [String]
         #   # @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat]
         #   # @param speed [Float]
