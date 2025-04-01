@@ -28,7 +28,7 @@ module OpenAI
       def content: (
         String file_id,
         ?request_options: OpenAI::request_opts
-      ) -> top
+      ) -> StringIO
 
       def initialize: (client: OpenAI::Client) -> void
     end

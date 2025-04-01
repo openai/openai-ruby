@@ -98,7 +98,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     response = @openai.files.content("file_id")
 
     assert_pattern do
-      response => OpenAI::Unknown
+      response => StringIO
     end
   end
 end
