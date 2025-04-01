@@ -73,7 +73,7 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileListParams::Order) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::FileListParams::Order::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::FileListParams::Order::TaggedSymbol) }
 
         ASC = T.let(:asc, OpenAI::Models::FileListParams::Order::TaggedSymbol)
         DESC = T.let(:desc, OpenAI::Models::FileListParams::Order::TaggedSymbol)

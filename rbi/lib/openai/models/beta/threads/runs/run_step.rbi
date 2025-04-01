@@ -215,7 +215,7 @@ module OpenAI
                 TaggedSymbol =
                   T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code) }
                 OrSymbol =
-                  T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol) }
+                  T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol) }
 
                 SERVER_ERROR =
                   T.let(:server_error, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
@@ -235,7 +235,7 @@ module OpenAI
 
               TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status) }
               OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol) }
+                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol) }
 
               IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
               CANCELLED = T.let(:cancelled, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
@@ -268,7 +268,7 @@ module OpenAI
 
               TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type) }
               OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol) }
+                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol) }
 
               MESSAGE_CREATION =
                 T.let(:message_creation, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)

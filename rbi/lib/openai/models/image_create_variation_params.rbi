@@ -99,7 +99,7 @@ module OpenAI
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat) }
         OrSymbol =
-          T.type_alias { T.any(Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol) }
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol) }
 
         URL = T.let(:url, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol)
         B64_JSON = T.let(:b64_json, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol)
@@ -115,7 +115,8 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::Size) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol) }
 
         NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol)
         NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol)

@@ -65,7 +65,8 @@ module OpenAI
           extend OpenAI::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::WebSearchTool::Type) }
-          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol) }
 
           WEB_SEARCH_PREVIEW =
             T.let(:web_search_preview, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol)
@@ -85,7 +86,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol) }
 
           LOW = T.let(:low, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)
           MEDIUM = T.let(:medium, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)

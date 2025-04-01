@@ -6,7 +6,7 @@ module OpenAI
       extend OpenAI::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ModerationModel) }
-      OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ModerationModel::TaggedSymbol) }
+      OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ModerationModel::TaggedSymbol) }
 
       OMNI_MODERATION_LATEST = T.let(:"omni-moderation-latest", OpenAI::Models::ModerationModel::TaggedSymbol)
       OMNI_MODERATION_2024_09_26 =

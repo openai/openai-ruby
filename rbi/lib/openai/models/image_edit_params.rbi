@@ -117,7 +117,8 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageEditParams::ResponseFormat) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol) }
 
         URL = T.let(:url, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol)
         B64_JSON = T.let(:b64_json, OpenAI::Models::ImageEditParams::ResponseFormat::TaggedSymbol)
@@ -133,7 +134,7 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageEditParams::Size) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageEditParams::Size::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageEditParams::Size::TaggedSymbol) }
 
         NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
         NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)

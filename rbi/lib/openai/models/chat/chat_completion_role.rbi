@@ -8,7 +8,7 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionRole) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol) }
 
         DEVELOPER = T.let(:developer, OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol)
         SYSTEM = T.let(:system, OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol)

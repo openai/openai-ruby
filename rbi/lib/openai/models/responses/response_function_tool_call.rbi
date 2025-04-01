@@ -76,7 +76,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol) }
 
           IN_PROGRESS =
             T.let(:in_progress, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol)

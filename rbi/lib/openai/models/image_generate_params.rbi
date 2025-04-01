@@ -119,7 +119,8 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Quality) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol) }
 
         STANDARD = T.let(:standard, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol)
         HD = T.let(:hd, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol)
@@ -137,7 +138,7 @@ module OpenAI
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat) }
         OrSymbol =
-          T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol) }
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol) }
 
         URL = T.let(:url, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol)
         B64_JSON = T.let(:b64_json, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol)
@@ -154,7 +155,8 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Size) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol) }
 
         NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
         NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
@@ -175,7 +177,8 @@ module OpenAI
         extend OpenAI::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Style) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol) }
 
         VIVID = T.let(:vivid, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol)
         NATURAL = T.let(:natural, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol)

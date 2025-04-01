@@ -46,7 +46,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol) }
 
           WAV = T.let(:wav, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
           MP3 = T.let(:mp3, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
@@ -70,7 +70,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
 
           ALLOY = T.let(:alloy, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           ASH = T.let(:ash, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)

@@ -156,7 +156,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol) }
 
           BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
           DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
@@ -646,7 +646,7 @@ module OpenAI
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol) }
 
             SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)
             DPO = T.let(:dpo, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)

@@ -162,7 +162,7 @@ module OpenAI
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol) }
 
             SERVER_ERROR =
               T.let(:server_error, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
@@ -185,7 +185,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
 
           IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
           COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)

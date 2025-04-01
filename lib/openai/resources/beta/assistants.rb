@@ -62,7 +62,7 @@ module OpenAI
         # @param description [String, nil]
         # @param instructions [String, nil]
         # @param metadata [Hash{Symbol=>String}, nil]
-        # @param model [String, Symbol]
+        # @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model]
         # @param name [String, nil]
         # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
         # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]

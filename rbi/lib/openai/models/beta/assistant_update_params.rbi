@@ -242,7 +242,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol) }
 
           O3_MINI = T.let(:"o3-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           O3_MINI_2025_01_31 =
