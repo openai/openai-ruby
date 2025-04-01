@@ -85,7 +85,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol) }
 
           INFO = T.let(:info, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
           WARN = T.let(:warn, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
@@ -102,7 +102,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol) }
 
           MESSAGE = T.let(:message, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
           METRICS = T.let(:metrics, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)

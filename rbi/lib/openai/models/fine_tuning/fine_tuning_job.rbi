@@ -308,7 +308,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJob::Status) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol) }
 
           VALIDATING_FILES =
             T.let(:validating_files, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
@@ -631,7 +631,7 @@ module OpenAI
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol) }
 
             SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)
             DPO = T.let(:dpo, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)

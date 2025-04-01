@@ -197,7 +197,7 @@ module OpenAI
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol) }
 
             USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol)
             ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol)

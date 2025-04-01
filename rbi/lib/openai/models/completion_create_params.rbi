@@ -256,7 +256,8 @@ module OpenAI
         end
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionCreateParams::Model) }
-        OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol) }
+        OrSymbol =
+          T.type_alias { T.any(Symbol, String, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol) }
 
         GPT_3_5_TURBO_INSTRUCT =
           T.let(:"gpt-3.5-turbo-instruct", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)

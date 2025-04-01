@@ -10,7 +10,7 @@ module OpenAI
         #
         # @param input [String]
         # @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel]
-        # @param voice [String, Symbol]
+        # @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         # @param instructions [String]
         # @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat]
         # @param speed [Float]

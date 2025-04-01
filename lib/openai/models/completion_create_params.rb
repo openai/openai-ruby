@@ -17,7 +17,7 @@ module OpenAI
       #     [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #     them.
       #
-      #   @return [String, Symbol]
+      #   @return [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
       required :model, union: -> { OpenAI::Models::CompletionCreateParams::Model }
 
       # @!attribute prompt
@@ -186,7 +186,7 @@ module OpenAI
       #   attr_writer :user
 
       # @!parse
-      #   # @param model [String, Symbol]
+      #   # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
       #   # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
       #   # @param best_of [Integer, nil]
       #   # @param echo [Boolean, nil]

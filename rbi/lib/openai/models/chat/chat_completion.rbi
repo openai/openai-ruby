@@ -161,7 +161,7 @@ module OpenAI
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol) }
+              T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol) }
 
             STOP = T.let(:stop, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
             LENGTH = T.let(:length, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
@@ -216,7 +216,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol) }
 
           SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)

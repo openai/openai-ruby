@@ -565,7 +565,13 @@ module OpenAI
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol) }
+              T.type_alias do
+                T.any(
+                  Symbol,
+                  String,
+                  OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol
+                )
+              end
 
             NONE =
               T.let(:none, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol)
@@ -638,7 +644,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
           AUDIO = T.let(:audio, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
@@ -690,7 +696,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol) }
 
           AUTO = T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
@@ -782,6 +788,7 @@ module OpenAI
               T.type_alias do
                 T.any(
                   Symbol,
+                  String,
                   OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
                 )
               end

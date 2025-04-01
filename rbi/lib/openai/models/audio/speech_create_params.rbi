@@ -109,7 +109,8 @@ module OpenAI
           end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice) }
-          OrSymbol = T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
 
           ALLOY = T.let(:alloy, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           ASH = T.let(:ash, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
@@ -131,7 +132,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol) }
 
           MP3 = T.let(:mp3, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
           OPUS = T.let(:opus, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)

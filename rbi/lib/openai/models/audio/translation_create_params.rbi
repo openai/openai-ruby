@@ -94,7 +94,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol) }
 
           JSON = T.let(:json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
           TEXT = T.let(:text, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)

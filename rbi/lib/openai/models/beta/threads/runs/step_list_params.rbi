@@ -108,7 +108,7 @@ module OpenAI
 
               TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order) }
               OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol) }
+                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol) }
 
               ASC = T.let(:asc, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol)
               DESC = T.let(:desc, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol)

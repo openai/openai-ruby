@@ -501,7 +501,7 @@ module OpenAI
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role) }
               OrSymbol =
-                T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol) }
+                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol) }
 
               USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role::TaggedSymbol)
               ASSISTANT =
@@ -1101,7 +1101,13 @@ module OpenAI
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type) }
             OrSymbol =
-              T.type_alias { T.any(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol) }
+              T.type_alias do
+                T.any(
+                  Symbol,
+                  String,
+                  OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol
+                )
+              end
 
             AUTO =
               T.let(:auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol)

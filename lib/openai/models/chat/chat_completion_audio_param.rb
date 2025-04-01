@@ -15,7 +15,7 @@ module OpenAI
         #   The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #     `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         #
-        #   @return [String, Symbol]
+        #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         required :voice, union: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
 
         # @!parse
@@ -24,7 +24,7 @@ module OpenAI
         #   #   [Learn more](https://platform.openai.com/docs/guides/audio).
         #   #
         #   # @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
-        #   # @param voice [String, Symbol]
+        #   # @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         #   #
         #   def initialize(format_:, voice:, **) = super
 

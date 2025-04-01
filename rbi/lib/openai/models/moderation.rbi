@@ -315,7 +315,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol)
 
@@ -332,7 +332,13 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol) }
+            T.type_alias do
+              T.any(
+                Symbol,
+                String,
+                OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol
+              )
+            end
 
           TEXT =
             T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol)
@@ -353,7 +359,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol)
 
@@ -368,7 +374,13 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol) }
+            T.type_alias do
+              T.any(
+                Symbol,
+                String,
+                OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol
+              )
+            end
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol)
 
@@ -386,7 +398,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol)
 
@@ -401,7 +413,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol)
 
@@ -419,7 +431,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
@@ -435,7 +447,13 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol) }
+            T.type_alias do
+              T.any(
+                Symbol,
+                String,
+                OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol
+              )
+            end
 
           TEXT =
             T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol)
@@ -458,7 +476,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol)
           IMAGE =
@@ -478,7 +496,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
@@ -494,7 +512,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol)
 
@@ -512,7 +530,7 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
@@ -528,7 +546,13 @@ module OpenAI
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol) }
+            T.type_alias do
+              T.any(
+                Symbol,
+                String,
+                OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol
+              )
+            end
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol)
           IMAGE =

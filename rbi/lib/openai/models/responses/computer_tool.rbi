@@ -54,7 +54,7 @@ module OpenAI
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ComputerTool::Environment) }
           OrSymbol =
-            T.type_alias { T.any(Symbol, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol) }
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol) }
 
           MAC = T.let(:mac, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
           WINDOWS = T.let(:windows, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
