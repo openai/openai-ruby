@@ -77,13 +77,13 @@ module OpenAI
 
     # Creates and returns a new client for interacting with the API.
     #
-    # @param base_url [String, nil] Override the default base URL for the API, e.g., `"https://api.example.com/v2/"`
-    #
     # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`
     #
     # @param organization [String, nil] Defaults to `ENV["OPENAI_ORG_ID"]`
     #
     # @param project [String, nil] Defaults to `ENV["OPENAI_PROJECT_ID"]`
+    #
+    # @param base_url [String, nil] Override the default base URL for the API, e.g., `"https://api.example.com/v2/"`
     #
     # @param max_retries [Integer] Max number of retries to attempt after a failed retryable request.
     #
@@ -93,10 +93,10 @@ module OpenAI
     #
     # @param max_retry_delay [Float]
     def initialize(
-      base_url: nil,
       api_key: ENV["OPENAI_API_KEY"],
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
+      base_url: nil,
       max_retries: DEFAULT_MAX_RETRIES,
       timeout: DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: DEFAULT_INITIAL_RETRY_DELAY,
@@ -105,7 +105,7 @@ module OpenAI
       base_url ||= "https://api.openai.com/v1"
 
       if api_key.nil?
-        raise ArgumentError.new("api_key is required")
+        raise ArgumentError.new("api_key is required, and can be set via environ: \"OPENAI_API_KEY\"")
       end
 
       headers = {
