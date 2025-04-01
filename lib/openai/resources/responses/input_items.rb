@@ -32,7 +32,7 @@ module OpenAI
           parsed, options = OpenAI::Models::Responses::InputItemListParams.dump_request(params)
           @client.request(
             method: :get,
-            path: ["responses/%0s/input_items", response_id],
+            path: ["responses/%1$s/input_items", response_id],
             query: parsed,
             page: OpenAI::CursorPage,
             model: OpenAI::Models::Responses::ResponseItem,

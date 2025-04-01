@@ -16,7 +16,7 @@ module OpenAI
       def retrieve(model, params = {})
         @client.request(
           method: :get,
-          path: ["models/%0s", model],
+          path: ["models/%1$s", model],
           model: OpenAI::Models::Model,
           options: params[:request_options]
         )
@@ -53,7 +53,7 @@ module OpenAI
       def delete(model, params = {})
         @client.request(
           method: :delete,
-          path: ["models/%0s", model],
+          path: ["models/%1$s", model],
           model: OpenAI::Models::ModelDeleted,
           options: params[:request_options]
         )

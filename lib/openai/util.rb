@@ -253,9 +253,9 @@ module OpenAI
           path
         in []
           ""
-        in [String, *interpolations]
+        in [String => p, *interpolations]
           encoded = interpolations.map { ERB::Util.url_encode(_1) }
-          path.first % encoded
+          format(p, *encoded)
         end
       end
     end

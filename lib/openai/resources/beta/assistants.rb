@@ -101,7 +101,7 @@ module OpenAI
         def retrieve(assistant_id, params = {})
           @client.request(
             method: :get,
-            path: ["assistants/%0s", assistant_id],
+            path: ["assistants/%1$s", assistant_id],
             model: OpenAI::Models::Beta::Assistant,
             options: params[:request_options]
           )
@@ -187,7 +187,7 @@ module OpenAI
           parsed, options = OpenAI::Models::Beta::AssistantUpdateParams.dump_request(params)
           @client.request(
             method: :post,
-            path: ["assistants/%0s", assistant_id],
+            path: ["assistants/%1$s", assistant_id],
             body: parsed,
             model: OpenAI::Models::Beta::Assistant,
             options: options
@@ -241,7 +241,7 @@ module OpenAI
         def delete(assistant_id, params = {})
           @client.request(
             method: :delete,
-            path: ["assistants/%0s", assistant_id],
+            path: ["assistants/%1$s", assistant_id],
             model: OpenAI::Models::Beta::AssistantDeleted,
             options: params[:request_options]
           )

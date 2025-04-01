@@ -29,7 +29,7 @@ module OpenAI
           parsed, options = OpenAI::Models::Uploads::PartCreateParams.dump_request(params)
           @client.request(
             method: :post,
-            path: ["uploads/%0s/parts", upload_id],
+            path: ["uploads/%1$s/parts", upload_id],
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
             model: OpenAI::Models::Uploads::UploadPart,

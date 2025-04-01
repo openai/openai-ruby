@@ -61,7 +61,7 @@ module OpenAI
       def retrieve(file_id, params = {})
         @client.request(
           method: :get,
-          path: ["files/%0s", file_id],
+          path: ["files/%1$s", file_id],
           model: OpenAI::Models::FileObject,
           options: params[:request_options]
         )
@@ -111,7 +111,7 @@ module OpenAI
       def delete(file_id, params = {})
         @client.request(
           method: :delete,
-          path: ["files/%0s", file_id],
+          path: ["files/%1$s", file_id],
           model: OpenAI::Models::FileDeleted,
           options: params[:request_options]
         )
@@ -129,7 +129,7 @@ module OpenAI
       def content(file_id, params = {})
         @client.request(
           method: :get,
-          path: ["files/%0s/content", file_id],
+          path: ["files/%1$s/content", file_id],
           headers: {"accept" => "application/binary"},
           model: StringIO,
           options: params[:request_options]

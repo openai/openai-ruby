@@ -55,7 +55,7 @@ module OpenAI
         def retrieve(thread_id, params = {})
           @client.request(
             method: :get,
-            path: ["threads/%0s", thread_id],
+            path: ["threads/%1$s", thread_id],
             model: OpenAI::Models::Beta::Thread,
             options: params[:request_options]
           )
@@ -86,7 +86,7 @@ module OpenAI
           parsed, options = OpenAI::Models::Beta::ThreadUpdateParams.dump_request(params)
           @client.request(
             method: :post,
-            path: ["threads/%0s", thread_id],
+            path: ["threads/%1$s", thread_id],
             body: parsed,
             model: OpenAI::Models::Beta::Thread,
             options: options
@@ -105,7 +105,7 @@ module OpenAI
         def delete(thread_id, params = {})
           @client.request(
             method: :delete,
-            path: ["threads/%0s", thread_id],
+            path: ["threads/%1$s", thread_id],
             model: OpenAI::Models::Beta::ThreadDeleted,
             options: params[:request_options]
           )
