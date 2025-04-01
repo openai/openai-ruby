@@ -59,7 +59,15 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {})
+        def self.new(
+          input:,
+          model:,
+          voice:,
+          instructions: nil,
+          response_format: nil,
+          speed: nil,
+          request_options: {}
+        )
         end
 
         sig do

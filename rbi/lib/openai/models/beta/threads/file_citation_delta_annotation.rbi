@@ -57,7 +57,14 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(index:, end_index: nil, file_citation: nil, start_index: nil, text: nil, type: :file_citation)
+          def self.new(
+            index:,
+            end_index: nil,
+            file_citation: nil,
+            start_index: nil,
+            text: nil,
+            type: :file_citation
+          )
           end
 
           sig do

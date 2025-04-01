@@ -51,7 +51,15 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, created_at:, level:, message:, data: nil, type: nil, object: :"fine_tuning.job.event")
+        def self.new(
+          id:,
+          created_at:,
+          level:,
+          message:,
+          data: nil,
+          type: nil,
+          object: :"fine_tuning.job.event"
+        )
         end
 
         sig do

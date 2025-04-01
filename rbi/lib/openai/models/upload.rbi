@@ -59,7 +59,17 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(id:, bytes:, created_at:, expires_at:, filename:, purpose:, status:, file: nil, object: :upload)
+      def self.new(
+        id:,
+        bytes:,
+        created_at:,
+        expires_at:,
+        filename:,
+        purpose:,
+        status:,
+        file: nil,
+        object: :upload
+      )
       end
 
       sig do

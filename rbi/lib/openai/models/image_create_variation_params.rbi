@@ -53,7 +53,15 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      def self.new(
+        image:,
+        model: nil,
+        n: nil,
+        response_format: nil,
+        size: nil,
+        user: nil,
+        request_options: {}
+      )
       end
 
       sig do
