@@ -497,7 +497,7 @@ module OpenAI
             thread_id:,
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
-            # There is no need to provide `stream:`. Instead, use `#submit_stream_raw` or
+            # There is no need to provide `stream:`. Instead, use `#submit_tool_stream_raw` or
             #   `#submit_tool_outputs` for streaming and non-streaming use cases, respectively.
             stream: false,
             request_options: {}
@@ -547,7 +547,7 @@ module OpenAI
                 ]
               )
           end
-          def submit_stream_raw(
+          def submit_tool_stream_raw(
             # Path param: The ID of the run that requires the tool output submission.
             run_id,
             # Path param: The ID of the
@@ -556,7 +556,7 @@ module OpenAI
             thread_id:,
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
-            # There is no need to provide `stream:`. Instead, use `#submit_stream_raw` or
+            # There is no need to provide `stream:`. Instead, use `#submit_tool_stream_raw` or
             #   `#submit_tool_outputs` for streaming and non-streaming use cases, respectively.
             stream: true,
             request_options: {}
