@@ -390,7 +390,7 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
           tap do
             target.public_send(accessor)
             flunk
-          rescue OpenAI::ConversionError => e
+          rescue OpenAI::Errors::ConversionError => e
             assert_kind_of(expect, e.cause)
           end
         else
