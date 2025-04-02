@@ -76,7 +76,7 @@ module OpenAI
         OrSymbol =
           T.type_alias { T.any(Symbol, String, OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol) }
 
-        NUMBER_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol)
+        COMPLETION_WINDOW_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol]) }
         def self.values

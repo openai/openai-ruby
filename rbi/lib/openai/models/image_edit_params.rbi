@@ -136,9 +136,9 @@ module OpenAI
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageEditParams::Size) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageEditParams::Size::TaggedSymbol) }
 
-        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
-        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
-        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        SIZE_256X256 = T.let(:"256x256", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        SIZE_512X512 = T.let(:"512x512", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::Size::TaggedSymbol]) }
         def self.values
