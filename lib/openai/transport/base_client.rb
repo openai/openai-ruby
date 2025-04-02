@@ -92,7 +92,7 @@ module OpenAI
               URI.join(url, response_headers["location"])
             rescue ArgumentError
               message = "Server responded with status #{status} but no valid location header."
-              raise OpenAI::APIConnectionError.new(url: url, message: message)
+              raise OpenAI::Errors::APIConnectionError.new(url: url, message: message)
             end
 
           request = {**request, url: location}
@@ -100,7 +100,7 @@ module OpenAI
           case [url.scheme, location.scheme]
           in ["https", "http"]
             message = "Tried to redirect to a insecure URL"
-            raise OpenAI::APIConnectionError.new(url: url, message: message)
+            raise OpenAI::Errors::APIConnectionError.new(url: url, message: message)
           else
             nil
           end
@@ -129,13 +129,13 @@ module OpenAI
 
         # @api private
         #
-        # @param status [Integer, OpenAI::APIConnectionError]
+        # @param status [Integer, OpenAI::Errors::APIConnectionError]
         # @param stream [Enumerable, nil]
         def reap_connection!(status, stream:)
           case status
           in (..199) | (300..499)
             stream&.each { next }
-          in OpenAI::APIConnectionError | (500..)
+          in OpenAI::Errors::APIConnectionError | (500..)
             OpenAI::Util.close_fused!(stream)
           else
           end
@@ -326,7 +326,7 @@ module OpenAI
       #
       # @param send_retry_header [Boolean]
       #
-      # @raise [OpenAI::APIError]
+      # @raise [OpenAI::Errors::APIError]
       # @return [Array(Integer, Net::HTTPResponse, Enumerable)]
       private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
         url, headers, max_retries, timeout = request.fetch_values(:url, :headers, :max_retries, :timeout)
@@ -349,7 +349,7 @@ module OpenAI
           self.class.reap_connection!(status, stream: stream)
 
           message = "Failed to complete the request within #{self.class::MAX_REDIRECTS} redirects."
-          raise OpenAI::APIConnectionError.new(url: url, message: message)
+          raise OpenAI::Errors::APIConnectionError.new(url: url, message: message)
         in 300..399
           self.class.reap_connection!(status, stream: stream)
 
@@ -369,14 +369,14 @@ module OpenAI
             self.class.reap_connection!(status, stream: stream)
           end
 
-          raise OpenAI::APIStatusError.for(
+          raise OpenAI::Errors::APIStatusError.for(
             url: url,
             status: status,
             body: decoded,
             request: nil,
             response: response
           )
-        in (400..) | OpenAI::APIConnectionError
+        in (400..) | OpenAI::Errors::APIConnectionError
           self.class.reap_connection!(status, stream: stream)
 
           delay = retry_delay(response, retry_count: retry_count)
@@ -416,7 +416,7 @@ module OpenAI
       #
       #   @option req [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :options
       #
-      # @raise [OpenAI::APIError]
+      # @raise [OpenAI::Errors::APIError]
       # @return [Object]
       def request(req)
         self.class.validate!(req)

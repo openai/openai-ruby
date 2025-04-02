@@ -153,7 +153,7 @@ module OpenAI
             end
           end
         rescue Timeout::Error
-          raise OpenAI::APITimeoutError
+          raise OpenAI::Errors::APITimeoutError
         end
 
         conn, _, response = enum.next

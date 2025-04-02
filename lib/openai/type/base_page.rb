@@ -29,7 +29,7 @@ module OpenAI
       # @return [Boolean]
       def next_page? = (raise NotImplementedError)
 
-      # @raise [OpenAI::APIError]
+      # @raise [OpenAI::Errors::APIError]
       # @return [OpenAI::Type::BasePage]
       def next_page = (raise NotImplementedError)
 
