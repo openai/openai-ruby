@@ -198,7 +198,7 @@ module OpenAI
 
     class << self
       sig { params(blk: T.proc.params(y: Enumerator::Yielder).void).returns(T::Enumerable[String]) }
-      def string_io(&blk)
+      def writable_enum(&blk)
       end
     end
 
@@ -207,7 +207,7 @@ module OpenAI
       sig do
         params(y: Enumerator::Yielder, boundary: String, key: T.any(Symbol, String), val: T.anything).void
       end
-      private def encode_multipart_formdata(y, boundary:, key:, val:)
+      private def write_multipart_chunk(y, boundary:, key:, val:)
       end
 
       # @api private
