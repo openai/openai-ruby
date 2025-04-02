@@ -82,11 +82,11 @@ module OpenAI
       } -> void
     end
 
-    def self?.string_io: {
+    def self?.writable_enum: {
       (Enumerator::Yielder y) -> void
     } -> Enumerable[String]
 
-    def self?.encode_multipart_formdata: (
+    def self?.write_multipart_chunk: (
       Enumerator::Yielder y,
       boundary: String,
       key: Symbol | String,

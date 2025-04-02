@@ -65,6 +65,10 @@ module OpenAI
 
       def deconstruct_keys: (::Array[Symbol]? keys) -> ::Hash[Symbol, top]
 
+      def to_json: (*top a) -> String
+
+      def to_yaml: (*top a) -> String
+
       def initialize: (?::Hash[Symbol, top] | self data) -> void
 
       def inspect: -> String
