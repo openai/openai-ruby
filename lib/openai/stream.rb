@@ -46,7 +46,7 @@ module OpenAI
                 else
                   "An error occurred during streaming"
                 end
-              OpenAI::APIError.for(
+              OpenAI::Errors::APIError.for(
                 url: @url,
                 status: @status,
                 body: body,

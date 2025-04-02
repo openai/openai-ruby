@@ -47,7 +47,7 @@ module OpenAI
       ) -> OpenAI::Transport::BaseClient::request_input
 
       def self.reap_connection!: (
-        Integer | OpenAI::APIConnectionError status,
+        Integer | OpenAI::Errors::APIConnectionError status,
         stream: Enumerable[String]?
       ) -> void
 

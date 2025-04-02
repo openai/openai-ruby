@@ -82,9 +82,10 @@ module OpenAI
         # @api private
         sig do
           params(
-            status: T.any(Integer, OpenAI::APIConnectionError),
+            status: T.any(Integer, OpenAI::Errors::APIConnectionError),
             stream: T.nilable(T::Enumerable[String])
-          ).void
+          )
+            .void
         end
         def reap_connection!(status, stream:)
         end

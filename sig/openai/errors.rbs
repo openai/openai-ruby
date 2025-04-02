@@ -1,105 +1,135 @@
 module OpenAI
-  class Error < StandardError
-    attr_accessor cause: StandardError?
+  module Errors
+    class Error < StandardError
+      attr_accessor cause: StandardError?
+    end
+
+    class ConversionError < OpenAI::Errors::Error
+    end
+
+    class APIError < OpenAI::Errors::Error
+      attr_accessor url: URI::Generic
+
+      attr_accessor status: Integer?
+
+      attr_accessor body: top?
+
+      attr_accessor code: String?
+
+      attr_accessor param: String?
+
+      attr_accessor type: String?
+
+      def initialize: (
+        url: URI::Generic,
+        ?status: Integer?,
+        ?body: Object?,
+        ?request: nil,
+        ?response: nil,
+        ?message: String?
+      ) -> void
+    end
+
+    class APIConnectionError < OpenAI::Errors::APIError
+      def initialize: (
+        url: URI::Generic,
+        ?status: nil,
+        ?body: nil,
+        ?request: nil,
+        ?response: nil,
+        ?message: String?
+      ) -> void
+    end
+
+    class APITimeoutError < OpenAI::Errors::APIConnectionError
+      def initialize: (
+        url: URI::Generic,
+        ?status: nil,
+        ?body: nil,
+        ?request: nil,
+        ?response: nil,
+        ?message: String?
+      ) -> void
+    end
+
+    class APIStatusError < OpenAI::Errors::APIError
+      def self.for: (
+        url: URI::Generic,
+        status: Integer,
+        body: Object?,
+        request: nil,
+        response: nil,
+        ?message: String?
+      ) -> instance
+
+      def initialize: (
+        url: URI::Generic,
+        status: Integer,
+        body: Object?,
+        request: nil,
+        response: nil,
+        ?message: String?
+      ) -> void
+    end
+
+    class BadRequestError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: 400
+    end
+
+    class AuthenticationError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: 401
+    end
+
+    class PermissionDeniedError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: 403
+    end
+
+    class NotFoundError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: 404
+    end
+
+    class ConflictError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: 409
+    end
+
+    class UnprocessableEntityError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: 422
+    end
+
+    class RateLimitError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: 429
+    end
+
+    class InternalServerError < OpenAI::Errors::APIStatusError
+      HTTP_STATUS: Range[Integer]
+    end
   end
 
-  class ConversionError < OpenAI::Error
-  end
+  class Error = OpenAI::Errors::Error
 
-  class APIError < OpenAI::Error
-    attr_accessor url: URI::Generic
+  class ConversionError = OpenAI::Errors::ConversionError
 
-    attr_accessor status: Integer?
+  class APIError = OpenAI::Errors::APIError
 
-    attr_accessor body: top?
+  class APIStatusError = OpenAI::Errors::APIStatusError
 
-    attr_accessor code: String?
+  class APIConnectionError = OpenAI::Errors::APIConnectionError
 
-    attr_accessor param: String?
+  class APITimeoutError = OpenAI::Errors::APITimeoutError
 
-    attr_accessor type: String?
+  class BadRequestError = OpenAI::Errors::BadRequestError
 
-    def initialize: (
-      url: URI::Generic,
-      ?status: Integer?,
-      ?body: Object?,
-      ?request: nil,
-      ?response: nil,
-      ?message: String?
-    ) -> void
-  end
+  class AuthenticationError = OpenAI::Errors::AuthenticationError
 
-  class APIConnectionError < OpenAI::APIError
-    def initialize: (
-      url: URI::Generic,
-      ?status: nil,
-      ?body: nil,
-      ?request: nil,
-      ?response: nil,
-      ?message: String?
-    ) -> void
-  end
+  class PermissionDeniedError = OpenAI::Errors::PermissionDeniedError
 
-  class APITimeoutError < OpenAI::APIConnectionError
-    def initialize: (
-      url: URI::Generic,
-      ?status: nil,
-      ?body: nil,
-      ?request: nil,
-      ?response: nil,
-      ?message: String?
-    ) -> void
-  end
+  class NotFoundError = OpenAI::Errors::NotFoundError
 
-  class APIStatusError < OpenAI::APIError
-    def self.for: (
-      url: URI::Generic,
-      status: Integer,
-      body: Object?,
-      request: nil,
-      response: nil,
-      ?message: String?
-    ) -> instance
+  class ConflictError = OpenAI::Errors::ConflictError
 
-    def initialize: (
-      url: URI::Generic,
-      status: Integer,
-      body: Object?,
-      request: nil,
-      response: nil,
-      ?message: String?
-    ) -> void
-  end
+  class UnprocessableEntityError = OpenAI::Errors::UnprocessableEntityError
 
-  class BadRequestError < OpenAI::APIStatusError
-    HTTP_STATUS: 400
-  end
+  class RateLimitError = OpenAI::Errors::RateLimitError
 
-  class AuthenticationError < OpenAI::APIStatusError
-    HTTP_STATUS: 401
-  end
-
-  class PermissionDeniedError < OpenAI::APIStatusError
-    HTTP_STATUS: 403
-  end
-
-  class NotFoundError < OpenAI::APIStatusError
-    HTTP_STATUS: 404
-  end
-
-  class ConflictError < OpenAI::APIStatusError
-    HTTP_STATUS: 409
-  end
-
-  class UnprocessableEntityError < OpenAI::APIStatusError
-    HTTP_STATUS: 422
-  end
-
-  class RateLimitError < OpenAI::APIStatusError
-    HTTP_STATUS: 429
-  end
-
-  class InternalServerError < OpenAI::APIStatusError
-    HTTP_STATUS: Range[Integer]
-  end
+  class InternalServerError = OpenAI::Errors::InternalServerError
 end
