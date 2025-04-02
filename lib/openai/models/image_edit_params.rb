@@ -138,9 +138,9 @@ module OpenAI
       module Size
         extend OpenAI::Enum
 
-        NUMBER_256X256 = :"256x256"
-        NUMBER_512X512 = :"512x512"
-        NUMBER_1024X1024 = :"1024x1024"
+        SIZE_256X256 = :"256x256"
+        SIZE_512X512 = :"512x512"
+        SIZE_1024X1024 = :"1024x1024"
 
         finalize!
 
