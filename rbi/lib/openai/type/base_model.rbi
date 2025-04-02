@@ -176,6 +176,14 @@ module OpenAI
       def deconstruct_keys(keys)
       end
 
+      sig { params(a: T.anything).returns(String) }
+      def to_json(*a)
+      end
+
+      sig { params(a: T.anything).returns(String) }
+      def to_yaml(*a)
+      end
+
       # Create a new instance of a model.
       sig { params(data: T.any(T::Hash[Symbol, T.anything], T.self_type)).returns(T.attached_class) }
       def self.new(data = {})
