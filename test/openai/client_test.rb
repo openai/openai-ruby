@@ -199,7 +199,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(307, {"location" => "/redirected"}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::APIConnectionError) do
+    assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
@@ -221,7 +221,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(303, {"location" => "/redirected"}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::APIConnectionError) do
+    assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
@@ -240,7 +240,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(307, {"location" => "/redirected"}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::APIConnectionError) do
+    assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
@@ -259,7 +259,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(307, {"location" => "https://example.com/redirected"}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::APIConnectionError) do
+    assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
