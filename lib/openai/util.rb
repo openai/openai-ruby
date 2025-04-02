@@ -441,7 +441,7 @@ module OpenAI
       #
       # @yieldparam [Enumerator::Yielder]
       # @return [Enumerable]
-      def string_io(&blk)
+      def writable_enum(&blk)
         Enumerator.new do |y|
           y.define_singleton_method(:write) do
             self << _1.clone
@@ -454,15 +454,13 @@ module OpenAI
     end
 
     class << self
-      # rubocop:disable Naming/MethodParameterName
-
       # @api private
       #
       # @param y [Enumerator::Yielder]
       # @param boundary [String]
       # @param key [Symbol, String]
       # @param val [Object]
-      private def encode_multipart_formdata(y, boundary:, key:, val:)
+      private def write_multipart_chunk(y, boundary:, key:, val:)
         y << "--#{boundary}\r\n"
         y << "Content-Disposition: form-data"
         unless key.nil?
@@ -494,8 +492,6 @@ module OpenAI
         y << "\r\n"
       end
 
-      # rubocop:enable Naming/MethodParameterName
-
       # @api private
       #
       # @param body [Object]
@@ -504,21 +500,21 @@ module OpenAI
       private def encode_multipart_streaming(body)
         boundary = SecureRandom.urlsafe_base64(60)
 
-        strio = string_io do |y|
+        strio = writable_enum do |y|
           case body
           in Hash
             body.each do |key, val|
               case val
               in Array if val.all? { primitive?(_1) }
                 val.each do |v|
-                  encode_multipart_formdata(y, boundary: boundary, key: key, val: v)
+                  write_multipart_chunk(y, boundary: boundary, key: key, val: v)
                 end
               else
-                encode_multipart_formdata(y, boundary: boundary, key: key, val: val)
+                write_multipart_chunk(y, boundary: boundary, key: key, val: val)
               end
             end
           else
-            encode_multipart_formdata(y, boundary: boundary, key: nil, val: body)
+            write_multipart_chunk(y, boundary: boundary, key: nil, val: body)
           end
           y << "--#{boundary}--\r\n"
         end
