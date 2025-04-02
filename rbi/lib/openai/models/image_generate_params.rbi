@@ -158,11 +158,11 @@ module OpenAI
         OrSymbol =
           T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol) }
 
-        NUMBER_256X256 = T.let(:"256x256", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
-        NUMBER_512X512 = T.let(:"512x512", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
-        NUMBER_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
-        NUMBER_1792X1024 = T.let(:"1792x1024", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
-        NUMBER_1024X1792 = T.let(:"1024x1792", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_256X256 = T.let(:"256x256", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_512X512 = T.let(:"512x512", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1792X1024 = T.let(:"1792x1024", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
+        SIZE_1024X1792 = T.let(:"1024x1792", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol]) }
         def self.values

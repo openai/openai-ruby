@@ -65,7 +65,7 @@ module OpenAI
       module CompletionWindow
         extend OpenAI::Enum
 
-        NUMBER_24H = :"24h"
+        COMPLETION_WINDOW_24H = :"24h"
 
         finalize!
 
