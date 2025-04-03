@@ -119,7 +119,7 @@ module OpenAI
         #
         #   @option request [Float] :deadline
         #
-        # @return [Array(Integer, Net::HTTPResponse, Enumerable)]
+        # @return [Array(Integer, Net::HTTPResponse, Enumerable<String>)]
         def execute(request)
           url, deadline = request.fetch_values(:url, :deadline)
 
