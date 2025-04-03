@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::FineTuning::Jobs::CheckpointsTest < OpenAI::Test:
     response = @openai.fine_tuning.jobs.checkpoints.list("ft-AF1WoRqd3aJAHsqc9NY7iL8F")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

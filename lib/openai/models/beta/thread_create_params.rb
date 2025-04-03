@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Beta::Threads#create
       class ThreadCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute [r] messages
         #   A list of [messages](https://platform.openai.com/docs/api-reference/messages) to

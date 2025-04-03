@@ -32,7 +32,7 @@ module OpenAI
             token: String,
             bytes: T.nilable(T::Array[Integer]),
             logprob: Float,
-            top_logprobs: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob, OpenAI::Util::AnyHash)]
+            top_logprobs: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob, OpenAI::Internal::Util::AnyHash)]
           )
             .returns(T.attached_class)
         end

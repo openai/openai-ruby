@@ -14,7 +14,7 @@ module OpenAI
       sig { returns(OpenAI::Models::VectorStore::FileCounts) }
       attr_reader :file_counts
 
-      sig { params(file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash)).void }
+      sig { params(file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Internal::Util::AnyHash)).void }
       attr_writer :file_counts
 
       # The Unix timestamp (in seconds) for when the vector store was last active.
@@ -52,7 +52,10 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Models::VectorStore::ExpiresAfter)) }
       attr_reader :expires_after
 
-      sig { params(expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash)).void }
+      sig do
+        params(expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Internal::Util::AnyHash))
+          .void
+      end
       attr_writer :expires_after
 
       # The Unix timestamp (in seconds) for when the vector store will expire.
@@ -65,13 +68,13 @@ module OpenAI
         params(
           id: String,
           created_at: Integer,
-          file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Util::AnyHash),
+          file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Internal::Util::AnyHash),
           last_active_at: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
           status: OpenAI::Models::VectorStore::Status::OrSymbol,
           usage_bytes: Integer,
-          expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Util::AnyHash),
+          expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Internal::Util::AnyHash),
           expires_at: T.nilable(Integer),
           object: Symbol
         )

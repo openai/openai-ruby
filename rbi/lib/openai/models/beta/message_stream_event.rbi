@@ -15,7 +15,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -25,7 +25,10 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
           #   created.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.created")
@@ -42,7 +45,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -52,7 +55,10 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
           #   to an `in_progress` state.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.in_progress")
@@ -69,7 +75,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::MessageDeltaEvent) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -80,7 +86,7 @@ module OpenAI
           #   being streamed.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Internal::Util::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -99,7 +105,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -109,7 +115,10 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
           #   completed.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.completed")
@@ -126,7 +135,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -136,7 +145,10 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
           #   before it is completed.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.incomplete")

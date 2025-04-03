@@ -61,7 +61,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Models::Batch::Errors)) }
       attr_reader :errors
 
-      sig { params(errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash)).void }
+      sig { params(errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Internal::Util::AnyHash)).void }
       attr_writer :errors
 
       # The Unix timestamp (in seconds) for when the batch expired.
@@ -119,7 +119,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Models::BatchRequestCounts)) }
       attr_reader :request_counts
 
-      sig { params(request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash)).void }
+      sig { params(request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Internal::Util::AnyHash)).void }
       attr_writer :request_counts
 
       sig do
@@ -134,7 +134,7 @@ module OpenAI
           cancelling_at: Integer,
           completed_at: Integer,
           error_file_id: String,
-          errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Util::AnyHash),
+          errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Internal::Util::AnyHash),
           expired_at: Integer,
           expires_at: Integer,
           failed_at: Integer,
@@ -142,7 +142,7 @@ module OpenAI
           in_progress_at: Integer,
           metadata: T.nilable(T::Hash[Symbol, String]),
           output_file_id: String,
-          request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Util::AnyHash),
+          request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Internal::Util::AnyHash),
           object: Symbol
         )
           .returns(T.attached_class)
@@ -226,7 +226,7 @@ module OpenAI
         sig { returns(T.nilable(T::Array[OpenAI::Models::BatchError])) }
         attr_reader :data
 
-        sig { params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)]).void }
+        sig { params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Internal::Util::AnyHash)]).void }
         attr_writer :data
 
         # The object type, which is always `list`.
@@ -237,7 +237,7 @@ module OpenAI
         attr_writer :object
 
         sig do
-          params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Util::AnyHash)], object: String)
+          params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Internal::Util::AnyHash)], object: String)
             .returns(T.attached_class)
         end
         def self.new(data: nil, object: nil)

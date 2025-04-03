@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Responses::InputItems#list
       class InputItemListParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute [r] after
         #   An item ID to list items after, used in pagination.

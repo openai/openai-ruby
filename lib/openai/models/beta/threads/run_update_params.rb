@@ -7,8 +7,8 @@ module OpenAI
         # @see OpenAI::Resources::Beta::Threads::Runs#update
         class RunUpdateParams < OpenAI::BaseModel
           # @!parse
-          #   extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute thread_id
           #

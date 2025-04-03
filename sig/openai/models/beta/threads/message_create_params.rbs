@@ -9,11 +9,11 @@ module OpenAI
             attachments: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment]?,
             metadata: OpenAI::Models::metadata?
           }
-          & OpenAI::request_parameters
+          & OpenAI::Internal::Type::request_parameters
 
         class MessageCreateParams < OpenAI::BaseModel
-          extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           attr_accessor content: OpenAI::Models::Beta::Threads::MessageCreateParams::content
 

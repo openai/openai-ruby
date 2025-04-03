@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::VectorStores::Files#list
       class FileListParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute [r] after
         #   A cursor for use in pagination. `after` is an object ID that defines your place

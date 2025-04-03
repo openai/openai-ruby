@@ -88,7 +88,7 @@ class OpenAI::Test::Resources::Beta::Threads::MessagesTest < OpenAI::Test::Resou
     response = @openai.beta.threads.messages.list("thread_id")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

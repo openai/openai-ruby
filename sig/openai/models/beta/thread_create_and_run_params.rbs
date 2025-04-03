@@ -19,11 +19,11 @@ module OpenAI
           top_p: Float?,
           truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class ThreadCreateAndRunParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor assistant_id: String
 

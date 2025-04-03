@@ -16,7 +16,10 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFileDelta)) }
           attr_reader :image_file
 
-          sig { params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Util::AnyHash)).void }
+          sig do
+            params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Internal::Util::AnyHash))
+              .void
+          end
           attr_writer :image_file
 
           # References an image [File](https://platform.openai.com/docs/api-reference/files)
@@ -24,7 +27,7 @@ module OpenAI
           sig do
             params(
               index: Integer,
-              image_file: T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Util::AnyHash),
+              image_file: T.any(OpenAI::Models::Beta::Threads::ImageFileDelta, OpenAI::Internal::Util::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)

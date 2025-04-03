@@ -11,7 +11,7 @@ module OpenAI
           dimensions: Integer,
           encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol,
           user: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::CreateEmbeddingResponse)
       end

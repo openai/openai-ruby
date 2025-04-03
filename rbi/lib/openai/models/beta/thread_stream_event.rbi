@@ -9,7 +9,7 @@ module OpenAI
         sig { returns(OpenAI::Models::Beta::Thread) }
         attr_reader :data
 
-        sig { params(data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash)).void }
+        sig { params(data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::Util::AnyHash)).void }
         attr_writer :data
 
         sig { returns(Symbol) }
@@ -27,7 +27,7 @@ module OpenAI
         #   created.
         sig do
           params(
-            data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Util::AnyHash),
+            data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::Util::AnyHash),
             enabled: T::Boolean,
             event: Symbol
           )

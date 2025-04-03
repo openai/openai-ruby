@@ -5,14 +5,20 @@ module OpenAI
     module Beta
       module Threads
         class RunCancelParams < OpenAI::BaseModel
-          extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           sig { returns(String) }
           attr_accessor :thread_id
 
           sig do
-            params(thread_id: String, request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            params(
+              thread_id: String,
+              request_options: T.any(
+                OpenAI::RequestOptions,
+                OpenAI::Internal::Util::AnyHash
+              )
+            )
               .returns(T.attached_class)
           end
           def self.new(thread_id:, request_options: {})

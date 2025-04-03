@@ -8,11 +8,11 @@ module OpenAI
         encoding_format: OpenAI::Models::EmbeddingCreateParams::encoding_format,
         user: String
       }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class EmbeddingCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor input: OpenAI::Models::EmbeddingCreateParams::input
 

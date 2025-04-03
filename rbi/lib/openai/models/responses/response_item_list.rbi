@@ -45,7 +45,7 @@ module OpenAI
             data: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseInputMessageItem,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseOutputMessage,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
               OpenAI::Models::Responses::ResponseComputerToolCall,

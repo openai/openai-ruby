@@ -9,7 +9,10 @@ module OpenAI
 
         sig do
           params(
-            input_audio: T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Util::AnyHash)
+            input_audio: T.any(
+              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio,
+              OpenAI::Internal::Util::AnyHash
+            )
           )
             .void
         end
@@ -22,7 +25,10 @@ module OpenAI
         # Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
         sig do
           params(
-            input_audio: T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Util::AnyHash),
+            input_audio: T.any(
+              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio,
+              OpenAI::Internal::Util::AnyHash
+            ),
             type: Symbol
           )
             .returns(T.attached_class)

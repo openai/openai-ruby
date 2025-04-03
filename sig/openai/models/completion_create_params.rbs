@@ -20,11 +20,11 @@ module OpenAI
         top_p: Float?,
         user: String
       }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class CompletionCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor model: OpenAI::Models::CompletionCreateParams::model
 

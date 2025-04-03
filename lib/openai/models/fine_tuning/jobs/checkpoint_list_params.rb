@@ -7,8 +7,8 @@ module OpenAI
         # @see OpenAI::Resources::FineTuning::Jobs::Checkpoints#list
         class CheckpointListParams < OpenAI::BaseModel
           # @!parse
-          #   extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute [r] after
           #   Identifier for the last checkpoint ID from the previous pagination request.

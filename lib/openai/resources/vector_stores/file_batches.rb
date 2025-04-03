@@ -92,7 +92,7 @@ module OpenAI
         # @param order [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
         #
         # @see OpenAI::Models::VectorStores::FileBatchListFilesParams
         def list_files(batch_id, params)
@@ -105,7 +105,7 @@ module OpenAI
             method: :get,
             path: ["vector_stores/%1$s/file_batches/%2$s/files", vector_store_id, batch_id],
             query: parsed,
-            page: OpenAI::CursorPage,
+            page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
             options: options
           )

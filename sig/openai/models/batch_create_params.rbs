@@ -7,11 +7,11 @@ module OpenAI
         input_file_id: String,
         metadata: OpenAI::Models::metadata?
       }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class BatchCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor completion_window: OpenAI::Models::BatchCreateParams::completion_window
 

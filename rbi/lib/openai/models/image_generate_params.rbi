@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class ImageGenerateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # A text description of the desired image(s). The maximum length is 1000
       #   characters for `dall-e-2` and 4000 characters for `dall-e-3`.
@@ -67,7 +67,7 @@ module OpenAI
           size: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol),
           style: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

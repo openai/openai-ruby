@@ -24,7 +24,7 @@ module OpenAI
           ?temperature: Float,
           ?timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity],
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Stream[OpenAI::Models::Audio::transcription_stream_event]
+        ) -> OpenAI::Internal::Stream[OpenAI::Models::Audio::transcription_stream_event]
 
         def initialize: (client: OpenAI::Client) -> void
       end

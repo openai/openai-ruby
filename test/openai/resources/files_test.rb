@@ -51,7 +51,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     response = @openai.files.list
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

@@ -8,7 +8,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::ImageFile) }
           attr_reader :image_file
 
-          sig { params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Util::AnyHash)).void }
+          sig { params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :image_file
 
           # Always `image_file`.
@@ -18,7 +18,10 @@ module OpenAI
           # References an image [File](https://platform.openai.com/docs/api-reference/files)
           #   in the content of a message.
           sig do
-            params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Util::AnyHash), type: Symbol)
+            params(
+              image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Internal::Util::AnyHash),
+              type: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(image_file:, type: :image_file)

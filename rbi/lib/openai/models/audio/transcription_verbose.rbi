@@ -20,14 +20,22 @@ module OpenAI
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionSegment])) }
         attr_reader :segments
 
-        sig { params(segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)]).void }
+        sig do
+          params(
+            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::Util::AnyHash)]
+          )
+            .void
+        end
         attr_writer :segments
 
         # Extracted words and their corresponding timestamps.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionWord])) }
         attr_reader :words
 
-        sig { params(words: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)]).void }
+        sig do
+          params(words: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Internal::Util::AnyHash)])
+            .void
+        end
         attr_writer :words
 
         # Represents a verbose json transcription response returned by model, based on the
@@ -37,8 +45,8 @@ module OpenAI
             duration: Float,
             language: String,
             text: String,
-            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)],
-            words: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Util::AnyHash)]
+            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::Util::AnyHash)],
+            words: T::Array[T.any(OpenAI::Models::Audio::TranscriptionWord, OpenAI::Internal::Util::AnyHash)]
           )
             .returns(T.attached_class)
         end

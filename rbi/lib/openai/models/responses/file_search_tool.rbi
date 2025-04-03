@@ -18,7 +18,7 @@ module OpenAI
 
         sig do
           params(
-            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter)
+            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter)
           )
             .void
         end
@@ -38,7 +38,7 @@ module OpenAI
 
         sig do
           params(
-            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash)
+            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -50,9 +50,9 @@ module OpenAI
         sig do
           params(
             vector_store_ids: T::Array[String],
-            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter),
+            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter),
             max_num_results: Integer,
-            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Util::AnyHash),
+            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::Util::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)

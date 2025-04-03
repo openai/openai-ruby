@@ -1,10 +1,10 @@
 module OpenAI
   module Models
-    type file_delete_params = {  } & OpenAI::request_parameters
+    type file_delete_params = {  } & OpenAI::Internal::Type::request_parameters
 
     class FileDeleteParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       def initialize: (?request_options: OpenAI::request_opts) -> void
 

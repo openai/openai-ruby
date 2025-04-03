@@ -13,7 +13,10 @@ module OpenAI
 
           sig do
             params(
-              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Util::AnyHash)
+              file_citation: T.any(
+                OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
               .void
           end
@@ -36,7 +39,10 @@ module OpenAI
           sig do
             params(
               end_index: Integer,
-              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Util::AnyHash),
+              file_citation: T.any(
+                OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
+                OpenAI::Internal::Util::AnyHash
+              ),
               start_index: Integer,
               text: String,
               type: Symbol

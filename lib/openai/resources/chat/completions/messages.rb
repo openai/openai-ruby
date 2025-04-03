@@ -16,7 +16,7 @@ module OpenAI
           # @param order [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::CursorPage<OpenAI::Models::Chat::ChatCompletionStoreMessage>]
+          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Chat::ChatCompletionStoreMessage>]
           #
           # @see OpenAI::Models::Chat::Completions::MessageListParams
           def list(completion_id, params = {})
@@ -25,7 +25,7 @@ module OpenAI
               method: :get,
               path: ["chat/completions/%1$s/messages", completion_id],
               query: parsed,
-              page: OpenAI::CursorPage,
+              page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::Chat::ChatCompletionStoreMessage,
               options: options
             )

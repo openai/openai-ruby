@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::FineTuning::Jobs#list
       class JobListParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute [r] after
         #   Identifier for the last job from the previous pagination request.

@@ -2,11 +2,11 @@ module OpenAI
   module Models
     module VectorStores
       type file_batch_retrieve_params =
-        { vector_store_id: String } & OpenAI::request_parameters
+        { vector_store_id: String } & OpenAI::Internal::Type::request_parameters
 
       class FileBatchRetrieveParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor vector_store_id: String
 

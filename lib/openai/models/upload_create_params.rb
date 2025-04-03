@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Uploads#create
     class UploadCreateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute bytes
       #   The number of bytes in the file you are uploading.

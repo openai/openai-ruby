@@ -16,7 +16,7 @@ module OpenAI
             temperature: Float,
             timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
           )
             .returns(T.any(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose))
         end
@@ -78,10 +78,10 @@ module OpenAI
             temperature: Float,
             timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
           )
             .returns(
-              OpenAI::Stream[
+              OpenAI::Internal::Stream[
               T.any(
                 OpenAI::Models::Audio::TranscriptionTextDeltaEvent,
                 OpenAI::Models::Audio::TranscriptionTextDoneEvent

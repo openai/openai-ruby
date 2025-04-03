@@ -16,7 +16,10 @@ module OpenAI
 
             sig do
               params(
-                file_search: T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Util::AnyHash)
+                file_search: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
+                  OpenAI::Internal::Util::AnyHash
+                )
               )
                 .void
             end
@@ -30,7 +33,10 @@ module OpenAI
             sig do
               params(
                 id: String,
-                file_search: T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Util::AnyHash),
+                file_search: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
+                  OpenAI::Internal::Util::AnyHash
+                ),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -56,7 +62,7 @@ module OpenAI
                 params(
                   ranking_options: T.any(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                    OpenAI::Util::AnyHash
+                    OpenAI::Internal::Util::AnyHash
                   )
                 )
                   .void
@@ -69,7 +75,12 @@ module OpenAI
 
               sig do
                 params(
-                  results: T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
+                  results: T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
+                    OpenAI::Internal::Util::AnyHash
+                  )
+                  ]
                 )
                   .void
               end
@@ -80,9 +91,14 @@ module OpenAI
                 params(
                   ranking_options: T.any(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                    OpenAI::Util::AnyHash
+                    OpenAI::Internal::Util::AnyHash
                   ),
-                  results: T::Array[T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result, OpenAI::Util::AnyHash)]
+                  results: T::Array[
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
+                    OpenAI::Internal::Util::AnyHash
+                  )
+                  ]
                 )
                   .returns(T.attached_class)
               end
@@ -205,7 +221,7 @@ module OpenAI
                     content: T::Array[
                     T.any(
                       OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                      OpenAI::Util::AnyHash
+                      OpenAI::Internal::Util::AnyHash
                     )
                     ]
                   )
@@ -222,7 +238,7 @@ module OpenAI
                     content: T::Array[
                     T.any(
                       OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                      OpenAI::Util::AnyHash
+                      OpenAI::Internal::Util::AnyHash
                     )
                     ]
                   )

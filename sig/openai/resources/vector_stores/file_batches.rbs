@@ -31,7 +31,7 @@ module OpenAI
           ?limit: Integer,
           ?order: OpenAI::Models::VectorStores::FileBatchListFilesParams::order,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile]
+        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile]
 
         def initialize: (client: OpenAI::Client) -> void
       end

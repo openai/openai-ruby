@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Beta::Assistants#update
       class AssistantUpdateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute description
         #   The description of the assistant. The maximum length is 512 characters.

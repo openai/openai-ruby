@@ -7,8 +7,8 @@ module OpenAI
     # @see OpenAI::Resources::Completions#stream_raw
     class CompletionCreateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute model
       #   ID of the model to use. You can use the

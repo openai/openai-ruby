@@ -13,7 +13,9 @@ module OpenAI
           attr_reader :file
 
           sig do
-            params(file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash))
+            params(
+              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::Util::AnyHash)
+            )
               .void
           end
           attr_writer :file
@@ -26,7 +28,7 @@ module OpenAI
           #   generation.
           sig do
             params(
-              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Util::AnyHash),
+              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::Util::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)

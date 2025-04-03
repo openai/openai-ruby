@@ -8,7 +8,7 @@ module OpenAI
         sig { returns(OpenAI::Models::Responses::Response) }
         attr_reader :response
 
-        sig { params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash)).void }
+        sig { params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::Util::AnyHash)).void }
         attr_writer :response
 
         # The type of the event. Always `response.in_progress`.
@@ -17,7 +17,10 @@ module OpenAI
 
         # Emitted when the response is in progress.
         sig do
-          params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Util::AnyHash), type: Symbol)
+          params(
+            response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::Util::AnyHash),
+            type: Symbol
+          )
             .returns(T.attached_class)
         end
         def self.new(response:, type: :"response.in_progress")

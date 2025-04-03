@@ -54,7 +54,7 @@ module OpenAI
               content: T::Array[
               T.any(
                 OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Responses::ResponseInputImage,
                 OpenAI::Models::Responses::ResponseInputFile
               )
@@ -156,7 +156,10 @@ module OpenAI
 
           sig do
             params(
-              output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash)
+              output: T.any(
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
               .void
           end
@@ -189,7 +192,7 @@ module OpenAI
               acknowledged_safety_checks: T::Array[
               T.any(
                 OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck,
-                OpenAI::Util::AnyHash
+                OpenAI::Internal::Util::AnyHash
               )
               ]
             )
@@ -209,12 +212,15 @@ module OpenAI
           sig do
             params(
               call_id: String,
-              output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Util::AnyHash),
+              output: T.any(
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+                OpenAI::Internal::Util::AnyHash
+              ),
               id: String,
               acknowledged_safety_checks: T::Array[
               T.any(
                 OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck,
-                OpenAI::Util::AnyHash
+                OpenAI::Internal::Util::AnyHash
               )
               ],
               status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol,

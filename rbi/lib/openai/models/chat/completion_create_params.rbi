@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Chat
       class CompletionCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # A list of messages comprising the conversation so far. Depending on the
         #   [model](https://platform.openai.com/docs/models) you use, different message
@@ -43,7 +43,12 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam)) }
         attr_reader :audio
 
-        sig { params(audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Util::AnyHash))).void }
+        sig do
+          params(
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Internal::Util::AnyHash))
+          )
+            .void
+        end
         attr_writer :audio
 
         # Number between -2.0 and 2.0. Positive values penalize new tokens based on their
@@ -83,7 +88,7 @@ module OpenAI
             function_call: T.any(
               OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
               OpenAI::Models::Chat::ChatCompletionFunctionCallOption,
-              OpenAI::Util::AnyHash
+              OpenAI::Internal::Util::AnyHash
             )
           )
             .void
@@ -98,7 +103,7 @@ module OpenAI
 
         sig do
           params(
-            functions: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Util::AnyHash)]
+            functions: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Internal::Util::AnyHash)]
           )
             .void
         end
@@ -181,7 +186,7 @@ module OpenAI
 
         sig do
           params(
-            prediction: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Util::AnyHash))
+            prediction: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Internal::Util::AnyHash))
           )
             .void
         end
@@ -229,7 +234,7 @@ module OpenAI
           params(
             response_format: T.any(
               OpenAI::Models::ResponseFormatText,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::ResponseFormatJSONSchema,
               OpenAI::Models::ResponseFormatJSONObject
             )
@@ -280,7 +285,7 @@ module OpenAI
 
         sig do
           params(
-            stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash))
+            stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash))
           )
             .void
         end
@@ -319,7 +324,7 @@ module OpenAI
             tool_choice: T.any(
               OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
               OpenAI::Models::Chat::ChatCompletionNamedToolChoice,
-              OpenAI::Util::AnyHash
+              OpenAI::Internal::Util::AnyHash
             )
           )
             .void
@@ -332,7 +337,10 @@ module OpenAI
         sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTool])) }
         attr_reader :tools
 
-        sig { params(tools: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Util::AnyHash)]).void }
+        sig do
+          params(tools: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Internal::Util::AnyHash)])
+            .void
+        end
         attr_writer :tools
 
         # An integer between 0 and 20 specifying the number of most likely tokens to
@@ -366,7 +374,7 @@ module OpenAI
 
         sig do
           params(
-            web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Util::AnyHash)
+            web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -377,7 +385,7 @@ module OpenAI
             messages: T::Array[
             T.any(
               OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
               OpenAI::Models::Chat::ChatCompletionUserMessageParam,
               OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
@@ -386,14 +394,14 @@ module OpenAI
             )
             ],
             model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
-            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Util::AnyHash)),
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Internal::Util::AnyHash)),
             frequency_penalty: T.nilable(Float),
             function_call: T.any(
               OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
               OpenAI::Models::Chat::ChatCompletionFunctionCallOption,
-              OpenAI::Util::AnyHash
+              OpenAI::Internal::Util::AnyHash
             ),
-            functions: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Util::AnyHash)],
+            functions: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Internal::Util::AnyHash)],
             logit_bias: T.nilable(T::Hash[Symbol, Integer]),
             logprobs: T.nilable(T::Boolean),
             max_completion_tokens: T.nilable(Integer),
@@ -402,12 +410,12 @@ module OpenAI
             modalities: T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
-            prediction: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Util::AnyHash)),
+            prediction: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Internal::Util::AnyHash)),
             presence_penalty: T.nilable(Float),
             reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
             response_format: T.any(
               OpenAI::Models::ResponseFormatText,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::ResponseFormatJSONSchema,
               OpenAI::Models::ResponseFormatJSONObject
             ),
@@ -415,19 +423,19 @@ module OpenAI
             service_tier: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol),
             stop: T.nilable(T.any(String, T::Array[String])),
             store: T.nilable(T::Boolean),
-            stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)),
+            stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash)),
             temperature: T.nilable(Float),
             tool_choice: T.any(
               OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
               OpenAI::Models::Chat::ChatCompletionNamedToolChoice,
-              OpenAI::Util::AnyHash
+              OpenAI::Internal::Util::AnyHash
             ),
-            tools: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Util::AnyHash)],
+            tools: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Internal::Util::AnyHash)],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
-            web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Util::AnyHash),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Internal::Util::AnyHash),
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -715,7 +723,7 @@ module OpenAI
           def self.variants
           end
 
-          StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
+          StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
         end
 
         class WebSearchOptions < OpenAI::BaseModel
@@ -743,7 +751,10 @@ module OpenAI
           sig do
             params(
               user_location: T.nilable(
-                T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, OpenAI::Util::AnyHash)
+                T.any(
+                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation,
+                  OpenAI::Internal::Util::AnyHash
+                )
               )
             )
               .void
@@ -757,7 +768,10 @@ module OpenAI
             params(
               search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
               user_location: T.nilable(
-                T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, OpenAI::Util::AnyHash)
+                T.any(
+                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation,
+                  OpenAI::Internal::Util::AnyHash
+                )
               )
             )
               .returns(T.attached_class)
@@ -828,7 +842,7 @@ module OpenAI
               params(
                 approximate: T.any(
                   OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
               )
                 .void
@@ -844,7 +858,7 @@ module OpenAI
               params(
                 approximate: T.any(
                   OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 ),
                 type: Symbol
               )

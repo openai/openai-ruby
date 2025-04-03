@@ -20,7 +20,12 @@ module OpenAI
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionSegment])) }
         attr_reader :segments
 
-        sig { params(segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)]).void }
+        sig do
+          params(
+            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::Util::AnyHash)]
+          )
+            .void
+        end
         attr_writer :segments
 
         sig do
@@ -28,7 +33,7 @@ module OpenAI
             duration: Float,
             language: String,
             text: String,
-            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Util::AnyHash)]
+            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::Util::AnyHash)]
           )
             .returns(T.attached_class)
         end

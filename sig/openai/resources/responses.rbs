@@ -43,7 +43,7 @@ module OpenAI
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Stream[OpenAI::Models::Responses::response_stream_event]
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
 
       def retrieve: (
         String response_id,

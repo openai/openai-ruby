@@ -4,11 +4,11 @@ module OpenAI
       module Threads
         type run_update_params =
           { thread_id: String, metadata: OpenAI::Models::metadata? }
-          & OpenAI::request_parameters
+          & OpenAI::Internal::Type::request_parameters
 
         class RunUpdateParams < OpenAI::BaseModel
-          extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           attr_accessor thread_id: String
 

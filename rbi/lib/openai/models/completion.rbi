@@ -37,7 +37,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Models::CompletionUsage)) }
       attr_reader :usage
 
-      sig { params(usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)).void }
+      sig { params(usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::Util::AnyHash)).void }
       attr_writer :usage
 
       # Represents a completion response from the API. Note: both the streamed and
@@ -45,11 +45,11 @@ module OpenAI
       sig do
         params(
           id: String,
-          choices: T::Array[T.any(OpenAI::Models::CompletionChoice, OpenAI::Util::AnyHash)],
+          choices: T::Array[T.any(OpenAI::Models::CompletionChoice, OpenAI::Internal::Util::AnyHash)],
           created: Integer,
           model: String,
           system_fingerprint: String,
-          usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash),
+          usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::Util::AnyHash),
           object: Symbol
         )
           .returns(T.attached_class)

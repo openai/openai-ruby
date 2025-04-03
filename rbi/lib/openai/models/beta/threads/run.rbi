@@ -42,7 +42,7 @@ module OpenAI
 
           sig do
             params(
-              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::IncompleteDetails, OpenAI::Util::AnyHash))
+              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::IncompleteDetails, OpenAI::Internal::Util::AnyHash))
             )
               .void
           end
@@ -59,7 +59,9 @@ module OpenAI
           attr_reader :last_error
 
           sig do
-            params(last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::LastError, OpenAI::Util::AnyHash)))
+            params(
+              last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::LastError, OpenAI::Internal::Util::AnyHash))
+            )
               .void
           end
           attr_writer :last_error
@@ -106,7 +108,7 @@ module OpenAI
 
           sig do
             params(
-              required_action: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction, OpenAI::Util::AnyHash))
+              required_action: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction, OpenAI::Internal::Util::AnyHash))
             )
               .void
           end
@@ -203,7 +205,7 @@ module OpenAI
 
           sig do
             params(
-              truncation_strategy: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Util::AnyHash))
+              truncation_strategy: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Internal::Util::AnyHash))
             )
               .void
           end
@@ -214,7 +216,12 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Run::Usage)) }
           attr_reader :usage
 
-          sig { params(usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Util::AnyHash))).void }
+          sig do
+            params(
+              usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Internal::Util::AnyHash))
+            )
+              .void
+          end
           attr_writer :usage
 
           # The sampling temperature used for this run. If not set, defaults to 1.
@@ -236,20 +243,20 @@ module OpenAI
               created_at: Integer,
               expires_at: T.nilable(Integer),
               failed_at: T.nilable(Integer),
-              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::IncompleteDetails, OpenAI::Util::AnyHash)),
+              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::IncompleteDetails, OpenAI::Internal::Util::AnyHash)),
               instructions: String,
-              last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::LastError, OpenAI::Util::AnyHash)),
+              last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::LastError, OpenAI::Internal::Util::AnyHash)),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
               model: String,
               parallel_tool_calls: T::Boolean,
-              required_action: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction, OpenAI::Util::AnyHash)),
+              required_action: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction, OpenAI::Internal::Util::AnyHash)),
               response_format: T.nilable(
                 T.any(
                   Symbol,
                   OpenAI::Models::ResponseFormatText,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::ResponseFormatJSONObject,
                   OpenAI::Models::ResponseFormatJSONSchema
                 )
@@ -261,19 +268,19 @@ module OpenAI
                 T.any(
                   OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
                   OpenAI::Models::Beta::AssistantToolChoice,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
               ),
               tools: T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Beta::FileSearchTool,
                 OpenAI::Models::Beta::FunctionTool
               )
               ],
-              truncation_strategy: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Util::AnyHash)),
-              usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Util::AnyHash)),
+              truncation_strategy: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Internal::Util::AnyHash)),
+              usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Internal::Util::AnyHash)),
               temperature: T.nilable(Float),
               top_p: T.nilable(Float),
               object: Symbol
@@ -460,7 +467,10 @@ module OpenAI
 
             sig do
               params(
-                submit_tool_outputs: T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs, OpenAI::Util::AnyHash)
+                submit_tool_outputs: T.any(
+                  OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
+                  OpenAI::Internal::Util::AnyHash
+                )
               )
                 .void
             end
@@ -474,7 +484,10 @@ module OpenAI
             #   is required.
             sig do
               params(
-                submit_tool_outputs: T.any(OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs, OpenAI::Util::AnyHash),
+                submit_tool_outputs: T.any(
+                  OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
+                  OpenAI::Internal::Util::AnyHash
+                ),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -499,7 +512,7 @@ module OpenAI
               # Details on the tool outputs needed for this run to continue.
               sig do
                 params(
-                  tool_calls: T::Array[T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall, OpenAI::Util::AnyHash)]
+                  tool_calls: T::Array[T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall, OpenAI::Internal::Util::AnyHash)]
                 )
                   .returns(T.attached_class)
               end

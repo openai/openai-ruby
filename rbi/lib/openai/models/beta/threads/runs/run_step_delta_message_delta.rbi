@@ -17,7 +17,7 @@ module OpenAI
               params(
                 message_creation: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
               )
                 .void
@@ -29,7 +29,7 @@ module OpenAI
               params(
                 message_creation: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 ),
                 type: Symbol
               )

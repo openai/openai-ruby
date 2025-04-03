@@ -51,7 +51,7 @@ module OpenAI
             id: String,
             action: T.any(
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
@@ -62,7 +62,12 @@ module OpenAI
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
             ),
             call_id: String,
-            pending_safety_checks: T::Array[T.any(OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck, OpenAI::Util::AnyHash)],
+            pending_safety_checks: T::Array[
+            T.any(
+              OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck,
+              OpenAI::Internal::Util::AnyHash
+            )
+            ],
             status: OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol,
             type: OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol
           )
@@ -230,7 +235,12 @@ module OpenAI
             # A drag action.
             sig do
               params(
-                path: T::Array[T.any(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path, OpenAI::Util::AnyHash)],
+                path: T::Array[
+                T.any(
+                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path,
+                  OpenAI::Internal::Util::AnyHash
+                )
+                ],
                 type: Symbol
               )
                 .returns(T.attached_class)

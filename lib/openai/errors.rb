@@ -178,10 +178,10 @@ module OpenAI
       # @param response [nil]
       # @param message [String, nil]
       def initialize(url:, status:, body:, request:, response:, message: nil)
-        message ||= OpenAI::Util.dig(body, :message) { {url: url.to_s, status: status, body: body} }
-        @code = OpenAI::Type::Converter.coerce(String, OpenAI::Util.dig(body, :code))
-        @param = OpenAI::Type::Converter.coerce(String, OpenAI::Util.dig(body, :param))
-        @type = OpenAI::Type::Converter.coerce(String, OpenAI::Util.dig(body, :type))
+        message ||= OpenAI::Internal::Util.dig(body, :message) { {url: url.to_s, status: status, body: body} }
+        @code = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :code))
+        @param = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :param))
+        @type = OpenAI::Internal::Type::Converter.coerce(String, OpenAI::Internal::Util.dig(body, :type))
         super(
           url: url,
           status: status,

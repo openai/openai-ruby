@@ -14,7 +14,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -23,7 +23,7 @@ module OpenAI
           # Occurs when a new
           #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.created")
@@ -40,7 +40,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -49,7 +49,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `queued` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.queued")
@@ -66,7 +66,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -75,7 +75,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to an `in_progress` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.in_progress")
@@ -92,7 +92,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -101,7 +101,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `requires_action` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.requires_action")
@@ -118,7 +118,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -127,7 +127,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is completed.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.completed")
@@ -144,7 +144,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -153,7 +153,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   ends with status `incomplete`.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.incomplete")
@@ -170,7 +170,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -179,7 +179,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   fails.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.failed")
@@ -196,7 +196,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -205,7 +205,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `cancelling` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.cancelling")
@@ -222,7 +222,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -231,7 +231,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is cancelled.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.cancelled")
@@ -248,7 +248,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -257,7 +257,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   expires.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.expired")

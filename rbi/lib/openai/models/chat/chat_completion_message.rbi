@@ -23,7 +23,7 @@ module OpenAI
 
         sig do
           params(
-            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Util::AnyHash)]
+            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Internal::Util::AnyHash)]
           )
             .void
         end
@@ -35,7 +35,12 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAudio)) }
         attr_reader :audio
 
-        sig { params(audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Util::AnyHash))).void }
+        sig do
+          params(
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Internal::Util::AnyHash))
+          )
+            .void
+        end
         attr_writer :audio
 
         # Deprecated and replaced by `tool_calls`. The name and arguments of a function
@@ -45,7 +50,7 @@ module OpenAI
 
         sig do
           params(
-            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Util::AnyHash)
+            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -57,7 +62,7 @@ module OpenAI
 
         sig do
           params(
-            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)]
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::Util::AnyHash)]
           )
             .void
         end
@@ -68,10 +73,10 @@ module OpenAI
           params(
             content: T.nilable(String),
             refusal: T.nilable(String),
-            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Util::AnyHash)],
-            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Util::AnyHash)),
-            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Util::AnyHash),
-            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)],
+            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Internal::Util::AnyHash)],
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Internal::Util::AnyHash)),
+            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Internal::Util::AnyHash),
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::Util::AnyHash)],
             role: Symbol
           )
             .returns(T.attached_class)
@@ -115,7 +120,10 @@ module OpenAI
 
           sig do
             params(
-              url_citation: T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, OpenAI::Util::AnyHash)
+              url_citation: T.any(
+                OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
               .void
           end
@@ -124,7 +132,10 @@ module OpenAI
           # A URL citation when using web search.
           sig do
             params(
-              url_citation: T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, OpenAI::Util::AnyHash),
+              url_citation: T.any(
+                OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation,
+                OpenAI::Internal::Util::AnyHash
+              ),
               type: Symbol
             )
               .returns(T.attached_class)

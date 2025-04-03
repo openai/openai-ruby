@@ -18,7 +18,7 @@ module OpenAI
         ?order: OpenAI::Models::FileListParams::order,
         ?purpose: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::CursorPage[OpenAI::Models::FileObject]
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Models::FileObject]
 
       def delete: (
         String file_id,

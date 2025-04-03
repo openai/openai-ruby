@@ -36,7 +36,7 @@ module OpenAI
             content: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputText,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseOutputRefusal
             )
             ],

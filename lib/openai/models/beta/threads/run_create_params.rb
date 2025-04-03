@@ -9,8 +9,8 @@ module OpenAI
         # @see OpenAI::Resources::Beta::Threads::Runs#stream_raw
         class RunCreateParams < OpenAI::BaseModel
           # @!parse
-          #   extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute assistant_id
           #   The ID of the

@@ -94,7 +94,7 @@ module OpenAI
           # @param run_id [String]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Threads::Message>]
+          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Beta::Threads::Message>]
           #
           # @see OpenAI::Models::Beta::Threads::MessageListParams
           def list(thread_id, params = {})
@@ -103,7 +103,7 @@ module OpenAI
               method: :get,
               path: ["threads/%1$s/messages", thread_id],
               query: parsed,
-              page: OpenAI::CursorPage,
+              page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::Beta::Threads::Message,
               options: options
             )

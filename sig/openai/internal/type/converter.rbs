@@ -1,0 +1,44 @@
+module OpenAI
+  module Internal
+    module Type
+      module Converter
+        type input = OpenAI::Internal::Type::Converter | Class
+
+        type state =
+          {
+            strictness: bool | :strong,
+            exactness: { yes: Integer, no: Integer, maybe: Integer },
+            branched: Integer
+          }
+
+        def coerce: (
+          top value,
+          state: OpenAI::Internal::Type::Converter::state
+        ) -> top
+
+        def dump: (top value) -> top
+
+        def self.type_info: (
+          {
+            const: (nil | bool | Integer | Float | Symbol)?,
+            enum: ^-> OpenAI::Internal::Type::Converter::input?,
+            union: ^-> OpenAI::Internal::Type::Converter::input?
+          }
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input spec
+        ) -> (^-> top)
+
+        def self.coerce: (
+          OpenAI::Internal::Type::Converter::input target,
+          top value,
+          ?state: OpenAI::Internal::Type::Converter::state
+        ) -> top
+
+        def self.dump: (
+          OpenAI::Internal::Type::Converter::input target,
+          top value
+        ) -> top
+      end
+    end
+  end
+end

@@ -8,11 +8,11 @@ module OpenAI
           limit: Integer,
           order: OpenAI::Models::Beta::AssistantListParams::order
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class AssistantListParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_reader after: String?
 

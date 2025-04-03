@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Moderations#create
     class ModerationCreateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute input
       #   Input (or inputs) to classify. Can be a single string, an array of strings, or

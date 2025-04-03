@@ -64,7 +64,7 @@ class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::Res
     response = @openai.vector_stores.file_batches.list_files("batch_id", vector_store_id: "vector_store_id")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

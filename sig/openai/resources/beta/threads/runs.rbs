@@ -47,7 +47,7 @@ module OpenAI
             ?top_p: Float?,
             ?truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Stream[OpenAI::Models::Beta::assistant_stream_event]
+          ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::assistant_stream_event]
 
           def retrieve: (
             String run_id,
@@ -69,7 +69,7 @@ module OpenAI
             ?limit: Integer,
             ?order: OpenAI::Models::Beta::Threads::RunListParams::order,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Run]
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Run]
 
           def cancel: (
             String run_id,
@@ -89,7 +89,7 @@ module OpenAI
             thread_id: String,
             tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Stream[OpenAI::Models::Beta::assistant_stream_event]
+          ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::assistant_stream_event]
 
           def initialize: (client: OpenAI::Client) -> void
         end

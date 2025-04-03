@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class BatchCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
@@ -45,7 +45,7 @@ module OpenAI
           endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

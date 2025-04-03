@@ -72,7 +72,7 @@ module OpenAI
         # @param metadata [Hash{Symbol=>String}, nil]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJob>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FineTuning::FineTuningJob>]
         #
         # @see OpenAI::Models::FineTuning::JobListParams
         def list(params = {})
@@ -81,7 +81,7 @@ module OpenAI
             method: :get,
             path: "fine_tuning/jobs",
             query: parsed,
-            page: OpenAI::CursorPage,
+            page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::FineTuning::FineTuningJob,
             options: options
           )
@@ -115,7 +115,7 @@ module OpenAI
         # @param limit [Integer]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::FineTuningJobEvent>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FineTuning::FineTuningJobEvent>]
         #
         # @see OpenAI::Models::FineTuning::JobListEventsParams
         def list_events(fine_tuning_job_id, params = {})
@@ -124,7 +124,7 @@ module OpenAI
             method: :get,
             path: ["fine_tuning/jobs/%1$s/events", fine_tuning_job_id],
             query: parsed,
-            page: OpenAI::CursorPage,
+            page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::FineTuning::FineTuningJobEvent,
             options: options
           )
