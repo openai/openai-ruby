@@ -59,8 +59,8 @@ module OpenAI
           #   is no additional latency for segment timestamps, but generating word timestamps
           #   incurs additional latency.
           timestamp_granularities: nil,
-          # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
-          #   for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+          #   `#create` for streaming and non-streaming use cases, respectively.
           stream: false,
           request_options: {}
         )
@@ -89,7 +89,7 @@ module OpenAI
               ]
             )
         end
-        def stream_raw(
+        def create_streaming(
           # The audio file object (not file name) to transcribe, in one of these formats:
           #   flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
           file:,
@@ -128,8 +128,8 @@ module OpenAI
           #   is no additional latency for segment timestamps, but generating word timestamps
           #   incurs additional latency.
           timestamp_granularities: nil,
-          # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
-          #   for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+          #   `#create` for streaming and non-streaming use cases, respectively.
           stream: true,
           request_options: {}
         )

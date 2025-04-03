@@ -4,7 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Completions#create
     #
-    # @see OpenAI::Resources::Completions#stream_raw
+    # @see OpenAI::Resources::Completions#create_streaming
     class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
