@@ -139,8 +139,8 @@ module OpenAI
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
-        #   for streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+        #   `#create` for streaming and non-streaming use cases, respectively.
         stream: false,
         request_options: {}
       )
@@ -178,7 +178,7 @@ module OpenAI
         )
           .returns(OpenAI::Internal::Stream[OpenAI::Models::Completion])
       end
-      def stream_raw(
+      def create_streaming(
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         #   see all of your available models, or see our
@@ -282,8 +282,8 @@ module OpenAI
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
-        # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
-        #   for streaming and non-streaming use cases, respectively.
+        # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+        #   `#create` for streaming and non-streaming use cases, respectively.
         stream: true,
         request_options: {}
       )

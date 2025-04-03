@@ -38,7 +38,7 @@ module OpenAI
           def create(thread_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunCreateParams.dump_request(params)
             if parsed[:stream]
-              message = "Please use `#stream_raw` for the streaming use case."
+              message = "Please use `#create_stream_raw` for the streaming use case."
               raise ArgumentError.new(message)
             end
             query_params = [:include]
@@ -54,7 +54,7 @@ module OpenAI
 
           # Create a run.
           #
-          # @overload stream_raw(thread_id, assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
+          # @overload create_stream_raw(thread_id, assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
           #
           # @param thread_id [String]
           # @param assistant_id [String]
@@ -79,7 +79,7 @@ module OpenAI
           # @return [OpenAI::Internal::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
           #
           # @see OpenAI::Models::Beta::Threads::RunCreateParams
-          def stream_raw(thread_id, params)
+          def create_stream_raw(thread_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunCreateParams.dump_request(params)
             unless parsed.fetch(:stream, true)
               message = "Please use `#create` for the non-streaming use case."
@@ -220,7 +220,7 @@ module OpenAI
           def submit_tool_outputs(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams.dump_request(params)
             if parsed[:stream]
-              message = "Please use `#submit_tool_stream_raw` for the streaming use case."
+              message = "Please use `#submit_tool_outputs_stream_raw` for the streaming use case."
               raise ArgumentError.new(message)
             end
             thread_id =
@@ -241,7 +241,7 @@ module OpenAI
           #   tool calls once they're all completed. All outputs must be submitted in a single
           #   request.
           #
-          # @overload submit_tool_stream_raw(run_id, thread_id:, tool_outputs:, request_options: {})
+          # @overload submit_tool_outputs_stream_raw(run_id, thread_id:, tool_outputs:, request_options: {})
           #
           # @param run_id [String]
           # @param thread_id [String]
@@ -251,7 +251,7 @@ module OpenAI
           # @return [OpenAI::Internal::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
           #
           # @see OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams
-          def submit_tool_stream_raw(run_id, params)
+          def submit_tool_outputs_stream_raw(run_id, params)
             parsed, options = OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams.dump_request(params)
             unless parsed.fetch(:stream, true)
               message = "Please use `#submit_tool_outputs` for the non-streaming use case."
