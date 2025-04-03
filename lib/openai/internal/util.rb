@@ -419,7 +419,7 @@ module OpenAI
 
         # @api private
         #
-        # @param stream [String, IO, StringIO, Enumerable]
+        # @param stream [String, IO, StringIO, Enumerable<String>]
         # @param blk [Proc]
         #
         # @yieldparam [String]
@@ -434,7 +434,7 @@ module OpenAI
         # @param blk [Proc]
         #
         # @yieldparam [Enumerator::Yielder]
-        # @return [Enumerable]
+        # @return [Enumerable<String>]
         def writable_enum(&blk)
           Enumerator.new do |y|
             y.define_singleton_method(:write) do
@@ -490,7 +490,7 @@ module OpenAI
         #
         # @param body [Object]
         #
-        # @return [Array(String, Enumerable)]
+        # @return [Array(String, Enumerable<String>)]
         private def encode_multipart_streaming(body)
           boundary = SecureRandom.urlsafe_base64(60)
 
@@ -543,7 +543,7 @@ module OpenAI
         # @api private
         #
         # @param headers [Hash{String=>String}, Net::HTTPHeader]
-        # @param stream [Enumerable]
+        # @param stream [Enumerable<String>]
         # @param suppress_error [Boolean]
         #
         # @raise [JSON::ParserError]
@@ -580,11 +580,11 @@ module OpenAI
         #
         # https://doc.rust-lang.org/std/iter/trait.FusedIterator.html
         #
-        # @param enum [Enumerable]
+        # @param enum [Enumerable<Object>]
         # @param external [Boolean]
         # @param close [Proc]
         #
-        # @return [Enumerable]
+        # @return [Enumerable<Object>]
         def fused_enum(enum, external: false, &close)
           fused = false
           iter = Enumerator.new do |y|
@@ -610,7 +610,7 @@ module OpenAI
 
         # @api private
         #
-        # @param enum [Enumerable, nil]
+        # @param enum [Enumerable<Object>, nil]
         def close_fused!(enum)
           return unless enum.is_a?(Enumerator)
 
@@ -621,11 +621,11 @@ module OpenAI
 
         # @api private
         #
-        # @param enum [Enumerable, nil]
+        # @param enum [Enumerable<Object>, nil]
         # @param blk [Proc]
         #
         # @yieldparam [Enumerator::Yielder]
-        # @return [Enumerable]
+        # @return [Enumerable<Object>]
         def chain_fused(enum, &blk)
           iter = Enumerator.new { blk.call(_1) }
           fused_enum(iter) { close_fused!(enum) }
@@ -635,9 +635,9 @@ module OpenAI
       class << self
         # @api private
         #
-        # @param enum [Enumerable]
+        # @param enum [Enumerable<String>]
         #
-        # @return [Enumerable]
+        # @return [Enumerable<String>]
         def decode_lines(enum)
           re = /(\r\n|\r|\n)/
           buffer = String.new.b
@@ -671,7 +671,7 @@ module OpenAI
         #
         # https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream
         #
-        # @param lines [Enumerable]
+        # @param lines [Enumerable<String>]
         #
         # @return [Hash{Symbol=>Object}]
         def decode_sse(lines)

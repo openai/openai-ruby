@@ -16,11 +16,11 @@ module OpenAI
         def ==: (top other) -> bool
 
         def coerce: (
-          Enumerable[Elem] | top value,
+          ::Array[top] | top value,
           state: OpenAI::Internal::Type::Converter::state
         ) -> (::Array[top] | top)
 
-        def dump: (Enumerable[Elem] | top value) -> (::Array[top] | top)
+        def dump: (::Array[top] | top value) -> (::Array[top] | top)
 
         def item_type: -> Elem
 
