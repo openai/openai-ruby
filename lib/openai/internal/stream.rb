@@ -2,6 +2,8 @@
 
 module OpenAI
   module Internal
+    # @generic Elem
+    #
     # @example
     #   stream.each do |event|
     #     puts(event)
@@ -11,7 +13,7 @@ module OpenAI
 
       # @api private
       #
-      # @return [Enumerable]
+      # @return [Enumerable<generic<Elem>>]
       private def iterator
         # rubocop:disable Metrics/BlockLength
         @iterator ||= OpenAI::Internal::Util.chain_fused(@stream) do |y|

@@ -2,6 +2,8 @@
 
 module OpenAI
   module Internal
+    # @generic Elem
+    #
     # @example
     #   if page.has_next?
     #     page = page.next_page
@@ -14,7 +16,7 @@ module OpenAI
     class Page
       include OpenAI::Internal::Type::BasePage
 
-      # @return [Array<Object>, nil]
+      # @return [Array<generic<Elem>>, nil]
       attr_accessor :data
 
       # @return [String]
@@ -55,6 +57,8 @@ module OpenAI
       end
 
       # @param blk [Proc]
+      #
+      # @yieldparam [generic<Elem>]
       def auto_paging_each(&blk)
         unless block_given?
           raise ArgumentError.new("A block must be given to ##{__method__}")

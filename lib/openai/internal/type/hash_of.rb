@@ -7,6 +7,8 @@ module OpenAI
       #
       # @abstract
       #
+      # @generic Elem
+      #
       # Hash of items of a given type.
       class HashOf
         include OpenAI::Internal::Type::Converter
@@ -111,7 +113,7 @@ module OpenAI
 
         # @api private
         #
-        # @return [OpenAI::Internal::Type::Converter, Class]
+        # @return [generic<Elem>]
         protected def item_type = @item_type_fn.call
 
         # @api private
