@@ -395,27 +395,39 @@ module OpenAI
         # Execute the request specified by `req`. This is the method that all resource
         #   methods call into.
         #
-        # @param req [Hash{Symbol=>Object}] .
+        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, options: {})
         #
-        #   @option req [Symbol] :method
+        # @param method [Symbol]
         #
-        #   @option req [String, Array<String>] :path
+        # @param path [String, Array<String>]
         #
-        #   @option req [Hash{String=>Array<String>, String, nil}, nil] :query
+        # @param query [Hash{String=>Array<String>, String, nil}, nil]
         #
-        #   @option req [Hash{String=>String, Integer, Array<String, Integer, nil>, nil}, nil] :headers
+        # @param headers [Hash{String=>String, Integer, Array<String, Integer, nil>, nil}, nil]
         #
-        #   @option req [Object, nil] :body
+        # @param body [Object, nil]
         #
-        #   @option req [Symbol, nil] :unwrap
+        # @param unwrap [Symbol, nil]
         #
-        #   @option req [Class, nil] :page
+        # @param page [Class, nil]
         #
-        #   @option req [Class, nil] :stream
+        # @param stream [Class, nil]
         #
-        #   @option req [OpenAI::Internal::Type::Converter, Class, nil] :model
+        # @param model [OpenAI::Internal::Type::Converter, Class, nil]
         #
-        #   @option req [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] :options
+        # @param options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil] .
+        #
+        #   @option options [String, nil] :idempotency_key
+        #
+        #   @option options [Hash{String=>Array<String>, String, nil}, nil] :extra_query
+        #
+        #   @option options [Hash{String=>String, nil}, nil] :extra_headers
+        #
+        #   @option options [Object, nil] :extra_body
+        #
+        #   @option options [Integer, nil] :max_retries
+        #
+        #   @option options [Float, nil] :timeout
         #
         # @raise [OpenAI::Errors::APIError]
         # @return [Object]
