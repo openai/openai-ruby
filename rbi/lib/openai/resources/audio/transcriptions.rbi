@@ -4,7 +4,10 @@ module OpenAI
   module Resources
     class Audio
       class Transcriptions
-        # Transcribes audio into the input language.
+        # See {OpenAI::Resources::Audio::Transcriptions#create_streaming} for streaming
+        #   counterpart.
+        #
+        #   Transcribes audio into the input language.
         sig do
           params(
             file: T.any(IO, StringIO),
@@ -66,7 +69,10 @@ module OpenAI
         )
         end
 
-        # Transcribes audio into the input language.
+        # See {OpenAI::Resources::Audio::Transcriptions#create} for non-streaming
+        #   counterpart.
+        #
+        #   Transcribes audio into the input language.
         sig do
           params(
             file: T.any(IO, StringIO),

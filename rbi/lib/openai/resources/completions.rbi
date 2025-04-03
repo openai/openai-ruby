@@ -3,7 +3,9 @@
 module OpenAI
   module Resources
     class Completions
-      # Creates a completion for the provided prompt and parameters.
+      # See {OpenAI::Resources::Completions#create_streaming} for streaming counterpart.
+      #
+      #   Creates a completion for the provided prompt and parameters.
       sig do
         params(
           model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
@@ -146,7 +148,9 @@ module OpenAI
       )
       end
 
-      # Creates a completion for the provided prompt and parameters.
+      # See {OpenAI::Resources::Completions#create} for non-streaming counterpart.
+      #
+      #   Creates a completion for the provided prompt and parameters.
       sig do
         params(
           model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),

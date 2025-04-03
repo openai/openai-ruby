@@ -88,24 +88,20 @@ module OpenAI
           send_retry_header: bool
         ) -> [Integer, top, Enumerable[String]]
 
-        def request:
-          (
-            Symbol method,
-            String | ::Array[String] path,
-            ?query: ::Hash[String, (::Array[String] | String)?]?,
-            ?headers: ::Hash[String, (String
-            | Integer
-            | ::Array[(String | Integer)?])?]?,
-            ?body: top?,
-            ?unwrap: Symbol?,
-            ?page: Class?,
-            ?stream: Class?,
-            ?model: OpenAI::Internal::Type::Converter::input?,
-            ?options: OpenAI::request_opts?
-          ) -> top
-          | (
-            OpenAI::Internal::Transport::BaseClient::request_components req
-          ) -> top
+        def request: (
+          Symbol method,
+          String | ::Array[String] path,
+          ?query: ::Hash[String, (::Array[String] | String)?]?,
+          ?headers: ::Hash[String, (String
+          | Integer
+          | ::Array[(String | Integer)?])?]?,
+          ?body: top?,
+          ?unwrap: Symbol?,
+          ?page: Class?,
+          ?stream: Class?,
+          ?model: OpenAI::Internal::Type::Converter::input?,
+          ?options: OpenAI::request_opts?
+        ) -> top
 
         def inspect: -> String
       end

@@ -7,7 +7,9 @@ module OpenAI
         # @return [OpenAI::Resources::Chat::Completions::Messages]
         attr_reader :messages
 
-        # **Starting a new project?** We recommend trying
+        # See {OpenAI::Resources::Chat::Completions#stream_raw} for streaming counterpart.
+        #
+        #   **Starting a new project?** We recommend trying
         #   [Responses](https://platform.openai.com/docs/api-reference/responses) to take
         #   advantage of the latest OpenAI platform features. Compare
         #   [Chat Completions with Responses](https://platform.openai.com/docs/guides/responses-vs-chat-completions?api-mode=responses).
@@ -77,7 +79,9 @@ module OpenAI
           )
         end
 
-        # **Starting a new project?** We recommend trying
+        # See {OpenAI::Resources::Chat::Completions#create} for non-streaming counterpart.
+        #
+        #   **Starting a new project?** We recommend trying
         #   [Responses](https://platform.openai.com/docs/api-reference/responses) to take
         #   advantage of the latest OpenAI platform features. Compare
         #   [Chat Completions with Responses](https://platform.openai.com/docs/guides/responses-vs-chat-completions?api-mode=responses).

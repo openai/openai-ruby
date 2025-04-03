@@ -99,7 +99,9 @@ module OpenAI
         )
         end
 
-        # Create a thread and run it in one request.
+        # See {OpenAI::Resources::Beta::Threads#stream_raw} for streaming counterpart.
+        #
+        #   Create a thread and run it in one request.
         sig do
           params(
             assistant_id: String,
@@ -243,7 +245,10 @@ module OpenAI
         )
         end
 
-        # Create a thread and run it in one request.
+        # See {OpenAI::Resources::Beta::Threads#create_and_run} for non-streaming
+        #   counterpart.
+        #
+        #   Create a thread and run it in one request.
         sig do
           params(
             assistant_id: String,
