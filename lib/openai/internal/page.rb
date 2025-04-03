@@ -11,18 +11,6 @@ module OpenAI
     #   page.auto_paging_each do |model|
     #     puts(model)
     #   end
-    #
-    # @example
-    #   models =
-    #     page
-    #     .to_enum
-    #     .lazy
-    #     .select { _1.object_id.even? }
-    #     .map(&:itself)
-    #     .take(2)
-    #     .to_a
-    #
-    #   models => Array
     class Page
       include OpenAI::Internal::Type::BasePage
 
