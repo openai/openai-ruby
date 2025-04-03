@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_function_message_param =
         { content: String?, name: String, role: :function }
 
-      class ChatCompletionFunctionMessageParam < OpenAI::BaseModel
+      class ChatCompletionFunctionMessageParam < OpenAI::Internal::Type::BaseModel
         attr_accessor content: String?
 
         attr_accessor name: String

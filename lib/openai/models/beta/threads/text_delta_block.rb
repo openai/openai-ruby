@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class TextDeltaBlock < OpenAI::BaseModel
+        class TextDeltaBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute index
           #   The index of the content part in the message.
           #
@@ -35,7 +35,7 @@ module OpenAI
           #   #
           #   def initialize(index:, text: nil, type: :text, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

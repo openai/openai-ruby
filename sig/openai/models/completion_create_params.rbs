@@ -22,7 +22,7 @@ module OpenAI
       }
       & OpenAI::Internal::Type::request_parameters
 
-    class CompletionCreateParams < OpenAI::BaseModel
+    class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -89,7 +89,7 @@ module OpenAI
         String | :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
 
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, (:"gpt-3.5-turbo-instruct"
         | :"davinci-002"
@@ -104,7 +104,7 @@ module OpenAI
         String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
 
       module Prompt
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
 
@@ -124,7 +124,7 @@ module OpenAI
       type stop = (String | ::Array[String])?
 
       module Stop
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, ::Array[String]]
 

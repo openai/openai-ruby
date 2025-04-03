@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class ThreadCreateAndRunParams < OpenAI::BaseModel
+      class ThreadCreateAndRunParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -105,9 +105,7 @@ module OpenAI
         attr_reader :thread
 
         sig do
-          params(
-            thread: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Internal::Util::AnyHash)
-          )
+          params(thread: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Internal::AnyHash))
             .void
         end
         attr_writer :thread
@@ -140,9 +138,7 @@ module OpenAI
 
         sig do
           params(
-            tool_resources: T.nilable(
-              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Internal::Util::AnyHash)
-            )
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Internal::AnyHash))
           )
             .void
         end
@@ -181,7 +177,7 @@ module OpenAI
         sig do
           params(
             truncation_strategy: T.nilable(
-              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Internal::Util::AnyHash)
+              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Internal::AnyHash)
             )
           )
             .void
@@ -201,28 +197,26 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
             ),
             temperature: T.nilable(Float),
-            thread: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Internal::Util::AnyHash),
+            thread: T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, OpenAI::Internal::AnyHash),
             tool_choice: T.nilable(
               T.any(
                 OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
                 OpenAI::Models::Beta::AssistantToolChoice,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               )
             ),
-            tool_resources: T.nilable(
-              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Internal::Util::AnyHash)
-            ),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T.nilable(
               T::Array[
               T.any(
                 OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Beta::FileSearchTool,
                 OpenAI::Models::Beta::FunctionTool
               )
@@ -230,9 +224,9 @@ module OpenAI
             ),
             top_p: T.nilable(Float),
             truncation_strategy: T.nilable(
-              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Internal::Util::AnyHash)
+              T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Internal::AnyHash)
             ),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -307,14 +301,14 @@ module OpenAI
         #   model associated with the assistant. If not, the model associated with the
         #   assistant will be used.
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
           def self.variants
           end
         end
 
-        class Thread < OpenAI::BaseModel
+        class Thread < OpenAI::Internal::Type::BaseModel
           # A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
           #   start the thread with.
           sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message])) }
@@ -322,7 +316,7 @@ module OpenAI
 
           sig do
             params(
-              messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message, OpenAI::Internal::Util::AnyHash)]
+              messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message, OpenAI::Internal::AnyHash)]
             )
               .void
           end
@@ -347,10 +341,7 @@ module OpenAI
           sig do
             params(
               tool_resources: T.nilable(
-                T.any(
-                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources,
-                  OpenAI::Internal::Util::AnyHash
-                )
+                T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, OpenAI::Internal::AnyHash)
               )
             )
               .void
@@ -361,13 +352,10 @@ module OpenAI
           #   an empty thread will be created.
           sig do
             params(
-              messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message, OpenAI::Internal::Util::AnyHash)],
+              messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message, OpenAI::Internal::AnyHash)],
               metadata: T.nilable(T::Hash[Symbol, String]),
               tool_resources: T.nilable(
-                T.any(
-                  OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources,
-                  OpenAI::Internal::Util::AnyHash
-                )
+                T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, OpenAI::Internal::AnyHash)
               )
             )
               .returns(T.attached_class)
@@ -388,7 +376,7 @@ module OpenAI
           def to_hash
           end
 
-          class Message < OpenAI::BaseModel
+          class Message < OpenAI::Internal::Type::BaseModel
             # The text contents of the message.
             sig do
               returns(
@@ -435,7 +423,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Internal::Util::AnyHash,
+                    OpenAI::Internal::AnyHash,
                     OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                     OpenAI::Models::Beta::Threads::TextContentBlockParam
                   )
@@ -446,7 +434,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment,
-                    OpenAI::Internal::Util::AnyHash
+                    OpenAI::Internal::AnyHash
                   )
                   ]
                 ),
@@ -482,7 +470,7 @@ module OpenAI
 
             # The text contents of the message.
             module Content
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               sig do
                 override
@@ -504,7 +492,7 @@ module OpenAI
 
               MessageContentPartParamArray =
                 T.let(
-                  OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam],
+                  OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam],
                   OpenAI::Internal::Type::Converter
                 )
             end
@@ -516,7 +504,7 @@ module OpenAI
             #   - `assistant`: Indicates the message is generated by the assistant. Use this
             #     value to insert messages from the assistant into the conversation.
             module Role
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role) }
@@ -535,7 +523,7 @@ module OpenAI
               end
             end
 
-            class Attachment < OpenAI::BaseModel
+            class Attachment < OpenAI::Internal::Type::BaseModel
               # The ID of the file to attach to the message.
               sig { returns(T.nilable(String)) }
               attr_reader :file_id
@@ -563,7 +551,7 @@ module OpenAI
                   tools: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Internal::Util::AnyHash,
+                    OpenAI::Internal::AnyHash,
                     OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch
                   )
                   ]
@@ -578,7 +566,7 @@ module OpenAI
                   tools: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Internal::Util::AnyHash,
+                    OpenAI::Internal::AnyHash,
                     OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch
                   )
                   ]
@@ -606,9 +594,9 @@ module OpenAI
               end
 
               module Tool
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
-                class FileSearch < OpenAI::BaseModel
+                class FileSearch < OpenAI::Internal::Type::BaseModel
                   # The type of tool being defined: `file_search`
                   sig { returns(Symbol) }
                   attr_accessor :type
@@ -634,7 +622,7 @@ module OpenAI
             end
           end
 
-          class ToolResources < OpenAI::BaseModel
+          class ToolResources < OpenAI::Internal::Type::BaseModel
             sig { returns(T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter)) }
             attr_reader :code_interpreter
 
@@ -642,7 +630,7 @@ module OpenAI
               params(
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
               )
                 .void
@@ -656,7 +644,7 @@ module OpenAI
               params(
                 file_search: T.any(
                   OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
               )
                 .void
@@ -671,11 +659,11 @@ module OpenAI
               params(
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 ),
                 file_search: T.any(
                   OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
               )
                 .returns(T.attached_class)
@@ -695,7 +683,7 @@ module OpenAI
             def to_hash
             end
 
-            class CodeInterpreter < OpenAI::BaseModel
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
               #   available to the `code_interpreter` tool. There can be a maximum of 20 files
               #   associated with the tool.
@@ -714,7 +702,7 @@ module OpenAI
               end
             end
 
-            class FileSearch < OpenAI::BaseModel
+            class FileSearch < OpenAI::Internal::Type::BaseModel
               # The
               #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
               #   attached to this thread. There can be a maximum of 1 vector store attached to
@@ -743,7 +731,7 @@ module OpenAI
                   vector_stores: T::Array[
                   T.any(
                     OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore,
-                    OpenAI::Internal::Util::AnyHash
+                    OpenAI::Internal::AnyHash
                   )
                   ]
                 )
@@ -757,7 +745,7 @@ module OpenAI
                   vector_stores: T::Array[
                   T.any(
                     OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore,
-                    OpenAI::Internal::Util::AnyHash
+                    OpenAI::Internal::AnyHash
                   )
                   ]
                 )
@@ -778,7 +766,7 @@ module OpenAI
               def to_hash
               end
 
-              class VectorStore < OpenAI::BaseModel
+              class VectorStore < OpenAI::Internal::Type::BaseModel
                 # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
                 #   strategy.
                 sig do
@@ -797,7 +785,7 @@ module OpenAI
                   params(
                     chunking_strategy: T.any(
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                      OpenAI::Internal::Util::AnyHash,
+                      OpenAI::Internal::AnyHash,
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     )
                   )
@@ -827,7 +815,7 @@ module OpenAI
                   params(
                     chunking_strategy: T.any(
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                      OpenAI::Internal::Util::AnyHash,
+                      OpenAI::Internal::AnyHash,
                       OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     ),
                     file_ids: T::Array[String],
@@ -857,9 +845,9 @@ module OpenAI
                 # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
                 #   strategy.
                 module ChunkingStrategy
-                  extend OpenAI::Union
+                  extend OpenAI::Internal::Type::Union
 
-                  class Auto < OpenAI::BaseModel
+                  class Auto < OpenAI::Internal::Type::BaseModel
                     # Always `auto`.
                     sig { returns(Symbol) }
                     attr_accessor :type
@@ -875,7 +863,7 @@ module OpenAI
                     end
                   end
 
-                  class Static < OpenAI::BaseModel
+                  class Static < OpenAI::Internal::Type::BaseModel
                     sig do
                       returns(
                         OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
@@ -887,7 +875,7 @@ module OpenAI
                       params(
                         static: T.any(
                           OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                          OpenAI::Internal::Util::AnyHash
+                          OpenAI::Internal::AnyHash
                         )
                       )
                         .void
@@ -902,7 +890,7 @@ module OpenAI
                       params(
                         static: T.any(
                           OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                          OpenAI::Internal::Util::AnyHash
+                          OpenAI::Internal::AnyHash
                         ),
                         type: Symbol
                       )
@@ -923,7 +911,7 @@ module OpenAI
                     def to_hash
                     end
 
-                    class Static < OpenAI::BaseModel
+                    class Static < OpenAI::Internal::Type::BaseModel
                       # The number of tokens that overlap between chunks. The default value is `400`.
                       #
                       #   Note that the overlap must not exceed half of `max_chunk_size_tokens`.
@@ -966,7 +954,7 @@ module OpenAI
           end
         end
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter)) }
           attr_reader :code_interpreter
 
@@ -974,7 +962,7 @@ module OpenAI
             params(
               code_interpreter: T.any(
                 OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               )
             )
               .void
@@ -988,7 +976,7 @@ module OpenAI
             params(
               file_search: T.any(
                 OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               )
             )
               .void
@@ -1003,11 +991,11 @@ module OpenAI
             params(
               code_interpreter: T.any(
                 OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               ),
               file_search: T.any(
                 OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               )
             )
               .returns(T.attached_class)
@@ -1027,7 +1015,7 @@ module OpenAI
           def to_hash
           end
 
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #   available to the `code_interpreter` tool. There can be a maximum of 20 files
             #   associated with the tool.
@@ -1046,7 +1034,7 @@ module OpenAI
             end
           end
 
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # The ID of the
             #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             #   attached to this assistant. There can be a maximum of 1 vector store attached to
@@ -1068,7 +1056,7 @@ module OpenAI
         end
 
         module Tool
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig do
             override
@@ -1080,7 +1068,7 @@ module OpenAI
           end
         end
 
-        class TruncationStrategy < OpenAI::BaseModel
+        class TruncationStrategy < OpenAI::Internal::Type::BaseModel
           # The truncation strategy to use for the thread. The default is `auto`. If set to
           #   `last_messages`, the thread will be truncated to the n most recent messages in
           #   the thread. When set to `auto`, messages in the middle of the thread will be
@@ -1122,7 +1110,7 @@ module OpenAI
           #   the thread. When set to `auto`, messages in the middle of the thread will be
           #   dropped to fit the context length of the model, `max_prompt_tokens`.
           module Type
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type) }

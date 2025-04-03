@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class AssistantUpdateParams < OpenAI::BaseModel
+      class AssistantUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -98,9 +98,7 @@ module OpenAI
 
         sig do
           params(
-            tool_resources: T.nilable(
-              T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::Util::AnyHash)
-            )
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash))
           )
             .void
         end
@@ -129,7 +127,7 @@ module OpenAI
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
@@ -159,25 +157,23 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(
-              T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::Util::AnyHash)
-            ),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
             ],
             top_p: T.nilable(Float),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -238,7 +234,7 @@ module OpenAI
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol]) }
           def self.variants
@@ -299,7 +295,7 @@ module OpenAI
             T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
         end
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter)) }
           attr_reader :code_interpreter
 
@@ -307,7 +303,7 @@ module OpenAI
             params(
               code_interpreter: T.any(
                 OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               )
             )
               .void
@@ -319,10 +315,7 @@ module OpenAI
 
           sig do
             params(
-              file_search: T.any(
-                OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch,
-                OpenAI::Internal::Util::AnyHash
-              )
+              file_search: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -336,12 +329,9 @@ module OpenAI
             params(
               code_interpreter: T.any(
                 OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               ),
-              file_search: T.any(
-                OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch,
-                OpenAI::Internal::Util::AnyHash
-              )
+              file_search: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -360,7 +350,7 @@ module OpenAI
           def to_hash
           end
 
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # Overrides the list of
             #   [file](https://platform.openai.com/docs/api-reference/files) IDs made available
             #   to the `code_interpreter` tool. There can be a maximum of 20 files associated
@@ -380,7 +370,7 @@ module OpenAI
             end
           end
 
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # Overrides the
             #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             #   attached to this assistant. There can be a maximum of 1 vector store attached to

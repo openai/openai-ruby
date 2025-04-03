@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFileSearchCallCompletedEvent < OpenAI::BaseModel
+      class ResponseFileSearchCallCompletedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute item_id
         #   The ID of the output item that the file search call is initiated.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(item_id:, output_index:, type: :"response.file_search_call.completed", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

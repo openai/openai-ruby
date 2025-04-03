@@ -9,7 +9,7 @@ module OpenAI
         }
         & OpenAI::Internal::Type::request_parameters
 
-      class ThreadCreateParams < OpenAI::BaseModel
+      class ThreadCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -40,7 +40,7 @@ module OpenAI
             metadata: OpenAI::Models::metadata?
           }
 
-        class Message < OpenAI::BaseModel
+        class Message < OpenAI::Internal::Type::BaseModel
           attr_accessor content: OpenAI::Models::Beta::ThreadCreateParams::Message::content
 
           attr_accessor role: OpenAI::Models::Beta::ThreadCreateParams::Message::role
@@ -63,7 +63,7 @@ module OpenAI
             | ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
           module Content
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
 
@@ -76,7 +76,7 @@ module OpenAI
           type role = :user | :assistant
 
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             USER: :user
             ASSISTANT: :assistant
@@ -90,7 +90,7 @@ module OpenAI
               tools: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::tool]
             }
 
-          class Attachment < OpenAI::BaseModel
+          class Attachment < OpenAI::Internal::Type::BaseModel
             attr_reader file_id: String?
 
             def file_id=: (String) -> String
@@ -113,11 +113,11 @@ module OpenAI
               | OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch
 
             module Tool
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               type file_search = { type: :file_search }
 
-              class FileSearch < OpenAI::BaseModel
+              class FileSearch < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :file_search
 
                 def initialize: (?type: :file_search) -> void
@@ -136,7 +136,7 @@ module OpenAI
             file_search: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch
           }
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           attr_reader code_interpreter: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter?
 
           def code_interpreter=: (
@@ -158,7 +158,7 @@ module OpenAI
 
           type code_interpreter = { file_ids: ::Array[String] }
 
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             attr_reader file_ids: ::Array[String]?
 
             def file_ids=: (::Array[String]) -> ::Array[String]
@@ -174,7 +174,7 @@ module OpenAI
               vector_stores: ::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
             }
 
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             attr_reader vector_store_ids: ::Array[String]?
 
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
@@ -199,7 +199,7 @@ module OpenAI
                 metadata: OpenAI::Models::metadata?
               }
 
-            class VectorStore < OpenAI::BaseModel
+            class VectorStore < OpenAI::Internal::Type::BaseModel
               attr_reader chunking_strategy: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy?
 
               def chunking_strategy=: (
@@ -225,11 +225,11 @@ module OpenAI
                 | OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
 
               module ChunkingStrategy
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 type auto = { type: :auto }
 
-                class Auto < OpenAI::BaseModel
+                class Auto < OpenAI::Internal::Type::BaseModel
                   attr_accessor type: :auto
 
                   def initialize: (?type: :auto) -> void
@@ -243,7 +243,7 @@ module OpenAI
                     type: :static
                   }
 
-                class Static < OpenAI::BaseModel
+                class Static < OpenAI::Internal::Type::BaseModel
                   attr_accessor static: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
 
                   attr_accessor type: :static
@@ -261,7 +261,7 @@ module OpenAI
                       max_chunk_size_tokens: Integer
                     }
 
-                  class Static < OpenAI::BaseModel
+                  class Static < OpenAI::Internal::Type::BaseModel
                     attr_accessor chunk_overlap_tokens: Integer
 
                     attr_accessor max_chunk_size_tokens: Integer

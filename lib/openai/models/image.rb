@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class Image < OpenAI::BaseModel
+    class Image < OpenAI::Internal::Type::BaseModel
       # @!attribute [r] b64_json
       #   The base64-encoded JSON of the generated image, if `response_format` is
       #     `b64_json`.
@@ -44,7 +44,7 @@ module OpenAI
       #   #
       #   def initialize(b64_json: nil, revised_prompt: nil, url: nil, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

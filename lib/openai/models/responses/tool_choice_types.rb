@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ToolChoiceTypes < OpenAI::BaseModel
+      class ToolChoiceTypes < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of hosted tool the model should to use. Learn more about
         #     [built-in tools](https://platform.openai.com/docs/guides/tools).
@@ -25,7 +25,7 @@ module OpenAI
         #   #
         #   def initialize(type:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The type of hosted tool the model should to use. Learn more about
         #   [built-in tools](https://platform.openai.com/docs/guides/tools).
@@ -38,7 +38,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ToolChoiceTypes#type
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           FILE_SEARCH = :file_search
           WEB_SEARCH_PREVIEW = :web_search_preview

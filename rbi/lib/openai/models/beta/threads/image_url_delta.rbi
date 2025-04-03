@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class ImageURLDelta < OpenAI::BaseModel
+        class ImageURLDelta < OpenAI::Internal::Type::BaseModel
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)) }
@@ -37,7 +37,7 @@ module OpenAI
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`.
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail) }
             OrSymbol =

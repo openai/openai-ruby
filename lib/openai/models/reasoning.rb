@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class Reasoning < OpenAI::BaseModel
+    class Reasoning < OpenAI::Internal::Type::BaseModel
       # @!attribute effort
       #   **o-series models only**
       #
@@ -35,7 +35,7 @@ module OpenAI
       #   #
       #   def initialize(effort: nil, generate_summary: nil, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # **computer_use_preview only**
       #
@@ -45,7 +45,7 @@ module OpenAI
       #
       # @see OpenAI::Models::Reasoning#generate_summary
       module GenerateSummary
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         CONCISE = :concise
         DETAILED = :detailed

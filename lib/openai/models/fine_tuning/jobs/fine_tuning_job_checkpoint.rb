@@ -5,7 +5,7 @@ module OpenAI
     module FineTuning
       module Jobs
         # @see OpenAI::Resources::FineTuning::Jobs::Checkpoints#list
-        class FineTuningJobCheckpoint < OpenAI::BaseModel
+        class FineTuningJobCheckpoint < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The checkpoint identifier, which can be referenced in the API endpoints.
           #
@@ -73,10 +73,10 @@ module OpenAI
           #     super
           #   end
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
-          class Metrics < OpenAI::BaseModel
+          class Metrics < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] full_valid_loss
             #
             #   @return [Float, nil]
@@ -164,7 +164,7 @@ module OpenAI
             #     super
             #   end
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

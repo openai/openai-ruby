@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class FilePathDeltaAnnotation < OpenAI::BaseModel
+        class FilePathDeltaAnnotation < OpenAI::Internal::Type::BaseModel
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
           attr_accessor :index
@@ -24,7 +24,7 @@ module OpenAI
 
           sig do
             params(
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::Util::AnyHash)
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -49,7 +49,7 @@ module OpenAI
             params(
               index: Integer,
               end_index: Integer,
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::Util::AnyHash),
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::AnyHash),
               start_index: Integer,
               text: String,
               type: Symbol
@@ -75,7 +75,7 @@ module OpenAI
           def to_hash
           end
 
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             # The ID of the file that was generated.
             sig { returns(T.nilable(String)) }
             attr_reader :file_id

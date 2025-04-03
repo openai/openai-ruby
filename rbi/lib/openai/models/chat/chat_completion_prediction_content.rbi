@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionPredictionContent < OpenAI::BaseModel
+      class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
         # The content that should be matched when generating a model response. If
         #   generated tokens would match this content, the entire model response can be
         #   returned much more quickly.
@@ -21,7 +21,7 @@ module OpenAI
           params(
             content: T.any(
               String,
-              T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Internal::Util::AnyHash)]
+              T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Internal::AnyHash)]
             ),
             type: Symbol
           )
@@ -43,7 +43,7 @@ module OpenAI
         #   generated tokens would match this content, the entire model response can be
         #   returned much more quickly.
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
           def self.variants
@@ -51,7 +51,7 @@ module OpenAI
 
           ChatCompletionContentPartTextArray =
             T.let(
-              OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText],
+              OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText],
               OpenAI::Internal::Type::Converter
             )
         end

@@ -10,7 +10,7 @@ module OpenAI
         | OpenAI::Models::Chat::ChatCompletionContentPart::File
 
       module ChatCompletionContentPart
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         type file =
           {
@@ -18,7 +18,7 @@ module OpenAI
             type: :file
           }
 
-        class File < OpenAI::BaseModel
+        class File < OpenAI::Internal::Type::BaseModel
           attr_accessor file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File
 
           attr_accessor type: :file
@@ -32,7 +32,7 @@ module OpenAI
 
           type file = { file_data: String, file_id: String, filename: String }
 
-          class File < OpenAI::BaseModel
+          class File < OpenAI::Internal::Type::BaseModel
             attr_reader file_data: String?
 
             def file_data=: (String) -> String

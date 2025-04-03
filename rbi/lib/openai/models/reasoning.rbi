@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class Reasoning < OpenAI::BaseModel
+    class Reasoning < OpenAI::Internal::Type::BaseModel
       # **o-series models only**
       #
       #   Constrains effort on reasoning for
@@ -52,7 +52,7 @@ module OpenAI
       #   debugging and understanding the model's reasoning process. One of `concise` or
       #   `detailed`.
       module GenerateSummary
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Reasoning::GenerateSummary) }
         OrSymbol =

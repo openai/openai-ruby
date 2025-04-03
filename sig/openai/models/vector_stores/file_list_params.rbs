@@ -11,7 +11,7 @@ module OpenAI
         }
         & OpenAI::Internal::Type::request_parameters
 
-      class FileListParams < OpenAI::BaseModel
+      class FileListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -53,7 +53,7 @@ module OpenAI
         type filter = :in_progress | :completed | :failed | :cancelled
 
         module Filter
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
@@ -66,7 +66,7 @@ module OpenAI
         type order = :asc | :desc
 
         module Order
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           ASC: :asc
           DESC: :desc

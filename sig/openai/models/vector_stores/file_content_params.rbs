@@ -4,7 +4,7 @@ module OpenAI
       type file_content_params =
         { vector_store_id: String } & OpenAI::Internal::Type::request_parameters
 
-      class FileContentParams < OpenAI::BaseModel
+      class FileContentParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

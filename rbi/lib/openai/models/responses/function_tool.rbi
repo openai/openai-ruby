@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class FunctionTool < OpenAI::BaseModel
+      class FunctionTool < OpenAI::Internal::Type::BaseModel
         # The name of the function to call.
         sig { returns(String) }
         attr_accessor :name

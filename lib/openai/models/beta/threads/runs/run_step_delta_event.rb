@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class RunStepDeltaEvent < OpenAI::BaseModel
+          class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
             # @!attribute id
             #   The identifier of the run step, which can be referenced in API endpoints.
             #
@@ -34,7 +34,7 @@ module OpenAI
             #   #
             #   def initialize(id:, delta:, object: :"thread.run.step.delta", **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
 

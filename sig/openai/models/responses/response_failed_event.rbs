@@ -7,7 +7,7 @@ module OpenAI
           type: :"response.failed"
         }
 
-      class ResponseFailedEvent < OpenAI::BaseModel
+      class ResponseFailedEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor response: OpenAI::Models::Responses::Response
 
         attr_accessor type: :"response.failed"

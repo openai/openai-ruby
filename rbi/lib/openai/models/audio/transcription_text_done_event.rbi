@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionTextDoneEvent < OpenAI::BaseModel
+      class TranscriptionTextDoneEvent < OpenAI::Internal::Type::BaseModel
         # The text that was transcribed.
         sig { returns(String) }
         attr_accessor :text
@@ -21,7 +21,7 @@ module OpenAI
 
         sig do
           params(
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob, OpenAI::Internal::Util::AnyHash)]
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob, OpenAI::Internal::AnyHash)]
           )
             .void
         end
@@ -34,7 +34,7 @@ module OpenAI
         sig do
           params(
             text: String,
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob, OpenAI::Internal::Util::AnyHash)],
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob, OpenAI::Internal::AnyHash)],
             type: Symbol
           )
             .returns(T.attached_class)
@@ -51,7 +51,7 @@ module OpenAI
         def to_hash
         end
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           # The token that was used to generate the log probability.
           sig { returns(T.nilable(String)) }
           attr_reader :token

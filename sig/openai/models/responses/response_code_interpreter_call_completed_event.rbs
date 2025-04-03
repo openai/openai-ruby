@@ -8,7 +8,7 @@ module OpenAI
           type: :"response.code_interpreter_call.completed"
         }
 
-      class ResponseCodeInterpreterCallCompletedEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCompletedEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor code_interpreter_call: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall
 
         attr_accessor output_index: Integer

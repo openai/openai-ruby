@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class TextContentBlock < OpenAI::BaseModel
+        class TextContentBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute text
           #
           #   @return [OpenAI::Models::Beta::Threads::Text]
@@ -24,7 +24,7 @@ module OpenAI
           #   #
           #   def initialize(text:, type: :text, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

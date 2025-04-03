@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseTextDeltaEvent < OpenAI::BaseModel
+      class ResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
         # The index of the content part that the text delta was added to.
         sig { returns(Integer) }
         attr_accessor :content_index

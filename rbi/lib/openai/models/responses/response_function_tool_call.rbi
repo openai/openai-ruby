@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionToolCall < OpenAI::BaseModel
+      class ResponseFunctionToolCall < OpenAI::Internal::Type::BaseModel
         # A JSON string of the arguments to pass to the function.
         sig { returns(String) }
         attr_accessor :arguments
@@ -71,7 +71,7 @@ module OpenAI
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status) }

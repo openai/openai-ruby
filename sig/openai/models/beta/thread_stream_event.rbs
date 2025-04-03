@@ -8,7 +8,7 @@ module OpenAI
           enabled: bool
         }
 
-      class ThreadStreamEvent < OpenAI::BaseModel
+      class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor data: OpenAI::Models::Beta::Thread
 
         attr_accessor event: :"thread.created"

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute delta
         #   The partial code snippet added by the code interpreter.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(delta:, output_index:, type: :"response.code_interpreter_call.code.delta", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class FileSearchTool < OpenAI::BaseModel
+      class FileSearchTool < OpenAI::Internal::Type::BaseModel
         # The type of tool being defined: `file_search`
         sig { returns(Symbol) }
         attr_accessor :type
@@ -13,16 +13,14 @@ module OpenAI
         attr_reader :file_search
 
         sig do
-          params(
-            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::Util::AnyHash)
-          )
+          params(file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::AnyHash))
             .void
         end
         attr_writer :file_search
 
         sig do
           params(
-            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::Util::AnyHash),
+            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)
@@ -34,7 +32,7 @@ module OpenAI
         def to_hash
         end
 
-        class FileSearch < OpenAI::BaseModel
+        class FileSearch < OpenAI::Internal::Type::BaseModel
           # The maximum number of results the file search tool should output. The default is
           #   20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
           #   1 and 50 inclusive.
@@ -60,7 +58,7 @@ module OpenAI
 
           sig do
             params(
-              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::Util::AnyHash)
+              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -70,7 +68,7 @@ module OpenAI
           sig do
             params(
               max_num_results: Integer,
-              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::Util::AnyHash)
+              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -86,7 +84,7 @@ module OpenAI
           def to_hash
           end
 
-          class RankingOptions < OpenAI::BaseModel
+          class RankingOptions < OpenAI::Internal::Type::BaseModel
             # The score threshold for the file search. All values must be a floating point
             #   number between 0 and 1.
             sig { returns(Float) }
@@ -131,7 +129,7 @@ module OpenAI
             # The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
             module Ranker
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker) }

@@ -13,13 +13,13 @@ module OpenAI
             T::Array[
             T.any(
               OpenAI::Models::ModerationImageURLInput,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::ModerationTextInput
             )
             ]
           ),
           model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::ModerationCreateResponse)
       end

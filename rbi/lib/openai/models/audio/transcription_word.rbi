@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionWord < OpenAI::BaseModel
+      class TranscriptionWord < OpenAI::Internal::Type::BaseModel
         # End time of the word in seconds.
         sig { returns(Float) }
         attr_accessor :end_

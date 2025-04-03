@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputText < OpenAI::BaseModel
+      class ResponseInputText < OpenAI::Internal::Type::BaseModel
         # The text input to the model.
         sig { returns(String) }
         attr_accessor :text

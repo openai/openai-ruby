@@ -2,14 +2,14 @@
 
 module OpenAI
   module Models
-    class Embedding < OpenAI::BaseModel
+    class Embedding < OpenAI::Internal::Type::BaseModel
       # @!attribute embedding
       #   The embedding vector, which is a list of floats. The length of vector depends on
       #     the model as listed in the
       #     [embedding guide](https://platform.openai.com/docs/guides/embeddings).
       #
       #   @return [Array<Float>]
-      required :embedding, OpenAI::ArrayOf[Float]
+      required :embedding, OpenAI::Internal::Type::ArrayOf[Float]
 
       # @!attribute index
       #   The index of the embedding in the list of embeddings.
@@ -32,7 +32,7 @@ module OpenAI
       #   #
       #   def initialize(embedding:, index:, object: :embedding, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

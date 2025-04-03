@@ -5,7 +5,7 @@ module OpenAI
     module Audio
       # @see OpenAI::Resources::Audio::Translations#create
       module TranslationCreateResponse
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant -> { OpenAI::Models::Audio::Translation }
 

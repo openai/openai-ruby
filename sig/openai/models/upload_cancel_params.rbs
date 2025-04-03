@@ -3,7 +3,7 @@ module OpenAI
     type upload_cancel_params =
       {  } & OpenAI::Internal::Type::request_parameters
 
-    class UploadCancelParams < OpenAI::BaseModel
+    class UploadCancelParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 

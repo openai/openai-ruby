@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFileSearchToolCall < OpenAI::BaseModel
+      class ResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
         # The unique ID of the file search tool call.
         sig { returns(String) }
         attr_accessor :id
@@ -34,7 +34,7 @@ module OpenAI
             queries: T::Array[String],
             status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
             results: T.nilable(
-              T::Array[T.any(OpenAI::Models::Responses::ResponseFileSearchToolCall::Result, OpenAI::Internal::Util::AnyHash)]
+              T::Array[T.any(OpenAI::Models::Responses::ResponseFileSearchToolCall::Result, OpenAI::Internal::AnyHash)]
             ),
             type: Symbol
           )
@@ -61,7 +61,7 @@ module OpenAI
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status) }
@@ -83,7 +83,7 @@ module OpenAI
           end
         end
 
-        class Result < OpenAI::BaseModel
+        class Result < OpenAI::Internal::Type::BaseModel
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           #   for storing additional information about the object in a structured format, and
           #   querying for objects via API or the dashboard. Keys are strings with a maximum
@@ -149,7 +149,7 @@ module OpenAI
           end
 
           module Attribute
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             sig { override.returns([String, Float, T::Boolean]) }
             def self.variants

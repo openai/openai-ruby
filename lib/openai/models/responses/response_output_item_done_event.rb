@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputItemDoneEvent < OpenAI::BaseModel
+      class ResponseOutputItemDoneEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute item
         #   The output item that was marked done.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(item:, output_index:, type: :"response.output_item.done", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

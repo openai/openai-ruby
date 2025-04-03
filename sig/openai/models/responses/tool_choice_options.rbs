@@ -4,7 +4,7 @@ module OpenAI
       type tool_choice_options = :none | :auto | :required
 
       module ToolChoiceOptions
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         NONE: :none
         AUTO: :auto

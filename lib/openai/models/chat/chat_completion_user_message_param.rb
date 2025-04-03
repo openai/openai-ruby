@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionUserMessageParam < OpenAI::BaseModel
+      class ChatCompletionUserMessageParam < OpenAI::Internal::Type::BaseModel
         # @!attribute content
         #   The contents of the user message.
         #
@@ -37,13 +37,13 @@ module OpenAI
         #   #
         #   def initialize(content:, name: nil, role: :user, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The contents of the user message.
         #
         # @see OpenAI::Models::Chat::ChatCompletionUserMessageParam#content
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # The text contents of the message.
           variant String
@@ -56,7 +56,7 @@ module OpenAI
           #   def self.variants; end
 
           ChatCompletionContentPartArray =
-            OpenAI::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionContentPart }]
+            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionContentPart }]
         end
       end
     end

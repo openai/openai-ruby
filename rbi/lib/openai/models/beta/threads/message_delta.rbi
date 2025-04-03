@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class MessageDelta < OpenAI::BaseModel
+        class MessageDelta < OpenAI::Internal::Type::BaseModel
           # The content of the message in array of text and/or images.
           sig do
             returns(
@@ -27,7 +27,7 @@ module OpenAI
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Beta::Threads::TextDeltaBlock,
                 OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
@@ -51,7 +51,7 @@ module OpenAI
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Beta::Threads::TextDeltaBlock,
                 OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
@@ -85,7 +85,7 @@ module OpenAI
 
           # The entity that produced the message. One of `user` or `assistant`.
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role) }
             OrSymbol =

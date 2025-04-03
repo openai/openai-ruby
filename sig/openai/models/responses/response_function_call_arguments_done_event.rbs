@@ -9,7 +9,7 @@ module OpenAI
           type: :"response.function_call_arguments.done"
         }
 
-      class ResponseFunctionCallArgumentsDoneEvent < OpenAI::BaseModel
+      class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor arguments: String
 
         attr_accessor item_id: String

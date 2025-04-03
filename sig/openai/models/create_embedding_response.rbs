@@ -8,7 +8,7 @@ module OpenAI
         usage: OpenAI::Models::CreateEmbeddingResponse::Usage
       }
 
-    class CreateEmbeddingResponse < OpenAI::BaseModel
+    class CreateEmbeddingResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor data: ::Array[OpenAI::Models::Embedding]
 
       attr_accessor model: String
@@ -28,7 +28,7 @@ module OpenAI
 
       type usage = { prompt_tokens: Integer, total_tokens: Integer }
 
-      class Usage < OpenAI::BaseModel
+      class Usage < OpenAI::Internal::Type::BaseModel
         attr_accessor prompt_tokens: Integer
 
         attr_accessor total_tokens: Integer

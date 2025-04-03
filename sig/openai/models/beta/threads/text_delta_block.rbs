@@ -9,7 +9,7 @@ module OpenAI
             text: OpenAI::Models::Beta::Threads::TextDelta
           }
 
-        class TextDeltaBlock < OpenAI::BaseModel
+        class TextDeltaBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor index: Integer
 
           attr_accessor type: :text

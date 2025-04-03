@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class StepRetrieveParams < OpenAI::BaseModel
+          class StepRetrieveParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
@@ -33,7 +33,7 @@ module OpenAI
                 thread_id: String,
                 run_id: String,
                 include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
-                request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+                request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
               )
                 .returns(T.attached_class)
             end

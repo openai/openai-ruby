@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ToolChoiceFunction < OpenAI::BaseModel
+      class ToolChoiceFunction < OpenAI::Internal::Type::BaseModel
         # The name of the function to call.
         sig { returns(String) }
         attr_accessor :name

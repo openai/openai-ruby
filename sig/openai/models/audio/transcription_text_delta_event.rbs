@@ -8,7 +8,7 @@ module OpenAI
           logprobs: ::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob]
         }
 
-      class TranscriptionTextDeltaEvent < OpenAI::BaseModel
+      class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor delta: String
 
         attr_accessor type: :"transcript.text.delta"
@@ -29,7 +29,7 @@ module OpenAI
 
         type logprob = { token: String, bytes: ::Array[top], logprob: Float }
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           attr_reader token: String?
 
           def token=: (String) -> String

@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_audio =
         { id: String, data: String, expires_at: Integer, transcript: String }
 
-      class ChatCompletionAudio < OpenAI::BaseModel
+      class ChatCompletionAudio < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor data: String

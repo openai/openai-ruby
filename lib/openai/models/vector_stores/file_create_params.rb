@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::Files#create
-      class FileCreateParams < OpenAI::BaseModel
+      class FileCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -26,7 +26,7 @@ module OpenAI
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         optional :attributes,
-                 -> { OpenAI::HashOf[union: OpenAI::Models::VectorStores::FileCreateParams::Attribute] },
+                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::FileCreateParams::Attribute] },
                  nil?: true
 
         # @!attribute [r] chunking_strategy
@@ -48,16 +48,16 @@ module OpenAI
         #   #
         #   def initialize(file_id:, attributes: nil, chunking_strategy: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
           variant Float
 
-          variant OpenAI::BooleanModel
+          variant OpenAI::Internal::Type::BooleanModel
 
           # @!parse
           #   # @return [Array(String, Float, Boolean)]

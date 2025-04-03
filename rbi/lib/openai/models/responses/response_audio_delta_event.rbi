@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseAudioDeltaEvent < OpenAI::BaseModel
+      class ResponseAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
         # A chunk of Base64 encoded response audio bytes.
         sig { returns(String) }
         attr_accessor :delta

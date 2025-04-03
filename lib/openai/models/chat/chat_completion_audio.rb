@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionAudio < OpenAI::BaseModel
+      class ChatCompletionAudio < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   Unique identifier for this audio response.
         #
@@ -42,7 +42,7 @@ module OpenAI
         #   #
         #   def initialize(id:, data:, expires_at:, transcript:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

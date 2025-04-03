@@ -8,7 +8,7 @@ module OpenAI
           type: :"response.code_interpreter_call.interpreting"
         }
 
-      class ResponseCodeInterpreterCallInterpretingEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallInterpretingEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor code_interpreter_call: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall
 
         attr_accessor output_index: Integer

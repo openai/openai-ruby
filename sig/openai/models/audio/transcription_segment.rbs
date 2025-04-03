@@ -15,7 +15,7 @@ module OpenAI
           tokens: ::Array[Integer]
         }
 
-      class TranscriptionSegment < OpenAI::BaseModel
+      class TranscriptionSegment < OpenAI::Internal::Type::BaseModel
         attr_accessor id: Integer
 
         attr_accessor avg_logprob: Float

@@ -11,7 +11,7 @@ module OpenAI
         | OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired
 
       module RunStepStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         type thread_run_step_created =
           {
@@ -19,7 +19,7 @@ module OpenAI
             event: :"thread.run.step.created"
           }
 
-        class ThreadRunStepCreated < OpenAI::BaseModel
+        class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.created"
@@ -38,7 +38,7 @@ module OpenAI
             event: :"thread.run.step.in_progress"
           }
 
-        class ThreadRunStepInProgress < OpenAI::BaseModel
+        class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.in_progress"
@@ -57,7 +57,7 @@ module OpenAI
             event: :"thread.run.step.delta"
           }
 
-        class ThreadRunStepDelta < OpenAI::BaseModel
+        class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent
 
           attr_accessor event: :"thread.run.step.delta"
@@ -76,7 +76,7 @@ module OpenAI
             event: :"thread.run.step.completed"
           }
 
-        class ThreadRunStepCompleted < OpenAI::BaseModel
+        class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.completed"
@@ -95,7 +95,7 @@ module OpenAI
             event: :"thread.run.step.failed"
           }
 
-        class ThreadRunStepFailed < OpenAI::BaseModel
+        class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.failed"
@@ -114,7 +114,7 @@ module OpenAI
             event: :"thread.run.step.cancelled"
           }
 
-        class ThreadRunStepCancelled < OpenAI::BaseModel
+        class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.cancelled"
@@ -133,7 +133,7 @@ module OpenAI
             event: :"thread.run.step.expired"
           }
 
-        class ThreadRunStepExpired < OpenAI::BaseModel
+        class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.expired"

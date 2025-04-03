@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class RunSubmitToolOutputsParams < OpenAI::BaseModel
+        class RunSubmitToolOutputsParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
@@ -18,13 +18,8 @@ module OpenAI
           sig do
             params(
               thread_id: String,
-              tool_outputs: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput,
-                OpenAI::Internal::Util::AnyHash
-              )
-              ],
-              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+              tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Internal::AnyHash)],
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -44,7 +39,7 @@ module OpenAI
           def to_hash
           end
 
-          class ToolOutput < OpenAI::BaseModel
+          class ToolOutput < OpenAI::Internal::Type::BaseModel
             # The output of the tool call to be submitted to continue the run.
             sig { returns(T.nilable(String)) }
             attr_reader :output

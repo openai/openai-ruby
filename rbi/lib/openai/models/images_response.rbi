@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ImagesResponse < OpenAI::BaseModel
+    class ImagesResponse < OpenAI::Internal::Type::BaseModel
       sig { returns(Integer) }
       attr_accessor :created
 
@@ -10,7 +10,7 @@ module OpenAI
       attr_accessor :data
 
       sig do
-        params(created: Integer, data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Internal::Util::AnyHash)])
+        params(created: Integer, data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Internal::AnyHash)])
           .returns(T.attached_class)
       end
       def self.new(created:, data:)

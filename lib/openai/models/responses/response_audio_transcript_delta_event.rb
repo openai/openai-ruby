@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseAudioTranscriptDeltaEvent < OpenAI::BaseModel
+      class ResponseAudioTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute delta
         #   The partial transcript of the audio response.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(delta:, type: :"response.audio.transcript.delta", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

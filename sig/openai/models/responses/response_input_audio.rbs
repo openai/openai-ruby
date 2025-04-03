@@ -8,7 +8,7 @@ module OpenAI
           type: :input_audio
         }
 
-      class ResponseInputAudio < OpenAI::BaseModel
+      class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
         attr_accessor data: String
 
         attr_accessor format_: OpenAI::Models::Responses::ResponseInputAudio::format_
@@ -26,7 +26,7 @@ module OpenAI
         type format_ = :mp3 | :wav
 
         module Format
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MP3: :mp3
           WAV: :wav

@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type auto_file_chunking_strategy_param = { type: :auto }
 
-    class AutoFileChunkingStrategyParam < OpenAI::BaseModel
+    class AutoFileChunkingStrategyParam < OpenAI::Internal::Type::BaseModel
       attr_accessor type: :auto
 
       def initialize: (?type: :auto) -> void

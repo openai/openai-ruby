@@ -10,7 +10,7 @@ module OpenAI
           type: :"response.refusal.delta"
         }
 
-      class ResponseRefusalDeltaEvent < OpenAI::BaseModel
+      class ResponseRefusalDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor content_index: Integer
 
         attr_accessor delta: String

@@ -3,13 +3,13 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionNamedToolChoice < OpenAI::BaseModel
+      class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function) }
         attr_reader :function
 
         sig do
           params(
-            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::Util::AnyHash)
+            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -23,7 +23,7 @@ module OpenAI
         #   function.
         sig do
           params(
-            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::Util::AnyHash),
+            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)
@@ -35,7 +35,7 @@ module OpenAI
         def to_hash
         end
 
-        class Function < OpenAI::BaseModel
+        class Function < OpenAI::Internal::Type::BaseModel
           # The name of the function to call.
           sig { returns(String) }
           attr_accessor :name

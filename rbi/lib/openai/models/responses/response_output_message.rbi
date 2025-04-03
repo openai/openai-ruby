@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputMessage < OpenAI::BaseModel
+      class ResponseOutputMessage < OpenAI::Internal::Type::BaseModel
         # The unique ID of the output message.
         sig { returns(String) }
         attr_accessor :id
@@ -36,7 +36,7 @@ module OpenAI
             content: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputText,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseOutputRefusal
             )
             ],
@@ -66,7 +66,7 @@ module OpenAI
 
         # A text output from the model.
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig do
             override
@@ -79,7 +79,7 @@ module OpenAI
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status) }
           OrSymbol =

@@ -9,7 +9,7 @@ module OpenAI
             image_file: OpenAI::Models::Beta::Threads::ImageFileDelta
           }
 
-        class ImageFileDeltaBlock < OpenAI::BaseModel
+        class ImageFileDeltaBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor index: Integer
 
           attr_accessor type: :image_file

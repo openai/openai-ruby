@@ -3,13 +3,13 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionContentPartImage < OpenAI::BaseModel
+      class ChatCompletionContentPartImage < OpenAI::Internal::Type::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL) }
         attr_reader :image_url
 
         sig do
           params(
-            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Internal::Util::AnyHash)
+            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -22,7 +22,7 @@ module OpenAI
         # Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
         sig do
           params(
-            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Internal::Util::AnyHash),
+            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Internal::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)
@@ -36,7 +36,7 @@ module OpenAI
         def to_hash
         end
 
-        class ImageURL < OpenAI::BaseModel
+        class ImageURL < OpenAI::Internal::Type::BaseModel
           # Either a URL of the image or the base64 encoded image data.
           sig { returns(String) }
           attr_accessor :url
@@ -71,7 +71,7 @@ module OpenAI
           # Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail) }

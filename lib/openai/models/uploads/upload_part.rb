@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Uploads
       # @see OpenAI::Resources::Uploads::Parts#create
-      class UploadPart < OpenAI::BaseModel
+      class UploadPart < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The upload Part unique identifier, which can be referenced in API endpoints.
         #
@@ -39,7 +39,7 @@ module OpenAI
         #   #
         #   def initialize(id:, created_at:, upload_id:, object: :"upload.part", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

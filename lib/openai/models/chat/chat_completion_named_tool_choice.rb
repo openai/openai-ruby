@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionNamedToolChoice < OpenAI::BaseModel
+      class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
         # @!attribute function
         #
         #   @return [OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function]
@@ -24,10 +24,10 @@ module OpenAI
         #   #
         #   def initialize(function:, type: :function, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::Chat::ChatCompletionNamedToolChoice#function
-        class Function < OpenAI::BaseModel
+        class Function < OpenAI::Internal::Type::BaseModel
           # @!attribute name
           #   The name of the function to call.
           #
@@ -39,7 +39,7 @@ module OpenAI
           #   #
           #   def initialize(name:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

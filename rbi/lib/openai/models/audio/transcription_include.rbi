@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Audio
       module TranscriptionInclude
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranscriptionInclude) }
         OrSymbol =

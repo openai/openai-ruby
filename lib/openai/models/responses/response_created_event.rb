@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCreatedEvent < OpenAI::BaseModel
+      class ResponseCreatedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute response
         #   The response that was created.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(response:, type: :"response.created", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

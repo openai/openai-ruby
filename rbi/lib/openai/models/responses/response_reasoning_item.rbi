@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseReasoningItem < OpenAI::BaseModel
+      class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
         # The unique identifier of the reasoning content.
         sig { returns(String) }
         attr_accessor :id
@@ -29,7 +29,7 @@ module OpenAI
         sig do
           params(
             id: String,
-            summary: T::Array[T.any(OpenAI::Models::Responses::ResponseReasoningItem::Summary, OpenAI::Internal::Util::AnyHash)],
+            summary: T::Array[T.any(OpenAI::Models::Responses::ResponseReasoningItem::Summary, OpenAI::Internal::AnyHash)],
             status: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol,
             type: Symbol
           )
@@ -52,7 +52,7 @@ module OpenAI
         def to_hash
         end
 
-        class Summary < OpenAI::BaseModel
+        class Summary < OpenAI::Internal::Type::BaseModel
           # A short summary of the reasoning used by the model when generating the response.
           sig { returns(String) }
           attr_accessor :text
@@ -73,7 +73,7 @@ module OpenAI
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status) }
           OrSymbol =

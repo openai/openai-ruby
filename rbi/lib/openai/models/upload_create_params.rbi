@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class UploadCreateParams < OpenAI::BaseModel
+    class UploadCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -34,7 +34,7 @@ module OpenAI
           filename: String,
           mime_type: String,
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end

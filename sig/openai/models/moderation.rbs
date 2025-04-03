@@ -8,7 +8,7 @@ module OpenAI
         flagged: bool
       }
 
-    class Moderation < OpenAI::BaseModel
+    class Moderation < OpenAI::Internal::Type::BaseModel
       attr_accessor categories: OpenAI::Models::Moderation::Categories
 
       attr_accessor category_applied_input_types: OpenAI::Models::Moderation::CategoryAppliedInputTypes
@@ -43,7 +43,7 @@ module OpenAI
           violence_graphic: bool
         }
 
-      class Categories < OpenAI::BaseModel
+      class Categories < OpenAI::Internal::Type::BaseModel
         attr_accessor harassment: bool
 
         attr_accessor harassment_threatening: bool
@@ -106,7 +106,7 @@ module OpenAI
           violence_graphic: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence_graphic]
         }
 
-      class CategoryAppliedInputTypes < OpenAI::BaseModel
+      class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
         attr_accessor harassment: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment]
 
         attr_accessor harassment_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening]
@@ -154,7 +154,7 @@ module OpenAI
         type harassment = :text
 
         module Harassment
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 
@@ -164,7 +164,7 @@ module OpenAI
         type harassment_threatening = :text
 
         module HarassmentThreatening
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 
@@ -174,7 +174,7 @@ module OpenAI
         type hate = :text
 
         module Hate
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 
@@ -184,7 +184,7 @@ module OpenAI
         type hate_threatening = :text
 
         module HateThreatening
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 
@@ -194,7 +194,7 @@ module OpenAI
         type illicit = :text
 
         module Illicit
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 
@@ -204,7 +204,7 @@ module OpenAI
         type illicit_violent = :text
 
         module IllicitViolent
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 
@@ -214,7 +214,7 @@ module OpenAI
         type self_harm = :text | :image
 
         module SelfHarm
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
           IMAGE: :image
@@ -225,7 +225,7 @@ module OpenAI
         type self_harm_instruction = :text | :image
 
         module SelfHarmInstruction
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
           IMAGE: :image
@@ -236,7 +236,7 @@ module OpenAI
         type self_harm_intent = :text | :image
 
         module SelfHarmIntent
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
           IMAGE: :image
@@ -247,7 +247,7 @@ module OpenAI
         type sexual = :text | :image
 
         module Sexual
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
           IMAGE: :image
@@ -258,7 +258,7 @@ module OpenAI
         type sexual_minor = :text
 
         module SexualMinor
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 
@@ -268,7 +268,7 @@ module OpenAI
         type violence = :text | :image
 
         module Violence
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
           IMAGE: :image
@@ -279,7 +279,7 @@ module OpenAI
         type violence_graphic = :text | :image
 
         module ViolenceGraphic
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
           IMAGE: :image
@@ -305,7 +305,7 @@ module OpenAI
           violence_graphic: Float
         }
 
-      class CategoryScores < OpenAI::BaseModel
+      class CategoryScores < OpenAI::Internal::Type::BaseModel
         attr_accessor harassment: Float
 
         attr_accessor harassment_threatening: Float

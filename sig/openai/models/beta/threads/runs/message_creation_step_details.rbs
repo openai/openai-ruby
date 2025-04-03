@@ -9,7 +9,7 @@ module OpenAI
               type: :message_creation
             }
 
-          class MessageCreationStepDetails < OpenAI::BaseModel
+          class MessageCreationStepDetails < OpenAI::Internal::Type::BaseModel
             attr_accessor message_creation: OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation
 
             attr_accessor type: :message_creation
@@ -23,7 +23,7 @@ module OpenAI
 
             type message_creation = { message_id: String }
 
-            class MessageCreation < OpenAI::BaseModel
+            class MessageCreation < OpenAI::Internal::Type::BaseModel
               attr_accessor message_id: String
 
               def initialize: (message_id: String) -> void

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Messages#delete
-        class MessageDeleted < OpenAI::BaseModel
+        class MessageDeleted < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #
           #   @return [String]
@@ -14,7 +14,7 @@ module OpenAI
           # @!attribute deleted
           #
           #   @return [Boolean]
-          required :deleted, OpenAI::BooleanModel
+          required :deleted, OpenAI::Internal::Type::BooleanModel
 
           # @!attribute object
           #
@@ -28,7 +28,7 @@ module OpenAI
           #   #
           #   def initialize(id:, deleted:, object: :"thread.message.deleted", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

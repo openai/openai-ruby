@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         module Runs
           module RunStepInclude
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude) }
             OrSymbol =

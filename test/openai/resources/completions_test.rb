@@ -13,7 +13,7 @@ class OpenAI::Test::Resources::CompletionsTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::ArrayOf[OpenAI::Models::CompletionChoice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::CompletionChoice]),
         created: Integer,
         model: String,
         object: Symbol,

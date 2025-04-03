@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseAudioDoneEvent < OpenAI::BaseModel
+      class ResponseAudioDoneEvent < OpenAI::Internal::Type::BaseModel
         # The type of the event. Always `response.audio.done`.
         sig { returns(Symbol) }
         attr_accessor :type

@@ -11,7 +11,7 @@ module OpenAI
           upload_id: String
         }
 
-      class UploadPart < OpenAI::BaseModel
+      class UploadPart < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor created_at: Integer

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       # @see OpenAI::Resources::Chat::Completions#update
-      class CompletionUpdateParams < OpenAI::BaseModel
+      class CompletionUpdateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -18,7 +18,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        required :metadata, OpenAI::HashOf[String], nil?: true
+        required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!parse
         #   # @param metadata [Hash{Symbol=>String}, nil]
@@ -26,7 +26,7 @@ module OpenAI
         #   #
         #   def initialize(metadata:, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -2,12 +2,12 @@
 
 module OpenAI
   module Models
-    class Moderation < OpenAI::BaseModel
+    class Moderation < OpenAI::Internal::Type::BaseModel
       # A list of the categories, and whether they are flagged or not.
       sig { returns(OpenAI::Models::Moderation::Categories) }
       attr_reader :categories
 
-      sig { params(categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Internal::Util::AnyHash)).void }
+      sig { params(categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Internal::AnyHash)).void }
       attr_writer :categories
 
       # A list of the categories along with the input type(s) that the score applies to.
@@ -16,7 +16,7 @@ module OpenAI
 
       sig do
         params(
-          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Internal::Util::AnyHash)
+          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Internal::AnyHash)
         )
           .void
       end
@@ -26,12 +26,7 @@ module OpenAI
       sig { returns(OpenAI::Models::Moderation::CategoryScores) }
       attr_reader :category_scores
 
-      sig do
-        params(
-          category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Internal::Util::AnyHash)
-        )
-          .void
-      end
+      sig { params(category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Internal::AnyHash)).void }
       attr_writer :category_scores
 
       # Whether any of the below categories are flagged.
@@ -40,9 +35,9 @@ module OpenAI
 
       sig do
         params(
-          categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Internal::Util::AnyHash),
-          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Internal::Util::AnyHash),
-          category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Internal::Util::AnyHash),
+          categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Internal::AnyHash),
+          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Internal::AnyHash),
+          category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Internal::AnyHash),
           flagged: T::Boolean
         )
           .returns(T.attached_class)
@@ -64,7 +59,7 @@ module OpenAI
       def to_hash
       end
 
-      class Categories < OpenAI::BaseModel
+      class Categories < OpenAI::Internal::Type::BaseModel
         # Content that expresses, incites, or promotes harassing language towards any
         #   target.
         sig { returns(T::Boolean) }
@@ -194,7 +189,7 @@ module OpenAI
         end
       end
 
-      class CategoryAppliedInputTypes < OpenAI::BaseModel
+      class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
         # The applied input type(s) for the category 'harassment'.
         sig { returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol]) }
         attr_accessor :harassment
@@ -315,7 +310,7 @@ module OpenAI
         end
 
         module Harassment
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment) }
@@ -332,7 +327,7 @@ module OpenAI
         end
 
         module HarassmentThreatening
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening) }
@@ -359,7 +354,7 @@ module OpenAI
         end
 
         module Hate
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate) }
@@ -374,7 +369,7 @@ module OpenAI
         end
 
         module HateThreatening
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening) }
@@ -398,7 +393,7 @@ module OpenAI
         end
 
         module Illicit
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit) }
@@ -413,7 +408,7 @@ module OpenAI
         end
 
         module IllicitViolent
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent) }
@@ -431,7 +426,7 @@ module OpenAI
         end
 
         module SelfHarm
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm) }
@@ -447,7 +442,7 @@ module OpenAI
         end
 
         module SelfHarmInstruction
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction) }
@@ -476,7 +471,7 @@ module OpenAI
         end
 
         module SelfHarmIntent
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent) }
@@ -496,7 +491,7 @@ module OpenAI
         end
 
         module Sexual
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual) }
@@ -512,7 +507,7 @@ module OpenAI
         end
 
         module SexualMinor
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor) }
@@ -530,7 +525,7 @@ module OpenAI
         end
 
         module Violence
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence) }
@@ -546,7 +541,7 @@ module OpenAI
         end
 
         module ViolenceGraphic
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic) }
@@ -572,7 +567,7 @@ module OpenAI
         end
       end
 
-      class CategoryScores < OpenAI::BaseModel
+      class CategoryScores < OpenAI::Internal::Type::BaseModel
         # The score for the category 'harassment'.
         sig { returns(Float) }
         attr_accessor :harassment

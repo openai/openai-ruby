@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseComputerToolCall < OpenAI::BaseModel
+      class ResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the computer call.
         #
@@ -27,7 +27,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck>]
         required :pending_safety_checks,
-                 -> { OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck] }
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck] }
 
         # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -56,13 +56,13 @@ module OpenAI
         #   #
         #   def initialize(id:, action:, call_id:, pending_safety_checks:, status:, type:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # A click action.
         #
         # @see OpenAI::Models::Responses::ResponseComputerToolCall#action
         module Action
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
@@ -93,7 +93,7 @@ module OpenAI
           # A wait action.
           variant :wait, -> { OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait }
 
-          class Click < OpenAI::BaseModel
+          class Click < OpenAI::Internal::Type::BaseModel
             # @!attribute button
             #   Indicates which mouse button was pressed during the click. One of `left`,
             #     `right`, `wheel`, `back`, or `forward`.
@@ -130,14 +130,14 @@ module OpenAI
             #   #
             #   def initialize(button:, x:, y_:, type: :click, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
             #
             # @see OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click#button
             module Button
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               LEFT = :left
               RIGHT = :right
@@ -153,7 +153,7 @@ module OpenAI
             end
           end
 
-          class DoubleClick < OpenAI::BaseModel
+          class DoubleClick < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a double click action, this property is always set
             #     to `double_click`.
@@ -182,10 +182,10 @@ module OpenAI
             #   #
             #   def initialize(x:, y_:, type: :double_click, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class Drag < OpenAI::BaseModel
+          class Drag < OpenAI::Internal::Type::BaseModel
             # @!attribute path
             #   An array of coordinates representing the path of the drag action. Coordinates
             #     will appear as an array of objects, eg
@@ -199,7 +199,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>]
             required :path,
-                     -> { OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path] }
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path] }
 
             # @!attribute type
             #   Specifies the event type. For a drag action, this property is always set to
@@ -216,9 +216,9 @@ module OpenAI
             #   #
             #   def initialize(path:, type: :drag, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-            class Path < OpenAI::BaseModel
+            class Path < OpenAI::Internal::Type::BaseModel
               # @!attribute x
               #   The x-coordinate.
               #
@@ -239,17 +239,17 @@ module OpenAI
               #   #
               #   def initialize(x:, y_:, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
 
-          class Keypress < OpenAI::BaseModel
+          class Keypress < OpenAI::Internal::Type::BaseModel
             # @!attribute keys
             #   The combination of keys the model is requesting to be pressed. This is an array
             #     of strings, each representing a key.
             #
             #   @return [Array<String>]
-            required :keys, OpenAI::ArrayOf[String]
+            required :keys, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!attribute type
             #   Specifies the event type. For a keypress action, this property is always set to
@@ -266,10 +266,10 @@ module OpenAI
             #   #
             #   def initialize(keys:, type: :keypress, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class Move < OpenAI::BaseModel
+          class Move < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a move action, this property is always set to
             #     `move`.
@@ -298,10 +298,10 @@ module OpenAI
             #   #
             #   def initialize(x:, y_:, type: :move, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class Screenshot < OpenAI::BaseModel
+          class Screenshot < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a screenshot action, this property is always set
             #     to `screenshot`.
@@ -316,10 +316,10 @@ module OpenAI
             #   #
             #   def initialize(type: :screenshot, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class Scroll < OpenAI::BaseModel
+          class Scroll < OpenAI::Internal::Type::BaseModel
             # @!attribute scroll_x
             #   The horizontal scroll distance.
             #
@@ -362,10 +362,10 @@ module OpenAI
             #   #
             #   def initialize(scroll_x:, scroll_y:, x:, y_:, type: :scroll, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class Type < OpenAI::BaseModel
+          class Type < OpenAI::Internal::Type::BaseModel
             # @!attribute text
             #   The text to type.
             #
@@ -387,10 +387,10 @@ module OpenAI
             #   #
             #   def initialize(text:, type: :type, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class Wait < OpenAI::BaseModel
+          class Wait < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a wait action, this property is always set to
             #     `wait`.
@@ -405,7 +405,7 @@ module OpenAI
             #   #
             #   def initialize(type: :wait, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
           # @!parse
@@ -413,7 +413,7 @@ module OpenAI
           #   def self.variants; end
         end
 
-        class PendingSafetyCheck < OpenAI::BaseModel
+        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The ID of the pending safety check.
           #
@@ -441,7 +441,7 @@ module OpenAI
           #   #
           #   def initialize(id:, code:, message:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -449,7 +449,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseComputerToolCall#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
@@ -466,7 +466,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseComputerToolCall#type
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           COMPUTER_CALL = :computer_call
 

@@ -14,7 +14,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
@@ -35,7 +35,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
@@ -56,7 +56,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
@@ -84,7 +84,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     assert_pattern do
       row => {
         id: String,
-        choices: ^(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
@@ -105,7 +105,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     assert_pattern do
       response => {
         id: String,
-        deleted: OpenAI::BooleanModel,
+        deleted: OpenAI::Internal::Type::BooleanModel,
         object: Symbol
       }
     end

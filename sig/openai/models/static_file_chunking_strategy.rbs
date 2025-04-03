@@ -3,7 +3,7 @@ module OpenAI
     type static_file_chunking_strategy =
       { chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer }
 
-    class StaticFileChunkingStrategy < OpenAI::BaseModel
+    class StaticFileChunkingStrategy < OpenAI::Internal::Type::BaseModel
       attr_accessor chunk_overlap_tokens: Integer
 
       attr_accessor max_chunk_size_tokens: Integer

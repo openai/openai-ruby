@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class VectorStoreUpdateParams < OpenAI::BaseModel
+    class VectorStoreUpdateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -12,7 +12,7 @@ module OpenAI
 
       sig do
         params(
-          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash))
+          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::AnyHash))
         )
           .void
       end
@@ -33,10 +33,10 @@ module OpenAI
 
       sig do
         params(
-          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash)),
+          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::AnyHash)),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -57,7 +57,7 @@ module OpenAI
       def to_hash
       end
 
-      class ExpiresAfter < OpenAI::BaseModel
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         #   `last_active_at`.
         sig { returns(Symbol) }

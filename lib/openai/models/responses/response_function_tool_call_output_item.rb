@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionToolCallOutputItem < OpenAI::BaseModel
+      class ResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the function call tool output.
         #
@@ -48,14 +48,14 @@ module OpenAI
         #   #
         #   def initialize(id:, call_id:, output:, status: nil, type: :function_call_output, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed

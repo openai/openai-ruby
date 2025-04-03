@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class MessageListParams < OpenAI::BaseModel
+        class MessageListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
@@ -58,7 +58,7 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::MessageListParams::Order::OrSymbol,
               run_id: String,
-              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -84,7 +84,7 @@ module OpenAI
           # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
           #   order and `desc` for descending order.
           module Order
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::MessageListParams::Order) }
             OrSymbol =

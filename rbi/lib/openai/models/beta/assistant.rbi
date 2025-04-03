@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class Assistant < OpenAI::BaseModel
+      class Assistant < OpenAI::Internal::Type::BaseModel
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         attr_accessor :id
@@ -111,7 +111,7 @@ module OpenAI
 
         sig do
           params(
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Internal::Util::AnyHash))
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Internal::AnyHash))
           )
             .void
         end
@@ -138,7 +138,7 @@ module OpenAI
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
@@ -147,13 +147,13 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Internal::Util::AnyHash)),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Internal::AnyHash)),
             top_p: T.nilable(Float),
             object: Symbol
           )
@@ -212,13 +212,13 @@ module OpenAI
         def to_hash
         end
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter)) }
           attr_reader :code_interpreter
 
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Internal::Util::AnyHash)
+              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -229,7 +229,7 @@ module OpenAI
 
           sig do
             params(
-              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Internal::Util::AnyHash)
+              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -241,8 +241,8 @@ module OpenAI
           #   IDs.
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Internal::Util::AnyHash),
-              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Internal::Util::AnyHash)
+              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Internal::AnyHash),
+              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -261,7 +261,7 @@ module OpenAI
           def to_hash
           end
 
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #   available to the `code_interpreter`` tool. There can be a maximum of 20 files
             #   associated with the tool.
@@ -280,7 +280,7 @@ module OpenAI
             end
           end
 
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # The ID of the
             #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             #   attached to this assistant. There can be a maximum of 1 vector store attached to

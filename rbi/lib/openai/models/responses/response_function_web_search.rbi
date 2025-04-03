@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionWebSearch < OpenAI::BaseModel
+      class ResponseFunctionWebSearch < OpenAI::Internal::Type::BaseModel
         # The unique ID of the web search tool call.
         sig { returns(String) }
         attr_accessor :id
@@ -41,7 +41,7 @@ module OpenAI
 
         # The status of the web search tool call.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status) }

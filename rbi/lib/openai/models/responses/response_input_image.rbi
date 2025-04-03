@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputImage < OpenAI::BaseModel
+      class ResponseInputImage < OpenAI::Internal::Type::BaseModel
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
         sig { returns(OpenAI::Models::Responses::ResponseInputImage::Detail::OrSymbol) }
@@ -53,7 +53,7 @@ module OpenAI
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
         module Detail
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail) }
           OrSymbol =

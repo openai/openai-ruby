@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseItemList < OpenAI::BaseModel
+      class ResponseItemList < OpenAI::Internal::Type::BaseModel
         # A list of items used to generate this response.
         sig do
           returns(
@@ -45,7 +45,7 @@ module OpenAI
             data: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseInputMessageItem,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseOutputMessage,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
               OpenAI::Models::Responses::ResponseComputerToolCall,

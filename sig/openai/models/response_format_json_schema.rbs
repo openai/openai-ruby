@@ -6,7 +6,7 @@ module OpenAI
         type: :json_schema
       }
 
-    class ResponseFormatJSONSchema < OpenAI::BaseModel
+    class ResponseFormatJSONSchema < OpenAI::Internal::Type::BaseModel
       attr_accessor json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema
 
       attr_accessor type: :json_schema
@@ -26,7 +26,7 @@ module OpenAI
           strict: bool?
         }
 
-      class JSONSchema < OpenAI::BaseModel
+      class JSONSchema < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
 
         attr_reader description: String?

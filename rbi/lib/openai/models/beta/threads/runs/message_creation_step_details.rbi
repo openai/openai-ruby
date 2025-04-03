@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class MessageCreationStepDetails < OpenAI::BaseModel
+          class MessageCreationStepDetails < OpenAI::Internal::Type::BaseModel
             sig { returns(OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation) }
             attr_reader :message_creation
 
@@ -13,7 +13,7 @@ module OpenAI
               params(
                 message_creation: T.any(
                   OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
               )
                 .void
@@ -29,7 +29,7 @@ module OpenAI
               params(
                 message_creation: T.any(
                   OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 ),
                 type: Symbol
               )
@@ -50,7 +50,7 @@ module OpenAI
             def to_hash
             end
 
-            class MessageCreation < OpenAI::BaseModel
+            class MessageCreation < OpenAI::Internal::Type::BaseModel
               # The ID of the message that was created by this run step.
               sig { returns(String) }
               attr_accessor :message_id

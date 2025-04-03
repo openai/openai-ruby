@@ -10,7 +10,7 @@ module OpenAI
           type: :"response.content_part.added"
         }
 
-      class ResponseContentPartAddedEvent < OpenAI::BaseModel
+      class ResponseContentPartAddedEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor content_index: Integer
 
         attr_accessor item_id: String
@@ -36,7 +36,7 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseOutputRefusal
 
         module Part
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         end

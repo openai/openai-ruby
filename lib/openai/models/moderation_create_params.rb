@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Moderations#create
-    class ModerationCreateParams < OpenAI::BaseModel
+    class ModerationCreateParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -35,12 +35,12 @@ module OpenAI
       #   #
       #   def initialize(input:, model: nil, request_options: {}, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       #   an array of multi-modal input objects similar to other models.
       module Input
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # A string of text to classify for moderation.
         variant String
@@ -55,9 +55,10 @@ module OpenAI
         #   # @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
         #   def self.variants; end
 
-        StringArray = OpenAI::ArrayOf[String]
+        StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
-        ModerationMultiModalInputArray = OpenAI::ArrayOf[union: -> { OpenAI::Models::ModerationMultiModalInput }]
+        ModerationMultiModalInputArray =
+          OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::ModerationMultiModalInput }]
       end
 
       # The content moderation model you would like to use. Learn more in
@@ -65,7 +66,7 @@ module OpenAI
       #   learn about available models
       #   [here](https://platform.openai.com/docs/models#moderation).
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 

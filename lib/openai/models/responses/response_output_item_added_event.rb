@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputItemAddedEvent < OpenAI::BaseModel
+      class ResponseOutputItemAddedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute item
         #   The output item that was added.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(item:, output_index:, type: :"response.output_item.added", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

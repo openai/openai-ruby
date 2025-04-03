@@ -9,7 +9,7 @@ module OpenAI
           segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment]
         }
 
-      class TranslationVerbose < OpenAI::BaseModel
+      class TranslationVerbose < OpenAI::Internal::Type::BaseModel
         attr_accessor duration: Float
 
         attr_accessor language: String

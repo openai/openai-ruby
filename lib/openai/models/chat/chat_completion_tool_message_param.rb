@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionToolMessageParam < OpenAI::BaseModel
+      class ChatCompletionToolMessageParam < OpenAI::Internal::Type::BaseModel
         # @!attribute content
         #   The contents of the tool message.
         #
@@ -29,13 +29,13 @@ module OpenAI
         #   #
         #   def initialize(content:, tool_call_id:, role: :tool, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The contents of the tool message.
         #
         # @see OpenAI::Models::Chat::ChatCompletionToolMessageParam#content
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # The contents of the tool message.
           variant String
@@ -48,7 +48,7 @@ module OpenAI
           #   def self.variants; end
 
           ChatCompletionContentPartTextArray =
-            OpenAI::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
+            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
         end
       end
     end

@@ -4,7 +4,7 @@ module OpenAI
       type function_tool =
         { function: OpenAI::Models::FunctionDefinition, type: :function }
 
-      class FunctionTool < OpenAI::BaseModel
+      class FunctionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::Models::FunctionDefinition
 
         attr_accessor type: :function

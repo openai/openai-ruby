@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputAudio < OpenAI::BaseModel
+      class ResponseOutputAudio < OpenAI::Internal::Type::BaseModel
         # Base64-encoded audio data from the model.
         sig { returns(String) }
         attr_accessor :data

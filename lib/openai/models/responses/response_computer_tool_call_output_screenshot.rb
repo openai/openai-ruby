@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseComputerToolCallOutputScreenshot < OpenAI::BaseModel
+      class ResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   Specifies the event type. For a computer screenshot, this property is always set
         #     to `computer_screenshot`.
@@ -40,7 +40,7 @@ module OpenAI
         #   #
         #   def initialize(file_id: nil, image_url: nil, type: :computer_screenshot, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

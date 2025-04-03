@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::VectorStores#search
-    class VectorStoreSearchParams < OpenAI::BaseModel
+    class VectorStoreSearchParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -49,7 +49,7 @@ module OpenAI
       #   Whether to rewrite the natural language query for vector search.
       #
       #   @return [Boolean, nil]
-      optional :rewrite_query, OpenAI::BooleanModel
+      optional :rewrite_query, OpenAI::Internal::Type::BooleanModel
 
       # @!parse
       #   # @return [Boolean]
@@ -75,11 +75,11 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # A query string for a search
       module Query
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
@@ -89,12 +89,12 @@ module OpenAI
         #   # @return [Array(String, Array<String>)]
         #   def self.variants; end
 
-        StringArray = OpenAI::ArrayOf[String]
+        StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end
 
       # A filter to apply based on file attributes.
       module Filters
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
         variant -> { OpenAI::Models::ComparisonFilter }
@@ -107,7 +107,7 @@ module OpenAI
         #   def self.variants; end
       end
 
-      class RankingOptions < OpenAI::BaseModel
+      class RankingOptions < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] ranker
         #
         #   @return [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker, nil]
@@ -134,11 +134,11 @@ module OpenAI
         #   #
         #   def initialize(ranker: nil, score_threshold: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::VectorStoreSearchParams::RankingOptions#ranker
         module Ranker
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           AUTO = :auto
           DEFAULT_2024_11_15 = :"default-2024-11-15"

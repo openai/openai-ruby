@@ -31,10 +31,10 @@ module OpenAI
         def dump(value)
           case value
           in Array
-            value.map { OpenAI::Unknown.dump(_1) }
+            value.map { OpenAI::Internal::Type::Unknown.dump(_1) }
           in Hash
-            value.transform_values { OpenAI::Unknown.dump(_1) }
-          in OpenAI::BaseModel
+            value.transform_values { OpenAI::Internal::Type::Unknown.dump(_1) }
+          in OpenAI::Internal::Type::BaseModel
             value.class.dump(value)
           else
             value
@@ -64,7 +64,7 @@ module OpenAI
             in Hash
               type_info(spec.slice(:const, :enum, :union).first&.last)
             in true | false
-              -> { OpenAI::BooleanModel }
+              -> { OpenAI::Internal::Type::BooleanModel }
             in OpenAI::Internal::Type::Converter | Class | Symbol
               -> { spec }
             in NilClass | Integer | Float
@@ -209,7 +209,7 @@ module OpenAI
           #
           # @return [Object]
           def dump(target, value)
-            target.is_a?(OpenAI::Internal::Type::Converter) ? target.dump(value) : OpenAI::Unknown.dump(value)
+            target.is_a?(OpenAI::Internal::Type::Converter) ? target.dump(value) : OpenAI::Internal::Type::Unknown.dump(value)
           end
         end
       end

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseComputerToolCallOutputItem < OpenAI::BaseModel
+      class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         # The unique ID of the computer call tool output.
         sig { returns(String) }
         attr_accessor :id
@@ -18,10 +18,7 @@ module OpenAI
 
         sig do
           params(
-            output: T.any(
-              OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-              OpenAI::Internal::Util::AnyHash
-            )
+            output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -47,7 +44,7 @@ module OpenAI
             acknowledged_safety_checks: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
-              OpenAI::Internal::Util::AnyHash
+              OpenAI::Internal::AnyHash
             )
             ]
           )
@@ -67,14 +64,11 @@ module OpenAI
           params(
             id: String,
             call_id: String,
-            output: T.any(
-              OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-              OpenAI::Internal::Util::AnyHash
-            ),
+            output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Internal::AnyHash),
             acknowledged_safety_checks: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
-              OpenAI::Internal::Util::AnyHash
+              OpenAI::Internal::AnyHash
             )
             ],
             status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol,
@@ -108,7 +102,7 @@ module OpenAI
         def to_hash
         end
 
-        class AcknowledgedSafetyCheck < OpenAI::BaseModel
+        class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           # The ID of the pending safety check.
           sig { returns(String) }
           attr_accessor :id
@@ -134,7 +128,7 @@ module OpenAI
         # The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status) }

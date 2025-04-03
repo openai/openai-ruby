@@ -12,7 +12,7 @@ module OpenAI
         }
         & OpenAI::Internal::Type::request_parameters
 
-      class SpeechCreateParams < OpenAI::BaseModel
+      class SpeechCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -51,7 +51,7 @@ module OpenAI
         type model = String | OpenAI::Models::Audio::speech_model
 
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, OpenAI::Models::Audio::speech_model]
         end
@@ -71,7 +71,7 @@ module OpenAI
           | :verse
 
         module Voice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, (:alloy
           | :ash
@@ -101,7 +101,7 @@ module OpenAI
         type response_format = :mp3 | :opus | :aac | :flac | :wav | :pcm
 
         module ResponseFormat
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MP3: :mp3
           OPUS: :opus

@@ -148,13 +148,6 @@ module OpenAI
         end
       end
 
-      # Use this to indicate that a value should be explicitly removed from a data
-      #   structure when using `OpenAI::Internal::Util.deep_merge`.
-      #
-      #   e.g. merging `{a: 1}` and `{a: OMIT}` should produce `{}`, where merging
-      #   `{a: 1}` and `{}` would produce `{a: 1}`.
-      OMIT = Object.new.freeze
-
       class << self
         # @api private
         #
@@ -166,9 +159,9 @@ module OpenAI
         private def deep_merge_lr(lhs, rhs, concat: false)
           case [lhs, rhs, concat]
           in [Hash, Hash, _]
-            rhs_cleaned = rhs.reject { _2 == OpenAI::Internal::Util::OMIT }
+            rhs_cleaned = rhs.reject { _2 == OpenAI::Internal::OMIT }
             lhs
-              .reject { |key, _| rhs[key] == OpenAI::Internal::Util::OMIT }
+              .reject { |key, _| rhs[key] == OpenAI::Internal::OMIT }
               .merge(rhs_cleaned) do |_, old_val, new_val|
                 deep_merge_lr(old_val, new_val, concat: concat)
               end

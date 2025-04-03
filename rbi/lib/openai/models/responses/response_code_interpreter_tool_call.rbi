@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterToolCall < OpenAI::BaseModel
+      class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
         # The unique ID of the code interpreter tool call.
         sig { returns(String) }
         attr_accessor :id
@@ -41,7 +41,7 @@ module OpenAI
             results: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
             )
             ],
@@ -75,9 +75,9 @@ module OpenAI
 
         # The output of a code interpreter tool call that is text.
         module Result
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
-          class Logs < OpenAI::BaseModel
+          class Logs < OpenAI::Internal::Type::BaseModel
             # The logs of the code interpreter tool call.
             sig { returns(String) }
             attr_accessor :logs
@@ -96,7 +96,7 @@ module OpenAI
             end
           end
 
-          class Files < OpenAI::BaseModel
+          class Files < OpenAI::Internal::Type::BaseModel
             sig { returns(T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File]) }
             attr_accessor :files
 
@@ -110,7 +110,7 @@ module OpenAI
                 files: T::Array[
                 T.any(
                   OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
                 ],
                 type: Symbol
@@ -132,7 +132,7 @@ module OpenAI
             def to_hash
             end
 
-            class File < OpenAI::BaseModel
+            class File < OpenAI::Internal::Type::BaseModel
               # The ID of the file.
               sig { returns(String) }
               attr_accessor :file_id
@@ -163,7 +163,7 @@ module OpenAI
 
         # The status of the code interpreter tool call.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status) }

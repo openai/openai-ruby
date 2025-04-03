@@ -7,7 +7,7 @@ module OpenAI
         :developer | :system | :user | :assistant | :tool | :function
 
       module ChatCompletionRole
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         DEVELOPER: :developer
         SYSTEM: :system

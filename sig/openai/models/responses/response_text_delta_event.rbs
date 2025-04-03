@@ -10,7 +10,7 @@ module OpenAI
           type: :"response.output_text.delta"
         }
 
-      class ResponseTextDeltaEvent < OpenAI::BaseModel
+      class ResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor content_index: Integer
 
         attr_accessor delta: String

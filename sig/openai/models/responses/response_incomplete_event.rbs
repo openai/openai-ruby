@@ -7,7 +7,7 @@ module OpenAI
           type: :"response.incomplete"
         }
 
-      class ResponseIncompleteEvent < OpenAI::BaseModel
+      class ResponseIncompleteEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor response: OpenAI::Models::Responses::Response
 
         attr_accessor type: :"response.incomplete"

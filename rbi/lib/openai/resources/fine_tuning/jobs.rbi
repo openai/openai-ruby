@@ -18,16 +18,16 @@ module OpenAI
           params(
             model: T.any(String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol),
             training_file: String,
-            hyperparameters: T.any(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, OpenAI::Internal::Util::AnyHash),
+            hyperparameters: T.any(OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters, OpenAI::Internal::AnyHash),
             integrations: T.nilable(
-              T::Array[T.any(OpenAI::Models::FineTuning::JobCreateParams::Integration, OpenAI::Internal::Util::AnyHash)]
+              T::Array[T.any(OpenAI::Models::FineTuning::JobCreateParams::Integration, OpenAI::Internal::AnyHash)]
             ),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            method_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Internal::Util::AnyHash),
+            method_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Internal::AnyHash),
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
             validation_file: T.nilable(String),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::FineTuning::FineTuningJob)
         end
@@ -100,7 +100,7 @@ module OpenAI
         sig do
           params(
             fine_tuning_job_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::FineTuning::FineTuningJob)
         end
@@ -117,7 +117,7 @@ module OpenAI
             after: String,
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FineTuning::FineTuningJob])
         end
@@ -137,7 +137,7 @@ module OpenAI
         sig do
           params(
             fine_tuning_job_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::FineTuning::FineTuningJob)
         end
@@ -154,7 +154,7 @@ module OpenAI
             fine_tuning_job_id: String,
             after: String,
             limit: Integer,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FineTuning::FineTuningJobEvent])
         end

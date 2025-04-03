@@ -36,7 +36,7 @@ module OpenAI
         }
         & OpenAI::Internal::Type::request_parameters
 
-      class CompletionCreateParams < OpenAI::BaseModel
+      class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -167,7 +167,7 @@ module OpenAI
         type model = String | OpenAI::Models::chat_model
 
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, OpenAI::Models::chat_model]
         end
@@ -177,12 +177,12 @@ module OpenAI
           | OpenAI::Models::Chat::ChatCompletionFunctionCallOption
 
         module FunctionCall
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           type function_call_mode = :none | :auto
 
           module FunctionCallMode
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             NONE: :none
             AUTO: :auto
@@ -200,7 +200,7 @@ module OpenAI
             parameters: OpenAI::Models::function_parameters
           }
 
-        class Function < OpenAI::BaseModel
+        class Function < OpenAI::Internal::Type::BaseModel
           attr_accessor name: String
 
           attr_reader description: String?
@@ -225,7 +225,7 @@ module OpenAI
         type modality = :text | :audio
 
         module Modality
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
           AUDIO: :audio
@@ -239,7 +239,7 @@ module OpenAI
           | OpenAI::Models::ResponseFormatJSONObject
 
         module ResponseFormat
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
         end
@@ -247,7 +247,7 @@ module OpenAI
         type service_tier = :auto | :default
 
         module ServiceTier
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           AUTO: :auto
           DEFAULT: :default
@@ -258,7 +258,7 @@ module OpenAI
         type stop = (String | ::Array[String])?
 
         module Stop
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, ::Array[String]]
 
@@ -273,7 +273,7 @@ module OpenAI
             user_location: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation?
           }
 
-        class WebSearchOptions < OpenAI::BaseModel
+        class WebSearchOptions < OpenAI::Internal::Type::BaseModel
           attr_reader search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::search_context_size?
 
           def search_context_size=: (
@@ -292,7 +292,7 @@ module OpenAI
           type search_context_size = :low | :medium | :high
 
           module SearchContextSize
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             LOW: :low
             MEDIUM: :medium
@@ -307,7 +307,7 @@ module OpenAI
               type: :approximate
             }
 
-          class UserLocation < OpenAI::BaseModel
+          class UserLocation < OpenAI::Internal::Type::BaseModel
             attr_accessor approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate
 
             attr_accessor type: :approximate
@@ -327,7 +327,7 @@ module OpenAI
                 timezone: String
               }
 
-            class Approximate < OpenAI::BaseModel
+            class Approximate < OpenAI::Internal::Type::BaseModel
               attr_reader city: String?
 
               def city=: (String) -> String

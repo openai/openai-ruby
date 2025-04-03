@@ -6,7 +6,7 @@ module OpenAI
           type file_search_tool_call_delta =
             { file_search: top, index: Integer, type: :file_search, id: String }
 
-          class FileSearchToolCallDelta < OpenAI::BaseModel
+          class FileSearchToolCallDelta < OpenAI::Internal::Type::BaseModel
             attr_accessor file_search: top
 
             attr_accessor index: Integer

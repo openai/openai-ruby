@@ -9,7 +9,7 @@ module OpenAI
           type: :input_audio
         }
 
-      class ChatCompletionContentPartInputAudio < OpenAI::BaseModel
+      class ChatCompletionContentPartInputAudio < OpenAI::Internal::Type::BaseModel
         attr_accessor input_audio: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio
 
         attr_accessor type: :input_audio
@@ -27,7 +27,7 @@ module OpenAI
             format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
           }
 
-        class InputAudio < OpenAI::BaseModel
+        class InputAudio < OpenAI::Internal::Type::BaseModel
           attr_accessor data: String
 
           attr_accessor format_: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::format_
@@ -42,7 +42,7 @@ module OpenAI
           type format_ = :wav | :mp3
 
           module Format
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             WAV: :wav
             MP3: :mp3

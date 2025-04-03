@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ImageCreateVariationParams < OpenAI::BaseModel
+    class ImageCreateVariationParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -49,7 +49,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
           size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -84,7 +84,7 @@ module OpenAI
       # The model to use for image generation. Only `dall-e-2` is supported at this
       #   time.
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
         def self.variants
@@ -95,7 +95,7 @@ module OpenAI
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
       module ResponseFormat
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat) }
         OrSymbol =
@@ -112,7 +112,7 @@ module OpenAI
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024`.
       module Size
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::Size) }
         OrSymbol =

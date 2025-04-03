@@ -13,7 +13,7 @@ module OpenAI
         file: OpenAI::Models::FileObject?
       }
 
-    class Upload < OpenAI::BaseModel
+    class Upload < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor bytes: Integer
@@ -49,7 +49,7 @@ module OpenAI
       type status = :pending | :completed | :cancelled | :expired
 
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         PENDING: :pending
         COMPLETED: :completed

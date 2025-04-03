@@ -9,7 +9,7 @@ module OpenAI
         score: Float
       }
 
-    class VectorStoreSearchResponse < OpenAI::BaseModel
+    class VectorStoreSearchResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStoreSearchResponse::attribute]?
 
       attr_accessor content: ::Array[OpenAI::Models::VectorStoreSearchResponse::Content]
@@ -33,7 +33,7 @@ module OpenAI
       type attribute = String | Float | bool
 
       module Attribute
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, Float, bool]
       end
@@ -44,7 +44,7 @@ module OpenAI
           type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
         }
 
-      class Content < OpenAI::BaseModel
+      class Content < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
 
         attr_accessor type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
@@ -59,7 +59,7 @@ module OpenAI
         type type_ = :text
 
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT: :text
 

@@ -4,7 +4,7 @@ module OpenAI
       type assistant_deleted =
         { id: String, deleted: bool, object: :"assistant.deleted" }
 
-      class AssistantDeleted < OpenAI::BaseModel
+      class AssistantDeleted < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor deleted: bool

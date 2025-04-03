@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterToolCallDelta < OpenAI::BaseModel
+          class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
             # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
             attr_accessor :index
@@ -30,7 +30,7 @@ module OpenAI
               params(
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
               )
                 .void
@@ -44,7 +44,7 @@ module OpenAI
                 id: String,
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 ),
                 type: Symbol
               )
@@ -67,7 +67,7 @@ module OpenAI
             def to_hash
             end
 
-            class CodeInterpreter < OpenAI::BaseModel
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # The input to the Code Interpreter tool call.
               sig { returns(T.nilable(String)) }
               attr_reader :input
@@ -97,7 +97,7 @@ module OpenAI
                   outputs: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                    OpenAI::Internal::Util::AnyHash,
+                    OpenAI::Internal::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
                   )
                   ]
@@ -113,7 +113,7 @@ module OpenAI
                   outputs: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                    OpenAI::Internal::Util::AnyHash,
+                    OpenAI::Internal::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
                   )
                   ]
@@ -142,7 +142,7 @@ module OpenAI
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 sig do
                   override

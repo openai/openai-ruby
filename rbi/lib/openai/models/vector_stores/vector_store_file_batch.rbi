@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
-      class VectorStoreFileBatch < OpenAI::BaseModel
+      class VectorStoreFileBatch < OpenAI::Internal::Type::BaseModel
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         attr_accessor :id
@@ -18,7 +18,7 @@ module OpenAI
 
         sig do
           params(
-            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::Util::AnyHash)
+            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -45,7 +45,7 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::Util::AnyHash),
+            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::AnyHash),
             status: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::OrSymbol,
             vector_store_id: String,
             object: Symbol
@@ -78,7 +78,7 @@ module OpenAI
         def to_hash
         end
 
-        class FileCounts < OpenAI::BaseModel
+        class FileCounts < OpenAI::Internal::Type::BaseModel
           # The number of files that where cancelled.
           sig { returns(Integer) }
           attr_accessor :cancelled
@@ -129,7 +129,7 @@ module OpenAI
         # The status of the vector store files batch, which can be either `in_progress`,
         #   `completed`, `cancelled` or `failed`.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status) }
           OrSymbol =

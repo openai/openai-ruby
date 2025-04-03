@@ -5,7 +5,7 @@ module OpenAI
     module Chat
       type chat_completion_content_part_text = { text: String, type: :text }
 
-      class ChatCompletionContentPartText < OpenAI::BaseModel
+      class ChatCompletionContentPartText < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
 
         attr_accessor type: :text

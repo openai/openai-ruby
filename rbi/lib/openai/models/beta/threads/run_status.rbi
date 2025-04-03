@@ -8,7 +8,7 @@ module OpenAI
         #   `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
         #   `incomplete`, or `expired`.
         module RunStatus
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::RunStatus) }
           OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol) }

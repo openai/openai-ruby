@@ -10,7 +10,7 @@ module OpenAI
           type: :message
         }
 
-      class ResponseOutputMessage < OpenAI::BaseModel
+      class ResponseOutputMessage < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content]
@@ -36,7 +36,7 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseOutputRefusal
 
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
         end
@@ -44,7 +44,7 @@ module OpenAI
         type status = :in_progress | :completed | :incomplete
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed

@@ -3,7 +3,7 @@ module OpenAI
     type model =
       { id: String, created: Integer, object: :model, owned_by: String }
 
-    class Model < OpenAI::BaseModel
+    class Model < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor created: Integer

@@ -9,7 +9,7 @@ module OpenAI
           type: :"response.function_call_arguments.delta"
         }
 
-      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::BaseModel
+      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor delta: String
 
         attr_accessor item_id: String

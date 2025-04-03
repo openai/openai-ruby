@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class InputItemListParams < OpenAI::BaseModel
+      class InputItemListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -54,7 +54,7 @@ module OpenAI
             include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
             order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -82,7 +82,7 @@ module OpenAI
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
         module Order
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::InputItemListParams::Order) }
           OrSymbol =

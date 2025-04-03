@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Messages#create
-        class Message < OpenAI::BaseModel
+        class Message < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The identifier, which can be referenced in API endpoints.
           #
@@ -25,7 +25,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::Message::Attachment>, nil]
           required :attachments,
-                   -> { OpenAI::ArrayOf[OpenAI::Models::Beta::Threads::Message::Attachment] },
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Message::Attachment] },
                    nil?: true
 
           # @!attribute completed_at
@@ -38,7 +38,8 @@ module OpenAI
           #   The content of the message in array of text and/or images.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock>]
-          required :content, -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContent] }
+          required :content,
+                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContent] }
 
           # @!attribute created_at
           #   The Unix timestamp (in seconds) for when the message was created.
@@ -67,7 +68,7 @@ module OpenAI
           #     a maximum length of 512 characters.
           #
           #   @return [Hash{Symbol=>String}, nil]
-          required :metadata, OpenAI::HashOf[String], nil?: true
+          required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!attribute object
           #   The object type, which is always `thread.message`.
@@ -142,9 +143,9 @@ module OpenAI
           #     super
           #   end
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-          class Attachment < OpenAI::BaseModel
+          class Attachment < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_id
             #   The ID of the file to attach to the message.
             #
@@ -159,7 +160,8 @@ module OpenAI
             #   The tools to add this file to.
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>, nil]
-            optional :tools, -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::Message::Attachment::Tool] }
+            optional :tools,
+                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::Message::Attachment::Tool] }
 
             # @!parse
             #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>]
@@ -171,16 +173,16 @@ module OpenAI
             #   #
             #   def initialize(file_id: nil, tools: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             module Tool
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               variant -> { OpenAI::Models::Beta::CodeInterpreterTool }
 
               variant -> { OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly }
 
-              class AssistantToolsFileSearchTypeOnly < OpenAI::BaseModel
+              class AssistantToolsFileSearchTypeOnly < OpenAI::Internal::Type::BaseModel
                 # @!attribute type
                 #   The type of tool being defined: `file_search`
                 #
@@ -192,7 +194,7 @@ module OpenAI
                 #   #
                 #   def initialize(type: :file_search, **) = super
 
-                # def initialize: (Hash | OpenAI::BaseModel) -> void
+                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
               end
 
               # @!parse
@@ -202,7 +204,7 @@ module OpenAI
           end
 
           # @see OpenAI::Models::Beta::Threads::Message#incomplete_details
-          class IncompleteDetails < OpenAI::BaseModel
+          class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             # @!attribute reason
             #   The reason the message is incomplete.
             #
@@ -216,13 +218,13 @@ module OpenAI
             #   #
             #   def initialize(reason:, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # The reason the message is incomplete.
             #
             # @see OpenAI::Models::Beta::Threads::Message::IncompleteDetails#reason
             module Reason
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               CONTENT_FILTER = :content_filter
               MAX_TOKENS = :max_tokens
@@ -242,7 +244,7 @@ module OpenAI
           #
           # @see OpenAI::Models::Beta::Threads::Message#role
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             USER = :user
             ASSISTANT = :assistant
@@ -259,7 +261,7 @@ module OpenAI
           #
           # @see OpenAI::Models::Beta::Threads::Message#status
           module Status
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             IN_PROGRESS = :in_progress
             INCOMPLETE = :incomplete

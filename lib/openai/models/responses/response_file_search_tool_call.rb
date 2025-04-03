@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFileSearchToolCall < OpenAI::BaseModel
+      class ResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the file search tool call.
         #
@@ -14,7 +14,7 @@ module OpenAI
         #   The queries used to search for files.
         #
         #   @return [Array<String>]
-        required :queries, OpenAI::ArrayOf[String]
+        required :queries, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!attribute status
         #   The status of the file search tool call. One of `in_progress`, `searching`,
@@ -34,7 +34,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil]
         optional :results,
-                 -> { OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result] },
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result] },
                  nil?: true
 
         # @!parse
@@ -50,14 +50,14 @@ module OpenAI
         #   #
         #   def initialize(id:, queries:, status:, results: nil, type: :file_search_call, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
         #
         # @see OpenAI::Models::Responses::ResponseFileSearchToolCall#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           SEARCHING = :searching
@@ -72,7 +72,7 @@ module OpenAI
           #   def self.values; end
         end
 
-        class Result < OpenAI::BaseModel
+        class Result < OpenAI::Internal::Type::BaseModel
           # @!attribute attributes
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
           #     for storing additional information about the object in a structured format, and
@@ -82,7 +82,7 @@ module OpenAI
           #
           #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
           optional :attributes,
-                   -> { OpenAI::HashOf[union: OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::Attribute] },
+                   -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::Attribute] },
                    nil?: true
 
           # @!attribute [r] file_id
@@ -134,16 +134,16 @@ module OpenAI
           #   #
           #   def initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           module Attribute
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             variant String
 
             variant Float
 
-            variant OpenAI::BooleanModel
+            variant OpenAI::Internal::Type::BooleanModel
 
             # @!parse
             #   # @return [Array(String, Float, Boolean)]

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterToolCall < OpenAI::BaseModel
+      class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the code interpreter tool call.
         #
@@ -21,7 +21,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files>]
         required :results,
-                 -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result] }
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result] }
 
         # @!attribute status
         #   The status of the code interpreter tool call.
@@ -46,11 +46,11 @@ module OpenAI
         #   #
         #   def initialize(id:, code:, results:, status:, type: :code_interpreter_call, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The output of a code interpreter tool call that is text.
         module Result
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
@@ -60,7 +60,7 @@ module OpenAI
           # The output of a code interpreter tool call that is a file.
           variant :files, -> { OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files }
 
-          class Logs < OpenAI::BaseModel
+          class Logs < OpenAI::Internal::Type::BaseModel
             # @!attribute logs
             #   The logs of the code interpreter tool call.
             #
@@ -81,15 +81,15 @@ module OpenAI
             #   #
             #   def initialize(logs:, type: :logs, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class Files < OpenAI::BaseModel
+          class Files < OpenAI::Internal::Type::BaseModel
             # @!attribute files
             #
             #   @return [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
             required :files,
-                     -> { OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File] }
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File] }
 
             # @!attribute type
             #   The type of the code interpreter file output. Always `files`.
@@ -105,9 +105,9 @@ module OpenAI
             #   #
             #   def initialize(files:, type: :files, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-            class File < OpenAI::BaseModel
+            class File < OpenAI::Internal::Type::BaseModel
               # @!attribute file_id
               #   The ID of the file.
               #
@@ -126,7 +126,7 @@ module OpenAI
               #   #
               #   def initialize(file_id:, mime_type:, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
 
@@ -139,7 +139,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseCodeInterpreterToolCall#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           INTERPRETING = :interpreting

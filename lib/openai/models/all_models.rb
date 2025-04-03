@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module AllModels
-      extend OpenAI::Union
+      extend OpenAI::Internal::Type::Union
 
       variant String
 

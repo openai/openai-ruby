@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class Message < OpenAI::BaseModel
+        class Message < OpenAI::Internal::Type::BaseModel
           # The identifier, which can be referenced in API endpoints.
           sig { returns(String) }
           attr_accessor :id
@@ -52,9 +52,7 @@ module OpenAI
 
           sig do
             params(
-              incomplete_details: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Internal::Util::AnyHash)
-              )
+              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Internal::AnyHash))
             )
               .void
           end
@@ -99,14 +97,12 @@ module OpenAI
             params(
               id: String,
               assistant_id: T.nilable(String),
-              attachments: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::Message::Attachment, OpenAI::Internal::Util::AnyHash)]
-              ),
+              attachments: T.nilable(T::Array[T.any(OpenAI::Models::Beta::Threads::Message::Attachment, OpenAI::Internal::AnyHash)]),
               completed_at: T.nilable(Integer),
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                 OpenAI::Models::Beta::Threads::TextContentBlock,
                 OpenAI::Models::Beta::Threads::RefusalContentBlock
@@ -114,9 +110,7 @@ module OpenAI
               ],
               created_at: Integer,
               incomplete_at: T.nilable(Integer),
-              incomplete_details: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Internal::Util::AnyHash)
-              ),
+              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Internal::AnyHash)),
               metadata: T.nilable(T::Hash[Symbol, String]),
               role: OpenAI::Models::Beta::Threads::Message::Role::OrSymbol,
               run_id: T.nilable(String),
@@ -175,7 +169,7 @@ module OpenAI
           def to_hash
           end
 
-          class Attachment < OpenAI::BaseModel
+          class Attachment < OpenAI::Internal::Type::BaseModel
             # The ID of the file to attach to the message.
             sig { returns(T.nilable(String)) }
             attr_reader :file_id
@@ -203,7 +197,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
                 )
                 ]
@@ -218,7 +212,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
                 )
                 ]
@@ -246,9 +240,9 @@ module OpenAI
             end
 
             module Tool
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
-              class AssistantToolsFileSearchTypeOnly < OpenAI::BaseModel
+              class AssistantToolsFileSearchTypeOnly < OpenAI::Internal::Type::BaseModel
                 # The type of tool being defined: `file_search`
                 sig { returns(Symbol) }
                 attr_accessor :type
@@ -273,7 +267,7 @@ module OpenAI
             end
           end
 
-          class IncompleteDetails < OpenAI::BaseModel
+          class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             # The reason the message is incomplete.
             sig { returns(OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol) }
             attr_accessor :reason
@@ -294,7 +288,7 @@ module OpenAI
 
             # The reason the message is incomplete.
             module Reason
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason) }
@@ -322,7 +316,7 @@ module OpenAI
 
           # The entity that produced the message. One of `user` or `assistant`.
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::Role) }
             OrSymbol =
@@ -339,7 +333,7 @@ module OpenAI
           # The status of the message, which can be either `in_progress`, `incomplete`, or
           #   `completed`.
           module Status
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Message::Status) }
             OrSymbol =

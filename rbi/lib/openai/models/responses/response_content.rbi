@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # Multi-modal input and output contents.
       module ResponseContent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig do
           override

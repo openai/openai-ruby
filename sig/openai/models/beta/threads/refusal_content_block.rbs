@@ -4,7 +4,7 @@ module OpenAI
       module Threads
         type refusal_content_block = { refusal: String, type: :refusal }
 
-        class RefusalContentBlock < OpenAI::BaseModel
+        class RefusalContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor refusal: String
 
           attr_accessor type: :refusal

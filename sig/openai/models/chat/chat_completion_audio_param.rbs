@@ -9,7 +9,7 @@ module OpenAI
           voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
         }
 
-      class ChatCompletionAudioParam < OpenAI::BaseModel
+      class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
         attr_accessor format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_
 
         attr_accessor voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
@@ -24,7 +24,7 @@ module OpenAI
         type format_ = :wav | :mp3 | :flac | :opus | :pcm16
 
         module Format
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           WAV: :wav
           MP3: :mp3
@@ -50,7 +50,7 @@ module OpenAI
           | :verse
 
         module Voice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, (:alloy
           | :ash

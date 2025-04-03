@@ -3,7 +3,7 @@ module OpenAI
     module Responses
       type response_input_text = { text: String, type: :input_text }
 
-      class ResponseInputText < OpenAI::BaseModel
+      class ResponseInputText < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
 
         attr_accessor type: :input_text

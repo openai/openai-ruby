@@ -8,7 +8,7 @@ module OpenAI
         strict: bool?
       }
 
-    class FunctionDefinition < OpenAI::BaseModel
+    class FunctionDefinition < OpenAI::Internal::Type::BaseModel
       attr_accessor name: String
 
       attr_reader description: String?

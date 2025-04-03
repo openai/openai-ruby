@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ComparisonFilter < OpenAI::BaseModel
+    class ComparisonFilter < OpenAI::Internal::Type::BaseModel
       # The key to compare against the value.
       sig { returns(String) }
       attr_accessor :key
@@ -54,7 +54,7 @@ module OpenAI
       #   - `lt`: less than
       #   - `lte`: less than or equal
       module Type
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ComparisonFilter::Type) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol) }
@@ -74,7 +74,7 @@ module OpenAI
       # The value to compare against the attribute key; supports string, number, or
       #   boolean types.
       module Value
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, Float, T::Boolean]) }
         def self.variants

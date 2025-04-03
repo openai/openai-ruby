@@ -10,7 +10,7 @@ module OpenAI
       }
       & OpenAI::Internal::Type::request_parameters
 
-    class EmbeddingCreateParams < OpenAI::BaseModel
+    class EmbeddingCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -47,7 +47,7 @@ module OpenAI
         String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
 
       module Input
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
 
@@ -67,7 +67,7 @@ module OpenAI
       type model = String | OpenAI::Models::embedding_model
 
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, OpenAI::Models::embedding_model]
       end
@@ -75,7 +75,7 @@ module OpenAI
       type encoding_format = :float | :base64
 
       module EncodingFormat
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         FLOAT: :float
         BASE64: :base64

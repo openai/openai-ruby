@@ -9,7 +9,7 @@ module OpenAI
       | :"computer-use-preview-2025-03-11"
 
     module AllModels
-      extend OpenAI::Union
+      extend OpenAI::Internal::Type::Union
 
       def self?.variants: -> [String, OpenAI::Models::chat_model, (:"o1-pro"
       | :"o1-pro-2025-03-19"

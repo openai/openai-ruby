@@ -6,7 +6,7 @@ module OpenAI
         generate_summary: OpenAI::Models::Reasoning::generate_summary?
       }
 
-    class Reasoning < OpenAI::BaseModel
+    class Reasoning < OpenAI::Internal::Type::BaseModel
       attr_accessor effort: OpenAI::Models::reasoning_effort?
 
       attr_accessor generate_summary: OpenAI::Models::Reasoning::generate_summary?
@@ -21,7 +21,7 @@ module OpenAI
       type generate_summary = :concise | :detailed
 
       module GenerateSummary
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         CONCISE: :concise
         DETAILED: :detailed

@@ -4,7 +4,7 @@ module OpenAI
       type assistant_delete_params =
         {  } & OpenAI::Internal::Type::request_parameters
 
-      class AssistantDeleteParams < OpenAI::BaseModel
+      class AssistantDeleteParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

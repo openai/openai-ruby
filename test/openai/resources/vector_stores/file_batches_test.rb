@@ -83,7 +83,7 @@ class OpenAI::Test::Resources::VectorStores::FileBatchesTest < OpenAI::Test::Res
         status: OpenAI::Models::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute]) | nil,
+        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute]) | nil,
         chunking_strategy: OpenAI::Models::FileChunkingStrategy | nil
       }
     end

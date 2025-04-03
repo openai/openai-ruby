@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class BatchCreateParams < OpenAI::BaseModel
+    class BatchCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -45,7 +45,7 @@ module OpenAI
           endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -70,7 +70,7 @@ module OpenAI
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
       module CompletionWindow
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow) }
         OrSymbol =
@@ -88,7 +88,7 @@ module OpenAI
       #   are supported. Note that `/v1/embeddings` batches are also restricted to a
       #   maximum of 50,000 embedding inputs across all requests in the batch.
       module Endpoint
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::Endpoint) }
         OrSymbol =

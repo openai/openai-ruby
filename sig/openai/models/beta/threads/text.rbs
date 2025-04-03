@@ -8,7 +8,7 @@ module OpenAI
             value: String
           }
 
-        class Text < OpenAI::BaseModel
+        class Text < OpenAI::Internal::Type::BaseModel
           attr_accessor annotations: ::Array[OpenAI::Models::Beta::Threads::annotation]
 
           attr_accessor value: String

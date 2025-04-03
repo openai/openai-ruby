@@ -9,7 +9,7 @@ module OpenAI
         prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
       }
 
-    class CompletionUsage < OpenAI::BaseModel
+    class CompletionUsage < OpenAI::Internal::Type::BaseModel
       attr_accessor completion_tokens: Integer
 
       attr_accessor prompt_tokens: Integer
@@ -46,7 +46,7 @@ module OpenAI
           rejected_prediction_tokens: Integer
         }
 
-      class CompletionTokensDetails < OpenAI::BaseModel
+      class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
         attr_reader accepted_prediction_tokens: Integer?
 
         def accepted_prediction_tokens=: (Integer) -> Integer
@@ -76,7 +76,7 @@ module OpenAI
       type prompt_tokens_details =
         { audio_tokens: Integer, cached_tokens: Integer }
 
-      class PromptTokensDetails < OpenAI::BaseModel
+      class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
         attr_reader audio_tokens: Integer?
 
         def audio_tokens=: (Integer) -> Integer

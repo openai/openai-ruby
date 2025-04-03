@@ -27,7 +27,7 @@ module OpenAI
           user: String
         }
 
-      class Response < OpenAI::BaseModel
+      class Response < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor created_at: Float
@@ -118,7 +118,7 @@ module OpenAI
             reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
           }
 
-        class IncompleteDetails < OpenAI::BaseModel
+        class IncompleteDetails < OpenAI::Internal::Type::BaseModel
           attr_reader reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason?
 
           def reason=: (
@@ -134,7 +134,7 @@ module OpenAI
           type reason = :max_output_tokens | :content_filter
 
           module Reason
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             MAX_OUTPUT_TOKENS: :max_output_tokens
             CONTENT_FILTER: :content_filter
@@ -149,7 +149,7 @@ module OpenAI
           | OpenAI::Models::Responses::ToolChoiceFunction
 
         module ToolChoice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
         end
@@ -157,7 +157,7 @@ module OpenAI
         type truncation = :auto | :disabled
 
         module Truncation
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           AUTO: :auto
           DISABLED: :disabled

@@ -25,7 +25,7 @@ module OpenAI
               usage: OpenAI::Models::Beta::Threads::Runs::RunStep::Usage?
             }
 
-          class RunStep < OpenAI::BaseModel
+          class RunStep < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
 
             attr_accessor assistant_id: String
@@ -85,7 +85,7 @@ module OpenAI
                 message: String
               }
 
-            class LastError < OpenAI::BaseModel
+            class LastError < OpenAI::Internal::Type::BaseModel
               attr_accessor code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::code
 
               attr_accessor message: String
@@ -100,7 +100,7 @@ module OpenAI
               type code = :server_error | :rate_limit_exceeded
 
               module Code
-                extend OpenAI::Enum
+                extend OpenAI::Internal::Type::Enum
 
                 SERVER_ERROR: :server_error
                 RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
@@ -113,7 +113,7 @@ module OpenAI
               :in_progress | :cancelled | :failed | :completed | :expired
 
             module Status
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               IN_PROGRESS: :in_progress
               CANCELLED: :cancelled
@@ -129,7 +129,7 @@ module OpenAI
               | OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
 
             module StepDetails
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               def self?.variants: -> [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
             end
@@ -137,7 +137,7 @@ module OpenAI
             type type_ = :message_creation | :tool_calls
 
             module Type
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               MESSAGE_CREATION: :message_creation
               TOOL_CALLS: :tool_calls
@@ -152,7 +152,7 @@ module OpenAI
                 total_tokens: Integer
               }
 
-            class Usage < OpenAI::BaseModel
+            class Usage < OpenAI::Internal::Type::BaseModel
               attr_accessor completion_tokens: Integer
 
               attr_accessor prompt_tokens: Integer

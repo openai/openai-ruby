@@ -14,7 +14,7 @@ module OpenAI
           tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
         }
 
-      class ChatCompletionAssistantMessageParam < OpenAI::BaseModel
+      class ChatCompletionAssistantMessageParam < OpenAI::Internal::Type::BaseModel
         attr_accessor role: :assistant
 
         attr_accessor audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?
@@ -49,7 +49,7 @@ module OpenAI
 
         type audio = { id: String }
 
-        class Audio < OpenAI::BaseModel
+        class Audio < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           def initialize: (id: String) -> void
@@ -62,14 +62,14 @@ module OpenAI
           | ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
 
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           type array_of_content_part =
             OpenAI::Models::Chat::ChatCompletionContentPartText
             | OpenAI::Models::Chat::ChatCompletionContentPartRefusal
 
           module ArrayOfContentPart
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
           end
@@ -84,7 +84,7 @@ module OpenAI
 
         type function_call = { arguments: String, name: String }
 
-        class FunctionCall < OpenAI::BaseModel
+        class FunctionCall < OpenAI::Internal::Type::BaseModel
           attr_accessor arguments: String
 
           attr_accessor name: String

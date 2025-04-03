@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class StaticFileChunkingStrategy < OpenAI::BaseModel
+    class StaticFileChunkingStrategy < OpenAI::Internal::Type::BaseModel
       # The number of tokens that overlap between chunks. The default value is `400`.
       #
       #   Note that the overlap must not exceed half of `max_chunk_size_tokens`.

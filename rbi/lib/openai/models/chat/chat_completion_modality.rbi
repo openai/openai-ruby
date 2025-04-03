@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       module ChatCompletionModality
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionModality) }
         OrSymbol =

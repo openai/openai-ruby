@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Runs#cancel
-        class RunCancelParams < OpenAI::BaseModel
+        class RunCancelParams < OpenAI::Internal::Type::BaseModel
           # @!parse
           #   extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
@@ -21,7 +21,7 @@ module OpenAI
           #   #
           #   def initialize(thread_id:, request_options: {}, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

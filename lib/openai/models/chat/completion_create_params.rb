@@ -6,7 +6,7 @@ module OpenAI
       # @see OpenAI::Resources::Chat::Completions#create
       #
       # @see OpenAI::Resources::Chat::Completions#stream_raw
-      class CompletionCreateParams < OpenAI::BaseModel
+      class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -20,7 +20,8 @@ module OpenAI
         #     [audio](https://platform.openai.com/docs/guides/audio).
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
-        required :messages, -> { OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionMessageParam] }
+        required :messages,
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionMessageParam] }
 
         # @!attribute model
         #   Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
@@ -77,7 +78,8 @@ module OpenAI
         #     A list of functions the model may generate JSON inputs for.
         #
         #   @return [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>, nil]
-        optional :functions, -> { OpenAI::ArrayOf[OpenAI::Models::Chat::CompletionCreateParams::Function] }
+        optional :functions,
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::CompletionCreateParams::Function] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>]
@@ -94,7 +96,7 @@ module OpenAI
         #     or exclusive selection of the relevant token.
         #
         #   @return [Hash{Symbol=>Integer}, nil]
-        optional :logit_bias, OpenAI::HashOf[Integer], nil?: true
+        optional :logit_bias, OpenAI::Internal::Type::HashOf[Integer], nil?: true
 
         # @!attribute logprobs
         #   Whether to return log probabilities of the output tokens or not. If true,
@@ -102,7 +104,7 @@ module OpenAI
         #     `message`.
         #
         #   @return [Boolean, nil]
-        optional :logprobs, OpenAI::BooleanModel, nil?: true
+        optional :logprobs, OpenAI::Internal::Type::BooleanModel, nil?: true
 
         # @!attribute max_completion_tokens
         #   An upper bound for the number of tokens that can be generated for a completion,
@@ -133,7 +135,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute modalities
         #   Output types that you would like the model to generate. Most models are capable
@@ -149,7 +151,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil]
         optional :modalities,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Chat::CompletionCreateParams::Modality] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Chat::CompletionCreateParams::Modality] },
                  nil?: true
 
         # @!attribute n
@@ -166,7 +168,7 @@ module OpenAI
         #     during tool use.
         #
         #   @return [Boolean, nil]
-        optional :parallel_tool_calls, OpenAI::BooleanModel
+        optional :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel
 
         # @!parse
         #   # @return [Boolean]
@@ -259,7 +261,7 @@ module OpenAI
         #     or [evals](https://platform.openai.com/docs/guides/evals) products.
         #
         #   @return [Boolean, nil]
-        optional :store, OpenAI::BooleanModel, nil?: true
+        optional :store, OpenAI::Internal::Type::BooleanModel, nil?: true
 
         # @!attribute stream_options
         #   Options for streaming response. Only set this when you set `stream: true`.
@@ -300,7 +302,7 @@ module OpenAI
         #     for. A max of 128 functions are supported.
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool>, nil]
-        optional :tools, -> { OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionTool] }
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTool] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Chat::ChatCompletionTool>]
@@ -418,7 +420,7 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
         #   wide range of models with different capabilities, performance characteristics,
@@ -426,7 +428,7 @@ module OpenAI
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
@@ -458,7 +460,7 @@ module OpenAI
         #   `none` is the default when no functions are present. `auto` is the default if
         #   functions are present.
         module FunctionCall
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # `none` means the model will not call a function and instead generates a message. `auto` means the model can pick between generating a message or calling a function.
           variant enum: -> { OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode }
@@ -470,7 +472,7 @@ module OpenAI
           #   `auto` means the model can pick between generating a message or calling a
           #   function.
           module FunctionCallMode
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             NONE = :none
             AUTO = :auto
@@ -488,7 +490,7 @@ module OpenAI
         end
 
         # @deprecated
-        class Function < OpenAI::BaseModel
+        class Function < OpenAI::Internal::Type::BaseModel
           # @!attribute name
           #   The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
           #     underscores and dashes, with a maximum length of 64.
@@ -517,7 +519,7 @@ module OpenAI
           #     Omitting `parameters` defines a function with an empty parameter list.
           #
           #   @return [Hash{Symbol=>Object}, nil]
-          optional :parameters, OpenAI::HashOf[OpenAI::Unknown]
+          optional :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
           # @!parse
           #   # @return [Hash{Symbol=>Object}]
@@ -530,11 +532,11 @@ module OpenAI
           #   #
           #   def initialize(name:, description: nil, parameters: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         module Modality
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
           AUDIO = :audio
@@ -557,7 +559,7 @@ module OpenAI
         #   ensures the message the model generates is valid JSON. Using `json_schema` is
         #   preferred for models that support it.
         module ResponseFormat
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # Default response format. Used to generate text responses.
           variant -> { OpenAI::Models::ResponseFormatText }
@@ -592,7 +594,7 @@ module OpenAI
         #   When this parameter is set, the response body will include the `service_tier`
         #   utilized.
         module ServiceTier
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           AUTO = :auto
           DEFAULT = :default
@@ -607,7 +609,7 @@ module OpenAI
         # Up to 4 sequences where the API will stop generating further tokens. The
         #   returned text will not contain the stop sequence.
         module Stop
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
@@ -617,10 +619,10 @@ module OpenAI
           #   # @return [Array(String, Array<String>)]
           #   def self.variants; end
 
-          StringArray = OpenAI::ArrayOf[String]
+          StringArray = OpenAI::Internal::Type::ArrayOf[String]
         end
 
-        class WebSearchOptions < OpenAI::BaseModel
+        class WebSearchOptions < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] search_context_size
           #   High level guidance for the amount of context window space to use for the
           #     search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -651,14 +653,14 @@ module OpenAI
           #   #
           #   def initialize(search_context_size: nil, user_location: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # High level guidance for the amount of context window space to use for the
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
           #
           # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions#search_context_size
           module SearchContextSize
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             LOW = :low
             MEDIUM = :medium
@@ -672,7 +674,7 @@ module OpenAI
           end
 
           # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions#user_location
-          class UserLocation < OpenAI::BaseModel
+          class UserLocation < OpenAI::Internal::Type::BaseModel
             # @!attribute approximate
             #   Approximate location parameters for the search.
             #
@@ -694,10 +696,10 @@ module OpenAI
             #   #
             #   def initialize(approximate:, type: :approximate, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation#approximate
-            class Approximate < OpenAI::BaseModel
+            class Approximate < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] city
               #   Free text input for the city of the user, e.g. `San Francisco`.
               #
@@ -750,7 +752,7 @@ module OpenAI
               #   #
               #   def initialize(city: nil, country: nil, region: nil, timezone: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
         end
