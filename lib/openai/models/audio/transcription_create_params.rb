@@ -5,7 +5,7 @@ module OpenAI
     module Audio
       # @see OpenAI::Resources::Audio::Transcriptions#create
       #
-      # @see OpenAI::Resources::Audio::Transcriptions#stream_raw
+      # @see OpenAI::Resources::Audio::Transcriptions#create_streaming
       class TranscriptionCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter

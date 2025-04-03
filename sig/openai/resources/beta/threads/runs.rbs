@@ -27,7 +27,7 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Threads::Run
 
-          def stream_raw: (
+          def create_stream_raw: (
             String thread_id,
             assistant_id: String,
             ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
@@ -84,7 +84,7 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::Beta::Threads::Run
 
-          def submit_tool_stream_raw: (
+          def submit_tool_outputs_stream_raw: (
             String run_id,
             thread_id: String,
             tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
