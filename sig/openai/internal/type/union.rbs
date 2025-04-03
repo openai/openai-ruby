@@ -1,0 +1,42 @@
+module OpenAI
+  module Internal
+    module Type
+      module Union
+        include OpenAI::Internal::Type::Converter
+
+        private def self.known_variants: -> ::Array[[Symbol?, (^-> OpenAI::Internal::Type::Converter::input)]]
+
+        def self.derefed_variants: -> ::Array[[Symbol?, top]]
+
+        def self.variants: -> ::Array[top]
+
+        private def self.discriminator: (Symbol property) -> void
+
+        private def self.variant: (
+          Symbol
+          | ::Hash[Symbol, top]
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input key,
+          ?::Hash[Symbol, top]
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input spec
+        ) -> void
+
+        private def self.resolve_variant: (
+          top value
+        ) -> OpenAI::Internal::Type::Converter::input?
+
+        def ===: (top other) -> bool
+
+        def ==: (top other) -> bool
+
+        def coerce: (
+          top value,
+          state: OpenAI::Internal::Type::Converter::state
+        ) -> top
+
+        def dump: (top value) -> top
+      end
+    end
+  end
+end

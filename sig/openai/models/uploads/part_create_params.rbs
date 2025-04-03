@@ -2,11 +2,11 @@ module OpenAI
   module Models
     module Uploads
       type part_create_params =
-        { data: (IO | StringIO) } & OpenAI::request_parameters
+        { data: (IO | StringIO) } & OpenAI::Internal::Type::request_parameters
 
       class PartCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor data: IO | StringIO
 

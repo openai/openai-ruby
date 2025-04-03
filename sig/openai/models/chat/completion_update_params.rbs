@@ -2,11 +2,12 @@ module OpenAI
   module Models
     module Chat
       type completion_update_params =
-        { metadata: OpenAI::Models::metadata? } & OpenAI::request_parameters
+        { metadata: OpenAI::Models::metadata? }
+        & OpenAI::Internal::Type::request_parameters
 
       class CompletionUpdateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor metadata: OpenAI::Models::metadata?
 

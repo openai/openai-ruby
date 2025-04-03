@@ -24,7 +24,7 @@ module OpenAI
 
         sig do
           params(
-            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash))
+            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Internal::Util::AnyHash))
           )
             .void
         end
@@ -37,7 +37,7 @@ module OpenAI
           params(
             type: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol,
             search_context_size: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol,
-            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Util::AnyHash))
+            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Internal::Util::AnyHash))
           )
             .returns(T.attached_class)
         end

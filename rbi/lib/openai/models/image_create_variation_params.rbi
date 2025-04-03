@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class ImageCreateVariationParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The image to use as the basis for the variation(s). Must be a valid PNG file,
       #   less than 4MB, and square.
@@ -49,7 +49,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
           size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

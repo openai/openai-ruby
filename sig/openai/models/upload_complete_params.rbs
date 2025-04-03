@@ -1,11 +1,12 @@
 module OpenAI
   module Models
     type upload_complete_params =
-      { part_ids: ::Array[String], :md5 => String } & OpenAI::request_parameters
+      { part_ids: ::Array[String], :md5 => String }
+      & OpenAI::Internal::Type::request_parameters
 
     class UploadCompleteParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor part_ids: ::Array[String]
 

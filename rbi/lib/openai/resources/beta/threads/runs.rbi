@@ -16,7 +16,7 @@ module OpenAI
               include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
               additional_messages: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Util::AnyHash)]
+                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Internal::Util::AnyHash)]
               ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
@@ -29,7 +29,7 @@ module OpenAI
                 T.any(
                   Symbol,
                   OpenAI::Models::ResponseFormatText,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::ResponseFormatJSONObject,
                   OpenAI::Models::ResponseFormatJSONSchema
                 )
@@ -39,14 +39,14 @@ module OpenAI
                 T.any(
                   OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
                   OpenAI::Models::Beta::AssistantToolChoice,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
               ),
               tools: T.nilable(
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::FileSearchTool,
                   OpenAI::Models::Beta::FunctionTool
                 )
@@ -54,10 +54,10 @@ module OpenAI
               ),
               top_p: T.nilable(Float),
               truncation_strategy: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
+                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::Util::AnyHash)
               ),
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -185,7 +185,7 @@ module OpenAI
               include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
               additional_messages: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Util::AnyHash)]
+                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Internal::Util::AnyHash)]
               ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
@@ -198,7 +198,7 @@ module OpenAI
                 T.any(
                   Symbol,
                   OpenAI::Models::ResponseFormatText,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::ResponseFormatJSONObject,
                   OpenAI::Models::ResponseFormatJSONSchema
                 )
@@ -208,14 +208,14 @@ module OpenAI
                 T.any(
                   OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
                   OpenAI::Models::Beta::AssistantToolChoice,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
               ),
               tools: T.nilable(
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::FileSearchTool,
                   OpenAI::Models::Beta::FunctionTool
                 )
@@ -223,13 +223,13 @@ module OpenAI
               ),
               top_p: T.nilable(Float),
               truncation_strategy: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
+                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::Util::AnyHash)
               ),
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
               .returns(
-                OpenAI::Stream[
+                OpenAI::Internal::Stream[
                 T.any(
                   OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated,
                   OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated,
@@ -380,7 +380,7 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -400,7 +400,7 @@ module OpenAI
               run_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -429,9 +429,9 @@ module OpenAI
               before: String,
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::RunListParams::Order::OrSymbol,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
-              .returns(OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Run])
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Run])
           end
           def list(
             # The ID of the thread the run belongs to.
@@ -461,7 +461,7 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -482,9 +482,14 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Util::AnyHash)],
+              tool_outputs: T::Array[
+              T.any(
+                OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput,
+                OpenAI::Internal::Util::AnyHash
+              )
+              ],
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -512,12 +517,17 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Util::AnyHash)],
+              tool_outputs: T::Array[
+              T.any(
+                OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput,
+                OpenAI::Internal::Util::AnyHash
+              )
+              ],
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
               .returns(
-                OpenAI::Stream[
+                OpenAI::Internal::Stream[
                 T.any(
                   OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated,
                   OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated,

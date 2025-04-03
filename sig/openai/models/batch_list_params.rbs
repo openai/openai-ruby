@@ -1,11 +1,12 @@
 module OpenAI
   module Models
     type batch_list_params =
-      { after: String, limit: Integer } & OpenAI::request_parameters
+      { after: String, limit: Integer }
+      & OpenAI::Internal::Type::request_parameters
 
     class BatchListParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_reader after: String?
 

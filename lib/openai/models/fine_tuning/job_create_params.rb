@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::FineTuning::Jobs#create
       class JobCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute model
         #   The name of the model to fine-tune. You can select one of the

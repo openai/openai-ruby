@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Batches#create
     class BatchCreateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute completion_window
       #   The time frame within which the batch should be processed. Currently only `24h`

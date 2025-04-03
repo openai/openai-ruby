@@ -32,7 +32,7 @@ module OpenAI
           params(
             item: T.any(
               OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
               OpenAI::Models::Responses::ResponseFunctionToolCall,
               OpenAI::Models::Responses::ResponseFunctionWebSearch,

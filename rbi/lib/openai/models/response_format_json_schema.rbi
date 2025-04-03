@@ -8,7 +8,9 @@ module OpenAI
       attr_reader :json_schema
 
       sig do
-        params(json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Util::AnyHash))
+        params(
+          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::Util::AnyHash)
+        )
           .void
       end
       attr_writer :json_schema
@@ -22,7 +24,7 @@ module OpenAI
       #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
       sig do
         params(
-          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Util::AnyHash),
+          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::Util::AnyHash),
           type: Symbol
         )
           .returns(T.attached_class)

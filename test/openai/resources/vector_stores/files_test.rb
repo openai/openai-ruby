@@ -78,7 +78,7 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
     response = @openai.vector_stores.files.list("vector_store_id")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first
@@ -123,7 +123,7 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
     response = @openai.vector_stores.files.content("file-abc123", vector_store_id: "vs_abc123")
 
     assert_pattern do
-      response => OpenAI::Page
+      response => OpenAI::Internal::Page
     end
 
     row = response.to_enum.first

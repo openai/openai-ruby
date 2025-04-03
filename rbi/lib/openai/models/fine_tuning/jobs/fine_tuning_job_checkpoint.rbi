@@ -27,7 +27,7 @@ module OpenAI
 
           sig do
             params(
-              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash)
+              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::Util::AnyHash)
             )
               .void
           end
@@ -49,7 +49,7 @@ module OpenAI
               created_at: Integer,
               fine_tuned_model_checkpoint: String,
               fine_tuning_job_id: String,
-              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Util::AnyHash),
+              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::Util::AnyHash),
               step_number: Integer,
               object: Symbol
             )

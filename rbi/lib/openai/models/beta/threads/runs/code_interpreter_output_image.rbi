@@ -19,7 +19,10 @@ module OpenAI
 
             sig do
               params(
-                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash)
+                image: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
+                  OpenAI::Internal::Util::AnyHash
+                )
               )
                 .void
             end
@@ -28,7 +31,10 @@ module OpenAI
             sig do
               params(
                 index: Integer,
-                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Util::AnyHash),
+                image: T.any(
+                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
+                  OpenAI::Internal::Util::AnyHash
+                ),
                 type: Symbol
               )
                 .returns(T.attached_class)

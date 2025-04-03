@@ -34,11 +34,11 @@ module OpenAI
           user: String,
           web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class CompletionCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor messages: ::Array[OpenAI::Models::Chat::chat_completion_message_param]
 

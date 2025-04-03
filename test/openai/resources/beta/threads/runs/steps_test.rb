@@ -36,7 +36,7 @@ class OpenAI::Test::Resources::Beta::Threads::Runs::StepsTest < OpenAI::Test::Re
     response = @openai.beta.threads.runs.steps.list("run_id", thread_id: "thread_id")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

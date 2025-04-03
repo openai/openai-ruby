@@ -14,14 +14,14 @@ module OpenAI
         params(
           chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Util::AnyHash,
+            OpenAI::Internal::Util::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           ),
-          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash),
+          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash),
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -52,7 +52,7 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -67,10 +67,10 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Util::AnyHash)),
+          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash)),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -99,9 +99,9 @@ module OpenAI
           before: String,
           limit: Integer,
           order: OpenAI::Models::VectorStoreListParams::Order::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
-          .returns(OpenAI::CursorPage[OpenAI::Models::VectorStore])
+          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStore])
       end
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -128,7 +128,7 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::VectorStoreDeleted)
       end
@@ -145,13 +145,13 @@ module OpenAI
         params(
           vector_store_id: String,
           query: T.any(String, T::Array[String]),
-          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter),
+          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter),
           max_num_results: Integer,
-          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash),
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::Util::AnyHash),
           rewrite_query: T::Boolean,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
-          .returns(OpenAI::Page[OpenAI::Models::VectorStoreSearchResponse])
+          .returns(OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse])
       end
       def search(
         # The ID of the vector store to search.

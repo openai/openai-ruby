@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # Text, image, or file inputs to the model, used to generate a response.
         #
@@ -100,7 +100,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Reasoning)) }
         attr_reader :reasoning
 
-        sig { params(reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash))).void }
+        sig { params(reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::Util::AnyHash))).void }
         attr_writer :reasoning
 
         # Whether to store the generated model response for later retrieval via API.
@@ -122,7 +122,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseTextConfig)) }
         attr_reader :text
 
-        sig { params(text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash)).void }
+        sig { params(text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::Util::AnyHash)).void }
         attr_writer :text
 
         # How the model should select which tool (or tools) to use when generating a
@@ -146,7 +146,7 @@ module OpenAI
             tool_choice: T.any(
               OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
               OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ToolChoiceFunction
             )
           )
@@ -189,7 +189,7 @@ module OpenAI
             tools: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::FunctionTool,
               OpenAI::Models::Responses::ComputerTool,
               OpenAI::Models::Responses::WebSearchTool
@@ -234,7 +234,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Responses::EasyInputMessage,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Responses::ResponseInputItem::Message,
                 OpenAI::Models::Responses::ResponseOutputMessage,
                 OpenAI::Models::Responses::ResponseFileSearchToolCall,
@@ -255,20 +255,20 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
-            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)),
+            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::Util::AnyHash)),
             store: T.nilable(T::Boolean),
             temperature: T.nilable(Float),
-            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash),
+            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::Util::AnyHash),
             tool_choice: T.any(
               OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
               OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ToolChoiceFunction
             ),
             tools: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::FunctionTool,
               OpenAI::Models::Responses::ComputerTool,
               OpenAI::Models::Responses::WebSearchTool
@@ -277,7 +277,7 @@ module OpenAI
             top_p: T.nilable(Float),
             truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
             user: String,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

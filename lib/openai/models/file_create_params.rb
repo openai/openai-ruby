@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Files#create
     class FileCreateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute file
       #   The File object (not file name) to be uploaded.

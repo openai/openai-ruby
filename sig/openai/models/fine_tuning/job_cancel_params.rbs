@@ -1,11 +1,11 @@
 module OpenAI
   module Models
     module FineTuning
-      type job_cancel_params = {  } & OpenAI::request_parameters
+      type job_cancel_params = {  } & OpenAI::Internal::Type::request_parameters
 
       class JobCancelParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         def initialize: (?request_options: OpenAI::request_opts) -> void
 

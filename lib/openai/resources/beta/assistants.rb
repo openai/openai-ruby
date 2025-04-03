@@ -96,7 +96,7 @@ module OpenAI
         # @param order [Symbol, OpenAI::Models::Beta::AssistantListParams::Order]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Assistant>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Beta::Assistant>]
         #
         # @see OpenAI::Models::Beta::AssistantListParams
         def list(params = {})
@@ -105,7 +105,7 @@ module OpenAI
             method: :get,
             path: "assistants",
             query: parsed,
-            page: OpenAI::CursorPage,
+            page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::Beta::Assistant,
             options: options
           )

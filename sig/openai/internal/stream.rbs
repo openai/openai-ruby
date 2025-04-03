@@ -1,0 +1,9 @@
+module OpenAI
+  module Internal
+    class Stream[Elem]
+      include OpenAI::Internal::Type::BaseStream[OpenAI::Internal::Util::server_sent_event, Elem]
+
+      private def iterator: -> Enumerable[Elem]
+    end
+  end
+end

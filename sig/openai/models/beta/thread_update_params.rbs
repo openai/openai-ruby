@@ -6,11 +6,11 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           tool_resources: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources?
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class ThreadUpdateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor metadata: OpenAI::Models::metadata?
 

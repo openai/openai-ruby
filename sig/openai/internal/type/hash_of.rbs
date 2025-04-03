@@ -1,0 +1,38 @@
+module OpenAI
+  module Internal
+    module Type
+      class HashOf[Elem]
+        include OpenAI::Internal::Type::Converter
+
+        def self.[]: (
+          ::Hash[Symbol, top]
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input type_info,
+          ?::Hash[Symbol, top] spec
+        ) -> instance
+
+        def ===: (top other) -> bool
+
+        def ==: (top other) -> bool
+
+        def coerce: (
+          ::Hash[top, top] | top value,
+          state: OpenAI::Internal::Type::Converter::state
+        ) -> (::Hash[Symbol, top] | top)
+
+        def dump: (::Hash[top, top] | top value) -> (::Hash[Symbol, top] | top)
+
+        def item_type: -> Elem
+
+        def nilable?: -> bool
+
+        def initialize: (
+          ::Hash[Symbol, top]
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input type_info,
+          ?::Hash[Symbol, top] spec
+        ) -> void
+      end
+    end
+  end
+end

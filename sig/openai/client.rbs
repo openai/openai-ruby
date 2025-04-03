@@ -1,5 +1,5 @@
 module OpenAI
-  class Client < OpenAI::Transport::BaseClient
+  class Client < OpenAI::Internal::Transport::BaseClient
     DEFAULT_MAX_RETRIES: 2
 
     DEFAULT_TIMEOUT_IN_SECONDS: Float

@@ -9,7 +9,7 @@ module OpenAI
 
         sig do
           params(
-            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash)
+            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -23,7 +23,7 @@ module OpenAI
         #   function.
         sig do
           params(
-            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Util::AnyHash),
+            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::Util::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)

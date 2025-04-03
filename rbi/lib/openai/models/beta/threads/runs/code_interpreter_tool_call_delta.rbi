@@ -30,7 +30,7 @@ module OpenAI
               params(
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
               )
                 .void
@@ -44,7 +44,7 @@ module OpenAI
                 id: String,
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 ),
                 type: Symbol
               )
@@ -97,7 +97,7 @@ module OpenAI
                   outputs: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                    OpenAI::Util::AnyHash,
+                    OpenAI::Internal::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
                   )
                   ]
@@ -113,7 +113,7 @@ module OpenAI
                   outputs: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                    OpenAI::Util::AnyHash,
+                    OpenAI::Internal::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
                   )
                   ]

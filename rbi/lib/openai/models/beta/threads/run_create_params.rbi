@@ -5,8 +5,8 @@ module OpenAI
     module Beta
       module Threads
         class RunCreateParams < OpenAI::BaseModel
-          extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           # The ID of the
           #   [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
@@ -185,7 +185,7 @@ module OpenAI
           sig do
             params(
               truncation_strategy: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
+                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::Util::AnyHash)
               )
             )
               .void
@@ -198,7 +198,7 @@ module OpenAI
               include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
               additional_messages: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Util::AnyHash)]
+                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Internal::Util::AnyHash)]
               ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
@@ -211,7 +211,7 @@ module OpenAI
                 T.any(
                   Symbol,
                   OpenAI::Models::ResponseFormatText,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::ResponseFormatJSONObject,
                   OpenAI::Models::ResponseFormatJSONSchema
                 )
@@ -221,14 +221,14 @@ module OpenAI
                 T.any(
                   OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
                   OpenAI::Models::Beta::AssistantToolChoice,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
               ),
               tools: T.nilable(
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::FileSearchTool,
                   OpenAI::Models::Beta::FunctionTool
                 )
@@ -236,9 +236,9 @@ module OpenAI
               ),
               top_p: T.nilable(Float),
               truncation_strategy: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Util::AnyHash)
+                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::Util::AnyHash)
               ),
-              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -363,7 +363,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Util::AnyHash,
+                    OpenAI::Internal::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                     OpenAI::Models::Beta::Threads::TextContentBlockParam
                   )
@@ -374,7 +374,7 @@ module OpenAI
                   T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment,
-                    OpenAI::Util::AnyHash
+                    OpenAI::Internal::Util::AnyHash
                   )
                   ]
                 ),
@@ -433,7 +433,7 @@ module OpenAI
               MessageContentPartParamArray =
                 T.let(
                   OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam],
-                  OpenAI::Type::Converter
+                  OpenAI::Internal::Type::Converter
                 )
             end
 
@@ -498,7 +498,7 @@ module OpenAI
                   tools: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Util::AnyHash,
+                    OpenAI::Internal::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
                   )
                   ]
@@ -513,7 +513,7 @@ module OpenAI
                   tools: T::Array[
                   T.any(
                     OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Util::AnyHash,
+                    OpenAI::Internal::Util::AnyHash,
                     OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
                   )
                   ]

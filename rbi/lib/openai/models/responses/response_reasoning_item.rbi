@@ -29,7 +29,7 @@ module OpenAI
         sig do
           params(
             id: String,
-            summary: T::Array[T.any(OpenAI::Models::Responses::ResponseReasoningItem::Summary, OpenAI::Util::AnyHash)],
+            summary: T::Array[T.any(OpenAI::Models::Responses::ResponseReasoningItem::Summary, OpenAI::Internal::Util::AnyHash)],
             status: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol,
             type: Symbol
           )

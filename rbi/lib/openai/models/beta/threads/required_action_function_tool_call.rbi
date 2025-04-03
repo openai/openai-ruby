@@ -18,7 +18,10 @@ module OpenAI
 
           sig do
             params(
-              function: T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Util::AnyHash)
+              function: T.any(
+                OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
               .void
           end
@@ -33,7 +36,10 @@ module OpenAI
           sig do
             params(
               id: String,
-              function: T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Util::AnyHash),
+              function: T.any(
+                OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function,
+                OpenAI::Internal::Util::AnyHash
+              ),
               type: Symbol
             )
               .returns(T.attached_class)

@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::VectorStores#create
     class VectorStoreCreateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute [r] chunking_strategy
       #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`

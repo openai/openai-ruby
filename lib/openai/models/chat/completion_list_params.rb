@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Chat::Completions#list
       class CompletionListParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute [r] after
         #   Identifier for the last chat completion from the previous pagination request.

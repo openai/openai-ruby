@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Chat::Completions#update
       class CompletionUpdateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful

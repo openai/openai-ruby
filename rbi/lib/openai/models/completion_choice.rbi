@@ -16,7 +16,12 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Models::CompletionChoice::Logprobs)) }
       attr_reader :logprobs
 
-      sig { params(logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash))).void }
+      sig do
+        params(
+          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::Util::AnyHash))
+        )
+          .void
+      end
       attr_writer :logprobs
 
       sig { returns(String) }
@@ -26,7 +31,7 @@ module OpenAI
         params(
           finish_reason: OpenAI::Models::CompletionChoice::FinishReason::OrSymbol,
           index: Integer,
-          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Util::AnyHash)),
+          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::Util::AnyHash)),
           text: String
         )
           .returns(T.attached_class)

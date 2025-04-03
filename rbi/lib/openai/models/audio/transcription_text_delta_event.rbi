@@ -20,7 +20,7 @@ module OpenAI
 
         sig do
           params(
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Util::AnyHash)]
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::Util::AnyHash)]
           )
             .void
         end
@@ -33,7 +33,7 @@ module OpenAI
         sig do
           params(
             delta: String,
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Util::AnyHash)],
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::Util::AnyHash)],
             type: Symbol
           )
             .returns(T.attached_class)

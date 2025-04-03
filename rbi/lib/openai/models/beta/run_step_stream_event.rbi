@@ -14,7 +14,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -24,7 +24,10 @@ module OpenAI
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is created.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.step.created")
@@ -40,7 +43,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -50,7 +53,10 @@ module OpenAI
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   moves to an `in_progress` state.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.step.in_progress")
@@ -67,7 +73,12 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash)).void }
+          sig do
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::Util::AnyHash)
+            )
+              .void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -78,7 +89,7 @@ module OpenAI
           #   are being streamed.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::Util::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -96,7 +107,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -106,7 +117,10 @@ module OpenAI
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is completed.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.step.completed")
@@ -122,7 +136,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -132,7 +146,10 @@ module OpenAI
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   fails.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.step.failed")
@@ -148,7 +165,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -158,7 +175,10 @@ module OpenAI
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is cancelled.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.step.cancelled")
@@ -174,7 +194,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -184,7 +204,10 @@ module OpenAI
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   expires.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Util::AnyHash), event: Symbol)
+            params(
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              event: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.step.expired")

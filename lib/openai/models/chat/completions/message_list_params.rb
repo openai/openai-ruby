@@ -7,8 +7,8 @@ module OpenAI
         # @see OpenAI::Resources::Chat::Completions::Messages#list
         class MessageListParams < OpenAI::BaseModel
           # @!parse
-          #   extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute [r] after
           #   Identifier for the last message from the previous pagination request.

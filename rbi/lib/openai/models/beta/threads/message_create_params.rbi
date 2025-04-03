@@ -5,8 +5,8 @@ module OpenAI
     module Beta
       module Threads
         class MessageCreateParams < OpenAI::BaseModel
-          extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           # The text contents of the message.
           sig do
@@ -54,7 +54,7 @@ module OpenAI
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                   OpenAI::Models::Beta::Threads::TextContentBlockParam
                 )
@@ -62,10 +62,10 @@ module OpenAI
               ),
               role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
               attachments: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment, OpenAI::Util::AnyHash)]
+                T::Array[T.any(OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment, OpenAI::Internal::Util::AnyHash)]
               ),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -121,7 +121,7 @@ module OpenAI
             MessageContentPartParamArray =
               T.let(
                 OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentPartParam],
-                OpenAI::Type::Converter
+                OpenAI::Internal::Type::Converter
               )
           end
 
@@ -174,7 +174,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
                 )
                 ]
@@ -189,7 +189,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
                 )
                 ]

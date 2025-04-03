@@ -1,0 +1,13 @@
+module OpenAI
+  module Internal
+    class Page[Elem]
+      include OpenAI::Internal::Type::BasePage[Elem]
+
+      attr_accessor data: ::Array[Elem]?
+
+      attr_accessor object: String
+
+      def inspect: -> String
+    end
+  end
+end

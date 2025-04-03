@@ -15,7 +15,9 @@ module OpenAI
 
         sig do
           params(
-            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio, OpenAI::Util::AnyHash))
+            audio: T.nilable(
+              T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio, OpenAI::Internal::Util::AnyHash)
+            )
           )
             .void
         end
@@ -48,7 +50,10 @@ module OpenAI
         sig do
           params(
             function_call: T.nilable(
-              T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall, OpenAI::Util::AnyHash)
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
           )
             .void
@@ -73,7 +78,7 @@ module OpenAI
 
         sig do
           params(
-            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)]
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::Util::AnyHash)]
           )
             .void
         end
@@ -82,25 +87,30 @@ module OpenAI
         # Messages sent by the model in response to user messages.
         sig do
           params(
-            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio, OpenAI::Util::AnyHash)),
+            audio: T.nilable(
+              T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio, OpenAI::Internal::Util::AnyHash)
+            ),
             content: T.nilable(
               T.any(
                 String,
                 T::Array[
                 T.any(
                   OpenAI::Models::Chat::ChatCompletionContentPartText,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Chat::ChatCompletionContentPartRefusal
                 )
                 ]
               )
             ),
             function_call: T.nilable(
-              T.any(OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall, OpenAI::Util::AnyHash)
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall,
+                OpenAI::Internal::Util::AnyHash
+              )
             ),
             name: String,
             refusal: T.nilable(String),
-            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Util::AnyHash)],
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::Util::AnyHash)],
             role: Symbol
           )
             .returns(T.attached_class)
@@ -199,7 +209,7 @@ module OpenAI
           ArrayOfContentPartArray =
             T.let(
               OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart],
-              OpenAI::Type::Converter
+              OpenAI::Internal::Type::Converter
             )
         end
 

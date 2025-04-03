@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Responses#retrieve
       class ResponseRetrieveParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute [r] include
         #   Additional fields to include in the response. See the `include` parameter for

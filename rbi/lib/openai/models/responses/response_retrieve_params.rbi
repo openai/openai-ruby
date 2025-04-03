@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseRetrieveParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
@@ -18,7 +18,7 @@ module OpenAI
         sig do
           params(
             include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

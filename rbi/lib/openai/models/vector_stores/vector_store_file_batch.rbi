@@ -18,7 +18,7 @@ module OpenAI
 
         sig do
           params(
-            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash)
+            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -45,7 +45,7 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Util::AnyHash),
+            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::Util::AnyHash),
             status: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::OrSymbol,
             vector_store_id: String,
             object: Symbol

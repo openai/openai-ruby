@@ -10,7 +10,7 @@ module OpenAI
       attr_accessor :data
 
       sig do
-        params(created: Integer, data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Util::AnyHash)])
+        params(created: Integer, data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Internal::Util::AnyHash)])
           .returns(T.attached_class)
       end
       def self.new(created:, data:)

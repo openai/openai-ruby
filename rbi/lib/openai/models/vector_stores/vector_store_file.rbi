@@ -19,7 +19,9 @@ module OpenAI
 
         sig do
           params(
-            last_error: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash))
+            last_error: T.nilable(
+              T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Internal::Util::AnyHash)
+            )
           )
             .void
         end
@@ -69,7 +71,7 @@ module OpenAI
           params(
             chunking_strategy: T.any(
               OpenAI::Models::StaticFileChunkingStrategyObject,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::OtherFileChunkingStrategyObject
             )
           )
@@ -82,14 +84,16 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            last_error: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Util::AnyHash)),
+            last_error: T.nilable(
+              T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Internal::Util::AnyHash)
+            ),
             status: OpenAI::Models::VectorStores::VectorStoreFile::Status::OrSymbol,
             usage_bytes: Integer,
             vector_store_id: String,
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
             chunking_strategy: T.any(
               OpenAI::Models::StaticFileChunkingStrategyObject,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::OtherFileChunkingStrategyObject
             ),
             object: Symbol

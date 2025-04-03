@@ -127,7 +127,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
     response = @openai.beta.threads.runs.list("thread_id")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

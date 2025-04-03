@@ -31,7 +31,7 @@ module OpenAI
           ?limit: Integer,
           ?order: OpenAI::Models::VectorStores::FileListParams::order,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile]
+        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile]
 
         def delete: (
           String file_id,
@@ -43,7 +43,7 @@ module OpenAI
           String file_id,
           vector_store_id: String,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Page[OpenAI::Models::VectorStores::FileContentResponse]
+        ) -> OpenAI::Internal::Page[OpenAI::Models::VectorStores::FileContentResponse]
 
         def initialize: (client: OpenAI::Client) -> void
       end

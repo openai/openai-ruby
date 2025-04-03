@@ -41,7 +41,7 @@ module OpenAI
           params(
             annotation: T.any(
               OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
               OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
             ),

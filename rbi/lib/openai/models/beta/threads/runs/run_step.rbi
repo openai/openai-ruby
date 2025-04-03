@@ -44,7 +44,7 @@ module OpenAI
 
             sig do
               params(
-                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash))
+                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Internal::Util::AnyHash))
               )
                 .void
             end
@@ -100,7 +100,7 @@ module OpenAI
 
             sig do
               params(
-                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash))
+                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Internal::Util::AnyHash))
               )
                 .void
             end
@@ -116,18 +116,18 @@ module OpenAI
                 created_at: Integer,
                 expired_at: T.nilable(Integer),
                 failed_at: T.nilable(Integer),
-                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Util::AnyHash)),
+                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Internal::Util::AnyHash)),
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 run_id: String,
                 status: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::OrSymbol,
                 step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
                 ),
                 thread_id: String,
                 type: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::OrSymbol,
-                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Util::AnyHash)),
+                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Internal::Util::AnyHash)),
                 object: Symbol
               )
                 .returns(T.attached_class)

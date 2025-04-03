@@ -3,11 +3,11 @@ module OpenAI
     module Responses
       type response_retrieve_params =
         { include: ::Array[OpenAI::Models::Responses::response_includable] }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class ResponseRetrieveParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_reader include: ::Array[OpenAI::Models::Responses::response_includable]?
 

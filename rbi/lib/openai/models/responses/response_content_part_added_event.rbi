@@ -36,7 +36,7 @@ module OpenAI
             output_index: Integer,
             part: T.any(
               OpenAI::Models::Responses::ResponseOutputText,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseOutputRefusal
             ),
             type: Symbol

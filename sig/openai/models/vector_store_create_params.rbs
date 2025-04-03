@@ -8,11 +8,11 @@ module OpenAI
         metadata: OpenAI::Models::metadata?,
         name: String
       }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class VectorStoreCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy_param?
 

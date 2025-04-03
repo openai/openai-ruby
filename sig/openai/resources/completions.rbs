@@ -41,7 +41,7 @@ module OpenAI
         ?top_p: Float?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Stream[OpenAI::Models::Completion]
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::Completion]
 
       def initialize: (client: OpenAI::Client) -> void
     end

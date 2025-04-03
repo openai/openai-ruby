@@ -52,7 +52,9 @@ module OpenAI
 
           sig do
             params(
-              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash))
+              incomplete_details: T.nilable(
+                T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Internal::Util::AnyHash)
+              )
             )
               .void
           end
@@ -97,12 +99,14 @@ module OpenAI
             params(
               id: String,
               assistant_id: T.nilable(String),
-              attachments: T.nilable(T::Array[T.any(OpenAI::Models::Beta::Threads::Message::Attachment, OpenAI::Util::AnyHash)]),
+              attachments: T.nilable(
+                T::Array[T.any(OpenAI::Models::Beta::Threads::Message::Attachment, OpenAI::Internal::Util::AnyHash)]
+              ),
               completed_at: T.nilable(Integer),
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                 OpenAI::Models::Beta::Threads::TextContentBlock,
                 OpenAI::Models::Beta::Threads::RefusalContentBlock
@@ -110,7 +114,9 @@ module OpenAI
               ],
               created_at: Integer,
               incomplete_at: T.nilable(Integer),
-              incomplete_details: T.nilable(T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Util::AnyHash)),
+              incomplete_details: T.nilable(
+                T.any(OpenAI::Models::Beta::Threads::Message::IncompleteDetails, OpenAI::Internal::Util::AnyHash)
+              ),
               metadata: T.nilable(T::Hash[Symbol, String]),
               role: OpenAI::Models::Beta::Threads::Message::Role::OrSymbol,
               run_id: T.nilable(String),
@@ -197,7 +203,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
                 )
                 ]
@@ -212,7 +218,7 @@ module OpenAI
                 tools: T::Array[
                 T.any(
                   OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Util::AnyHash,
+                  OpenAI::Internal::Util::AnyHash,
                   OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
                 )
                 ]

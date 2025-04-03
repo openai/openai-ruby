@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # The audio file object (not file name) to transcribe, in one of these formats:
         #   flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
@@ -98,7 +98,7 @@ module OpenAI
             response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
             temperature: Float,
             timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
