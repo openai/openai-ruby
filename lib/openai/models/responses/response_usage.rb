@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseUsage < OpenAI::BaseModel
+      class ResponseUsage < OpenAI::Internal::Type::BaseModel
         # @!attribute input_tokens
         #   The number of input tokens.
         #
@@ -46,10 +46,10 @@ module OpenAI
         #   #
         #   def initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::Responses::ResponseUsage#input_tokens_details
-        class InputTokensDetails < OpenAI::BaseModel
+        class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute cached_tokens
           #   The number of tokens that were retrieved from the cache.
           #     [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
@@ -64,11 +64,11 @@ module OpenAI
           #   #
           #   def initialize(cached_tokens:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # @see OpenAI::Models::Responses::ResponseUsage#output_tokens_details
-        class OutputTokensDetails < OpenAI::BaseModel
+        class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute reasoning_tokens
           #   The number of reasoning tokens.
           #
@@ -82,7 +82,7 @@ module OpenAI
           #   #
           #   def initialize(reasoning_tokens:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

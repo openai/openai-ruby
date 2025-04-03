@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ToolChoiceTypes < OpenAI::BaseModel
+      class ToolChoiceTypes < OpenAI::Internal::Type::BaseModel
         # The type of hosted tool the model should to use. Learn more about
         #   [built-in tools](https://platform.openai.com/docs/guides/tools).
         #
@@ -34,7 +34,7 @@ module OpenAI
         #   - `web_search_preview`
         #   - `computer_use_preview`
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type) }
           OrSymbol =

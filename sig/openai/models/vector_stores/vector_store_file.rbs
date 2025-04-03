@@ -16,7 +16,7 @@ module OpenAI
           chunking_strategy: OpenAI::Models::file_chunking_strategy
         }
 
-      class VectorStoreFile < OpenAI::BaseModel
+      class VectorStoreFile < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor created_at: Integer
@@ -59,7 +59,7 @@ module OpenAI
             message: String
           }
 
-        class LastError < OpenAI::BaseModel
+        class LastError < OpenAI::Internal::Type::BaseModel
           attr_accessor code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code
 
           attr_accessor message: String
@@ -74,7 +74,7 @@ module OpenAI
           type code = :server_error | :unsupported_file | :invalid_file
 
           module Code
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             SERVER_ERROR: :server_error
             UNSUPPORTED_FILE: :unsupported_file
@@ -87,7 +87,7 @@ module OpenAI
         type status = :in_progress | :completed | :cancelled | :failed
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
@@ -100,7 +100,7 @@ module OpenAI
         type attribute = String | Float | bool
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, Float, bool]
         end

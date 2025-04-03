@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Batches#create
-    class Batch < OpenAI::BaseModel
+    class Batch < OpenAI::Internal::Type::BaseModel
       # @!attribute id
       #
       #   @return [String]
@@ -153,7 +153,7 @@ module OpenAI
       #     a maximum length of 512 characters.
       #
       #   @return [Hash{Symbol=>String}, nil]
-      optional :metadata, OpenAI::HashOf[String], nil?: true
+      optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
       # @!attribute [r] output_file_id
       #   The ID of the file containing the outputs of successfully executed requests.
@@ -223,13 +223,13 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The current status of the batch.
       #
       # @see OpenAI::Models::Batch#status
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         VALIDATING = :validating
         FAILED = :failed
@@ -248,11 +248,11 @@ module OpenAI
       end
 
       # @see OpenAI::Models::Batch#errors
-      class Errors < OpenAI::BaseModel
+      class Errors < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] data
         #
         #   @return [Array<OpenAI::Models::BatchError>, nil]
-        optional :data, -> { OpenAI::ArrayOf[OpenAI::Models::BatchError] }
+        optional :data, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::BatchError] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::BatchError>]
@@ -274,7 +274,7 @@ module OpenAI
         #   #
         #   def initialize(data: nil, object: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -6,15 +6,15 @@ module OpenAI
       # Occurs when a new
       #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
       module RunStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
-        class ThreadRunCreated < OpenAI::BaseModel
+        class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -23,7 +23,7 @@ module OpenAI
           # Occurs when a new
           #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.created")
@@ -34,13 +34,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunQueued < OpenAI::BaseModel
+        class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -49,7 +49,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `queued` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.queued")
@@ -60,13 +60,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunInProgress < OpenAI::BaseModel
+        class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -75,7 +75,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to an `in_progress` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.in_progress")
@@ -86,13 +86,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunRequiresAction < OpenAI::BaseModel
+        class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -101,7 +101,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `requires_action` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.requires_action")
@@ -112,13 +112,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunCompleted < OpenAI::BaseModel
+        class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -127,7 +127,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is completed.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.completed")
@@ -138,13 +138,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunIncomplete < OpenAI::BaseModel
+        class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -153,7 +153,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   ends with status `incomplete`.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.incomplete")
@@ -164,13 +164,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunFailed < OpenAI::BaseModel
+        class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -179,7 +179,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   fails.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.failed")
@@ -190,13 +190,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunCancelling < OpenAI::BaseModel
+        class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -205,7 +205,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   moves to a `cancelling` status.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.cancelling")
@@ -216,13 +216,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunCancelled < OpenAI::BaseModel
+        class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -231,7 +231,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   is cancelled.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.cancelled")
@@ -242,13 +242,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunExpired < OpenAI::BaseModel
+        class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -257,7 +257,7 @@ module OpenAI
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
           #   expires.
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::Util::AnyHash), event: Symbol)
+            params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.run.expired")

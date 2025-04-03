@@ -7,7 +7,7 @@ module OpenAI
           file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch
         }
 
-      class FileSearchTool < OpenAI::BaseModel
+      class FileSearchTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :file_search
 
         attr_reader file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch?
@@ -29,7 +29,7 @@ module OpenAI
             ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
           }
 
-        class FileSearch < OpenAI::BaseModel
+        class FileSearch < OpenAI::Internal::Type::BaseModel
           attr_reader max_num_results: Integer?
 
           def max_num_results=: (Integer) -> Integer
@@ -53,7 +53,7 @@ module OpenAI
               ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             }
 
-          class RankingOptions < OpenAI::BaseModel
+          class RankingOptions < OpenAI::Internal::Type::BaseModel
             attr_accessor score_threshold: Float
 
             attr_reader ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker?
@@ -72,7 +72,7 @@ module OpenAI
             type ranker = :auto | :default_2024_08_21
 
             module Ranker
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               AUTO: :auto
               DEFAULT_2024_08_21: :default_2024_08_21

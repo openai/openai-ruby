@@ -4,7 +4,7 @@ module OpenAI
   module Models
     # The strategy used to chunk the file.
     module FileChunkingStrategy
-      extend OpenAI::Union
+      extend OpenAI::Internal::Type::Union
 
       discriminator :type
 

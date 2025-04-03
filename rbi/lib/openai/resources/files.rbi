@@ -28,7 +28,7 @@ module OpenAI
         params(
           file: T.any(IO, StringIO),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::FileObject)
       end
@@ -48,7 +48,7 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::FileObject)
       end
@@ -66,7 +66,7 @@ module OpenAI
           limit: Integer,
           order: OpenAI::Models::FileListParams::Order::OrSymbol,
           purpose: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FileObject])
       end
@@ -92,7 +92,7 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::FileDeleted)
       end
@@ -107,7 +107,7 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(StringIO)
       end

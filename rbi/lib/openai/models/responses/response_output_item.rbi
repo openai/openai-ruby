@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # An output message from the model.
       module ResponseOutputItem
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig do
           override

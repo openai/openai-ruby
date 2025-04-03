@@ -4,11 +4,11 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class ImageFileContentBlock < OpenAI::BaseModel
+        class ImageFileContentBlock < OpenAI::Internal::Type::BaseModel
           sig { returns(OpenAI::Models::Beta::Threads::ImageFile) }
           attr_reader :image_file
 
-          sig { params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Internal::AnyHash)).void }
           attr_writer :image_file
 
           # Always `image_file`.
@@ -19,7 +19,7 @@ module OpenAI
           #   in the content of a message.
           sig do
             params(
-              image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Internal::Util::AnyHash),
+              image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Internal::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)

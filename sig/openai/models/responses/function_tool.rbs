@@ -10,7 +10,7 @@ module OpenAI
           description: String?
         }
 
-      class FunctionTool < OpenAI::BaseModel
+      class FunctionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
 
         attr_accessor parameters: ::Hash[Symbol, top]

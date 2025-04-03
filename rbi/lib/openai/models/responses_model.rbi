@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module ResponsesModel
-      extend OpenAI::Union
+      extend OpenAI::Internal::Type::Union
 
       sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol]) }
       def self.variants

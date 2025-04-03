@@ -6,7 +6,7 @@ module OpenAI
       # Represents a transcription response returned by model, based on the provided
       #   input.
       module TranscriptionCreateResponse
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]) }
         def self.variants

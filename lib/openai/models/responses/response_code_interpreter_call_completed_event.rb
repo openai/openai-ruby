@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterCallCompletedEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCompletedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute code_interpreter_call
         #   A tool call to run code.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.completed", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

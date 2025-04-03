@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ErrorObject < OpenAI::BaseModel
+    class ErrorObject < OpenAI::Internal::Type::BaseModel
       sig { returns(T.nilable(String)) }
       attr_accessor :code
 

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module EmbeddingModel
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       TEXT_EMBEDDING_ADA_002 = :"text-embedding-ada-002"
       TEXT_EMBEDDING_3_SMALL = :"text-embedding-3-small"

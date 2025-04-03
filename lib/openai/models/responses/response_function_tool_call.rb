@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionToolCall < OpenAI::BaseModel
+      class ResponseFunctionToolCall < OpenAI::Internal::Type::BaseModel
         # @!attribute arguments
         #   A JSON string of the arguments to pass to the function.
         #
@@ -63,14 +63,14 @@ module OpenAI
         #   #
         #   def initialize(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseFunctionToolCall#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed

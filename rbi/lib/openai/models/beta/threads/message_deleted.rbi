@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class MessageDeleted < OpenAI::BaseModel
+        class MessageDeleted < OpenAI::Internal::Type::BaseModel
           sig { returns(String) }
           attr_accessor :id
 

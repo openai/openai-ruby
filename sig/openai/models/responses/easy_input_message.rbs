@@ -8,7 +8,7 @@ module OpenAI
           type: OpenAI::Models::Responses::EasyInputMessage::type_
         }
 
-      class EasyInputMessage < OpenAI::BaseModel
+      class EasyInputMessage < OpenAI::Internal::Type::BaseModel
         attr_accessor content: OpenAI::Models::Responses::EasyInputMessage::content
 
         attr_accessor role: OpenAI::Models::Responses::EasyInputMessage::role
@@ -32,7 +32,7 @@ module OpenAI
           | OpenAI::Models::Responses::response_input_message_content_list
 
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, OpenAI::Models::Responses::response_input_message_content_list]
         end
@@ -40,7 +40,7 @@ module OpenAI
         type role = :user | :assistant | :system | :developer
 
         module Role
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           USER: :user
           ASSISTANT: :assistant
@@ -53,7 +53,7 @@ module OpenAI
         type type_ = :message
 
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MESSAGE: :message
 

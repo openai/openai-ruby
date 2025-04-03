@@ -9,7 +9,7 @@ module OpenAI
           filename: String
         }
 
-      class ResponseInputFile < OpenAI::BaseModel
+      class ResponseInputFile < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :input_file
 
         attr_reader file_data: String?

@@ -10,7 +10,7 @@ module OpenAI
           strict: bool?
         }
 
-      class ResponseFormatTextJSONSchemaConfig < OpenAI::BaseModel
+      class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
 
         attr_accessor schema: ::Hash[Symbol, top]

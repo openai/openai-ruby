@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranslationVerbose < OpenAI::BaseModel
+      class TranslationVerbose < OpenAI::Internal::Type::BaseModel
         # The duration of the input audio.
         sig { returns(Float) }
         attr_accessor :duration
@@ -21,9 +21,7 @@ module OpenAI
         attr_reader :segments
 
         sig do
-          params(
-            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::Util::AnyHash)]
-          )
+          params(segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::AnyHash)])
             .void
         end
         attr_writer :segments
@@ -33,7 +31,7 @@ module OpenAI
             duration: Float,
             language: String,
             text: String,
-            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::Util::AnyHash)]
+            segments: T::Array[T.any(OpenAI::Models::Audio::TranscriptionSegment, OpenAI::Internal::AnyHash)]
           )
             .returns(T.attached_class)
         end

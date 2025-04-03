@@ -5,7 +5,7 @@ module OpenAI
         { include: ::Array[OpenAI::Models::Responses::response_includable] }
         & OpenAI::Internal::Type::request_parameters
 
-      class ResponseRetrieveParams < OpenAI::BaseModel
+      class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

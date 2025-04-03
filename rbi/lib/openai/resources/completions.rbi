@@ -25,13 +25,13 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash)),
+          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash)),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::Completion)
       end
@@ -168,13 +168,13 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash)),
+          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash)),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Internal::Stream[OpenAI::Models::Completion])
       end

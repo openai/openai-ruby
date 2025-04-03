@@ -9,7 +9,7 @@ module OpenAI
           }
           & OpenAI::Internal::Type::request_parameters
 
-        class RunSubmitToolOutputsParams < OpenAI::BaseModel
+        class RunSubmitToolOutputsParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
@@ -27,7 +27,7 @@ module OpenAI
 
           type tool_output = { output: String, tool_call_id: String }
 
-          class ToolOutput < OpenAI::BaseModel
+          class ToolOutput < OpenAI::Internal::Type::BaseModel
             attr_reader output: String?
 
             def output=: (String) -> String

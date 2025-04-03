@@ -3,14 +3,14 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterCallCompletedEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCompletedEvent < OpenAI::Internal::Type::BaseModel
         # A tool call to run code.
         sig { returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall) }
         attr_reader :code_interpreter_call
 
         sig do
           params(
-            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::Util::AnyHash)
+            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -27,7 +27,7 @@ module OpenAI
         # Emitted when the code interpreter call is completed.
         sig do
           params(
-            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::Util::AnyHash),
+            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::AnyHash),
             output_index: Integer,
             type: Symbol
           )

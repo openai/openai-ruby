@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
-      class FineTuningJobEvent < OpenAI::BaseModel
+      class FineTuningJobEvent < OpenAI::Internal::Type::BaseModel
         # The object identifier.
         sig { returns(String) }
         attr_accessor :id
@@ -81,7 +81,7 @@ module OpenAI
 
         # The log level of the event.
         module Level
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level) }
           OrSymbol =
@@ -98,7 +98,7 @@ module OpenAI
 
         # The type of event.
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type) }
           OrSymbol =

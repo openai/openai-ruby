@@ -6,7 +6,7 @@ module OpenAI
       # @see OpenAI::Resources::Audio::Transcriptions#create
       #
       # @see OpenAI::Resources::Audio::Transcriptions#stream_raw
-      class TranscriptionCreateParams < OpenAI::BaseModel
+      class TranscriptionCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -34,7 +34,8 @@ module OpenAI
         #     `gpt-4o-mini-transcribe`.
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>, nil]
-        optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionInclude] }
+        optional :include,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionInclude] }
 
         # @!parse
         #   # @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
@@ -100,7 +101,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
         optional :timestamp_granularities,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity] }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity] }
 
         # @!parse
         #   # @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>]
@@ -132,13 +133,13 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         #   Whisper V2 model).
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
@@ -151,7 +152,7 @@ module OpenAI
         end
 
         module TimestampGranularity
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           WORD = :word
           SEGMENT = :segment

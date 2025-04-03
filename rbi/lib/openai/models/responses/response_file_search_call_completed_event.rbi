@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFileSearchCallCompletedEvent < OpenAI::BaseModel
+      class ResponseFileSearchCallCompletedEvent < OpenAI::Internal::Type::BaseModel
         # The ID of the output item that the file search call is initiated.
         sig { returns(String) }
         attr_accessor :item_id

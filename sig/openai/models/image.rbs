@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type image = { :b64_json => String, revised_prompt: String, url: String }
 
-    class Image < OpenAI::BaseModel
+    class Image < OpenAI::Internal::Type::BaseModel
       attr_reader b64_json: String?
 
       def b64_json=: (String) -> String

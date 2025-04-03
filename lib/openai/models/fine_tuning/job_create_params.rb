@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       # @see OpenAI::Resources::FineTuning::Jobs#create
-      class JobCreateParams < OpenAI::BaseModel
+      class JobCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -54,7 +54,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
         optional :integrations,
-                 -> { OpenAI::ArrayOf[OpenAI::Models::FineTuning::JobCreateParams::Integration] },
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::JobCreateParams::Integration] },
                  nil?: true
 
         # @!attribute metadata
@@ -66,7 +66,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute [r] method_
         #   The method used for fine-tuning.
@@ -141,12 +141,12 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The name of the model to fine-tune. You can select one of the
         #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
@@ -173,7 +173,7 @@ module OpenAI
         end
 
         # @deprecated
-        class Hyperparameters < OpenAI::BaseModel
+        class Hyperparameters < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] batch_size
           #   Number of examples in each batch. A larger batch size means that model
           #     parameters are updated less frequently, but with lower variance.
@@ -219,14 +219,14 @@ module OpenAI
           #   #
           #   def initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Number of examples in each batch. A larger batch size means that model
           #   parameters are updated less frequently, but with lower variance.
           #
           # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#batch_size
           module BatchSize
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             variant const: :auto
 
@@ -242,7 +242,7 @@ module OpenAI
           #
           # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#learning_rate_multiplier
           module LearningRateMultiplier
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             variant const: :auto
 
@@ -258,7 +258,7 @@ module OpenAI
           #
           # @see OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters#n_epochs
           module NEpochs
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             variant const: :auto
 
@@ -270,7 +270,7 @@ module OpenAI
           end
         end
 
-        class Integration < OpenAI::BaseModel
+        class Integration < OpenAI::Internal::Type::BaseModel
           # @!attribute type
           #   The type of integration to enable. Currently, only "wandb" (Weights and Biases)
           #     is supported.
@@ -293,10 +293,10 @@ module OpenAI
           #   #
           #   def initialize(wandb:, type: :wandb, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::FineTuning::JobCreateParams::Integration#wandb
-          class Wandb < OpenAI::BaseModel
+          class Wandb < OpenAI::Internal::Type::BaseModel
             # @!attribute project
             #   The name of the project that the new run will be created under.
             #
@@ -324,7 +324,7 @@ module OpenAI
             #     "openai/finetune", "openai/{base-model}", "openai/{ftjob-abcdef}".
             #
             #   @return [Array<String>, nil]
-            optional :tags, OpenAI::ArrayOf[String]
+            optional :tags, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -343,11 +343,11 @@ module OpenAI
             #   #
             #   def initialize(project:, entity: nil, name: nil, tags: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
 
-        class Method < OpenAI::BaseModel
+        class Method < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] dpo
           #   Configuration for the DPO fine-tuning method.
           #
@@ -387,10 +387,10 @@ module OpenAI
           #   #
           #   def initialize(dpo: nil, supervised: nil, type: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::FineTuning::JobCreateParams::Method#dpo
-          class Dpo < OpenAI::BaseModel
+          class Dpo < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] hyperparameters
             #   The hyperparameters used for the fine-tuning job.
             #
@@ -409,10 +409,10 @@ module OpenAI
             #   #
             #   def initialize(hyperparameters: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo#hyperparameters
-            class Hyperparameters < OpenAI::BaseModel
+            class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] batch_size
               #   Number of examples in each batch. A larger batch size means that model
               #     parameters are updated less frequently, but with lower variance.
@@ -471,14 +471,14 @@ module OpenAI
               #   #
               #   def initialize(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
               #
               # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#batch_size
               module BatchSize
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 variant const: :auto
 
@@ -494,7 +494,7 @@ module OpenAI
               #
               # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#beta
               module Beta
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 variant const: :auto
 
@@ -510,7 +510,7 @@ module OpenAI
               #
               # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#learning_rate_multiplier
               module LearningRateMultiplier
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 variant const: :auto
 
@@ -526,7 +526,7 @@ module OpenAI
               #
               # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters#n_epochs
               module NEpochs
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 variant const: :auto
 
@@ -540,7 +540,7 @@ module OpenAI
           end
 
           # @see OpenAI::Models::FineTuning::JobCreateParams::Method#supervised
-          class Supervised < OpenAI::BaseModel
+          class Supervised < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] hyperparameters
             #   The hyperparameters used for the fine-tuning job.
             #
@@ -559,10 +559,10 @@ module OpenAI
             #   #
             #   def initialize(hyperparameters: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised#hyperparameters
-            class Hyperparameters < OpenAI::BaseModel
+            class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] batch_size
               #   Number of examples in each batch. A larger batch size means that model
               #     parameters are updated less frequently, but with lower variance.
@@ -608,14 +608,14 @@ module OpenAI
               #   #
               #   def initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
               #
               # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters#batch_size
               module BatchSize
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 variant const: :auto
 
@@ -631,7 +631,7 @@ module OpenAI
               #
               # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters#learning_rate_multiplier
               module LearningRateMultiplier
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 variant const: :auto
 
@@ -647,7 +647,7 @@ module OpenAI
               #
               # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters#n_epochs
               module NEpochs
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 variant const: :auto
 
@@ -664,7 +664,7 @@ module OpenAI
           #
           # @see OpenAI::Models::FineTuning::JobCreateParams::Method#type
           module Type
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             SUPERVISED = :supervised
             DPO = :dpo

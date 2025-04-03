@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class Model < OpenAI::BaseModel
+    class Model < OpenAI::Internal::Type::BaseModel
       # The model identifier, which can be referenced in the API endpoints.
       sig { returns(String) }
       attr_accessor :id

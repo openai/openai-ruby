@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Uploads#complete
-    class UploadCompleteParams < OpenAI::BaseModel
+    class UploadCompleteParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -12,7 +12,7 @@ module OpenAI
       #   The ordered list of Part IDs.
       #
       #   @return [Array<String>]
-      required :part_ids, OpenAI::ArrayOf[String]
+      required :part_ids, OpenAI::Internal::Type::ArrayOf[String]
 
       # @!attribute [r] md5
       #   The optional md5 checksum for the file contents to verify if the bytes uploaded
@@ -32,7 +32,7 @@ module OpenAI
       #   #
       #   def initialize(part_ids:, md5: nil, request_options: {}, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

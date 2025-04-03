@@ -11,7 +11,7 @@ module OpenAI
           top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
         }
 
-      class ChatCompletionTokenLogprob < OpenAI::BaseModel
+      class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
         attr_accessor token: String
 
         attr_accessor bytes: ::Array[Integer]?
@@ -32,7 +32,7 @@ module OpenAI
         type top_logprob =
           { token: String, bytes: ::Array[Integer]?, logprob: Float }
 
-        class TopLogprob < OpenAI::BaseModel
+        class TopLogprob < OpenAI::Internal::Type::BaseModel
           attr_accessor token: String
 
           attr_accessor bytes: ::Array[Integer]?

@@ -5,12 +5,12 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FileSearchToolCallDelta < OpenAI::BaseModel
+          class FileSearchToolCallDelta < OpenAI::Internal::Type::BaseModel
             # @!attribute file_search
             #   For now, this is always going to be an empty object.
             #
             #   @return [Object]
-            required :file_search, OpenAI::Unknown
+            required :file_search, OpenAI::Internal::Type::Unknown
 
             # @!attribute index
             #   The index of the tool call in the tool calls array.
@@ -43,7 +43,7 @@ module OpenAI
             #   #
             #   def initialize(file_search:, index:, id: nil, type: :file_search, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

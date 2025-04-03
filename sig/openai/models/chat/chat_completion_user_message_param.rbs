@@ -10,7 +10,7 @@ module OpenAI
           name: String
         }
 
-      class ChatCompletionUserMessageParam < OpenAI::BaseModel
+      class ChatCompletionUserMessageParam < OpenAI::Internal::Type::BaseModel
         attr_accessor content: OpenAI::Models::Chat::ChatCompletionUserMessageParam::content
 
         attr_accessor role: :user
@@ -31,7 +31,7 @@ module OpenAI
           String | ::Array[OpenAI::Models::Chat::chat_completion_content_part]
 
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::chat_completion_content_part]]
 

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FileSearchToolCall < OpenAI::BaseModel
+          class FileSearchToolCall < OpenAI::Internal::Type::BaseModel
             # @!attribute id
             #   The ID of the tool call object.
             #
@@ -32,10 +32,10 @@ module OpenAI
             #   #
             #   def initialize(id:, file_search:, type: :file_search, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall#file_search
-            class FileSearch < OpenAI::BaseModel
+            class FileSearch < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] ranking_options
               #   The ranking options for the file search.
               #
@@ -52,7 +52,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>, nil]
               optional :results,
-                       -> { OpenAI::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result] }
+                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result] }
 
               # @!parse
               #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>]
@@ -66,10 +66,10 @@ module OpenAI
               #   #
               #   def initialize(ranking_options: nil, results: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch#ranking_options
-              class RankingOptions < OpenAI::BaseModel
+              class RankingOptions < OpenAI::Internal::Type::BaseModel
                 # @!attribute ranker
                 #   The ranker to use for the file search. If not specified will use the `auto`
                 #     ranker.
@@ -93,14 +93,14 @@ module OpenAI
                 #   #
                 #   def initialize(ranker:, score_threshold:, **) = super
 
-                # def initialize: (Hash | OpenAI::BaseModel) -> void
+                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
                 #
                 # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions#ranker
                 module Ranker
-                  extend OpenAI::Enum
+                  extend OpenAI::Internal::Type::Enum
 
                   AUTO = :auto
                   DEFAULT_2024_08_21 = :default_2024_08_21
@@ -113,7 +113,7 @@ module OpenAI
                 end
               end
 
-              class Result < OpenAI::BaseModel
+              class Result < OpenAI::Internal::Type::BaseModel
                 # @!attribute file_id
                 #   The ID of the file that result was found in.
                 #
@@ -139,7 +139,7 @@ module OpenAI
                 #
                 #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>, nil]
                 optional :content,
-                         -> { OpenAI::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content] }
+                         -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content] }
 
                 # @!parse
                 #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>]
@@ -155,9 +155,9 @@ module OpenAI
                 #   #
                 #   def initialize(file_id:, file_name:, score:, content: nil, **) = super
 
-                # def initialize: (Hash | OpenAI::BaseModel) -> void
+                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-                class Content < OpenAI::BaseModel
+                class Content < OpenAI::Internal::Type::BaseModel
                   # @!attribute [r] text
                   #   The text content of the file.
                   #
@@ -185,13 +185,13 @@ module OpenAI
                   #   #
                   #   def initialize(text: nil, type: nil, **) = super
 
-                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
                   # The type of the content.
                   #
                   # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content#type
                   module Type
-                    extend OpenAI::Enum
+                    extend OpenAI::Internal::Type::Enum
 
                     TEXT = :text
 

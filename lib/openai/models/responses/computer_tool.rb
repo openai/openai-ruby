@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ComputerTool < OpenAI::BaseModel
+      class ComputerTool < OpenAI::Internal::Type::BaseModel
         # @!attribute display_height
         #   The height of the computer display.
         #
@@ -39,13 +39,13 @@ module OpenAI
         #   #
         #   def initialize(display_height:, display_width:, environment:, type: :computer_use_preview, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The type of computer environment to control.
         #
         # @see OpenAI::Models::Responses::ComputerTool#environment
         module Environment
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MAC = :mac
           WINDOWS = :windows

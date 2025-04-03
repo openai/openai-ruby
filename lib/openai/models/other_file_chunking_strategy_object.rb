@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class OtherFileChunkingStrategyObject < OpenAI::BaseModel
+    class OtherFileChunkingStrategyObject < OpenAI::Internal::Type::BaseModel
       # @!attribute type
       #   Always `other`.
       #
@@ -18,7 +18,7 @@ module OpenAI
       #   #
       #   def initialize(type: :other, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

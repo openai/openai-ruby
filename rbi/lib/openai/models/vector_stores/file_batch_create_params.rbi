@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
-      class FileBatchCreateParams < OpenAI::BaseModel
+      class FileBatchCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -39,7 +39,7 @@ module OpenAI
           params(
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             )
           )
@@ -53,10 +53,10 @@ module OpenAI
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -81,7 +81,7 @@ module OpenAI
         end
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, Float, T::Boolean]) }
           def self.variants

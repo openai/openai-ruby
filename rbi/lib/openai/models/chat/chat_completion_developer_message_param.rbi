@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionDeveloperMessageParam < OpenAI::BaseModel
+      class ChatCompletionDeveloperMessageParam < OpenAI::Internal::Type::BaseModel
         # The contents of the developer message.
         sig { returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])) }
         attr_accessor :content
@@ -27,7 +27,7 @@ module OpenAI
           params(
             content: T.any(
               String,
-              T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Internal::Util::AnyHash)]
+              T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Internal::AnyHash)]
             ),
             name: String,
             role: Symbol
@@ -52,7 +52,7 @@ module OpenAI
 
         # The contents of the developer message.
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
           def self.variants
@@ -60,7 +60,7 @@ module OpenAI
 
           ChatCompletionContentPartTextArray =
             T.let(
-              OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText],
+              OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText],
               OpenAI::Internal::Type::Converter
             )
         end

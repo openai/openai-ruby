@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class FilePathAnnotation < OpenAI::BaseModel
+        class FilePathAnnotation < OpenAI::Internal::Type::BaseModel
           # @!attribute end_index
           #
           #   @return [Integer]
@@ -44,10 +44,10 @@ module OpenAI
           #   #
           #   def initialize(end_index:, file_path:, start_index:, text:, type: :file_path, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::Threads::FilePathAnnotation#file_path
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the file that was generated.
             #
@@ -59,7 +59,7 @@ module OpenAI
             #   #
             #   def initialize(file_id:, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

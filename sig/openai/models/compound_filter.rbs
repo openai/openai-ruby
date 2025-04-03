@@ -6,7 +6,7 @@ module OpenAI
         type: OpenAI::Models::CompoundFilter::type_
       }
 
-    class CompoundFilter < OpenAI::BaseModel
+    class CompoundFilter < OpenAI::Internal::Type::BaseModel
       attr_accessor filters: ::Array[OpenAI::Models::CompoundFilter::filter]
 
       attr_accessor type: OpenAI::Models::CompoundFilter::type_
@@ -21,7 +21,7 @@ module OpenAI
       type filter = OpenAI::Models::ComparisonFilter | top
 
       module Filter
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [OpenAI::Models::ComparisonFilter, top]
       end
@@ -29,7 +29,7 @@ module OpenAI
       type type_ = :and | :or
 
       module Type
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         AND: :and
         OR: :or

@@ -9,7 +9,7 @@ module OpenAI
           type: :image_url
         }
 
-      class ChatCompletionContentPartImage < OpenAI::BaseModel
+      class ChatCompletionContentPartImage < OpenAI::Internal::Type::BaseModel
         attr_accessor image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL
 
         attr_accessor type: :image_url
@@ -27,7 +27,7 @@ module OpenAI
             detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail
           }
 
-        class ImageURL < OpenAI::BaseModel
+        class ImageURL < OpenAI::Internal::Type::BaseModel
           attr_accessor url: String
 
           attr_reader detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::detail?
@@ -46,7 +46,7 @@ module OpenAI
           type detail = :auto | :low | :high
 
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO: :auto
             LOW: :low

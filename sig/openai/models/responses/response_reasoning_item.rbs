@@ -9,7 +9,7 @@ module OpenAI
           status: OpenAI::Models::Responses::ResponseReasoningItem::status
         }
 
-      class ResponseReasoningItem < OpenAI::BaseModel
+      class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary]
@@ -33,7 +33,7 @@ module OpenAI
 
         type summary = { text: String, type: :summary_text }
 
-        class Summary < OpenAI::BaseModel
+        class Summary < OpenAI::Internal::Type::BaseModel
           attr_accessor text: String
 
           attr_accessor type: :summary_text
@@ -46,7 +46,7 @@ module OpenAI
         type status = :in_progress | :completed | :incomplete
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed

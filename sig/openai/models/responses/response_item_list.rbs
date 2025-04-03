@@ -12,7 +12,7 @@ module OpenAI
           object: :list
         }
 
-      class ResponseItemList < OpenAI::BaseModel
+      class ResponseItemList < OpenAI::Internal::Type::BaseModel
         attr_accessor data: ::Array[OpenAI::Models::Responses::response_item]
 
         attr_accessor first_id: String

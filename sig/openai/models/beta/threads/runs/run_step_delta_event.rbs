@@ -12,7 +12,7 @@ module OpenAI
               object: :"thread.run.step.delta"
             }
 
-          class RunStepDeltaEvent < OpenAI::BaseModel
+          class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
 
             attr_accessor delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta

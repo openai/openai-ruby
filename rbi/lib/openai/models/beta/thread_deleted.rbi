@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class ThreadDeleted < OpenAI::BaseModel
+      class ThreadDeleted < OpenAI::Internal::Type::BaseModel
         sig { returns(String) }
         attr_accessor :id
 

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Messages#list
-        class MessageListParams < OpenAI::BaseModel
+        class MessageListParams < OpenAI::Internal::Type::BaseModel
           # @!parse
           #   extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
@@ -78,12 +78,12 @@ module OpenAI
           #   #
           #   def initialize(after: nil, before: nil, limit: nil, order: nil, run_id: nil, request_options: {}, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
           #   order and `desc` for descending order.
           module Order
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             ASC = :asc
             DESC = :desc

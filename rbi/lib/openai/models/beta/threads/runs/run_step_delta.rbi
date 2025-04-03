@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class RunStepDelta < OpenAI::BaseModel
+          class RunStepDelta < OpenAI::Internal::Type::BaseModel
             # The details of the run step.
             sig do
               returns(
@@ -23,7 +23,7 @@ module OpenAI
               params(
                 step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
                 )
               )
@@ -36,7 +36,7 @@ module OpenAI
               params(
                 step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
                 )
               )
@@ -61,7 +61,7 @@ module OpenAI
 
             # The details of the run step.
             module StepDetails
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               sig do
                 override

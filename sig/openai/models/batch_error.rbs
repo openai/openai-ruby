@@ -3,7 +3,7 @@ module OpenAI
     type batch_error =
       { code: String, line: Integer?, message: String, param: String? }
 
-    class BatchError < OpenAI::BaseModel
+    class BatchError < OpenAI::Internal::Type::BaseModel
       attr_reader code: String?
 
       def code=: (String) -> String

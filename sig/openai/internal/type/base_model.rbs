@@ -7,10 +7,10 @@ module OpenAI
         type known_field =
           { mode: (:coerce | :dump)?, required: bool, nilable: bool }
 
-        def self.known_fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
+        def self.known_fields: -> ::Hash[Symbol, (OpenAI::Internal::Type::BaseModel::known_field
         & { type_fn: (^-> OpenAI::Internal::Type::Converter::input) })]
 
-        def self.fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
+        def self.fields: -> ::Hash[Symbol, (OpenAI::Internal::Type::BaseModel::known_field
         & { type: OpenAI::Internal::Type::Converter::input })]
 
         private def self.add_field: (
@@ -52,7 +52,7 @@ module OpenAI
         def ==: (top other) -> bool
 
         def self.coerce: (
-          OpenAI::BaseModel | ::Hash[top, top] | top value,
+          OpenAI::Internal::Type::BaseModel | ::Hash[top, top] | top value,
           state: OpenAI::Internal::Type::Converter::state
         ) -> (instance | top)
 

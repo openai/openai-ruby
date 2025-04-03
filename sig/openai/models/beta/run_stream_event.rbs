@@ -14,7 +14,7 @@ module OpenAI
         | OpenAI::Models::Beta::RunStreamEvent::ThreadRunExpired
 
       module RunStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         type thread_run_created =
           {
@@ -22,7 +22,7 @@ module OpenAI
             event: :"thread.run.created"
           }
 
-        class ThreadRunCreated < OpenAI::BaseModel
+        class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.created"
@@ -41,7 +41,7 @@ module OpenAI
             event: :"thread.run.queued"
           }
 
-        class ThreadRunQueued < OpenAI::BaseModel
+        class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.queued"
@@ -60,7 +60,7 @@ module OpenAI
             event: :"thread.run.in_progress"
           }
 
-        class ThreadRunInProgress < OpenAI::BaseModel
+        class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.in_progress"
@@ -79,7 +79,7 @@ module OpenAI
             event: :"thread.run.requires_action"
           }
 
-        class ThreadRunRequiresAction < OpenAI::BaseModel
+        class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.requires_action"
@@ -98,7 +98,7 @@ module OpenAI
             event: :"thread.run.completed"
           }
 
-        class ThreadRunCompleted < OpenAI::BaseModel
+        class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.completed"
@@ -117,7 +117,7 @@ module OpenAI
             event: :"thread.run.incomplete"
           }
 
-        class ThreadRunIncomplete < OpenAI::BaseModel
+        class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.incomplete"
@@ -136,7 +136,7 @@ module OpenAI
             event: :"thread.run.failed"
           }
 
-        class ThreadRunFailed < OpenAI::BaseModel
+        class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.failed"
@@ -155,7 +155,7 @@ module OpenAI
             event: :"thread.run.cancelling"
           }
 
-        class ThreadRunCancelling < OpenAI::BaseModel
+        class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.cancelling"
@@ -174,7 +174,7 @@ module OpenAI
             event: :"thread.run.cancelled"
           }
 
-        class ThreadRunCancelled < OpenAI::BaseModel
+        class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.cancelled"
@@ -193,7 +193,7 @@ module OpenAI
             event: :"thread.run.expired"
           }
 
-        class ThreadRunExpired < OpenAI::BaseModel
+        class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.expired"

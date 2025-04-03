@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionVerbose < OpenAI::BaseModel
+      class TranscriptionVerbose < OpenAI::Internal::Type::BaseModel
         # @!attribute duration
         #   The duration of the input audio.
         #
@@ -26,7 +26,7 @@ module OpenAI
         #   Segments of the transcribed text and their corresponding details.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionSegment>, nil]
-        optional :segments, -> { OpenAI::ArrayOf[OpenAI::Models::Audio::TranscriptionSegment] }
+        optional :segments, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionSegment] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionSegment>]
@@ -36,7 +36,7 @@ module OpenAI
         #   Extracted words and their corresponding timestamps.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionWord>, nil]
-        optional :words, -> { OpenAI::ArrayOf[OpenAI::Models::Audio::TranscriptionWord] }
+        optional :words, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionWord] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionWord>]
@@ -54,7 +54,7 @@ module OpenAI
         #   #
         #   def initialize(duration:, language:, text:, segments: nil, words: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

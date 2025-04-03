@@ -10,7 +10,7 @@ module OpenAI
           status: OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::status
         }
 
-      class ResponseFunctionToolCallOutputItem < OpenAI::BaseModel
+      class ResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor call_id: String
@@ -38,7 +38,7 @@ module OpenAI
         type status = :in_progress | :completed | :incomplete
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed

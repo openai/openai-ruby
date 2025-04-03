@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class EmbeddingCreateParams < OpenAI::BaseModel
+    class EmbeddingCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -57,7 +57,7 @@ module OpenAI
           dimensions: Integer,
           encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol,
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -89,20 +89,21 @@ module OpenAI
       #   for counting tokens. Some models may also impose a limit on total number of
       #   tokens summed across inputs.
       module Input
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
-        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Internal::Type::Converter)
+        IntegerArray = T.let(OpenAI::Internal::Type::ArrayOf[Integer], OpenAI::Internal::Type::Converter)
 
-        ArrayOfToken2DArray = T.let(
-          OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]],
-          OpenAI::Internal::Type::Converter
-        )
+        ArrayOfToken2DArray =
+          T.let(
+            OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]],
+            OpenAI::Internal::Type::Converter
+          )
       end
 
       # ID of the model to use. You can use the
@@ -111,7 +112,7 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::EmbeddingModel::OrSymbol]) }
         def self.variants
@@ -121,7 +122,7 @@ module OpenAI
       # The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
       module EncodingFormat
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat) }
         OrSymbol =

@@ -8,7 +8,7 @@ module OpenAI
         text: String
       }
 
-    class CompletionChoice < OpenAI::BaseModel
+    class CompletionChoice < OpenAI::Internal::Type::BaseModel
       attr_accessor finish_reason: OpenAI::Models::CompletionChoice::finish_reason
 
       attr_accessor index: Integer
@@ -29,7 +29,7 @@ module OpenAI
       type finish_reason = :stop | :length | :content_filter
 
       module FinishReason
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         STOP: :stop
         LENGTH: :length
@@ -46,7 +46,7 @@ module OpenAI
           top_logprobs: ::Array[::Hash[Symbol, Float]]
         }
 
-      class Logprobs < OpenAI::BaseModel
+      class Logprobs < OpenAI::Internal::Type::BaseModel
         attr_reader text_offset: ::Array[Integer]?
 
         def text_offset=: (::Array[Integer]) -> ::Array[Integer]

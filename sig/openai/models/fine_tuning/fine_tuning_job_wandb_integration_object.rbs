@@ -9,7 +9,7 @@ module OpenAI
           wandb: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration
         }
 
-      class FineTuningJobWandbIntegrationObject < OpenAI::BaseModel
+      class FineTuningJobWandbIntegrationObject < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :wandb
 
         attr_accessor wandb: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration

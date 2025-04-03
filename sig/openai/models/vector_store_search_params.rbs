@@ -10,7 +10,7 @@ module OpenAI
       }
       & OpenAI::Internal::Type::request_parameters
 
-    class VectorStoreSearchParams < OpenAI::BaseModel
+    class VectorStoreSearchParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -50,7 +50,7 @@ module OpenAI
       type query = String | ::Array[String]
 
       module Query
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, ::Array[String]]
 
@@ -63,7 +63,7 @@ module OpenAI
         OpenAI::Models::ComparisonFilter | OpenAI::Models::CompoundFilter
 
       module Filters
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
       end
@@ -74,7 +74,7 @@ module OpenAI
           score_threshold: Float
         }
 
-      class RankingOptions < OpenAI::BaseModel
+      class RankingOptions < OpenAI::Internal::Type::BaseModel
         attr_reader ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker?
 
         def ranker=: (
@@ -95,7 +95,7 @@ module OpenAI
         type ranker = :auto | :"default-2024-11-15"
 
         module Ranker
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           AUTO: :auto
           DEFAULT_2024_11_15: :"default-2024-11-15"

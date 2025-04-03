@@ -14,7 +14,7 @@ module OpenAI
           tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
         }
 
-      class ChatCompletionMessage < OpenAI::BaseModel
+      class ChatCompletionMessage < OpenAI::Internal::Type::BaseModel
         attr_accessor content: String?
 
         attr_accessor refusal: String?
@@ -59,7 +59,7 @@ module OpenAI
             url_citation: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation
           }
 
-        class Annotation < OpenAI::BaseModel
+        class Annotation < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :url_citation
 
           attr_accessor url_citation: OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation
@@ -79,7 +79,7 @@ module OpenAI
               url: String
             }
 
-          class URLCitation < OpenAI::BaseModel
+          class URLCitation < OpenAI::Internal::Type::BaseModel
             attr_accessor end_index: Integer
 
             attr_accessor start_index: Integer
@@ -101,7 +101,7 @@ module OpenAI
 
         type function_call = { arguments: String, name: String }
 
-        class FunctionCall < OpenAI::BaseModel
+        class FunctionCall < OpenAI::Internal::Type::BaseModel
           attr_accessor arguments: String
 
           attr_accessor name: String

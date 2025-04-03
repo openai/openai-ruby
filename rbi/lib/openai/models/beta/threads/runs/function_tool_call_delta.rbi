@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FunctionToolCallDelta < OpenAI::BaseModel
+          class FunctionToolCallDelta < OpenAI::Internal::Type::BaseModel
             # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
             attr_accessor :index
@@ -28,10 +28,7 @@ module OpenAI
 
             sig do
               params(
-                function: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
-                  OpenAI::Internal::Util::AnyHash
-                )
+                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function, OpenAI::Internal::AnyHash)
               )
                 .void
             end
@@ -41,10 +38,7 @@ module OpenAI
               params(
                 index: Integer,
                 id: String,
-                function: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
-                  OpenAI::Internal::Util::AnyHash
-                ),
+                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function, OpenAI::Internal::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -66,7 +60,7 @@ module OpenAI
             def to_hash
             end
 
-            class Function < OpenAI::BaseModel
+            class Function < OpenAI::Internal::Type::BaseModel
               # The arguments passed to the function.
               sig { returns(T.nilable(String)) }
               attr_reader :arguments

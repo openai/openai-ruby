@@ -6,7 +6,7 @@ module OpenAI
           type code_interpreter_logs =
             { index: Integer, type: :logs, logs: String }
 
-          class CodeInterpreterLogs < OpenAI::BaseModel
+          class CodeInterpreterLogs < OpenAI::Internal::Type::BaseModel
             attr_accessor index: Integer
 
             attr_accessor type: :logs

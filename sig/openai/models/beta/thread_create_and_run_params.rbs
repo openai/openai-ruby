@@ -21,7 +21,7 @@ module OpenAI
         }
         & OpenAI::Internal::Type::request_parameters
 
-      class ThreadCreateAndRunParams < OpenAI::BaseModel
+      class ThreadCreateAndRunParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -85,7 +85,7 @@ module OpenAI
         type model = String | OpenAI::Models::chat_model
 
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, OpenAI::Models::chat_model]
         end
@@ -97,7 +97,7 @@ module OpenAI
             tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources?
           }
 
-        class Thread < OpenAI::BaseModel
+        class Thread < OpenAI::Internal::Type::BaseModel
           attr_reader messages: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message]?
 
           def messages=: (
@@ -124,7 +124,7 @@ module OpenAI
               metadata: OpenAI::Models::metadata?
             }
 
-          class Message < OpenAI::BaseModel
+          class Message < OpenAI::Internal::Type::BaseModel
             attr_accessor content: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::content
 
             attr_accessor role: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::role
@@ -147,7 +147,7 @@ module OpenAI
               | ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
             module Content
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
 
@@ -160,7 +160,7 @@ module OpenAI
             type role = :user | :assistant
 
             module Role
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               USER: :user
               ASSISTANT: :assistant
@@ -174,7 +174,7 @@ module OpenAI
                 tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
               }
 
-            class Attachment < OpenAI::BaseModel
+            class Attachment < OpenAI::Internal::Type::BaseModel
               attr_reader file_id: String?
 
               def file_id=: (String) -> String
@@ -197,11 +197,11 @@ module OpenAI
                 | OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch
 
               module Tool
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 type file_search = { type: :file_search }
 
-                class FileSearch < OpenAI::BaseModel
+                class FileSearch < OpenAI::Internal::Type::BaseModel
                   attr_accessor type: :file_search
 
                   def initialize: (?type: :file_search) -> void
@@ -220,7 +220,7 @@ module OpenAI
               file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch
             }
 
-          class ToolResources < OpenAI::BaseModel
+          class ToolResources < OpenAI::Internal::Type::BaseModel
             attr_reader code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter?
 
             def code_interpreter=: (
@@ -242,7 +242,7 @@ module OpenAI
 
             type code_interpreter = { file_ids: ::Array[String] }
 
-            class CodeInterpreter < OpenAI::BaseModel
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               attr_reader file_ids: ::Array[String]?
 
               def file_ids=: (::Array[String]) -> ::Array[String]
@@ -258,7 +258,7 @@ module OpenAI
                 vector_stores: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore]
               }
 
-            class FileSearch < OpenAI::BaseModel
+            class FileSearch < OpenAI::Internal::Type::BaseModel
               attr_reader vector_store_ids: ::Array[String]?
 
               def vector_store_ids=: (::Array[String]) -> ::Array[String]
@@ -283,7 +283,7 @@ module OpenAI
                   metadata: OpenAI::Models::metadata?
                 }
 
-              class VectorStore < OpenAI::BaseModel
+              class VectorStore < OpenAI::Internal::Type::BaseModel
                 attr_reader chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy?
 
                 def chunking_strategy=: (
@@ -309,11 +309,11 @@ module OpenAI
                   | OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
 
                 module ChunkingStrategy
-                  extend OpenAI::Union
+                  extend OpenAI::Internal::Type::Union
 
                   type auto = { type: :auto }
 
-                  class Auto < OpenAI::BaseModel
+                  class Auto < OpenAI::Internal::Type::BaseModel
                     attr_accessor type: :auto
 
                     def initialize: (?type: :auto) -> void
@@ -327,7 +327,7 @@ module OpenAI
                       type: :static
                     }
 
-                  class Static < OpenAI::BaseModel
+                  class Static < OpenAI::Internal::Type::BaseModel
                     attr_accessor static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
 
                     attr_accessor type: :static
@@ -345,7 +345,7 @@ module OpenAI
                         max_chunk_size_tokens: Integer
                       }
 
-                    class Static < OpenAI::BaseModel
+                    class Static < OpenAI::Internal::Type::BaseModel
                       attr_accessor chunk_overlap_tokens: Integer
 
                       attr_accessor max_chunk_size_tokens: Integer
@@ -372,7 +372,7 @@ module OpenAI
             file_search: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch
           }
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           attr_reader code_interpreter: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter?
 
           def code_interpreter=: (
@@ -394,7 +394,7 @@ module OpenAI
 
           type code_interpreter = { file_ids: ::Array[String] }
 
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             attr_reader file_ids: ::Array[String]?
 
             def file_ids=: (::Array[String]) -> ::Array[String]
@@ -406,7 +406,7 @@ module OpenAI
 
           type file_search = { vector_store_ids: ::Array[String] }
 
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             attr_reader vector_store_ids: ::Array[String]?
 
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
@@ -423,7 +423,7 @@ module OpenAI
           | OpenAI::Models::Beta::FunctionTool
 
         module Tool
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
         end
@@ -434,7 +434,7 @@ module OpenAI
             last_messages: Integer?
           }
 
-        class TruncationStrategy < OpenAI::BaseModel
+        class TruncationStrategy < OpenAI::Internal::Type::BaseModel
           attr_accessor type: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_
 
           attr_accessor last_messages: Integer?
@@ -449,7 +449,7 @@ module OpenAI
           type type_ = :auto | :last_messages
 
           module Type
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO: :auto
             LAST_MESSAGES: :last_messages

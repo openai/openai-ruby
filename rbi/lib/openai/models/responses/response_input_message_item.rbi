@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputMessageItem < OpenAI::BaseModel
+      class ResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
         # The unique ID of the message input.
         sig { returns(String) }
         attr_accessor :id
@@ -48,7 +48,7 @@ module OpenAI
             content: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseInputText,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseInputImage,
               OpenAI::Models::Responses::ResponseInputFile
             )
@@ -85,7 +85,7 @@ module OpenAI
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         module Role
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role) }
           OrSymbol =
@@ -103,7 +103,7 @@ module OpenAI
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status) }
@@ -123,7 +123,7 @@ module OpenAI
 
         # The type of the message input. Always set to `message`.
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type) }
           OrSymbol =

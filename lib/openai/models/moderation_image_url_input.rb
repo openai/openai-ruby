@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ModerationImageURLInput < OpenAI::BaseModel
+    class ModerationImageURLInput < OpenAI::Internal::Type::BaseModel
       # @!attribute image_url
       #   Contains either an image URL or a data URL for a base64 encoded image.
       #
@@ -23,10 +23,10 @@ module OpenAI
       #   #
       #   def initialize(image_url:, type: :image_url, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # @see OpenAI::Models::ModerationImageURLInput#image_url
-      class ImageURL < OpenAI::BaseModel
+      class ImageURL < OpenAI::Internal::Type::BaseModel
         # @!attribute url
         #   Either a URL of the image or the base64 encoded image data.
         #
@@ -40,7 +40,7 @@ module OpenAI
         #   #
         #   def initialize(url:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

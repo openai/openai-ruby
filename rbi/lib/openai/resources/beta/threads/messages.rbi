@@ -14,7 +14,7 @@ module OpenAI
                 T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::ImageURLContentBlock,
                   OpenAI::Models::Beta::Threads::TextContentBlockParam
                 )
@@ -22,10 +22,10 @@ module OpenAI
               ),
               role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
               attachments: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment, OpenAI::Internal::Util::AnyHash)]
+                T::Array[T.any(OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment, OpenAI::Internal::AnyHash)]
               ),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)
           end
@@ -60,7 +60,7 @@ module OpenAI
             params(
               message_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)
           end
@@ -80,7 +80,7 @@ module OpenAI
               message_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::Message)
           end
@@ -109,7 +109,7 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::MessageListParams::Order::OrSymbol,
               run_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             )
               .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Message])
           end
@@ -144,7 +144,7 @@ module OpenAI
             params(
               message_id: String,
               thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             )
               .returns(OpenAI::Models::Beta::Threads::MessageDeleted)
           end

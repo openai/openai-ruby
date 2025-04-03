@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseRefusalDeltaEvent < OpenAI::BaseModel
+      class ResponseRefusalDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute content_index
         #   The index of the content part that the refusal text is added to.
         #
@@ -45,7 +45,7 @@ module OpenAI
         #   #
         #   def initialize(content_index:, delta:, item_id:, output_index:, type: :"response.refusal.delta", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

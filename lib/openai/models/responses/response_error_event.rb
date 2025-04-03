@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseErrorEvent < OpenAI::BaseModel
+      class ResponseErrorEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute code
         #   The error code.
         #
@@ -38,7 +38,7 @@ module OpenAI
         #   #
         #   def initialize(code:, message:, param:, type: :error, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

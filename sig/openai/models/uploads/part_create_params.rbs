@@ -4,7 +4,7 @@ module OpenAI
       type part_create_params =
         { data: (IO | StringIO) } & OpenAI::Internal::Type::request_parameters
 
-      class PartCreateParams < OpenAI::BaseModel
+      class PartCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

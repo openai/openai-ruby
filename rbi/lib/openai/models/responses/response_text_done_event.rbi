@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseTextDoneEvent < OpenAI::BaseModel
+      class ResponseTextDoneEvent < OpenAI::Internal::Type::BaseModel
         # The index of the content part that the text content is finalized.
         sig { returns(Integer) }
         attr_accessor :content_index

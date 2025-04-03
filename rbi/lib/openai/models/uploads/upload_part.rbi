@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Uploads
-      class UploadPart < OpenAI::BaseModel
+      class UploadPart < OpenAI::Internal::Type::BaseModel
         # The upload Part unique identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         attr_accessor :id

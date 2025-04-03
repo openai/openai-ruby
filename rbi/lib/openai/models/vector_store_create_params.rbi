@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class VectorStoreCreateParams < OpenAI::BaseModel
+    class VectorStoreCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -24,7 +24,7 @@ module OpenAI
         params(
           chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Internal::Util::AnyHash,
+            OpenAI::Internal::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           )
         )
@@ -38,7 +38,7 @@ module OpenAI
 
       sig do
         params(
-          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash)
+          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::AnyHash)
         )
           .void
       end
@@ -73,14 +73,14 @@ module OpenAI
         params(
           chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Internal::Util::AnyHash,
+            OpenAI::Internal::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           ),
-          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash),
+          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::AnyHash),
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -113,7 +113,7 @@ module OpenAI
       def to_hash
       end
 
-      class ExpiresAfter < OpenAI::BaseModel
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         #   `last_active_at`.
         sig { returns(Symbol) }

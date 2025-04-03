@@ -7,7 +7,7 @@ module OpenAI
         value: OpenAI::Models::ComparisonFilter::value
       }
 
-    class ComparisonFilter < OpenAI::BaseModel
+    class ComparisonFilter < OpenAI::Internal::Type::BaseModel
       attr_accessor key: String
 
       attr_accessor type: OpenAI::Models::ComparisonFilter::type_
@@ -25,7 +25,7 @@ module OpenAI
       type type_ = :eq | :ne | :gt | :gte | :lt | :lte
 
       module Type
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         EQ: :eq
         NE: :ne
@@ -40,7 +40,7 @@ module OpenAI
       type value = String | Float | bool
 
       module Value
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, Float, bool]
       end

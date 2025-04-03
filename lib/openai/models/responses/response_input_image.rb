@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputImage < OpenAI::BaseModel
+      class ResponseInputImage < OpenAI::Internal::Type::BaseModel
         # @!attribute detail
         #   The detail level of the image to be sent to the model. One of `high`, `low`, or
         #     `auto`. Defaults to `auto`.
@@ -41,14 +41,14 @@ module OpenAI
         #   #
         #   def initialize(detail:, file_id: nil, image_url: nil, type: :input_image, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
         #
         # @see OpenAI::Models::Responses::ResponseInputImage#detail
         module Detail
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           HIGH = :high
           LOW = :low

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionToolCallOutputItem < OpenAI::BaseModel
+      class ResponseFunctionToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         # The unique ID of the function call tool output.
         sig { returns(String) }
         attr_accessor :id
@@ -59,7 +59,7 @@ module OpenAI
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status) }

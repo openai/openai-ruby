@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class FileCitationAnnotation < OpenAI::BaseModel
+        class FileCitationAnnotation < OpenAI::Internal::Type::BaseModel
           sig { returns(Integer) }
           attr_accessor :end_index
 
@@ -13,10 +13,7 @@ module OpenAI
 
           sig do
             params(
-              file_citation: T.any(
-                OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
-                OpenAI::Internal::Util::AnyHash
-              )
+              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -39,10 +36,7 @@ module OpenAI
           sig do
             params(
               end_index: Integer,
-              file_citation: T.any(
-                OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
-                OpenAI::Internal::Util::AnyHash
-              ),
+              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Internal::AnyHash),
               start_index: Integer,
               text: String,
               type: Symbol
@@ -67,7 +61,7 @@ module OpenAI
           def to_hash
           end
 
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             # The ID of the specific File the citation is from.
             sig { returns(String) }
             attr_accessor :file_id

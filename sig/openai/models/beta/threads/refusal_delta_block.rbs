@@ -5,7 +5,7 @@ module OpenAI
         type refusal_delta_block =
           { index: Integer, type: :refusal, refusal: String }
 
-        class RefusalDeltaBlock < OpenAI::BaseModel
+        class RefusalDeltaBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor index: Integer
 
           attr_accessor type: :refusal

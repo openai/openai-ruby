@@ -10,7 +10,7 @@ module OpenAI
           type: :"response.output_text.done"
         }
 
-      class ResponseTextDoneEvent < OpenAI::BaseModel
+      class ResponseTextDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor content_index: Integer
 
         attr_accessor item_id: String

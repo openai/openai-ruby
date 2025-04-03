@@ -15,7 +15,7 @@ module OpenAI
         | OpenAI::Models::Responses::ResponseInputItem::ItemReference
 
       module ResponseInputItem
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         type message =
           {
@@ -25,7 +25,7 @@ module OpenAI
             type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
           }
 
-        class Message < OpenAI::BaseModel
+        class Message < OpenAI::Internal::Type::BaseModel
           attr_accessor content: OpenAI::Models::Responses::response_input_message_content_list
 
           attr_accessor role: OpenAI::Models::Responses::ResponseInputItem::Message::role
@@ -54,7 +54,7 @@ module OpenAI
           type role = :user | :system | :developer
 
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             USER: :user
             SYSTEM: :system
@@ -66,7 +66,7 @@ module OpenAI
           type status = :in_progress | :completed | :incomplete
 
           module Status
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             IN_PROGRESS: :in_progress
             COMPLETED: :completed
@@ -78,7 +78,7 @@ module OpenAI
           type type_ = :message
 
           module Type
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             MESSAGE: :message
 
@@ -96,7 +96,7 @@ module OpenAI
             status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status
           }
 
-        class ComputerCallOutput < OpenAI::BaseModel
+        class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
 
           attr_accessor output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot
@@ -133,7 +133,7 @@ module OpenAI
           type acknowledged_safety_check =
             { id: String, code: String, message: String }
 
-          class AcknowledgedSafetyCheck < OpenAI::BaseModel
+          class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
 
             attr_accessor code: String
@@ -148,7 +148,7 @@ module OpenAI
           type status = :in_progress | :completed | :incomplete
 
           module Status
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             IN_PROGRESS: :in_progress
             COMPLETED: :completed
@@ -167,7 +167,7 @@ module OpenAI
             status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status
           }
 
-        class FunctionCallOutput < OpenAI::BaseModel
+        class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
 
           attr_accessor output: String
@@ -197,7 +197,7 @@ module OpenAI
           type status = :in_progress | :completed | :incomplete
 
           module Status
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             IN_PROGRESS: :in_progress
             COMPLETED: :completed
@@ -209,7 +209,7 @@ module OpenAI
 
         type item_reference = { id: String, type: :item_reference }
 
-        class ItemReference < OpenAI::BaseModel
+        class ItemReference < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor type: :item_reference

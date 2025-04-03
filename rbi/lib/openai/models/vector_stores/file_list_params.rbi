@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
-      class FileListParams < OpenAI::BaseModel
+      class FileListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -57,7 +57,7 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -82,7 +82,7 @@ module OpenAI
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         module Filter
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Filter) }
           OrSymbol =
@@ -101,7 +101,7 @@ module OpenAI
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
         module Order
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Order) }
           OrSymbol =

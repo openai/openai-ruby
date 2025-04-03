@@ -9,7 +9,7 @@ module OpenAI
           type: :content
         }
 
-      class ChatCompletionPredictionContent < OpenAI::BaseModel
+      class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
         attr_accessor content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content
 
         attr_accessor type: :content
@@ -25,7 +25,7 @@ module OpenAI
           String | ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
 
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
 

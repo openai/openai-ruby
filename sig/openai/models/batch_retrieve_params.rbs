@@ -3,7 +3,7 @@ module OpenAI
     type batch_retrieve_params =
       {  } & OpenAI::Internal::Type::request_parameters
 
-    class BatchRetrieveParams < OpenAI::BaseModel
+    class BatchRetrieveParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 

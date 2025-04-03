@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class MessageDeltaEvent < OpenAI::BaseModel
+        class MessageDeltaEvent < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The identifier of the message, which can be referenced in API endpoints.
           #
@@ -33,7 +33,7 @@ module OpenAI
           #   #
           #   def initialize(id:, delta:, object: :"thread.message.delta", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

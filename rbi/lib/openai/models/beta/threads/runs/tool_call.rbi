@@ -7,7 +7,7 @@ module OpenAI
         module Runs
           # Details of the Code Interpreter tool call the run step was involved in.
           module ToolCall
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             sig do
               override

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCompletedEvent < OpenAI::BaseModel
+      class ResponseCompletedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute response
         #   Properties of the completed response.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(response:, type: :"response.completed", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

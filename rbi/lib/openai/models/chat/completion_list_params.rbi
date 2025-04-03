@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class CompletionListParams < OpenAI::BaseModel
+      class CompletionListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -49,7 +49,7 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -75,7 +75,7 @@ module OpenAI
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         #   `desc` for descending order. Defaults to `asc`.
         module Order
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionListParams::Order) }
           OrSymbol =

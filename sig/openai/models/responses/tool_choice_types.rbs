@@ -4,7 +4,7 @@ module OpenAI
       type tool_choice_types =
         { type: OpenAI::Models::Responses::ToolChoiceTypes::type_ }
 
-      class ToolChoiceTypes < OpenAI::BaseModel
+      class ToolChoiceTypes < OpenAI::Internal::Type::BaseModel
         attr_accessor type: OpenAI::Models::Responses::ToolChoiceTypes::type_
 
         def initialize: (
@@ -20,7 +20,7 @@ module OpenAI
           | :web_search_preview_2025_03_11
 
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           FILE_SEARCH: :file_search
           WEB_SEARCH_PREVIEW: :web_search_preview

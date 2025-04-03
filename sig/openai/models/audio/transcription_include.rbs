@@ -4,7 +4,7 @@ module OpenAI
       type transcription_include = :logprobs
 
       module TranscriptionInclude
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         LOGPROBS: :logprobs
 

@@ -7,7 +7,7 @@ module OpenAI
           message: String
         }
 
-      class ResponseError < OpenAI::BaseModel
+      class ResponseError < OpenAI::Internal::Type::BaseModel
         attr_accessor code: OpenAI::Models::Responses::ResponseError::code
 
         attr_accessor message: String
@@ -40,7 +40,7 @@ module OpenAI
           | :image_file_not_found
 
         module Code
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           SERVER_ERROR: :server_error
           RATE_LIMIT_EXCEEDED: :rate_limit_exceeded

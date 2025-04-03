@@ -14,7 +14,7 @@ module OpenAI
           type: OpenAI::Models::FineTuning::FineTuningJobEvent::type_
         }
 
-      class FineTuningJobEvent < OpenAI::BaseModel
+      class FineTuningJobEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor created_at: Integer
@@ -50,7 +50,7 @@ module OpenAI
         type level = :info | :warn | :error
 
         module Level
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           INFO: :info
           WARN: :warn
@@ -62,7 +62,7 @@ module OpenAI
         type type_ = :message | :metrics
 
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MESSAGE: :message
           METRICS: :metrics

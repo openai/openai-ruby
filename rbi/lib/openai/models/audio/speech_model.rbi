@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Audio
       module SpeechModel
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechModel) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::SpeechModel::TaggedSymbol) }

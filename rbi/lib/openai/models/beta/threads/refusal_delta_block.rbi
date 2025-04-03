@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class RefusalDeltaBlock < OpenAI::BaseModel
+        class RefusalDeltaBlock < OpenAI::Internal::Type::BaseModel
           # The index of the refusal part in the message.
           sig { returns(Integer) }
           attr_accessor :index

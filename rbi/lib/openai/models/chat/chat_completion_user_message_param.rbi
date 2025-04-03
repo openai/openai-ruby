@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionUserMessageParam < OpenAI::BaseModel
+      class ChatCompletionUserMessageParam < OpenAI::Internal::Type::BaseModel
         # The contents of the user message.
         sig do
           returns(
@@ -43,7 +43,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Chat::ChatCompletionContentPartImage,
                 OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
                 OpenAI::Models::Chat::ChatCompletionContentPart::File
@@ -83,7 +83,7 @@ module OpenAI
 
         # The contents of the user message.
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig do
             override
@@ -106,7 +106,7 @@ module OpenAI
 
           ChatCompletionContentPartArray =
             T.let(
-              OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionContentPart],
+              OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionContentPart],
               OpenAI::Internal::Type::Converter
             )
         end

@@ -21,7 +21,7 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Unknown
+        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::Unknown
 
         class << self
           # @api private

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseComputerToolCallOutputScreenshot < OpenAI::BaseModel
+      class ResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
         # Specifies the event type. For a computer screenshot, this property is always set
         #   to `computer_screenshot`.
         sig { returns(Symbol) }

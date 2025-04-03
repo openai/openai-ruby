@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Embeddings#create
-    class EmbeddingCreateParams < OpenAI::BaseModel
+    class EmbeddingCreateParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -75,7 +75,7 @@ module OpenAI
       #   #
       #   def initialize(input:, model:, dimensions: nil, encoding_format: nil, user: nil, request_options: {}, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # Input text to embed, encoded as a string or array of tokens. To embed multiple
       #   inputs in a single request, pass an array of strings or array of token arrays.
@@ -86,7 +86,7 @@ module OpenAI
       #   for counting tokens. Some models may also impose a limit on total number of
       #   tokens summed across inputs.
       module Input
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # The string that will be turned into an embedding.
         variant String
@@ -104,11 +104,11 @@ module OpenAI
         #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
         #   def self.variants; end
 
-        StringArray = OpenAI::ArrayOf[String]
+        StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
-        IntegerArray = OpenAI::ArrayOf[Integer]
+        IntegerArray = OpenAI::Internal::Type::ArrayOf[Integer]
 
-        ArrayOfToken2DArray = OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]]
+        ArrayOfToken2DArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]]
       end
 
       # ID of the model to use. You can use the
@@ -117,7 +117,7 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
@@ -132,7 +132,7 @@ module OpenAI
       # The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
       module EncodingFormat
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         FLOAT = :float
         BASE64 = :base64

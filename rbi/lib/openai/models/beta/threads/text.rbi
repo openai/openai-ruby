@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class Text < OpenAI::BaseModel
+        class Text < OpenAI::Internal::Type::BaseModel
           sig do
             returns(
               T::Array[
@@ -26,7 +26,7 @@ module OpenAI
               annotations: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Beta::Threads::FilePathAnnotation
               )
               ],

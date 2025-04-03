@@ -33,7 +33,7 @@ module OpenAI
             top_p: Float?
           }
 
-        class Run < OpenAI::BaseModel
+        class Run < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor assistant_id: String
@@ -125,7 +125,7 @@ module OpenAI
               reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason
             }
 
-          class IncompleteDetails < OpenAI::BaseModel
+          class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             attr_reader reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::reason?
 
             def reason=: (
@@ -141,7 +141,7 @@ module OpenAI
             type reason = :max_completion_tokens | :max_prompt_tokens
 
             module Reason
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               MAX_COMPLETION_TOKENS: :max_completion_tokens
               MAX_PROMPT_TOKENS: :max_prompt_tokens
@@ -156,7 +156,7 @@ module OpenAI
               message: String
             }
 
-          class LastError < OpenAI::BaseModel
+          class LastError < OpenAI::Internal::Type::BaseModel
             attr_accessor code: OpenAI::Models::Beta::Threads::Run::LastError::code
 
             attr_accessor message: String
@@ -171,7 +171,7 @@ module OpenAI
             type code = :server_error | :rate_limit_exceeded | :invalid_prompt
 
             module Code
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               SERVER_ERROR: :server_error
               RATE_LIMIT_EXCEEDED: :rate_limit_exceeded
@@ -187,7 +187,7 @@ module OpenAI
               type: :submit_tool_outputs
             }
 
-          class RequiredAction < OpenAI::BaseModel
+          class RequiredAction < OpenAI::Internal::Type::BaseModel
             attr_accessor submit_tool_outputs: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs
 
             attr_accessor type: :submit_tool_outputs
@@ -204,7 +204,7 @@ module OpenAI
                 tool_calls: ::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]
               }
 
-            class SubmitToolOutputs < OpenAI::BaseModel
+            class SubmitToolOutputs < OpenAI::Internal::Type::BaseModel
               attr_accessor tool_calls: ::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]
 
               def initialize: (
@@ -221,7 +221,7 @@ module OpenAI
               last_messages: Integer?
             }
 
-          class TruncationStrategy < OpenAI::BaseModel
+          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
             attr_accessor type: OpenAI::Models::Beta::Threads::Run::TruncationStrategy::type_
 
             attr_accessor last_messages: Integer?
@@ -236,7 +236,7 @@ module OpenAI
             type type_ = :auto | :last_messages
 
             module Type
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               AUTO: :auto
               LAST_MESSAGES: :last_messages
@@ -252,7 +252,7 @@ module OpenAI
               total_tokens: Integer
             }
 
-          class Usage < OpenAI::BaseModel
+          class Usage < OpenAI::Internal::Type::BaseModel
             attr_accessor completion_tokens: Integer
 
             attr_accessor prompt_tokens: Integer

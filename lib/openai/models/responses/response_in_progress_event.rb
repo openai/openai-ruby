@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInProgressEvent < OpenAI::BaseModel
+      class ResponseInProgressEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute response
         #   The response that is in progress.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(response:, type: :"response.in_progress", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

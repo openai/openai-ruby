@@ -11,7 +11,7 @@ module OpenAI
           tags: ::Array[String]
         }
 
-      class FineTuningJobWandbIntegration < OpenAI::BaseModel
+      class FineTuningJobWandbIntegration < OpenAI::Internal::Type::BaseModel
         attr_accessor project: String
 
         attr_accessor entity: String?

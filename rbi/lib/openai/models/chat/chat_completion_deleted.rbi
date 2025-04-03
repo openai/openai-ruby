@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionDeleted < OpenAI::BaseModel
+      class ChatCompletionDeleted < OpenAI::Internal::Type::BaseModel
         # The ID of the chat completion that was deleted.
         sig { returns(String) }
         attr_accessor :id

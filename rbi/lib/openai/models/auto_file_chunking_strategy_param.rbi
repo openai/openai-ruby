@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class AutoFileChunkingStrategyParam < OpenAI::BaseModel
+    class AutoFileChunkingStrategyParam < OpenAI::Internal::Type::BaseModel
       # Always `auto`.
       sig { returns(Symbol) }
       attr_accessor :type

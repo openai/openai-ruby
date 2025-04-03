@@ -7,7 +7,7 @@ module OpenAI
         results: ::Array[OpenAI::Models::Moderation]
       }
 
-    class ModerationCreateResponse < OpenAI::BaseModel
+    class ModerationCreateResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor model: String

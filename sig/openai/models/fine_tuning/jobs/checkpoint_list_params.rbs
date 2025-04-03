@@ -6,7 +6,7 @@ module OpenAI
           { after: String, limit: Integer }
           & OpenAI::Internal::Type::request_parameters
 
-        class CheckpointListParams < OpenAI::BaseModel
+        class CheckpointListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 

@@ -7,7 +7,7 @@ module OpenAI
           type: :"response.in_progress"
         }
 
-      class ResponseInProgressEvent < OpenAI::BaseModel
+      class ResponseInProgressEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor response: OpenAI::Models::Responses::Response
 
         attr_accessor type: :"response.in_progress"

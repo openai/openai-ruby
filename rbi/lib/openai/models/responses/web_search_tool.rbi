@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class WebSearchTool < OpenAI::BaseModel
+      class WebSearchTool < OpenAI::Internal::Type::BaseModel
         # The type of the web search tool. One of:
         #
         #   - `web_search_preview`
@@ -24,7 +24,7 @@ module OpenAI
 
         sig do
           params(
-            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Internal::Util::AnyHash))
+            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Internal::AnyHash))
           )
             .void
         end
@@ -37,7 +37,7 @@ module OpenAI
           params(
             type: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol,
             search_context_size: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol,
-            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Internal::Util::AnyHash))
+            user_location: T.nilable(T.any(OpenAI::Models::Responses::WebSearchTool::UserLocation, OpenAI::Internal::AnyHash))
           )
             .returns(T.attached_class)
         end
@@ -62,7 +62,7 @@ module OpenAI
         #   - `web_search_preview`
         #   - `web_search_preview_2025_03_11`
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::WebSearchTool::Type) }
           OrSymbol =
@@ -81,7 +81,7 @@ module OpenAI
         # High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         module SearchContextSize
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize) }
@@ -97,7 +97,7 @@ module OpenAI
           end
         end
 
-        class UserLocation < OpenAI::BaseModel
+        class UserLocation < OpenAI::Internal::Type::BaseModel
           # The type of location approximation. Always `approximate`.
           sig { returns(Symbol) }
           attr_accessor :type

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class TextContentBlockParam < OpenAI::BaseModel
+        class TextContentBlockParam < OpenAI::Internal::Type::BaseModel
           # @!attribute text
           #   Text content to be sent to the model
           #
@@ -25,7 +25,7 @@ module OpenAI
           #   #
           #   def initialize(text:, type: :text, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

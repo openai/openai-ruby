@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class RunStepDeltaMessageDelta < OpenAI::BaseModel
+          class RunStepDeltaMessageDelta < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Always `message_creation`.
             #
@@ -30,10 +30,10 @@ module OpenAI
             #   #
             #   def initialize(message_creation: nil, type: :message_creation, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta#message_creation
-            class MessageCreation < OpenAI::BaseModel
+            class MessageCreation < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] message_id
               #   The ID of the message that was created by this run step.
               #
@@ -49,7 +49,7 @@ module OpenAI
               #   #
               #   def initialize(message_id: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
         end

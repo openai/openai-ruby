@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputMessage < OpenAI::BaseModel
+      class ResponseOutputMessage < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the output message.
         #
@@ -15,7 +15,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
         required :content,
-                 -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputMessage::Content] }
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputMessage::Content] }
 
         # @!attribute role
         #   The role of the output message. Always `assistant`.
@@ -47,11 +47,11 @@ module OpenAI
         #   #
         #   def initialize(id:, content:, status:, role: :assistant, type: :message, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # A text output from the model.
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
@@ -71,7 +71,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseOutputMessage#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed

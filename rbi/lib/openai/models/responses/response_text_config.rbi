@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseTextConfig < OpenAI::BaseModel
+      class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
         # An object specifying the format that the model must output.
         #
         #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
@@ -34,7 +34,7 @@ module OpenAI
           params(
             format_: T.any(
               OpenAI::Models::ResponseFormatText,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
               OpenAI::Models::ResponseFormatJSONObject
             )
@@ -52,7 +52,7 @@ module OpenAI
           params(
             format_: T.any(
               OpenAI::Models::ResponseFormatText,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
               OpenAI::Models::ResponseFormatJSONObject
             )

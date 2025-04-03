@@ -6,12 +6,12 @@ module OpenAI
         | OpenAI::Models::Beta::AssistantToolChoice
 
       module AssistantToolChoiceOption
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         type auto = :none | :auto | :required
 
         module Auto
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           NONE: :none
           AUTO: :auto

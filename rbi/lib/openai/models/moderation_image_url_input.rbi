@@ -2,17 +2,12 @@
 
 module OpenAI
   module Models
-    class ModerationImageURLInput < OpenAI::BaseModel
+    class ModerationImageURLInput < OpenAI::Internal::Type::BaseModel
       # Contains either an image URL or a data URL for a base64 encoded image.
       sig { returns(OpenAI::Models::ModerationImageURLInput::ImageURL) }
       attr_reader :image_url
 
-      sig do
-        params(
-          image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Internal::Util::AnyHash)
-        )
-          .void
-      end
+      sig { params(image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Internal::AnyHash)).void }
       attr_writer :image_url
 
       # Always `image_url`.
@@ -22,7 +17,7 @@ module OpenAI
       # An object describing an image to classify.
       sig do
         params(
-          image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Internal::Util::AnyHash),
+          image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Internal::AnyHash),
           type: Symbol
         )
           .returns(T.attached_class)
@@ -34,7 +29,7 @@ module OpenAI
       def to_hash
       end
 
-      class ImageURL < OpenAI::BaseModel
+      class ImageURL < OpenAI::Internal::Type::BaseModel
         # Either a URL of the image or the base64 encoded image data.
         sig { returns(String) }
         attr_accessor :url

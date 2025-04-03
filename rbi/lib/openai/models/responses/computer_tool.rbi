@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ComputerTool < OpenAI::BaseModel
+      class ComputerTool < OpenAI::Internal::Type::BaseModel
         # The height of the computer display.
         sig { returns(Float) }
         attr_accessor :display_height
@@ -50,7 +50,7 @@ module OpenAI
 
         # The type of computer environment to control.
         module Environment
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ComputerTool::Environment) }
           OrSymbol =

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute code
         #   The final code snippet output by the code interpreter.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(code:, output_index:, type: :"response.code_interpreter_call.code.done", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

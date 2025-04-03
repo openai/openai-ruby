@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class FileSearchTool < OpenAI::BaseModel
+      class FileSearchTool < OpenAI::Internal::Type::BaseModel
         # The type of the file search tool. Always `file_search`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -18,7 +18,7 @@ module OpenAI
 
         sig do
           params(
-            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter)
+            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter)
           )
             .void
         end
@@ -38,7 +38,7 @@ module OpenAI
 
         sig do
           params(
-            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::Util::AnyHash)
+            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -50,9 +50,9 @@ module OpenAI
         sig do
           params(
             vector_store_ids: T::Array[String],
-            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter),
+            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter),
             max_num_results: Integer,
-            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::Util::AnyHash),
+            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)
@@ -83,14 +83,14 @@ module OpenAI
 
         # A filter to apply based on file attributes.
         module Filters
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
           def self.variants
           end
         end
 
-        class RankingOptions < OpenAI::BaseModel
+        class RankingOptions < OpenAI::Internal::Type::BaseModel
           # The ranker to use for the file search.
           sig { returns(T.nilable(OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)) }
           attr_reader :ranker
@@ -129,7 +129,7 @@ module OpenAI
 
           # The ranker to use for the file search.
           module Ranker
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker) }

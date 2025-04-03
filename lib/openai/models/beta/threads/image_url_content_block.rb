@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class ImageURLContentBlock < OpenAI::BaseModel
+        class ImageURLContentBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute image_url
           #
           #   @return [OpenAI::Models::Beta::Threads::ImageURL]
@@ -24,7 +24,7 @@ module OpenAI
           #   #
           #   def initialize(image_url:, type: :image_url, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

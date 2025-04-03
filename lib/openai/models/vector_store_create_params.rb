@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::VectorStores#create
-    class VectorStoreCreateParams < OpenAI::BaseModel
+    class VectorStoreCreateParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -35,7 +35,7 @@ module OpenAI
       #     files.
       #
       #   @return [Array<String>, nil]
-      optional :file_ids, OpenAI::ArrayOf[String]
+      optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
       # @!parse
       #   # @return [Array<String>]
@@ -50,7 +50,7 @@ module OpenAI
       #     a maximum length of 512 characters.
       #
       #   @return [Hash{Symbol=>String}, nil]
-      optional :metadata, OpenAI::HashOf[String], nil?: true
+      optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
       # @!attribute [r] name
       #   The name of the vector store.
@@ -82,9 +82,9 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-      class ExpiresAfter < OpenAI::BaseModel
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # @!attribute anchor
         #   Anchor timestamp after which the expiration policy applies. Supported anchors:
         #     `last_active_at`.
@@ -106,7 +106,7 @@ module OpenAI
         #   #
         #   def initialize(days:, anchor: :last_active_at, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

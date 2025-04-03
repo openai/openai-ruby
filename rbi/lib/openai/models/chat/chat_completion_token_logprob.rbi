@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionTokenLogprob < OpenAI::BaseModel
+      class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
         # The token.
         sig { returns(String) }
         attr_accessor :token
@@ -32,7 +32,7 @@ module OpenAI
             token: String,
             bytes: T.nilable(T::Array[Integer]),
             logprob: Float,
-            top_logprobs: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob, OpenAI::Internal::Util::AnyHash)]
+            top_logprobs: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob, OpenAI::Internal::AnyHash)]
           )
             .returns(T.attached_class)
         end
@@ -53,7 +53,7 @@ module OpenAI
         def to_hash
         end
 
-        class TopLogprob < OpenAI::BaseModel
+        class TopLogprob < OpenAI::Internal::Type::BaseModel
           # The token.
           sig { returns(String) }
           attr_accessor :token

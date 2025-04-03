@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class RunStepDeltaEvent < OpenAI::BaseModel
+          class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
             # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }
             attr_accessor :id
@@ -14,10 +14,7 @@ module OpenAI
             sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDelta) }
             attr_reader :delta
 
-            sig do
-              params(delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::Util::AnyHash))
-                .void
-            end
+            sig { params(delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::AnyHash)).void }
             attr_writer :delta
 
             # The object type, which is always `thread.run.step.delta`.
@@ -29,7 +26,7 @@ module OpenAI
             sig do
               params(
                 id: String,
-                delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::Util::AnyHash),
+                delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::AnyHash),
                 object: Symbol
               )
                 .returns(T.attached_class)

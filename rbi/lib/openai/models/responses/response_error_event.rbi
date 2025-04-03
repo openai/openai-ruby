@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseErrorEvent < OpenAI::BaseModel
+      class ResponseErrorEvent < OpenAI::Internal::Type::BaseModel
         # The error code.
         sig { returns(T.nilable(String)) }
         attr_accessor :code

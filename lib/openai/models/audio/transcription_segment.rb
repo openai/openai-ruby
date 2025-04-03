@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionSegment < OpenAI::BaseModel
+      class TranscriptionSegment < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   Unique identifier of the segment.
         #
@@ -65,7 +65,7 @@ module OpenAI
         #   Array of token IDs for the text content.
         #
         #   @return [Array<Integer>]
-        required :tokens, OpenAI::ArrayOf[Integer]
+        required :tokens, OpenAI::Internal::Type::ArrayOf[Integer]
 
         # @!parse
         #   # @param id [Integer]
@@ -95,7 +95,7 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

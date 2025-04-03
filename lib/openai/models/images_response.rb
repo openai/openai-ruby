@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Images#create_variation
-    class ImagesResponse < OpenAI::BaseModel
+    class ImagesResponse < OpenAI::Internal::Type::BaseModel
       # @!attribute created
       #
       #   @return [Integer]
@@ -12,7 +12,7 @@ module OpenAI
       # @!attribute data
       #
       #   @return [Array<OpenAI::Models::Image>]
-      required :data, -> { OpenAI::ArrayOf[OpenAI::Models::Image] }
+      required :data, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image] }
 
       # @!parse
       #   # @param created [Integer]
@@ -20,7 +20,7 @@ module OpenAI
       #   #
       #   def initialize(created:, data:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

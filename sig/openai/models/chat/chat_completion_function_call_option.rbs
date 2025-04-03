@@ -5,7 +5,7 @@ module OpenAI
     module Chat
       type chat_completion_function_call_option = { name: String }
 
-      class ChatCompletionFunctionCallOption < OpenAI::BaseModel
+      class ChatCompletionFunctionCallOption < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
 
         def initialize: (name: String) -> void

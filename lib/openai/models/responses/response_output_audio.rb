@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputAudio < OpenAI::BaseModel
+      class ResponseOutputAudio < OpenAI::Internal::Type::BaseModel
         # @!attribute data
         #   Base64-encoded audio data from the model.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(data:, transcript:, type: :output_audio, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

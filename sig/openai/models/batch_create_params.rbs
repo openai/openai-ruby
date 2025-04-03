@@ -9,7 +9,7 @@ module OpenAI
       }
       & OpenAI::Internal::Type::request_parameters
 
-    class BatchCreateParams < OpenAI::BaseModel
+    class BatchCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -34,7 +34,7 @@ module OpenAI
       type completion_window = :"24h"
 
       module CompletionWindow
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         COMPLETION_WINDOW_24H: :"24h"
 
@@ -48,7 +48,7 @@ module OpenAI
         | :"/v1/completions"
 
       module Endpoint
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         V1_RESPONSES: :"/v1/responses"
         V1_CHAT_COMPLETIONS: :"/v1/chat/completions"

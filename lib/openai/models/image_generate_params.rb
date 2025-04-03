@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Images#generate
-    class ImageGenerateParams < OpenAI::BaseModel
+    class ImageGenerateParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -103,11 +103,11 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The model to use for image generation.
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
@@ -123,7 +123,7 @@ module OpenAI
       #   details and greater consistency across the image. This param is only supported
       #   for `dall-e-3`.
       module Quality
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         STANDARD = :standard
         HD = :hd
@@ -139,7 +139,7 @@ module OpenAI
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
       module ResponseFormat
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         URL = :url
         B64_JSON = :b64_json
@@ -155,7 +155,7 @@ module OpenAI
       #   `1024x1024` for `dall-e-2`. Must be one of `1024x1024`, `1792x1024`, or
       #   `1024x1792` for `dall-e-3` models.
       module Size
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         SIZE_256X256 = :"256x256"
         SIZE_512X512 = :"512x512"
@@ -175,7 +175,7 @@ module OpenAI
       #   Natural causes the model to produce more natural, less hyper-real looking
       #   images. This param is only supported for `dall-e-3`.
       module Style
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         VIVID = :vivid
         NATURAL = :natural

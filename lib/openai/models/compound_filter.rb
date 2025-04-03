@@ -2,13 +2,13 @@
 
 module OpenAI
   module Models
-    class CompoundFilter < OpenAI::BaseModel
+    class CompoundFilter < OpenAI::Internal::Type::BaseModel
       # @!attribute filters
       #   Array of filters to combine. Items can be `ComparisonFilter` or
       #     `CompoundFilter`.
       #
       #   @return [Array<OpenAI::Models::ComparisonFilter, Object>]
-      required :filters, -> { OpenAI::ArrayOf[union: OpenAI::Models::CompoundFilter::Filter] }
+      required :filters, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::CompoundFilter::Filter] }
 
       # @!attribute type
       #   Type of operation: `and` or `or`.
@@ -24,17 +24,17 @@ module OpenAI
       #   #
       #   def initialize(filters:, type:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
       module Filter
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
         variant -> { OpenAI::Models::ComparisonFilter }
 
-        variant OpenAI::Unknown
+        variant OpenAI::Internal::Type::Unknown
 
         # @!parse
         #   # @return [Array(OpenAI::Models::ComparisonFilter, Object)]
@@ -45,7 +45,7 @@ module OpenAI
       #
       # @see OpenAI::Models::CompoundFilter#type
       module Type
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         AND = :and
         OR = :or

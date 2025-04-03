@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class FunctionDefinition < OpenAI::BaseModel
+    class FunctionDefinition < OpenAI::Internal::Type::BaseModel
       # @!attribute name
       #   The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
       #     underscores and dashes, with a maximum length of 64.
@@ -31,7 +31,7 @@ module OpenAI
       #     Omitting `parameters` defines a function with an empty parameter list.
       #
       #   @return [Hash{Symbol=>Object}, nil]
-      optional :parameters, OpenAI::HashOf[OpenAI::Unknown]
+      optional :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
       # @!parse
       #   # @return [Hash{Symbol=>Object}]
@@ -45,7 +45,7 @@ module OpenAI
       #     [function calling guide](docs/guides/function-calling).
       #
       #   @return [Boolean, nil]
-      optional :strict, OpenAI::BooleanModel, nil?: true
+      optional :strict, OpenAI::Internal::Type::BooleanModel, nil?: true
 
       # @!parse
       #   # @param name [String]
@@ -55,7 +55,7 @@ module OpenAI
       #   #
       #   def initialize(name:, description: nil, parameters: nil, strict: nil, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

@@ -10,7 +10,7 @@ module OpenAI
               image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
             }
 
-          class CodeInterpreterOutputImage < OpenAI::BaseModel
+          class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
             attr_accessor index: Integer
 
             attr_accessor type: :image
@@ -31,7 +31,7 @@ module OpenAI
 
             type image = { file_id: String }
 
-            class Image < OpenAI::BaseModel
+            class Image < OpenAI::Internal::Type::BaseModel
               attr_reader file_id: String?
 
               def file_id=: (String) -> String

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class TextDelta < OpenAI::BaseModel
+        class TextDelta < OpenAI::Internal::Type::BaseModel
           sig do
             returns(
               T.nilable(
@@ -24,7 +24,7 @@ module OpenAI
               annotations: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
               )
               ]
@@ -45,7 +45,7 @@ module OpenAI
               annotations: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
               )
               ],

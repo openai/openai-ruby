@@ -13,7 +13,7 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         created: Integer,
-        data: ^(OpenAI::ArrayOf[OpenAI::Models::Image])
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image])
       }
     end
   end
@@ -32,7 +32,7 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         created: Integer,
-        data: ^(OpenAI::ArrayOf[OpenAI::Models::Image])
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image])
       }
     end
   end
@@ -47,7 +47,7 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         created: Integer,
-        data: ^(OpenAI::ArrayOf[OpenAI::Models::Image])
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image])
       }
     end
   end

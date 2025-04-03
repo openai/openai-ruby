@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class RequiredActionFunctionToolCall < OpenAI::BaseModel
+        class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
           # The ID of the tool call. This ID must be referenced when you submit the tool
           #   outputs in using the
           #   [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
@@ -18,10 +18,7 @@ module OpenAI
 
           sig do
             params(
-              function: T.any(
-                OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function,
-                OpenAI::Internal::Util::AnyHash
-              )
+              function: T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -36,10 +33,7 @@ module OpenAI
           sig do
             params(
               id: String,
-              function: T.any(
-                OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function,
-                OpenAI::Internal::Util::AnyHash
-              ),
+              function: T.any(OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, OpenAI::Internal::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)
@@ -56,7 +50,7 @@ module OpenAI
           def to_hash
           end
 
-          class Function < OpenAI::BaseModel
+          class Function < OpenAI::Internal::Type::BaseModel
             # The arguments that the model expects you to pass to the function.
             sig { returns(String) }
             attr_accessor :arguments

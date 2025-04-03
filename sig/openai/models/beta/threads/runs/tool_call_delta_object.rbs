@@ -9,7 +9,7 @@ module OpenAI
               tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta]
             }
 
-          class ToolCallDeltaObject < OpenAI::BaseModel
+          class ToolCallDeltaObject < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :tool_calls
 
             attr_reader tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta]?

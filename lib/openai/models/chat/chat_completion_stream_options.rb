@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionStreamOptions < OpenAI::BaseModel
+      class ChatCompletionStreamOptions < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] include_usage
         #   If set, an additional chunk will be streamed before the `data: [DONE]` message.
         #     The `usage` field on this chunk shows the token usage statistics for the entire
@@ -14,7 +14,7 @@ module OpenAI
         #     chunk which contains the total token usage for the request.
         #
         #   @return [Boolean, nil]
-        optional :include_usage, OpenAI::BooleanModel
+        optional :include_usage, OpenAI::Internal::Type::BooleanModel
 
         # @!parse
         #   # @return [Boolean]
@@ -27,7 +27,7 @@ module OpenAI
         #   #
         #   def initialize(include_usage: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

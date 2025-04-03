@@ -10,7 +10,7 @@ module OpenAI
           type: :"response.refusal.done"
         }
 
-      class ResponseRefusalDoneEvent < OpenAI::BaseModel
+      class ResponseRefusalDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor content_index: Integer
 
         attr_accessor item_id: String

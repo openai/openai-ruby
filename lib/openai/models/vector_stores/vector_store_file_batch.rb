@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::FileBatches#create
-      class VectorStoreFileBatch < OpenAI::BaseModel
+      class VectorStoreFileBatch < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The identifier, which can be referenced in API endpoints.
         #
@@ -57,10 +57,10 @@ module OpenAI
         #   #
         #   def initialize(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#file_counts
-        class FileCounts < OpenAI::BaseModel
+        class FileCounts < OpenAI::Internal::Type::BaseModel
           # @!attribute cancelled
           #   The number of files that where cancelled.
           #
@@ -100,7 +100,7 @@ module OpenAI
           #   #
           #   def initialize(cancelled:, completed:, failed:, in_progress:, total:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,
@@ -108,7 +108,7 @@ module OpenAI
         #
         # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed

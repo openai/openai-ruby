@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ResponseFormatText < OpenAI::BaseModel
+    class ResponseFormatText < OpenAI::Internal::Type::BaseModel
       # The type of response format being defined. Always `text`.
       sig { returns(Symbol) }
       attr_accessor :type

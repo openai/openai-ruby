@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::BaseModel
+      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
         # The function-call arguments delta that is added.
         sig { returns(String) }
         attr_accessor :delta

@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         module Runs
           # @see OpenAI::Resources::Beta::Threads::Runs::Steps#retrieve
-          class StepRetrieveParams < OpenAI::BaseModel
+          class StepRetrieveParams < OpenAI::Internal::Type::BaseModel
             # @!parse
             #   extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
@@ -31,7 +31,8 @@ module OpenAI
             #     for more information.
             #
             #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
-            optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Beta::Threads::Runs::RunStepInclude] }
+            optional :include,
+                     -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Beta::Threads::Runs::RunStepInclude] }
 
             # @!parse
             #   # @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
@@ -45,7 +46,7 @@ module OpenAI
             #   #
             #   def initialize(thread_id:, run_id:, include: nil, request_options: {}, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

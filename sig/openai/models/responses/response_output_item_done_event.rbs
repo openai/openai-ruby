@@ -8,7 +8,7 @@ module OpenAI
           type: :"response.output_item.done"
         }
 
-      class ResponseOutputItemDoneEvent < OpenAI::BaseModel
+      class ResponseOutputItemDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor item: OpenAI::Models::Responses::response_output_item
 
         attr_accessor output_index: Integer

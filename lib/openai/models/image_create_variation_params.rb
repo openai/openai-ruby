@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Images#create_variation
-    class ImageCreateVariationParams < OpenAI::BaseModel
+    class ImageCreateVariationParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -69,12 +69,12 @@ module OpenAI
       #   #
       #   def initialize(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {}, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
       #   time.
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
@@ -90,7 +90,7 @@ module OpenAI
       #   `b64_json`. URLs are only valid for 60 minutes after the image has been
       #   generated.
       module ResponseFormat
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         URL = :url
         B64_JSON = :b64_json
@@ -105,7 +105,7 @@ module OpenAI
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
       #   `1024x1024`.
       module Size
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         SIZE_256X256 = :"256x256"
         SIZE_512X512 = :"512x512"

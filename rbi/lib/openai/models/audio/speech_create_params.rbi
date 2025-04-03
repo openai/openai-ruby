@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class SpeechCreateParams < OpenAI::BaseModel
+      class SpeechCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -55,7 +55,7 @@ module OpenAI
             instructions: String,
             response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -90,7 +90,7 @@ module OpenAI
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Audio::SpeechModel::OrSymbol]) }
           def self.variants
@@ -102,7 +102,7 @@ module OpenAI
         #   `verse`. Previews of the voices are available in the
         #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         module Voice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol]) }
           def self.variants
@@ -128,7 +128,7 @@ module OpenAI
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
         #   `wav`, and `pcm`.
         module ResponseFormat
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat) }
           OrSymbol =

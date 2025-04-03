@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
-      class FineTuningJobWandbIntegrationObject < OpenAI::BaseModel
+      class FineTuningJobWandbIntegrationObject < OpenAI::Internal::Type::BaseModel
         # The type of the integration being enabled for the fine-tuning job
         sig { returns(Symbol) }
         attr_accessor :type
@@ -16,16 +16,14 @@ module OpenAI
         attr_reader :wandb
 
         sig do
-          params(
-            wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Internal::Util::AnyHash)
-          )
+          params(wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Internal::AnyHash))
             .void
         end
         attr_writer :wandb
 
         sig do
           params(
-            wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Internal::Util::AnyHash),
+            wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Internal::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)

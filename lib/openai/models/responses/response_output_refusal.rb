@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputRefusal < OpenAI::BaseModel
+      class ResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
         # @!attribute refusal
         #   The refusal explanationfrom the model.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(refusal:, type: :refusal, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

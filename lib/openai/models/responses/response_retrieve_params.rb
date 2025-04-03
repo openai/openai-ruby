@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Responses
       # @see OpenAI::Resources::Responses#retrieve
-      class ResponseRetrieveParams < OpenAI::BaseModel
+      class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -14,7 +14,8 @@ module OpenAI
         #     Response creation above for more information.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
-        optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
+        optional :include,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
 
         # @!parse
         #   # @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
@@ -26,7 +27,7 @@ module OpenAI
         #   #
         #   def initialize(include: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

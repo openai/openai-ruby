@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
-      class FileDeleteParams < OpenAI::BaseModel
+      class FileDeleteParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -13,7 +13,7 @@ module OpenAI
         sig do
           params(
             vector_store_id: String,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end

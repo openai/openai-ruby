@@ -16,7 +16,7 @@ class OpenAI::Test::Resources::EmbeddingsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::ArrayOf[OpenAI::Models::Embedding]),
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Embedding]),
         model: String,
         object: Symbol,
         usage: OpenAI::Models::CreateEmbeddingResponse::Usage

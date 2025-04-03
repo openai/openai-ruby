@@ -7,7 +7,7 @@ module OpenAI
     #   fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
     #   Flexible file type for any purpose - `evals`: Used for eval data sets
     module FilePurpose
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       ASSISTANTS = :assistants
       BATCH = :batch

@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class CompoundFilter < OpenAI::BaseModel
+    class CompoundFilter < OpenAI::Internal::Type::BaseModel
       # Array of filters to combine. Items can be `ComparisonFilter` or
       #   `CompoundFilter`.
       sig { returns(T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)]) }
@@ -15,7 +15,7 @@ module OpenAI
       # Combine multiple filters using `and` or `or`.
       sig do
         params(
-          filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, T.anything)],
+          filters: T::Array[T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, T.anything)],
           type: OpenAI::Models::CompoundFilter::Type::OrSymbol
         )
           .returns(T.attached_class)
@@ -38,7 +38,7 @@ module OpenAI
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
       module Filter
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([OpenAI::Models::ComparisonFilter, T.anything]) }
         def self.variants
@@ -47,7 +47,7 @@ module OpenAI
 
       # Type of operation: `and` or `or`.
       module Type
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompoundFilter::Type) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::CompoundFilter::Type::TaggedSymbol) }

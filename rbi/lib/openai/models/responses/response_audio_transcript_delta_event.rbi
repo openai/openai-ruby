@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseAudioTranscriptDeltaEvent < OpenAI::BaseModel
+      class ResponseAudioTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
         # The partial transcript of the audio response.
         sig { returns(String) }
         attr_accessor :delta

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class ThreadUpdateParams < OpenAI::BaseModel
+      class ThreadUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -25,7 +25,7 @@ module OpenAI
 
         sig do
           params(
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Internal::Util::AnyHash))
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Internal::AnyHash))
           )
             .void
         end
@@ -34,8 +34,8 @@ module OpenAI
         sig do
           params(
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Internal::Util::AnyHash)),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -55,16 +55,13 @@ module OpenAI
         def to_hash
         end
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter)) }
           attr_reader :code_interpreter
 
           sig do
             params(
-              code_interpreter: T.any(
-                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::Util::AnyHash
-              )
+              code_interpreter: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -75,10 +72,7 @@ module OpenAI
 
           sig do
             params(
-              file_search: T.any(
-                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch,
-                OpenAI::Internal::Util::AnyHash
-              )
+              file_search: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -90,14 +84,8 @@ module OpenAI
           #   tool requires a list of vector store IDs.
           sig do
             params(
-              code_interpreter: T.any(
-                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::Util::AnyHash
-              ),
-              file_search: T.any(
-                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch,
-                OpenAI::Internal::Util::AnyHash
-              )
+              code_interpreter: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter, OpenAI::Internal::AnyHash),
+              file_search: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -116,7 +104,7 @@ module OpenAI
           def to_hash
           end
 
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #   available to the `code_interpreter` tool. There can be a maximum of 20 files
             #   associated with the tool.
@@ -135,7 +123,7 @@ module OpenAI
             end
           end
 
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # The
             #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             #   attached to this thread. There can be a maximum of 1 vector store attached to

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletion < OpenAI::BaseModel
+      class ChatCompletion < OpenAI::Internal::Type::BaseModel
         # A unique identifier for the chat completion.
         sig { returns(String) }
         attr_accessor :id
@@ -43,7 +43,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::CompletionUsage)) }
         attr_reader :usage
 
-        sig { params(usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::Util::AnyHash)).void }
+        sig { params(usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::AnyHash)).void }
         attr_writer :usage
 
         # Represents a chat completion response returned by model, based on the provided
@@ -51,12 +51,12 @@ module OpenAI
         sig do
           params(
             id: String,
-            choices: T::Array[T.any(OpenAI::Models::Chat::ChatCompletion::Choice, OpenAI::Internal::Util::AnyHash)],
+            choices: T::Array[T.any(OpenAI::Models::Chat::ChatCompletion::Choice, OpenAI::Internal::AnyHash)],
             created: Integer,
             model: String,
             service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletion::ServiceTier::OrSymbol),
             system_fingerprint: String,
-            usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::Util::AnyHash),
+            usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::AnyHash),
             object: Symbol
           )
             .returns(T.attached_class)
@@ -91,7 +91,7 @@ module OpenAI
         def to_hash
         end
 
-        class Choice < OpenAI::BaseModel
+        class Choice < OpenAI::Internal::Type::BaseModel
           # The reason the model stopped generating tokens. This will be `stop` if the model
           #   hit a natural stop point or a provided stop sequence, `length` if the maximum
           #   number of tokens specified in the request was reached, `content_filter` if
@@ -111,7 +111,7 @@ module OpenAI
 
           sig do
             params(
-              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Internal::Util::AnyHash))
+              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Internal::AnyHash))
             )
               .void
           end
@@ -121,15 +121,15 @@ module OpenAI
           sig { returns(OpenAI::Models::Chat::ChatCompletionMessage) }
           attr_reader :message
 
-          sig { params(message: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(message: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Internal::AnyHash)).void }
           attr_writer :message
 
           sig do
             params(
               finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::OrSymbol,
               index: Integer,
-              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Internal::Util::AnyHash)),
-              message: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Internal::Util::AnyHash)
+              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, OpenAI::Internal::AnyHash)),
+              message: T.any(OpenAI::Models::Chat::ChatCompletionMessage, OpenAI::Internal::AnyHash)
             )
               .returns(T.attached_class)
           end
@@ -157,7 +157,7 @@ module OpenAI
           #   model called a tool, or `function_call` (deprecated) if the model called a
           #   function.
           module FinishReason
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason) }
             OrSymbol =
@@ -176,7 +176,7 @@ module OpenAI
             end
           end
 
-          class Logprobs < OpenAI::BaseModel
+          class Logprobs < OpenAI::Internal::Type::BaseModel
             # A list of message content tokens with log probability information.
             sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob])) }
             attr_accessor :content
@@ -188,12 +188,8 @@ module OpenAI
             # Log probability information for the choice.
             sig do
               params(
-                content: T.nilable(
-                  T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Internal::Util::AnyHash)]
-                ),
-                refusal: T.nilable(
-                  T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Internal::Util::AnyHash)]
-                )
+                content: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Internal::AnyHash)]),
+                refusal: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Internal::AnyHash)])
               )
                 .returns(T.attached_class)
             end
@@ -216,7 +212,7 @@ module OpenAI
 
         # The service tier used for processing the request.
         module ServiceTier
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier) }
           OrSymbol =

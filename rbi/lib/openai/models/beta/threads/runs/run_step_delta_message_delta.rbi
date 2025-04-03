@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class RunStepDeltaMessageDelta < OpenAI::BaseModel
+          class RunStepDeltaMessageDelta < OpenAI::Internal::Type::BaseModel
             # Always `message_creation`.
             sig { returns(Symbol) }
             attr_accessor :type
@@ -17,7 +17,7 @@ module OpenAI
               params(
                 message_creation: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
               )
                 .void
@@ -29,7 +29,7 @@ module OpenAI
               params(
                 message_creation: T.any(
                   OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 ),
                 type: Symbol
               )
@@ -50,7 +50,7 @@ module OpenAI
             def to_hash
             end
 
-            class MessageCreation < OpenAI::BaseModel
+            class MessageCreation < OpenAI::Internal::Type::BaseModel
               # The ID of the message that was created by this run step.
               sig { returns(T.nilable(String)) }
               attr_reader :message_id

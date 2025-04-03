@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class FileDeleted < OpenAI::BaseModel
+    class FileDeleted < OpenAI::Internal::Type::BaseModel
       sig { returns(String) }
       attr_accessor :id
 

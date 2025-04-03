@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_tool =
         { function: OpenAI::Models::FunctionDefinition, type: :function }
 
-      class ChatCompletionTool < OpenAI::BaseModel
+      class ChatCompletionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::Models::FunctionDefinition
 
         attr_accessor type: :function

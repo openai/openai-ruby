@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputFile < OpenAI::BaseModel
+      class ResponseInputFile < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of the input item. Always `input_file`.
         #
@@ -50,7 +50,7 @@ module OpenAI
         #   #
         #   def initialize(file_data: nil, file_id: nil, filename: nil, type: :input_file, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

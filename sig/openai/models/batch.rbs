@@ -24,7 +24,7 @@ module OpenAI
         request_counts: OpenAI::Models::BatchRequestCounts
       }
 
-    class Batch < OpenAI::BaseModel
+    class Batch < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor completion_window: String
@@ -129,7 +129,7 @@ module OpenAI
         | :cancelled
 
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         VALIDATING: :validating
         FAILED: :failed
@@ -146,7 +146,7 @@ module OpenAI
       type errors =
         { data: ::Array[OpenAI::Models::BatchError], object: String }
 
-      class Errors < OpenAI::BaseModel
+      class Errors < OpenAI::Internal::Type::BaseModel
         attr_reader data: ::Array[OpenAI::Models::BatchError]?
 
         def data=: (

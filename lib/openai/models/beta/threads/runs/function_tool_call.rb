@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FunctionToolCall < OpenAI::BaseModel
+          class FunctionToolCall < OpenAI::Internal::Type::BaseModel
             # @!attribute id
             #   The ID of the tool call object.
             #
@@ -32,10 +32,10 @@ module OpenAI
             #   #
             #   def initialize(id:, function:, type: :function, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::FunctionToolCall#function
-            class Function < OpenAI::BaseModel
+            class Function < OpenAI::Internal::Type::BaseModel
               # @!attribute arguments
               #   The arguments passed to the function.
               #
@@ -65,7 +65,7 @@ module OpenAI
               #   #
               #   def initialize(arguments:, name:, output:, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
         end

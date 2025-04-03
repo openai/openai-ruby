@@ -17,11 +17,11 @@ module OpenAI
         sig(:final) do
           params(
             type_info: T.any(
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               T.proc.returns(OpenAI::Internal::Type::Converter::Input),
               OpenAI::Internal::Type::Converter::Input
             ),
-            spec: OpenAI::Internal::Util::AnyHash
+            spec: OpenAI::Internal::AnyHash
           )
             .returns(T.attached_class)
         end
@@ -43,7 +43,7 @@ module OpenAI
               value: T.any(T::Hash[T.anything, T.anything], T.anything),
               state: OpenAI::Internal::Type::Converter::State
             )
-            .returns(T.any(OpenAI::Internal::Util::AnyHash, T.anything))
+            .returns(T.any(OpenAI::Internal::AnyHash, T.anything))
         end
         def coerce(value, state:)
         end
@@ -52,7 +52,7 @@ module OpenAI
         sig(:final) do
           override
             .params(value: T.any(T::Hash[T.anything, T.anything], T.anything))
-            .returns(T.any(OpenAI::Internal::Util::AnyHash, T.anything))
+            .returns(T.any(OpenAI::Internal::AnyHash, T.anything))
         end
         def dump(value)
         end
@@ -71,11 +71,11 @@ module OpenAI
         sig(:final) do
           params(
             type_info: T.any(
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               T.proc.returns(OpenAI::Internal::Type::Converter::Input),
               OpenAI::Internal::Type::Converter::Input
             ),
-            spec: OpenAI::Internal::Util::AnyHash
+            spec: OpenAI::Internal::AnyHash
           )
             .void
         end

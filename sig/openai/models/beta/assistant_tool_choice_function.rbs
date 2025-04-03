@@ -3,7 +3,7 @@ module OpenAI
     module Beta
       type assistant_tool_choice_function = { name: String }
 
-      class AssistantToolChoiceFunction < OpenAI::BaseModel
+      class AssistantToolChoiceFunction < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
 
         def initialize: (name: String) -> void

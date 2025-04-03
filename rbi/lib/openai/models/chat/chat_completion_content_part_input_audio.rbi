@@ -3,16 +3,13 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionContentPartInputAudio < OpenAI::BaseModel
+      class ChatCompletionContentPartInputAudio < OpenAI::Internal::Type::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio) }
         attr_reader :input_audio
 
         sig do
           params(
-            input_audio: T.any(
-              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio,
-              OpenAI::Internal::Util::AnyHash
-            )
+            input_audio: T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -25,10 +22,7 @@ module OpenAI
         # Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
         sig do
           params(
-            input_audio: T.any(
-              OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio,
-              OpenAI::Internal::Util::AnyHash
-            ),
+            input_audio: T.any(OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, OpenAI::Internal::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)
@@ -45,7 +39,7 @@ module OpenAI
         def to_hash
         end
 
-        class InputAudio < OpenAI::BaseModel
+        class InputAudio < OpenAI::Internal::Type::BaseModel
           # Base64 encoded audio data.
           sig { returns(String) }
           attr_accessor :data
@@ -78,7 +72,7 @@ module OpenAI
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
           module Format
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format) }

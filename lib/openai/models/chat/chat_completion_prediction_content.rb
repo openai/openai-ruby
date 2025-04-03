@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionPredictionContent < OpenAI::BaseModel
+      class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
         # @!attribute content
         #   The content that should be matched when generating a model response. If
         #     generated tokens would match this content, the entire model response can be
@@ -28,7 +28,7 @@ module OpenAI
         #   #
         #   def initialize(content:, type: :content, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The content that should be matched when generating a model response. If
         #   generated tokens would match this content, the entire model response can be
@@ -36,7 +36,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Chat::ChatCompletionPredictionContent#content
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # The content used for a Predicted Output. This is often the
           # text of a file you are regenerating with minor changes.
@@ -50,7 +50,7 @@ module OpenAI
           #   def self.variants; end
 
           ChatCompletionContentPartTextArray =
-            OpenAI::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
+            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
         end
       end
     end

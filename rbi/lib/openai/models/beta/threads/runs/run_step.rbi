@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class RunStep < OpenAI::BaseModel
+          class RunStep < OpenAI::Internal::Type::BaseModel
             # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }
             attr_accessor :id
@@ -44,7 +44,7 @@ module OpenAI
 
             sig do
               params(
-                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Internal::Util::AnyHash))
+                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Internal::AnyHash))
               )
                 .void
             end
@@ -100,7 +100,7 @@ module OpenAI
 
             sig do
               params(
-                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Internal::Util::AnyHash))
+                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Internal::AnyHash))
               )
                 .void
             end
@@ -116,18 +116,18 @@ module OpenAI
                 created_at: Integer,
                 expired_at: T.nilable(Integer),
                 failed_at: T.nilable(Integer),
-                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Internal::Util::AnyHash)),
+                last_error: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, OpenAI::Internal::AnyHash)),
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 run_id: String,
                 status: OpenAI::Models::Beta::Threads::Runs::RunStep::Status::OrSymbol,
                 step_details: T.any(
                   OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails
                 ),
                 thread_id: String,
                 type: OpenAI::Models::Beta::Threads::Runs::RunStep::Type::OrSymbol,
-                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Internal::Util::AnyHash)),
+                usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, OpenAI::Internal::AnyHash)),
                 object: Symbol
               )
                 .returns(T.attached_class)
@@ -181,7 +181,7 @@ module OpenAI
             def to_hash
             end
 
-            class LastError < OpenAI::BaseModel
+            class LastError < OpenAI::Internal::Type::BaseModel
               # One of `server_error` or `rate_limit_exceeded`.
               sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol) }
               attr_accessor :code
@@ -210,7 +210,7 @@ module OpenAI
 
               # One of `server_error` or `rate_limit_exceeded`.
               module Code
-                extend OpenAI::Enum
+                extend OpenAI::Internal::Type::Enum
 
                 TaggedSymbol =
                   T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code) }
@@ -231,7 +231,7 @@ module OpenAI
             # The status of the run step, which can be either `in_progress`, `cancelled`,
             #   `failed`, `completed`, or `expired`.
             module Status
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status) }
               OrSymbol =
@@ -250,7 +250,7 @@ module OpenAI
 
             # The details of the run step.
             module StepDetails
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               sig do
                 override
@@ -264,7 +264,7 @@ module OpenAI
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
             module Type
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type) }
               OrSymbol =
@@ -279,7 +279,7 @@ module OpenAI
               end
             end
 
-            class Usage < OpenAI::BaseModel
+            class Usage < OpenAI::Internal::Type::BaseModel
               # Number of completion tokens used over the course of the run step.
               sig { returns(Integer) }
               attr_accessor :completion_tokens

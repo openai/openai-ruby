@@ -3,7 +3,7 @@ module OpenAI
     type error_object =
       { code: String?, message: String, param: String?, type: String }
 
-    class ErrorObject < OpenAI::BaseModel
+    class ErrorObject < OpenAI::Internal::Type::BaseModel
       attr_accessor code: String?
 
       attr_accessor message: String

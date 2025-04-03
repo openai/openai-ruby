@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class CodeInterpreterTool < OpenAI::BaseModel
+      class CodeInterpreterTool < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of tool being defined: `code_interpreter`
         #
@@ -15,7 +15,7 @@ module OpenAI
         #   #
         #   def initialize(type: :code_interpreter, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

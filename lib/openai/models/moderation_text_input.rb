@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ModerationTextInput < OpenAI::BaseModel
+    class ModerationTextInput < OpenAI::Internal::Type::BaseModel
       # @!attribute text
       #   A string of text to classify.
       #
@@ -23,7 +23,7 @@ module OpenAI
       #   #
       #   def initialize(text:, type: :text, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

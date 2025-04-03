@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class EasyInputMessage < OpenAI::BaseModel
+      class EasyInputMessage < OpenAI::Internal::Type::BaseModel
         # @!attribute content
         #   Text, image, or audio input to the model, used to generate a response. Can also
         #     contain previous assistant responses.
@@ -41,14 +41,14 @@ module OpenAI
         #   #
         #   def initialize(content:, role:, type: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
         #
         # @see OpenAI::Models::Responses::EasyInputMessage#content
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # A text input to the model.
           variant String
@@ -67,7 +67,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::EasyInputMessage#role
         module Role
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           USER = :user
           ASSISTANT = :assistant
@@ -85,7 +85,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::EasyInputMessage#type
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MESSAGE = :message
 

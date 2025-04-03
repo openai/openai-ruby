@@ -12,7 +12,7 @@ module OpenAI
             text: String
           }
 
-        class FilePathDeltaAnnotation < OpenAI::BaseModel
+        class FilePathDeltaAnnotation < OpenAI::Internal::Type::BaseModel
           attr_accessor index: Integer
 
           attr_accessor type: :file_path
@@ -48,7 +48,7 @@ module OpenAI
 
           type file_path = { file_id: String }
 
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             attr_reader file_id: String?
 
             def file_id=: (String) -> String

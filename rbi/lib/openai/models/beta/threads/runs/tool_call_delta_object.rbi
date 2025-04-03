@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class ToolCallDeltaObject < OpenAI::BaseModel
+          class ToolCallDeltaObject < OpenAI::Internal::Type::BaseModel
             # Always `tool_calls`.
             sig { returns(Symbol) }
             attr_accessor :type
@@ -33,7 +33,7 @@ module OpenAI
                 tool_calls: T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
                   OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
                 )
@@ -49,7 +49,7 @@ module OpenAI
                 tool_calls: T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
                   OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
                 )

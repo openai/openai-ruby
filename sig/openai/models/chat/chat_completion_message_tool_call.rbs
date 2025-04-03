@@ -10,7 +10,7 @@ module OpenAI
           type: :function
         }
 
-      class ChatCompletionMessageToolCall < OpenAI::BaseModel
+      class ChatCompletionMessageToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function
@@ -27,7 +27,7 @@ module OpenAI
 
         type function = { arguments: String, name: String }
 
-        class Function < OpenAI::BaseModel
+        class Function < OpenAI::Internal::Type::BaseModel
           attr_accessor arguments: String
 
           attr_accessor name: String

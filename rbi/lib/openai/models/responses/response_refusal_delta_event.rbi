@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseRefusalDeltaEvent < OpenAI::BaseModel
+      class ResponseRefusalDeltaEvent < OpenAI::Internal::Type::BaseModel
         # The index of the content part that the refusal text is added to.
         sig { returns(Integer) }
         attr_accessor :content_index

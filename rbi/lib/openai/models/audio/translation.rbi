@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class Translation < OpenAI::BaseModel
+      class Translation < OpenAI::Internal::Type::BaseModel
         sig { returns(String) }
         attr_accessor :text
 
