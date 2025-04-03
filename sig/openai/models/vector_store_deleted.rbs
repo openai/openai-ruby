@@ -3,7 +3,7 @@ module OpenAI
     type vector_store_deleted =
       { id: String, deleted: bool, object: :"vector_store.deleted" }
 
-    class VectorStoreDeleted < OpenAI::BaseModel
+    class VectorStoreDeleted < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor deleted: bool

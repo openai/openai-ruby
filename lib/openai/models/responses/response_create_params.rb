@@ -6,7 +6,7 @@ module OpenAI
       # @see OpenAI::Resources::Responses#create
       #
       # @see OpenAI::Resources::Responses#stream_raw
-      class ResponseCreateParams < OpenAI::BaseModel
+      class ResponseCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -46,7 +46,9 @@ module OpenAI
         #       call output.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
-        optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }, nil?: true
+        optional :include,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] },
+                 nil?: true
 
         # @!attribute instructions
         #   Inserts a system (or developer) message as the first item in the model's
@@ -76,13 +78,13 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute parallel_tool_calls
         #   Whether to allow the model to run tool calls in parallel.
         #
         #   @return [Boolean, nil]
-        optional :parallel_tool_calls, OpenAI::BooleanModel, nil?: true
+        optional :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel, nil?: true
 
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
@@ -105,7 +107,7 @@ module OpenAI
         #   Whether to store the generated model response for later retrieval via API.
         #
         #   @return [Boolean, nil]
-        optional :store, OpenAI::BooleanModel, nil?: true
+        optional :store, OpenAI::Internal::Type::BooleanModel, nil?: true
 
         # @!attribute temperature
         #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -159,7 +161,7 @@ module OpenAI
         #       [function calling](https://platform.openai.com/docs/guides/function-calling).
         #
         #   @return [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>, nil]
-        optional :tools, -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::Tool] }
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::Tool] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>]
@@ -243,7 +245,7 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # Text, image, or file inputs to the model, used to generate a response.
         #
@@ -255,7 +257,7 @@ module OpenAI
         #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         module Input
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # A text input to the model, equivalent to a text input with the
           # `user` role.
@@ -274,7 +276,7 @@ module OpenAI
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
         module ToolChoice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # Controls which (if any) tool is called by the model.
           #
@@ -306,7 +308,7 @@ module OpenAI
         #   - `disabled` (default): If a model response will exceed the context window size
         #     for a model, the request will fail with a 400 error.
         module Truncation
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           AUTO = :auto
           DISABLED = :disabled

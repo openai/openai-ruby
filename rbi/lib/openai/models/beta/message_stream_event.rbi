@@ -7,15 +7,15 @@ module OpenAI
       #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
       #   created.
       module MessageStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
-        class ThreadMessageCreated < OpenAI::BaseModel
+        class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -25,10 +25,7 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
           #   created.
           sig do
-            params(
-              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
-              event: Symbol
-            )
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.created")
@@ -39,13 +36,13 @@ module OpenAI
           end
         end
 
-        class ThreadMessageInProgress < OpenAI::BaseModel
+        class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -55,10 +52,7 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
           #   to an `in_progress` state.
           sig do
-            params(
-              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
-              event: Symbol
-            )
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.in_progress")
@@ -69,13 +63,13 @@ module OpenAI
           end
         end
 
-        class ThreadMessageDelta < OpenAI::BaseModel
+        class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           # Represents a message delta i.e. any changed fields on a message during
           #   streaming.
           sig { returns(OpenAI::Models::Beta::Threads::MessageDeltaEvent) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -86,7 +80,7 @@ module OpenAI
           #   being streamed.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -99,13 +93,13 @@ module OpenAI
           end
         end
 
-        class ThreadMessageCompleted < OpenAI::BaseModel
+        class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -115,10 +109,7 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
           #   completed.
           sig do
-            params(
-              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
-              event: Symbol
-            )
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.completed")
@@ -129,13 +120,13 @@ module OpenAI
           end
         end
 
-        class ThreadMessageIncomplete < OpenAI::BaseModel
+        class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
           #   [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -145,10 +136,7 @@ module OpenAI
           #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
           #   before it is completed.
           sig do
-            params(
-              data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::Util::AnyHash),
-              event: Symbol
-            )
+            params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
           def self.new(data:, event: :"thread.message.incomplete")

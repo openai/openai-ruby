@@ -10,7 +10,7 @@ module OpenAI
           tool_call_id: String
         }
 
-      class ChatCompletionToolMessageParam < OpenAI::BaseModel
+      class ChatCompletionToolMessageParam < OpenAI::Internal::Type::BaseModel
         attr_accessor content: OpenAI::Models::Chat::ChatCompletionToolMessageParam::content
 
         attr_accessor role: :tool
@@ -29,7 +29,7 @@ module OpenAI
           String | ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
 
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
 

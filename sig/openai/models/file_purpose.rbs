@@ -4,7 +4,7 @@ module OpenAI
       :assistants | :batch | :"fine-tune" | :vision | :user_data | :evals
 
     module FilePurpose
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       ASSISTANTS: :assistants
       BATCH: :batch

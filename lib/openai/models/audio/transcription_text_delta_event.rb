@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionTextDeltaEvent < OpenAI::BaseModel
+      class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute delta
         #   The text delta that was additionally transcribed.
         #
@@ -22,7 +22,8 @@ module OpenAI
         #     with the `include[]` parameter set to `logprobs`.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>, nil]
-        optional :logprobs, -> { OpenAI::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob] }
+        optional :logprobs,
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>]
@@ -40,9 +41,9 @@ module OpenAI
         #   #
         #   def initialize(delta:, logprobs: nil, type: :"transcript.text.delta", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] token
           #   The token that was used to generate the log probability.
           #
@@ -57,7 +58,7 @@ module OpenAI
           #   The bytes that were used to generate the log probability.
           #
           #   @return [Array<Object>, nil]
-          optional :bytes, OpenAI::ArrayOf[OpenAI::Unknown]
+          optional :bytes, OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
 
           # @!parse
           #   # @return [Array<Object>]
@@ -80,7 +81,7 @@ module OpenAI
           #   #
           #   def initialize(token: nil, bytes: nil, logprob: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

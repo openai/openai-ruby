@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
-      class JobListParams < OpenAI::BaseModel
+      class JobListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -31,7 +31,7 @@ module OpenAI
             after: String,
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end

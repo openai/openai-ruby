@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionFunctionMessageParam < OpenAI::BaseModel
+      class ChatCompletionFunctionMessageParam < OpenAI::Internal::Type::BaseModel
         # The contents of the function message.
         sig { returns(T.nilable(String)) }
         attr_accessor :content

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterLogs < OpenAI::BaseModel
+          class CodeInterpreterLogs < OpenAI::Internal::Type::BaseModel
             # @!attribute index
             #   The index of the output in the outputs array.
             #
@@ -37,7 +37,7 @@ module OpenAI
             #   #
             #   def initialize(index:, logs: nil, type: :logs, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

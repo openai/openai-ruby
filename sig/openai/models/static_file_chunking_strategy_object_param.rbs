@@ -3,7 +3,7 @@ module OpenAI
     type static_file_chunking_strategy_object_param =
       { static: OpenAI::Models::StaticFileChunkingStrategy, type: :static }
 
-    class StaticFileChunkingStrategyObjectParam < OpenAI::BaseModel
+    class StaticFileChunkingStrategyObjectParam < OpenAI::Internal::Type::BaseModel
       attr_accessor static: OpenAI::Models::StaticFileChunkingStrategy
 
       attr_accessor type: :static

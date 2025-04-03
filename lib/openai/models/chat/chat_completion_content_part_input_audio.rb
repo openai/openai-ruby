@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionContentPartInputAudio < OpenAI::BaseModel
+      class ChatCompletionContentPartInputAudio < OpenAI::Internal::Type::BaseModel
         # @!attribute input_audio
         #
         #   @return [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio]
@@ -23,10 +23,10 @@ module OpenAI
         #   #
         #   def initialize(input_audio:, type: :input_audio, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartInputAudio#input_audio
-        class InputAudio < OpenAI::BaseModel
+        class InputAudio < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Base64 encoded audio data.
           #
@@ -47,13 +47,13 @@ module OpenAI
           #   #
           #   def initialize(data:, format_:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
           #
           # @see OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio#format_
           module Format
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             WAV = :wav
             MP3 = :mp3

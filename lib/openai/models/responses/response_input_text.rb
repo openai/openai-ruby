@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputText < OpenAI::BaseModel
+      class ResponseInputText < OpenAI::Internal::Type::BaseModel
         # @!attribute text
         #   The text input to the model.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(text:, type: :input_text, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

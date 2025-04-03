@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class BatchRequestCounts < OpenAI::BaseModel
+    class BatchRequestCounts < OpenAI::Internal::Type::BaseModel
       # Number of requests that have been completed successfully.
       sig { returns(Integer) }
       attr_accessor :completed

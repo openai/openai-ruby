@@ -7,7 +7,7 @@ module OpenAI
         # @see OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs
         #
         # @see OpenAI::Resources::Beta::Threads::Runs#submit_tool_stream_raw
-        class RunSubmitToolOutputsParams < OpenAI::BaseModel
+        class RunSubmitToolOutputsParams < OpenAI::Internal::Type::BaseModel
           # @!parse
           #   extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
@@ -22,7 +22,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>]
           required :tool_outputs,
-                   -> { OpenAI::ArrayOf[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput] }
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput] }
 
           # @!parse
           #   # @param thread_id [String]
@@ -31,9 +31,9 @@ module OpenAI
           #   #
           #   def initialize(thread_id:, tool_outputs:, request_options: {}, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-          class ToolOutput < OpenAI::BaseModel
+          class ToolOutput < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] output
             #   The output of the tool call to be submitted to continue the run.
             #
@@ -61,7 +61,7 @@ module OpenAI
             #   #
             #   def initialize(output: nil, tool_call_id: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterToolCall < OpenAI::BaseModel
+          class CodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
             # @!attribute id
             #   The ID of the tool call.
             #
@@ -35,10 +35,10 @@ module OpenAI
             #   #
             #   def initialize(id:, code_interpreter:, type: :code_interpreter, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall#code_interpreter
-            class CodeInterpreter < OpenAI::BaseModel
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # @!attribute input
               #   The input to the Code Interpreter tool call.
               #
@@ -52,7 +52,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
               required :outputs,
-                       -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output] }
+                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output] }
 
               # @!parse
               #   # The Code Interpreter tool call definition.
@@ -62,11 +62,11 @@ module OpenAI
               #   #
               #   def initialize(input:, outputs:, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 discriminator :type
 
@@ -77,7 +77,7 @@ module OpenAI
                 variant :image,
                         -> { OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image }
 
-                class Logs < OpenAI::BaseModel
+                class Logs < OpenAI::Internal::Type::BaseModel
                   # @!attribute logs
                   #   The text output from the Code Interpreter tool call.
                   #
@@ -98,10 +98,10 @@ module OpenAI
                   #   #
                   #   def initialize(logs:, type: :logs, **) = super
 
-                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
                 end
 
-                class Image < OpenAI::BaseModel
+                class Image < OpenAI::Internal::Type::BaseModel
                   # @!attribute image
                   #
                   #   @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
@@ -120,10 +120,10 @@ module OpenAI
                   #   #
                   #   def initialize(image:, type: :image, **) = super
 
-                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
                   # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image#image
-                  class Image < OpenAI::BaseModel
+                  class Image < OpenAI::Internal::Type::BaseModel
                     # @!attribute file_id
                     #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the
                     #     image.
@@ -136,7 +136,7 @@ module OpenAI
                     #   #
                     #   def initialize(file_id:, **) = super
 
-                    # def initialize: (Hash | OpenAI::BaseModel) -> void
+                    # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
                   end
                 end
 

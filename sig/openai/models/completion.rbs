@@ -11,7 +11,7 @@ module OpenAI
         usage: OpenAI::Models::CompletionUsage
       }
 
-    class Completion < OpenAI::BaseModel
+    class Completion < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor choices: ::Array[OpenAI::Models::CompletionChoice]

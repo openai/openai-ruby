@@ -24,7 +24,7 @@ module OpenAI
           }
           & OpenAI::Internal::Type::request_parameters
 
-        class RunCreateParams < OpenAI::BaseModel
+        class RunCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
@@ -99,7 +99,7 @@ module OpenAI
               metadata: OpenAI::Models::metadata?
             }
 
-          class AdditionalMessage < OpenAI::BaseModel
+          class AdditionalMessage < OpenAI::Internal::Type::BaseModel
             attr_accessor content: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::content
 
             attr_accessor role: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role
@@ -122,7 +122,7 @@ module OpenAI
               | ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
 
             module Content
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
 
@@ -135,7 +135,7 @@ module OpenAI
             type role = :user | :assistant
 
             module Role
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               USER: :user
               ASSISTANT: :assistant
@@ -149,7 +149,7 @@ module OpenAI
                 tools: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
               }
 
-            class Attachment < OpenAI::BaseModel
+            class Attachment < OpenAI::Internal::Type::BaseModel
               attr_reader file_id: String?
 
               def file_id=: (String) -> String
@@ -172,11 +172,11 @@ module OpenAI
                 | OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
 
               module Tool
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 type file_search = { type: :file_search }
 
-                class FileSearch < OpenAI::BaseModel
+                class FileSearch < OpenAI::Internal::Type::BaseModel
                   attr_accessor type: :file_search
 
                   def initialize: (?type: :file_search) -> void
@@ -192,7 +192,7 @@ module OpenAI
           type model = String | OpenAI::Models::chat_model
 
           module Model
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> [String, OpenAI::Models::chat_model]
           end
@@ -203,7 +203,7 @@ module OpenAI
               last_messages: Integer?
             }
 
-          class TruncationStrategy < OpenAI::BaseModel
+          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
             attr_accessor type: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_
 
             attr_accessor last_messages: Integer?
@@ -218,7 +218,7 @@ module OpenAI
             type type_ = :auto | :last_messages
 
             module Type
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               AUTO: :auto
               LAST_MESSAGES: :last_messages

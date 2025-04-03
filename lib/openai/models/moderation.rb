@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class Moderation < OpenAI::BaseModel
+    class Moderation < OpenAI::Internal::Type::BaseModel
       # @!attribute categories
       #   A list of the categories, and whether they are flagged or not.
       #
@@ -25,7 +25,7 @@ module OpenAI
       #   Whether any of the below categories are flagged.
       #
       #   @return [Boolean]
-      required :flagged, OpenAI::BooleanModel
+      required :flagged, OpenAI::Internal::Type::BooleanModel
 
       # @!parse
       #   # @param categories [OpenAI::Models::Moderation::Categories]
@@ -35,23 +35,25 @@ module OpenAI
       #   #
       #   def initialize(categories:, category_applied_input_types:, category_scores:, flagged:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # @see OpenAI::Models::Moderation#categories
-      class Categories < OpenAI::BaseModel
+      class Categories < OpenAI::Internal::Type::BaseModel
         # @!attribute harassment
         #   Content that expresses, incites, or promotes harassing language towards any
         #     target.
         #
         #   @return [Boolean]
-        required :harassment, OpenAI::BooleanModel
+        required :harassment, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute harassment_threatening
         #   Harassment content that also includes violence or serious harm towards any
         #     target.
         #
         #   @return [Boolean]
-        required :harassment_threatening, OpenAI::BooleanModel, api_name: :"harassment/threatening"
+        required :harassment_threatening,
+                 OpenAI::Internal::Type::BooleanModel,
+                 api_name: :"harassment/threatening"
 
         # @!attribute hate
         #   Content that expresses, incites, or promotes hate based on race, gender,
@@ -60,7 +62,7 @@ module OpenAI
         #     harassment.
         #
         #   @return [Boolean]
-        required :hate, OpenAI::BooleanModel
+        required :hate, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute hate_threatening
         #   Hateful content that also includes violence or serious harm towards the targeted
@@ -68,7 +70,7 @@ module OpenAI
         #     orientation, disability status, or caste.
         #
         #   @return [Boolean]
-        required :hate_threatening, OpenAI::BooleanModel, api_name: :"hate/threatening"
+        required :hate_threatening, OpenAI::Internal::Type::BooleanModel, api_name: :"hate/threatening"
 
         # @!attribute illicit
         #   Content that includes instructions or advice that facilitate the planning or
@@ -76,7 +78,7 @@ module OpenAI
         #     illicit acts. For example, "how to shoplift" would fit this category.
         #
         #   @return [Boolean, nil]
-        required :illicit, OpenAI::BooleanModel, nil?: true
+        required :illicit, OpenAI::Internal::Type::BooleanModel, nil?: true
 
         # @!attribute illicit_violent
         #   Content that includes instructions or advice that facilitate the planning or
@@ -84,14 +86,17 @@ module OpenAI
         #     instruction on the procurement of any weapon.
         #
         #   @return [Boolean, nil]
-        required :illicit_violent, OpenAI::BooleanModel, api_name: :"illicit/violent", nil?: true
+        required :illicit_violent,
+                 OpenAI::Internal::Type::BooleanModel,
+                 api_name: :"illicit/violent",
+                 nil?: true
 
         # @!attribute self_harm
         #   Content that promotes, encourages, or depicts acts of self-harm, such as
         #     suicide, cutting, and eating disorders.
         #
         #   @return [Boolean]
-        required :self_harm, OpenAI::BooleanModel, api_name: :"self-harm"
+        required :self_harm, OpenAI::Internal::Type::BooleanModel, api_name: :"self-harm"
 
         # @!attribute self_harm_instructions
         #   Content that encourages performing acts of self-harm, such as suicide, cutting,
@@ -99,14 +104,16 @@ module OpenAI
         #     acts.
         #
         #   @return [Boolean]
-        required :self_harm_instructions, OpenAI::BooleanModel, api_name: :"self-harm/instructions"
+        required :self_harm_instructions,
+                 OpenAI::Internal::Type::BooleanModel,
+                 api_name: :"self-harm/instructions"
 
         # @!attribute self_harm_intent
         #   Content where the speaker expresses that they are engaging or intend to engage
         #     in acts of self-harm, such as suicide, cutting, and eating disorders.
         #
         #   @return [Boolean]
-        required :self_harm_intent, OpenAI::BooleanModel, api_name: :"self-harm/intent"
+        required :self_harm_intent, OpenAI::Internal::Type::BooleanModel, api_name: :"self-harm/intent"
 
         # @!attribute sexual
         #   Content meant to arouse sexual excitement, such as the description of sexual
@@ -114,25 +121,25 @@ module OpenAI
         #     wellness).
         #
         #   @return [Boolean]
-        required :sexual, OpenAI::BooleanModel
+        required :sexual, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute sexual_minors
         #   Sexual content that includes an individual who is under 18 years old.
         #
         #   @return [Boolean]
-        required :sexual_minors, OpenAI::BooleanModel, api_name: :"sexual/minors"
+        required :sexual_minors, OpenAI::Internal::Type::BooleanModel, api_name: :"sexual/minors"
 
         # @!attribute violence
         #   Content that depicts death, violence, or physical injury.
         #
         #   @return [Boolean]
-        required :violence, OpenAI::BooleanModel
+        required :violence, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute violence_graphic
         #   Content that depicts death, violence, or physical injury in graphic detail.
         #
         #   @return [Boolean]
-        required :violence_graphic, OpenAI::BooleanModel, api_name: :"violence/graphic"
+        required :violence_graphic, OpenAI::Internal::Type::BooleanModel, api_name: :"violence/graphic"
 
         # @!parse
         #   # A list of the categories, and whether they are flagged or not.
@@ -170,38 +177,39 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
 
       # @see OpenAI::Models::Moderation#category_applied_input_types
-      class CategoryAppliedInputTypes < OpenAI::BaseModel
+      class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
         # @!attribute harassment
         #   The applied input type(s) for the category 'harassment'.
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>]
         required :harassment,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment] }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment] }
 
         # @!attribute harassment_threatening
         #   The applied input type(s) for the category 'harassment/threatening'.
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>]
         required :harassment_threatening,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening] },
                  api_name: :"harassment/threatening"
 
         # @!attribute hate
         #   The applied input type(s) for the category 'hate'.
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>]
-        required :hate, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate] }
+        required :hate,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate] }
 
         # @!attribute hate_threatening
         #   The applied input type(s) for the category 'hate/threatening'.
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening>]
         required :hate_threatening,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening] },
                  api_name: :"hate/threatening"
 
         # @!attribute illicit
@@ -209,14 +217,14 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>]
         required :illicit,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit] }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit] }
 
         # @!attribute illicit_violent
         #   The applied input type(s) for the category 'illicit/violent'.
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent>]
         required :illicit_violent,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent] },
                  api_name: :"illicit/violent"
 
         # @!attribute self_harm
@@ -224,7 +232,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm>]
         required :self_harm,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm] },
                  api_name: :"self-harm"
 
         # @!attribute self_harm_instructions
@@ -232,7 +240,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>]
         required :self_harm_instructions,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction] },
                  api_name: :"self-harm/instructions"
 
         # @!attribute self_harm_intent
@@ -240,7 +248,7 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>]
         required :self_harm_intent,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent] },
                  api_name: :"self-harm/intent"
 
         # @!attribute sexual
@@ -248,14 +256,14 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>]
         required :sexual,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual] }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual] }
 
         # @!attribute sexual_minors
         #   The applied input type(s) for the category 'sexual/minors'.
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor>]
         required :sexual_minors,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor] },
                  api_name: :"sexual/minors"
 
         # @!attribute violence
@@ -263,14 +271,14 @@ module OpenAI
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>]
         required :violence,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence] }
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence] }
 
         # @!attribute violence_graphic
         #   The applied input type(s) for the category 'violence/graphic'.
         #
         #   @return [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>]
         required :violence_graphic,
-                 -> { OpenAI::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic] },
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic] },
                  api_name: :"violence/graphic"
 
         # @!parse
@@ -309,10 +317,10 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         module Harassment
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
@@ -324,7 +332,7 @@ module OpenAI
         end
 
         module HarassmentThreatening
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
@@ -336,7 +344,7 @@ module OpenAI
         end
 
         module Hate
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
@@ -348,7 +356,7 @@ module OpenAI
         end
 
         module HateThreatening
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
@@ -360,7 +368,7 @@ module OpenAI
         end
 
         module Illicit
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
@@ -372,7 +380,7 @@ module OpenAI
         end
 
         module IllicitViolent
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
@@ -384,7 +392,7 @@ module OpenAI
         end
 
         module SelfHarm
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
           IMAGE = :image
@@ -397,7 +405,7 @@ module OpenAI
         end
 
         module SelfHarmInstruction
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
           IMAGE = :image
@@ -410,7 +418,7 @@ module OpenAI
         end
 
         module SelfHarmIntent
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
           IMAGE = :image
@@ -423,7 +431,7 @@ module OpenAI
         end
 
         module Sexual
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
           IMAGE = :image
@@ -436,7 +444,7 @@ module OpenAI
         end
 
         module SexualMinor
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
@@ -448,7 +456,7 @@ module OpenAI
         end
 
         module Violence
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
           IMAGE = :image
@@ -461,7 +469,7 @@ module OpenAI
         end
 
         module ViolenceGraphic
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
           IMAGE = :image
@@ -475,7 +483,7 @@ module OpenAI
       end
 
       # @see OpenAI::Models::Moderation#category_scores
-      class CategoryScores < OpenAI::BaseModel
+      class CategoryScores < OpenAI::Internal::Type::BaseModel
         # @!attribute harassment
         #   The score for the category 'harassment'.
         #
@@ -590,7 +598,7 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

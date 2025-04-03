@@ -1,0 +1,4 @@
+module OpenAI
+  module Internal
+  end
+end

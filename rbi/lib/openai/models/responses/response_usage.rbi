@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseUsage < OpenAI::BaseModel
+      class ResponseUsage < OpenAI::Internal::Type::BaseModel
         # The number of input tokens.
         sig { returns(Integer) }
         attr_accessor :input_tokens
@@ -14,7 +14,7 @@ module OpenAI
 
         sig do
           params(
-            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::Util::AnyHash)
+            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -30,7 +30,7 @@ module OpenAI
 
         sig do
           params(
-            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::Util::AnyHash)
+            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -45,9 +45,9 @@ module OpenAI
         sig do
           params(
             input_tokens: Integer,
-            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::Util::AnyHash),
+            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::AnyHash),
             output_tokens: Integer,
-            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::Util::AnyHash),
+            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::AnyHash),
             total_tokens: Integer
           )
             .returns(T.attached_class)
@@ -76,7 +76,7 @@ module OpenAI
         def to_hash
         end
 
-        class InputTokensDetails < OpenAI::BaseModel
+        class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # The number of tokens that were retrieved from the cache.
           #   [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
           sig { returns(Integer) }
@@ -92,7 +92,7 @@ module OpenAI
           end
         end
 
-        class OutputTokensDetails < OpenAI::BaseModel
+        class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
           # The number of reasoning tokens.
           sig { returns(Integer) }
           attr_accessor :reasoning_tokens

@@ -3,12 +3,12 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseIncompleteEvent < OpenAI::BaseModel
+      class ResponseIncompleteEvent < OpenAI::Internal::Type::BaseModel
         # The response that was incomplete.
         sig { returns(OpenAI::Models::Responses::Response) }
         attr_reader :response
 
-        sig { params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::Util::AnyHash)).void }
+        sig { params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::AnyHash)).void }
         attr_writer :response
 
         # The type of the event. Always `response.incomplete`.
@@ -17,10 +17,7 @@ module OpenAI
 
         # An event that is emitted when a response finishes as incomplete.
         sig do
-          params(
-            response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::Util::AnyHash),
-            type: Symbol
-          )
+          params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::AnyHash), type: Symbol)
             .returns(T.attached_class)
         end
         def self.new(response:, type: :"response.incomplete")

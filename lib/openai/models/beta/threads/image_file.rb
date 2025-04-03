@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class ImageFile < OpenAI::BaseModel
+        class ImageFile < OpenAI::Internal::Type::BaseModel
           # @!attribute file_id
           #   The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
           #     in the message content. Set `purpose="vision"` when uploading the File if you
@@ -30,14 +30,14 @@ module OpenAI
           #   #
           #   def initialize(file_id:, detail: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
           #
           # @see OpenAI::Models::Beta::Threads::ImageFile#detail
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO = :auto
             LOW = :low

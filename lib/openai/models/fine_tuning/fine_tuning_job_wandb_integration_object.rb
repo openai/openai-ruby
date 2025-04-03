@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
-      class FineTuningJobWandbIntegrationObject < OpenAI::BaseModel
+      class FineTuningJobWandbIntegrationObject < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of the integration being enabled for the fine-tuning job
         #
@@ -25,7 +25,7 @@ module OpenAI
         #   #
         #   def initialize(wandb:, type: :wandb, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseError < OpenAI::BaseModel
+      class ResponseError < OpenAI::Internal::Type::BaseModel
         # The error code for the response.
         sig { returns(OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol) }
         attr_accessor :code
@@ -26,7 +26,7 @@ module OpenAI
 
         # The error code for the response.
         module Code
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseError::Code) }
           OrSymbol =

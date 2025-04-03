@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class RunStepDelta < OpenAI::BaseModel
+          class RunStepDelta < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] step_details
             #   The details of the run step.
             #
@@ -23,13 +23,13 @@ module OpenAI
             #   #
             #   def initialize(step_details: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # The details of the run step.
             #
             # @see OpenAI::Models::Beta::Threads::Runs::RunStepDelta#step_details
             module StepDetails
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               discriminator :type
 

@@ -11,7 +11,7 @@ module OpenAI
           type: :"response.output_text.annotation.added"
         }
 
-      class ResponseTextAnnotationDeltaEvent < OpenAI::BaseModel
+      class ResponseTextAnnotationDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor annotation: OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::annotation
 
         attr_accessor annotation_index: Integer
@@ -41,12 +41,12 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
 
         module Annotation
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           type file_citation =
             { file_id: String, index: Integer, type: :file_citation }
 
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             attr_accessor file_id: String
 
             attr_accessor index: Integer
@@ -71,7 +71,7 @@ module OpenAI
               url: String
             }
 
-          class URLCitation < OpenAI::BaseModel
+          class URLCitation < OpenAI::Internal::Type::BaseModel
             attr_accessor end_index: Integer
 
             attr_accessor start_index: Integer
@@ -95,7 +95,7 @@ module OpenAI
 
           type file_path = { file_id: String, index: Integer, type: :file_path }
 
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             attr_accessor file_id: String
 
             attr_accessor index: Integer

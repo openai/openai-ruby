@@ -8,7 +8,7 @@ module OpenAI
         #   File associated with the assistant or the message. Generated when the assistant
         #   uses the "file_search" tool to search files.
         module Annotation
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig do
             override

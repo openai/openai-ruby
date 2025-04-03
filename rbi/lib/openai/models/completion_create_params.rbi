@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class CompletionCreateParams < OpenAI::BaseModel
+    class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -119,7 +119,7 @@ module OpenAI
 
       sig do
         params(
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash))
+          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash))
         )
           .void
       end
@@ -177,12 +177,12 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash)),
+          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash)),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -249,7 +249,7 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
         def self.variants
@@ -272,32 +272,33 @@ module OpenAI
       #   training, so if a prompt is not specified the model will generate as if from the
       #   beginning of a new document.
       module Prompt
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
-        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Internal::Type::Converter)
+        IntegerArray = T.let(OpenAI::Internal::Type::ArrayOf[Integer], OpenAI::Internal::Type::Converter)
 
-        ArrayOfToken2DArray = T.let(
-          OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]],
-          OpenAI::Internal::Type::Converter
-        )
+        ArrayOfToken2DArray =
+          T.let(
+            OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]],
+            OpenAI::Internal::Type::Converter
+          )
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
       #   returned text will not contain the stop sequence.
       module Stop
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String]]) }
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
       end
     end
   end

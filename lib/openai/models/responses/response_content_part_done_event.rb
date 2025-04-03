@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseContentPartDoneEvent < OpenAI::BaseModel
+      class ResponseContentPartDoneEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute content_index
         #   The index of the content part that is done.
         #
@@ -45,13 +45,13 @@ module OpenAI
         #   #
         #   def initialize(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The content part that is done.
         #
         # @see OpenAI::Models::Responses::ResponseContentPartDoneEvent#part
         module Part
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           discriminator :type
 

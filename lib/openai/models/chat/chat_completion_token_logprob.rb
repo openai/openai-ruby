@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionTokenLogprob < OpenAI::BaseModel
+      class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
         # @!attribute token
         #   The token.
         #
@@ -17,7 +17,7 @@ module OpenAI
         #     representation. Can be `null` if there is no bytes representation for the token.
         #
         #   @return [Array<Integer>, nil]
-        required :bytes, OpenAI::ArrayOf[Integer], nil?: true
+        required :bytes, OpenAI::Internal::Type::ArrayOf[Integer], nil?: true
 
         # @!attribute logprob
         #   The log probability of this token, if it is within the top 20 most likely
@@ -34,7 +34,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
         required :top_logprobs,
-                 -> { OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob] }
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob] }
 
         # @!parse
         #   # @param token [String]
@@ -44,9 +44,9 @@ module OpenAI
         #   #
         #   def initialize(token:, bytes:, logprob:, top_logprobs:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class TopLogprob < OpenAI::BaseModel
+        class TopLogprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
           #   The token.
           #
@@ -60,7 +60,7 @@ module OpenAI
           #     representation. Can be `null` if there is no bytes representation for the token.
           #
           #   @return [Array<Integer>, nil]
-          required :bytes, OpenAI::ArrayOf[Integer], nil?: true
+          required :bytes, OpenAI::Internal::Type::ArrayOf[Integer], nil?: true
 
           # @!attribute logprob
           #   The log probability of this token, if it is within the top 20 most likely
@@ -77,7 +77,7 @@ module OpenAI
           #   #
           #   def initialize(token:, bytes:, logprob:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

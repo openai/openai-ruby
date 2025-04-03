@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputAudio < OpenAI::BaseModel
+      class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
         # Base64-encoded audio data.
         sig { returns(String) }
         attr_accessor :data
@@ -39,7 +39,7 @@ module OpenAI
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         module Format
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format) }
           OrSymbol =

@@ -7,14 +7,14 @@ module OpenAI
       #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
       #   is created.
       module RunStepStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
-        class ThreadRunStepCreated < OpenAI::BaseModel
+        class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -25,7 +25,7 @@ module OpenAI
           #   is created.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -38,12 +38,12 @@ module OpenAI
           end
         end
 
-        class ThreadRunStepInProgress < OpenAI::BaseModel
+        class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -54,7 +54,7 @@ module OpenAI
           #   moves to an `in_progress` state.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -67,18 +67,13 @@ module OpenAI
           end
         end
 
-        class ThreadRunStepDelta < OpenAI::BaseModel
+        class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           # Represents a run step delta i.e. any changed fields on a run step during
           #   streaming.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
           attr_reader :data
 
-          sig do
-            params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::Util::AnyHash)
-            )
-              .void
-          end
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -89,7 +84,7 @@ module OpenAI
           #   are being streamed.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -102,12 +97,12 @@ module OpenAI
           end
         end
 
-        class ThreadRunStepCompleted < OpenAI::BaseModel
+        class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -118,7 +113,7 @@ module OpenAI
           #   is completed.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -131,12 +126,12 @@ module OpenAI
           end
         end
 
-        class ThreadRunStepFailed < OpenAI::BaseModel
+        class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -147,7 +142,7 @@ module OpenAI
           #   fails.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -160,12 +155,12 @@ module OpenAI
           end
         end
 
-        class ThreadRunStepCancelled < OpenAI::BaseModel
+        class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -176,7 +171,7 @@ module OpenAI
           #   is cancelled.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)
@@ -189,12 +184,12 @@ module OpenAI
           end
         end
 
-        class ThreadRunStepExpired < OpenAI::BaseModel
+        class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -205,7 +200,7 @@ module OpenAI
           #   expires.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::Util::AnyHash),
+              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
               event: Symbol
             )
               .returns(T.attached_class)

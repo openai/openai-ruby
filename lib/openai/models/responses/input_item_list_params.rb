@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Responses
       # @see OpenAI::Resources::Responses::InputItems#list
-      class InputItemListParams < OpenAI::BaseModel
+      class InputItemListParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -34,7 +34,8 @@ module OpenAI
         #     Response creation above for more information.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
-        optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
+        optional :include,
+                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
 
         # @!parse
         #   # @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
@@ -74,14 +75,14 @@ module OpenAI
         #   #
         #   def initialize(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The order to return the input items in. Default is `asc`.
         #
         #   - `asc`: Return the input items in ascending order.
         #   - `desc`: Return the input items in descending order.
         module Order
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           ASC = :asc
           DESC = :desc

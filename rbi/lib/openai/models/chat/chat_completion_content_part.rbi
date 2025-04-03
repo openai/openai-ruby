@@ -6,15 +6,15 @@ module OpenAI
       # Learn about
       #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
       module ChatCompletionContentPart
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
-        class File < OpenAI::BaseModel
+        class File < OpenAI::Internal::Type::BaseModel
           sig { returns(OpenAI::Models::Chat::ChatCompletionContentPart::File::File) }
           attr_reader :file
 
           sig do
             params(
-              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::Util::AnyHash)
+              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -28,7 +28,7 @@ module OpenAI
           #   generation.
           sig do
             params(
-              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::Util::AnyHash),
+              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)
@@ -40,7 +40,7 @@ module OpenAI
           def to_hash
           end
 
-          class File < OpenAI::BaseModel
+          class File < OpenAI::Internal::Type::BaseModel
             # The base64 encoded file data, used when passing the file to the model as a
             #   string.
             sig { returns(T.nilable(String)) }

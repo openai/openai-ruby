@@ -5,7 +5,7 @@ module OpenAI
     # @see OpenAI::Resources::Completions#create
     #
     # @see OpenAI::Resources::Completions#stream_raw
-    class CompletionCreateParams < OpenAI::BaseModel
+    class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -49,7 +49,7 @@ module OpenAI
       #   Echo back the prompt in addition to the completion
       #
       #   @return [Boolean, nil]
-      optional :echo, OpenAI::BooleanModel, nil?: true
+      optional :echo, OpenAI::Internal::Type::BooleanModel, nil?: true
 
       # @!attribute frequency_penalty
       #   Number between -2.0 and 2.0. Positive values penalize new tokens based on their
@@ -76,7 +76,7 @@ module OpenAI
       #     from being generated.
       #
       #   @return [Hash{Symbol=>Integer}, nil]
-      optional :logit_bias, OpenAI::HashOf[Integer], nil?: true
+      optional :logit_bias, OpenAI::Internal::Type::HashOf[Integer], nil?: true
 
       # @!attribute logprobs
       #   Include the log probabilities on the `logprobs` most likely output tokens, as
@@ -229,7 +229,7 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # ID of the model to use. You can use the
       #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -237,7 +237,7 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
@@ -267,7 +267,7 @@ module OpenAI
       #   training, so if a prompt is not specified the model will generate as if from the
       #   beginning of a new document.
       module Prompt
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
@@ -281,17 +281,17 @@ module OpenAI
         #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
         #   def self.variants; end
 
-        StringArray = OpenAI::ArrayOf[String]
+        StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
-        IntegerArray = OpenAI::ArrayOf[Integer]
+        IntegerArray = OpenAI::Internal::Type::ArrayOf[Integer]
 
-        ArrayOfToken2DArray = OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]]
+        ArrayOfToken2DArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]]
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
       #   returned text will not contain the stop sequence.
       module Stop
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
@@ -301,7 +301,7 @@ module OpenAI
         #   # @return [Array(String, Array<String>)]
         #   def self.variants; end
 
-        StringArray = OpenAI::ArrayOf[String]
+        StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end
     end
   end

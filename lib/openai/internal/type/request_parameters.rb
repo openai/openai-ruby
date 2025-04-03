@@ -12,7 +12,7 @@ module OpenAI
 
         # @param mod [Module]
         def self.included(mod)
-          return unless mod <= OpenAI::BaseModel
+          return unless mod <= OpenAI::Internal::Type::BaseModel
 
           mod.extend(OpenAI::Internal::Type::RequestParameters::Converter)
           mod.optional(:request_options, OpenAI::RequestOptions)

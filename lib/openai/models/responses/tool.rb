@@ -7,7 +7,7 @@ module OpenAI
       #   the
       #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
       module Tool
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :type
 

@@ -5,7 +5,7 @@ module OpenAI
       | OpenAI::Models::ModerationTextInput
 
     module ModerationMultiModalInput
-      extend OpenAI::Union
+      extend OpenAI::Internal::Type::Union
 
       def self?.variants: -> [OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput]
     end

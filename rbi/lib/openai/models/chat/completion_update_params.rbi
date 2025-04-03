@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class CompletionUpdateParams < OpenAI::BaseModel
+      class CompletionUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -19,7 +19,7 @@ module OpenAI
         sig do
           params(
             metadata: T.nilable(T::Hash[Symbol, String]),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end

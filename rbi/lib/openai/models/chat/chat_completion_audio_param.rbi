@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionAudioParam < OpenAI::BaseModel
+      class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
         sig { returns(OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol) }
@@ -42,7 +42,7 @@ module OpenAI
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
         module Format
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format) }
           OrSymbol =
@@ -62,7 +62,7 @@ module OpenAI
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         module Voice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol]) }
           def self.variants

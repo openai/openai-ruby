@@ -55,7 +55,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
@@ -67,7 +67,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
@@ -79,7 +79,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
@@ -95,7 +95,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
@@ -111,7 +111,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {"retry-after" => "1.3"}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
@@ -124,7 +124,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {"retry-after" => (Time.now + 10).httpdate}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       Thread.current.thread_variable_set(:time_now, Time.now)
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
       Thread.current.thread_variable_set(:time_now, nil)
@@ -139,7 +139,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {"retry-after-ms" => "1300"}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
@@ -152,7 +152,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
     end
 
@@ -165,7 +165,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",
@@ -182,7 +182,7 @@ class OpenAITest < Minitest::Test
     requester = MockRequester.new(500, {}, {})
     openai.requester = requester
 
-    assert_raises(OpenAI::InternalServerError) do
+    assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
         model: :"o3-mini",

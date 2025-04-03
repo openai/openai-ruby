@@ -8,7 +8,7 @@ module OpenAI
         }
         & OpenAI::Internal::Type::request_parameters
 
-      class ThreadUpdateParams < OpenAI::BaseModel
+      class ThreadUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -30,7 +30,7 @@ module OpenAI
             file_search: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch
           }
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           attr_reader code_interpreter: OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter?
 
           def code_interpreter=: (
@@ -52,7 +52,7 @@ module OpenAI
 
           type code_interpreter = { file_ids: ::Array[String] }
 
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             attr_reader file_ids: ::Array[String]?
 
             def file_ids=: (::Array[String]) -> ::Array[String]
@@ -64,7 +64,7 @@ module OpenAI
 
           type file_search = { vector_store_ids: ::Array[String] }
 
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             attr_reader vector_store_ids: ::Array[String]?
 
             def vector_store_ids=: (::Array[String]) -> ::Array[String]

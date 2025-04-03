@@ -17,11 +17,11 @@ module OpenAI
         sig(:final) do
           params(
             type_info: T.any(
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               T.proc.returns(OpenAI::Internal::Type::Converter::Input),
               OpenAI::Internal::Type::Converter::Input
             ),
-            spec: OpenAI::Internal::Util::AnyHash
+            spec: OpenAI::Internal::AnyHash
           )
             .returns(T.attached_class)
         end
@@ -72,11 +72,11 @@ module OpenAI
         sig(:final) do
           params(
             type_info: T.any(
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               T.proc.returns(OpenAI::Internal::Type::Converter::Input),
               OpenAI::Internal::Type::Converter::Input
             ),
-            spec: OpenAI::Internal::Util::AnyHash
+            spec: OpenAI::Internal::AnyHash
           )
             .void
         end

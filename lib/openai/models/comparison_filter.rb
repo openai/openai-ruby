@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ComparisonFilter < OpenAI::BaseModel
+    class ComparisonFilter < OpenAI::Internal::Type::BaseModel
       # @!attribute key
       #   The key to compare against the value.
       #
@@ -39,7 +39,7 @@ module OpenAI
       #   #
       #   def initialize(key:, type:, value:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
@@ -52,7 +52,7 @@ module OpenAI
       #
       # @see OpenAI::Models::ComparisonFilter#type
       module Type
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         EQ = :eq
         NE = :ne
@@ -73,13 +73,13 @@ module OpenAI
       #
       # @see OpenAI::Models::ComparisonFilter#value
       module Value
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         variant String
 
         variant Float
 
-        variant OpenAI::BooleanModel
+        variant OpenAI::Internal::Type::BooleanModel
 
         # @!parse
         #   # @return [Array(String, Float, Boolean)]

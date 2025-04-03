@@ -7,7 +7,7 @@ module OpenAI
       #   messages sent by the user. With o1 models and newer, `developer` messages
       #   replace the previous `system` messages.
       module ChatCompletionMessageParam
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :role
 

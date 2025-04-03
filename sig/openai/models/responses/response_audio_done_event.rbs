@@ -3,7 +3,7 @@ module OpenAI
     module Responses
       type response_audio_done_event = { type: :"response.audio.done" }
 
-      class ResponseAudioDoneEvent < OpenAI::BaseModel
+      class ResponseAudioDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :"response.audio.done"
 
         def initialize: (?type: :"response.audio.done") -> void

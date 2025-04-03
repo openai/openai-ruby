@@ -3,7 +3,7 @@ module OpenAI
     type batch_request_counts =
       { completed: Integer, failed: Integer, total: Integer }
 
-    class BatchRequestCounts < OpenAI::BaseModel
+    class BatchRequestCounts < OpenAI::Internal::Type::BaseModel
       attr_accessor completed: Integer
 
       attr_accessor failed: Integer

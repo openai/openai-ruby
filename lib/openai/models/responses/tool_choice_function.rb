@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ToolChoiceFunction < OpenAI::BaseModel
+      class ToolChoiceFunction < OpenAI::Internal::Type::BaseModel
         # @!attribute name
         #   The name of the function to call.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(name:, type: :function, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

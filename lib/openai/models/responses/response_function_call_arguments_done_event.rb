@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionCallArgumentsDoneEvent < OpenAI::BaseModel
+      class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute arguments
         #   The function-call arguments.
         #
@@ -37,7 +37,7 @@ module OpenAI
         #   #
         #   def initialize(arguments:, item_id:, output_index:, type: :"response.function_call_arguments.done", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

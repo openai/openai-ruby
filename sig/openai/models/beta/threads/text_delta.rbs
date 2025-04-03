@@ -8,7 +8,7 @@ module OpenAI
             value: String
           }
 
-        class TextDelta < OpenAI::BaseModel
+        class TextDelta < OpenAI::Internal::Type::BaseModel
           attr_reader annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta]?
 
           def annotations=: (

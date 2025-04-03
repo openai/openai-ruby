@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class EasyInputMessage < OpenAI::BaseModel
+      class EasyInputMessage < OpenAI::Internal::Type::BaseModel
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
         sig do
@@ -46,7 +46,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::Responses::ResponseInputImage,
                 OpenAI::Models::Responses::ResponseInputFile
               )
@@ -85,7 +85,7 @@ module OpenAI
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
         module Content
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig do
             override
@@ -109,7 +109,7 @@ module OpenAI
         # The role of the message input. One of `user`, `assistant`, `system`, or
         #   `developer`.
         module Role
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::EasyInputMessage::Role) }
           OrSymbol =
@@ -127,7 +127,7 @@ module OpenAI
 
         # The type of the message input. Always `message`.
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::EasyInputMessage::Type) }
           OrSymbol =

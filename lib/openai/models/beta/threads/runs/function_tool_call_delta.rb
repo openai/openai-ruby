@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FunctionToolCallDelta < OpenAI::BaseModel
+          class FunctionToolCallDelta < OpenAI::Internal::Type::BaseModel
             # @!attribute index
             #   The index of the tool call in the tool calls array.
             #
@@ -47,10 +47,10 @@ module OpenAI
             #   #
             #   def initialize(index:, id: nil, function: nil, type: :function, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta#function
-            class Function < OpenAI::BaseModel
+            class Function < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] arguments
               #   The arguments passed to the function.
               #
@@ -88,7 +88,7 @@ module OpenAI
               #   #
               #   def initialize(arguments: nil, name: nil, output: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
         end

@@ -24,7 +24,7 @@ module OpenAI
       #   [Assistants API quickstart](https://platform.openai.com/docs/assistants/overview)
       #   to learn how to integrate the Assistants API with streaming.
       module AssistantStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :event
 
@@ -109,7 +109,7 @@ module OpenAI
         # Occurs when an [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs. This can happen due to an internal server error or a timeout.
         variant :error, -> { OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent }
 
-        class ThreadCreated < OpenAI::BaseModel
+        class ThreadCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a thread that contains
           #     [messages](https://platform.openai.com/docs/api-reference/messages).
@@ -126,7 +126,7 @@ module OpenAI
           #   Whether to enable input audio transcription.
           #
           #   @return [Boolean, nil]
-          optional :enabled, OpenAI::BooleanModel
+          optional :enabled, OpenAI::Internal::Type::BooleanModel
 
           # @!parse
           #   # @return [Boolean]
@@ -143,10 +143,10 @@ module OpenAI
           #   #
           #   def initialize(data:, enabled: nil, event: :"thread.created", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunCreated < OpenAI::BaseModel
+        class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -168,10 +168,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.created", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunQueued < OpenAI::BaseModel
+        class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -193,10 +193,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.queued", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunInProgress < OpenAI::BaseModel
+        class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -218,10 +218,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.in_progress", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunRequiresAction < OpenAI::BaseModel
+        class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -243,10 +243,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.requires_action", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunCompleted < OpenAI::BaseModel
+        class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -268,10 +268,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.completed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunIncomplete < OpenAI::BaseModel
+        class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -293,10 +293,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.incomplete", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunFailed < OpenAI::BaseModel
+        class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -318,10 +318,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.failed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunCancelling < OpenAI::BaseModel
+        class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -343,10 +343,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.cancelling", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunCancelled < OpenAI::BaseModel
+        class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -368,10 +368,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.cancelled", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunExpired < OpenAI::BaseModel
+        class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -393,10 +393,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.expired", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepCreated < OpenAI::BaseModel
+        class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -418,10 +418,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.created", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepInProgress < OpenAI::BaseModel
+        class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -443,10 +443,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.in_progress", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepDelta < OpenAI::BaseModel
+        class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a run step delta i.e. any changed fields on a run step during
           #     streaming.
@@ -469,10 +469,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.delta", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepCompleted < OpenAI::BaseModel
+        class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -494,10 +494,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.completed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepFailed < OpenAI::BaseModel
+        class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -519,10 +519,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.failed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepCancelled < OpenAI::BaseModel
+        class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -544,10 +544,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.cancelled", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepExpired < OpenAI::BaseModel
+        class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -569,10 +569,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.expired", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageCreated < OpenAI::BaseModel
+        class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -595,10 +595,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.created", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageInProgress < OpenAI::BaseModel
+        class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -621,10 +621,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.in_progress", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageDelta < OpenAI::BaseModel
+        class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message delta i.e. any changed fields on a message during
           #     streaming.
@@ -647,10 +647,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.delta", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageCompleted < OpenAI::BaseModel
+        class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -673,10 +673,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.completed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageIncomplete < OpenAI::BaseModel
+        class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -699,10 +699,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.incomplete", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ErrorEvent < OpenAI::BaseModel
+        class ErrorEvent < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #
           #   @return [OpenAI::Models::ErrorObject]
@@ -723,7 +723,7 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :error, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # @!parse

@@ -4,7 +4,7 @@ module OpenAI
       module Threads
         type text_content_block_param = { text: String, type: :text }
 
-        class TextContentBlockParam < OpenAI::BaseModel
+        class TextContentBlockParam < OpenAI::Internal::Type::BaseModel
           attr_accessor text: String
 
           attr_accessor type: :text

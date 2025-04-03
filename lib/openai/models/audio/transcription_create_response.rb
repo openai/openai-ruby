@@ -10,7 +10,7 @@ module OpenAI
       #
       # @see OpenAI::Resources::Audio::Transcriptions#stream_raw
       module TranscriptionCreateResponse
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # Represents a transcription response returned by model, based on the provided input.
         variant -> { OpenAI::Models::Audio::Transcription }

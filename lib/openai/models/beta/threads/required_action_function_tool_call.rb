@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class RequiredActionFunctionToolCall < OpenAI::BaseModel
+        class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The ID of the tool call. This ID must be referenced when you submit the tool
           #     outputs in using the
@@ -36,10 +36,10 @@ module OpenAI
           #   #
           #   def initialize(id:, function:, type: :function, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall#function
-          class Function < OpenAI::BaseModel
+          class Function < OpenAI::Internal::Type::BaseModel
             # @!attribute arguments
             #   The arguments that the model expects you to pass to the function.
             #
@@ -60,7 +60,7 @@ module OpenAI
             #   #
             #   def initialize(arguments:, name:, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

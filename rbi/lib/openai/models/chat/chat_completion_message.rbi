@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionMessage < OpenAI::BaseModel
+      class ChatCompletionMessage < OpenAI::Internal::Type::BaseModel
         # The contents of the message.
         sig { returns(T.nilable(String)) }
         attr_accessor :content
@@ -23,7 +23,7 @@ module OpenAI
 
         sig do
           params(
-            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Internal::Util::AnyHash)]
+            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Internal::AnyHash)]
           )
             .void
         end
@@ -35,12 +35,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAudio)) }
         attr_reader :audio
 
-        sig do
-          params(
-            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Internal::Util::AnyHash))
-          )
-            .void
-        end
+        sig { params(audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Internal::AnyHash))).void }
         attr_writer :audio
 
         # Deprecated and replaced by `tool_calls`. The name and arguments of a function
@@ -50,7 +45,7 @@ module OpenAI
 
         sig do
           params(
-            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Internal::Util::AnyHash)
+            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Internal::AnyHash)
           )
             .void
         end
@@ -62,7 +57,7 @@ module OpenAI
 
         sig do
           params(
-            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::Util::AnyHash)]
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::AnyHash)]
           )
             .void
         end
@@ -73,10 +68,10 @@ module OpenAI
           params(
             content: T.nilable(String),
             refusal: T.nilable(String),
-            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Internal::Util::AnyHash)],
-            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Internal::Util::AnyHash)),
-            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Internal::Util::AnyHash),
-            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::Util::AnyHash)],
+            annotations: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation, OpenAI::Internal::AnyHash)],
+            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudio, OpenAI::Internal::AnyHash)),
+            function_call: T.any(OpenAI::Models::Chat::ChatCompletionMessage::FunctionCall, OpenAI::Internal::AnyHash),
+            tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionMessageToolCall, OpenAI::Internal::AnyHash)],
             role: Symbol
           )
             .returns(T.attached_class)
@@ -109,7 +104,7 @@ module OpenAI
         def to_hash
         end
 
-        class Annotation < OpenAI::BaseModel
+        class Annotation < OpenAI::Internal::Type::BaseModel
           # The type of the URL citation. Always `url_citation`.
           sig { returns(Symbol) }
           attr_accessor :type
@@ -120,10 +115,7 @@ module OpenAI
 
           sig do
             params(
-              url_citation: T.any(
-                OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation,
-                OpenAI::Internal::Util::AnyHash
-              )
+              url_citation: T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -132,10 +124,7 @@ module OpenAI
           # A URL citation when using web search.
           sig do
             params(
-              url_citation: T.any(
-                OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation,
-                OpenAI::Internal::Util::AnyHash
-              ),
+              url_citation: T.any(OpenAI::Models::Chat::ChatCompletionMessage::Annotation::URLCitation, OpenAI::Internal::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)
@@ -152,7 +141,7 @@ module OpenAI
           def to_hash
           end
 
-          class URLCitation < OpenAI::BaseModel
+          class URLCitation < OpenAI::Internal::Type::BaseModel
             # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
             attr_accessor :end_index
@@ -187,7 +176,7 @@ module OpenAI
           end
         end
 
-        class FunctionCall < OpenAI::BaseModel
+        class FunctionCall < OpenAI::Internal::Type::BaseModel
           # The arguments to call the function with, as generated by the model in JSON
           #   format. Note that the model does not always generate valid JSON, and may
           #   hallucinate parameters not defined by your function schema. Validate the

@@ -13,7 +13,7 @@ module OpenAI
             step_number: Integer
           }
 
-        class FineTuningJobCheckpoint < OpenAI::BaseModel
+        class FineTuningJobCheckpoint < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor created_at: Integer
@@ -51,7 +51,7 @@ module OpenAI
               valid_mean_token_accuracy: Float
             }
 
-          class Metrics < OpenAI::BaseModel
+          class Metrics < OpenAI::Internal::Type::BaseModel
             attr_reader full_valid_loss: Float?
 
             def full_valid_loss=: (Float) -> Float

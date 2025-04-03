@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class Transcription < OpenAI::BaseModel
+      class Transcription < OpenAI::Internal::Type::BaseModel
         # The transcribed text.
         sig { returns(String) }
         attr_accessor :text
@@ -16,7 +16,7 @@ module OpenAI
 
         sig do
           params(
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::Util::AnyHash)]
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::AnyHash)]
           )
             .void
         end
@@ -27,7 +27,7 @@ module OpenAI
         sig do
           params(
             text: String,
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::Util::AnyHash)]
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::AnyHash)]
           )
             .returns(T.attached_class)
         end
@@ -38,7 +38,7 @@ module OpenAI
         def to_hash
         end
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           # The token in the transcription.
           sig { returns(T.nilable(String)) }
           attr_reader :token

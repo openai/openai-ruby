@@ -2,13 +2,17 @@
 
 module OpenAI
   module Models
-    class ModelDeleteParams < OpenAI::BaseModel
+    class ModelDeleteParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       sig do
-        params(request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
-          .returns(T.attached_class)
+        params(
+          request_options: T.any(
+            OpenAI::RequestOptions,
+            OpenAI::Internal::AnyHash
+          )
+        ).returns(T.attached_class)
       end
       def self.new(request_options: {})
       end

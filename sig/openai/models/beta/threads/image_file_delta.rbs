@@ -8,7 +8,7 @@ module OpenAI
             file_id: String
           }
 
-        class ImageFileDelta < OpenAI::BaseModel
+        class ImageFileDelta < OpenAI::Internal::Type::BaseModel
           attr_reader detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail?
 
           def detail=: (
@@ -29,7 +29,7 @@ module OpenAI
           type detail = :auto | :low | :high
 
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO: :auto
             LOW: :low

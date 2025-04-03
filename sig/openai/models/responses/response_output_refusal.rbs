@@ -3,7 +3,7 @@ module OpenAI
     module Responses
       type response_output_refusal = { refusal: String, type: :refusal }
 
-      class ResponseOutputRefusal < OpenAI::BaseModel
+      class ResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
         attr_accessor refusal: String
 
         attr_accessor type: :refusal

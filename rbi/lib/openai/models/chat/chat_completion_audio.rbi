@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionAudio < OpenAI::BaseModel
+      class ChatCompletionAudio < OpenAI::Internal::Type::BaseModel
         # Unique identifier for this audio response.
         sig { returns(String) }
         attr_accessor :id

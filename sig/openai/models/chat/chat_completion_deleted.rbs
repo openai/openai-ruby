@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_deleted =
         { id: String, deleted: bool, object: :"chat.completion.deleted" }
 
-      class ChatCompletionDeleted < OpenAI::BaseModel
+      class ChatCompletionDeleted < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor deleted: bool

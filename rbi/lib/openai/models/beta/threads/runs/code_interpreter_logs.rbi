@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterLogs < OpenAI::BaseModel
+          class CodeInterpreterLogs < OpenAI::Internal::Type::BaseModel
             # The index of the output in the outputs array.
             sig { returns(Integer) }
             attr_accessor :index

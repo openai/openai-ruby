@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Uploads#create
-    class Upload < OpenAI::BaseModel
+    class Upload < OpenAI::Internal::Type::BaseModel
       # @!attribute id
       #   The Upload unique identifier, which can be referenced in API endpoints.
       #
@@ -75,13 +75,13 @@ module OpenAI
       #   #
       #   def initialize(id:, bytes:, created_at:, expires_at:, filename:, purpose:, status:, file: nil, object: :upload, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The status of the Upload.
       #
       # @see OpenAI::Models::Upload#status
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         PENDING = :pending
         COMPLETED = :completed

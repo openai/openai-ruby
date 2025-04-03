@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module ModerationModel
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ModerationModel) }
       OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ModerationModel::TaggedSymbol) }

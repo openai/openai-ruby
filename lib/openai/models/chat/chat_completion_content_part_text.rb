@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionContentPartText < OpenAI::BaseModel
+      class ChatCompletionContentPartText < OpenAI::Internal::Type::BaseModel
         # @!attribute text
         #   The text content.
         #
@@ -25,7 +25,7 @@ module OpenAI
         #   #
         #   def initialize(text:, type: :text, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

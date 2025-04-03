@@ -9,7 +9,7 @@ module OpenAI
             image_url: OpenAI::Models::Beta::Threads::ImageURLDelta
           }
 
-        class ImageURLDeltaBlock < OpenAI::BaseModel
+        class ImageURLDeltaBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor index: Integer
 
           attr_accessor type: :image_url

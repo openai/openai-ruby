@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseWebSearchCallSearchingEvent < OpenAI::BaseModel
+      class ResponseWebSearchCallSearchingEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute item_id
         #   Unique ID for the output item associated with the web search call.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(item_id:, output_index:, type: :"response.web_search_call.searching", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

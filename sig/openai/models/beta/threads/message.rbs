@@ -20,7 +20,7 @@ module OpenAI
             thread_id: String
           }
 
-        class Message < OpenAI::BaseModel
+        class Message < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor assistant_id: String?
@@ -74,7 +74,7 @@ module OpenAI
               tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
             }
 
-          class Attachment < OpenAI::BaseModel
+          class Attachment < OpenAI::Internal::Type::BaseModel
             attr_reader file_id: String?
 
             def file_id=: (String) -> String
@@ -97,12 +97,12 @@ module OpenAI
               | OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
 
             module Tool
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               type assistant_tools_file_search_type_only =
                 { type: :file_search }
 
-              class AssistantToolsFileSearchTypeOnly < OpenAI::BaseModel
+              class AssistantToolsFileSearchTypeOnly < OpenAI::Internal::Type::BaseModel
                 attr_accessor type: :file_search
 
                 def initialize: (?type: :file_search) -> void
@@ -119,7 +119,7 @@ module OpenAI
               reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
             }
 
-          class IncompleteDetails < OpenAI::BaseModel
+          class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             attr_accessor reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
 
             def initialize: (
@@ -136,7 +136,7 @@ module OpenAI
               | :run_failed
 
             module Reason
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               CONTENT_FILTER: :content_filter
               MAX_TOKENS: :max_tokens
@@ -151,7 +151,7 @@ module OpenAI
           type role = :user | :assistant
 
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             USER: :user
             ASSISTANT: :assistant
@@ -162,7 +162,7 @@ module OpenAI
           type status = :in_progress | :incomplete | :completed
 
           module Status
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             IN_PROGRESS: :in_progress
             INCOMPLETE: :incomplete

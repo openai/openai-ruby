@@ -25,10 +25,13 @@ module OpenAI
               ),
               body: T.nilable(T.anything),
               unwrap: T.nilable(Symbol),
-              page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::BaseModel]]),
-              stream: T.nilable(T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::BaseModel]]),
+              page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::Internal::Type::BaseModel]]),
+              stream: T.nilable(
+                T::Class[OpenAI::Internal::Type::BaseStream[T.anything,
+                                                            OpenAI::Internal::Type::BaseModel]]
+              ),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-              options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+              options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             }
           end
 
@@ -136,7 +139,7 @@ module OpenAI
           overridable
             .params(
               req: OpenAI::Internal::Transport::BaseClient::RequestComponentsShape,
-              opts: OpenAI::Internal::Util::AnyHash
+              opts: OpenAI::Internal::AnyHash
             )
             .returns(OpenAI::Internal::Transport::BaseClient::RequestInputShape)
         end
@@ -180,10 +183,13 @@ module OpenAI
             ),
             body: T.nilable(T.anything),
             unwrap: T.nilable(Symbol),
-            page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::BaseModel]]),
-            stream: T.nilable(T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::BaseModel]]),
+            page: T.nilable(T::Class[OpenAI::Internal::Type::BasePage[OpenAI::Internal::Type::BaseModel]]),
+            stream: T.nilable(
+              T::Class[OpenAI::Internal::Type::BaseStream[T.anything,
+                                                          OpenAI::Internal::Type::BaseModel]]
+            ),
             model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-            options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(T.anything)
         end
@@ -196,7 +202,7 @@ module OpenAI
           unwrap: nil,
           page: nil,
           stream: nil,
-          model: OpenAI::Unknown,
+          model: OpenAI::Internal::Type::Unknown,
           options: {}
         )
         end

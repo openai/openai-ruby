@@ -3,13 +3,13 @@
 module OpenAI
   module Models
     module Beta
-      class ThreadStreamEvent < OpenAI::BaseModel
+      class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
         # Represents a thread that contains
         #   [messages](https://platform.openai.com/docs/api-reference/messages).
         sig { returns(OpenAI::Models::Beta::Thread) }
         attr_reader :data
 
-        sig { params(data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::Util::AnyHash)).void }
+        sig { params(data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::AnyHash)).void }
         attr_writer :data
 
         sig { returns(Symbol) }
@@ -27,7 +27,7 @@ module OpenAI
         #   created.
         sig do
           params(
-            data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::Util::AnyHash),
+            data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::AnyHash),
             enabled: T::Boolean,
             event: Symbol
           )

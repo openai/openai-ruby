@@ -7,7 +7,7 @@ module OpenAI
       #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
       #   created.
       module MessageStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :event
 
@@ -29,7 +29,7 @@ module OpenAI
         variant :"thread.message.incomplete",
                 -> { OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete }
 
-        class ThreadMessageCreated < OpenAI::BaseModel
+        class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -52,10 +52,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.created", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageInProgress < OpenAI::BaseModel
+        class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -78,10 +78,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.in_progress", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageDelta < OpenAI::BaseModel
+        class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message delta i.e. any changed fields on a message during
           #     streaming.
@@ -104,10 +104,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.delta", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageCompleted < OpenAI::BaseModel
+        class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -130,10 +130,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.completed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadMessageIncomplete < OpenAI::BaseModel
+        class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
           #     [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -156,7 +156,7 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.message.incomplete", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # @!parse

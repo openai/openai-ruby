@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class CompletionChoice < OpenAI::BaseModel
+    class CompletionChoice < OpenAI::Internal::Type::BaseModel
       # The reason the model stopped generating tokens. This will be `stop` if the model
       #   hit a natural stop point or a provided stop sequence, `length` if the maximum
       #   number of tokens specified in the request was reached, or `content_filter` if
@@ -17,9 +17,7 @@ module OpenAI
       attr_reader :logprobs
 
       sig do
-        params(
-          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::Util::AnyHash))
-        )
+        params(logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::AnyHash)))
           .void
       end
       attr_writer :logprobs
@@ -31,7 +29,7 @@ module OpenAI
         params(
           finish_reason: OpenAI::Models::CompletionChoice::FinishReason::OrSymbol,
           index: Integer,
-          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::Util::AnyHash)),
+          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::AnyHash)),
           text: String
         )
           .returns(T.attached_class)
@@ -58,7 +56,7 @@ module OpenAI
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
       module FinishReason
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionChoice::FinishReason) }
         OrSymbol =
@@ -73,7 +71,7 @@ module OpenAI
         end
       end
 
-      class Logprobs < OpenAI::BaseModel
+      class Logprobs < OpenAI::Internal::Type::BaseModel
         sig { returns(T.nilable(T::Array[Integer])) }
         attr_reader :text_offset
 

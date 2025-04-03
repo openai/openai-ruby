@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module AudioModel
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       WHISPER_1 = :"whisper-1"
       GPT_4O_TRANSCRIBE = :"gpt-4o-transcribe"

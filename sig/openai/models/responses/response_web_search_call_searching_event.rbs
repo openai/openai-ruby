@@ -8,7 +8,7 @@ module OpenAI
           type: :"response.web_search_call.searching"
         }
 
-      class ResponseWebSearchCallSearchingEvent < OpenAI::BaseModel
+      class ResponseWebSearchCallSearchingEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor item_id: String
 
         attr_accessor output_index: Integer

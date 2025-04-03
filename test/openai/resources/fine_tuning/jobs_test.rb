@@ -21,15 +21,15 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         model: String,
         object: Symbol,
         organization_id: String,
-        result_files: ^(OpenAI::ArrayOf[String]),
+        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
         seed: Integer,
         status: OpenAI::Models::FineTuning::FineTuningJob::Status,
         trained_tokens: Integer | nil,
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end
@@ -53,15 +53,15 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         model: String,
         object: Symbol,
         organization_id: String,
-        result_files: ^(OpenAI::ArrayOf[String]),
+        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
         seed: Integer,
         status: OpenAI::Models::FineTuning::FineTuningJob::Status,
         trained_tokens: Integer | nil,
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end
@@ -92,15 +92,15 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         model: String,
         object: Symbol,
         organization_id: String,
-        result_files: ^(OpenAI::ArrayOf[String]),
+        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
         seed: Integer,
         status: OpenAI::Models::FineTuning::FineTuningJob::Status,
         trained_tokens: Integer | nil,
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end
@@ -124,15 +124,15 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         model: String,
         object: Symbol,
         organization_id: String,
-        result_files: ^(OpenAI::ArrayOf[String]),
+        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
         seed: Integer,
         status: OpenAI::Models::FineTuning::FineTuningJob::Status,
         trained_tokens: Integer | nil,
         training_file: String,
         validation_file: String | nil,
         estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         method_: OpenAI::Models::FineTuning::FineTuningJob::Method | nil
       }
     end
@@ -159,7 +159,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
         level: OpenAI::Models::FineTuning::FineTuningJobEvent::Level,
         message: String,
         object: Symbol,
-        data: OpenAI::Unknown | nil,
+        data: OpenAI::Internal::Type::Unknown | nil,
         type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type | nil
       }
     end

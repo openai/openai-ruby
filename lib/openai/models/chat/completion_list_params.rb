@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       # @see OpenAI::Resources::Chat::Completions#list
-      class CompletionListParams < OpenAI::BaseModel
+      class CompletionListParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -35,7 +35,7 @@ module OpenAI
         #     `metadata[key1]=value1&metadata[key2]=value2`
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute [r] model
         #   The model used to generate the Chat Completions.
@@ -68,12 +68,12 @@ module OpenAI
         #   #
         #   def initialize(after: nil, limit: nil, metadata: nil, model: nil, order: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         #   `desc` for descending order. Defaults to `asc`.
         module Order
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           ASC = :asc
           DESC = :desc

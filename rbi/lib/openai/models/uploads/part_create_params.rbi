@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Uploads
-      class PartCreateParams < OpenAI::BaseModel
+      class PartCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -14,7 +14,7 @@ module OpenAI
         sig do
           params(
             data: T.any(IO, StringIO),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end

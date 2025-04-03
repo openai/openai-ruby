@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class StaticFileChunkingStrategyObjectParam < OpenAI::BaseModel
+    class StaticFileChunkingStrategyObjectParam < OpenAI::Internal::Type::BaseModel
       # @!attribute static
       #
       #   @return [OpenAI::Models::StaticFileChunkingStrategy]
@@ -22,7 +22,7 @@ module OpenAI
       #   #
       #   def initialize(static:, type: :static, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

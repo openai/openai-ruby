@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
-      class FineTuningJobWandbIntegration < OpenAI::BaseModel
+      class FineTuningJobWandbIntegration < OpenAI::Internal::Type::BaseModel
         # The name of the project that the new run will be created under.
         sig { returns(String) }
         attr_accessor :project

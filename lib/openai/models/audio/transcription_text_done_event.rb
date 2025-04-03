@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionTextDoneEvent < OpenAI::BaseModel
+      class TranscriptionTextDoneEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute text
         #   The text that was transcribed.
         #
@@ -23,7 +23,8 @@ module OpenAI
         #     with the `include[]` parameter set to `logprobs`.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
-        optional :logprobs, -> { OpenAI::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob] }
+        optional :logprobs,
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>]
@@ -41,9 +42,9 @@ module OpenAI
         #   #
         #   def initialize(text:, logprobs: nil, type: :"transcript.text.done", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] token
           #   The token that was used to generate the log probability.
           #
@@ -58,7 +59,7 @@ module OpenAI
           #   The bytes that were used to generate the log probability.
           #
           #   @return [Array<Object>, nil]
-          optional :bytes, OpenAI::ArrayOf[OpenAI::Unknown]
+          optional :bytes, OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
 
           # @!parse
           #   # @return [Array<Object>]
@@ -81,7 +82,7 @@ module OpenAI
           #   #
           #   def initialize(token: nil, bytes: nil, logprob: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

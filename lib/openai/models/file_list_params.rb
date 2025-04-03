@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Files#list
-    class FileListParams < OpenAI::BaseModel
+    class FileListParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -62,12 +62,12 @@ module OpenAI
       #   #
       #   def initialize(after: nil, limit: nil, order: nil, purpose: nil, request_options: {}, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
       #   order and `desc` for descending order.
       module Order
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         ASC = :asc
         DESC = :desc

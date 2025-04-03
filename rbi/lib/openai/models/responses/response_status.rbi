@@ -6,7 +6,7 @@ module OpenAI
       # The status of the response generation. One of `completed`, `failed`,
       #   `in_progress`, or `incomplete`.
       module ResponseStatus
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseStatus) }
         OrSymbol =

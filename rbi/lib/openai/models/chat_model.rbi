@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module ChatModel
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ChatModel) }
       OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ChatModel::TaggedSymbol) }

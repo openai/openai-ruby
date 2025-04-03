@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class Translation < OpenAI::BaseModel
+      class Translation < OpenAI::Internal::Type::BaseModel
         # @!attribute text
         #
         #   @return [String]
@@ -14,7 +14,7 @@ module OpenAI
         #   #
         #   def initialize(text:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

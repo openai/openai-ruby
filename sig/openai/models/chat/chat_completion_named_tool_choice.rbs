@@ -9,7 +9,7 @@ module OpenAI
           type: :function
         }
 
-      class ChatCompletionNamedToolChoice < OpenAI::BaseModel
+      class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function
 
         attr_accessor type: :function
@@ -23,7 +23,7 @@ module OpenAI
 
         type function = { name: String }
 
-        class Function < OpenAI::BaseModel
+        class Function < OpenAI::Internal::Type::BaseModel
           attr_accessor name: String
 
           def initialize: (name: String) -> void

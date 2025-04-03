@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module FineTuning
-      class FineTuningJobWandbIntegration < OpenAI::BaseModel
+      class FineTuningJobWandbIntegration < OpenAI::Internal::Type::BaseModel
         # @!attribute project
         #   The name of the project that the new run will be created under.
         #
@@ -31,7 +31,7 @@ module OpenAI
         #     "openai/finetune", "openai/{base-model}", "openai/{ftjob-abcdef}".
         #
         #   @return [Array<String>, nil]
-        optional :tags, OpenAI::ArrayOf[String]
+        optional :tags, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!parse
         #   # @return [Array<String>]
@@ -50,7 +50,7 @@ module OpenAI
         #   #
         #   def initialize(project:, entity: nil, name: nil, tags: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

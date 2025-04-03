@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module ImageModel
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       DALL_E_2 = :"dall-e-2"
       DALL_E_3 = :"dall-e-3"

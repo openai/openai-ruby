@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionSegment < OpenAI::BaseModel
+      class TranscriptionSegment < OpenAI::Internal::Type::BaseModel
         # Unique identifier of the segment.
         sig { returns(Integer) }
         attr_accessor :id

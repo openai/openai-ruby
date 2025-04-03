@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::BaseModel
+      class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute delta
         #   The function-call arguments delta that is added.
         #
@@ -38,7 +38,7 @@ module OpenAI
         #   #
         #   def initialize(delta:, item_id:, output_index:, type: :"response.function_call_arguments.delta", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

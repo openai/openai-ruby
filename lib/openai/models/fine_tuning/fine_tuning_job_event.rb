@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       # @see OpenAI::Resources::FineTuning::Jobs#list_events
-      class FineTuningJobEvent < OpenAI::BaseModel
+      class FineTuningJobEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The object identifier.
         #
@@ -39,7 +39,7 @@ module OpenAI
         #   The data associated with the event.
         #
         #   @return [Object, nil]
-        optional :data, OpenAI::Unknown
+        optional :data, OpenAI::Internal::Type::Unknown
 
         # @!parse
         #   # @return [Object]
@@ -68,13 +68,13 @@ module OpenAI
         #   #
         #   def initialize(id:, created_at:, level:, message:, data: nil, type: nil, object: :"fine_tuning.job.event", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The log level of the event.
         #
         # @see OpenAI::Models::FineTuning::FineTuningJobEvent#level
         module Level
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           INFO = :info
           WARN = :warn
@@ -91,7 +91,7 @@ module OpenAI
         #
         # @see OpenAI::Models::FineTuning::FineTuningJobEvent#type
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MESSAGE = :message
           METRICS = :metrics

@@ -8,7 +8,7 @@ module OpenAI
             type: :image_file
           }
 
-        class ImageFileContentBlock < OpenAI::BaseModel
+        class ImageFileContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor image_file: OpenAI::Models::Beta::Threads::ImageFile
 
           attr_accessor type: :image_file

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class TextDeltaBlock < OpenAI::BaseModel
+        class TextDeltaBlock < OpenAI::Internal::Type::BaseModel
           # The index of the content part in the message.
           sig { returns(Integer) }
           attr_accessor :index
@@ -16,14 +16,14 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::TextDelta)) }
           attr_reader :text
 
-          sig { params(text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Internal::AnyHash)).void }
           attr_writer :text
 
           # The text content that is part of a message.
           sig do
             params(
               index: Integer,
-              text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Internal::Util::AnyHash),
+              text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Internal::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)

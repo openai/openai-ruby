@@ -4,11 +4,11 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class TextContentBlock < OpenAI::BaseModel
+        class TextContentBlock < OpenAI::Internal::Type::BaseModel
           sig { returns(OpenAI::Models::Beta::Threads::Text) }
           attr_reader :text
 
-          sig { params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Internal::AnyHash)).void }
           attr_writer :text
 
           # Always `text`.
@@ -17,7 +17,7 @@ module OpenAI
 
           # The text content that is part of a message.
           sig do
-            params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Internal::Util::AnyHash), type: Symbol)
+            params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Internal::AnyHash), type: Symbol)
               .returns(T.attached_class)
           end
           def self.new(text:, type: :text)

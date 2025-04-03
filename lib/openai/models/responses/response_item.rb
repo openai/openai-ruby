@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # Content item used to generate a response.
       module ResponseItem
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :type
 

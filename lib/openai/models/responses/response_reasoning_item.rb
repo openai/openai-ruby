@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseReasoningItem < OpenAI::BaseModel
+      class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique identifier of the reasoning content.
         #
@@ -14,7 +14,8 @@ module OpenAI
         #   Reasoning text contents.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>]
-        required :summary, -> { OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseReasoningItem::Summary] }
+        required :summary,
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseReasoningItem::Summary] }
 
         # @!attribute type
         #   The type of the object. Always `reasoning`.
@@ -44,9 +45,9 @@ module OpenAI
         #   #
         #   def initialize(id:, summary:, status: nil, type: :reasoning, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class Summary < OpenAI::BaseModel
+        class Summary < OpenAI::Internal::Type::BaseModel
           # @!attribute text
           #   A short summary of the reasoning used by the model when generating the response.
           #
@@ -65,7 +66,7 @@ module OpenAI
           #   #
           #   def initialize(text:, type: :summary_text, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -73,7 +74,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseReasoningItem#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed

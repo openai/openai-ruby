@@ -10,7 +10,7 @@ module OpenAI
           }
           & OpenAI::Internal::Type::request_parameters
 
-        class MessageListParams < OpenAI::BaseModel
+        class MessageListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
@@ -40,7 +40,7 @@ module OpenAI
           type order = :asc | :desc
 
           module Order
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             ASC: :asc
             DESC: :desc

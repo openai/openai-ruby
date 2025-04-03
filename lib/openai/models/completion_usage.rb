@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class CompletionUsage < OpenAI::BaseModel
+    class CompletionUsage < OpenAI::Internal::Type::BaseModel
       # @!attribute completion_tokens
       #   Number of tokens in the generated completion.
       #
@@ -61,10 +61,10 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # @see OpenAI::Models::CompletionUsage#completion_tokens_details
-      class CompletionTokensDetails < OpenAI::BaseModel
+      class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] accepted_prediction_tokens
         #   When using Predicted Outputs, the number of tokens in the prediction that
         #     appeared in the completion.
@@ -127,11 +127,11 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
 
       # @see OpenAI::Models::CompletionUsage#prompt_tokens_details
-      class PromptTokensDetails < OpenAI::BaseModel
+      class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] audio_tokens
         #   Audio input tokens present in the prompt.
         #
@@ -160,7 +160,7 @@ module OpenAI
         #   #
         #   def initialize(audio_tokens: nil, cached_tokens: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

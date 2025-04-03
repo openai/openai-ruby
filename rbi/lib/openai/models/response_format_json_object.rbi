@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ResponseFormatJSONObject < OpenAI::BaseModel
+    class ResponseFormatJSONObject < OpenAI::Internal::Type::BaseModel
       # The type of response format being defined. Always `json_object`.
       sig { returns(Symbol) }
       attr_accessor :type

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseAudioDeltaEvent < OpenAI::BaseModel
+      class ResponseAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute delta
         #   A chunk of Base64 encoded response audio bytes.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(delta:, type: :"response.audio.delta", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

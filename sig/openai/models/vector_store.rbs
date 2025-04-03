@@ -15,7 +15,7 @@ module OpenAI
         expires_at: Integer?
       }
 
-    class VectorStore < OpenAI::BaseModel
+    class VectorStore < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor created_at: Integer
@@ -67,7 +67,7 @@ module OpenAI
           total: Integer
         }
 
-      class FileCounts < OpenAI::BaseModel
+      class FileCounts < OpenAI::Internal::Type::BaseModel
         attr_accessor cancelled: Integer
 
         attr_accessor completed: Integer
@@ -92,7 +92,7 @@ module OpenAI
       type status = :expired | :in_progress | :completed
 
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         EXPIRED: :expired
         IN_PROGRESS: :in_progress
@@ -103,7 +103,7 @@ module OpenAI
 
       type expires_after = { anchor: :last_active_at, days: Integer }
 
-      class ExpiresAfter < OpenAI::BaseModel
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         attr_accessor anchor: :last_active_at
 
         attr_accessor days: Integer

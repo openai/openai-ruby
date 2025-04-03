@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class AssistantToolChoice < OpenAI::BaseModel
+      class AssistantToolChoice < OpenAI::Internal::Type::BaseModel
         # The type of the tool. If type is `function`, the function name must be set
         sig { returns(OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol) }
         attr_accessor :type
@@ -11,12 +11,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Beta::AssistantToolChoiceFunction)) }
         attr_reader :function
 
-        sig do
-          params(
-            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::Util::AnyHash)
-          )
-            .void
-        end
+        sig { params(function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::AnyHash)).void }
         attr_writer :function
 
         # Specifies a tool the model should use. Use to force the model to call a specific
@@ -24,7 +19,7 @@ module OpenAI
         sig do
           params(
             type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,
-            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::Util::AnyHash)
+            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -45,7 +40,7 @@ module OpenAI
 
         # The type of the tool. If type is `function`, the function name must be set
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type) }
           OrSymbol =

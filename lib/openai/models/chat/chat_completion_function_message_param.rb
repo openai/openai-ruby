@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       # @deprecated
-      class ChatCompletionFunctionMessageParam < OpenAI::BaseModel
+      class ChatCompletionFunctionMessageParam < OpenAI::Internal::Type::BaseModel
         # @!attribute content
         #   The contents of the function message.
         #
@@ -30,7 +30,7 @@ module OpenAI
         #   #
         #   def initialize(content:, name:, role: :function, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

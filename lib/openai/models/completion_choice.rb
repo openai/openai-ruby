@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class CompletionChoice < OpenAI::BaseModel
+    class CompletionChoice < OpenAI::Internal::Type::BaseModel
       # @!attribute finish_reason
       #   The reason the model stopped generating tokens. This will be `stop` if the model
       #     hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -35,7 +35,7 @@ module OpenAI
       #   #
       #   def initialize(finish_reason:, index:, logprobs:, text:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
       #   hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -44,7 +44,7 @@ module OpenAI
       #
       # @see OpenAI::Models::CompletionChoice#finish_reason
       module FinishReason
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         STOP = :stop
         LENGTH = :length
@@ -58,11 +58,11 @@ module OpenAI
       end
 
       # @see OpenAI::Models::CompletionChoice#logprobs
-      class Logprobs < OpenAI::BaseModel
+      class Logprobs < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] text_offset
         #
         #   @return [Array<Integer>, nil]
-        optional :text_offset, OpenAI::ArrayOf[Integer]
+        optional :text_offset, OpenAI::Internal::Type::ArrayOf[Integer]
 
         # @!parse
         #   # @return [Array<Integer>]
@@ -71,7 +71,7 @@ module OpenAI
         # @!attribute [r] token_logprobs
         #
         #   @return [Array<Float>, nil]
-        optional :token_logprobs, OpenAI::ArrayOf[Float]
+        optional :token_logprobs, OpenAI::Internal::Type::ArrayOf[Float]
 
         # @!parse
         #   # @return [Array<Float>]
@@ -80,7 +80,7 @@ module OpenAI
         # @!attribute [r] tokens
         #
         #   @return [Array<String>, nil]
-        optional :tokens, OpenAI::ArrayOf[String]
+        optional :tokens, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!parse
         #   # @return [Array<String>]
@@ -89,7 +89,7 @@ module OpenAI
         # @!attribute [r] top_logprobs
         #
         #   @return [Array<Hash{Symbol=>Float}>, nil]
-        optional :top_logprobs, OpenAI::ArrayOf[OpenAI::HashOf[Float]]
+        optional :top_logprobs, OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[Float]]
 
         # @!parse
         #   # @return [Array<Hash{Symbol=>Float}>]
@@ -103,7 +103,7 @@ module OpenAI
         #   #
         #   def initialize(text_offset: nil, token_logprobs: nil, tokens: nil, top_logprobs: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

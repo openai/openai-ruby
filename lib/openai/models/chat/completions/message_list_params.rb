@@ -5,7 +5,7 @@ module OpenAI
     module Chat
       module Completions
         # @see OpenAI::Resources::Chat::Completions::Messages#list
-        class MessageListParams < OpenAI::BaseModel
+        class MessageListParams < OpenAI::Internal::Type::BaseModel
           # @!parse
           #   extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
@@ -49,12 +49,12 @@ module OpenAI
           #   #
           #   def initialize(after: nil, limit: nil, order: nil, request_options: {}, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           #   for descending order. Defaults to `asc`.
           module Order
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             ASC = :asc
             DESC = :desc

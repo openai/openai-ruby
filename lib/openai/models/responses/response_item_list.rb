@@ -3,12 +3,12 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseItemList < OpenAI::BaseModel
+      class ResponseItemList < OpenAI::Internal::Type::BaseModel
         # @!attribute data
         #   A list of items used to generate this response.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
-        required :data, -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseItem] }
+        required :data, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseItem] }
 
         # @!attribute first_id
         #   The ID of the first item in the list.
@@ -20,7 +20,7 @@ module OpenAI
         #   Whether there are more items available.
         #
         #   @return [Boolean]
-        required :has_more, OpenAI::BooleanModel
+        required :has_more, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute last_id
         #   The ID of the last item in the list.
@@ -45,7 +45,7 @@ module OpenAI
         #   #
         #   def initialize(data:, first_id:, has_more:, last_id:, object: :list, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

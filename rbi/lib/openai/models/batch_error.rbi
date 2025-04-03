@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class BatchError < OpenAI::BaseModel
+    class BatchError < OpenAI::Internal::Type::BaseModel
       # An error code identifying the error type.
       sig { returns(T.nilable(String)) }
       attr_reader :code

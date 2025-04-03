@@ -11,7 +11,7 @@ module OpenAI
       #   `{"type": "function", "function": {"name": "my_function"}}` forces the model to
       #   call that tool.
       module AssistantToolChoiceOption
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # `none` means the model will not call any tools and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools before responding to the user.
         variant enum: -> { OpenAI::Models::Beta::AssistantToolChoiceOption::Auto }
@@ -24,7 +24,7 @@ module OpenAI
         #   more tools. `required` means the model must call one or more tools before
         #   responding to the user.
         module Auto
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           NONE = :none
           AUTO = :auto

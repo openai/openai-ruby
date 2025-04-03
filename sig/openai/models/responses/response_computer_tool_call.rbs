@@ -11,7 +11,7 @@ module OpenAI
           type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
         }
 
-      class ResponseComputerToolCall < OpenAI::BaseModel
+      class ResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor action: OpenAI::Models::Responses::ResponseComputerToolCall::action
@@ -47,7 +47,7 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
 
         module Action
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           type click =
             {
@@ -57,7 +57,7 @@ module OpenAI
               y_: Integer
             }
 
-          class Click < OpenAI::BaseModel
+          class Click < OpenAI::Internal::Type::BaseModel
             attr_accessor button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button
 
             attr_accessor type: :click
@@ -78,7 +78,7 @@ module OpenAI
             type button = :left | :right | :wheel | :back | :forward
 
             module Button
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               LEFT: :left
               RIGHT: :right
@@ -92,7 +92,7 @@ module OpenAI
 
           type double_click = { type: :double_click, x: Integer, y_: Integer }
 
-          class DoubleClick < OpenAI::BaseModel
+          class DoubleClick < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :double_click
 
             attr_accessor x: Integer
@@ -114,7 +114,7 @@ module OpenAI
               type: :drag
             }
 
-          class Drag < OpenAI::BaseModel
+          class Drag < OpenAI::Internal::Type::BaseModel
             attr_accessor path: ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path]
 
             attr_accessor type: :drag
@@ -128,7 +128,7 @@ module OpenAI
 
             type path = { x: Integer, y_: Integer }
 
-            class Path < OpenAI::BaseModel
+            class Path < OpenAI::Internal::Type::BaseModel
               attr_accessor x: Integer
 
               attr_accessor y_: Integer
@@ -141,7 +141,7 @@ module OpenAI
 
           type keypress = { keys: ::Array[String], type: :keypress }
 
-          class Keypress < OpenAI::BaseModel
+          class Keypress < OpenAI::Internal::Type::BaseModel
             attr_accessor keys: ::Array[String]
 
             attr_accessor type: :keypress
@@ -153,7 +153,7 @@ module OpenAI
 
           type move = { type: :move, x: Integer, y_: Integer }
 
-          class Move < OpenAI::BaseModel
+          class Move < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :move
 
             attr_accessor x: Integer
@@ -167,7 +167,7 @@ module OpenAI
 
           type screenshot = { type: :screenshot }
 
-          class Screenshot < OpenAI::BaseModel
+          class Screenshot < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :screenshot
 
             def initialize: (?type: :screenshot) -> void
@@ -184,7 +184,7 @@ module OpenAI
               y_: Integer
             }
 
-          class Scroll < OpenAI::BaseModel
+          class Scroll < OpenAI::Internal::Type::BaseModel
             attr_accessor scroll_x: Integer
 
             attr_accessor scroll_y: Integer
@@ -208,7 +208,7 @@ module OpenAI
 
           type type_ = { text: String, type: :type }
 
-          class Type < OpenAI::BaseModel
+          class Type < OpenAI::Internal::Type::BaseModel
             attr_accessor text: String
 
             attr_accessor type: :type
@@ -220,7 +220,7 @@ module OpenAI
 
           type wait = { type: :wait }
 
-          class Wait < OpenAI::BaseModel
+          class Wait < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :wait
 
             def initialize: (?type: :wait) -> void
@@ -234,7 +234,7 @@ module OpenAI
         type pending_safety_check =
           { id: String, code: String, message: String }
 
-        class PendingSafetyCheck < OpenAI::BaseModel
+        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor code: String
@@ -249,7 +249,7 @@ module OpenAI
         type status = :in_progress | :completed | :incomplete
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed
@@ -261,7 +261,7 @@ module OpenAI
         type type_ = :computer_call
 
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           COMPUTER_CALL: :computer_call
 

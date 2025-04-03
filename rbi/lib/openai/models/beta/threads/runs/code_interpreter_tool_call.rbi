@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterToolCall < OpenAI::BaseModel
+          class CodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
             # The ID of the tool call.
             sig { returns(String) }
             attr_accessor :id
@@ -18,7 +18,7 @@ module OpenAI
               params(
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 )
               )
                 .void
@@ -36,7 +36,7 @@ module OpenAI
                 id: String,
                 code_interpreter: T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-                  OpenAI::Internal::Util::AnyHash
+                  OpenAI::Internal::AnyHash
                 ),
                 type: Symbol
               )
@@ -58,7 +58,7 @@ module OpenAI
             def to_hash
             end
 
-            class CodeInterpreter < OpenAI::BaseModel
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # The input to the Code Interpreter tool call.
               sig { returns(String) }
               attr_accessor :input
@@ -85,7 +85,7 @@ module OpenAI
                   outputs: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                    OpenAI::Internal::Util::AnyHash,
+                    OpenAI::Internal::AnyHash,
                     OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
                   )
                   ]
@@ -114,9 +114,9 @@ module OpenAI
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
-                class Logs < OpenAI::BaseModel
+                class Logs < OpenAI::Internal::Type::BaseModel
                   # The text output from the Code Interpreter tool call.
                   sig { returns(String) }
                   attr_accessor :logs
@@ -135,7 +135,7 @@ module OpenAI
                   end
                 end
 
-                class Image < OpenAI::BaseModel
+                class Image < OpenAI::Internal::Type::BaseModel
                   sig do
                     returns(
                       OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
@@ -147,7 +147,7 @@ module OpenAI
                     params(
                       image: T.any(
                         OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                        OpenAI::Internal::Util::AnyHash
+                        OpenAI::Internal::AnyHash
                       )
                     )
                       .void
@@ -162,7 +162,7 @@ module OpenAI
                     params(
                       image: T.any(
                         OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                        OpenAI::Internal::Util::AnyHash
+                        OpenAI::Internal::AnyHash
                       ),
                       type: Symbol
                     )
@@ -183,7 +183,7 @@ module OpenAI
                   def to_hash
                   end
 
-                  class Image < OpenAI::BaseModel
+                  class Image < OpenAI::Internal::Type::BaseModel
                     # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
                     #   image.
                     sig { returns(String) }

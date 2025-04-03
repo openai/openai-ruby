@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class ToolCallsStepDetails < OpenAI::BaseModel
+          class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
             # An array of tool calls the run step was involved in. These can be associated
             #   with one of three types of tools: `code_interpreter`, `file_search`, or
             #   `function`.
@@ -32,7 +32,7 @@ module OpenAI
                 tool_calls: T::Array[
                 T.any(
                   OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
-                  OpenAI::Internal::Util::AnyHash,
+                  OpenAI::Internal::AnyHash,
                   OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
                   OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
                 )

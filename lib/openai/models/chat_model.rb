@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module ChatModel
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       O3_MINI = :"o3-mini"
       O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"

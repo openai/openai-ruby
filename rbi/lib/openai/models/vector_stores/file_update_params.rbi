@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
-      class FileUpdateParams < OpenAI::BaseModel
+      class FileUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -22,7 +22,7 @@ module OpenAI
           params(
             vector_store_id: String,
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -43,7 +43,7 @@ module OpenAI
         end
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, Float, T::Boolean]) }
           def self.variants

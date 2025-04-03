@@ -11,7 +11,7 @@ module OpenAI
               fine_tuning_job_id: String,
               after: String,
               limit: Integer,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             )
               .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint])
           end

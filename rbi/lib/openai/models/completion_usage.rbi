@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class CompletionUsage < OpenAI::BaseModel
+    class CompletionUsage < OpenAI::Internal::Type::BaseModel
       # Number of tokens in the generated completion.
       sig { returns(Integer) }
       attr_accessor :completion_tokens
@@ -21,7 +21,7 @@ module OpenAI
 
       sig do
         params(
-          completion_tokens_details: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Internal::Util::AnyHash)
+          completion_tokens_details: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Internal::AnyHash)
         )
           .void
       end
@@ -33,7 +33,7 @@ module OpenAI
 
       sig do
         params(
-          prompt_tokens_details: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Internal::Util::AnyHash)
+          prompt_tokens_details: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Internal::AnyHash)
         )
           .void
       end
@@ -45,8 +45,8 @@ module OpenAI
           completion_tokens: Integer,
           prompt_tokens: Integer,
           total_tokens: Integer,
-          completion_tokens_details: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Internal::Util::AnyHash),
-          prompt_tokens_details: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Internal::Util::AnyHash)
+          completion_tokens_details: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Internal::AnyHash),
+          prompt_tokens_details: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -74,7 +74,7 @@ module OpenAI
       def to_hash
       end
 
-      class CompletionTokensDetails < OpenAI::BaseModel
+      class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
         # When using Predicted Outputs, the number of tokens in the prediction that
         #   appeared in the completion.
         sig { returns(T.nilable(Integer)) }
@@ -140,7 +140,7 @@ module OpenAI
         end
       end
 
-      class PromptTokensDetails < OpenAI::BaseModel
+      class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
         # Audio input tokens present in the prompt.
         sig { returns(T.nilable(Integer)) }
         attr_reader :audio_tokens

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FunctionToolCall < OpenAI::BaseModel
+          class FunctionToolCall < OpenAI::Internal::Type::BaseModel
             # The ID of the tool call object.
             sig { returns(String) }
             attr_accessor :id
@@ -16,7 +16,7 @@ module OpenAI
 
             sig do
               params(
-                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, OpenAI::Internal::Util::AnyHash)
+                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, OpenAI::Internal::AnyHash)
               )
                 .void
             end
@@ -30,7 +30,7 @@ module OpenAI
             sig do
               params(
                 id: String,
-                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, OpenAI::Internal::Util::AnyHash),
+                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, OpenAI::Internal::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -47,7 +47,7 @@ module OpenAI
             def to_hash
             end
 
-            class Function < OpenAI::BaseModel
+            class Function < OpenAI::Internal::Type::BaseModel
               # The arguments passed to the function.
               sig { returns(String) }
               attr_accessor :arguments

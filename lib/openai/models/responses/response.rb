@@ -6,7 +6,7 @@ module OpenAI
       # @see OpenAI::Resources::Responses#create
       #
       # @see OpenAI::Resources::Responses#stream_raw
-      class Response < OpenAI::BaseModel
+      class Response < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   Unique identifier for this Response.
         #
@@ -51,7 +51,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        required :metadata, OpenAI::HashOf[String], nil?: true
+        required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute model
         #   Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
@@ -79,13 +79,14 @@ module OpenAI
         #       consider using the `output_text` property where supported in SDKs.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem>]
-        required :output, -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputItem] }
+        required :output,
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputItem] }
 
         # @!attribute parallel_tool_calls
         #   Whether to allow the model to run tool calls in parallel.
         #
         #   @return [Boolean]
-        required :parallel_tool_calls, OpenAI::BooleanModel
+        required :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute temperature
         #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -121,7 +122,7 @@ module OpenAI
         #       [function calling](https://platform.openai.com/docs/guides/function-calling).
         #
         #   @return [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>]
-        required :tools, -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::Tool] }
+        required :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::Tool] }
 
         # @!attribute top_p
         #   An alternative to sampling with temperature, called nucleus sampling, where the
@@ -270,10 +271,10 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::Responses::Response#incomplete_details
-        class IncompleteDetails < OpenAI::BaseModel
+        class IncompleteDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] reason
           #   The reason why the response is incomplete.
           #
@@ -291,13 +292,13 @@ module OpenAI
           #   #
           #   def initialize(reason: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # The reason why the response is incomplete.
           #
           # @see OpenAI::Models::Responses::Response::IncompleteDetails#reason
           module Reason
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             MAX_OUTPUT_TOKENS = :max_output_tokens
             CONTENT_FILTER = :content_filter
@@ -316,7 +317,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::Response#tool_choice
         module ToolChoice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # Controls which (if any) tool is called by the model.
           #
@@ -350,7 +351,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::Response#truncation
         module Truncation
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           AUTO = :auto
           DISABLED = :disabled

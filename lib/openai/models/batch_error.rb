@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class BatchError < OpenAI::BaseModel
+    class BatchError < OpenAI::Internal::Type::BaseModel
       # @!attribute [r] code
       #   An error code identifying the error type.
       #
@@ -43,7 +43,7 @@ module OpenAI
       #   #
       #   def initialize(code: nil, line: nil, message: nil, param: nil, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

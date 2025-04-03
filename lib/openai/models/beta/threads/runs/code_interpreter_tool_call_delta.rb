@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterToolCallDelta < OpenAI::BaseModel
+          class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
             # @!attribute index
             #   The index of the tool call in the tool calls array.
             #
@@ -50,10 +50,10 @@ module OpenAI
             #   #
             #   def initialize(index:, id: nil, code_interpreter: nil, type: :code_interpreter, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta#code_interpreter
-            class CodeInterpreter < OpenAI::BaseModel
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] input
               #   The input to the Code Interpreter tool call.
               #
@@ -71,7 +71,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>, nil]
               optional :outputs,
-                       -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output] }
+                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output] }
 
               # @!parse
               #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>]
@@ -85,11 +85,11 @@ module OpenAI
               #   #
               #   def initialize(input: nil, outputs: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 discriminator :type
 

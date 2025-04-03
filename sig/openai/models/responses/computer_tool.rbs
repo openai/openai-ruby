@@ -9,7 +9,7 @@ module OpenAI
           type: :computer_use_preview
         }
 
-      class ComputerTool < OpenAI::BaseModel
+      class ComputerTool < OpenAI::Internal::Type::BaseModel
         attr_accessor display_height: Float
 
         attr_accessor display_width: Float
@@ -30,7 +30,7 @@ module OpenAI
         type environment = :mac | :windows | :ubuntu | :browser
 
         module Environment
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MAC: :mac
           WINDOWS: :windows

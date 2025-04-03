@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class FilePathDeltaAnnotation < OpenAI::BaseModel
+        class FilePathDeltaAnnotation < OpenAI::Internal::Type::BaseModel
           # @!attribute index
           #   The index of the annotation in the text content part.
           #
@@ -67,10 +67,10 @@ module OpenAI
           #   #
           #   def initialize(index:, end_index: nil, file_path: nil, start_index: nil, text: nil, type: :file_path, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation#file_path
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_id
             #   The ID of the file that was generated.
             #
@@ -86,7 +86,7 @@ module OpenAI
             #   #
             #   def initialize(file_id: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

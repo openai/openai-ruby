@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::Files#content
-      class FileContentResponse < OpenAI::BaseModel
+      class FileContentResponse < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] text
         #   The text content
         #
@@ -31,7 +31,7 @@ module OpenAI
         #   #
         #   def initialize(text: nil, type: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

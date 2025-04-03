@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FileSearchToolCallDelta < OpenAI::BaseModel
+          class FileSearchToolCallDelta < OpenAI::Internal::Type::BaseModel
             # For now, this is always going to be an empty object.
             sig { returns(T.anything) }
             attr_accessor :file_search

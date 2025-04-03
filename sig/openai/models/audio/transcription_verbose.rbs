@@ -10,7 +10,7 @@ module OpenAI
           words: ::Array[OpenAI::Models::Audio::TranscriptionWord]
         }
 
-      class TranscriptionVerbose < OpenAI::BaseModel
+      class TranscriptionVerbose < OpenAI::Internal::Type::BaseModel
         attr_accessor duration: Float
 
         attr_accessor language: String

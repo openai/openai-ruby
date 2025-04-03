@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionContentPartImage < OpenAI::BaseModel
+      class ChatCompletionContentPartImage < OpenAI::Internal::Type::BaseModel
         # @!attribute image_url
         #
         #   @return [OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL]
@@ -23,10 +23,10 @@ module OpenAI
         #   #
         #   def initialize(image_url:, type: :image_url, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartImage#image_url
-        class ImageURL < OpenAI::BaseModel
+        class ImageURL < OpenAI::Internal::Type::BaseModel
           # @!attribute url
           #   Either a URL of the image or the base64 encoded image data.
           #
@@ -50,14 +50,14 @@ module OpenAI
           #   #
           #   def initialize(url:, detail: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           #
           # @see OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL#detail
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO = :auto
             LOW = :low

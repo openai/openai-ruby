@@ -170,32 +170,4 @@ module OpenAI
       HTTP_STATUS = T.let((500..), T::Range[Integer])
     end
   end
-
-  Error = OpenAI::Errors::Error
-
-  ConversionError = OpenAI::Errors::ConversionError
-
-  APIError = OpenAI::Errors::APIError
-
-  APIStatusError = OpenAI::Errors::APIStatusError
-
-  APIConnectionError = OpenAI::Errors::APIConnectionError
-
-  APITimeoutError = OpenAI::Errors::APITimeoutError
-
-  BadRequestError = OpenAI::Errors::BadRequestError
-
-  AuthenticationError = OpenAI::Errors::AuthenticationError
-
-  PermissionDeniedError = OpenAI::Errors::PermissionDeniedError
-
-  NotFoundError = OpenAI::Errors::NotFoundError
-
-  ConflictError = OpenAI::Errors::ConflictError
-
-  UnprocessableEntityError = OpenAI::Errors::UnprocessableEntityError
-
-  RateLimitError = OpenAI::Errors::RateLimitError
-
-  InternalServerError = OpenAI::Errors::InternalServerError
 end

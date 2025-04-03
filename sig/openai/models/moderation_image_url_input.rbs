@@ -6,7 +6,7 @@ module OpenAI
         type: :image_url
       }
 
-    class ModerationImageURLInput < OpenAI::BaseModel
+    class ModerationImageURLInput < OpenAI::Internal::Type::BaseModel
       attr_accessor image_url: OpenAI::Models::ModerationImageURLInput::ImageURL
 
       attr_accessor type: :image_url
@@ -20,7 +20,7 @@ module OpenAI
 
       type image_url = { url: String }
 
-      class ImageURL < OpenAI::BaseModel
+      class ImageURL < OpenAI::Internal::Type::BaseModel
         attr_accessor url: String
 
         def initialize: (url: String) -> void

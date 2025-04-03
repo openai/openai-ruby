@@ -35,30 +35,30 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
       in {
         type: :message,
         id: String,
-        content: ^(OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseInputContent]),
+        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseInputContent]),
         role: OpenAI::Models::Responses::ResponseInputMessageItem::Role,
         status: OpenAI::Models::Responses::ResponseInputMessageItem::Status | nil
       }
       in {
         type: :message,
         id: String,
-        content: ^(OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputMessage::Content]),
+        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputMessage::Content]),
         role: Symbol,
         status: OpenAI::Models::Responses::ResponseOutputMessage::Status
       }
       in {
         type: :file_search_call,
         id: String,
-        queries: ^(OpenAI::ArrayOf[String]),
+        queries: ^(OpenAI::Internal::Type::ArrayOf[String]),
         status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status,
-        results: ^(OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]) | nil
+        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]) | nil
       }
       in {
         type: :computer_call,
         id: String,
         action: OpenAI::Models::Responses::ResponseComputerToolCall::Action,
         call_id: String,
-        pending_safety_checks: ^(OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
+        pending_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck]),
         status: OpenAI::Models::Responses::ResponseComputerToolCall::Status
       }
       in {
@@ -66,7 +66,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
         id: String,
         call_id: String,
         output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-        acknowledged_safety_checks: ^(OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
+        acknowledged_safety_checks: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]) | nil,
         status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status | nil
       }
       in {type: :web_search_call, id: String, status: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status}

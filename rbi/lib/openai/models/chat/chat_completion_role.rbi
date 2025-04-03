@@ -5,7 +5,7 @@ module OpenAI
     module Chat
       # The role of the author of a message
       module ChatCompletionRole
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionRole) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionRole::TaggedSymbol) }

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseComputerToolCallOutputItem < OpenAI::BaseModel
+      class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the computer call tool output.
         #
@@ -34,7 +34,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>, nil]
         optional :acknowledged_safety_checks,
-                 -> { OpenAI::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck] }
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>]
@@ -61,9 +61,9 @@ module OpenAI
         #   #
         #   def initialize(id:, call_id:, output:, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class AcknowledgedSafetyCheck < OpenAI::BaseModel
+        class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The ID of the pending safety check.
           #
@@ -91,7 +91,7 @@ module OpenAI
           #   #
           #   def initialize(id:, code:, message:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
@@ -99,7 +99,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseComputerToolCallOutputItem#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed

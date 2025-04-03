@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module AssistantTool
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig do
           override

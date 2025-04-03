@@ -13,7 +13,7 @@ module OpenAI
         status_details: String
       }
 
-    class FileObject < OpenAI::BaseModel
+    class FileObject < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor bytes: Integer
@@ -60,7 +60,7 @@ module OpenAI
         | :vision
 
       module Purpose
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         ASSISTANTS: :assistants
         ASSISTANTS_OUTPUT: :assistants_output
@@ -76,7 +76,7 @@ module OpenAI
       type status = :uploaded | :processed | :error
 
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         UPLOADED: :uploaded
         PROCESSED: :processed

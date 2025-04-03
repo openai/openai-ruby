@@ -12,7 +12,7 @@ module OpenAI
             text: String
           }
 
-        class FileCitationDeltaAnnotation < OpenAI::BaseModel
+        class FileCitationDeltaAnnotation < OpenAI::Internal::Type::BaseModel
           attr_accessor index: Integer
 
           attr_accessor type: :file_citation
@@ -48,7 +48,7 @@ module OpenAI
 
           type file_citation = { file_id: String, quote: String }
 
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             attr_reader file_id: String?
 
             def file_id=: (String) -> String

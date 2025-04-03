@@ -4,7 +4,7 @@ module OpenAI
       type response_error_event =
         { code: String?, message: String, param: String?, type: :error }
 
-      class ResponseErrorEvent < OpenAI::BaseModel
+      class ResponseErrorEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor code: String?
 
         attr_accessor message: String

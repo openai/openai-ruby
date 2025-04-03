@@ -5,7 +5,7 @@ module OpenAI
     # @see OpenAI::Resources::Completions#create
     #
     # @see OpenAI::Resources::Completions#stream_raw
-    class Completion < OpenAI::BaseModel
+    class Completion < OpenAI::Internal::Type::BaseModel
       # @!attribute id
       #   A unique identifier for the completion.
       #
@@ -16,7 +16,7 @@ module OpenAI
       #   The list of completion choices the model generated for the input prompt.
       #
       #   @return [Array<OpenAI::Models::CompletionChoice>]
-      required :choices, -> { OpenAI::ArrayOf[OpenAI::Models::CompletionChoice] }
+      required :choices, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::CompletionChoice] }
 
       # @!attribute created
       #   The Unix timestamp (in seconds) of when the completion was created.
@@ -73,7 +73,7 @@ module OpenAI
       #   #
       #   def initialize(id:, choices:, created:, model:, system_fingerprint: nil, usage: nil, object: :text_completion, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

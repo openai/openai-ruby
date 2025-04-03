@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseTextConfig < OpenAI::BaseModel
+      class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
         # @!attribute [r] format_
         #   An object specifying the format that the model must output.
         #
@@ -37,7 +37,7 @@ module OpenAI
         #   #
         #   def initialize(format_: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

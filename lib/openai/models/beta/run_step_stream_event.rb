@@ -7,7 +7,7 @@ module OpenAI
       #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
       #   is created.
       module RunStepStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :event
 
@@ -35,7 +35,7 @@ module OpenAI
         # Occurs when a [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object) expires.
         variant :"thread.run.step.expired", -> { OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired }
 
-        class ThreadRunStepCreated < OpenAI::BaseModel
+        class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -57,10 +57,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.created", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepInProgress < OpenAI::BaseModel
+        class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -82,10 +82,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.in_progress", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepDelta < OpenAI::BaseModel
+        class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a run step delta i.e. any changed fields on a run step during
           #     streaming.
@@ -108,10 +108,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.delta", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepCompleted < OpenAI::BaseModel
+        class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -133,10 +133,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.completed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepFailed < OpenAI::BaseModel
+        class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -158,10 +158,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.failed", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepCancelled < OpenAI::BaseModel
+        class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -183,10 +183,10 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.cancelled", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
-        class ThreadRunStepExpired < OpenAI::BaseModel
+        class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a step in execution of a run.
           #
@@ -208,7 +208,7 @@ module OpenAI
           #   #
           #   def initialize(data:, event: :"thread.run.step.expired", **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
 
         # @!parse

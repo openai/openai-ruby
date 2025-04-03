@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class ToolCallDeltaObject < OpenAI::BaseModel
+          class ToolCallDeltaObject < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Always `tool_calls`.
             #
@@ -18,7 +18,8 @@ module OpenAI
             #     `function`.
             #
             #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>, nil]
-            optional :tool_calls, -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::ToolCallDelta] }
+            optional :tool_calls,
+                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::ToolCallDelta] }
 
             # @!parse
             #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>]
@@ -32,7 +33,7 @@ module OpenAI
             #   #
             #   def initialize(tool_calls: nil, type: :tool_calls, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

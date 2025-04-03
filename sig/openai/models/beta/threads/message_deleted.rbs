@@ -5,7 +5,7 @@ module OpenAI
         type message_deleted =
           { id: String, deleted: bool, object: :"thread.message.deleted" }
 
-        class MessageDeleted < OpenAI::BaseModel
+        class MessageDeleted < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor deleted: bool

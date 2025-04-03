@@ -9,7 +9,7 @@ module OpenAI
             object: :"thread.message.delta"
           }
 
-        class MessageDeltaEvent < OpenAI::BaseModel
+        class MessageDeltaEvent < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor delta: OpenAI::Models::Beta::Threads::MessageDelta

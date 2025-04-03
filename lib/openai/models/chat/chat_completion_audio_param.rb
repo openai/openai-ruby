@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionAudioParam < OpenAI::BaseModel
+      class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
         # @!attribute format_
         #   Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #     or `pcm16`.
@@ -28,14 +28,14 @@ module OpenAI
         #   #
         #   def initialize(format_:, voice:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
         #
         # @see OpenAI::Models::Chat::ChatCompletionAudioParam#format_
         module Format
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           WAV = :wav
           MP3 = :mp3
@@ -55,7 +55,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Chat::ChatCompletionAudioParam#voice
         module Voice
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 

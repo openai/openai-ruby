@@ -4,12 +4,13 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class MessageDelta < OpenAI::BaseModel
+        class MessageDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] content
           #   The content of the message in array of text and/or images.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>, nil]
-          optional :content, -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentDelta] }
+          optional :content,
+                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentDelta] }
 
           # @!parse
           #   # @return [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>]
@@ -33,13 +34,13 @@ module OpenAI
           #   #
           #   def initialize(content: nil, role: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # The entity that produced the message. One of `user` or `assistant`.
           #
           # @see OpenAI::Models::Beta::Threads::MessageDelta#role
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             USER = :user
             ASSISTANT = :assistant

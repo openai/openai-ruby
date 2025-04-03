@@ -4,7 +4,7 @@ module OpenAI
       type response_status = :completed | :failed | :in_progress | :incomplete
 
       module ResponseStatus
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         COMPLETED: :completed
         FAILED: :failed

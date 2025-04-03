@@ -19,7 +19,7 @@ module OpenAI
         #   #
         #   def initialize(id:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ModerationTextInput < OpenAI::BaseModel
+    class ModerationTextInput < OpenAI::Internal::Type::BaseModel
       # A string of text to classify.
       sig { returns(String) }
       attr_accessor :text

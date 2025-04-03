@@ -4,7 +4,7 @@ module OpenAI
       type speech_model = :"tts-1" | :"tts-1-hd" | :"gpt-4o-mini-tts"
 
       module SpeechModel
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TTS_1: :"tts-1"
         TTS_1_HD: :"tts-1-hd"

@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class Upload < OpenAI::BaseModel
+    class Upload < OpenAI::Internal::Type::BaseModel
       # The Upload unique identifier, which can be referenced in API endpoints.
       sig { returns(String) }
       attr_accessor :id
@@ -41,7 +41,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Models::FileObject)) }
       attr_reader :file
 
-      sig { params(file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::Util::AnyHash))).void }
+      sig { params(file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::AnyHash))).void }
       attr_writer :file
 
       # The Upload object can accept byte chunks in the form of Parts.
@@ -54,7 +54,7 @@ module OpenAI
           filename: String,
           purpose: String,
           status: OpenAI::Models::Upload::Status::OrSymbol,
-          file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::Util::AnyHash)),
+          file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::AnyHash)),
           object: Symbol
         )
           .returns(T.attached_class)
@@ -93,7 +93,7 @@ module OpenAI
 
       # The status of the Upload.
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Upload::Status) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Upload::Status::TaggedSymbol) }

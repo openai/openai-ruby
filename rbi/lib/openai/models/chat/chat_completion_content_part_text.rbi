@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Chat
-      class ChatCompletionContentPartText < OpenAI::BaseModel
+      class ChatCompletionContentPartText < OpenAI::Internal::Type::BaseModel
         # The text content.
         sig { returns(String) }
         attr_accessor :text

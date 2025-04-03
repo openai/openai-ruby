@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Uploads
       # @see OpenAI::Resources::Uploads::Parts#create
-      class PartCreateParams < OpenAI::BaseModel
+      class PartCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -21,7 +21,7 @@ module OpenAI
         #   #
         #   def initialize(data:, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -7,7 +7,7 @@ module OpenAI
     #   fine-tuning - `vision`: Images used for vision fine-tuning - `user_data`:
     #   Flexible file type for any purpose - `evals`: Used for eval data sets
     module FilePurpose
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FilePurpose) }
       OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::FilePurpose::TaggedSymbol) }

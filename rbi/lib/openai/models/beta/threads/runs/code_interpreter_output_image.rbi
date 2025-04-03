@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterOutputImage < OpenAI::BaseModel
+          class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
             # The index of the output in the outputs array.
             sig { returns(Integer) }
             attr_accessor :index
@@ -19,10 +19,7 @@ module OpenAI
 
             sig do
               params(
-                image: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
-                  OpenAI::Internal::Util::AnyHash
-                )
+                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Internal::AnyHash)
               )
                 .void
             end
@@ -31,10 +28,7 @@ module OpenAI
             sig do
               params(
                 index: Integer,
-                image: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
-                  OpenAI::Internal::Util::AnyHash
-                ),
+                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Internal::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -51,7 +45,7 @@ module OpenAI
             def to_hash
             end
 
-            class Image < OpenAI::BaseModel
+            class Image < OpenAI::Internal::Type::BaseModel
               # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
               #   image.
               sig { returns(T.nilable(String)) }

@@ -104,32 +104,4 @@ module OpenAI
       HTTP_STATUS: Range[Integer]
     end
   end
-
-  class Error = OpenAI::Errors::Error
-
-  class ConversionError = OpenAI::Errors::ConversionError
-
-  class APIError = OpenAI::Errors::APIError
-
-  class APIStatusError = OpenAI::Errors::APIStatusError
-
-  class APIConnectionError = OpenAI::Errors::APIConnectionError
-
-  class APITimeoutError = OpenAI::Errors::APITimeoutError
-
-  class BadRequestError = OpenAI::Errors::BadRequestError
-
-  class AuthenticationError = OpenAI::Errors::AuthenticationError
-
-  class PermissionDeniedError = OpenAI::Errors::PermissionDeniedError
-
-  class NotFoundError = OpenAI::Errors::NotFoundError
-
-  class ConflictError = OpenAI::Errors::ConflictError
-
-  class UnprocessableEntityError = OpenAI::Errors::UnprocessableEntityError
-
-  class RateLimitError = OpenAI::Errors::RateLimitError
-
-  class InternalServerError = OpenAI::Errors::InternalServerError
 end

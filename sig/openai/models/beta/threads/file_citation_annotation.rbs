@@ -11,7 +11,7 @@ module OpenAI
             type: :file_citation
           }
 
-        class FileCitationAnnotation < OpenAI::BaseModel
+        class FileCitationAnnotation < OpenAI::Internal::Type::BaseModel
           attr_accessor end_index: Integer
 
           attr_accessor file_citation: OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation
@@ -34,7 +34,7 @@ module OpenAI
 
           type file_citation = { file_id: String }
 
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             attr_accessor file_id: String
 
             def initialize: (file_id: String) -> void
