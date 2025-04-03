@@ -135,6 +135,10 @@ module OpenAI
           )
         end
 
+        def stream
+          raise NotImplementedError.new("higher level helpers are coming soon!")
+        end
+
         # See {OpenAI::Resources::Beta::Threads#create_and_run} for non-streaming
         #   counterpart.
         #

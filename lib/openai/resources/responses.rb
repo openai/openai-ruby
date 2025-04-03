@@ -59,6 +59,10 @@ module OpenAI
         )
       end
 
+      def stream
+        raise NotImplementedError.new("higher level helpers are coming soon!")
+      end
+
       # See {OpenAI::Resources::Responses#create} for non-streaming counterpart.
       #
       #   Creates a model response. Provide

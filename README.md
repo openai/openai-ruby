@@ -66,6 +66,8 @@ end
 
 We provide support for streaming responses using Server Side Events (SSE).
 
+**coming soon:** `openai.chat.completions.stream` will soon come with Python SDK style higher level streaming responses support.
+
 ```ruby
 stream = openai.chat.completions.stream_raw(
   messages: [{

@@ -79,6 +79,10 @@ module OpenAI
           )
         end
 
+        def stream
+          raise NotImplementedError.new("higher level helpers are coming soon!")
+        end
+
         # See {OpenAI::Resources::Chat::Completions#create} for non-streaming counterpart.
         #
         #   **Starting a new project?** We recommend trying
