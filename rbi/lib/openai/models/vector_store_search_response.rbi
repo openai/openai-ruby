@@ -30,7 +30,7 @@ module OpenAI
       sig do
         params(
           attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-          content: T::Array[T.any(OpenAI::Models::VectorStoreSearchResponse::Content, OpenAI::Util::AnyHash)],
+          content: T::Array[T.any(OpenAI::Models::VectorStoreSearchResponse::Content, OpenAI::Internal::Util::AnyHash)],
           file_id: String,
           filename: String,
           score: Float

@@ -43,7 +43,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Chat::ChatCompletionContentPartImage,
                 OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
                 OpenAI::Models::Chat::ChatCompletionContentPart::File
@@ -105,7 +105,10 @@ module OpenAI
           end
 
           ChatCompletionContentPartArray =
-            T.let(OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionContentPart], OpenAI::Type::Converter)
+            T.let(
+              OpenAI::ArrayOf[union: OpenAI::Models::Chat::ChatCompletionContentPart],
+              OpenAI::Internal::Type::Converter
+            )
         end
       end
     end

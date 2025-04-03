@@ -11,7 +11,12 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Beta::AssistantToolChoiceFunction)) }
         attr_reader :function
 
-        sig { params(function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash)).void }
+        sig do
+          params(
+            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::Util::AnyHash)
+          )
+            .void
+        end
         attr_writer :function
 
         # Specifies a tool the model should use. Use to force the model to call a specific
@@ -19,7 +24,7 @@ module OpenAI
         sig do
           params(
             type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,
-            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Util::AnyHash)
+            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

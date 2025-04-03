@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Beta
       class AssistantListParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # A cursor for use in pagination. `after` is an object ID that defines your place
         #   in the list. For instance, if you make a list request and receive 100 objects,
@@ -49,7 +49,7 @@ module OpenAI
             before: String,
             limit: Integer,
             order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

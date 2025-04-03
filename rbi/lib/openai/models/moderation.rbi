@@ -7,7 +7,7 @@ module OpenAI
       sig { returns(OpenAI::Models::Moderation::Categories) }
       attr_reader :categories
 
-      sig { params(categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash)).void }
+      sig { params(categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Internal::Util::AnyHash)).void }
       attr_writer :categories
 
       # A list of the categories along with the input type(s) that the score applies to.
@@ -16,7 +16,7 @@ module OpenAI
 
       sig do
         params(
-          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash)
+          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Internal::Util::AnyHash)
         )
           .void
       end
@@ -26,7 +26,12 @@ module OpenAI
       sig { returns(OpenAI::Models::Moderation::CategoryScores) }
       attr_reader :category_scores
 
-      sig { params(category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash)).void }
+      sig do
+        params(
+          category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Internal::Util::AnyHash)
+        )
+          .void
+      end
       attr_writer :category_scores
 
       # Whether any of the below categories are flagged.
@@ -35,9 +40,9 @@ module OpenAI
 
       sig do
         params(
-          categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Util::AnyHash),
-          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Util::AnyHash),
-          category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Util::AnyHash),
+          categories: T.any(OpenAI::Models::Moderation::Categories, OpenAI::Internal::Util::AnyHash),
+          category_applied_input_types: T.any(OpenAI::Models::Moderation::CategoryAppliedInputTypes, OpenAI::Internal::Util::AnyHash),
+          category_scores: T.any(OpenAI::Models::Moderation::CategoryScores, OpenAI::Internal::Util::AnyHash),
           flagged: T::Boolean
         )
           .returns(T.attached_class)

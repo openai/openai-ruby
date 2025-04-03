@@ -51,7 +51,7 @@ module OpenAI
         # @param timestamp_granularities [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Stream<OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent>]
+        # @return [OpenAI::Internal::Stream<OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent>]
         #
         # @see OpenAI::Models::Audio::TranscriptionCreateParams
         def stream_raw(params)
@@ -66,7 +66,7 @@ module OpenAI
             path: "audio/transcriptions",
             headers: {"content-type" => "multipart/form-data", "accept" => "text/event-stream"},
             body: parsed,
-            stream: OpenAI::Stream,
+            stream: OpenAI::Internal::Stream,
             model: OpenAI::Models::Audio::TranscriptionStreamEvent,
             options: options
           )

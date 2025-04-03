@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class UploadCompleteParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The ordered list of Part IDs.
       sig { returns(T::Array[String]) }
@@ -22,7 +22,7 @@ module OpenAI
         params(
           part_ids: T::Array[String],
           md5: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

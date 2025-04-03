@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class VectorStoreSearchParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # A query string for a search
       sig { returns(T.any(String, T::Array[String])) }
@@ -16,7 +16,7 @@ module OpenAI
 
       sig do
         params(
-          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter)
+          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter)
         )
           .void
       end
@@ -36,7 +36,7 @@ module OpenAI
 
       sig do
         params(
-          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash)
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::Util::AnyHash)
         )
           .void
       end
@@ -52,11 +52,11 @@ module OpenAI
       sig do
         params(
           query: T.any(String, T::Array[String]),
-          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Util::AnyHash, OpenAI::Models::CompoundFilter),
+          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter),
           max_num_results: Integer,
-          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Util::AnyHash),
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::Util::AnyHash),
           rewrite_query: T::Boolean,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -94,7 +94,7 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
       end
 
       # A filter to apply based on file attributes.

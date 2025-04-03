@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class ImageEditParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask
       #   is not provided, image must have transparency, which will be used as the mask.
@@ -64,7 +64,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol),
           size: T.nilable(OpenAI::Models::ImageEditParams::Size::OrSymbol),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

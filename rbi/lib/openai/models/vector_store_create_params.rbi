@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class VectorStoreCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
       #   strategy. Only applicable if `file_ids` is non-empty.
@@ -24,7 +24,7 @@ module OpenAI
         params(
           chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Util::AnyHash,
+            OpenAI::Internal::Util::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           )
         )
@@ -37,7 +37,9 @@ module OpenAI
       attr_reader :expires_after
 
       sig do
-        params(expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash))
+        params(
+          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash)
+        )
           .void
       end
       attr_writer :expires_after
@@ -71,14 +73,14 @@ module OpenAI
         params(
           chunking_strategy: T.any(
             OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Util::AnyHash,
+            OpenAI::Internal::Util::AnyHash,
             OpenAI::Models::StaticFileChunkingStrategyObjectParam
           ),
-          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Util::AnyHash),
+          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash),
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

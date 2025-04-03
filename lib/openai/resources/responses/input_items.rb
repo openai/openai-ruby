@@ -16,7 +16,7 @@ module OpenAI
         # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
         #
         # @see OpenAI::Models::Responses::InputItemListParams
         def list(response_id, params = {})
@@ -25,7 +25,7 @@ module OpenAI
             method: :get,
             path: ["responses/%1$s/input_items", response_id],
             query: parsed,
-            page: OpenAI::CursorPage,
+            page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::Responses::ResponseItem,
             options: options
           )

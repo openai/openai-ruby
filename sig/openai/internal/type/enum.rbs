@@ -1,0 +1,24 @@
+module OpenAI
+  module Internal
+    module Type
+      module Enum
+        include OpenAI::Internal::Type::Converter
+
+        def self.values: -> ::Array[(nil | bool | Integer | Float | Symbol)]
+
+        private def self.finalize!: -> void
+
+        def ===: (top other) -> bool
+
+        def ==: (top other) -> bool
+
+        def coerce: (
+          String | Symbol | top value,
+          state: OpenAI::Internal::Type::Converter::state
+        ) -> (Symbol | top)
+
+        def dump: (Symbol | top value) -> (Symbol | top)
+      end
+    end
+  end
+end

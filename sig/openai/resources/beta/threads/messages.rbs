@@ -33,7 +33,7 @@ module OpenAI
             ?order: OpenAI::Models::Beta::Threads::MessageListParams::order,
             ?run_id: String,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Threads::Message]
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Message]
 
           def delete: (
             String message_id,

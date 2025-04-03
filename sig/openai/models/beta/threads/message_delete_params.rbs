@@ -3,11 +3,11 @@ module OpenAI
     module Beta
       module Threads
         type message_delete_params =
-          { thread_id: String } & OpenAI::request_parameters
+          { thread_id: String } & OpenAI::Internal::Type::request_parameters
 
         class MessageDeleteParams < OpenAI::BaseModel
-          extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           attr_accessor thread_id: String
 

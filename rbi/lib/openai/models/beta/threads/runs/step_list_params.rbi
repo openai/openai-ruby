@@ -6,8 +6,8 @@ module OpenAI
       module Threads
         module Runs
           class StepListParams < OpenAI::BaseModel
-            extend OpenAI::Type::RequestParameters::Converter
-            include OpenAI::RequestParameters
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
 
             sig { returns(String) }
             attr_accessor :thread_id
@@ -69,7 +69,7 @@ module OpenAI
                 include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
                 limit: Integer,
                 order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
-                request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+                request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
               )
                 .returns(T.attached_class)
             end

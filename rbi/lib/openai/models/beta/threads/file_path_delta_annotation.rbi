@@ -24,7 +24,7 @@ module OpenAI
 
           sig do
             params(
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Util::AnyHash)
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::Util::AnyHash)
             )
               .void
           end
@@ -49,7 +49,7 @@ module OpenAI
             params(
               index: Integer,
               end_index: Integer,
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Util::AnyHash),
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::Util::AnyHash),
               start_index: Integer,
               text: String,
               type: Symbol

@@ -8,8 +8,8 @@ module OpenAI
       # @see OpenAI::Resources::Audio::Transcriptions#stream_raw
       class TranscriptionCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute file
         #   The audio file object (not file name) to transcribe, in one of these formats:

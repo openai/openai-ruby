@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Files#delete
     class FileDeleteParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!parse
       #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]

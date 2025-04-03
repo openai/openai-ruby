@@ -14,7 +14,10 @@ module OpenAI
             sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDelta) }
             attr_reader :delta
 
-            sig { params(delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Util::AnyHash)).void }
+            sig do
+              params(delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::Util::AnyHash))
+                .void
+            end
             attr_writer :delta
 
             # The object type, which is always `thread.run.step.delta`.
@@ -26,7 +29,7 @@ module OpenAI
             sig do
               params(
                 id: String,
-                delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Util::AnyHash),
+                delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::Util::AnyHash),
                 object: Symbol
               )
                 .returns(T.attached_class)

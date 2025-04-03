@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class ModerationCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       #   an array of multi-modal input objects similar to other models.
@@ -34,10 +34,16 @@ module OpenAI
           input: T.any(
             String,
             T::Array[String],
-            T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Util::AnyHash, OpenAI::Models::ModerationTextInput)]
+            T::Array[
+            T.any(
+              OpenAI::Models::ModerationImageURLInput,
+              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Models::ModerationTextInput
+            )
+            ]
           ),
           model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -75,10 +81,13 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
         ModerationMultiModalInputArray =
-          T.let(OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput], OpenAI::Type::Converter)
+          T.let(
+            OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput],
+            OpenAI::Internal::Type::Converter
+          )
       end
 
       # The content moderation model you would like to use. Learn more in

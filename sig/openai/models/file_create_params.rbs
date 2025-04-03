@@ -2,11 +2,11 @@ module OpenAI
   module Models
     type file_create_params =
       { file: (IO | StringIO), purpose: OpenAI::Models::file_purpose }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class FileCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor file: IO | StringIO
 

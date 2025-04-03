@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module VectorStores
       class FileBatchListFilesParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         sig { returns(String) }
         attr_accessor :vector_store_id
@@ -61,7 +61,7 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

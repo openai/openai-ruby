@@ -71,7 +71,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
     response = @openai.fine_tuning.jobs.list
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first
@@ -142,7 +142,7 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
     response = @openai.fine_tuning.jobs.list_events("ft-AF1WoRqd3aJAHsqc9NY7iL8F")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

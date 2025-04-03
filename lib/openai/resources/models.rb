@@ -30,14 +30,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Page<OpenAI::Models::Model>]
+      # @return [OpenAI::Internal::Page<OpenAI::Models::Model>]
       #
       # @see OpenAI::Models::ModelListParams
       def list(params = {})
         @client.request(
           method: :get,
           path: "models",
-          page: OpenAI::Page,
+          page: OpenAI::Internal::Page,
           model: OpenAI::Models::Model,
           options: params[:request_options]
         )

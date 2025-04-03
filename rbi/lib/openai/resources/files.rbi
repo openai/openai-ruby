@@ -28,7 +28,7 @@ module OpenAI
         params(
           file: T.any(IO, StringIO),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::FileObject)
       end
@@ -48,12 +48,7 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(
-            T.any(
-              OpenAI::RequestOptions,
-              OpenAI::Util::AnyHash
-            )
-          )
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::FileObject)
       end
@@ -71,9 +66,9 @@ module OpenAI
           limit: Integer,
           order: OpenAI::Models::FileListParams::Order::OrSymbol,
           purpose: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
-          .returns(OpenAI::CursorPage[OpenAI::Models::FileObject])
+          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FileObject])
       end
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -97,12 +92,7 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(
-            T.any(
-              OpenAI::RequestOptions,
-              OpenAI::Util::AnyHash
-            )
-          )
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::FileDeleted)
       end
@@ -117,12 +107,7 @@ module OpenAI
       sig do
         params(
           file_id: String,
-          request_options: T.nilable(
-            T.any(
-              OpenAI::RequestOptions,
-              OpenAI::Util::AnyHash
-            )
-          )
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(StringIO)
       end

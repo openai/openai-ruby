@@ -87,7 +87,7 @@ module OpenAI
       # @param order [Symbol, OpenAI::Models::VectorStoreListParams::Order]
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::CursorPage<OpenAI::Models::VectorStore>]
+      # @return [OpenAI::Internal::CursorPage<OpenAI::Models::VectorStore>]
       #
       # @see OpenAI::Models::VectorStoreListParams
       def list(params = {})
@@ -96,7 +96,7 @@ module OpenAI
           method: :get,
           path: "vector_stores",
           query: parsed,
-          page: OpenAI::CursorPage,
+          page: OpenAI::Internal::CursorPage,
           model: OpenAI::Models::VectorStore,
           options: options
         )
@@ -134,7 +134,7 @@ module OpenAI
       # @param rewrite_query [Boolean]
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Page<OpenAI::Models::VectorStoreSearchResponse>]
+      # @return [OpenAI::Internal::Page<OpenAI::Models::VectorStoreSearchResponse>]
       #
       # @see OpenAI::Models::VectorStoreSearchParams
       def search(vector_store_id, params)
@@ -143,7 +143,7 @@ module OpenAI
           method: :post,
           path: ["vector_stores/%1$s/search", vector_store_id],
           body: parsed,
-          page: OpenAI::Page,
+          page: OpenAI::Internal::Page,
           model: OpenAI::Models::VectorStoreSearchResponse,
           options: options
         )

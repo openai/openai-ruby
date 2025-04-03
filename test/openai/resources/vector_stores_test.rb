@@ -79,7 +79,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     response = @openai.vector_stores.list
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first
@@ -126,7 +126,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     response = @openai.vector_stores.search("vs_abc123", query: "string")
 
     assert_pattern do
-      response => OpenAI::Page
+      response => OpenAI::Internal::Page
     end
 
     row = response.to_enum.first

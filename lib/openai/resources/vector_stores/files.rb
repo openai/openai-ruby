@@ -94,7 +94,7 @@ module OpenAI
         # @param order [Symbol, OpenAI::Models::VectorStores::FileListParams::Order]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::VectorStores::VectorStoreFile>]
         #
         # @see OpenAI::Models::VectorStores::FileListParams
         def list(vector_store_id, params = {})
@@ -103,7 +103,7 @@ module OpenAI
             method: :get,
             path: ["vector_stores/%1$s/files", vector_store_id],
             query: parsed,
-            page: OpenAI::CursorPage,
+            page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
             options: options
           )
@@ -145,7 +145,7 @@ module OpenAI
         # @param vector_store_id [String]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Page<OpenAI::Models::VectorStores::FileContentResponse>]
+        # @return [OpenAI::Internal::Page<OpenAI::Models::VectorStores::FileContentResponse>]
         #
         # @see OpenAI::Models::VectorStores::FileContentParams
         def content(file_id, params)
@@ -157,7 +157,7 @@ module OpenAI
           @client.request(
             method: :get,
             path: ["vector_stores/%1$s/files/%2$s/content", vector_store_id, file_id],
-            page: OpenAI::Page,
+            page: OpenAI::Internal::Page,
             model: OpenAI::Models::VectorStores::FileContentResponse,
             options: options
           )

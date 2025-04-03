@@ -41,7 +41,7 @@ module OpenAI
             results: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
             )
             ],
@@ -110,7 +110,7 @@ module OpenAI
                 files: T::Array[
                 T.any(
                   OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File,
-                  OpenAI::Util::AnyHash
+                  OpenAI::Internal::Util::AnyHash
                 )
                 ],
                 type: Symbol

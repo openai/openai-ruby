@@ -32,7 +32,7 @@ module OpenAI
             annotations: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
               OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
             )

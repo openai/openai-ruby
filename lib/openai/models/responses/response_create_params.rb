@@ -8,8 +8,8 @@ module OpenAI
       # @see OpenAI::Resources::Responses#stream_raw
       class ResponseCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response.

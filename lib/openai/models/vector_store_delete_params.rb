@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::VectorStores#delete
     class VectorStoreDeleteParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!parse
       #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]

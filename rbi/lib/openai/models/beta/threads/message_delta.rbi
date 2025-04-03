@@ -27,7 +27,7 @@ module OpenAI
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::TextDeltaBlock,
                 OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
@@ -51,7 +51,7 @@ module OpenAI
               content: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::TextDeltaBlock,
                 OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
                 OpenAI::Models::Beta::Threads::ImageURLDeltaBlock

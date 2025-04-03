@@ -15,12 +15,17 @@ module OpenAI
         sig { returns(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration) }
         attr_reader :wandb
 
-        sig { params(wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Util::AnyHash)).void }
+        sig do
+          params(
+            wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Internal::Util::AnyHash)
+          )
+            .void
+        end
         attr_writer :wandb
 
         sig do
           params(
-            wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Util::AnyHash),
+            wandb: T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegration, OpenAI::Internal::Util::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)

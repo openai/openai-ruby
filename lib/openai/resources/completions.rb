@@ -67,7 +67,7 @@ module OpenAI
       # @param user [String]
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Stream<OpenAI::Models::Completion>]
+      # @return [OpenAI::Internal::Stream<OpenAI::Models::Completion>]
       #
       # @see OpenAI::Models::CompletionCreateParams
       def stream_raw(params)
@@ -82,7 +82,7 @@ module OpenAI
           path: "completions",
           headers: {"accept" => "text/event-stream"},
           body: parsed,
-          stream: OpenAI::Stream,
+          stream: OpenAI::Internal::Stream,
           model: OpenAI::Models::Completion,
           options: options
         )

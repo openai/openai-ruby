@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Uploads#complete
     class UploadCompleteParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute part_ids
       #   The ordered list of Part IDs.

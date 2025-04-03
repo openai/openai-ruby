@@ -14,7 +14,7 @@ module OpenAI
 
         sig do
           params(
-            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash)
+            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -30,7 +30,7 @@ module OpenAI
 
         sig do
           params(
-            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash)
+            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -45,9 +45,9 @@ module OpenAI
         sig do
           params(
             input_tokens: Integer,
-            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Util::AnyHash),
+            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::Util::AnyHash),
             output_tokens: Integer,
-            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Util::AnyHash),
+            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::Util::AnyHash),
             total_tokens: Integer
           )
             .returns(T.attached_class)

@@ -10,7 +10,7 @@ module OpenAI
 
         sig do
           params(
-            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash)
+            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -27,7 +27,7 @@ module OpenAI
         # Emitted when the code interpreter is actively interpreting the code snippet.
         sig do
           params(
-            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Util::AnyHash),
+            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::Util::AnyHash),
             output_index: Integer,
             type: Symbol
           )

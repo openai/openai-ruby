@@ -78,7 +78,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
     response = @openai.batches.list
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Responses
       class InputItemListParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # An item ID to list items after, used in pagination.
         sig { returns(T.nilable(String)) }
@@ -54,7 +54,7 @@ module OpenAI
             include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
             order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

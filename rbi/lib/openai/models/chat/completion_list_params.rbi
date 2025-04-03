@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Chat
       class CompletionListParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # Identifier for the last chat completion from the previous pagination request.
         sig { returns(T.nilable(String)) }
@@ -49,7 +49,7 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

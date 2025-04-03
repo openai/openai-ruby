@@ -5,11 +5,11 @@ module OpenAI
         input: OpenAI::Models::ModerationCreateParams::input,
         model: OpenAI::Models::ModerationCreateParams::model
       }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class ModerationCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor input: OpenAI::Models::ModerationCreateParams::input
 

@@ -33,7 +33,7 @@ module OpenAI
         ?limit: Integer,
         ?order: OpenAI::Models::VectorStoreListParams::order,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::CursorPage[OpenAI::Models::VectorStore]
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Models::VectorStore]
 
       def delete: (
         String vector_store_id,
@@ -48,7 +48,7 @@ module OpenAI
         ?ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
         ?rewrite_query: bool,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Page[OpenAI::Models::VectorStoreSearchResponse]
+      ) -> OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse]
 
       def initialize: (client: OpenAI::Client) -> void
     end

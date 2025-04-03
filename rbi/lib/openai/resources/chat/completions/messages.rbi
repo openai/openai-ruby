@@ -13,9 +13,9 @@ module OpenAI
               after: String,
               limit: Integer,
               order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
             )
-              .returns(OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage])
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage])
           end
           def list(
             # The ID of the chat completion to retrieve messages from.

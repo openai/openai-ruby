@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module VectorStores
       class FileBatchCancelParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         sig { returns(String) }
         attr_accessor :vector_store_id
@@ -13,7 +13,7 @@ module OpenAI
         sig do
           params(
             vector_store_id: String,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

@@ -19,14 +19,14 @@ module OpenAI
       sig { returns(OpenAI::Models::CreateEmbeddingResponse::Usage) }
       attr_reader :usage
 
-      sig { params(usage: T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Util::AnyHash)).void }
+      sig { params(usage: T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Internal::Util::AnyHash)).void }
       attr_writer :usage
 
       sig do
         params(
-          data: T::Array[T.any(OpenAI::Models::Embedding, OpenAI::Util::AnyHash)],
+          data: T::Array[T.any(OpenAI::Models::Embedding, OpenAI::Internal::Util::AnyHash)],
           model: String,
-          usage: T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Util::AnyHash),
+          usage: T.any(OpenAI::Models::CreateEmbeddingResponse::Usage, OpenAI::Internal::Util::AnyHash),
           object: Symbol
         )
           .returns(T.attached_class)

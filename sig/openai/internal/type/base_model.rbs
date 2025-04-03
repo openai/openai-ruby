@@ -1,0 +1,79 @@
+module OpenAI
+  module Internal
+    module Type
+      class BaseModel
+        extend OpenAI::Internal::Type::Converter
+
+        type known_field =
+          { mode: (:coerce | :dump)?, required: bool, nilable: bool }
+
+        def self.known_fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
+        & { type_fn: (^-> OpenAI::Internal::Type::Converter::input) })]
+
+        def self.fields: -> ::Hash[Symbol, (OpenAI::BaseModel::known_field
+        & { type: OpenAI::Internal::Type::Converter::input })]
+
+        private def self.add_field: (
+          Symbol name_sym,
+          required: bool,
+          type_info: {
+            const: (nil | bool | Integer | Float | Symbol)?,
+            enum: ^-> OpenAI::Internal::Type::Converter::input?,
+            union: ^-> OpenAI::Internal::Type::Converter::input?,
+            api_name: Symbol
+          }
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input,
+          spec: ::Hash[Symbol, top]
+        ) -> void
+
+        def self.required: (
+          Symbol name_sym,
+          ::Hash[Symbol, top]
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input type_info,
+          ?::Hash[Symbol, top] spec
+        ) -> void
+
+        def self.optional: (
+          Symbol name_sym,
+          ::Hash[Symbol, top]
+          | ^-> OpenAI::Internal::Type::Converter::input
+          | OpenAI::Internal::Type::Converter::input type_info,
+          ?::Hash[Symbol, top] spec
+        ) -> void
+
+        private def self.request_only: { -> void } -> void
+
+        private def self.response_only: { -> void } -> void
+
+        def self.==: (top other) -> bool
+
+        def ==: (top other) -> bool
+
+        def self.coerce: (
+          OpenAI::BaseModel | ::Hash[top, top] | top value,
+          state: OpenAI::Internal::Type::Converter::state
+        ) -> (instance | top)
+
+        def self.dump: (instance | top value) -> (::Hash[top, top] | top)
+
+        def []: (Symbol key) -> top?
+
+        def to_h: -> ::Hash[Symbol, top]
+
+        alias to_hash to_h
+
+        def deconstruct_keys: (::Array[Symbol]? keys) -> ::Hash[Symbol, top]
+
+        def to_json: (*top a) -> String
+
+        def to_yaml: (*top a) -> String
+
+        def initialize: (?::Hash[Symbol, top] | self data) -> void
+
+        def inspect: -> String
+      end
+    end
+  end
+end

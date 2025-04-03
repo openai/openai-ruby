@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class CompletionCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # ID of the model to use. You can use the
       #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -119,7 +119,7 @@ module OpenAI
 
       sig do
         params(
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash))
+          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash))
         )
           .void
       end
@@ -177,12 +177,12 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Util::AnyHash)),
+          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::Util::AnyHash)),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -278,11 +278,14 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
-        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Type::Converter)
+        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Internal::Type::Converter)
 
-        ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Type::Converter)
+        ArrayOfToken2DArray = T.let(
+          OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]],
+          OpenAI::Internal::Type::Converter
+        )
       end
 
       # Up to 4 sequences where the API will stop generating further tokens. The
@@ -294,7 +297,7 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
       end
     end
   end

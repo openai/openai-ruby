@@ -85,7 +85,7 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
     response = @openai.beta.assistants.list
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

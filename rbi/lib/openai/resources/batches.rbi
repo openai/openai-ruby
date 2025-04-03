@@ -10,7 +10,7 @@ module OpenAI
           endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::Batch)
       end
@@ -48,12 +48,7 @@ module OpenAI
       sig do
         params(
           batch_id: String,
-          request_options: T.nilable(
-            T.any(
-              OpenAI::RequestOptions,
-              OpenAI::Util::AnyHash
-            )
-          )
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::Batch)
       end
@@ -69,9 +64,9 @@ module OpenAI
         params(
           after: String,
           limit: Integer,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
-          .returns(OpenAI::CursorPage[OpenAI::Models::Batch])
+          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Batch])
       end
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -92,12 +87,7 @@ module OpenAI
       sig do
         params(
           batch_id: String,
-          request_options: T.nilable(
-            T.any(
-              OpenAI::RequestOptions,
-              OpenAI::Util::AnyHash
-            )
-          )
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
         )
           .returns(OpenAI::Models::Batch)
       end

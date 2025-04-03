@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::VectorStores#search
     class VectorStoreSearchParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute query
       #   A query string for a search
