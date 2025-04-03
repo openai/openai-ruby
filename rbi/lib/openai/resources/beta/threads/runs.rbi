@@ -8,7 +8,10 @@ module OpenAI
           sig { returns(OpenAI::Resources::Beta::Threads::Runs::Steps) }
           attr_reader :steps
 
-          # Create a run.
+          # See {OpenAI::Resources::Beta::Threads::Runs#create_stream_raw} for streaming
+          #   counterpart.
+          #
+          #   Create a run.
           sig do
             params(
               thread_id: String,
@@ -177,7 +180,10 @@ module OpenAI
           )
           end
 
-          # Create a run.
+          # See {OpenAI::Resources::Beta::Threads::Runs#create} for non-streaming
+          #   counterpart.
+          #
+          #   Create a run.
           sig do
             params(
               thread_id: String,
@@ -474,7 +480,10 @@ module OpenAI
           )
           end
 
-          # When a run has the `status: "requires_action"` and `required_action.type` is
+          # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_stream_raw} for
+          #   streaming counterpart.
+          #
+          #   When a run has the `status: "requires_action"` and `required_action.type` is
           #   `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
           #   tool calls once they're all completed. All outputs must be submitted in a single
           #   request.
@@ -505,7 +514,10 @@ module OpenAI
           )
           end
 
-          # When a run has the `status: "requires_action"` and `required_action.type` is
+          # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs} for
+          #   non-streaming counterpart.
+          #
+          #   When a run has the `status: "requires_action"` and `required_action.type` is
           #   `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
           #   tool calls once they're all completed. All outputs must be submitted in a single
           #   request.
