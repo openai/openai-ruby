@@ -3,9 +3,9 @@
 module OpenAI
   module Internal
     class Page
-      include OpenAI::Internal::Type::BasePage
-
       Elem = type_member
+
+      include OpenAI::Internal::Type::BasePage
 
       sig { returns(T.nilable(T::Array[Elem])) }
       attr_accessor :data

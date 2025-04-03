@@ -3,6 +3,8 @@
 module OpenAI
   module Internal
     module Type
+      # @generic Elem
+      #
       # This module provides a base implementation for paginated responses in the SDK.
       module BasePage
         # rubocop:disable Lint/UnusedMethodArgument
@@ -16,10 +18,11 @@ module OpenAI
 
         # @param blk [Proc]
         #
+        # @yieldparam [generic<Elem>]
         # @return [void]
         def auto_paging_each(&blk) = (raise NotImplementedError)
 
-        # @return [Enumerable]
+        # @return [Enumerable<generic<Elem>>]
         def to_enum = super(:auto_paging_each)
 
         alias_method :enum_for, :to_enum

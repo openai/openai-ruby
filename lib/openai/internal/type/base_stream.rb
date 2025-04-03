@@ -3,6 +3,8 @@
 module OpenAI
   module Internal
     module Type
+      # @generic Elem
+      #
       # This module provides a base implementation for streaming responses in the SDK.
       #
       # @see https://rubyapi.org/3.1/o/enumerable
@@ -14,11 +16,12 @@ module OpenAI
 
         # @api private
         #
-        # @return [Enumerable]
+        # @return [Enumerable<generic<Elem>>]
         private def iterator = (raise NotImplementedError)
 
         # @param blk [Proc]
         #
+        # @yieldparam [generic<Elem>]
         # @return [void]
         def each(&blk)
           unless block_given?
@@ -27,7 +30,7 @@ module OpenAI
           @iterator.each(&blk)
         end
 
-        # @return [Enumerator]
+        # @return [Enumerator<generic<Elem>>]
         def to_enum = @iterator
 
         alias_method :enum_for, :to_enum
@@ -38,7 +41,7 @@ module OpenAI
         # @param url [URI::Generic]
         # @param status [Integer]
         # @param response [Net::HTTPResponse]
-        # @param stream [Enumerable]
+        # @param stream [Enumerable<Object>]
         def initialize(model:, url:, status:, response:, stream:)
           @model = model
           @url = url
