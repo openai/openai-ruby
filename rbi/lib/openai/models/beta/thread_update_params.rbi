@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Beta
       class ThreadUpdateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         #   for storing additional information about the object in a structured format, and
@@ -25,7 +25,7 @@ module OpenAI
 
         sig do
           params(
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Util::AnyHash))
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Internal::Util::AnyHash))
           )
             .void
         end
@@ -34,8 +34,8 @@ module OpenAI
         sig do
           params(
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Util::AnyHash)),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Internal::Util::AnyHash)),
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -61,7 +61,10 @@ module OpenAI
 
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+              code_interpreter: T.any(
+                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
               .void
           end
@@ -72,7 +75,10 @@ module OpenAI
 
           sig do
             params(
-              file_search: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+              file_search: T.any(
+                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
               .void
           end
@@ -84,8 +90,14 @@ module OpenAI
           #   tool requires a list of vector store IDs.
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash),
-              file_search: T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+              code_interpreter: T.any(
+                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter,
+                OpenAI::Internal::Util::AnyHash
+              ),
+              file_search: T.any(
+                OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch,
+                OpenAI::Internal::Util::AnyHash
+              )
             )
               .returns(T.attached_class)
           end

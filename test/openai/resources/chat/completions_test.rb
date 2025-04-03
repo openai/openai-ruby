@@ -71,7 +71,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     response = @openai.chat.completions.list
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

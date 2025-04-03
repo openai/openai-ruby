@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::VectorStores::Files#create
       class FileCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute file_id
         #   A [File](https://platform.openai.com/docs/api-reference/files) ID that the

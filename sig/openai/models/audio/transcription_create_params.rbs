@@ -12,11 +12,11 @@ module OpenAI
           temperature: Float,
           timestamp_granularities: ::Array[OpenAI::Models::Audio::TranscriptionCreateParams::timestamp_granularity]
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class TranscriptionCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor file: IO | StringIO
 

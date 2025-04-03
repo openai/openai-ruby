@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class VectorStoreUpdateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter)) }
@@ -12,7 +12,7 @@ module OpenAI
 
       sig do
         params(
-          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Util::AnyHash))
+          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash))
         )
           .void
       end
@@ -33,10 +33,10 @@ module OpenAI
 
       sig do
         params(
-          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Util::AnyHash)),
+          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::Util::AnyHash)),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

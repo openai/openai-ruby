@@ -14,7 +14,7 @@ module OpenAI
           # @param limit [Integer]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::CursorPage<OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint>]
+          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint>]
           #
           # @see OpenAI::Models::FineTuning::Jobs::CheckpointListParams
           def list(fine_tuning_job_id, params = {})
@@ -23,7 +23,7 @@ module OpenAI
               method: :get,
               path: ["fine_tuning/jobs/%1$s/checkpoints", fine_tuning_job_id],
               query: parsed,
-              page: OpenAI::CursorPage,
+              page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint,
               options: options
             )

@@ -70,7 +70,7 @@ module OpenAI
           ?user: String,
           ?web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Stream[OpenAI::Models::Chat::ChatCompletionChunk]
+        ) -> OpenAI::Internal::Stream[OpenAI::Models::Chat::ChatCompletionChunk]
 
         def retrieve: (
           String completion_id,
@@ -90,7 +90,7 @@ module OpenAI
           ?model: String,
           ?order: OpenAI::Models::Chat::CompletionListParams::order,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::CursorPage[OpenAI::Models::Chat::ChatCompletion]
+        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Chat::ChatCompletion]
 
         def delete: (
           String completion_id,

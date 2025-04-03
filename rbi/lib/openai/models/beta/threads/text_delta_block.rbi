@@ -16,14 +16,14 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::TextDelta)) }
           attr_reader :text
 
-          sig { params(text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash)).void }
+          sig { params(text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Internal::Util::AnyHash)).void }
           attr_writer :text
 
           # The text content that is part of a message.
           sig do
             params(
               index: Integer,
-              text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Util::AnyHash),
+              text: T.any(OpenAI::Models::Beta::Threads::TextDelta, OpenAI::Internal::Util::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)

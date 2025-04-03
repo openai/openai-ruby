@@ -7,11 +7,11 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           tool_resources: OpenAI::Models::Beta::ThreadCreateParams::ToolResources?
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class ThreadCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_reader messages: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message]?
 

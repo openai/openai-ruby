@@ -129,7 +129,7 @@ module OpenAI
         # @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Stream<OpenAI::Models::Chat::ChatCompletionChunk>]
+        # @return [OpenAI::Internal::Stream<OpenAI::Models::Chat::ChatCompletionChunk>]
         #
         # @see OpenAI::Models::Chat::CompletionCreateParams
         def stream_raw(params)
@@ -144,7 +144,7 @@ module OpenAI
             path: "chat/completions",
             headers: {"accept" => "text/event-stream"},
             body: parsed,
-            stream: OpenAI::Stream,
+            stream: OpenAI::Internal::Stream,
             model: OpenAI::Models::Chat::ChatCompletionChunk,
             options: options
           )
@@ -206,7 +206,7 @@ module OpenAI
         # @param order [Symbol, OpenAI::Models::Chat::CompletionListParams::Order]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::CursorPage<OpenAI::Models::Chat::ChatCompletion>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Chat::ChatCompletion>]
         #
         # @see OpenAI::Models::Chat::CompletionListParams
         def list(params = {})
@@ -215,7 +215,7 @@ module OpenAI
             method: :get,
             path: "chat/completions",
             query: parsed,
-            page: OpenAI::CursorPage,
+            page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::Chat::ChatCompletion,
             options: options
           )

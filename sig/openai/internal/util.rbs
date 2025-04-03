@@ -1,0 +1,141 @@
+module OpenAI
+  module Internal
+    module Util
+      def self?.monotonic_secs: -> Float
+
+      def self?.arch: -> String
+
+      def self?.os: -> String
+
+      def self?.primitive?: (top input) -> bool
+
+      def self?.coerce_boolean: (top input) -> (bool | top)
+
+      def self?.coerce_boolean!: (top input) -> bool?
+
+      def self?.coerce_integer: (top input) -> (Integer | top)
+
+      def self?.coerce_float: (top input) -> (Float | top)
+
+      def self?.coerce_hash: (top input) -> (::Hash[top, top] | top)
+
+      OMIT: top
+
+      def self?.deep_merge_lr: (top lhs, top rhs, ?concat: bool) -> top
+
+      def self?.deep_merge: (
+        *::Array[top] values,
+        ?sentinel: top?,
+        ?concat: bool
+      ) -> top
+
+      def self?.dig: (
+        ::Hash[Symbol, top] | ::Array[top] | top data,
+        (Symbol | Integer | ::Array[(Symbol | Integer)])? pick,
+        ?top? sentinel
+      ) {
+        -> top?
+      } -> top?
+
+      def self?.uri_origin: (URI::Generic uri) -> String
+
+      def self?.interpolate_path: (String | ::Array[String] path) -> String
+
+      def self?.decode_query: (String? query) -> ::Hash[String, ::Array[String]]
+
+      def self?.encode_query: (
+        ::Hash[String, (::Array[String] | String)?]? query
+      ) -> String?
+
+      type parsed_uri =
+        {
+          scheme: String?,
+          host: String?,
+          port: Integer?,
+          path: String?,
+          query: ::Hash[String, ::Array[String]]
+        }
+
+      def self?.parse_uri: (
+        URI::Generic | String url
+      ) -> OpenAI::Internal::Util::parsed_uri
+
+      def self?.unparse_uri: (
+        OpenAI::Internal::Util::parsed_uri parsed
+      ) -> URI::Generic
+
+      def self?.join_parsed_uri: (
+        OpenAI::Internal::Util::parsed_uri lhs,
+        OpenAI::Internal::Util::parsed_uri rhs
+      ) -> URI::Generic
+
+      def self?.normalized_headers: (
+        *::Hash[String, (String
+        | Integer
+        | ::Array[(String | Integer)?])?] headers
+      ) -> ::Hash[String, String]
+
+      class ReadIOAdapter
+        private def read_enum: (Integer? max_len) -> String
+
+        def read: (?Integer? max_len, ?String? out_string) -> String?
+
+        def initialize: (
+          String | IO | StringIO | Enumerable[String] stream
+        ) {
+          (String arg0) -> void
+        } -> void
+      end
+
+      def self?.writable_enum: {
+        (Enumerator::Yielder y) -> void
+      } -> Enumerable[String]
+
+      def self?.write_multipart_chunk: (
+        Enumerator::Yielder y,
+        boundary: String,
+        key: Symbol | String,
+        val: top
+      ) -> void
+
+      def self?.encode_multipart_streaming: (
+        top body
+      ) -> [String, Enumerable[String]]
+
+      def self?.encode_content: (
+        ::Hash[String, String] headers,
+        top body
+      ) -> top
+
+      def self?.decode_content: (
+        ::Hash[String, String] headers,
+        stream: Enumerable[String],
+        ?suppress_error: bool
+      ) -> top
+
+      def self?.fused_enum: (
+        Enumerable[top] enum,
+        ?external: bool
+      ) {
+        -> void
+      } -> Enumerable[top]
+
+      def self?.close_fused!: (Enumerable[top]? enum) -> void
+
+      def self?.chain_fused: (
+        Enumerable[top]? enum
+      ) {
+        (Enumerator::Yielder arg0) -> void
+      } -> Enumerable[top]
+
+      type server_sent_event =
+        { event: String?, data: String?, id: String?, retry: Integer? }
+
+      def self?.decode_lines: (Enumerable[String] enum) -> Enumerable[String]
+
+      def self?.decode_sse: (
+        Enumerable[String] lines
+      ) -> OpenAI::Internal::Util::server_sent_event
+    end
+  end
+end

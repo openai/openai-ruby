@@ -75,7 +75,7 @@ module OpenAI
       # @param purpose [String]
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::CursorPage<OpenAI::Models::FileObject>]
+      # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FileObject>]
       #
       # @see OpenAI::Models::FileListParams
       def list(params = {})
@@ -84,7 +84,7 @@ module OpenAI
           method: :get,
           path: "files",
           query: parsed,
-          page: OpenAI::CursorPage,
+          page: OpenAI::Internal::CursorPage,
           model: OpenAI::Models::FileObject,
           options: options
         )

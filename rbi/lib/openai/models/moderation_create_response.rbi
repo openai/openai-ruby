@@ -20,7 +20,7 @@ module OpenAI
         params(
           id: String,
           model: String,
-          results: T::Array[T.any(OpenAI::Models::Moderation, OpenAI::Util::AnyHash)]
+          results: T::Array[T.any(OpenAI::Models::Moderation, OpenAI::Internal::Util::AnyHash)]
         )
           .returns(T.attached_class)
       end

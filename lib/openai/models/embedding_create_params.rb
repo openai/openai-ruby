@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Embeddings#create
     class EmbeddingCreateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute input
       #   Input text to embed, encoded as a string or array of tokens. To embed multiple

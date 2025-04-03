@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class UploadCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The number of bytes in the file you are uploading.
       sig { returns(Integer) }
@@ -34,7 +34,7 @@ module OpenAI
           filename: String,
           mime_type: String,
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

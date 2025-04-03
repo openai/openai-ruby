@@ -25,7 +25,10 @@ module OpenAI
         #   replace the previous `system` messages.
         sig do
           params(
-            content: T.any(String, T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Util::AnyHash)]),
+            content: T.any(
+              String,
+              T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Internal::Util::AnyHash)]
+            ),
             name: String,
             role: Symbol
           )
@@ -56,7 +59,10 @@ module OpenAI
           end
 
           ChatCompletionContentPartTextArray =
-            T.let(OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText], OpenAI::Type::Converter)
+            T.let(
+              OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText],
+              OpenAI::Internal::Type::Converter
+            )
         end
       end
     end

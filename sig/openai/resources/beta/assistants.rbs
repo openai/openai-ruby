@@ -44,7 +44,7 @@ module OpenAI
           ?limit: Integer,
           ?order: OpenAI::Models::Beta::AssistantListParams::order,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::CursorPage[OpenAI::Models::Beta::Assistant]
+        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Assistant]
 
         def delete: (
           String assistant_id,

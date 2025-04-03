@@ -34,7 +34,7 @@ module OpenAI
             queries: T::Array[String],
             status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
             results: T.nilable(
-              T::Array[T.any(OpenAI::Models::Responses::ResponseFileSearchToolCall::Result, OpenAI::Util::AnyHash)]
+              T::Array[T.any(OpenAI::Models::Responses::ResponseFileSearchToolCall::Result, OpenAI::Internal::Util::AnyHash)]
             ),
             type: Symbol
           )

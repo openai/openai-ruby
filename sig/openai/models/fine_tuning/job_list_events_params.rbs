@@ -2,11 +2,12 @@ module OpenAI
   module Models
     module FineTuning
       type job_list_events_params =
-        { after: String, limit: Integer } & OpenAI::request_parameters
+        { after: String, limit: Integer }
+        & OpenAI::Internal::Type::request_parameters
 
       class JobListEventsParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_reader after: String?
 

@@ -3,11 +3,11 @@ module OpenAI
     module FineTuning
       type job_list_params =
         { after: String, limit: Integer, metadata: ::Hash[Symbol, String]? }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class JobListParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_reader after: String?
 

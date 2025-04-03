@@ -15,7 +15,9 @@ module OpenAI
         attr_reader :logprobs
 
         sig do
-          params(logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)])
+          params(
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::Util::AnyHash)]
+          )
             .void
         end
         attr_writer :logprobs
@@ -25,7 +27,7 @@ module OpenAI
         sig do
           params(
             text: String,
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Util::AnyHash)]
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::Util::AnyHash)]
           )
             .returns(T.attached_class)
         end

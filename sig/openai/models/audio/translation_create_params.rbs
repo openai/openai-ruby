@@ -9,11 +9,11 @@ module OpenAI
           response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
           temperature: Float
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class TranslationCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor file: IO | StringIO
 

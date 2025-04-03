@@ -50,7 +50,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::CompletionUsage)) }
         attr_reader :usage
 
-        sig { params(usage: T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash))).void }
+        sig { params(usage: T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::Util::AnyHash))).void }
         attr_writer :usage
 
         # Represents a streamed chunk of a chat completion response returned by the model,
@@ -59,12 +59,12 @@ module OpenAI
         sig do
           params(
             id: String,
-            choices: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice, OpenAI::Util::AnyHash)],
+            choices: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice, OpenAI::Internal::Util::AnyHash)],
             created: Integer,
             model: String,
             service_tier: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::OrSymbol),
             system_fingerprint: String,
-            usage: T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Util::AnyHash)),
+            usage: T.nilable(T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::Util::AnyHash)),
             object: Symbol
           )
             .returns(T.attached_class)
@@ -104,7 +104,12 @@ module OpenAI
           sig { returns(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta) }
           attr_reader :delta
 
-          sig { params(delta: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Util::AnyHash)).void }
+          sig do
+            params(
+              delta: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Internal::Util::AnyHash)
+            )
+              .void
+          end
           attr_writer :delta
 
           # The reason the model stopped generating tokens. This will be `stop` if the model
@@ -126,7 +131,9 @@ module OpenAI
 
           sig do
             params(
-              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Util::AnyHash))
+              logprobs: T.nilable(
+                T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Internal::Util::AnyHash)
+              )
             )
               .void
           end
@@ -134,10 +141,12 @@ module OpenAI
 
           sig do
             params(
-              delta: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Util::AnyHash),
+              delta: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta, OpenAI::Internal::Util::AnyHash),
               finish_reason: T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason::OrSymbol),
               index: Integer,
-              logprobs: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Util::AnyHash))
+              logprobs: T.nilable(
+                T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, OpenAI::Internal::Util::AnyHash)
+              )
             )
               .returns(T.attached_class)
           end
@@ -170,7 +179,10 @@ module OpenAI
 
             sig do
               params(
-                function_call: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall, OpenAI::Util::AnyHash)
+                function_call: T.any(
+                  OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+                  OpenAI::Internal::Util::AnyHash
+                )
               )
                 .void
             end
@@ -192,7 +204,7 @@ module OpenAI
 
             sig do
               params(
-                tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall, OpenAI::Util::AnyHash)]
+                tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall, OpenAI::Internal::Util::AnyHash)]
               )
                 .void
             end
@@ -202,10 +214,13 @@ module OpenAI
             sig do
               params(
                 content: T.nilable(String),
-                function_call: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall, OpenAI::Util::AnyHash),
+                function_call: T.any(
+                  OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+                  OpenAI::Internal::Util::AnyHash
+                ),
                 refusal: T.nilable(String),
                 role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role::OrSymbol,
-                tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall, OpenAI::Util::AnyHash)]
+                tool_calls: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall, OpenAI::Internal::Util::AnyHash)]
               )
                 .returns(T.attached_class)
             end
@@ -294,7 +309,10 @@ module OpenAI
 
               sig do
                 params(
-                  function: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function, OpenAI::Util::AnyHash)
+                  function: T.any(
+                    OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                    OpenAI::Internal::Util::AnyHash
+                  )
                 )
                   .void
               end
@@ -311,7 +329,10 @@ module OpenAI
                 params(
                   index: Integer,
                   id: String,
-                  function: T.any(OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function, OpenAI::Util::AnyHash),
+                  function: T.any(
+                    OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                    OpenAI::Internal::Util::AnyHash
+                  ),
                   type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type::OrSymbol
                 )
                   .returns(T.attached_class)
@@ -428,8 +449,12 @@ module OpenAI
             # Log probability information for the choice.
             sig do
               params(
-                content: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Util::AnyHash)]),
-                refusal: T.nilable(T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Util::AnyHash)])
+                content: T.nilable(
+                  T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Internal::Util::AnyHash)]
+                ),
+                refusal: T.nilable(
+                  T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob, OpenAI::Internal::Util::AnyHash)]
+                )
               )
                 .returns(T.attached_class)
             end

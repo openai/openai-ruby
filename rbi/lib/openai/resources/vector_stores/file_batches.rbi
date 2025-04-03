@@ -12,10 +12,10 @@ module OpenAI
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
@@ -44,7 +44,7 @@ module OpenAI
           params(
             batch_id: String,
             vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
@@ -63,7 +63,7 @@ module OpenAI
           params(
             batch_id: String,
             vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
@@ -86,9 +86,9 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
           )
-            .returns(OpenAI::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
+            .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
         end
         def list_files(
           # Path param: The ID of the file batch that the files belong to.

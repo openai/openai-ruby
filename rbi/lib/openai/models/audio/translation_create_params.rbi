@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Audio
       class TranslationCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # The audio file object (not file name) translate, in one of these formats: flac,
         #   mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
@@ -53,7 +53,7 @@ module OpenAI
             prompt: String,
             response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

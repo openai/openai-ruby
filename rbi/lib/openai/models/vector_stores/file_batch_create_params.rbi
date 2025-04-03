@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module VectorStores
       class FileBatchCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
         #   the vector store should use. Useful for tools like `file_search` that can access
@@ -39,7 +39,7 @@ module OpenAI
           params(
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             )
           )
@@ -53,10 +53,10 @@ module OpenAI
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
           )
             .returns(T.attached_class)
         end

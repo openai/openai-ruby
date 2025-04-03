@@ -24,7 +24,7 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
     response = @openai.models.list
 
     assert_pattern do
-      response => OpenAI::Page
+      response => OpenAI::Internal::Page
     end
 
     row = response.to_enum.first

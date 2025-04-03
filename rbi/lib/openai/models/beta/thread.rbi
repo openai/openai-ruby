@@ -34,7 +34,7 @@ module OpenAI
 
         sig do
           params(
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Util::AnyHash))
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Internal::Util::AnyHash))
           )
             .void
         end
@@ -47,7 +47,7 @@ module OpenAI
             id: String,
             created_at: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Util::AnyHash)),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Thread::ToolResources, OpenAI::Internal::Util::AnyHash)),
             object: Symbol
           )
             .returns(T.attached_class)
@@ -76,7 +76,7 @@ module OpenAI
 
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash)
+              code_interpreter: T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Internal::Util::AnyHash)
             )
               .void
           end
@@ -86,7 +86,9 @@ module OpenAI
           attr_reader :file_search
 
           sig do
-            params(file_search: T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Util::AnyHash))
+            params(
+              file_search: T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Internal::Util::AnyHash)
+            )
               .void
           end
           attr_writer :file_search
@@ -97,8 +99,8 @@ module OpenAI
           #   tool requires a list of vector store IDs.
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Util::AnyHash),
-              file_search: T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Util::AnyHash)
+              code_interpreter: T.any(OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter, OpenAI::Internal::Util::AnyHash),
+              file_search: T.any(OpenAI::Models::Beta::Thread::ToolResources::FileSearch, OpenAI::Internal::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

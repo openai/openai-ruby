@@ -9,7 +9,7 @@ module OpenAI
 
         sig do
           params(
-            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash)
+            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Internal::Util::AnyHash)
           )
             .void
         end
@@ -22,7 +22,7 @@ module OpenAI
         # Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
         sig do
           params(
-            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Util::AnyHash),
+            image_url: T.any(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, OpenAI::Internal::Util::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)

@@ -24,7 +24,7 @@ module OpenAI
               annotations: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
               )
               ]
@@ -45,7 +45,7 @@ module OpenAI
               annotations: T::Array[
               T.any(
                 OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
               )
               ],

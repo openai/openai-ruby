@@ -13,10 +13,10 @@ module OpenAI
             include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
             order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
           )
             .returns(
-              OpenAI::CursorPage[
+              OpenAI::Internal::CursorPage[
               T.any(
                 OpenAI::Models::Responses::ResponseInputMessageItem,
                 OpenAI::Models::Responses::ResponseOutputMessage,

@@ -9,11 +9,11 @@ module OpenAI
         size: OpenAI::Models::ImageCreateVariationParams::size?,
         user: String
       }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class ImageCreateVariationParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor image: IO | StringIO
 

@@ -15,11 +15,11 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Beta::assistant_tool],
           top_p: Float?
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class AssistantCreateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor model: OpenAI::Models::Beta::AssistantCreateParams::model
 

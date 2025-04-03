@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class FileCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # The File object (not file name) to be uploaded.
       sig { returns(T.any(IO, StringIO)) }
@@ -21,7 +21,7 @@ module OpenAI
         params(
           file: T.any(IO, StringIO),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end

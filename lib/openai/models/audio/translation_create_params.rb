@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Audio::Translations#create
       class TranslationCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute file
         #   The audio file object (not file name) translate, in one of these formats: flac,

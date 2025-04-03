@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::VectorStores::FileBatches#create
       class FileBatchCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute file_ids
         #   A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that

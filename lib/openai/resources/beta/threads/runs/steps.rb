@@ -51,7 +51,7 @@ module OpenAI
             # @param order [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order]
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::CursorPage<OpenAI::Models::Beta::Threads::Runs::RunStep>]
+            # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Beta::Threads::Runs::RunStep>]
             #
             # @see OpenAI::Models::Beta::Threads::Runs::StepListParams
             def list(run_id, params)
@@ -64,7 +64,7 @@ module OpenAI
                 method: :get,
                 path: ["threads/%1$s/runs/%2$s/steps", thread_id, run_id],
                 query: parsed,
-                page: OpenAI::CursorPage,
+                page: OpenAI::Internal::CursorPage,
                 model: OpenAI::Models::Beta::Threads::Runs::RunStep,
                 options: options
               )

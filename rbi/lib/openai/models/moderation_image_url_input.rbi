@@ -7,7 +7,12 @@ module OpenAI
       sig { returns(OpenAI::Models::ModerationImageURLInput::ImageURL) }
       attr_reader :image_url
 
-      sig { params(image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash)).void }
+      sig do
+        params(
+          image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Internal::Util::AnyHash)
+        )
+          .void
+      end
       attr_writer :image_url
 
       # Always `image_url`.
@@ -17,7 +22,7 @@ module OpenAI
       # An object describing an image to classify.
       sig do
         params(
-          image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Util::AnyHash),
+          image_url: T.any(OpenAI::Models::ModerationImageURLInput::ImageURL, OpenAI::Internal::Util::AnyHash),
           type: Symbol
         )
           .returns(T.attached_class)

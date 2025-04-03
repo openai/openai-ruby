@@ -16,7 +16,10 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseError)) }
         attr_reader :error
 
-        sig { params(error: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Util::AnyHash))).void }
+        sig do
+          params(error: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Internal::Util::AnyHash)))
+            .void
+        end
         attr_writer :error
 
         # Details about why the response is incomplete.
@@ -25,7 +28,7 @@ module OpenAI
 
         sig do
           params(
-            incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Util::AnyHash))
+            incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Internal::Util::AnyHash))
           )
             .void
         end
@@ -168,7 +171,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Reasoning)) }
         attr_reader :reasoning
 
-        sig { params(reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash))).void }
+        sig { params(reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::Util::AnyHash))).void }
         attr_writer :reasoning
 
         # The status of the response generation. One of `completed`, `failed`,
@@ -187,7 +190,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseTextConfig)) }
         attr_reader :text
 
-        sig { params(text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash)).void }
+        sig { params(text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::Util::AnyHash)).void }
         attr_writer :text
 
         # The truncation strategy to use for the model response.
@@ -205,7 +208,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseUsage)) }
         attr_reader :usage
 
-        sig { params(usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Util::AnyHash)).void }
+        sig { params(usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Internal::Util::AnyHash)).void }
         attr_writer :usage
 
         # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -221,15 +224,15 @@ module OpenAI
           params(
             id: String,
             created_at: Float,
-            error: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Util::AnyHash)),
-            incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Util::AnyHash)),
+            error: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Internal::Util::AnyHash)),
+            incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Internal::Util::AnyHash)),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
             output: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
               OpenAI::Models::Responses::ResponseFunctionToolCall,
               OpenAI::Models::Responses::ResponseFunctionWebSearch,
@@ -242,13 +245,13 @@ module OpenAI
             tool_choice: T.any(
               OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
               OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::ToolChoiceFunction
             ),
             tools: T::Array[
             T.any(
               OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Util::AnyHash,
+              OpenAI::Internal::Util::AnyHash,
               OpenAI::Models::Responses::FunctionTool,
               OpenAI::Models::Responses::ComputerTool,
               OpenAI::Models::Responses::WebSearchTool
@@ -257,11 +260,11 @@ module OpenAI
             top_p: T.nilable(Float),
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
-            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Util::AnyHash)),
+            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::Util::AnyHash)),
             status: OpenAI::Models::Responses::ResponseStatus::OrSymbol,
-            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Util::AnyHash),
+            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::Util::AnyHash),
             truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::OrSymbol),
-            usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Util::AnyHash),
+            usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Internal::Util::AnyHash),
             user: String,
             object: Symbol
           )

@@ -41,7 +41,7 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::Models::FileObject)) }
       attr_reader :file
 
-      sig { params(file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash))).void }
+      sig { params(file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::Util::AnyHash))).void }
       attr_writer :file
 
       # The Upload object can accept byte chunks in the form of Parts.
@@ -54,7 +54,7 @@ module OpenAI
           filename: String,
           purpose: String,
           status: OpenAI::Models::Upload::Status::OrSymbol,
-          file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Util::AnyHash)),
+          file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::Util::AnyHash)),
           object: Symbol
         )
           .returns(T.attached_class)

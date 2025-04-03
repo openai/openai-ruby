@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::Chat::Completions::MessagesTest < OpenAI::Test::R
     response = @openai.chat.completions.messages.list("completion_id")
 
     assert_pattern do
-      response => OpenAI::CursorPage
+      response => OpenAI::Internal::CursorPage
     end
 
     row = response.to_enum.first

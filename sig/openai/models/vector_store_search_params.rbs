@@ -8,11 +8,11 @@ module OpenAI
         ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
         rewrite_query: bool
       }
-      & OpenAI::request_parameters
+      & OpenAI::Internal::Type::request_parameters
 
     class VectorStoreSearchParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       attr_accessor query: OpenAI::Models::VectorStoreSearchParams::query
 

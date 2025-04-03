@@ -3,11 +3,11 @@ module OpenAI
     module Beta
       module Threads
         type run_retrieve_params =
-          { thread_id: String } & OpenAI::request_parameters
+          { thread_id: String } & OpenAI::Internal::Type::request_parameters
 
         class RunRetrieveParams < OpenAI::BaseModel
-          extend OpenAI::Type::RequestParameters::Converter
-          include OpenAI::RequestParameters
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
 
           attr_accessor thread_id: String
 

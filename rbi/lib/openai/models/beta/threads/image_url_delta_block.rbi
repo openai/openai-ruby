@@ -16,14 +16,17 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageURLDelta)) }
           attr_reader :image_url
 
-          sig { params(image_url: T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Util::AnyHash)).void }
+          sig do
+            params(image_url: T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Internal::Util::AnyHash))
+              .void
+          end
           attr_writer :image_url
 
           # References an image URL in the content of a message.
           sig do
             params(
               index: Integer,
-              image_url: T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Util::AnyHash),
+              image_url: T.any(OpenAI::Models::Beta::Threads::ImageURLDelta, OpenAI::Internal::Util::AnyHash),
               type: Symbol
             )
               .returns(T.attached_class)

@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::Uploads::Parts#create
       class PartCreateParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute data
         #   The chunk of bytes for this Part.

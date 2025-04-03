@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::Images#edit
     class ImageEditParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute image
       #   The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask

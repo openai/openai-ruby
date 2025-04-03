@@ -6,8 +6,8 @@ module OpenAI
       # @see OpenAI::Resources::VectorStores::FileBatches#retrieve
       class FileBatchRetrieveParams < OpenAI::BaseModel
         # @!parse
-        #   extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute vector_store_id
         #

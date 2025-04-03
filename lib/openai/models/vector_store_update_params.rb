@@ -5,8 +5,8 @@ module OpenAI
     # @see OpenAI::Resources::VectorStores#update
     class VectorStoreUpdateParams < OpenAI::BaseModel
       # @!parse
-      #   extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute expires_after
       #   The expiration policy for a vector store.

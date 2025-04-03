@@ -6,11 +6,11 @@ module OpenAI
           vector_store_id: String,
           attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?
         }
-        & OpenAI::request_parameters
+        & OpenAI::Internal::Type::request_parameters
 
       class FileUpdateParams < OpenAI::BaseModel
-        extend OpenAI::Type::RequestParameters::Converter
-        include OpenAI::RequestParameters
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
 
         attr_accessor vector_store_id: String
 

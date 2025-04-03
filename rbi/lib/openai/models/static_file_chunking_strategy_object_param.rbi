@@ -6,7 +6,7 @@ module OpenAI
       sig { returns(OpenAI::Models::StaticFileChunkingStrategy) }
       attr_reader :static
 
-      sig { params(static: T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Util::AnyHash)).void }
+      sig { params(static: T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Internal::Util::AnyHash)).void }
       attr_writer :static
 
       # Always `static`.
@@ -15,7 +15,10 @@ module OpenAI
 
       # Customize your own chunking strategy by setting chunk size and chunk overlap.
       sig do
-        params(static: T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Util::AnyHash), type: Symbol)
+        params(
+          static: T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Internal::Util::AnyHash),
+          type: Symbol
+        )
           .returns(T.attached_class)
       end
       def self.new(static:, type: :static)

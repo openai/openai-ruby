@@ -46,7 +46,7 @@ module OpenAI
               T::Array[
               T.any(
                 OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Util::AnyHash,
+                OpenAI::Internal::Util::AnyHash,
                 OpenAI::Models::Responses::ResponseInputImage,
                 OpenAI::Models::Responses::ResponseInputFile
               )

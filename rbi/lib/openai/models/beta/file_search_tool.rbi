@@ -12,12 +12,17 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch)) }
         attr_reader :file_search
 
-        sig { params(file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash)).void }
+        sig do
+          params(
+            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::Util::AnyHash)
+          )
+            .void
+        end
         attr_writer :file_search
 
         sig do
           params(
-            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Util::AnyHash),
+            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::Util::AnyHash),
             type: Symbol
           )
             .returns(T.attached_class)
@@ -55,7 +60,7 @@ module OpenAI
 
           sig do
             params(
-              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash)
+              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::Util::AnyHash)
             )
               .void
           end
@@ -65,7 +70,7 @@ module OpenAI
           sig do
             params(
               max_num_results: Integer,
-              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Util::AnyHash)
+              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::Util::AnyHash)
             )
               .returns(T.attached_class)
           end

@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class EmbeddingCreateParams < OpenAI::BaseModel
-      extend OpenAI::Type::RequestParameters::Converter
-      include OpenAI::RequestParameters
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
 
       # Input text to embed, encoded as a string or array of tokens. To embed multiple
       #   inputs in a single request, pass an array of strings or array of token arrays.
@@ -57,7 +57,7 @@ module OpenAI
           dimensions: Integer,
           encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol,
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -95,11 +95,14 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Type::Converter)
+        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
-        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Type::Converter)
+        IntegerArray = T.let(OpenAI::ArrayOf[Integer], OpenAI::Internal::Type::Converter)
 
-        ArrayOfToken2DArray = T.let(OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]], OpenAI::Type::Converter)
+        ArrayOfToken2DArray = T.let(
+          OpenAI::ArrayOf[OpenAI::ArrayOf[Integer]],
+          OpenAI::Internal::Type::Converter
+        )
       end
 
       # ID of the model to use. You can use the
