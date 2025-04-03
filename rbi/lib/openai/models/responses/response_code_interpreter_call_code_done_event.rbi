@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::Internal::Type::BaseModel
         # The final code snippet output by the code interpreter.
         sig { returns(String) }
         attr_accessor :code

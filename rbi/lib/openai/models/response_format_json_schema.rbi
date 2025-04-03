@@ -2,14 +2,14 @@
 
 module OpenAI
   module Models
-    class ResponseFormatJSONSchema < OpenAI::BaseModel
+    class ResponseFormatJSONSchema < OpenAI::Internal::Type::BaseModel
       # Structured Outputs configuration options, including a JSON Schema.
       sig { returns(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema) }
       attr_reader :json_schema
 
       sig do
         params(
-          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::Util::AnyHash)
+          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::AnyHash)
         )
           .void
       end
@@ -24,7 +24,7 @@ module OpenAI
       #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
       sig do
         params(
-          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::Util::AnyHash),
+          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::AnyHash),
           type: Symbol
         )
           .returns(T.attached_class)
@@ -36,7 +36,7 @@ module OpenAI
       def to_hash
       end
 
-      class JSONSchema < OpenAI::BaseModel
+      class JSONSchema < OpenAI::Internal::Type::BaseModel
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         #   and dashes, with a maximum length of 64.
         sig { returns(String) }

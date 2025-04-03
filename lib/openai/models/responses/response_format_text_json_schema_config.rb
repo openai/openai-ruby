@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFormatTextJSONSchemaConfig < OpenAI::BaseModel
+      class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
         # @!attribute name
         #   The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         #     and dashes, with a maximum length of 64.
@@ -16,7 +16,7 @@ module OpenAI
         #     to build JSON schemas [here](https://json-schema.org/).
         #
         #   @return [Hash{Symbol=>Object}]
-        required :schema, OpenAI::HashOf[OpenAI::Unknown]
+        required :schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
         # @!attribute type
         #   The type of response format being defined. Always `json_schema`.
@@ -43,7 +43,7 @@ module OpenAI
         #     [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
         #   @return [Boolean, nil]
-        optional :strict, OpenAI::BooleanModel, nil?: true
+        optional :strict, OpenAI::Internal::Type::BooleanModel, nil?: true
 
         # @!parse
         #   # JSON Schema response format. Used to generate structured JSON responses. Learn
@@ -58,7 +58,7 @@ module OpenAI
         #   #
         #   def initialize(name:, schema:, description: nil, strict: nil, type: :json_schema, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class CodeInterpreterOutputImage < OpenAI::BaseModel
+          class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
             # @!attribute index
             #   The index of the output in the outputs array.
             #
@@ -34,10 +34,10 @@ module OpenAI
             #   #
             #   def initialize(index:, image: nil, type: :image, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage#image
-            class Image < OpenAI::BaseModel
+            class Image < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] file_id
               #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the
               #     image.
@@ -54,7 +54,7 @@ module OpenAI
               #   #
               #   def initialize(file_id: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
         end

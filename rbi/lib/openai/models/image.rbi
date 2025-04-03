@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class Image < OpenAI::BaseModel
+    class Image < OpenAI::Internal::Type::BaseModel
       # The base64-encoded JSON of the generated image, if `response_format` is
       #   `b64_json`.
       sig { returns(T.nilable(String)) }

@@ -3,7 +3,7 @@ module OpenAI
     type reasoning_effort = :low | :medium | :high
 
     module ReasoningEffort
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       LOW: :low
       MEDIUM: :medium

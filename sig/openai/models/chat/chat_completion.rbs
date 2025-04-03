@@ -15,7 +15,7 @@ module OpenAI
           usage: OpenAI::Models::CompletionUsage
         }
 
-      class ChatCompletion < OpenAI::BaseModel
+      class ChatCompletion < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor choices: ::Array[OpenAI::Models::Chat::ChatCompletion::Choice]
@@ -59,7 +59,7 @@ module OpenAI
             message: OpenAI::Models::Chat::ChatCompletionMessage
           }
 
-        class Choice < OpenAI::BaseModel
+        class Choice < OpenAI::Internal::Type::BaseModel
           attr_accessor finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason
 
           attr_accessor index: Integer
@@ -81,7 +81,7 @@ module OpenAI
             :stop | :length | :tool_calls | :content_filter | :function_call
 
           module FinishReason
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             STOP: :stop
             LENGTH: :length
@@ -98,7 +98,7 @@ module OpenAI
               refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
             }
 
-          class Logprobs < OpenAI::BaseModel
+          class Logprobs < OpenAI::Internal::Type::BaseModel
             attr_accessor content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
 
             attr_accessor refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
@@ -115,7 +115,7 @@ module OpenAI
         type service_tier = :scale | :default
 
         module ServiceTier
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           SCALE: :scale
           DEFAULT: :default

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseContentPartAddedEvent < OpenAI::BaseModel
+      class ResponseContentPartAddedEvent < OpenAI::Internal::Type::BaseModel
         # The index of the content part that was added.
         sig { returns(Integer) }
         attr_accessor :content_index
@@ -36,7 +36,7 @@ module OpenAI
             output_index: Integer,
             part: T.any(
               OpenAI::Models::Responses::ResponseOutputText,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseOutputRefusal
             ),
             type: Symbol
@@ -63,7 +63,7 @@ module OpenAI
 
         # The content part that was added.
         module Part
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig do
             override

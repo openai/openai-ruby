@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # Emitted when there is a partial audio response.
       module ResponseStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig do
           override

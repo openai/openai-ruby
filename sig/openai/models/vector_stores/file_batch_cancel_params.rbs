@@ -4,7 +4,7 @@ module OpenAI
       type file_batch_cancel_params =
         { vector_store_id: String } & OpenAI::Internal::Type::request_parameters
 
-      class FileBatchCancelParams < OpenAI::BaseModel
+      class FileBatchCancelParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

@@ -11,7 +11,7 @@ module OpenAI
               function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function
             }
 
-          class FunctionToolCallDelta < OpenAI::BaseModel
+          class FunctionToolCallDelta < OpenAI::Internal::Type::BaseModel
             attr_accessor index: Integer
 
             attr_accessor type: :function
@@ -37,7 +37,7 @@ module OpenAI
 
             type function = { arguments: String, name: String, output: String? }
 
-            class Function < OpenAI::BaseModel
+            class Function < OpenAI::Internal::Type::BaseModel
               attr_reader arguments: String?
 
               def arguments=: (String) -> String

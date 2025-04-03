@@ -5,7 +5,7 @@ module OpenAI
     module Chat
       # The role of the author of a message
       module ChatCompletionRole
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         DEVELOPER = :developer
         SYSTEM = :system

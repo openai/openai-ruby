@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class BatchRequestCounts < OpenAI::BaseModel
+    class BatchRequestCounts < OpenAI::Internal::Type::BaseModel
       # @!attribute completed
       #   Number of requests that have been completed successfully.
       #
@@ -30,7 +30,7 @@ module OpenAI
       #   #
       #   def initialize(completed:, failed:, total:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

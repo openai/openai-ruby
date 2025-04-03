@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputMessageItem < OpenAI::BaseModel
+      class ResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the message input.
         #
@@ -15,7 +15,8 @@ module OpenAI
         #     types.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
-        required :content, -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseInputContent] }
+        required :content,
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseInputContent] }
 
         # @!attribute role
         #   The role of the message input. One of `user`, `system`, or `developer`.
@@ -53,13 +54,13 @@ module OpenAI
         #   #
         #   def initialize(id:, content:, role:, status: nil, type: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         #
         # @see OpenAI::Models::Responses::ResponseInputMessageItem#role
         module Role
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           USER = :user
           SYSTEM = :system
@@ -77,7 +78,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseInputMessageItem#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
@@ -94,7 +95,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::ResponseInputMessageItem#type
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MESSAGE = :message
 

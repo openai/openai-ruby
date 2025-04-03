@@ -4,7 +4,7 @@ module OpenAI
       { file: (IO | StringIO), purpose: OpenAI::Models::file_purpose }
       & OpenAI::Internal::Type::request_parameters
 
-    class FileCreateParams < OpenAI::BaseModel
+    class FileCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 

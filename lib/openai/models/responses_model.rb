@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module ResponsesModel
-      extend OpenAI::Union
+      extend OpenAI::Internal::Type::Union
 
       variant String
 

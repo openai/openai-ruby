@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ModerationCreateParams < OpenAI::BaseModel
+    class ModerationCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -37,13 +37,13 @@ module OpenAI
             T::Array[
             T.any(
               OpenAI::Models::ModerationImageURLInput,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::ModerationTextInput
             )
             ]
           ),
           model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -70,7 +70,7 @@ module OpenAI
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       #   an array of multi-modal input objects similar to other models.
       module Input
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig do
           override
@@ -81,11 +81,11 @@ module OpenAI
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
         ModerationMultiModalInputArray =
           T.let(
-            OpenAI::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput],
+            OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput],
             OpenAI::Internal::Type::Converter
           )
       end
@@ -95,7 +95,7 @@ module OpenAI
       #   learn about available models
       #   [here](https://platform.openai.com/docs/models#moderation).
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::ModerationModel::OrSymbol]) }
         def self.variants

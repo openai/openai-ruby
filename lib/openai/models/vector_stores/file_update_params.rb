@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::Files#update
-      class FileUpdateParams < OpenAI::BaseModel
+      class FileUpdateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -23,7 +23,7 @@ module OpenAI
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         required :attributes,
-                 -> { OpenAI::HashOf[union: OpenAI::Models::VectorStores::FileUpdateParams::Attribute] },
+                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::FileUpdateParams::Attribute] },
                  nil?: true
 
         # @!parse
@@ -33,16 +33,16 @@ module OpenAI
         #   #
         #   def initialize(vector_store_id:, attributes:, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
           variant Float
 
-          variant OpenAI::BooleanModel
+          variant OpenAI::Internal::Type::BooleanModel
 
           # @!parse
           #   # @return [Array(String, Float, Boolean)]

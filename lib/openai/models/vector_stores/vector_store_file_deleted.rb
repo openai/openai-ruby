@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::Files#delete
-      class VectorStoreFileDeleted < OpenAI::BaseModel
+      class VectorStoreFileDeleted < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #
         #   @return [String]
@@ -13,7 +13,7 @@ module OpenAI
         # @!attribute deleted
         #
         #   @return [Boolean]
-        required :deleted, OpenAI::BooleanModel
+        required :deleted, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute object
         #
@@ -27,7 +27,7 @@ module OpenAI
         #   #
         #   def initialize(id:, deleted:, object: :"vector_store.file.deleted", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

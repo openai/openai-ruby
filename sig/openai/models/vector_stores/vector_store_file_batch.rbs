@@ -13,7 +13,7 @@ module OpenAI
           vector_store_id: String
         }
 
-      class VectorStoreFileBatch < OpenAI::BaseModel
+      class VectorStoreFileBatch < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor created_at: Integer
@@ -46,7 +46,7 @@ module OpenAI
             total: Integer
           }
 
-        class FileCounts < OpenAI::BaseModel
+        class FileCounts < OpenAI::Internal::Type::BaseModel
           attr_accessor cancelled: Integer
 
           attr_accessor completed: Integer
@@ -71,7 +71,7 @@ module OpenAI
         type status = :in_progress | :completed | :cancelled | :failed
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed

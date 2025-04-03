@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class VectorStoreDeleted < OpenAI::BaseModel
+    class VectorStoreDeleted < OpenAI::Internal::Type::BaseModel
       sig { returns(String) }
       attr_accessor :id
 

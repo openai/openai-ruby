@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class VectorStoreSearchParams < OpenAI::BaseModel
+    class VectorStoreSearchParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -16,7 +16,7 @@ module OpenAI
 
       sig do
         params(
-          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter)
+          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter)
         )
           .void
       end
@@ -36,7 +36,7 @@ module OpenAI
 
       sig do
         params(
-          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::Util::AnyHash)
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::AnyHash)
         )
           .void
       end
@@ -52,11 +52,11 @@ module OpenAI
       sig do
         params(
           query: T.any(String, T::Array[String]),
-          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::Util::AnyHash, OpenAI::Models::CompoundFilter),
+          filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter),
           max_num_results: Integer,
-          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::Util::AnyHash),
+          ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::AnyHash),
           rewrite_query: T::Boolean,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
           .returns(T.attached_class)
       end
@@ -88,25 +88,25 @@ module OpenAI
 
       # A query string for a search
       module Query
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String]]) }
         def self.variants
         end
 
-        StringArray = T.let(OpenAI::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
       end
 
       # A filter to apply based on file attributes.
       module Filters
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
         def self.variants
         end
       end
 
-      class RankingOptions < OpenAI::BaseModel
+      class RankingOptions < OpenAI::Internal::Type::BaseModel
         sig { returns(T.nilable(OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol)) }
         attr_reader :ranker
 
@@ -140,7 +140,7 @@ module OpenAI
         end
 
         module Ranker
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker) }

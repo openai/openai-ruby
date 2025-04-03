@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseError < OpenAI::BaseModel
+      class ResponseError < OpenAI::Internal::Type::BaseModel
         # @!attribute code
         #   The error code for the response.
         #
@@ -24,13 +24,13 @@ module OpenAI
         #   #
         #   def initialize(code:, message:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The error code for the response.
         #
         # @see OpenAI::Models::Responses::ResponseError#code
         module Code
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           SERVER_ERROR = :server_error
           RATE_LIMIT_EXCEEDED = :rate_limit_exceeded

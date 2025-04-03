@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class AssistantDeleted < OpenAI::BaseModel
+      class AssistantDeleted < OpenAI::Internal::Type::BaseModel
         sig { returns(String) }
         attr_accessor :id
 

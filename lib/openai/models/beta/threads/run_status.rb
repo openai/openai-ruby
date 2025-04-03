@@ -8,7 +8,7 @@ module OpenAI
         #   `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
         #   `incomplete`, or `expired`.
         module RunStatus
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           QUEUED = :queued
           IN_PROGRESS = :in_progress

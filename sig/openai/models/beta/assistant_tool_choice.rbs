@@ -7,7 +7,7 @@ module OpenAI
           function: OpenAI::Models::Beta::AssistantToolChoiceFunction
         }
 
-      class AssistantToolChoice < OpenAI::BaseModel
+      class AssistantToolChoice < OpenAI::Internal::Type::BaseModel
         attr_accessor type: OpenAI::Models::Beta::AssistantToolChoice::type_
 
         attr_reader function: OpenAI::Models::Beta::AssistantToolChoiceFunction?
@@ -26,7 +26,7 @@ module OpenAI
         type type_ = :function | :code_interpreter | :file_search
 
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           FUNCTION: :function
           CODE_INTERPRETER: :code_interpreter

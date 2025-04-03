@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       # @see OpenAI::Resources::Chat::Completions#delete
-      class ChatCompletionDeleted < OpenAI::BaseModel
+      class ChatCompletionDeleted < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The ID of the chat completion that was deleted.
         #
@@ -15,7 +15,7 @@ module OpenAI
         #   Whether the chat completion was deleted.
         #
         #   @return [Boolean]
-        required :deleted, OpenAI::BooleanModel
+        required :deleted, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute object
         #   The type of object being deleted.
@@ -30,7 +30,7 @@ module OpenAI
         #   #
         #   def initialize(id:, deleted:, object: :"chat.completion.deleted", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
 

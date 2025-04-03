@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class MessageRetrieveParams < OpenAI::BaseModel
+        class MessageRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
@@ -16,7 +16,7 @@ module OpenAI
               thread_id: String,
               request_options: T.any(
                 OpenAI::RequestOptions,
-                OpenAI::Internal::Util::AnyHash
+                OpenAI::Internal::AnyHash
               )
             )
               .returns(T.attached_class)

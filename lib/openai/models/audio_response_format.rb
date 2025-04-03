@@ -6,7 +6,7 @@ module OpenAI
     #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
     #   the only supported format is `json`.
     module AudioResponseFormat
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       JSON = :json
       TEXT = :text

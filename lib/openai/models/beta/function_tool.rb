@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class FunctionTool < OpenAI::BaseModel
+      class FunctionTool < OpenAI::Internal::Type::BaseModel
         # @!attribute function
         #
         #   @return [OpenAI::Models::FunctionDefinition]
@@ -21,7 +21,7 @@ module OpenAI
         #   #
         #   def initialize(function:, type: :function, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

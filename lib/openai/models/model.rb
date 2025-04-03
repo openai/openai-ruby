@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Models#retrieve
-    class Model < OpenAI::BaseModel
+    class Model < OpenAI::Internal::Type::BaseModel
       # @!attribute id
       #   The model identifier, which can be referenced in the API endpoints.
       #
@@ -38,7 +38,7 @@ module OpenAI
       #   #
       #   def initialize(id:, created:, owned_by:, object: :model, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

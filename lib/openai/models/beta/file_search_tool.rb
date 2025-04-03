@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class FileSearchTool < OpenAI::BaseModel
+      class FileSearchTool < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of tool being defined: `file_search`
         #
@@ -26,10 +26,10 @@ module OpenAI
         #   #
         #   def initialize(file_search: nil, type: :file_search, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::Beta::FileSearchTool#file_search
-        class FileSearch < OpenAI::BaseModel
+        class FileSearch < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] max_num_results
           #   The maximum number of results the file search tool should output. The default is
           #     20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
@@ -70,10 +70,10 @@ module OpenAI
           #   #
           #   def initialize(max_num_results: nil, ranking_options: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::FileSearchTool::FileSearch#ranking_options
-          class RankingOptions < OpenAI::BaseModel
+          class RankingOptions < OpenAI::Internal::Type::BaseModel
             # @!attribute score_threshold
             #   The score threshold for the file search. All values must be a floating point
             #     number between 0 and 1.
@@ -105,14 +105,14 @@ module OpenAI
             #   #
             #   def initialize(score_threshold:, ranker: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
             #
             # @see OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions#ranker
             module Ranker
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               AUTO = :auto
               DEFAULT_2024_08_21 = :default_2024_08_21

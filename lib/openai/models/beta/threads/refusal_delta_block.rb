@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class RefusalDeltaBlock < OpenAI::BaseModel
+        class RefusalDeltaBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute index
           #   The index of the refusal part in the message.
           #
@@ -35,7 +35,7 @@ module OpenAI
           #   #
           #   def initialize(index:, refusal: nil, type: :refusal, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

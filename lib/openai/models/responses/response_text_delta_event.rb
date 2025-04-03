@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseTextDeltaEvent < OpenAI::BaseModel
+      class ResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute content_index
         #   The index of the content part that the text delta was added to.
         #
@@ -45,7 +45,7 @@ module OpenAI
         #   #
         #   def initialize(content_index:, delta:, item_id:, output_index:, type: :"response.output_text.delta", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

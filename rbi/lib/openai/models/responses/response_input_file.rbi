@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputFile < OpenAI::BaseModel
+      class ResponseInputFile < OpenAI::Internal::Type::BaseModel
         # The type of the input item. Always `input_file`.
         sig { returns(Symbol) }
         attr_accessor :type

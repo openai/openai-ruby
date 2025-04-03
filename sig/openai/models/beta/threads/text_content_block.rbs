@@ -5,7 +5,7 @@ module OpenAI
         type text_content_block =
           { text: OpenAI::Models::Beta::Threads::Text, type: :text }
 
-        class TextContentBlock < OpenAI::BaseModel
+        class TextContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor text: OpenAI::Models::Beta::Threads::Text
 
           attr_accessor type: :text

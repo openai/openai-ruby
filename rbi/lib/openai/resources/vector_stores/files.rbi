@@ -14,10 +14,10 @@ module OpenAI
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
             chunking_strategy: T.any(
               OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFile)
         end
@@ -46,7 +46,7 @@ module OpenAI
           params(
             file_id: String,
             vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFile)
         end
@@ -65,7 +65,7 @@ module OpenAI
             file_id: String,
             vector_store_id: String,
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFile)
         end
@@ -93,7 +93,7 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
         end
@@ -130,7 +130,7 @@ module OpenAI
           params(
             file_id: String,
             vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileDeleted)
         end
@@ -148,7 +148,7 @@ module OpenAI
           params(
             file_id: String,
             vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Internal::Page[OpenAI::Models::VectorStores::FileContentResponse])
         end

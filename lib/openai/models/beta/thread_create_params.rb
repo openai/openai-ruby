@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       # @see OpenAI::Resources::Beta::Threads#create
-      class ThreadCreateParams < OpenAI::BaseModel
+      class ThreadCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -14,7 +14,8 @@ module OpenAI
         #     start the thread with.
         #
         #   @return [Array<OpenAI::Models::Beta::ThreadCreateParams::Message>, nil]
-        optional :messages, -> { OpenAI::ArrayOf[OpenAI::Models::Beta::ThreadCreateParams::Message] }
+        optional :messages,
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::ThreadCreateParams::Message] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Beta::ThreadCreateParams::Message>]
@@ -29,7 +30,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute tool_resources
         #   A set of resources that are made available to the assistant's tools in this
@@ -48,9 +49,9 @@ module OpenAI
         #   #
         #   def initialize(messages: nil, metadata: nil, tool_resources: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class Message < OpenAI::BaseModel
+        class Message < OpenAI::Internal::Type::BaseModel
           # @!attribute content
           #   The text contents of the message.
           #
@@ -73,7 +74,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment>, nil]
           optional :attachments,
-                   -> { OpenAI::ArrayOf[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment] },
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment] },
                    nil?: true
 
           # @!attribute metadata
@@ -85,7 +86,7 @@ module OpenAI
           #     a maximum length of 512 characters.
           #
           #   @return [Hash{Symbol=>String}, nil]
-          optional :metadata, OpenAI::HashOf[String], nil?: true
+          optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!parse
           #   # @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
@@ -95,13 +96,13 @@ module OpenAI
           #   #
           #   def initialize(content:, role:, attachments: nil, metadata: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # The text contents of the message.
           #
           # @see OpenAI::Models::Beta::ThreadCreateParams::Message#content
           module Content
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             # The text contents of the message.
             variant String
@@ -114,7 +115,7 @@ module OpenAI
             #   def self.variants; end
 
             MessageContentPartParamArray =
-              OpenAI::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
+              OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
           end
 
           # The role of the entity that is creating the message. Allowed values include:
@@ -126,7 +127,7 @@ module OpenAI
           #
           # @see OpenAI::Models::Beta::ThreadCreateParams::Message#role
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             USER = :user
             ASSISTANT = :assistant
@@ -138,7 +139,7 @@ module OpenAI
             #   def self.values; end
           end
 
-          class Attachment < OpenAI::BaseModel
+          class Attachment < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_id
             #   The ID of the file to attach to the message.
             #
@@ -154,7 +155,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch>, nil]
             optional :tools,
-                     -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool] }
+                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool] }
 
             # @!parse
             #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch>]
@@ -166,10 +167,10 @@ module OpenAI
             #   #
             #   def initialize(file_id: nil, tools: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             module Tool
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               discriminator :type
 
@@ -178,7 +179,7 @@ module OpenAI
               variant :file_search,
                       -> { OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch }
 
-              class FileSearch < OpenAI::BaseModel
+              class FileSearch < OpenAI::Internal::Type::BaseModel
                 # @!attribute type
                 #   The type of tool being defined: `file_search`
                 #
@@ -190,7 +191,7 @@ module OpenAI
                 #   #
                 #   def initialize(type: :file_search, **) = super
 
-                # def initialize: (Hash | OpenAI::BaseModel) -> void
+                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
               end
 
               # @!parse
@@ -200,7 +201,7 @@ module OpenAI
           end
         end
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] code_interpreter
           #
           #   @return [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter, nil]
@@ -231,17 +232,17 @@ module OpenAI
           #   #
           #   def initialize(code_interpreter: nil, file_search: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources#code_interpreter
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #     available to the `code_interpreter` tool. There can be a maximum of 20 files
             #     associated with the tool.
             #
             #   @return [Array<String>, nil]
-            optional :file_ids, OpenAI::ArrayOf[String]
+            optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -252,11 +253,11 @@ module OpenAI
             #   #
             #   def initialize(file_ids: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
           # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources#file_search
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] vector_store_ids
             #   The
             #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -264,7 +265,7 @@ module OpenAI
             #     the thread.
             #
             #   @return [Array<String>, nil]
-            optional :vector_store_ids, OpenAI::ArrayOf[String]
+            optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -278,7 +279,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore>, nil]
             optional :vector_stores,
-                     -> { OpenAI::ArrayOf[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore] }
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore] }
 
             # @!parse
             #   # @return [Array<OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore>]
@@ -290,9 +291,9 @@ module OpenAI
             #   #
             #   def initialize(vector_store_ids: nil, vector_stores: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-            class VectorStore < OpenAI::BaseModel
+            class VectorStore < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] chunking_strategy
               #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               #     strategy.
@@ -311,7 +312,7 @@ module OpenAI
               #     store.
               #
               #   @return [Array<String>, nil]
-              optional :file_ids, OpenAI::ArrayOf[String]
+              optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!parse
               #   # @return [Array<String>]
@@ -326,7 +327,7 @@ module OpenAI
               #     a maximum length of 512 characters.
               #
               #   @return [Hash{Symbol=>String}, nil]
-              optional :metadata, OpenAI::HashOf[String], nil?: true
+              optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
               # @!parse
               #   # @param chunking_strategy [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
@@ -335,14 +336,14 @@ module OpenAI
               #   #
               #   def initialize(chunking_strategy: nil, file_ids: nil, metadata: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               #   strategy.
               #
               # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore#chunking_strategy
               module ChunkingStrategy
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 discriminator :type
 
@@ -353,7 +354,7 @@ module OpenAI
                 variant :static,
                         -> { OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static }
 
-                class Auto < OpenAI::BaseModel
+                class Auto < OpenAI::Internal::Type::BaseModel
                   # @!attribute type
                   #   Always `auto`.
                   #
@@ -368,10 +369,10 @@ module OpenAI
                   #   #
                   #   def initialize(type: :auto, **) = super
 
-                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
                 end
 
-                class Static < OpenAI::BaseModel
+                class Static < OpenAI::Internal::Type::BaseModel
                   # @!attribute static
                   #
                   #   @return [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
@@ -390,10 +391,10 @@ module OpenAI
                   #   #
                   #   def initialize(static:, type: :static, **) = super
 
-                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
                   # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static#static
-                  class Static < OpenAI::BaseModel
+                  class Static < OpenAI::Internal::Type::BaseModel
                     # @!attribute chunk_overlap_tokens
                     #   The number of tokens that overlap between chunks. The default value is `400`.
                     #
@@ -415,7 +416,7 @@ module OpenAI
                     #   #
                     #   def initialize(chunk_overlap_tokens:, max_chunk_size_tokens:, **) = super
 
-                    # def initialize: (Hash | OpenAI::BaseModel) -> void
+                    # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
                   end
                 end
 

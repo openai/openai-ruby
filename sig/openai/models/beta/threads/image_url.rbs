@@ -8,7 +8,7 @@ module OpenAI
             detail: OpenAI::Models::Beta::Threads::ImageURL::detail
           }
 
-        class ImageURL < OpenAI::BaseModel
+        class ImageURL < OpenAI::Internal::Type::BaseModel
           attr_accessor url: String
 
           attr_reader detail: OpenAI::Models::Beta::Threads::ImageURL::detail?
@@ -27,7 +27,7 @@ module OpenAI
           type detail = :auto | :low | :high
 
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO: :auto
             LOW: :low

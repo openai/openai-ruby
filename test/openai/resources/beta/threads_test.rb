@@ -14,7 +14,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
       response => {
         id: String,
         created_at: Integer,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         object: Symbol,
         tool_resources: OpenAI::Models::Beta::Thread::ToolResources | nil
       }
@@ -32,7 +32,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
       response => {
         id: String,
         created_at: Integer,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         object: Symbol,
         tool_resources: OpenAI::Models::Beta::Thread::ToolResources | nil
       }
@@ -50,7 +50,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
       response => {
         id: String,
         created_at: Integer,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         object: Symbol,
         tool_resources: OpenAI::Models::Beta::Thread::ToolResources | nil
       }
@@ -67,7 +67,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        deleted: OpenAI::BooleanModel,
+        deleted: OpenAI::Internal::Type::BooleanModel,
         object: Symbol
       }
     end
@@ -94,17 +94,17 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
         last_error: OpenAI::Models::Beta::Threads::Run::LastError | nil,
         max_completion_tokens: Integer | nil,
         max_prompt_tokens: Integer | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         model: String,
         object: Symbol,
-        parallel_tool_calls: OpenAI::BooleanModel,
+        parallel_tool_calls: OpenAI::Internal::Type::BooleanModel,
         required_action: OpenAI::Models::Beta::Threads::Run::RequiredAction | nil,
         response_format: OpenAI::Models::Beta::AssistantResponseFormatOption | nil,
         started_at: Integer | nil,
         status: OpenAI::Models::Beta::Threads::RunStatus,
         thread_id: String,
         tool_choice: OpenAI::Models::Beta::AssistantToolChoiceOption | nil,
-        tools: ^(OpenAI::ArrayOf[union: OpenAI::Models::Beta::AssistantTool]),
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool]),
         truncation_strategy: OpenAI::Models::Beta::Threads::Run::TruncationStrategy | nil,
         usage: OpenAI::Models::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,

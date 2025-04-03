@@ -3,7 +3,7 @@ module OpenAI
     module Responses
       type tool_choice_function = { name: String, type: :function }
 
-      class ToolChoiceFunction < OpenAI::BaseModel
+      class ToolChoiceFunction < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
 
         attr_accessor type: :function

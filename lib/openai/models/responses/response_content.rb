@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # Multi-modal input and output contents.
       module ResponseContent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # A text input to the model.
         variant -> { OpenAI::Models::Responses::ResponseInputText }

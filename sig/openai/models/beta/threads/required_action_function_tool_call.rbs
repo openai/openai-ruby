@@ -9,7 +9,7 @@ module OpenAI
             type: :function
           }
 
-        class RequiredActionFunctionToolCall < OpenAI::BaseModel
+        class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
           attr_accessor function: OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function
@@ -26,7 +26,7 @@ module OpenAI
 
           type function = { arguments: String, name: String }
 
-          class Function < OpenAI::BaseModel
+          class Function < OpenAI::Internal::Type::BaseModel
             attr_accessor arguments: String
 
             attr_accessor name: String

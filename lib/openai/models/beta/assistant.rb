@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       # @see OpenAI::Resources::Beta::Assistants#create
-      class Assistant < OpenAI::BaseModel
+      class Assistant < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The identifier, which can be referenced in API endpoints.
         #
@@ -39,7 +39,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        required :metadata, OpenAI::HashOf[String], nil?: true
+        required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute model
         #   ID of the model to use. You can use the
@@ -69,7 +69,7 @@ module OpenAI
         #     `function`.
         #
         #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
-        required :tools, -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] }
+        required :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] }
 
         # @!attribute response_format
         #   Specifies the format that the model must output. Compatible with
@@ -159,10 +159,10 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::Beta::Assistant#tool_resources
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] code_interpreter
           #
           #   @return [OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, nil]
@@ -192,17 +192,17 @@ module OpenAI
           #   #
           #   def initialize(code_interpreter: nil, file_search: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::Assistant::ToolResources#code_interpreter
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #     available to the `code_interpreter`` tool. There can be a maximum of 20 files
             #     associated with the tool.
             #
             #   @return [Array<String>, nil]
-            optional :file_ids, OpenAI::ArrayOf[String]
+            optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -213,11 +213,11 @@ module OpenAI
             #   #
             #   def initialize(file_ids: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
           # @see OpenAI::Models::Beta::Assistant::ToolResources#file_search
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] vector_store_ids
             #   The ID of the
             #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -225,7 +225,7 @@ module OpenAI
             #     the assistant.
             #
             #   @return [Array<String>, nil]
-            optional :vector_store_ids, OpenAI::ArrayOf[String]
+            optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -236,7 +236,7 @@ module OpenAI
             #   #
             #   def initialize(vector_store_ids: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

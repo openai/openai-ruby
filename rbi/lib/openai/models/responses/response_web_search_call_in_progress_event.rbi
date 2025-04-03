@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseWebSearchCallInProgressEvent < OpenAI::BaseModel
+      class ResponseWebSearchCallInProgressEvent < OpenAI::Internal::Type::BaseModel
         # Unique ID for the output item associated with the web search call.
         sig { returns(String) }
         attr_accessor :item_id

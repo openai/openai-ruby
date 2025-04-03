@@ -4,7 +4,7 @@ module OpenAI
       type response_text_config =
         { format_: OpenAI::Models::Responses::response_format_text_config }
 
-      class ResponseTextConfig < OpenAI::BaseModel
+      class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
         attr_reader format_: OpenAI::Models::Responses::response_format_text_config?
 
         def format_=: (

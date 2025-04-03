@@ -4,7 +4,7 @@ module OpenAI
       type response_computer_tool_call_output_screenshot =
         { type: :computer_screenshot, file_id: String, image_url: String }
 
-      class ResponseComputerToolCallOutputScreenshot < OpenAI::BaseModel
+      class ResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :computer_screenshot
 
         attr_reader file_id: String?

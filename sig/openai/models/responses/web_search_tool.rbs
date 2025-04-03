@@ -8,7 +8,7 @@ module OpenAI
           user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
         }
 
-      class WebSearchTool < OpenAI::BaseModel
+      class WebSearchTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: OpenAI::Models::Responses::WebSearchTool::type_
 
         attr_reader search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size?
@@ -30,7 +30,7 @@ module OpenAI
         type type_ = :web_search_preview | :web_search_preview_2025_03_11
 
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           WEB_SEARCH_PREVIEW: :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
@@ -41,7 +41,7 @@ module OpenAI
         type search_context_size = :low | :medium | :high
 
         module SearchContextSize
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           LOW: :low
           MEDIUM: :medium
@@ -59,7 +59,7 @@ module OpenAI
             timezone: String
           }
 
-        class UserLocation < OpenAI::BaseModel
+        class UserLocation < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :approximate
 
           attr_reader city: String?

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class RefusalContentBlock < OpenAI::BaseModel
+        class RefusalContentBlock < OpenAI::Internal::Type::BaseModel
           # @!attribute refusal
           #
           #   @return [String]
@@ -24,7 +24,7 @@ module OpenAI
           #   #
           #   def initialize(refusal:, type: :refusal, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

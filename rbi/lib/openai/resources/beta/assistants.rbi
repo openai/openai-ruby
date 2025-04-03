@@ -17,25 +17,23 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(
-              T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Internal::Util::AnyHash)
-            ),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
             ],
             top_p: T.nilable(Float),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -115,7 +113,7 @@ module OpenAI
         sig do
           params(
             assistant_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -140,25 +138,23 @@ module OpenAI
               T.any(
                 Symbol,
                 OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 OpenAI::Models::ResponseFormatJSONObject,
                 OpenAI::Models::ResponseFormatJSONSchema
               )
             ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(
-              T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::Util::AnyHash)
-            ),
+            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T::Array[
             T.any(
               OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Beta::FileSearchTool,
               OpenAI::Models::Beta::FunctionTool
             )
             ],
             top_p: T.nilable(Float),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -243,7 +239,7 @@ module OpenAI
             before: String,
             limit: Integer,
             order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Assistant])
         end
@@ -272,7 +268,7 @@ module OpenAI
         sig do
           params(
             assistant_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::Beta::AssistantDeleted)
         end

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class TextContentBlockParam < OpenAI::BaseModel
+        class TextContentBlockParam < OpenAI::Internal::Type::BaseModel
           # Text content to be sent to the model
           sig { returns(String) }
           attr_accessor :text

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Files#create
-    class FileObject < OpenAI::BaseModel
+    class FileObject < OpenAI::Internal::Type::BaseModel
       # @!attribute id
       #   The file identifier, which can be referenced in the API endpoints.
       #
@@ -98,7 +98,7 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The intended purpose of the file. Supported values are `assistants`,
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
@@ -106,7 +106,7 @@ module OpenAI
       #
       # @see OpenAI::Models::FileObject#purpose
       module Purpose
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         ASSISTANTS = :assistants
         ASSISTANTS_OUTPUT = :assistants_output
@@ -130,7 +130,7 @@ module OpenAI
       #
       # @see OpenAI::Models::FileObject#status
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         UPLOADED = :uploaded
         PROCESSED = :processed

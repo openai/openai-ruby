@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class FileObject < OpenAI::BaseModel
+    class FileObject < OpenAI::Internal::Type::BaseModel
       # The file identifier, which can be referenced in the API endpoints.
       sig { returns(String) }
       attr_accessor :id
@@ -100,7 +100,7 @@ module OpenAI
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
       #   and `vision`.
       module Purpose
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Purpose) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::FileObject::Purpose::TaggedSymbol) }
@@ -121,7 +121,7 @@ module OpenAI
       # Deprecated. The current status of the file, which can be either `uploaded`,
       #   `processed`, or `error`.
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Status) }
         OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::FileObject::Status::TaggedSymbol) }

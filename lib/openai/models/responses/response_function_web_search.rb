@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionWebSearch < OpenAI::BaseModel
+      class ResponseFunctionWebSearch < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the web search tool call.
         #
@@ -33,13 +33,13 @@ module OpenAI
         #   #
         #   def initialize(id:, status:, type: :web_search_call, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The status of the web search tool call.
         #
         # @see OpenAI::Models::Responses::ResponseFunctionWebSearch#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           SEARCHING = :searching

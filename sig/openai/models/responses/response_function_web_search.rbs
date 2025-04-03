@@ -8,7 +8,7 @@ module OpenAI
           type: :web_search_call
         }
 
-      class ResponseFunctionWebSearch < OpenAI::BaseModel
+      class ResponseFunctionWebSearch < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status
@@ -26,7 +26,7 @@ module OpenAI
         type status = :in_progress | :searching | :completed | :failed
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           SEARCHING: :searching

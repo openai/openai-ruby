@@ -3,7 +3,7 @@ module OpenAI
     module Audio
       type transcription_word = { end_: Float, start: Float, word: String }
 
-      class TranscriptionWord < OpenAI::BaseModel
+      class TranscriptionWord < OpenAI::Internal::Type::BaseModel
         attr_accessor end_: Float
 
         attr_accessor start: Float

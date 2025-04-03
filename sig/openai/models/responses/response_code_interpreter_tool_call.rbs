@@ -10,7 +10,7 @@ module OpenAI
           type: :code_interpreter_call
         }
 
-      class ResponseCodeInterpreterToolCall < OpenAI::BaseModel
+      class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor code: String
@@ -36,11 +36,11 @@ module OpenAI
           | OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
 
         module Result
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           type logs = { logs: String, type: :logs }
 
-          class Logs < OpenAI::BaseModel
+          class Logs < OpenAI::Internal::Type::BaseModel
             attr_accessor logs: String
 
             attr_accessor type: :logs
@@ -56,7 +56,7 @@ module OpenAI
               type: :files
             }
 
-          class Files < OpenAI::BaseModel
+          class Files < OpenAI::Internal::Type::BaseModel
             attr_accessor files: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File]
 
             attr_accessor type: :files
@@ -70,7 +70,7 @@ module OpenAI
 
             type file = { file_id: String, mime_type: String }
 
-            class File < OpenAI::BaseModel
+            class File < OpenAI::Internal::Type::BaseModel
               attr_accessor file_id: String
 
               attr_accessor mime_type: String
@@ -87,7 +87,7 @@ module OpenAI
         type status = :in_progress | :interpreting | :completed
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           INTERPRETING: :interpreting

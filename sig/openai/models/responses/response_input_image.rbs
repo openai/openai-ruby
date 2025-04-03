@@ -9,7 +9,7 @@ module OpenAI
           image_url: String?
         }
 
-      class ResponseInputImage < OpenAI::BaseModel
+      class ResponseInputImage < OpenAI::Internal::Type::BaseModel
         attr_accessor detail: OpenAI::Models::Responses::ResponseInputImage::detail
 
         attr_accessor type: :input_image
@@ -30,7 +30,7 @@ module OpenAI
         type detail = :high | :low | :auto
 
         module Detail
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           HIGH: :high
           LOW: :low

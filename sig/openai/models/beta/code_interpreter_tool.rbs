@@ -3,7 +3,7 @@ module OpenAI
     module Beta
       type code_interpreter_tool = { type: :code_interpreter }
 
-      class CodeInterpreterTool < OpenAI::BaseModel
+      class CodeInterpreterTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :code_interpreter
 
         def initialize: (?type: :code_interpreter) -> void

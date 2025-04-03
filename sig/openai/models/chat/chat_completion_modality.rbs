@@ -6,7 +6,7 @@ module OpenAI
       type chat_completion_modality = :text | :audio
 
       module ChatCompletionModality
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         TEXT: :text
         AUDIO: :audio

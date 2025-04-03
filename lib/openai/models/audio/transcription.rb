@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class Transcription < OpenAI::BaseModel
+      class Transcription < OpenAI::Internal::Type::BaseModel
         # @!attribute text
         #   The transcribed text.
         #
@@ -16,7 +16,7 @@ module OpenAI
         #     to the `include` array.
         #
         #   @return [Array<OpenAI::Models::Audio::Transcription::Logprob>, nil]
-        optional :logprobs, -> { OpenAI::ArrayOf[OpenAI::Models::Audio::Transcription::Logprob] }
+        optional :logprobs, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::Transcription::Logprob] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Audio::Transcription::Logprob>]
@@ -31,9 +31,9 @@ module OpenAI
         #   #
         #   def initialize(text:, logprobs: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] token
           #   The token in the transcription.
           #
@@ -48,7 +48,7 @@ module OpenAI
           #   The bytes of the token.
           #
           #   @return [Array<Float>, nil]
-          optional :bytes, OpenAI::ArrayOf[Float]
+          optional :bytes, OpenAI::Internal::Type::ArrayOf[Float]
 
           # @!parse
           #   # @return [Array<Float>]
@@ -71,7 +71,7 @@ module OpenAI
           #   #
           #   def initialize(token: nil, bytes: nil, logprob: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

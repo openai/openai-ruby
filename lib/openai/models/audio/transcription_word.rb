@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionWord < OpenAI::BaseModel
+      class TranscriptionWord < OpenAI::Internal::Type::BaseModel
         # @!attribute end_
         #   End time of the word in seconds.
         #
@@ -29,7 +29,7 @@ module OpenAI
         #   #
         #   def initialize(end_:, start:, word:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFailedEvent < OpenAI::BaseModel
+      class ResponseFailedEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute response
         #   The response that failed.
         #
@@ -24,7 +24,7 @@ module OpenAI
         #   #
         #   def initialize(response:, type: :"response.failed", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

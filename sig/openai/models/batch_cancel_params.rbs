@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type batch_cancel_params = {  } & OpenAI::Internal::Type::request_parameters
 
-    class BatchCancelParams < OpenAI::BaseModel
+    class BatchCancelParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 

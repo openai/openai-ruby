@@ -5,7 +5,7 @@ module OpenAI
         type message_retrieve_params =
           { thread_id: String } & OpenAI::Internal::Type::request_parameters
 
-        class MessageRetrieveParams < OpenAI::BaseModel
+        class MessageRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 

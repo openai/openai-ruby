@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type response_format_text = { type: :text }
 
-    class ResponseFormatText < OpenAI::BaseModel
+    class ResponseFormatText < OpenAI::Internal::Type::BaseModel
       attr_accessor type: :text
 
       def initialize: (?type: :text) -> void

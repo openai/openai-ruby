@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class FileCitationAnnotation < OpenAI::BaseModel
+        class FileCitationAnnotation < OpenAI::Internal::Type::BaseModel
           # @!attribute end_index
           #
           #   @return [Integer]
@@ -45,10 +45,10 @@ module OpenAI
           #   #
           #   def initialize(end_index:, file_citation:, start_index:, text:, type: :file_citation, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::Threads::FileCitationAnnotation#file_citation
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the specific File the citation is from.
             #
@@ -60,7 +60,7 @@ module OpenAI
             #   #
             #   def initialize(file_id:, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

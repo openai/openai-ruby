@@ -4,7 +4,7 @@ module OpenAI
       type response_delete_params =
         {  } & OpenAI::Internal::Type::request_parameters
 
-      class ResponseDeleteParams < OpenAI::BaseModel
+      class ResponseDeleteParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

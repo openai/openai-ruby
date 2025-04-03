@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       # @see OpenAI::Resources::FineTuning::Jobs#list
-      class JobListParams < OpenAI::BaseModel
+      class JobListParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -34,7 +34,7 @@ module OpenAI
         #     Alternatively, set `metadata=null` to indicate no metadata.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!parse
         #   # @param after [String]
@@ -44,7 +44,7 @@ module OpenAI
         #   #
         #   def initialize(after: nil, limit: nil, metadata: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

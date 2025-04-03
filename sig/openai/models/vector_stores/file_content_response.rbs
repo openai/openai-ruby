@@ -3,7 +3,7 @@ module OpenAI
     module VectorStores
       type file_content_response = { text: String, type: String }
 
-      class FileContentResponse < OpenAI::BaseModel
+      class FileContentResponse < OpenAI::Internal::Type::BaseModel
         attr_reader text: String?
 
         def text=: (String) -> String

@@ -9,7 +9,7 @@ module OpenAI
               type: :tool_calls
             }
 
-          class ToolCallsStepDetails < OpenAI::BaseModel
+          class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
             attr_accessor tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call]
 
             attr_accessor type: :tool_calls

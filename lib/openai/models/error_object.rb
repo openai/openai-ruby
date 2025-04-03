@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ErrorObject < OpenAI::BaseModel
+    class ErrorObject < OpenAI::Internal::Type::BaseModel
       # @!attribute code
       #
       #   @return [String, nil]
@@ -31,7 +31,7 @@ module OpenAI
       #   #
       #   def initialize(code:, message:, param:, type:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

@@ -19,7 +19,7 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def self.==(other) = other.is_a?(Class) && other <= OpenAI::BooleanModel
+        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::BooleanModel
 
         class << self
           # @api private

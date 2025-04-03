@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class MessageDeltaEvent < OpenAI::BaseModel
+        class MessageDeltaEvent < OpenAI::Internal::Type::BaseModel
           # The identifier of the message, which can be referenced in API endpoints.
           sig { returns(String) }
           attr_accessor :id
@@ -13,7 +13,7 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::MessageDelta) }
           attr_reader :delta
 
-          sig { params(delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Internal::Util::AnyHash)).void }
+          sig { params(delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Internal::AnyHash)).void }
           attr_writer :delta
 
           # The object type, which is always `thread.message.delta`.
@@ -25,7 +25,7 @@ module OpenAI
           sig do
             params(
               id: String,
-              delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Internal::Util::AnyHash),
+              delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Internal::AnyHash),
               object: Symbol
             )
               .returns(T.attached_class)

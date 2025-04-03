@@ -11,7 +11,7 @@ module OpenAI
           status: OpenAI::Models::Responses::ResponseFunctionToolCall::status
         }
 
-      class ResponseFunctionToolCall < OpenAI::BaseModel
+      class ResponseFunctionToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor arguments: String
 
         attr_accessor call_id: String
@@ -44,7 +44,7 @@ module OpenAI
         type status = :in_progress | :completed | :incomplete
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           COMPLETED: :completed

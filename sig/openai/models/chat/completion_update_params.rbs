@@ -5,7 +5,7 @@ module OpenAI
         { metadata: OpenAI::Models::metadata? }
         & OpenAI::Internal::Type::request_parameters
 
-      class CompletionUpdateParams < OpenAI::BaseModel
+      class CompletionUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

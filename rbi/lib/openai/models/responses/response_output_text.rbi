@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputText < OpenAI::BaseModel
+      class ResponseOutputText < OpenAI::Internal::Type::BaseModel
         # The annotations of the text output.
         sig do
           returns(
@@ -32,7 +32,7 @@ module OpenAI
             annotations: T::Array[
             T.any(
               OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
               OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
             )
@@ -66,9 +66,9 @@ module OpenAI
 
         # A citation to a file.
         module Annotation
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             # The ID of the file.
             sig { returns(String) }
             attr_accessor :file_id
@@ -91,7 +91,7 @@ module OpenAI
             end
           end
 
-          class URLCitation < OpenAI::BaseModel
+          class URLCitation < OpenAI::Internal::Type::BaseModel
             # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
             attr_accessor :end_index
@@ -135,7 +135,7 @@ module OpenAI
             end
           end
 
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             # The ID of the file.
             sig { returns(String) }
             attr_accessor :file_id

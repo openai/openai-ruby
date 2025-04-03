@@ -11,7 +11,7 @@ module OpenAI
               message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
             }
 
-          class RunStepDeltaMessageDelta < OpenAI::BaseModel
+          class RunStepDeltaMessageDelta < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :message_creation
 
             attr_reader message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation?
@@ -29,7 +29,7 @@ module OpenAI
 
             type message_creation = { message_id: String }
 
-            class MessageCreation < OpenAI::BaseModel
+            class MessageCreation < OpenAI::Internal::Type::BaseModel
               attr_reader message_id: String?
 
               def message_id=: (String) -> String

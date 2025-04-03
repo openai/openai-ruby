@@ -6,7 +6,7 @@ module OpenAI
         | OpenAI::Models::Audio::TranscriptionVerbose
 
       module TranscriptionCreateResponse
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]
       end

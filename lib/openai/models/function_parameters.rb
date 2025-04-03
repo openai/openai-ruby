@@ -2,6 +2,6 @@
 
 module OpenAI
   module Models
-    FunctionParameters = OpenAI::HashOf[OpenAI::Unknown]
+    FunctionParameters = OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
   end
 end

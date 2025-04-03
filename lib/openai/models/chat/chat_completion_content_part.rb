@@ -6,7 +6,7 @@ module OpenAI
       # Learn about
       #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
       module ChatCompletionContentPart
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :type
 
@@ -22,7 +22,7 @@ module OpenAI
         # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text generation.
         variant :file, -> { OpenAI::Models::Chat::ChatCompletionContentPart::File }
 
-        class File < OpenAI::BaseModel
+        class File < OpenAI::Internal::Type::BaseModel
           # @!attribute file
           #
           #   @return [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
@@ -43,10 +43,10 @@ module OpenAI
           #   #
           #   def initialize(file:, type: :file, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Chat::ChatCompletionContentPart::File#file
-          class File < OpenAI::BaseModel
+          class File < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_data
             #   The base64 encoded file data, used when passing the file to the model as a
             #     string.
@@ -85,7 +85,7 @@ module OpenAI
             #   #
             #   def initialize(file_data: nil, file_id: nil, filename: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
 

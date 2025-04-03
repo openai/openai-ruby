@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class FilePathAnnotation < OpenAI::BaseModel
+        class FilePathAnnotation < OpenAI::Internal::Type::BaseModel
           sig { returns(Integer) }
           attr_accessor :end_index
 
@@ -13,7 +13,7 @@ module OpenAI
 
           sig do
             params(
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Internal::Util::AnyHash)
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -35,7 +35,7 @@ module OpenAI
           sig do
             params(
               end_index: Integer,
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Internal::Util::AnyHash),
+              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Internal::AnyHash),
               start_index: Integer,
               text: String,
               type: Symbol
@@ -60,7 +60,7 @@ module OpenAI
           def to_hash
           end
 
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             # The ID of the file that was generated.
             sig { returns(String) }
             attr_accessor :file_id

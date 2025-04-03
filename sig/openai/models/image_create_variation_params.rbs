@@ -11,7 +11,7 @@ module OpenAI
       }
       & OpenAI::Internal::Type::request_parameters
 
-    class ImageCreateVariationParams < OpenAI::BaseModel
+    class ImageCreateVariationParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
@@ -44,7 +44,7 @@ module OpenAI
       type model = String | OpenAI::Models::image_model
 
       module Model
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [String, OpenAI::Models::image_model]
       end
@@ -52,7 +52,7 @@ module OpenAI
       type response_format = :url | :b64_json
 
       module ResponseFormat
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         URL: :url
         B64_JSON: :b64_json
@@ -63,7 +63,7 @@ module OpenAI
       type size = :"256x256" | :"512x512" | :"1024x1024"
 
       module Size
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         SIZE_256X256: :"256x256"
         SIZE_512X512: :"512x512"

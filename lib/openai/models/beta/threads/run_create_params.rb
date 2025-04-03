@@ -7,7 +7,7 @@ module OpenAI
         # @see OpenAI::Resources::Beta::Threads::Runs#create
         #
         # @see OpenAI::Resources::Beta::Threads::Runs#stream_raw
-        class RunCreateParams < OpenAI::BaseModel
+        class RunCreateParams < OpenAI::Internal::Type::BaseModel
           # @!parse
           #   extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
@@ -30,7 +30,8 @@ module OpenAI
           #     for more information.
           #
           #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
-          optional :include, -> { OpenAI::ArrayOf[enum: OpenAI::Models::Beta::Threads::Runs::RunStepInclude] }
+          optional :include,
+                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Beta::Threads::Runs::RunStepInclude] }
 
           # @!parse
           #   # @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
@@ -49,7 +50,7 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage>, nil]
           optional :additional_messages,
-                   -> { OpenAI::ArrayOf[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage] },
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage] },
                    nil?: true
 
           # @!attribute instructions
@@ -89,7 +90,7 @@ module OpenAI
           #     a maximum length of 512 characters.
           #
           #   @return [Hash{Symbol=>String}, nil]
-          optional :metadata, OpenAI::HashOf[String], nil?: true
+          optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!attribute model
           #   The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
@@ -106,7 +107,7 @@ module OpenAI
           #     during tool use.
           #
           #   @return [Boolean, nil]
-          optional :parallel_tool_calls, OpenAI::BooleanModel
+          optional :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel
 
           # @!parse
           #   # @return [Boolean]
@@ -173,7 +174,9 @@ module OpenAI
           #     modifying the behavior on a per-run basis.
           #
           #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
-          optional :tools, -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] }, nil?: true
+          optional :tools,
+                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] },
+                   nil?: true
 
           # @!attribute top_p
           #   An alternative to sampling with temperature, called nucleus sampling, where the
@@ -238,9 +241,9 @@ module OpenAI
           #     super
           #   end
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-          class AdditionalMessage < OpenAI::BaseModel
+          class AdditionalMessage < OpenAI::Internal::Type::BaseModel
             # @!attribute content
             #   The text contents of the message.
             #
@@ -264,7 +267,7 @@ module OpenAI
             #
             #   @return [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment>, nil]
             optional :attachments,
-                     -> { OpenAI::ArrayOf[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment] },
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment] },
                      nil?: true
 
             # @!attribute metadata
@@ -276,7 +279,7 @@ module OpenAI
             #     a maximum length of 512 characters.
             #
             #   @return [Hash{Symbol=>String}, nil]
-            optional :metadata, OpenAI::HashOf[String], nil?: true
+            optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
             # @!parse
             #   # @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
@@ -286,13 +289,13 @@ module OpenAI
             #   #
             #   def initialize(content:, role:, attachments: nil, metadata: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # The text contents of the message.
             #
             # @see OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage#content
             module Content
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               # The text contents of the message.
               variant String
@@ -305,7 +308,7 @@ module OpenAI
               #   def self.variants; end
 
               MessageContentPartParamArray =
-                OpenAI::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
+                OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
             end
 
             # The role of the entity that is creating the message. Allowed values include:
@@ -317,7 +320,7 @@ module OpenAI
             #
             # @see OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage#role
             module Role
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               USER = :user
               ASSISTANT = :assistant
@@ -329,7 +332,7 @@ module OpenAI
               #   def self.values; end
             end
 
-            class Attachment < OpenAI::BaseModel
+            class Attachment < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] file_id
               #   The ID of the file to attach to the message.
               #
@@ -345,7 +348,7 @@ module OpenAI
               #
               #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>, nil]
               optional :tools,
-                       -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool] }
+                       -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool] }
 
               # @!parse
               #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>]
@@ -357,10 +360,10 @@ module OpenAI
               #   #
               #   def initialize(file_id: nil, tools: nil, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               module Tool
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 discriminator :type
 
@@ -369,7 +372,7 @@ module OpenAI
                 variant :file_search,
                         -> { OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch }
 
-                class FileSearch < OpenAI::BaseModel
+                class FileSearch < OpenAI::Internal::Type::BaseModel
                   # @!attribute type
                   #   The type of tool being defined: `file_search`
                   #
@@ -381,7 +384,7 @@ module OpenAI
                   #   #
                   #   def initialize(type: :file_search, **) = super
 
-                  # def initialize: (Hash | OpenAI::BaseModel) -> void
+                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
                 end
 
                 # @!parse
@@ -396,7 +399,7 @@ module OpenAI
           #   model associated with the assistant. If not, the model associated with the
           #   assistant will be used.
           module Model
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             variant String
 
@@ -408,7 +411,7 @@ module OpenAI
             #   def self.variants; end
           end
 
-          class TruncationStrategy < OpenAI::BaseModel
+          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   The truncation strategy to use for the thread. The default is `auto`. If set to
             #     `last_messages`, the thread will be truncated to the n most recent messages in
@@ -434,7 +437,7 @@ module OpenAI
             #   #
             #   def initialize(type:, last_messages: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             #   `last_messages`, the thread will be truncated to the n most recent messages in
@@ -443,7 +446,7 @@ module OpenAI
             #
             # @see OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy#type
             module Type
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               AUTO = :auto
               LAST_MESSAGES = :last_messages

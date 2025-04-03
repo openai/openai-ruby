@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFormatTextJSONSchemaConfig < OpenAI::BaseModel
+      class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         #   and dashes, with a maximum length of 64.
         sig { returns(String) }

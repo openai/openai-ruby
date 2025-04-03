@@ -4,7 +4,7 @@ module OpenAI
       type thread_deleted =
         { id: String, deleted: bool, object: :"thread.deleted" }
 
-      class ThreadDeleted < OpenAI::BaseModel
+      class ThreadDeleted < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor deleted: bool

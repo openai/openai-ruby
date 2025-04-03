@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module FineTuning
       module Jobs
-        class FineTuningJobCheckpoint < OpenAI::BaseModel
+        class FineTuningJobCheckpoint < OpenAI::Internal::Type::BaseModel
           # The checkpoint identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
           attr_accessor :id
@@ -27,7 +27,7 @@ module OpenAI
 
           sig do
             params(
-              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::Util::AnyHash)
+              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::AnyHash)
             )
               .void
           end
@@ -49,7 +49,7 @@ module OpenAI
               created_at: Integer,
               fine_tuned_model_checkpoint: String,
               fine_tuning_job_id: String,
-              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::Util::AnyHash),
+              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::AnyHash),
               step_number: Integer,
               object: Symbol
             )
@@ -83,7 +83,7 @@ module OpenAI
           def to_hash
           end
 
-          class Metrics < OpenAI::BaseModel
+          class Metrics < OpenAI::Internal::Type::BaseModel
             sig { returns(T.nilable(Float)) }
             attr_reader :full_valid_loss
 

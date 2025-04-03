@@ -8,7 +8,7 @@ module OpenAI
           type: :"response.code_interpreter_call.code.delta"
         }
 
-      class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor delta: String
 
         attr_accessor output_index: Integer

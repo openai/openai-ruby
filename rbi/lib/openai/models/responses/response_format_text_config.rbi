@@ -17,7 +17,7 @@ module OpenAI
       #   ensures the message the model generates is valid JSON. Using `json_schema` is
       #   preferred for models that support it.
       module ResponseFormatTextConfig
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         sig do
           override

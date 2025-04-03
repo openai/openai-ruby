@@ -7,7 +7,7 @@ module OpenAI
           logprobs: ::Array[OpenAI::Models::Audio::Transcription::Logprob]
         }
 
-      class Transcription < OpenAI::BaseModel
+      class Transcription < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
 
         attr_reader logprobs: ::Array[OpenAI::Models::Audio::Transcription::Logprob]?
@@ -25,7 +25,7 @@ module OpenAI
 
         type logprob = { token: String, bytes: ::Array[Float], logprob: Float }
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           attr_reader token: String?
 
           def token=: (String) -> String

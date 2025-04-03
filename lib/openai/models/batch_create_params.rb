@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Batches#create
-    class BatchCreateParams < OpenAI::BaseModel
+    class BatchCreateParams < OpenAI::Internal::Type::BaseModel
       # @!parse
       #   extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
@@ -47,7 +47,7 @@ module OpenAI
       #     a maximum length of 512 characters.
       #
       #   @return [Hash{Symbol=>String}, nil]
-      optional :metadata, OpenAI::HashOf[String], nil?: true
+      optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
       # @!parse
       #   # @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow]
@@ -58,12 +58,12 @@ module OpenAI
       #   #
       #   def initialize(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {}, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
       module CompletionWindow
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         COMPLETION_WINDOW_24H = :"24h"
 
@@ -79,7 +79,7 @@ module OpenAI
       #   are supported. Note that `/v1/embeddings` batches are also restricted to a
       #   maximum of 50,000 embedding inputs across all requests in the batch.
       module Endpoint
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         V1_RESPONSES = :"/v1/responses"
         V1_CHAT_COMPLETIONS = :"/v1/chat/completions"

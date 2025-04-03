@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class ImageURLDelta < OpenAI::BaseModel
+        class ImageURLDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] detail
           #   Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #     to high resolution using `high`.
@@ -33,14 +33,14 @@ module OpenAI
           #   #
           #   def initialize(detail: nil, url: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`.
           #
           # @see OpenAI::Models::Beta::Threads::ImageURLDelta#detail
           module Detail
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO = :auto
             LOW = :low

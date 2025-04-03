@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::Files#create
-      class VectorStoreFile < OpenAI::BaseModel
+      class VectorStoreFile < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The identifier, which can be referenced in API endpoints.
         #
@@ -63,7 +63,7 @@ module OpenAI
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         optional :attributes,
-                 -> { OpenAI::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute] },
+                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute] },
                  nil?: true
 
         # @!attribute [r] chunking_strategy
@@ -104,10 +104,10 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # @see OpenAI::Models::VectorStores::VectorStoreFile#last_error
-        class LastError < OpenAI::BaseModel
+        class LastError < OpenAI::Internal::Type::BaseModel
           # @!attribute code
           #   One of `server_error` or `rate_limit_exceeded`.
           #
@@ -129,13 +129,13 @@ module OpenAI
           #   #
           #   def initialize(code:, message:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # One of `server_error` or `rate_limit_exceeded`.
           #
           # @see OpenAI::Models::VectorStores::VectorStoreFile::LastError#code
           module Code
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             SERVER_ERROR = :server_error
             UNSUPPORTED_FILE = :unsupported_file
@@ -155,7 +155,7 @@ module OpenAI
         #
         # @see OpenAI::Models::VectorStores::VectorStoreFile#status
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
@@ -170,13 +170,13 @@ module OpenAI
         end
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
           variant Float
 
-          variant OpenAI::BooleanModel
+          variant OpenAI::Internal::Type::BooleanModel
 
           # @!parse
           #   # @return [Array(String, Float, Boolean)]

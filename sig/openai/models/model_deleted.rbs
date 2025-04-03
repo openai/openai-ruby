@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type model_deleted = { id: String, deleted: bool, object: String }
 
-    class ModelDeleted < OpenAI::BaseModel
+    class ModelDeleted < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor deleted: bool

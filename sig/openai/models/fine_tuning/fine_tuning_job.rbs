@@ -26,7 +26,7 @@ module OpenAI
           method_: OpenAI::Models::FineTuning::FineTuningJob::Method
         }
 
-      class FineTuningJob < OpenAI::BaseModel
+      class FineTuningJob < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor created_at: Integer
@@ -95,7 +95,7 @@ module OpenAI
 
         type error = { code: String, message: String, param: String? }
 
-        class Error < OpenAI::BaseModel
+        class Error < OpenAI::Internal::Type::BaseModel
           attr_accessor code: String
 
           attr_accessor message: String
@@ -118,7 +118,7 @@ module OpenAI
             n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           }
 
-        class Hyperparameters < OpenAI::BaseModel
+        class Hyperparameters < OpenAI::Internal::Type::BaseModel
           attr_reader batch_size: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::batch_size?
 
           def batch_size=: (
@@ -148,7 +148,7 @@ module OpenAI
           type batch_size = :auto | Integer
 
           module BatchSize
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> [:auto, Integer]
           end
@@ -156,7 +156,7 @@ module OpenAI
           type learning_rate_multiplier = :auto | Float
 
           module LearningRateMultiplier
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> [:auto, Float]
           end
@@ -164,7 +164,7 @@ module OpenAI
           type n_epochs = :auto | Integer
 
           module NEpochs
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> [:auto, Integer]
           end
@@ -179,7 +179,7 @@ module OpenAI
           | :cancelled
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           VALIDATING_FILES: :validating_files
           QUEUED: :queued
@@ -198,7 +198,7 @@ module OpenAI
             type: OpenAI::Models::FineTuning::FineTuningJob::Method::type_
           }
 
-        class Method < OpenAI::BaseModel
+        class Method < OpenAI::Internal::Type::BaseModel
           attr_reader dpo: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo?
 
           def dpo=: (
@@ -230,7 +230,7 @@ module OpenAI
               hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters
             }
 
-          class Dpo < OpenAI::BaseModel
+          class Dpo < OpenAI::Internal::Type::BaseModel
             attr_reader hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters?
 
             def hyperparameters=: (
@@ -251,7 +251,7 @@ module OpenAI
                 n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::n_epochs
               }
 
-            class Hyperparameters < OpenAI::BaseModel
+            class Hyperparameters < OpenAI::Internal::Type::BaseModel
               attr_reader batch_size: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::batch_size?
 
               def batch_size=: (
@@ -288,7 +288,7 @@ module OpenAI
               type batch_size = :auto | Integer
 
               module BatchSize
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [:auto, Integer]
               end
@@ -296,7 +296,7 @@ module OpenAI
               type beta = :auto | Float
 
               module Beta
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [:auto, Float]
               end
@@ -304,7 +304,7 @@ module OpenAI
               type learning_rate_multiplier = :auto | Float
 
               module LearningRateMultiplier
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [:auto, Float]
               end
@@ -312,7 +312,7 @@ module OpenAI
               type n_epochs = :auto | Integer
 
               module NEpochs
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [:auto, Integer]
               end
@@ -324,7 +324,7 @@ module OpenAI
               hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters
             }
 
-          class Supervised < OpenAI::BaseModel
+          class Supervised < OpenAI::Internal::Type::BaseModel
             attr_reader hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters?
 
             def hyperparameters=: (
@@ -344,7 +344,7 @@ module OpenAI
                 n_epochs: OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::n_epochs
               }
 
-            class Hyperparameters < OpenAI::BaseModel
+            class Hyperparameters < OpenAI::Internal::Type::BaseModel
               attr_reader batch_size: OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::batch_size?
 
               def batch_size=: (
@@ -374,7 +374,7 @@ module OpenAI
               type batch_size = :auto | Integer
 
               module BatchSize
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [:auto, Integer]
               end
@@ -382,7 +382,7 @@ module OpenAI
               type learning_rate_multiplier = :auto | Float
 
               module LearningRateMultiplier
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [:auto, Float]
               end
@@ -390,7 +390,7 @@ module OpenAI
               type n_epochs = :auto | Integer
 
               module NEpochs
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [:auto, Integer]
               end
@@ -400,7 +400,7 @@ module OpenAI
           type type_ = :supervised | :dpo
 
           module Type
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             SUPERVISED: :supervised
             DPO: :dpo

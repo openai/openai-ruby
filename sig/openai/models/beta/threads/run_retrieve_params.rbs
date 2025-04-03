@@ -5,7 +5,7 @@ module OpenAI
         type run_retrieve_params =
           { thread_id: String } & OpenAI::Internal::Type::request_parameters
 
-        class RunRetrieveParams < OpenAI::BaseModel
+        class RunRetrieveParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 

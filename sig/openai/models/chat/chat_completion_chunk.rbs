@@ -15,7 +15,7 @@ module OpenAI
           usage: OpenAI::Models::CompletionUsage?
         }
 
-      class ChatCompletionChunk < OpenAI::BaseModel
+      class ChatCompletionChunk < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor choices: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice]
@@ -55,7 +55,7 @@ module OpenAI
             logprobs: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs?
           }
 
-        class Choice < OpenAI::BaseModel
+        class Choice < OpenAI::Internal::Type::BaseModel
           attr_accessor delta: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta
 
           attr_accessor finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?
@@ -82,7 +82,7 @@ module OpenAI
               tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             }
 
-          class Delta < OpenAI::BaseModel
+          class Delta < OpenAI::Internal::Type::BaseModel
             attr_accessor content: String?
 
             attr_reader function_call: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall?
@@ -117,7 +117,7 @@ module OpenAI
 
             type function_call = { arguments: String, name: String }
 
-            class FunctionCall < OpenAI::BaseModel
+            class FunctionCall < OpenAI::Internal::Type::BaseModel
               attr_reader arguments: String?
 
               def arguments=: (String) -> String
@@ -134,7 +134,7 @@ module OpenAI
             type role = :developer | :system | :user | :assistant | :tool
 
             module Role
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               DEVELOPER: :developer
               SYSTEM: :system
@@ -153,7 +153,7 @@ module OpenAI
                 type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               }
 
-            class ToolCall < OpenAI::BaseModel
+            class ToolCall < OpenAI::Internal::Type::BaseModel
               attr_accessor index: Integer
 
               attr_reader id: String?
@@ -183,7 +183,7 @@ module OpenAI
 
               type function = { arguments: String, name: String }
 
-              class Function < OpenAI::BaseModel
+              class Function < OpenAI::Internal::Type::BaseModel
                 attr_reader arguments: String?
 
                 def arguments=: (String) -> String
@@ -200,7 +200,7 @@ module OpenAI
               type type_ = :function
 
               module Type
-                extend OpenAI::Enum
+                extend OpenAI::Internal::Type::Enum
 
                 FUNCTION: :function
 
@@ -213,7 +213,7 @@ module OpenAI
             :stop | :length | :tool_calls | :content_filter | :function_call
 
           module FinishReason
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             STOP: :stop
             LENGTH: :length
@@ -230,7 +230,7 @@ module OpenAI
               refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
             }
 
-          class Logprobs < OpenAI::BaseModel
+          class Logprobs < OpenAI::Internal::Type::BaseModel
             attr_accessor content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
 
             attr_accessor refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
@@ -247,7 +247,7 @@ module OpenAI
         type service_tier = :scale | :default
 
         module ServiceTier
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           SCALE: :scale
           DEFAULT: :default

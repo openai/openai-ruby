@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class RefusalContentBlock < OpenAI::BaseModel
+        class RefusalContentBlock < OpenAI::Internal::Type::BaseModel
           sig { returns(String) }
           attr_accessor :refusal
 

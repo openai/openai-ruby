@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ResponseFormatText < OpenAI::BaseModel
+    class ResponseFormatText < OpenAI::Internal::Type::BaseModel
       # @!attribute type
       #   The type of response format being defined. Always `text`.
       #
@@ -16,7 +16,7 @@ module OpenAI
       #   #
       #   def initialize(type: :text, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

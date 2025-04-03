@@ -9,7 +9,7 @@ module OpenAI
     #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
     #   result in faster responses and fewer tokens used on reasoning in a response.
     module ReasoningEffort
-      extend OpenAI::Enum
+      extend OpenAI::Internal::Type::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ReasoningEffort) }
       OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ReasoningEffort::TaggedSymbol) }

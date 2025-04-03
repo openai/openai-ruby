@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::Internal::Type::BaseModel
         # The partial code snippet added by the code interpreter.
         sig { returns(String) }
         attr_accessor :delta

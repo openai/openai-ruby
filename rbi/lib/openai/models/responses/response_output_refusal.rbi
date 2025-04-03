@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputRefusal < OpenAI::BaseModel
+      class ResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
         # The refusal explanationfrom the model.
         sig { returns(String) }
         attr_accessor :refusal

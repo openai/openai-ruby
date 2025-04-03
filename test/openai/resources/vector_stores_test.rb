@@ -16,7 +16,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         created_at: Integer,
         file_counts: OpenAI::Models::VectorStore::FileCounts,
         last_active_at: Integer | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
         status: OpenAI::Models::VectorStore::Status,
@@ -40,7 +40,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         created_at: Integer,
         file_counts: OpenAI::Models::VectorStore::FileCounts,
         last_active_at: Integer | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
         status: OpenAI::Models::VectorStore::Status,
@@ -64,7 +64,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         created_at: Integer,
         file_counts: OpenAI::Models::VectorStore::FileCounts,
         last_active_at: Integer | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
         status: OpenAI::Models::VectorStore::Status,
@@ -95,7 +95,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         created_at: Integer,
         file_counts: OpenAI::Models::VectorStore::FileCounts,
         last_active_at: Integer | nil,
-        metadata: ^(OpenAI::HashOf[String]) | nil,
+        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
         status: OpenAI::Models::VectorStore::Status,
@@ -116,7 +116,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        deleted: OpenAI::BooleanModel,
+        deleted: OpenAI::Internal::Type::BooleanModel,
         object: Symbol
       }
     end
@@ -138,8 +138,8 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        attributes: ^(OpenAI::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute]) | nil,
-        content: ^(OpenAI::ArrayOf[OpenAI::Models::VectorStoreSearchResponse::Content]),
+        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStoreSearchResponse::Attribute]) | nil,
+        content: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::VectorStoreSearchResponse::Content]),
         file_id: String,
         filename: String,
         score: Float

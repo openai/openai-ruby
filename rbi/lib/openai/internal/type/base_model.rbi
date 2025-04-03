@@ -22,7 +22,7 @@ module OpenAI
               T::Hash[
               Symbol,
               T.all(
-                OpenAI::BaseModel::KnownFieldShape,
+                OpenAI::Internal::Type::BaseModel::KnownFieldShape,
                 {type_fn: T.proc.returns(OpenAI::Internal::Type::Converter::Input)}
               )
               ]
@@ -34,11 +34,13 @@ module OpenAI
           # @api private
           sig do
             returns(
-              T::Hash[Symbol,
-                      T.all(
-                        OpenAI::BaseModel::KnownFieldShape,
-                        {type: OpenAI::Internal::Type::Converter::Input}
-                      )]
+              T::Hash[
+              Symbol,
+              T.all(
+                OpenAI::Internal::Type::BaseModel::KnownFieldShape,
+                {type: OpenAI::Internal::Type::Converter::Input}
+              )
+              ]
             )
           end
           def fields
@@ -60,7 +62,7 @@ module OpenAI
                 T.proc.returns(OpenAI::Internal::Type::Converter::Input),
                 OpenAI::Internal::Type::Converter::Input
               ),
-              spec: OpenAI::Internal::Util::AnyHash
+              spec: OpenAI::Internal::AnyHash
             )
               .void
           end
@@ -72,11 +74,11 @@ module OpenAI
             params(
               name_sym: Symbol,
               type_info: T.any(
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 T.proc.returns(OpenAI::Internal::Type::Converter::Input),
                 OpenAI::Internal::Type::Converter::Input
               ),
-              spec: OpenAI::Internal::Util::AnyHash
+              spec: OpenAI::Internal::AnyHash
             )
               .void
           end
@@ -88,11 +90,11 @@ module OpenAI
             params(
               name_sym: Symbol,
               type_info: T.any(
-                OpenAI::Internal::Util::AnyHash,
+                OpenAI::Internal::AnyHash,
                 T.proc.returns(OpenAI::Internal::Type::Converter::Input),
                 OpenAI::Internal::Type::Converter::Input
               ),
-              spec: OpenAI::Internal::Util::AnyHash
+              spec: OpenAI::Internal::AnyHash
             )
               .void
           end
@@ -128,7 +130,7 @@ module OpenAI
           sig do
             override
               .params(
-                value: T.any(OpenAI::BaseModel, T::Hash[T.anything, T.anything], T.anything),
+                value: T.any(OpenAI::Internal::Type::BaseModel, T::Hash[T.anything, T.anything], T.anything),
                 state: OpenAI::Internal::Type::Converter::State
               )
               .returns(T.any(T.attached_class, T.anything))
@@ -164,7 +166,7 @@ module OpenAI
         #
         #   This method is not recursive. The returned value is shared by the object, so it
         #   should not be mutated.
-        sig { overridable.returns(OpenAI::Internal::Util::AnyHash) }
+        sig { overridable.returns(OpenAI::Internal::AnyHash) }
         def to_h
         end
 
@@ -176,11 +178,11 @@ module OpenAI
         #
         #   This method is not recursive. The returned value is shared by the object, so it
         #   should not be mutated.
-        sig { overridable.returns(OpenAI::Internal::Util::AnyHash) }
+        sig { overridable.returns(OpenAI::Internal::AnyHash) }
         def to_hash
         end
 
-        sig { params(keys: T.nilable(T::Array[Symbol])).returns(OpenAI::Internal::Util::AnyHash) }
+        sig { params(keys: T.nilable(T::Array[Symbol])).returns(OpenAI::Internal::AnyHash) }
         def deconstruct_keys(keys)
         end
 

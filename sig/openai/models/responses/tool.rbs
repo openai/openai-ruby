@@ -8,7 +8,7 @@ module OpenAI
         | OpenAI::Models::Responses::WebSearchTool
 
       module Tool
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool]
       end

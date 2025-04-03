@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class ModerationCreateResponse < OpenAI::BaseModel
+    class ModerationCreateResponse < OpenAI::Internal::Type::BaseModel
       # The unique identifier for the moderation request.
       sig { returns(String) }
       attr_accessor :id
@@ -20,7 +20,7 @@ module OpenAI
         params(
           id: String,
           model: String,
-          results: T::Array[T.any(OpenAI::Models::Moderation, OpenAI::Internal::Util::AnyHash)]
+          results: T::Array[T.any(OpenAI::Models::Moderation, OpenAI::Internal::AnyHash)]
         )
           .returns(T.attached_class)
       end

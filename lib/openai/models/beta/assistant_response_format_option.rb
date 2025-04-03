@@ -24,7 +24,7 @@ module OpenAI
       #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
       #   max context length.
       module AssistantResponseFormatOption
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # `auto` is the default value
         variant const: :auto

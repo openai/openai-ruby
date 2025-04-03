@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class WebSearchTool < OpenAI::BaseModel
+      class WebSearchTool < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of the web search tool. One of:
         #
@@ -40,7 +40,7 @@ module OpenAI
         #   #
         #   def initialize(type:, search_context_size: nil, user_location: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The type of the web search tool. One of:
         #
@@ -49,7 +49,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::WebSearchTool#type
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           WEB_SEARCH_PREVIEW = :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
@@ -66,7 +66,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Responses::WebSearchTool#search_context_size
         module SearchContextSize
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           LOW = :low
           MEDIUM = :medium
@@ -80,7 +80,7 @@ module OpenAI
         end
 
         # @see OpenAI::Models::Responses::WebSearchTool#user_location
-        class UserLocation < OpenAI::BaseModel
+        class UserLocation < OpenAI::Internal::Type::BaseModel
           # @!attribute type
           #   The type of location approximation. Always `approximate`.
           #
@@ -138,7 +138,7 @@ module OpenAI
           #   #
           #   def initialize(city: nil, country: nil, region: nil, timezone: nil, type: :approximate, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

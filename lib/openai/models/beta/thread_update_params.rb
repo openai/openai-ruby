@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       # @see OpenAI::Resources::Beta::Threads#update
-      class ThreadUpdateParams < OpenAI::BaseModel
+      class ThreadUpdateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -18,7 +18,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute tool_resources
         #   A set of resources that are made available to the assistant's tools in this
@@ -36,9 +36,9 @@ module OpenAI
         #   #
         #   def initialize(metadata: nil, tool_resources: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] code_interpreter
           #
           #   @return [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter, nil]
@@ -69,17 +69,17 @@ module OpenAI
           #   #
           #   def initialize(code_interpreter: nil, file_search: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::ThreadUpdateParams::ToolResources#code_interpreter
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #     available to the `code_interpreter` tool. There can be a maximum of 20 files
             #     associated with the tool.
             #
             #   @return [Array<String>, nil]
-            optional :file_ids, OpenAI::ArrayOf[String]
+            optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -90,11 +90,11 @@ module OpenAI
             #   #
             #   def initialize(file_ids: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
           # @see OpenAI::Models::Beta::ThreadUpdateParams::ToolResources#file_search
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] vector_store_ids
             #   The
             #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -102,7 +102,7 @@ module OpenAI
             #     the thread.
             #
             #   @return [Array<String>, nil]
-            optional :vector_store_ids, OpenAI::ArrayOf[String]
+            optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -113,7 +113,7 @@ module OpenAI
             #   #
             #   def initialize(vector_store_ids: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

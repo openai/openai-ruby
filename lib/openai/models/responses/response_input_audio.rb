@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseInputAudio < OpenAI::BaseModel
+      class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
         # @!attribute data
         #   Base64-encoded audio data.
         #
@@ -31,13 +31,13 @@ module OpenAI
         #   #
         #   def initialize(data:, format_:, type: :input_audio, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         #
         # @see OpenAI::Models::Responses::ResponseInputAudio#format_
         module Format
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           MP3 = :mp3
           WAV = :wav

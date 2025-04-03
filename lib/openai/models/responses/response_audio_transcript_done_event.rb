@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseAudioTranscriptDoneEvent < OpenAI::BaseModel
+      class ResponseAudioTranscriptDoneEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of the event. Always `response.audio.transcript.done`.
         #
@@ -17,7 +17,7 @@ module OpenAI
         #   #
         #   def initialize(type: :"response.audio.transcript.done", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -10,7 +10,7 @@ module OpenAI
           results: ::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result]?
         }
 
-      class ResponseFileSearchToolCall < OpenAI::BaseModel
+      class ResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
         attr_accessor queries: ::Array[String]
@@ -35,7 +35,7 @@ module OpenAI
           :in_progress | :searching | :completed | :incomplete | :failed
 
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS: :in_progress
           SEARCHING: :searching
@@ -55,7 +55,7 @@ module OpenAI
             text: String
           }
 
-        class Result < OpenAI::BaseModel
+        class Result < OpenAI::Internal::Type::BaseModel
           attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::attribute]?
 
           attr_reader file_id: String?
@@ -87,7 +87,7 @@ module OpenAI
           type attribute = String | Float | bool
 
           module Attribute
-            extend OpenAI::Union
+            extend OpenAI::Internal::Type::Union
 
             def self?.variants: -> [String, Float, bool]
           end

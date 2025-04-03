@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseRefusalDoneEvent < OpenAI::BaseModel
+      class ResponseRefusalDoneEvent < OpenAI::Internal::Type::BaseModel
         # The index of the content part that the refusal text is finalized.
         sig { returns(Integer) }
         attr_accessor :content_index

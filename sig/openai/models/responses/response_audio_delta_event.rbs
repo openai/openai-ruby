@@ -4,7 +4,7 @@ module OpenAI
       type response_audio_delta_event =
         { delta: String, type: :"response.audio.delta" }
 
-      class ResponseAudioDeltaEvent < OpenAI::BaseModel
+      class ResponseAudioDeltaEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor delta: String
 
         attr_accessor type: :"response.audio.delta"

@@ -11,7 +11,7 @@ module OpenAI
             type: :file_path
           }
 
-        class FilePathAnnotation < OpenAI::BaseModel
+        class FilePathAnnotation < OpenAI::Internal::Type::BaseModel
           attr_accessor end_index: Integer
 
           attr_accessor file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath
@@ -34,7 +34,7 @@ module OpenAI
 
           type file_path = { file_id: String }
 
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             attr_accessor file_id: String
 
             def initialize: (file_id: String) -> void

@@ -24,7 +24,7 @@ module OpenAI
             T::Array[
             T.any(
               OpenAI::Models::Responses::EasyInputMessage,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseInputItem::Message,
               OpenAI::Models::Responses::ResponseOutputMessage,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
@@ -45,20 +45,20 @@ module OpenAI
           metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
-          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::Util::AnyHash)),
+          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::Util::AnyHash),
+          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
           tool_choice: T.any(
             OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
             OpenAI::Models::Responses::ToolChoiceTypes,
-            OpenAI::Internal::Util::AnyHash,
+            OpenAI::Internal::AnyHash,
             OpenAI::Models::Responses::ToolChoiceFunction
           ),
           tools: T::Array[
           T.any(
             OpenAI::Models::Responses::FileSearchTool,
-            OpenAI::Internal::Util::AnyHash,
+            OpenAI::Internal::AnyHash,
             OpenAI::Models::Responses::FunctionTool,
             OpenAI::Models::Responses::ComputerTool,
             OpenAI::Models::Responses::WebSearchTool
@@ -68,7 +68,7 @@ module OpenAI
           truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::Responses::Response)
       end
@@ -202,7 +202,7 @@ module OpenAI
             T::Array[
             T.any(
               OpenAI::Models::Responses::EasyInputMessage,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseInputItem::Message,
               OpenAI::Models::Responses::ResponseOutputMessage,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
@@ -223,20 +223,20 @@ module OpenAI
           metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
-          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::Util::AnyHash)),
+          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::Util::AnyHash),
+          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
           tool_choice: T.any(
             OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
             OpenAI::Models::Responses::ToolChoiceTypes,
-            OpenAI::Internal::Util::AnyHash,
+            OpenAI::Internal::AnyHash,
             OpenAI::Models::Responses::ToolChoiceFunction
           ),
           tools: T::Array[
           T.any(
             OpenAI::Models::Responses::FileSearchTool,
-            OpenAI::Internal::Util::AnyHash,
+            OpenAI::Internal::AnyHash,
             OpenAI::Models::Responses::FunctionTool,
             OpenAI::Models::Responses::ComputerTool,
             OpenAI::Models::Responses::WebSearchTool
@@ -246,7 +246,7 @@ module OpenAI
           truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(
             OpenAI::Internal::Stream[
@@ -404,7 +404,7 @@ module OpenAI
         params(
           response_id: String,
           include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::Responses::Response)
       end
@@ -422,7 +422,7 @@ module OpenAI
       sig do
         params(
           response_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .void
       end

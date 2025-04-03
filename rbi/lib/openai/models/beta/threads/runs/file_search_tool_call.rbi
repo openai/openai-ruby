@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         module Runs
-          class FileSearchToolCall < OpenAI::BaseModel
+          class FileSearchToolCall < OpenAI::Internal::Type::BaseModel
             # The ID of the tool call object.
             sig { returns(String) }
             attr_accessor :id
@@ -16,10 +16,7 @@ module OpenAI
 
             sig do
               params(
-                file_search: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
-                  OpenAI::Internal::Util::AnyHash
-                )
+                file_search: T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Internal::AnyHash)
               )
                 .void
             end
@@ -33,10 +30,7 @@ module OpenAI
             sig do
               params(
                 id: String,
-                file_search: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
-                  OpenAI::Internal::Util::AnyHash
-                ),
+                file_search: T.any(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, OpenAI::Internal::AnyHash),
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -53,7 +47,7 @@ module OpenAI
             def to_hash
             end
 
-            class FileSearch < OpenAI::BaseModel
+            class FileSearch < OpenAI::Internal::Type::BaseModel
               # The ranking options for the file search.
               sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions)) }
               attr_reader :ranking_options
@@ -62,7 +56,7 @@ module OpenAI
                 params(
                   ranking_options: T.any(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                    OpenAI::Internal::Util::AnyHash
+                    OpenAI::Internal::AnyHash
                   )
                 )
                   .void
@@ -78,7 +72,7 @@ module OpenAI
                   results: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
-                    OpenAI::Internal::Util::AnyHash
+                    OpenAI::Internal::AnyHash
                   )
                   ]
                 )
@@ -91,12 +85,12 @@ module OpenAI
                 params(
                   ranking_options: T.any(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                    OpenAI::Internal::Util::AnyHash
+                    OpenAI::Internal::AnyHash
                   ),
                   results: T::Array[
                   T.any(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
-                    OpenAI::Internal::Util::AnyHash
+                    OpenAI::Internal::AnyHash
                   )
                   ]
                 )
@@ -117,7 +111,7 @@ module OpenAI
               def to_hash
               end
 
-              class RankingOptions < OpenAI::BaseModel
+              class RankingOptions < OpenAI::Internal::Type::BaseModel
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
                 sig do
@@ -158,7 +152,7 @@ module OpenAI
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
                 module Ranker
-                  extend OpenAI::Enum
+                  extend OpenAI::Internal::Type::Enum
 
                   TaggedSymbol =
                     T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker) }
@@ -193,7 +187,7 @@ module OpenAI
                 end
               end
 
-              class Result < OpenAI::BaseModel
+              class Result < OpenAI::Internal::Type::BaseModel
                 # The ID of the file that result was found in.
                 sig { returns(String) }
                 attr_accessor :file_id
@@ -221,7 +215,7 @@ module OpenAI
                     content: T::Array[
                     T.any(
                       OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                      OpenAI::Internal::Util::AnyHash
+                      OpenAI::Internal::AnyHash
                     )
                     ]
                   )
@@ -238,7 +232,7 @@ module OpenAI
                     content: T::Array[
                     T.any(
                       OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                      OpenAI::Internal::Util::AnyHash
+                      OpenAI::Internal::AnyHash
                     )
                     ]
                   )
@@ -261,7 +255,7 @@ module OpenAI
                 def to_hash
                 end
 
-                class Content < OpenAI::BaseModel
+                class Content < OpenAI::Internal::Type::BaseModel
                   # The text content of the file.
                   sig { returns(T.nilable(String)) }
                   attr_reader :text
@@ -311,7 +305,7 @@ module OpenAI
 
                   # The type of the content.
                   module Type
-                    extend OpenAI::Enum
+                    extend OpenAI::Internal::Type::Enum
 
                     TaggedSymbol =
                       T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type) }

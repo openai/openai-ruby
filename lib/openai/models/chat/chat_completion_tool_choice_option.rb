@@ -13,7 +13,7 @@ module OpenAI
       #   `none` is the default when no tools are present. `auto` is the default if tools
       #   are present.
       module ChatCompletionToolChoiceOption
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         # `none` means the model will not call any tool and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools.
         variant enum: -> { OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto }
@@ -25,7 +25,7 @@ module OpenAI
         #   `auto` means the model can pick between generating a message or calling one or
         #   more tools. `required` means the model must call one or more tools.
         module Auto
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           NONE = :none
           AUTO = :auto

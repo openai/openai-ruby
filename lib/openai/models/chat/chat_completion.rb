@@ -6,7 +6,7 @@ module OpenAI
       # @see OpenAI::Resources::Chat::Completions#create
       #
       # @see OpenAI::Resources::Chat::Completions#stream_raw
-      class ChatCompletion < OpenAI::BaseModel
+      class ChatCompletion < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   A unique identifier for the chat completion.
         #
@@ -18,7 +18,7 @@ module OpenAI
         #     than 1.
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletion::Choice>]
-        required :choices, -> { OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice] }
+        required :choices, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice] }
 
         # @!attribute created
         #   The Unix timestamp (in seconds) of when the chat completion was created.
@@ -94,9 +94,9 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-        class Choice < OpenAI::BaseModel
+        class Choice < OpenAI::Internal::Type::BaseModel
           # @!attribute finish_reason
           #   The reason the model stopped generating tokens. This will be `stop` if the model
           #     hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -134,7 +134,7 @@ module OpenAI
           #   #
           #   def initialize(finish_reason:, index:, logprobs:, message:, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # The reason the model stopped generating tokens. This will be `stop` if the model
           #   hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -145,7 +145,7 @@ module OpenAI
           #
           # @see OpenAI::Models::Chat::ChatCompletion::Choice#finish_reason
           module FinishReason
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             STOP = :stop
             LENGTH = :length
@@ -161,18 +161,22 @@ module OpenAI
           end
 
           # @see OpenAI::Models::Chat::ChatCompletion::Choice#logprobs
-          class Logprobs < OpenAI::BaseModel
+          class Logprobs < OpenAI::Internal::Type::BaseModel
             # @!attribute content
             #   A list of message content tokens with log probability information.
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            required :content, -> { OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob] }, nil?: true
+            required :content,
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob] },
+                     nil?: true
 
             # @!attribute refusal
             #   A list of message refusal tokens with log probability information.
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            required :refusal, -> { OpenAI::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob] }, nil?: true
+            required :refusal,
+                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob] },
+                     nil?: true
 
             # @!parse
             #   # Log probability information for the choice.
@@ -182,7 +186,7 @@ module OpenAI
             #   #
             #   def initialize(content:, refusal:, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
 
@@ -190,7 +194,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Chat::ChatCompletion#service_tier
         module ServiceTier
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           SCALE = :scale
           DEFAULT = :default

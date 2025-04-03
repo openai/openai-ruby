@@ -11,7 +11,7 @@ module OpenAI
               code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
             }
 
-          class CodeInterpreterToolCallDelta < OpenAI::BaseModel
+          class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
             attr_accessor index: Integer
 
             attr_accessor type: :code_interpreter
@@ -41,7 +41,7 @@ module OpenAI
                 outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::output]
               }
 
-            class CodeInterpreter < OpenAI::BaseModel
+            class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               attr_reader input: String?
 
               def input=: (String) -> String
@@ -64,7 +64,7 @@ module OpenAI
                 | OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
 
               module Output
-                extend OpenAI::Union
+                extend OpenAI::Internal::Type::Union
 
                 def self?.variants: -> [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
               end

@@ -12,7 +12,7 @@ module OpenAI
       timeout: Float?
     }
 
-  class RequestOptions < OpenAI::BaseModel
+  class RequestOptions < OpenAI::Internal::Type::BaseModel
     def self.validate!: (self | ::Hash[Symbol, top] opts) -> void
 
     attr_accessor idempotency_key: String?

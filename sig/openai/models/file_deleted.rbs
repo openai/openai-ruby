@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type file_deleted = { id: String, deleted: bool, object: :file }
 
-    class FileDeleted < OpenAI::BaseModel
+    class FileDeleted < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor deleted: bool

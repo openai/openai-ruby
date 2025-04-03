@@ -3,13 +3,13 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputText < OpenAI::BaseModel
+      class ResponseOutputText < OpenAI::Internal::Type::BaseModel
         # @!attribute annotations
         #   The annotations of the text output.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
         required :annotations,
-                 -> { OpenAI::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputText::Annotation] }
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputText::Annotation] }
 
         # @!attribute text
         #   The text output from the model.
@@ -32,11 +32,11 @@ module OpenAI
         #   #
         #   def initialize(annotations:, text:, type: :output_text, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # A citation to a file.
         module Annotation
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
@@ -49,7 +49,7 @@ module OpenAI
           # A path to a file.
           variant :file_path, -> { OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath }
 
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the file.
             #
@@ -77,10 +77,10 @@ module OpenAI
             #   #
             #   def initialize(file_id:, index:, type: :file_citation, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class URLCitation < OpenAI::BaseModel
+          class URLCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute end_index
             #   The index of the last character of the URL citation in the message.
             #
@@ -122,10 +122,10 @@ module OpenAI
             #   #
             #   def initialize(end_index:, start_index:, title:, url:, type: :url_citation, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
-          class FilePath < OpenAI::BaseModel
+          class FilePath < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the file.
             #
@@ -153,7 +153,7 @@ module OpenAI
             #   #
             #   def initialize(file_id:, index:, type: :file_path, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
           # @!parse

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class AssistantToolChoice < OpenAI::BaseModel
+      class AssistantToolChoice < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of the tool. If type is `function`, the function name must be set
         #
@@ -28,13 +28,13 @@ module OpenAI
         #   #
         #   def initialize(type:, function: nil, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The type of the tool. If type is `function`, the function name must be set
         #
         # @see OpenAI::Models::Beta::AssistantToolChoice#type
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           FUNCTION = :function
           CODE_INTERPRETER = :code_interpreter

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Beta
-      class ThreadStreamEvent < OpenAI::BaseModel
+      class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute data
         #   Represents a thread that contains
         #     [messages](https://platform.openai.com/docs/api-reference/messages).
@@ -20,7 +20,7 @@ module OpenAI
         #   Whether to enable input audio transcription.
         #
         #   @return [Boolean, nil]
-        optional :enabled, OpenAI::BooleanModel
+        optional :enabled, OpenAI::Internal::Type::BooleanModel
 
         # @!parse
         #   # @return [Boolean]
@@ -37,7 +37,7 @@ module OpenAI
         #   #
         #   def initialize(data:, enabled: nil, event: :"thread.created", **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

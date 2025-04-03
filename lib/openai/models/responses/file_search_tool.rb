@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class FileSearchTool < OpenAI::BaseModel
+      class FileSearchTool < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   The type of the file search tool. Always `file_search`.
         #
@@ -14,7 +14,7 @@ module OpenAI
         #   The IDs of the vector stores to search.
         #
         #   @return [Array<String>]
-        required :vector_store_ids, OpenAI::ArrayOf[String]
+        required :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!attribute [r] filters
         #   A filter to apply based on file attributes.
@@ -60,13 +60,13 @@ module OpenAI
         #   #
         #   def initialize(vector_store_ids:, filters: nil, max_num_results: nil, ranking_options: nil, type: :file_search, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # A filter to apply based on file attributes.
         #
         # @see OpenAI::Models::Responses::FileSearchTool#filters
         module Filters
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
           variant -> { OpenAI::Models::ComparisonFilter }
@@ -80,7 +80,7 @@ module OpenAI
         end
 
         # @see OpenAI::Models::Responses::FileSearchTool#ranking_options
-        class RankingOptions < OpenAI::BaseModel
+        class RankingOptions < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] ranker
           #   The ranker to use for the file search.
           #
@@ -111,13 +111,13 @@ module OpenAI
           #   #
           #   def initialize(ranker: nil, score_threshold: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # The ranker to use for the file search.
           #
           # @see OpenAI::Models::Responses::FileSearchTool::RankingOptions#ranker
           module Ranker
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             AUTO = :auto
             DEFAULT_2024_11_15 = :"default-2024-11-15"

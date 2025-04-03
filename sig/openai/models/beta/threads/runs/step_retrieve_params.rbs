@@ -11,7 +11,7 @@ module OpenAI
             }
             & OpenAI::Internal::Type::request_parameters
 
-          class StepRetrieveParams < OpenAI::BaseModel
+          class StepRetrieveParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 

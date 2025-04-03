@@ -13,7 +13,7 @@ module OpenAI
             instructions: String,
             response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash))
+            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(StringIO)
         end

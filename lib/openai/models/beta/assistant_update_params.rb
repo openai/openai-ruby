@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       # @see OpenAI::Resources::Beta::Assistants#update
-      class AssistantUpdateParams < OpenAI::BaseModel
+      class AssistantUpdateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -31,7 +31,7 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
-        optional :metadata, OpenAI::HashOf[String], nil?: true
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute [r] model
         #   ID of the model to use. You can use the
@@ -112,7 +112,7 @@ module OpenAI
         #     `function`.
         #
         #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
-        optional :tools, -> { OpenAI::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] }
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] }
 
         # @!parse
         #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
@@ -160,7 +160,7 @@ module OpenAI
         #     super
         #   end
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -168,7 +168,7 @@ module OpenAI
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
@@ -272,7 +272,7 @@ module OpenAI
           # @!endgroup
         end
 
-        class ToolResources < OpenAI::BaseModel
+        class ToolResources < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] code_interpreter
           #
           #   @return [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter, nil]
@@ -303,10 +303,10 @@ module OpenAI
           #   #
           #   def initialize(code_interpreter: nil, file_search: nil, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#code_interpreter
-          class CodeInterpreter < OpenAI::BaseModel
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_ids
             #   Overrides the list of
             #     [file](https://platform.openai.com/docs/api-reference/files) IDs made available
@@ -314,7 +314,7 @@ module OpenAI
             #     with the tool.
             #
             #   @return [Array<String>, nil]
-            optional :file_ids, OpenAI::ArrayOf[String]
+            optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -325,11 +325,11 @@ module OpenAI
             #   #
             #   def initialize(file_ids: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
 
           # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#file_search
-          class FileSearch < OpenAI::BaseModel
+          class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] vector_store_ids
             #   Overrides the
             #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -337,7 +337,7 @@ module OpenAI
             #     the assistant.
             #
             #   @return [Array<String>, nil]
-            optional :vector_store_ids, OpenAI::ArrayOf[String]
+            optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!parse
             #   # @return [Array<String>]
@@ -348,7 +348,7 @@ module OpenAI
             #   #
             #   def initialize(vector_store_ids: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

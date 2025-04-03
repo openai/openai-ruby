@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranslationCreateParams < OpenAI::BaseModel
+      class TranslationCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -53,7 +53,7 @@ module OpenAI
             prompt: String,
             response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::Util::AnyHash)
+            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
         end
@@ -79,7 +79,7 @@ module OpenAI
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
           def self.variants
@@ -89,7 +89,7 @@ module OpenAI
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
         module ResponseFormat
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat) }

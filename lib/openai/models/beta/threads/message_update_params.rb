@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Messages#update
-        class MessageUpdateParams < OpenAI::BaseModel
+        class MessageUpdateParams < OpenAI::Internal::Type::BaseModel
           # @!parse
           #   extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
@@ -24,7 +24,7 @@ module OpenAI
           #     a maximum length of 512 characters.
           #
           #   @return [Hash{Symbol=>String}, nil]
-          optional :metadata, OpenAI::HashOf[String], nil?: true
+          optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!parse
           #   # @param thread_id [String]
@@ -33,7 +33,7 @@ module OpenAI
           #   #
           #   def initialize(thread_id:, metadata: nil, request_options: {}, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
         end
       end
     end

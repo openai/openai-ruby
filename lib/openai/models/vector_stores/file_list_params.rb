@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::Files#list
-      class FileListParams < OpenAI::BaseModel
+      class FileListParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -77,11 +77,11 @@ module OpenAI
         #   #
         #   def initialize(after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         module Filter
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           IN_PROGRESS = :in_progress
           COMPLETED = :completed
@@ -98,7 +98,7 @@ module OpenAI
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         #   order and `desc` for descending order.
         module Order
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           ASC = :asc
           DESC = :desc

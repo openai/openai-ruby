@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        class FileCitationDeltaAnnotation < OpenAI::BaseModel
+        class FileCitationDeltaAnnotation < OpenAI::Internal::Type::BaseModel
           # @!attribute index
           #   The index of the annotation in the text content part.
           #
@@ -68,10 +68,10 @@ module OpenAI
           #   #
           #   def initialize(index:, end_index: nil, file_citation: nil, start_index: nil, text: nil, type: :file_citation, **) = super
 
-          # def initialize: (Hash | OpenAI::BaseModel) -> void
+          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # @see OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation#file_citation
-          class FileCitation < OpenAI::BaseModel
+          class FileCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_id
             #   The ID of the specific File the citation is from.
             #
@@ -98,7 +98,7 @@ module OpenAI
             #   #
             #   def initialize(file_id: nil, quote: nil, **) = super
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
           end
         end
       end

@@ -8,7 +8,7 @@ module OpenAI
         }
         & OpenAI::Internal::Type::request_parameters
 
-      class FileUpdateParams < OpenAI::BaseModel
+      class FileUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
@@ -27,7 +27,7 @@ module OpenAI
         type attribute = String | Float | bool
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, Float, bool]
         end

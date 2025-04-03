@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module VectorStores
-      class FileContentResponse < OpenAI::BaseModel
+      class FileContentResponse < OpenAI::Internal::Type::BaseModel
         # The text content
         sig { returns(T.nilable(String)) }
         attr_reader :text

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Audio
-      class TranscriptionTextDeltaEvent < OpenAI::BaseModel
+      class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
         # The text delta that was additionally transcribed.
         sig { returns(String) }
         attr_accessor :delta
@@ -20,7 +20,7 @@ module OpenAI
 
         sig do
           params(
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::Util::AnyHash)]
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::AnyHash)]
           )
             .void
         end
@@ -33,7 +33,7 @@ module OpenAI
         sig do
           params(
             delta: String,
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::Util::AnyHash)],
+            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::AnyHash)],
             type: Symbol
           )
             .returns(T.attached_class)
@@ -50,7 +50,7 @@ module OpenAI
         def to_hash
         end
 
-        class Logprob < OpenAI::BaseModel
+        class Logprob < OpenAI::Internal::Type::BaseModel
           # The token that was used to generate the log probability.
           sig { returns(T.nilable(String)) }
           attr_reader :token

@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         module Runs
           # @see OpenAI::Resources::Beta::Threads::Runs::Steps#retrieve
-          class RunStep < OpenAI::BaseModel
+          class RunStep < OpenAI::Internal::Type::BaseModel
             # @!attribute id
             #   The identifier of the run step, which can be referenced in API endpoints.
             #
@@ -68,7 +68,7 @@ module OpenAI
             #     a maximum length of 512 characters.
             #
             #   @return [Hash{Symbol=>String}, nil]
-            required :metadata, OpenAI::HashOf[String], nil?: true
+            required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
             # @!attribute object
             #   The object type, which is always `thread.run.step`.
@@ -158,10 +158,10 @@ module OpenAI
             #     super
             #   end
 
-            # def initialize: (Hash | OpenAI::BaseModel) -> void
+            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#last_error
-            class LastError < OpenAI::BaseModel
+            class LastError < OpenAI::Internal::Type::BaseModel
               # @!attribute code
               #   One of `server_error` or `rate_limit_exceeded`.
               #
@@ -183,13 +183,13 @@ module OpenAI
               #   #
               #   def initialize(code:, message:, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # One of `server_error` or `rate_limit_exceeded`.
               #
               # @see OpenAI::Models::Beta::Threads::Runs::RunStep::LastError#code
               module Code
-                extend OpenAI::Enum
+                extend OpenAI::Internal::Type::Enum
 
                 SERVER_ERROR = :server_error
                 RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
@@ -207,7 +207,7 @@ module OpenAI
             #
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#status
             module Status
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               IN_PROGRESS = :in_progress
               CANCELLED = :cancelled
@@ -226,7 +226,7 @@ module OpenAI
             #
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#step_details
             module StepDetails
-              extend OpenAI::Union
+              extend OpenAI::Internal::Type::Union
 
               discriminator :type
 
@@ -245,7 +245,7 @@ module OpenAI
             #
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#type
             module Type
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               MESSAGE_CREATION = :message_creation
               TOOL_CALLS = :tool_calls
@@ -258,7 +258,7 @@ module OpenAI
             end
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#usage
-            class Usage < OpenAI::BaseModel
+            class Usage < OpenAI::Internal::Type::BaseModel
               # @!attribute completion_tokens
               #   Number of completion tokens used over the course of the run step.
               #
@@ -287,7 +287,7 @@ module OpenAI
               #   #
               #   def initialize(completion_tokens:, prompt_tokens:, total_tokens:, **) = super
 
-              # def initialize: (Hash | OpenAI::BaseModel) -> void
+              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
             end
           end
         end

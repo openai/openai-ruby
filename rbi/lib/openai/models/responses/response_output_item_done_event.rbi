@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseOutputItemDoneEvent < OpenAI::BaseModel
+      class ResponseOutputItemDoneEvent < OpenAI::Internal::Type::BaseModel
         # The output item that was marked done.
         sig do
           returns(
@@ -32,7 +32,7 @@ module OpenAI
           params(
             item: T.any(
               OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseFileSearchToolCall,
               OpenAI::Models::Responses::ResponseFunctionToolCall,
               OpenAI::Models::Responses::ResponseFunctionWebSearch,

@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module VectorStores
       # @see OpenAI::Resources::VectorStores::FileBatches#create
-      class FileBatchCreateParams < OpenAI::BaseModel
+      class FileBatchCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -15,7 +15,7 @@ module OpenAI
         #     files.
         #
         #   @return [Array<String>]
-        required :file_ids, OpenAI::ArrayOf[String]
+        required :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!attribute attributes
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -26,7 +26,7 @@ module OpenAI
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         optional :attributes,
-                 -> { OpenAI::HashOf[union: OpenAI::Models::VectorStores::FileBatchCreateParams::Attribute] },
+                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::FileBatchCreateParams::Attribute] },
                  nil?: true
 
         # @!attribute [r] chunking_strategy
@@ -48,16 +48,16 @@ module OpenAI
         #   #
         #   def initialize(file_ids:, attributes: nil, chunking_strategy: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         module Attribute
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
           variant Float
 
-          variant OpenAI::BooleanModel
+          variant OpenAI::Internal::Type::BooleanModel
 
           # @!parse
           #   # @return [Array(String, Float, Boolean)]

@@ -8,7 +8,7 @@ module OpenAI
             type: :image_url
           }
 
-        class ImageURLContentBlock < OpenAI::BaseModel
+        class ImageURLContentBlock < OpenAI::Internal::Type::BaseModel
           attr_accessor image_url: OpenAI::Models::Beta::Threads::ImageURL
 
           attr_accessor type: :image_url

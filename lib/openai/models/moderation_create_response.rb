@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::Moderations#create
-    class ModerationCreateResponse < OpenAI::BaseModel
+    class ModerationCreateResponse < OpenAI::Internal::Type::BaseModel
       # @!attribute id
       #   The unique identifier for the moderation request.
       #
@@ -20,7 +20,7 @@ module OpenAI
       #   A list of moderation objects.
       #
       #   @return [Array<OpenAI::Models::Moderation>]
-      required :results, -> { OpenAI::ArrayOf[OpenAI::Models::Moderation] }
+      required :results, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Moderation] }
 
       # @!parse
       #   # Represents if a given text input is potentially harmful.
@@ -31,7 +31,7 @@ module OpenAI
       #   #
       #   def initialize(id:, model:, results:, **) = super
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
     end
   end
 end

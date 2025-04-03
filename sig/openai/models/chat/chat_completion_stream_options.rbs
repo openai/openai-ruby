@@ -5,7 +5,7 @@ module OpenAI
     module Chat
       type chat_completion_stream_options = { include_usage: bool }
 
-      class ChatCompletionStreamOptions < OpenAI::BaseModel
+      class ChatCompletionStreamOptions < OpenAI::Internal::Type::BaseModel
         attr_reader include_usage: bool?
 
         def include_usage=: (bool) -> bool

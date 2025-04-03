@@ -2,7 +2,7 @@
 
 module OpenAI
   module Models
-    class OtherFileChunkingStrategyObject < OpenAI::BaseModel
+    class OtherFileChunkingStrategyObject < OpenAI::Internal::Type::BaseModel
       # Always `other`.
       sig { returns(Symbol) }
       attr_accessor :type

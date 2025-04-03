@@ -8,7 +8,7 @@ module OpenAI
             role: OpenAI::Models::Beta::Threads::MessageDelta::role
           }
 
-        class MessageDelta < OpenAI::BaseModel
+        class MessageDelta < OpenAI::Internal::Type::BaseModel
           attr_reader content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta]?
 
           def content=: (
@@ -31,7 +31,7 @@ module OpenAI
           type role = :user | :assistant
 
           module Role
-            extend OpenAI::Enum
+            extend OpenAI::Internal::Type::Enum
 
             USER: :user
             ASSISTANT: :assistant

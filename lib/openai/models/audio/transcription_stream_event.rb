@@ -8,7 +8,7 @@ module OpenAI
       #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
       #   with the `Stream` parameter set to `true`.
       module TranscriptionStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :type
 

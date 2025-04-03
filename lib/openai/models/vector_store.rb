@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     # @see OpenAI::Resources::VectorStores#create
-    class VectorStore < OpenAI::BaseModel
+    class VectorStore < OpenAI::Internal::Type::BaseModel
       # @!attribute id
       #   The identifier, which can be referenced in API endpoints.
       #
@@ -36,7 +36,7 @@ module OpenAI
       #     a maximum length of 512 characters.
       #
       #   @return [Hash{Symbol=>String}, nil]
-      required :metadata, OpenAI::HashOf[String], nil?: true
+      required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
       # @!attribute name
       #   The name of the vector store.
@@ -113,10 +113,10 @@ module OpenAI
       #     super
       #   end
 
-      # def initialize: (Hash | OpenAI::BaseModel) -> void
+      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # @see OpenAI::Models::VectorStore#file_counts
-      class FileCounts < OpenAI::BaseModel
+      class FileCounts < OpenAI::Internal::Type::BaseModel
         # @!attribute cancelled
         #   The number of files that were cancelled.
         #
@@ -156,7 +156,7 @@ module OpenAI
         #   #
         #   def initialize(cancelled:, completed:, failed:, in_progress:, total:, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
 
       # The status of the vector store, which can be either `expired`, `in_progress`, or
@@ -165,7 +165,7 @@ module OpenAI
       #
       # @see OpenAI::Models::VectorStore#status
       module Status
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         EXPIRED = :expired
         IN_PROGRESS = :in_progress
@@ -179,7 +179,7 @@ module OpenAI
       end
 
       # @see OpenAI::Models::VectorStore#expires_after
-      class ExpiresAfter < OpenAI::BaseModel
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # @!attribute anchor
         #   Anchor timestamp after which the expiration policy applies. Supported anchors:
         #     `last_active_at`.
@@ -201,7 +201,7 @@ module OpenAI
         #   #
         #   def initialize(days:, anchor: :last_active_at, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

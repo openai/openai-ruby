@@ -9,7 +9,7 @@ module OpenAI
         | OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete
 
       module MessageStreamEvent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         type thread_message_created =
           {
@@ -17,7 +17,7 @@ module OpenAI
             event: :"thread.message.created"
           }
 
-        class ThreadMessageCreated < OpenAI::BaseModel
+        class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.created"
@@ -36,7 +36,7 @@ module OpenAI
             event: :"thread.message.in_progress"
           }
 
-        class ThreadMessageInProgress < OpenAI::BaseModel
+        class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.in_progress"
@@ -55,7 +55,7 @@ module OpenAI
             event: :"thread.message.delta"
           }
 
-        class ThreadMessageDelta < OpenAI::BaseModel
+        class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::MessageDeltaEvent
 
           attr_accessor event: :"thread.message.delta"
@@ -74,7 +74,7 @@ module OpenAI
             event: :"thread.message.completed"
           }
 
-        class ThreadMessageCompleted < OpenAI::BaseModel
+        class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.completed"
@@ -93,7 +93,7 @@ module OpenAI
             event: :"thread.message.incomplete"
           }
 
-        class ThreadMessageIncomplete < OpenAI::BaseModel
+        class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           attr_accessor data: OpenAI::Models::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.incomplete"

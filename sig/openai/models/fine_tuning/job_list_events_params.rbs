@@ -5,7 +5,7 @@ module OpenAI
         { after: String, limit: Integer }
         & OpenAI::Internal::Type::request_parameters
 
-      class JobListEventsParams < OpenAI::BaseModel
+      class JobListEventsParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 

@@ -2,6 +2,6 @@
 
 module OpenAI
   module Models
-    Metadata = OpenAI::HashOf[String]
+    Metadata = OpenAI::Internal::Type::HashOf[String]
   end
 end

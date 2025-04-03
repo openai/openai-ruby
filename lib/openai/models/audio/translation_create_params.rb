@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Audio
       # @see OpenAI::Resources::Audio::Translations#create
-      class TranslationCreateParams < OpenAI::BaseModel
+      class TranslationCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
@@ -71,12 +71,12 @@ module OpenAI
         #   #
         #   def initialize(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {}, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
         module Model
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
           variant String
 
@@ -91,7 +91,7 @@ module OpenAI
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
         module ResponseFormat
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           JSON = :json
           TEXT = :text

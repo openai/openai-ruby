@@ -5,7 +5,7 @@ module OpenAI
         type run_cancel_params =
           { thread_id: String } & OpenAI::Internal::Type::request_parameters
 
-        class RunCancelParams < OpenAI::BaseModel
+        class RunCancelParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 

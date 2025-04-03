@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # A text input to the model.
       module ResponseInputContent
-        extend OpenAI::Union
+        extend OpenAI::Internal::Type::Union
 
         discriminator :type
 

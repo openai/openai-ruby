@@ -3,7 +3,7 @@ module OpenAI
     type images_response =
       { created: Integer, data: ::Array[OpenAI::Models::Image] }
 
-    class ImagesResponse < OpenAI::BaseModel
+    class ImagesResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor created: Integer
 
       attr_accessor data: ::Array[OpenAI::Models::Image]

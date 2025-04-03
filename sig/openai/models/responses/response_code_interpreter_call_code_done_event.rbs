@@ -8,7 +8,7 @@ module OpenAI
           type: :"response.code_interpreter_call.code.done"
         }
 
-      class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::BaseModel
+      class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor code: String
 
         attr_accessor output_index: Integer

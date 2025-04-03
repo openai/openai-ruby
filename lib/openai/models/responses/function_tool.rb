@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class FunctionTool < OpenAI::BaseModel
+      class FunctionTool < OpenAI::Internal::Type::BaseModel
         # @!attribute name
         #   The name of the function to call.
         #
@@ -14,13 +14,13 @@ module OpenAI
         #   A JSON schema object describing the parameters of the function.
         #
         #   @return [Hash{Symbol=>Object}]
-        required :parameters, OpenAI::HashOf[OpenAI::Unknown]
+        required :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
         # @!attribute strict
         #   Whether to enforce strict parameter validation. Default `true`.
         #
         #   @return [Boolean]
-        required :strict, OpenAI::BooleanModel
+        required :strict, OpenAI::Internal::Type::BooleanModel
 
         # @!attribute type
         #   The type of the function tool. Always `function`.
@@ -48,7 +48,7 @@ module OpenAI
         #   #
         #   def initialize(name:, parameters:, strict:, description: nil, type: :function, **) = super
 
-        # def initialize: (Hash | OpenAI::BaseModel) -> void
+        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
       end
     end
   end

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseComputerToolCall < OpenAI::BaseModel
+      class ResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
         # The unique ID of the computer call.
         sig { returns(String) }
         attr_accessor :id
@@ -51,7 +51,7 @@ module OpenAI
             id: String,
             action: T.any(
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click,
-              OpenAI::Internal::Util::AnyHash,
+              OpenAI::Internal::AnyHash,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag,
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress,
@@ -62,12 +62,7 @@ module OpenAI
               OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait
             ),
             call_id: String,
-            pending_safety_checks: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck,
-              OpenAI::Internal::Util::AnyHash
-            )
-            ],
+            pending_safety_checks: T::Array[T.any(OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck, OpenAI::Internal::AnyHash)],
             status: OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol,
             type: OpenAI::Models::Responses::ResponseComputerToolCall::Type::OrSymbol
           )
@@ -104,9 +99,9 @@ module OpenAI
 
         # A click action.
         module Action
-          extend OpenAI::Union
+          extend OpenAI::Internal::Type::Union
 
-          class Click < OpenAI::BaseModel
+          class Click < OpenAI::Internal::Type::BaseModel
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
             sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol) }
@@ -155,7 +150,7 @@ module OpenAI
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
             module Button
-              extend OpenAI::Enum
+              extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button) }
@@ -190,7 +185,7 @@ module OpenAI
             end
           end
 
-          class DoubleClick < OpenAI::BaseModel
+          class DoubleClick < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a double click action, this property is always set
             #   to `double_click`.
             sig { returns(Symbol) }
@@ -214,7 +209,7 @@ module OpenAI
             end
           end
 
-          class Drag < OpenAI::BaseModel
+          class Drag < OpenAI::Internal::Type::BaseModel
             # An array of coordinates representing the path of the drag action. Coordinates
             #   will appear as an array of objects, eg
             #
@@ -235,12 +230,7 @@ module OpenAI
             # A drag action.
             sig do
               params(
-                path: T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path,
-                  OpenAI::Internal::Util::AnyHash
-                )
-                ],
+                path: T::Array[T.any(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path, OpenAI::Internal::AnyHash)],
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -257,7 +247,7 @@ module OpenAI
             def to_hash
             end
 
-            class Path < OpenAI::BaseModel
+            class Path < OpenAI::Internal::Type::BaseModel
               # The x-coordinate.
               sig { returns(Integer) }
               attr_accessor :x
@@ -277,7 +267,7 @@ module OpenAI
             end
           end
 
-          class Keypress < OpenAI::BaseModel
+          class Keypress < OpenAI::Internal::Type::BaseModel
             # The combination of keys the model is requesting to be pressed. This is an array
             #   of strings, each representing a key.
             sig { returns(T::Array[String]) }
@@ -298,7 +288,7 @@ module OpenAI
             end
           end
 
-          class Move < OpenAI::BaseModel
+          class Move < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a move action, this property is always set to
             #   `move`.
             sig { returns(Symbol) }
@@ -322,7 +312,7 @@ module OpenAI
             end
           end
 
-          class Screenshot < OpenAI::BaseModel
+          class Screenshot < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a screenshot action, this property is always set
             #   to `screenshot`.
             sig { returns(Symbol) }
@@ -338,7 +328,7 @@ module OpenAI
             end
           end
 
-          class Scroll < OpenAI::BaseModel
+          class Scroll < OpenAI::Internal::Type::BaseModel
             # The horizontal scroll distance.
             sig { returns(Integer) }
             attr_accessor :scroll_x
@@ -375,7 +365,7 @@ module OpenAI
             end
           end
 
-          class Type < OpenAI::BaseModel
+          class Type < OpenAI::Internal::Type::BaseModel
             # The text to type.
             sig { returns(String) }
             attr_accessor :text
@@ -395,7 +385,7 @@ module OpenAI
             end
           end
 
-          class Wait < OpenAI::BaseModel
+          class Wait < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a wait action, this property is always set to
             #   `wait`.
             sig { returns(Symbol) }
@@ -421,7 +411,7 @@ module OpenAI
           end
         end
 
-        class PendingSafetyCheck < OpenAI::BaseModel
+        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
           # The ID of the pending safety check.
           sig { returns(String) }
           attr_accessor :id
@@ -447,7 +437,7 @@ module OpenAI
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         module Status
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status) }
@@ -467,7 +457,7 @@ module OpenAI
 
         # The type of the computer call. Always `computer_call`.
         module Type
-          extend OpenAI::Enum
+          extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type) }
           OrSymbol =

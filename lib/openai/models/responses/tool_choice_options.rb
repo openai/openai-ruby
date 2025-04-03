@@ -12,7 +12,7 @@ module OpenAI
       #
       #   `required` means the model must call one or more tools.
       module ToolChoiceOptions
-        extend OpenAI::Enum
+        extend OpenAI::Internal::Type::Enum
 
         NONE = :none
         AUTO = :auto

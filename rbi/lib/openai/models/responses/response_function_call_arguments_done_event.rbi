@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      class ResponseFunctionCallArgumentsDoneEvent < OpenAI::BaseModel
+      class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
         # The function-call arguments.
         sig { returns(String) }
         attr_accessor :arguments
