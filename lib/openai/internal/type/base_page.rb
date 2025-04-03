@@ -3,27 +3,7 @@
 module OpenAI
   module Internal
     module Type
-      # @example
-      #   if page.has_next?
-      #     page = page.next_page
-      #   end
-      #
-      # @example
-      #   page.auto_paging_each do |completion|
-      #     puts(completion)
-      #   end
-      #
-      # @example
-      #   completions =
-      #     page
-      #     .to_enum
-      #     .lazy
-      #     .select { _1.object_id.even? }
-      #     .map(&:itself)
-      #     .take(2)
-      #     .to_a
-      #
-      #   completions => Array
+      # This module provides a base implementation for paginated responses in the SDK.
       module BasePage
         # rubocop:disable Lint/UnusedMethodArgument
 

@@ -3,21 +3,9 @@
 module OpenAI
   module Internal
     module Type
-      # @example
-      #   stream.each do |chunk|
-      #     puts(chunk)
-      #   end
+      # This module provides a base implementation for streaming responses in the SDK.
       #
-      # @example
-      #   chunks =
-      #     stream
-      #     .lazy
-      #     .select { _1.object_id.even? }
-      #     .map(&:itself)
-      #     .take(2)
-      #     .to_a
-      #
-      #   chunks => Array
+      # @see https://rubyapi.org/3.1/o/enumerable
       module BaseStream
         include Enumerable
 

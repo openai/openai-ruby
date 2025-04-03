@@ -3,6 +3,7 @@
 module OpenAI
   module Internal
     module Type
+      # This module provides a base implementation for streaming responses in the SDK.
       module BaseStream
         include Enumerable
 
