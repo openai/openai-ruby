@@ -11,18 +11,6 @@ module OpenAI
     #   cursor_page.auto_paging_each do |completion|
     #     puts(completion)
     #   end
-    #
-    # @example
-    #   completions =
-    #     cursor_page
-    #     .to_enum
-    #     .lazy
-    #     .select { _1.object_id.even? }
-    #     .map(&:itself)
-    #     .take(2)
-    #     .to_a
-    #
-    #   completions => Array
     class CursorPage
       include OpenAI::Internal::Type::BasePage
 

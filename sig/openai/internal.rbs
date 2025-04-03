@@ -1,4 +1,5 @@
 module OpenAI
   module Internal
+    OMIT: top
   end
 end
