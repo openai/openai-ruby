@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Runs#create
         #
-        # @see OpenAI::Resources::Beta::Threads::Runs#stream_raw
+        # @see OpenAI::Resources::Beta::Threads::Runs#create_stream_raw
         class Run < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The identifier, which can be referenced in API endpoints.
