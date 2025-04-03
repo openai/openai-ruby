@@ -6,7 +6,9 @@ module OpenAI
       # @return [OpenAI::Resources::Responses::InputItems]
       attr_reader :input_items
 
-      # Creates a model response. Provide
+      # See {OpenAI::Resources::Responses#stream_raw} for streaming counterpart.
+      #
+      #   Creates a model response. Provide
       #   [text](https://platform.openai.com/docs/guides/text) or
       #   [image](https://platform.openai.com/docs/guides/images) inputs to generate
       #   [text](https://platform.openai.com/docs/guides/text) or
@@ -57,7 +59,9 @@ module OpenAI
         )
       end
 
-      # Creates a model response. Provide
+      # See {OpenAI::Resources::Responses#create} for non-streaming counterpart.
+      #
+      #   Creates a model response. Provide
       #   [text](https://platform.openai.com/docs/guides/text) or
       #   [image](https://platform.openai.com/docs/guides/images) inputs to generate
       #   [text](https://platform.openai.com/docs/guides/text) or
