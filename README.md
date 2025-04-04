@@ -180,10 +180,10 @@ Please follow Sorbet's [setup guides](https://sorbet.org/docs/adopting) for best
 
 ```ruby
 model = OpenAI::Models::Chat::CompletionCreateParams.new(
-  messages: [{
+  messages: [OpenAI::Models::ChatCompletionUserMessageParam.new(
     role: "user",
     content: "Say this is a test"
-  }],
+  )],
   model: "gpt-4o"
 )
 
