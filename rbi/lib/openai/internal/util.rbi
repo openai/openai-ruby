@@ -28,22 +28,22 @@ module OpenAI
         end
 
         # @api private
-        sig { params(input: T.anything).returns(T.any(T::Boolean, T.anything)) }
+        sig { params(input: T.any(String, T::Boolean)).returns(T.any(T::Boolean, T.anything)) }
         def coerce_boolean(input)
         end
 
         # @api private
-        sig { params(input: T.anything).returns(T.nilable(T::Boolean)) }
+        sig { params(input: T.any(String, T::Boolean)).returns(T.nilable(T::Boolean)) }
         def coerce_boolean!(input)
         end
 
         # @api private
-        sig { params(input: T.anything).returns(T.any(Integer, T.anything)) }
+        sig { params(input: T.any(String, Integer)).returns(T.any(Integer, T.anything)) }
         def coerce_integer(input)
         end
 
         # @api private
-        sig { params(input: T.anything).returns(T.any(Float, T.anything)) }
+        sig { params(input: T.any(String, Integer, Float)).returns(T.any(Float, T.anything)) }
         def coerce_float(input)
         end
 
@@ -271,7 +271,9 @@ module OpenAI
         # @api private
         #
         # https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream
-        sig { params(lines: T::Enumerable[String]).returns(OpenAI::Internal::Util::ServerSentEvent) }
+        sig do
+          params(lines: T::Enumerable[String]).returns(T::Enumerable[OpenAI::Internal::Util::ServerSentEvent])
+        end
         def decode_sse(lines)
         end
       end
