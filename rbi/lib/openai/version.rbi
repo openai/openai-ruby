@@ -1,5 +1,5 @@
 # typed: strong
 
 module OpenAI
-  VERSION = "0.1.0.pre.alpha.3"
+  VERSION = T.let(T.unsafe(nil), String)
 end
