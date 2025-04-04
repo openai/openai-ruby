@@ -9,13 +9,13 @@ module OpenAI
 
       def self?.primitive?: (top input) -> bool
 
-      def self?.coerce_boolean: (top input) -> (bool | top)
+      def self?.coerce_boolean: (String | bool input) -> (bool | top)
 
-      def self?.coerce_boolean!: (top input) -> bool?
+      def self?.coerce_boolean!: (String | bool input) -> bool?
 
-      def self?.coerce_integer: (top input) -> (Integer | top)
+      def self?.coerce_integer: (String | Integer input) -> (Integer | top)
 
-      def self?.coerce_float: (top input) -> (Float | top)
+      def self?.coerce_float: (String | Integer | Float input) -> (Float | top)
 
       def self?.coerce_hash: (top input) -> (::Hash[top, top] | top)
 
@@ -133,7 +133,7 @@ module OpenAI
 
       def self?.decode_sse: (
         Enumerable[String] lines
-      ) -> OpenAI::Internal::Util::server_sent_event
+      ) -> Enumerable[OpenAI::Internal::Util::server_sent_event]
     end
   end
 end
