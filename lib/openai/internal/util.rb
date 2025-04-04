@@ -70,13 +70,11 @@ module OpenAI
 
         # @api private
         #
-        # @param input [Object]
+        # @param input [String, Boolean]
         #
         # @return [Boolean, Object]
         def coerce_boolean(input)
           case input.is_a?(String) ? input.downcase : input
-          in Numeric
-            input.nonzero?
           in "true"
             true
           in "false"
@@ -88,7 +86,7 @@ module OpenAI
 
         # @api private
         #
-        # @param input [Object]
+        # @param input [String, Boolean]
         #
         # @raise [ArgumentError]
         # @return [Boolean, nil]
@@ -103,34 +101,20 @@ module OpenAI
 
         # @api private
         #
-        # @param input [Object]
+        # @param input [String, Integer]
         #
         # @return [Integer, Object]
         def coerce_integer(input)
-          case input
-          in true
-            1
-          in false
-            0
-          else
-            Integer(input, exception: false) || input
-          end
+          Integer(input, exception: false) || input
         end
 
         # @api private
         #
-        # @param input [Object]
+        # @param input [String, Integer, Float]
         #
         # @return [Float, Object]
         def coerce_float(input)
-          case input
-          in true
-            1.0
-          in false
-            0.0
-          else
-            Float(input, exception: false) || input
-          end
+          Float(input, exception: false) || input
         end
 
         # @api private
@@ -159,12 +143,7 @@ module OpenAI
         private def deep_merge_lr(lhs, rhs, concat: false)
           case [lhs, rhs, concat]
           in [Hash, Hash, _]
-            rhs_cleaned = rhs.reject { _2 == OpenAI::Internal::OMIT }
-            lhs
-              .reject { |key, _| rhs[key] == OpenAI::Internal::OMIT }
-              .merge(rhs_cleaned) do |_, old_val, new_val|
-                deep_merge_lr(old_val, new_val, concat: concat)
-              end
+            lhs.merge(rhs) { deep_merge_lr(_2, _3, concat: concat) }
           in [Array, Array, true]
             lhs.concat(rhs)
           else
@@ -362,7 +341,7 @@ module OpenAI
             value =
               case val
               in Array
-                val.map { _1.to_s.strip }.join(", ")
+                val.filter_map { _1&.to_s&.strip }.join(", ")
               else
                 val&.to_s&.strip
               end
@@ -469,7 +448,7 @@ module OpenAI
           case val
           in IO
             y << "Content-Type: application/octet-stream\r\n\r\n"
-            IO.copy_stream(val, y)
+            IO.copy_stream(val.tap(&:rewind), y)
           in StringIO
             y << "Content-Type: application/octet-stream\r\n\r\n"
             y << val.string
@@ -533,6 +512,8 @@ module OpenAI
             boundary, strio = encode_multipart_streaming(body)
             headers = {**headers, "content-type" => "#{content_type}; boundary=#{boundary}"}
             [headers, strio]
+          in [_, IO]
+            [headers, body.tap(&:rewind)]
           in [_, StringIO]
             [headers, body.string]
           else
@@ -673,7 +654,7 @@ module OpenAI
         #
         # @param lines [Enumerable<String>]
         #
-        # @return [Hash{Symbol=>Object}]
+        # @return [Enumerable<Hash{Symbol=>Object}>]
         def decode_sse(lines)
           # rubocop:disable Metrics/BlockLength
           chain_fused(lines) do |y|
