@@ -179,7 +179,7 @@ Due to limitations with the Sorbet type system, where a method otherwise can tak
 Please follow Sorbet's [setup guides](https://sorbet.org/docs/adopting) for best experience.
 
 ```ruby
-model = OpenAI::Models::Chat::CompletionCreateParams.new(
+params = OpenAI::Models::Chat::CompletionCreateParams.new(
   messages: [OpenAI::Models::ChatCompletionUserMessageParam.new(
     role: "user",
     content: "Say this is a test"
@@ -187,7 +187,7 @@ model = OpenAI::Models::Chat::CompletionCreateParams.new(
   model: "gpt-4o"
 )
 
-openai.chat.completions.create(**model)
+openai.chat.completions.create(**params)
 ```
 
 ## Advanced

@@ -209,7 +209,9 @@ module OpenAI
           #
           # @return [Object]
           def dump(target, value)
+            # rubocop:disable Layout/LineLength
             target.is_a?(OpenAI::Internal::Type::Converter) ? target.dump(value) : OpenAI::Internal::Type::Unknown.dump(value)
+            # rubocop:enable Layout/LineLength
           end
         end
       end
