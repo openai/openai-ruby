@@ -61,7 +61,7 @@ module OpenAI
         # @return [Boolean]
         def primitive?(input)
           case input
-          in true | false | Integer | Float | Symbol | String
+          in true | false | Numeric | Symbol | String
             true
           else
             false
@@ -504,7 +504,7 @@ module OpenAI
         def encode_content(headers, body)
           content_type = headers["content-type"]
           case [content_type, body]
-          in [%r{^application/(?:vnd\.api\+)?json}, Hash | Array]
+          in [%r{^application/(?:vnd\.api\+)?json}, _] unless body.nil?
             [headers, JSON.fast_generate(body)]
           in [%r{^application/(?:x-)?jsonl}, Enumerable]
             [headers, body.lazy.map { JSON.fast_generate(_1) }]
@@ -516,6 +516,8 @@ module OpenAI
             [headers, body.tap(&:rewind)]
           in [_, StringIO]
             [headers, body.string]
+          in [_, Symbol | Numeric]
+            [headers, body.to_s]
           else
             [headers, body]
           end
