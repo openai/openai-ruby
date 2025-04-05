@@ -118,7 +118,7 @@ module OpenAI
           #     during tool use.
           #
           #   @return [Boolean]
-          required :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel
+          required :parallel_tool_calls, OpenAI::Internal::Type::Boolean
 
           # @!attribute required_action
           #   Details on the action required to continue the run. Will be `null` if no action

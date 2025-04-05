@@ -104,7 +104,7 @@ module OpenAI
         #     `message`.
         #
         #   @return [Boolean, nil]
-        optional :logprobs, OpenAI::Internal::Type::BooleanModel, nil?: true
+        optional :logprobs, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!attribute max_completion_tokens
         #   An upper bound for the number of tokens that can be generated for a completion,
@@ -168,7 +168,7 @@ module OpenAI
         #     during tool use.
         #
         #   @return [Boolean, nil]
-        optional :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel
+        optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
 
         # @!parse
         #   # @return [Boolean]
@@ -261,7 +261,7 @@ module OpenAI
         #     or [evals](https://platform.openai.com/docs/guides/evals) products.
         #
         #   @return [Boolean, nil]
-        optional :store, OpenAI::Internal::Type::BooleanModel, nil?: true
+        optional :store, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!attribute stream_options
         #   Options for streaming response. Only set this when you set `stream: true`.

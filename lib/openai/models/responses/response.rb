@@ -86,7 +86,7 @@ module OpenAI
         #   Whether to allow the model to run tool calls in parallel.
         #
         #   @return [Boolean]
-        required :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel
+        required :parallel_tool_calls, OpenAI::Internal::Type::Boolean
 
         # @!attribute temperature
         #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will

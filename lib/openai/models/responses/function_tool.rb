@@ -20,7 +20,7 @@ module OpenAI
         #   Whether to enforce strict parameter validation. Default `true`.
         #
         #   @return [Boolean]
-        required :strict, OpenAI::Internal::Type::BooleanModel
+        required :strict, OpenAI::Internal::Type::Boolean
 
         # @!attribute type
         #   The type of the function tool. Always `function`.

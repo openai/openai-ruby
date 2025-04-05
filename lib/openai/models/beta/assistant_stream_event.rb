@@ -126,7 +126,7 @@ module OpenAI
           #   Whether to enable input audio transcription.
           #
           #   @return [Boolean, nil]
-          optional :enabled, OpenAI::Internal::Type::BooleanModel
+          optional :enabled, OpenAI::Internal::Type::Boolean
 
           # @!parse
           #   # @return [Boolean]

@@ -14,7 +14,7 @@ module OpenAI
           # @!attribute deleted
           #
           #   @return [Boolean]
-          required :deleted, OpenAI::Internal::Type::BooleanModel
+          required :deleted, OpenAI::Internal::Type::Boolean
 
           # @!attribute object
           #

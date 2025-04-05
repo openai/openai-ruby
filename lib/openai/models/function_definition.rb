@@ -45,7 +45,7 @@ module OpenAI
       #     [function calling guide](docs/guides/function-calling).
       #
       #   @return [Boolean, nil]
-      optional :strict, OpenAI::Internal::Type::BooleanModel, nil?: true
+      optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
       # @!parse
       #   # @param name [String]
