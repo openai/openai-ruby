@@ -39,7 +39,7 @@ Layout/LineLength:
   AllowedPatterns:
     - "^\\s*#.*$"
     - ^require(_relative)?
-    - "OpenAI::(Models|Resources)::"
+    - "OpenAI::(Models|Resources|Test)::"
   Max: 110
 
 Layout/MultilineArrayLineBreaks:
@@ -122,9 +122,9 @@ Metrics/PerceivedComplexity:
 Naming/BlockForwarding:
   Enabled: false
 
+# Underscores are generally useful for disambiguation.
 Naming/ClassAndModuleCamelCase:
-  Exclude:
-    - "**/*.rbi"
+  Enabled: false
 
 Naming/MethodParameterName:
   Enabled: false
