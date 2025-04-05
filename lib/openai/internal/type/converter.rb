@@ -3,7 +3,6 @@
 module OpenAI
   module Internal
     module Type
-      # rubocop:disable Metrics/ModuleLength
       # @api private
       module Converter
         # rubocop:disable Lint/UnusedMethodArgument
@@ -218,7 +217,6 @@ module OpenAI
           end
         end
       end
-      # rubocop:enable Metrics/ModuleLength
     end
   end
 end
