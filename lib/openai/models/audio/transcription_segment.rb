@@ -12,14 +12,14 @@ module OpenAI
 
         # @!attribute avg_logprob
         #   Average logprob of the segment. If the value is lower than -1, consider the
-        #     logprobs failed.
+        #   logprobs failed.
         #
         #   @return [Float]
         required :avg_logprob, Float
 
         # @!attribute compression_ratio
         #   Compression ratio of the segment. If the value is greater than 2.4, consider the
-        #     compression failed.
+        #   compression failed.
         #
         #   @return [Float]
         required :compression_ratio, Float
@@ -32,7 +32,7 @@ module OpenAI
 
         # @!attribute no_speech_prob
         #   Probability of no speech in the segment. If the value is higher than 1.0 and the
-        #     `avg_logprob` is below -1, consider this segment silent.
+        #   `avg_logprob` is below -1, consider this segment silent.
         #
         #   @return [Float]
         required :no_speech_prob, Float

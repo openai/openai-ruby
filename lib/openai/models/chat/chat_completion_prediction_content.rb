@@ -6,22 +6,22 @@ module OpenAI
       class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
         # @!attribute content
         #   The content that should be matched when generating a model response. If
-        #     generated tokens would match this content, the entire model response can be
-        #     returned much more quickly.
+        #   generated tokens would match this content, the entire model response can be
+        #   returned much more quickly.
         #
         #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
         required :content, union: -> { OpenAI::Models::Chat::ChatCompletionPredictionContent::Content }
 
         # @!attribute type
         #   The type of the predicted content you want to provide. This type is currently
-        #     always `content`.
+        #   always `content`.
         #
         #   @return [Symbol, :content]
         required :type, const: :content
 
         # @!parse
         #   # Static predicted output content, such as the content of a text file that is
-        #   #   being regenerated.
+        #   # being regenerated.
         #   #
         #   # @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
         #   # @param type [Symbol, :content]
@@ -31,8 +31,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The content that should be matched when generating a model response. If
-        #   generated tokens would match this content, the entire model response can be
-        #   returned much more quickly.
+        # generated tokens would match this content, the entire model response can be
+        # returned much more quickly.
         #
         # @see OpenAI::Models::Chat::ChatCompletionPredictionContent#content
         module Content

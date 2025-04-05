@@ -7,34 +7,34 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       # The image to use as the basis for the variation(s). Must be a valid PNG file,
-      #   less than 4MB, and square.
+      # less than 4MB, and square.
       sig { returns(T.any(IO, StringIO)) }
       attr_accessor :image
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      # time.
       sig { returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol))) }
       attr_accessor :model
 
       # The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
-      #   `n=1` is supported.
+      # `n=1` is supported.
       sig { returns(T.nilable(Integer)) }
       attr_accessor :n
 
       # The format in which the generated images are returned. Must be one of `url` or
-      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #   generated.
+      # `b64_json`. URLs are only valid for 60 minutes after the image has been
+      # generated.
       sig { returns(T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol)) }
       attr_accessor :response_format
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
-      #   `1024x1024`.
+      # `1024x1024`.
       sig { returns(T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol)) }
       attr_accessor :size
 
       # A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   and detect abuse.
-      #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+      # and detect abuse.
+      # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       sig { returns(T.nilable(String)) }
       attr_reader :user
 
@@ -81,7 +81,7 @@ module OpenAI
       def to_hash; end
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      # time.
       module Model
         extend OpenAI::Internal::Type::Union
 
@@ -90,8 +90,8 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
-      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #   generated.
+      # `b64_json`. URLs are only valid for 60 minutes after the image has been
+      # generated.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -107,7 +107,7 @@ module OpenAI
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
-      #   `1024x1024`.
+      # `1024x1024`.
       module Size
         extend OpenAI::Internal::Type::Enum
 

@@ -36,15 +36,15 @@ module OpenAI
 
       # @!attribute purpose
       #   The intended purpose of the file. Supported values are `assistants`,
-      #     `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      #     and `vision`.
+      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
+      #   and `vision`.
       #
       #   @return [Symbol, OpenAI::Models::FileObject::Purpose]
       required :purpose, enum: -> { OpenAI::Models::FileObject::Purpose }
 
       # @!attribute status
       #   Deprecated. The current status of the file, which can be either `uploaded`,
-      #     `processed`, or `error`.
+      #   `processed`, or `error`.
       #
       #   @return [Symbol, OpenAI::Models::FileObject::Status]
       required :status, enum: -> { OpenAI::Models::FileObject::Status }
@@ -61,7 +61,7 @@ module OpenAI
 
       # @!attribute [r] status_details
       #   Deprecated. For details on why a fine-tuning training file failed validation,
-      #     see the `error` field on `fine_tuning.job`.
+      #   see the `error` field on `fine_tuning.job`.
       #
       #   @return [String, nil]
       optional :status_details, String
@@ -101,8 +101,8 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The intended purpose of the file. Supported values are `assistants`,
-      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      #   and `vision`.
+      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
+      # and `vision`.
       #
       # @see OpenAI::Models::FileObject#purpose
       module Purpose
@@ -126,7 +126,7 @@ module OpenAI
       # @deprecated
       #
       # Deprecated. The current status of the file, which can be either `uploaded`,
-      #   `processed`, or `error`.
+      # `processed`, or `error`.
       #
       # @see OpenAI::Models::FileObject#status
       module Status

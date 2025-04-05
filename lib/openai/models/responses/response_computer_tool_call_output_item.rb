@@ -30,7 +30,7 @@ module OpenAI
 
         # @!attribute [r] acknowledged_safety_checks
         #   The safety checks reported by the API that have been acknowledged by the
-        #     developer.
+        #   developer.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>, nil]
         optional :acknowledged_safety_checks,
@@ -42,7 +42,7 @@ module OpenAI
 
         # @!attribute [r] status
         #   The status of the message input. One of `in_progress`, `completed`, or
-        #     `incomplete`. Populated when input items are returned via API.
+        #   `incomplete`. Populated when input items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status }
@@ -95,7 +95,7 @@ module OpenAI
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
-        #   `incomplete`. Populated when input items are returned via API.
+        # `incomplete`. Populated when input items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseComputerToolCallOutputItem#status
         module Status

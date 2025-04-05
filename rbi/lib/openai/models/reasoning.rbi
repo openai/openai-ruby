@@ -5,25 +5,25 @@ module OpenAI
     class Reasoning < OpenAI::Internal::Type::BaseModel
       # **o-series models only**
       #
-      #   Constrains effort on reasoning for
-      #   [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
-      #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
-      #   result in faster responses and fewer tokens used on reasoning in a response.
+      # Constrains effort on reasoning for
+      # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
+      # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
+      # result in faster responses and fewer tokens used on reasoning in a response.
       sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
       attr_accessor :effort
 
       # **computer_use_preview only**
       #
-      #   A summary of the reasoning performed by the model. This can be useful for
-      #   debugging and understanding the model's reasoning process. One of `concise` or
-      #   `detailed`.
+      # A summary of the reasoning performed by the model. This can be useful for
+      # debugging and understanding the model's reasoning process. One of `concise` or
+      # `detailed`.
       sig { returns(T.nilable(OpenAI::Models::Reasoning::GenerateSummary::OrSymbol)) }
       attr_accessor :generate_summary
 
       # **o-series models only**
       #
-      #   Configuration options for
-      #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+      # Configuration options for
+      # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
       sig do
         params(
           effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
@@ -46,9 +46,9 @@ module OpenAI
 
       # **computer_use_preview only**
       #
-      #   A summary of the reasoning performed by the model. This can be useful for
-      #   debugging and understanding the model's reasoning process. One of `concise` or
-      #   `detailed`.
+      # A summary of the reasoning performed by the model. This can be useful for
+      # debugging and understanding the model's reasoning process. One of `concise` or
+      # `detailed`.
       module GenerateSummary
         extend OpenAI::Internal::Type::Enum
 

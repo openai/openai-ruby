@@ -18,7 +18,7 @@ module OpenAI
 
         # @!attribute status
         #   The status of the file search tool call. One of `in_progress`, `searching`,
-        #     `incomplete` or `failed`,
+        #   `incomplete` or `failed`,
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status]
         required :status, enum: -> { OpenAI::Models::Responses::ResponseFileSearchToolCall::Status }
@@ -39,8 +39,8 @@ module OpenAI
 
         # @!parse
         #   # The results of a file search tool call. See the
-        #   #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
-        #   #   for more information.
+        #   # [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
+        #   # for more information.
         #   #
         #   # @param id [String]
         #   # @param queries [Array<String>]
@@ -53,7 +53,7 @@ module OpenAI
         # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
-        #   `incomplete` or `failed`,
+        # `incomplete` or `failed`,
         #
         # @see OpenAI::Models::Responses::ResponseFileSearchToolCall#status
         module Status
@@ -75,10 +75,10 @@ module OpenAI
         class Result < OpenAI::Internal::Type::BaseModel
           # @!attribute attributes
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-          #     for storing additional information about the object in a structured format, and
-          #     querying for objects via API or the dashboard. Keys are strings with a maximum
-          #     length of 64 characters. Values are strings with a maximum length of 512
-          #     characters, booleans, or numbers.
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard. Keys are strings with a maximum
+          #   length of 64 characters. Values are strings with a maximum length of 512
+          #   characters, booleans, or numbers.
           #
           #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
           optional :attributes,

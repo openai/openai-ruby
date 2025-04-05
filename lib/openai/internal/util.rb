@@ -152,7 +152,7 @@ module OpenAI
         # @api private
         #
         # Recursively merge one hash with another. If the values at a given key are not
-        #   both hashes, just take the new value.
+        # both hashes, just take the new value.
         #
         # @param values [Array<Object>]
         #

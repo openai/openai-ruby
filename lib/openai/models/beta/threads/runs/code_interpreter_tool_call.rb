@@ -21,7 +21,7 @@ module OpenAI
 
             # @!attribute type
             #   The type of tool call. This is always going to be `code_interpreter` for this
-            #     type of tool call.
+            #   type of tool call.
             #
             #   @return [Symbol, :code_interpreter]
             required :type, const: :code_interpreter
@@ -47,8 +47,8 @@ module OpenAI
 
               # @!attribute outputs
               #   The outputs from the Code Interpreter tool call. Code Interpreter can output one
-              #     or more items, including text (`logs`) or images (`image`). Each of these are
-              #     represented by a different object type.
+              #   or more items, including text (`logs`) or images (`image`). Each of these are
+              #   represented by a different object type.
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
               required :outputs,
@@ -126,7 +126,7 @@ module OpenAI
                   class Image < OpenAI::Internal::Type::BaseModel
                     # @!attribute file_id
                     #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the
-                    #     image.
+                    #   image.
                     #
                     #   @return [String]
                     required :file_id, String

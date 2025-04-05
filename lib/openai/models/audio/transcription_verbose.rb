@@ -44,7 +44,7 @@ module OpenAI
 
         # @!parse
         #   # Represents a verbose json transcription response returned by model, based on the
-        #   #   provided input.
+        #   # provided input.
         #   #
         #   # @param duration [Float]
         #   # @param language [String]

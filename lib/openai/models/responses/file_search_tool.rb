@@ -28,7 +28,7 @@ module OpenAI
 
         # @!attribute [r] max_num_results
         #   The maximum number of results to return. This number should be between 1 and 50
-        #     inclusive.
+        #   inclusive.
         #
         #   @return [Integer, nil]
         optional :max_num_results, Integer
@@ -49,8 +49,8 @@ module OpenAI
 
         # @!parse
         #   # A tool that searches for relevant content from uploaded files. Learn more about
-        #   #   the
-        #   #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
+        #   # the
+        #   # [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         #   #
         #   # @param vector_store_ids [Array<String>]
         #   # @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
@@ -93,8 +93,8 @@ module OpenAI
 
           # @!attribute [r] score_threshold
           #   The score threshold for the file search, a number between 0 and 1. Numbers
-          #     closer to 1 will attempt to return only the most relevant results, but may
-          #     return fewer results.
+          #   closer to 1 will attempt to return only the most relevant results, but may
+          #   return fewer results.
           #
           #   @return [Float, nil]
           optional :score_threshold, Float

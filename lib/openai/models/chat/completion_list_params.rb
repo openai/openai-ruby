@@ -32,7 +32,7 @@ module OpenAI
         # @!attribute metadata
         #   A list of metadata keys to filter the Chat Completions by. Example:
         #
-        #     `metadata[key1]=value1&metadata[key2]=value2`
+        #   `metadata[key1]=value1&metadata[key2]=value2`
         #
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
@@ -49,7 +49,7 @@ module OpenAI
 
         # @!attribute [r] order
         #   Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
-        #     `desc` for descending order. Defaults to `asc`.
+        #   `desc` for descending order. Defaults to `asc`.
         #
         #   @return [Symbol, OpenAI::Models::Chat::CompletionListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Models::Chat::CompletionListParams::Order }
@@ -71,7 +71,7 @@ module OpenAI
         # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
-        #   `desc` for descending order. Defaults to `asc`.
+        # `desc` for descending order. Defaults to `asc`.
         module Order
           extend OpenAI::Internal::Type::Enum
 

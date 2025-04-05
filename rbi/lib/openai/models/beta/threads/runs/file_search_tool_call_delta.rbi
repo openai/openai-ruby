@@ -15,7 +15,7 @@ module OpenAI
             attr_accessor :index
 
             # The type of tool call. This is always going to be `file_search` for this type of
-            #   tool call.
+            # tool call.
             sig { returns(Symbol) }
             attr_accessor :type
 

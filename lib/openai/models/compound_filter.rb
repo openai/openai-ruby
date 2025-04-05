@@ -5,7 +5,7 @@ module OpenAI
     class CompoundFilter < OpenAI::Internal::Type::BaseModel
       # @!attribute filters
       #   Array of filters to combine. Items can be `ComparisonFilter` or
-      #     `CompoundFilter`.
+      #   `CompoundFilter`.
       #
       #   @return [Array<OpenAI::Models::ComparisonFilter, Object>]
       required :filters, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::CompoundFilter::Filter] }
@@ -27,7 +27,7 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # A filter used to compare a specified attribute key to a given value using a
-      #   defined comparison operation.
+      # defined comparison operation.
       module Filter
         extend OpenAI::Internal::Type::Union
 

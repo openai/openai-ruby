@@ -5,8 +5,8 @@ module OpenAI
     module Beta
       module Threads
         # The status of the run, which can be either `queued`, `in_progress`,
-        #   `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
-        #   `incomplete`, or `expired`.
+        # `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
+        # `incomplete`, or `expired`.
         module RunStatus
           extend OpenAI::Internal::Type::Enum
 

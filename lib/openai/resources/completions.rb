@@ -5,7 +5,7 @@ module OpenAI
     class Completions
       # See {OpenAI::Resources::Completions#create_streaming} for streaming counterpart.
       #
-      #   Creates a completion for the provided prompt and parameters.
+      # Creates a completion for the provided prompt and parameters.
       #
       # @overload create(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #
@@ -48,7 +48,7 @@ module OpenAI
 
       # See {OpenAI::Resources::Completions#create} for non-streaming counterpart.
       #
-      #   Creates a completion for the provided prompt and parameters.
+      # Creates a completion for the provided prompt and parameters.
       #
       # @overload create_streaming(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #

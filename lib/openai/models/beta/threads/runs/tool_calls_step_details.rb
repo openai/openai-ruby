@@ -8,8 +8,8 @@ module OpenAI
           class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
             # @!attribute tool_calls
             #   An array of tool calls the run step was involved in. These can be associated
-            #     with one of three types of tools: `code_interpreter`, `file_search`, or
-            #     `function`.
+            #   with one of three types of tools: `code_interpreter`, `file_search`, or
+            #   `function`.
             #
             #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>]
             required :tool_calls,

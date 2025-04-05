@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Beta
       # Occurs when a
-      #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
-      #   created.
+      # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+      # created.
       module MessageStreamEvent
         extend OpenAI::Internal::Type::Union
 
@@ -32,7 +32,7 @@ module OpenAI
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -44,8 +44,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   #   created.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          #   # created.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.created"]
@@ -58,7 +58,7 @@ module OpenAI
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -70,8 +70,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
-          #   #   to an `in_progress` state.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) moves
+          #   # to an `in_progress` state.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.in_progress"]
@@ -84,7 +84,7 @@ module OpenAI
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message delta i.e. any changed fields on a message during
-          #     streaming.
+          #   streaming.
           #
           #   @return [OpenAI::Models::Beta::Threads::MessageDeltaEvent]
           required :data, -> { OpenAI::Models::Beta::Threads::MessageDeltaEvent }
@@ -96,8 +96,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when parts of a
-          #   #   [Message](https://platform.openai.com/docs/api-reference/messages/object) are
-          #   #   being streamed.
+          #   # [Message](https://platform.openai.com/docs/api-reference/messages/object) are
+          #   # being streamed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::MessageDeltaEvent]
           #   # @param event [Symbol, :"thread.message.delta"]
@@ -110,7 +110,7 @@ module OpenAI
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -122,8 +122,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   #   completed.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          #   # completed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.completed"]
@@ -136,7 +136,7 @@ module OpenAI
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -148,8 +148,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
-          #   #   before it is completed.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) ends
+          #   # before it is completed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.incomplete"]

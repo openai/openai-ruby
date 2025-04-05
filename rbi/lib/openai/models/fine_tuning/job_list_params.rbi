@@ -22,7 +22,7 @@ module OpenAI
         attr_writer :limit
 
         # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
-        #   Alternatively, set `metadata=null` to indicate no metadata.
+        # Alternatively, set `metadata=null` to indicate no metadata.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 

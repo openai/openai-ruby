@@ -7,9 +7,9 @@ module OpenAI
         class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The ID of the tool call. This ID must be referenced when you submit the tool
-          #     outputs in using the
-          #     [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
-          #     endpoint.
+          #   outputs in using the
+          #   [Submit tool outputs to run](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+          #   endpoint.
           #
           #   @return [String]
           required :id, String
@@ -22,7 +22,7 @@ module OpenAI
 
           # @!attribute type
           #   The type of tool call the output is required for. For now, this is always
-          #     `function`.
+          #   `function`.
           #
           #   @return [Symbol, :function]
           required :type, const: :function

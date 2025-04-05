@@ -10,16 +10,16 @@ module OpenAI
 
       # @!attribute input
       #   Input (or inputs) to classify. Can be a single string, an array of strings, or
-      #     an array of multi-modal input objects similar to other models.
+      #   an array of multi-modal input objects similar to other models.
       #
       #   @return [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
       required :input, union: -> { OpenAI::Models::ModerationCreateParams::Input }
 
       # @!attribute [r] model
       #   The content moderation model you would like to use. Learn more in
-      #     [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      #     learn about available models
-      #     [here](https://platform.openai.com/docs/models#moderation).
+      #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
+      #   learn about available models
+      #   [here](https://platform.openai.com/docs/models#moderation).
       #
       #   @return [String, Symbol, OpenAI::Models::ModerationModel, nil]
       optional :model, union: -> { OpenAI::Models::ModerationCreateParams::Model }
@@ -38,7 +38,7 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
-      #   an array of multi-modal input objects similar to other models.
+      # an array of multi-modal input objects similar to other models.
       module Input
         extend OpenAI::Internal::Type::Union
 
@@ -62,9 +62,9 @@ module OpenAI
       end
 
       # The content moderation model you would like to use. Learn more in
-      #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      #   learn about available models
-      #   [here](https://platform.openai.com/docs/models#moderation).
+      # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
+      # learn about available models
+      # [here](https://platform.openai.com/docs/models#moderation).
       module Model
         extend OpenAI::Internal::Type::Union
 

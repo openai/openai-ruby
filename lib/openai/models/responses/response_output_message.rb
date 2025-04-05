@@ -25,7 +25,7 @@ module OpenAI
 
         # @!attribute status
         #   The status of the message input. One of `in_progress`, `completed`, or
-        #     `incomplete`. Populated when input items are returned via API.
+        #   `incomplete`. Populated when input items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status]
         required :status, enum: -> { OpenAI::Models::Responses::ResponseOutputMessage::Status }
@@ -67,7 +67,7 @@ module OpenAI
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
-        #   `incomplete`. Populated when input items are returned via API.
+        # `incomplete`. Populated when input items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseOutputMessage#status
         module Status

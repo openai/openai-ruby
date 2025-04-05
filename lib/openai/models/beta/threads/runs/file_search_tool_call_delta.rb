@@ -20,7 +20,7 @@ module OpenAI
 
             # @!attribute type
             #   The type of tool call. This is always going to be `file_search` for this type of
-            #     tool call.
+            #   tool call.
             #
             #   @return [Symbol, :file_search]
             required :type, const: :file_search

@@ -13,7 +13,7 @@ module OpenAI
         attr_accessor :created_at
 
         # The last error associated with this vector store file. Will be `null` if there
-        #   are no errors.
+        # are no errors.
         sig { returns(T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError)) }
         attr_reader :last_error
 
@@ -30,28 +30,28 @@ module OpenAI
         attr_accessor :object
 
         # The status of the vector store file, which can be either `in_progress`,
-        #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
-        #   vector store file is ready for use.
+        # `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        # vector store file is ready for use.
         sig { returns(OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
         attr_accessor :status
 
         # The total vector store usage in bytes. Note that this may be different from the
-        #   original file size.
+        # original file size.
         sig { returns(Integer) }
         attr_accessor :usage_bytes
 
         # The ID of the
-        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
-        #   attached to.
+        # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+        # that the [File](https://platform.openai.com/docs/api-reference/files) is
+        # attached to.
         sig { returns(String) }
         attr_accessor :vector_store_id
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #   for storing additional information about the object in a structured format, and
-        #   querying for objects via API or the dashboard. Keys are strings with a maximum
-        #   length of 64 characters. Values are strings with a maximum length of 512
-        #   characters, booleans, or numbers.
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard. Keys are strings with a maximum
+        # length of 64 characters. Values are strings with a maximum length of 512
+        # characters, booleans, or numbers.
         sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
         attr_accessor :attributes
 
@@ -135,7 +135,7 @@ module OpenAI
           attr_accessor :message
 
           # The last error associated with this vector store file. Will be `null` if there
-          #   are no errors.
+          # are no errors.
           sig do
             params(code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::OrSymbol, message: String)
               .returns(T.attached_class)
@@ -172,8 +172,8 @@ module OpenAI
         end
 
         # The status of the vector store file, which can be either `in_progress`,
-        #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
-        #   vector store file is ready for use.
+        # `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        # vector store file is ready for use.
         module Status
           extend OpenAI::Internal::Type::Enum
 

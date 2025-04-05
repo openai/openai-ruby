@@ -5,18 +5,18 @@ module OpenAI
     module Chat
       class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
-        #   or `pcm16`.
+        # or `pcm16`.
         sig { returns(OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol) }
         attr_accessor :format_
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         sig { returns(T.any(String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)) }
         attr_accessor :voice
 
         # Parameters for audio output. Required when audio output is requested with
-        #   `modalities: ["audio"]`.
-        #   [Learn more](https://platform.openai.com/docs/guides/audio).
+        # `modalities: ["audio"]`.
+        # [Learn more](https://platform.openai.com/docs/guides/audio).
         sig do
           params(
             format_: OpenAI::Models::Chat::ChatCompletionAudioParam::Format::OrSymbol,
@@ -38,7 +38,7 @@ module OpenAI
         def to_hash; end
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
-        #   or `pcm16`.
+        # or `pcm16`.
         module Format
           extend OpenAI::Internal::Type::Enum
 
@@ -57,7 +57,7 @@ module OpenAI
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
         module Voice
           extend OpenAI::Internal::Type::Union
 

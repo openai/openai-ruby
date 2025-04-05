@@ -41,7 +41,7 @@ module OpenAI
         attr_accessor :total_tokens
 
         # Represents token usage details including input tokens, output tokens, a
-        #   breakdown of output tokens, and the total tokens used.
+        # breakdown of output tokens, and the total tokens used.
         sig do
           params(
             input_tokens: Integer,
@@ -77,7 +77,7 @@ module OpenAI
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # The number of tokens that were retrieved from the cache.
-          #   [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+          # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
           sig { returns(Integer) }
           attr_accessor :cached_tokens
 

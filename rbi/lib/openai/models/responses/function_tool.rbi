@@ -21,13 +21,13 @@ module OpenAI
         attr_accessor :type
 
         # A description of the function. Used by the model to determine whether or not to
-        #   call the function.
+        # call the function.
         sig { returns(T.nilable(String)) }
         attr_accessor :description
 
         # Defines a function in your own code the model can choose to call. Learn more
-        #   about
-        #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+        # about
+        # [function calling](https://platform.openai.com/docs/guides/function-calling).
         sig do
           params(
             name: String,

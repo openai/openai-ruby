@@ -9,7 +9,7 @@ module OpenAI
         attr_accessor :id
 
         # A list of one or many input items to the model, containing different content
-        #   types.
+        # types.
         sig do
           returns(
             T::Array[
@@ -28,7 +28,7 @@ module OpenAI
         attr_accessor :role
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)) }
         attr_reader :status
 
@@ -98,7 +98,7 @@ module OpenAI
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         module Status
           extend OpenAI::Internal::Type::Enum
 

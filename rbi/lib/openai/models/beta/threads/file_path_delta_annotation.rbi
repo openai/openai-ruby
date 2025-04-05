@@ -44,7 +44,7 @@ module OpenAI
           attr_writer :text
 
           # A URL for the file that's generated when the assistant used the
-          #   `code_interpreter` tool to generate a file.
+          # `code_interpreter` tool to generate a file.
           sig do
             params(
               index: Integer,

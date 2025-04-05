@@ -10,22 +10,22 @@ module OpenAI
 
       # @!attribute image
       #   The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask
-      #     is not provided, image must have transparency, which will be used as the mask.
+      #   is not provided, image must have transparency, which will be used as the mask.
       #
       #   @return [IO, StringIO]
       required :image, IO
 
       # @!attribute prompt
       #   A text description of the desired image(s). The maximum length is 1000
-      #     characters.
+      #   characters.
       #
       #   @return [String]
       required :prompt, String
 
       # @!attribute [r] mask
       #   An additional image whose fully transparent areas (e.g. where alpha is zero)
-      #     indicate where `image` should be edited. Must be a valid PNG file, less than
-      #     4MB, and have the same dimensions as `image`.
+      #   indicate where `image` should be edited. Must be a valid PNG file, less than
+      #   4MB, and have the same dimensions as `image`.
       #
       #   @return [IO, StringIO, nil]
       optional :mask, IO
@@ -36,7 +36,7 @@ module OpenAI
 
       # @!attribute model
       #   The model to use for image generation. Only `dall-e-2` is supported at this
-      #     time.
+      #   time.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::Models::ImageEditParams::Model }, nil?: true
@@ -49,23 +49,23 @@ module OpenAI
 
       # @!attribute response_format
       #   The format in which the generated images are returned. Must be one of `url` or
-      #     `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #     generated.
+      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
+      #   generated.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
       optional :response_format, enum: -> { OpenAI::Models::ImageEditParams::ResponseFormat }, nil?: true
 
       # @!attribute size
       #   The size of the generated images. Must be one of `256x256`, `512x512`, or
-      #     `1024x1024`.
+      #   `1024x1024`.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       optional :size, enum: -> { OpenAI::Models::ImageEditParams::Size }, nil?: true
 
       # @!attribute [r] user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #     and detect abuse.
-      #     [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+      #   and detect abuse.
+      #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
@@ -103,7 +103,7 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      # time.
       module Model
         extend OpenAI::Internal::Type::Union
 
@@ -118,8 +118,8 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
-      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #   generated.
+      # `b64_json`. URLs are only valid for 60 minutes after the image has been
+      # generated.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -134,7 +134,7 @@ module OpenAI
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
-      #   `1024x1024`.
+      # `1024x1024`.
       module Size
         extend OpenAI::Internal::Type::Enum
 

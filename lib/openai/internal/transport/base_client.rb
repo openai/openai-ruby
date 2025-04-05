@@ -393,7 +393,7 @@ module OpenAI
         end
 
         # Execute the request specified by `req`. This is the method that all resource
-        #   methods call into.
+        # methods call into.
         #
         # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, options: {})
         #

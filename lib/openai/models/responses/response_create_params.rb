@@ -14,36 +14,36 @@ module OpenAI
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response.
         #
-        #     Learn more:
+        #   Learn more:
         #
-        #     - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #     - [Image inputs](https://platform.openai.com/docs/guides/images)
-        #     - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        #     - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        #     - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        #   - [Image inputs](https://platform.openai.com/docs/guides/images)
+        #   - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
+        #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
+        #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         #
         #   @return [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>]
         required :input, union: -> { OpenAI::Models::Responses::ResponseCreateParams::Input }
 
         # @!attribute model
         #   Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
-        #     wide range of models with different capabilities, performance characteristics,
-        #     and price points. Refer to the
-        #     [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #     available models.
+        #   wide range of models with different capabilities, performance characteristics,
+        #   and price points. Refer to the
+        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
+        #   available models.
         #
         #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel]
         required :model, union: -> { OpenAI::Models::ResponsesModel }
 
         # @!attribute include
         #   Specify additional output data to include in the model response. Currently
-        #     supported values are:
+        #   supported values are:
         #
-        #     - `file_search_call.results`: Include the search results of the file search tool
-        #       call.
-        #     - `message.input_image.image_url`: Include image urls from the input message.
-        #     - `computer_call_output.output.image_url`: Include image urls from the computer
-        #       call output.
+        #   - `file_search_call.results`: Include the search results of the file search tool
+        #     call.
+        #   - `message.input_image.image_url`: Include image urls from the input message.
+        #   - `computer_call_output.output.image_url`: Include image urls from the computer
+        #     call output.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         optional :include,
@@ -52,30 +52,30 @@ module OpenAI
 
         # @!attribute instructions
         #   Inserts a system (or developer) message as the first item in the model's
-        #     context.
+        #   context.
         #
-        #     When using along with `previous_response_id`, the instructions from a previous
-        #     response will not be carried over to the next response. This makes it simple to
-        #     swap out system (or developer) messages in new responses.
+        #   When using along with `previous_response_id`, the instructions from a previous
+        #   response will not be carried over to the next response. This makes it simple to
+        #   swap out system (or developer) messages in new responses.
         #
         #   @return [String, nil]
         optional :instructions, String, nil?: true
 
         # @!attribute max_output_tokens
         #   An upper bound for the number of tokens that can be generated for a response,
-        #     including visible output tokens and
-        #     [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
+        #   including visible output tokens and
+        #   [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
         #
         #   @return [Integer, nil]
         optional :max_output_tokens, Integer, nil?: true
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #     for storing additional information about the object in a structured format, and
-        #     querying for objects via API or the dashboard.
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
         #
-        #     Keys are strings with a maximum length of 64 characters. Values are strings with
-        #     a maximum length of 512 characters.
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
@@ -88,8 +88,8 @@ module OpenAI
 
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
-        #     multi-turn conversations. Learn more about
-        #     [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        #   multi-turn conversations. Learn more about
+        #   [conversation state](https://platform.openai.com/docs/guides/conversation-state).
         #
         #   @return [String, nil]
         optional :previous_response_id, String, nil?: true
@@ -97,8 +97,8 @@ module OpenAI
         # @!attribute reasoning
         #   **o-series models only**
         #
-        #     Configuration options for
-        #     [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+        #   Configuration options for
+        #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         #
         #   @return [OpenAI::Models::Reasoning, nil]
         optional :reasoning, -> { OpenAI::Models::Reasoning }, nil?: true
@@ -111,19 +111,19 @@ module OpenAI
 
         # @!attribute temperature
         #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
-        #     make the output more random, while lower values like 0.2 will make it more
-        #     focused and deterministic. We generally recommend altering this or `top_p` but
-        #     not both.
+        #   make the output more random, while lower values like 0.2 will make it more
+        #   focused and deterministic. We generally recommend altering this or `top_p` but
+        #   not both.
         #
         #   @return [Float, nil]
         optional :temperature, Float, nil?: true
 
         # @!attribute [r] text
         #   Configuration options for a text response from the model. Can be plain text or
-        #     structured JSON data. Learn more:
+        #   structured JSON data. Learn more:
         #
-        #     - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #     - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         #
         #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
         optional :text, -> { OpenAI::Models::Responses::ResponseTextConfig }
@@ -134,8 +134,8 @@ module OpenAI
 
         # @!attribute [r] tool_choice
         #   How the model should select which tool (or tools) to use when generating a
-        #     response. See the `tools` parameter to see how to specify which tools the model
-        #     can call.
+        #   response. See the `tools` parameter to see how to specify which tools the model
+        #   can call.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, nil]
         optional :tool_choice, union: -> { OpenAI::Models::Responses::ResponseCreateParams::ToolChoice }
@@ -146,19 +146,19 @@ module OpenAI
 
         # @!attribute [r] tools
         #   An array of tools the model may call while generating a response. You can
-        #     specify which tool to use by setting the `tool_choice` parameter.
+        #   specify which tool to use by setting the `tool_choice` parameter.
         #
-        #     The two categories of tools you can provide the model are:
+        #   The two categories of tools you can provide the model are:
         #
-        #     - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
-        #       capabilities, like
-        #       [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-        #       [file search](https://platform.openai.com/docs/guides/tools-file-search).
-        #       Learn more about
-        #       [built-in tools](https://platform.openai.com/docs/guides/tools).
-        #     - **Function calls (custom tools)**: Functions that are defined by you, enabling
-        #       the model to call your own code. Learn more about
-        #       [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+        #     capabilities, like
+        #     [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+        #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
+        #     Learn more about
+        #     [built-in tools](https://platform.openai.com/docs/guides/tools).
+        #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
+        #     the model to call your own code. Learn more about
+        #     [function calling](https://platform.openai.com/docs/guides/function-calling).
         #
         #   @return [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::Tool] }
@@ -169,10 +169,10 @@ module OpenAI
 
         # @!attribute top_p
         #   An alternative to sampling with temperature, called nucleus sampling, where the
-        #     model considers the results of the tokens with top_p probability mass. So 0.1
-        #     means only the tokens comprising the top 10% probability mass are considered.
+        #   model considers the results of the tokens with top_p probability mass. So 0.1
+        #   means only the tokens comprising the top 10% probability mass are considered.
         #
-        #     We generally recommend altering this or `temperature` but not both.
+        #   We generally recommend altering this or `temperature` but not both.
         #
         #   @return [Float, nil]
         optional :top_p, Float, nil?: true
@@ -180,19 +180,19 @@ module OpenAI
         # @!attribute truncation
         #   The truncation strategy to use for the model response.
         #
-        #     - `auto`: If the context of this response and previous ones exceeds the model's
-        #       context window size, the model will truncate the response to fit the context
-        #       window by dropping input items in the middle of the conversation.
-        #     - `disabled` (default): If a model response will exceed the context window size
-        #       for a model, the request will fail with a 400 error.
+        #   - `auto`: If the context of this response and previous ones exceeds the model's
+        #     context window size, the model will truncate the response to fit the context
+        #     window by dropping input items in the middle of the conversation.
+        #   - `disabled` (default): If a model response will exceed the context window size
+        #     for a model, the request will fail with a 400 error.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation, nil]
         optional :truncation, enum: -> { OpenAI::Models::Responses::ResponseCreateParams::Truncation }, nil?: true
 
         # @!attribute [r] user
         #   A unique identifier representing your end-user, which can help OpenAI to monitor
-        #     and detect abuse.
-        #     [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+        #   and detect abuse.
+        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         #
         #   @return [String, nil]
         optional :user, String
@@ -249,13 +249,13 @@ module OpenAI
 
         # Text, image, or file inputs to the model, used to generate a response.
         #
-        #   Learn more:
+        # Learn more:
         #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Image inputs](https://platform.openai.com/docs/guides/images)
-        #   - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
-        #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
-        #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
+        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        # - [Image inputs](https://platform.openai.com/docs/guides/images)
+        # - [File inputs](https://platform.openai.com/docs/guides/pdf-files)
+        # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
+        # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         module Input
           extend OpenAI::Internal::Type::Union
 
@@ -273,8 +273,8 @@ module OpenAI
         end
 
         # How the model should select which tool (or tools) to use when generating a
-        #   response. See the `tools` parameter to see how to specify which tools the model
-        #   can call.
+        # response. See the `tools` parameter to see how to specify which tools the model
+        # can call.
         module ToolChoice
           extend OpenAI::Internal::Type::Union
 
@@ -302,11 +302,11 @@ module OpenAI
 
         # The truncation strategy to use for the model response.
         #
-        #   - `auto`: If the context of this response and previous ones exceeds the model's
-        #     context window size, the model will truncate the response to fit the context
-        #     window by dropping input items in the middle of the conversation.
-        #   - `disabled` (default): If a model response will exceed the context window size
-        #     for a model, the request will fail with a 400 error.
+        # - `auto`: If the context of this response and previous ones exceeds the model's
+        #   context window size, the model will truncate the response to fit the context
+        #   window by dropping input items in the middle of the conversation.
+        # - `disabled` (default): If a model response will exceed the context window size
+        #   for a model, the request will fail with a 400 error.
         module Truncation
           extend OpenAI::Internal::Type::Enum
 

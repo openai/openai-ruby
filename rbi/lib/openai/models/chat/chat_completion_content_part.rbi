@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Chat
       # Learn about
-      #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
+      # [text inputs](https://platform.openai.com/docs/guides/text-generation).
       module ChatCompletionContentPart
         extend OpenAI::Internal::Type::Union
 
@@ -25,7 +25,7 @@ module OpenAI
           attr_accessor :type
 
           # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
-          #   generation.
+          # generation.
           sig do
             params(
               file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::AnyHash),
@@ -40,7 +40,7 @@ module OpenAI
 
           class File < OpenAI::Internal::Type::BaseModel
             # The base64 encoded file data, used when passing the file to the model as a
-            #   string.
+            # string.
             sig { returns(T.nilable(String)) }
             attr_reader :file_data
 

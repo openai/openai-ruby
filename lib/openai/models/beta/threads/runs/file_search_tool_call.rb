@@ -20,7 +20,7 @@ module OpenAI
 
             # @!attribute type
             #   The type of tool call. This is always going to be `file_search` for this type of
-            #     tool call.
+            #   tool call.
             #
             #   @return [Symbol, :file_search]
             required :type, const: :file_search
@@ -72,7 +72,7 @@ module OpenAI
               class RankingOptions < OpenAI::Internal::Type::BaseModel
                 # @!attribute ranker
                 #   The ranker to use for the file search. If not specified will use the `auto`
-                #     ranker.
+                #   ranker.
                 #
                 #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker]
                 required :ranker,
@@ -80,7 +80,7 @@ module OpenAI
 
                 # @!attribute score_threshold
                 #   The score threshold for the file search. All values must be a floating point
-                #     number between 0 and 1.
+                #   number between 0 and 1.
                 #
                 #   @return [Float]
                 required :score_threshold, Float
@@ -96,7 +96,7 @@ module OpenAI
                 # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
                 # The ranker to use for the file search. If not specified will use the `auto`
-                #   ranker.
+                # ranker.
                 #
                 # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions#ranker
                 module Ranker
@@ -128,14 +128,14 @@ module OpenAI
 
                 # @!attribute score
                 #   The score of the result. All values must be a floating point number between 0
-                #     and 1.
+                #   and 1.
                 #
                 #   @return [Float]
                 required :score, Float
 
                 # @!attribute [r] content
                 #   The content of the result that was found. The content is only included if
-                #     requested via the include query parameter.
+                #   requested via the include query parameter.
                 #
                 #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>, nil]
                 optional :content,
