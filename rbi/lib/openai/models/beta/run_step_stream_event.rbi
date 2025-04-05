@@ -4,8 +4,8 @@ module OpenAI
   module Models
     module Beta
       # Occurs when a
-      #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-      #   is created.
+      # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+      # is created.
       module RunStepStreamEvent
         extend OpenAI::Internal::Type::Union
 
@@ -21,8 +21,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   is created.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # is created.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -48,8 +48,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   moves to an `in_progress` state.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # moves to an `in_progress` state.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -65,7 +65,7 @@ module OpenAI
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           # Represents a run step delta i.e. any changed fields on a run step during
-          #   streaming.
+          # streaming.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
           attr_reader :data
 
@@ -78,8 +78,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when parts of a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   are being streamed.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # are being streamed.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash),
@@ -105,8 +105,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   is completed.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # is completed.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -132,8 +132,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   fails.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # fails.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -159,8 +159,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   is cancelled.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # is cancelled.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -186,8 +186,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   expires.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # expires.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),

@@ -15,7 +15,7 @@ module OpenAI
 
         # @!attribute choices
         #   A list of chat completion choices. Can be more than one if `n` is greater
-        #     than 1.
+        #   than 1.
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletion::Choice>]
         required :choices, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice] }
@@ -47,8 +47,8 @@ module OpenAI
         # @!attribute [r] system_fingerprint
         #   This fingerprint represents the backend configuration that the model runs with.
         #
-        #     Can be used in conjunction with the `seed` request parameter to understand when
-        #     backend changes have been made that might impact determinism.
+        #   Can be used in conjunction with the `seed` request parameter to understand when
+        #   backend changes have been made that might impact determinism.
         #
         #   @return [String, nil]
         optional :system_fingerprint, String
@@ -69,7 +69,7 @@ module OpenAI
 
         # @!parse
         #   # Represents a chat completion response returned by model, based on the provided
-        #   #   input.
+        #   # input.
         #   #
         #   # @param id [String]
         #   # @param choices [Array<OpenAI::Models::Chat::ChatCompletion::Choice>]
@@ -99,11 +99,11 @@ module OpenAI
         class Choice < OpenAI::Internal::Type::BaseModel
           # @!attribute finish_reason
           #   The reason the model stopped generating tokens. This will be `stop` if the model
-          #     hit a natural stop point or a provided stop sequence, `length` if the maximum
-          #     number of tokens specified in the request was reached, `content_filter` if
-          #     content was omitted due to a flag from our content filters, `tool_calls` if the
-          #     model called a tool, or `function_call` (deprecated) if the model called a
-          #     function.
+          #   hit a natural stop point or a provided stop sequence, `length` if the maximum
+          #   number of tokens specified in the request was reached, `content_filter` if
+          #   content was omitted due to a flag from our content filters, `tool_calls` if the
+          #   model called a tool, or `function_call` (deprecated) if the model called a
+          #   function.
           #
           #   @return [Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason]
           required :finish_reason, enum: -> { OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason }
@@ -137,11 +137,11 @@ module OpenAI
           # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # The reason the model stopped generating tokens. This will be `stop` if the model
-          #   hit a natural stop point or a provided stop sequence, `length` if the maximum
-          #   number of tokens specified in the request was reached, `content_filter` if
-          #   content was omitted due to a flag from our content filters, `tool_calls` if the
-          #   model called a tool, or `function_call` (deprecated) if the model called a
-          #   function.
+          # hit a natural stop point or a provided stop sequence, `length` if the maximum
+          # number of tokens specified in the request was reached, `content_filter` if
+          # content was omitted due to a flag from our content filters, `tool_calls` if the
+          # model called a tool, or `function_call` (deprecated) if the model called a
+          # function.
           #
           # @see OpenAI::Models::Chat::ChatCompletion::Choice#finish_reason
           module FinishReason

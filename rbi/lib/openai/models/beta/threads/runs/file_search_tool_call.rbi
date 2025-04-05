@@ -23,7 +23,7 @@ module OpenAI
             attr_writer :file_search
 
             # The type of tool call. This is always going to be `file_search` for this type of
-            #   tool call.
+            # tool call.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -109,7 +109,7 @@ module OpenAI
 
               class RankingOptions < OpenAI::Internal::Type::BaseModel
                 # The ranker to use for the file search. If not specified will use the `auto`
-                #   ranker.
+                # ranker.
                 sig do
                   returns(
                     OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
@@ -118,7 +118,7 @@ module OpenAI
                 attr_accessor :ranker
 
                 # The score threshold for the file search. All values must be a floating point
-                #   number between 0 and 1.
+                # number between 0 and 1.
                 sig { returns(Float) }
                 attr_accessor :score_threshold
 
@@ -144,7 +144,7 @@ module OpenAI
                 def to_hash; end
 
                 # The ranker to use for the file search. If not specified will use the `auto`
-                #   ranker.
+                # ranker.
                 module Ranker
                   extend OpenAI::Internal::Type::Enum
 
@@ -190,12 +190,12 @@ module OpenAI
                 attr_accessor :file_name
 
                 # The score of the result. All values must be a floating point number between 0
-                #   and 1.
+                # and 1.
                 sig { returns(Float) }
                 attr_accessor :score
 
                 # The content of the result that was found. The content is only included if
-                #   requested via the include query parameter.
+                # requested via the include query parameter.
                 sig do
                   returns(
                     T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content])

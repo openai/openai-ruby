@@ -6,7 +6,7 @@ module OpenAI
       class Completions
         class Messages
           # Get the messages in a stored chat completion. Only Chat Completions that have
-          #   been created with the `store` parameter set to `true` will be returned.
+          # been created with the `store` parameter set to `true` will be returned.
           sig do
             params(
               completion_id: String,
@@ -25,7 +25,7 @@ module OpenAI
             # Number of messages to retrieve.
             limit: nil,
             # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
-            #   for descending order. Defaults to `asc`.
+            # for descending order. Defaults to `asc`.
             order: nil,
             request_options: {}
           ); end

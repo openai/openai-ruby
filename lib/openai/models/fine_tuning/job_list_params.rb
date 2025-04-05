@@ -31,7 +31,7 @@ module OpenAI
 
         # @!attribute metadata
         #   Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
-        #     Alternatively, set `metadata=null` to indicate no metadata.
+        #   Alternatively, set `metadata=null` to indicate no metadata.
         #
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true

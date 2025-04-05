@@ -11,20 +11,20 @@ module OpenAI
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #     for storing additional information about the object in a structured format, and
-        #     querying for objects via API or the dashboard.
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
         #
-        #     Keys are strings with a maximum length of 64 characters. Values are strings with
-        #     a maximum length of 512 characters.
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute tool_resources
         #   A set of resources that are made available to the assistant's tools in this
-        #     thread. The resources are specific to the type of tool. For example, the
-        #     `code_interpreter` tool requires a list of file IDs, while the `file_search`
-        #     tool requires a list of vector store IDs.
+        #   thread. The resources are specific to the type of tool. For example, the
+        #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
+        #   tool requires a list of vector store IDs.
         #
         #   @return [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, nil]
         optional :tool_resources, -> { OpenAI::Models::Beta::ThreadUpdateParams::ToolResources }, nil?: true
@@ -60,9 +60,9 @@ module OpenAI
 
           # @!parse
           #   # A set of resources that are made available to the assistant's tools in this
-          #   #   thread. The resources are specific to the type of tool. For example, the
-          #   #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
-          #   #   tool requires a list of vector store IDs.
+          #   # thread. The resources are specific to the type of tool. For example, the
+          #   # `code_interpreter` tool requires a list of file IDs, while the `file_search`
+          #   # tool requires a list of vector store IDs.
           #   #
           #   # @param code_interpreter [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter]
           #   # @param file_search [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch]
@@ -75,8 +75,8 @@ module OpenAI
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
-            #     available to the `code_interpreter` tool. There can be a maximum of 20 files
-            #     associated with the tool.
+            #   available to the `code_interpreter` tool. There can be a maximum of 20 files
+            #   associated with the tool.
             #
             #   @return [Array<String>, nil]
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
@@ -97,9 +97,9 @@ module OpenAI
           class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] vector_store_ids
             #   The
-            #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-            #     attached to this thread. There can be a maximum of 1 vector store attached to
-            #     the thread.
+            #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            #   attached to this thread. There can be a maximum of 1 vector store attached to
+            #   the thread.
             #
             #   @return [Array<String>, nil]
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]

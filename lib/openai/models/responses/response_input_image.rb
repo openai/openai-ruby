@@ -6,7 +6,7 @@ module OpenAI
       class ResponseInputImage < OpenAI::Internal::Type::BaseModel
         # @!attribute detail
         #   The detail level of the image to be sent to the model. One of `high`, `low`, or
-        #     `auto`. Defaults to `auto`.
+        #   `auto`. Defaults to `auto`.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail]
         required :detail, enum: -> { OpenAI::Models::Responses::ResponseInputImage::Detail }
@@ -25,14 +25,14 @@ module OpenAI
 
         # @!attribute image_url
         #   The URL of the image to be sent to the model. A fully qualified URL or base64
-        #     encoded image in a data URL.
+        #   encoded image in a data URL.
         #
         #   @return [String, nil]
         optional :image_url, String, nil?: true
 
         # @!parse
         #   # An image input to the model. Learn about
-        #   #   [image inputs](https://platform.openai.com/docs/guides/vision).
+        #   # [image inputs](https://platform.openai.com/docs/guides/vision).
         #   #
         #   # @param detail [Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail]
         #   # @param file_id [String, nil]
@@ -44,7 +44,7 @@ module OpenAI
         # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
-        #   `auto`. Defaults to `auto`.
+        # `auto`. Defaults to `auto`.
         #
         # @see OpenAI::Models::Responses::ResponseInputImage#detail
         module Detail

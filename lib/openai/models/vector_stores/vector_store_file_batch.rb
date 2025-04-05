@@ -13,7 +13,7 @@ module OpenAI
 
         # @!attribute created_at
         #   The Unix timestamp (in seconds) for when the vector store files batch was
-        #     created.
+        #   created.
         #
         #   @return [Integer]
         required :created_at, Integer
@@ -31,16 +31,16 @@ module OpenAI
 
         # @!attribute status
         #   The status of the vector store files batch, which can be either `in_progress`,
-        #     `completed`, `cancelled` or `failed`.
+        #   `completed`, `cancelled` or `failed`.
         #
         #   @return [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status]
         required :status, enum: -> { OpenAI::Models::VectorStores::VectorStoreFileBatch::Status }
 
         # @!attribute vector_store_id
         #   The ID of the
-        #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-        #     that the [File](https://platform.openai.com/docs/api-reference/files) is
-        #     attached to.
+        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
+        #   attached to.
         #
         #   @return [String]
         required :vector_store_id, String
@@ -104,7 +104,7 @@ module OpenAI
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,
-        #   `completed`, `cancelled` or `failed`.
+        # `completed`, `cancelled` or `failed`.
         #
         # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#status
         module Status

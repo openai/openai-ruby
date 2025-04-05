@@ -54,7 +54,7 @@ module OpenAI
         end
 
         # Cancel a vector store file batch. This attempts to cancel the processing of
-        #   files in this batch as soon as possible.
+        # files in this batch as soon as possible.
         #
         # @overload cancel(batch_id, vector_store_id:, request_options: {})
         #

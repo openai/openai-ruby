@@ -18,7 +18,7 @@ module OpenAI
 
           # @!parse
           #   # References an image [File](https://platform.openai.com/docs/api-reference/files)
-          #   #   in the content of a message.
+          #   # in the content of a message.
           #   #
           #   # @param image_file [OpenAI::Models::Beta::Threads::ImageFile]
           #   # @param type [Symbol, :image_file]

@@ -7,15 +7,15 @@ module OpenAI
         # @!attribute type
         #   The type of the web search tool. One of:
         #
-        #     - `web_search_preview`
-        #     - `web_search_preview_2025_03_11`
+        #   - `web_search_preview`
+        #   - `web_search_preview_2025_03_11`
         #
         #   @return [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
         required :type, enum: -> { OpenAI::Models::Responses::WebSearchTool::Type }
 
         # @!attribute [r] search_context_size
         #   High level guidance for the amount of context window space to use for the
-        #     search. One of `low`, `medium`, or `high`. `medium` is the default.
+        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         #
         #   @return [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize, nil]
         optional :search_context_size, enum: -> { OpenAI::Models::Responses::WebSearchTool::SearchContextSize }
@@ -31,8 +31,8 @@ module OpenAI
 
         # @!parse
         #   # This tool searches the web for relevant results to use in a response. Learn more
-        #   #   about the
-        #   #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        #   # about the
+        #   # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         #   #
         #   # @param type [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
         #   # @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize]
@@ -44,8 +44,8 @@ module OpenAI
 
         # The type of the web search tool. One of:
         #
-        #   - `web_search_preview`
-        #   - `web_search_preview_2025_03_11`
+        # - `web_search_preview`
+        # - `web_search_preview_2025_03_11`
         #
         # @see OpenAI::Models::Responses::WebSearchTool#type
         module Type
@@ -62,7 +62,7 @@ module OpenAI
         end
 
         # High level guidance for the amount of context window space to use for the
-        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
         #
         # @see OpenAI::Models::Responses::WebSearchTool#search_context_size
         module SearchContextSize
@@ -99,7 +99,7 @@ module OpenAI
 
           # @!attribute [r] country
           #   The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
-          #     the user, e.g. `US`.
+          #   the user, e.g. `US`.
           #
           #   @return [String, nil]
           optional :country, String
@@ -120,7 +120,7 @@ module OpenAI
 
           # @!attribute [r] timezone
           #   The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
-          #     user, e.g. `America/Los_Angeles`.
+          #   user, e.g. `America/Los_Angeles`.
           #
           #   @return [String, nil]
           optional :timezone, String

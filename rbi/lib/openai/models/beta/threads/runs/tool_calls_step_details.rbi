@@ -7,8 +7,8 @@ module OpenAI
         module Runs
           class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
             # An array of tool calls the run step was involved in. These can be associated
-            #   with one of three types of tools: `code_interpreter`, `file_search`, or
-            #   `function`.
+            # with one of three types of tools: `code_interpreter`, `file_search`, or
+            # `function`.
             sig do
               returns(
                 T::Array[

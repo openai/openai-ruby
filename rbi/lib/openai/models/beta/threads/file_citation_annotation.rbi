@@ -31,8 +31,8 @@ module OpenAI
           attr_accessor :type
 
           # A citation within the message that points to a specific quote from a specific
-          #   File associated with the assistant or the message. Generated when the assistant
-          #   uses the "file_search" tool to search files.
+          # File associated with the assistant or the message. Generated when the assistant
+          # uses the "file_search" tool to search files.
           sig do
             params(
               end_index: Integer,

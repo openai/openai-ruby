@@ -70,8 +70,8 @@ module OpenAI
       end
 
       # Cancels an in-progress batch. The batch will be in status `cancelling` for up to
-      #   10 minutes, before changing to `cancelled`, where it will have partial results
-      #   (if any) available in the output file.
+      # 10 minutes, before changing to `cancelled`, where it will have partial results
+      # (if any) available in the output file.
       #
       # @overload cancel(batch_id, request_options: {})
       #

@@ -30,7 +30,7 @@ module OpenAI
 
         # @!parse
         #   # A tool that controls a virtual computer. Learn more about the
-        #   #   [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+        #   # [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
         #   #
         #   # @param display_height [Float]
         #   # @param display_width [Float]

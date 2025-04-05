@@ -4,7 +4,7 @@ module OpenAI
   module Models
     class CompoundFilter < OpenAI::Internal::Type::BaseModel
       # Array of filters to combine. Items can be `ComparisonFilter` or
-      #   `CompoundFilter`.
+      # `CompoundFilter`.
       sig { returns(T::Array[T.any(OpenAI::Models::ComparisonFilter, T.anything)]) }
       attr_accessor :filters
 
@@ -34,7 +34,7 @@ module OpenAI
       def to_hash; end
 
       # A filter used to compare a specified attribute key to a given value using a
-      #   defined comparison operation.
+      # defined comparison operation.
       module Filter
         extend OpenAI::Internal::Type::Union
 

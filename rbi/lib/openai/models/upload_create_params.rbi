@@ -16,15 +16,15 @@ module OpenAI
 
       # The MIME type of the file.
       #
-      #   This must fall within the supported MIME types for your file purpose. See the
-      #   supported MIME types for assistants and vision.
+      # This must fall within the supported MIME types for your file purpose. See the
+      # supported MIME types for assistants and vision.
       sig { returns(String) }
       attr_accessor :mime_type
 
       # The intended purpose of the uploaded file.
       #
-      #   See the
-      #   [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
+      # See the
+      # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
       sig { returns(OpenAI::Models::FilePurpose::OrSymbol) }
       attr_accessor :purpose
 

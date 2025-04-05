@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         class ImageURLDelta < OpenAI::Internal::Type::BaseModel
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #   to high resolution using `high`.
+          # to high resolution using `high`.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)) }
           attr_reader :detail
 
@@ -14,7 +14,7 @@ module OpenAI
           attr_writer :detail
 
           # The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
-          #   webp.
+          # webp.
           sig { returns(T.nilable(String)) }
           attr_reader :url
 
@@ -33,7 +33,7 @@ module OpenAI
           def to_hash; end
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #   to high resolution using `high`.
+          # to high resolution using `high`.
           module Detail
             extend OpenAI::Internal::Type::Enum
 

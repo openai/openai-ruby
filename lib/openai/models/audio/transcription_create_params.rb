@@ -13,25 +13,25 @@ module OpenAI
 
         # @!attribute file
         #   The audio file object (not file name) to transcribe, in one of these formats:
-        #     flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
+        #   flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         #
         #   @return [IO, StringIO]
         required :file, IO
 
         # @!attribute model
         #   ID of the model to use. The options are `gpt-4o-transcribe`,
-        #     `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
-        #     Whisper V2 model).
+        #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
+        #   Whisper V2 model).
         #
         #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Models::Audio::TranscriptionCreateParams::Model }
 
         # @!attribute [r] include
         #   Additional information to include in the transcription response. `logprobs` will
-        #     return the log probabilities of the tokens in the response to understand the
-        #     model's confidence in the transcription. `logprobs` only works with
-        #     response_format set to `json` and only with the models `gpt-4o-transcribe` and
-        #     `gpt-4o-mini-transcribe`.
+        #   return the log probabilities of the tokens in the response to understand the
+        #   model's confidence in the transcription. `logprobs` only works with
+        #   response_format set to `json` and only with the models `gpt-4o-transcribe` and
+        #   `gpt-4o-mini-transcribe`.
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>, nil]
         optional :include,
@@ -43,8 +43,8 @@ module OpenAI
 
         # @!attribute [r] language
         #   The language of the input audio. Supplying the input language in
-        #     [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
-        #     format will improve accuracy and latency.
+        #   [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
+        #   format will improve accuracy and latency.
         #
         #   @return [String, nil]
         optional :language, String
@@ -55,9 +55,9 @@ module OpenAI
 
         # @!attribute [r] prompt
         #   An optional text to guide the model's style or continue a previous audio
-        #     segment. The
-        #     [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
-        #     should match the audio language.
+        #   segment. The
+        #   [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
+        #   should match the audio language.
         #
         #   @return [String, nil]
         optional :prompt, String
@@ -68,8 +68,8 @@ module OpenAI
 
         # @!attribute [r] response_format
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
-        #     `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
-        #     the only supported format is `json`.
+        #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
+        #   the only supported format is `json`.
         #
         #   @return [Symbol, OpenAI::Models::AudioResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Models::AudioResponseFormat }
@@ -80,10 +80,10 @@ module OpenAI
 
         # @!attribute [r] temperature
         #   The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-        #     output more random, while lower values like 0.2 will make it more focused and
-        #     deterministic. If set to 0, the model will use
-        #     [log probability](https://en.wikipedia.org/wiki/Log_probability) to
-        #     automatically increase the temperature until certain thresholds are hit.
+        #   output more random, while lower values like 0.2 will make it more focused and
+        #   deterministic. If set to 0, the model will use
+        #   [log probability](https://en.wikipedia.org/wiki/Log_probability) to
+        #   automatically increase the temperature until certain thresholds are hit.
         #
         #   @return [Float, nil]
         optional :temperature, Float
@@ -94,10 +94,10 @@ module OpenAI
 
         # @!attribute [r] timestamp_granularities
         #   The timestamp granularities to populate for this transcription.
-        #     `response_format` must be set `verbose_json` to use timestamp granularities.
-        #     Either or both of these options are supported: `word`, or `segment`. Note: There
-        #     is no additional latency for segment timestamps, but generating word timestamps
-        #     incurs additional latency.
+        #   `response_format` must be set `verbose_json` to use timestamp granularities.
+        #   Either or both of these options are supported: `word`, or `segment`. Note: There
+        #   is no additional latency for segment timestamps, but generating word timestamps
+        #   incurs additional latency.
         #
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
         optional :timestamp_granularities,
@@ -136,8 +136,8 @@ module OpenAI
         # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
-        #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
-        #   Whisper V2 model).
+        # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
+        # Whisper V2 model).
         module Model
           extend OpenAI::Internal::Type::Union
 

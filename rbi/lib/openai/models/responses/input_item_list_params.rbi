@@ -22,7 +22,7 @@ module OpenAI
         attr_writer :before
 
         # Additional fields to include in the response. See the `include` parameter for
-        #   Response creation above for more information.
+        # Response creation above for more information.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])) }
         attr_reader :include
 
@@ -30,7 +30,7 @@ module OpenAI
         attr_writer :include
 
         # A limit on the number of objects to be returned. Limit can range between 1 and
-        #   100, and the default is 20.
+        # 100, and the default is 20.
         sig { returns(T.nilable(Integer)) }
         attr_reader :limit
 
@@ -39,8 +39,8 @@ module OpenAI
 
         # The order to return the input items in. Default is `asc`.
         #
-        #   - `asc`: Return the input items in ascending order.
-        #   - `desc`: Return the input items in descending order.
+        # - `asc`: Return the input items in ascending order.
+        # - `desc`: Return the input items in descending order.
         sig { returns(T.nilable(OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol)) }
         attr_reader :order
 
@@ -77,8 +77,8 @@ module OpenAI
 
         # The order to return the input items in. Default is `asc`.
         #
-        #   - `asc`: Return the input items in ascending order.
-        #   - `desc`: Return the input items in descending order.
+        # - `asc`: Return the input items in ascending order.
+        # - `desc`: Return the input items in descending order.
         module Order
           extend OpenAI::Internal::Type::Enum
 

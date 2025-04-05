@@ -14,8 +14,8 @@ module OpenAI
 
           # @!attribute assistant_id
           #   If applicable, the ID of the
-          #     [assistant](https://platform.openai.com/docs/api-reference/assistants) that
-          #     authored this message.
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) that
+          #   authored this message.
           #
           #   @return [String, nil]
           required :assistant_id, String, nil?: true
@@ -61,11 +61,11 @@ module OpenAI
 
           # @!attribute metadata
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-          #     for storing additional information about the object in a structured format, and
-          #     querying for objects via API or the dashboard.
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
           #
-          #     Keys are strings with a maximum length of 64 characters. Values are strings with
-          #     a maximum length of 512 characters.
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
           #
           #   @return [Hash{Symbol=>String}, nil]
           required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
@@ -84,29 +84,29 @@ module OpenAI
 
           # @!attribute run_id
           #   The ID of the [run](https://platform.openai.com/docs/api-reference/runs)
-          #     associated with the creation of this message. Value is `null` when messages are
-          #     created manually using the create message or create thread endpoints.
+          #   associated with the creation of this message. Value is `null` when messages are
+          #   created manually using the create message or create thread endpoints.
           #
           #   @return [String, nil]
           required :run_id, String, nil?: true
 
           # @!attribute status
           #   The status of the message, which can be either `in_progress`, `incomplete`, or
-          #     `completed`.
+          #   `completed`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Threads::Message::Status]
           required :status, enum: -> { OpenAI::Models::Beta::Threads::Message::Status }
 
           # @!attribute thread_id
           #   The [thread](https://platform.openai.com/docs/api-reference/threads) ID that
-          #     this message belongs to.
+          #   this message belongs to.
           #
           #   @return [String]
           required :thread_id, String
 
           # @!parse
           #   # Represents a message within a
-          #   #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   # [thread](https://platform.openai.com/docs/api-reference/threads).
           #   #
           #   # @param id [String]
           #   # @param assistant_id [String, nil]
@@ -257,7 +257,7 @@ module OpenAI
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
-          #   `completed`.
+          # `completed`.
           #
           # @see OpenAI::Models::Beta::Threads::Message#status
           module Status

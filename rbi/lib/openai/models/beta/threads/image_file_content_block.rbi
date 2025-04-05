@@ -16,7 +16,7 @@ module OpenAI
           attr_accessor :type
 
           # References an image [File](https://platform.openai.com/docs/api-reference/files)
-          #   in the content of a message.
+          # in the content of a message.
           sig do
             params(
               image_file: T.any(OpenAI::Models::Beta::Threads::ImageFile, OpenAI::Internal::AnyHash),

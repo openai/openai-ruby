@@ -5,7 +5,7 @@ module OpenAI
     module Beta
       class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
         # Represents a thread that contains
-        #   [messages](https://platform.openai.com/docs/api-reference/messages).
+        # [messages](https://platform.openai.com/docs/api-reference/messages).
         sig { returns(OpenAI::Models::Beta::Thread) }
         attr_reader :data
 
@@ -23,8 +23,8 @@ module OpenAI
         attr_writer :enabled
 
         # Occurs when a new
-        #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
-        #   created.
+        # [thread](https://platform.openai.com/docs/api-reference/threads/object) is
+        # created.
         sig do
           params(
             data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::AnyHash),

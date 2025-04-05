@@ -7,14 +7,14 @@ module OpenAI
         class ImageURL < OpenAI::Internal::Type::BaseModel
           # @!attribute url
           #   The external URL of the image, must be a supported image types: jpeg, jpg, png,
-          #     gif, webp.
+          #   gif, webp.
           #
           #   @return [String]
           required :url, String
 
           # @!attribute [r] detail
           #   Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #     to high resolution using `high`. Default value is `auto`
+          #   to high resolution using `high`. Default value is `auto`
           #
           #   @return [Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail, nil]
           optional :detail, enum: -> { OpenAI::Models::Beta::Threads::ImageURL::Detail }
@@ -32,7 +32,7 @@ module OpenAI
           # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #   to high resolution using `high`. Default value is `auto`
+          # to high resolution using `high`. Default value is `auto`
           #
           # @see OpenAI::Models::Beta::Threads::ImageURL#detail
           module Detail

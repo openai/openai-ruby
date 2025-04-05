@@ -16,8 +16,8 @@ module OpenAI
 
           # @!attribute assistant_id
           #   The ID of the
-          #     [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #     execution of this run.
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   execution of this run.
           #
           #   @return [String]
           required :assistant_id, String
@@ -54,15 +54,15 @@ module OpenAI
 
           # @!attribute incomplete_details
           #   Details on why the run is incomplete. Will be `null` if the run is not
-          #     incomplete.
+          #   incomplete.
           #
           #   @return [OpenAI::Models::Beta::Threads::Run::IncompleteDetails, nil]
           required :incomplete_details, -> { OpenAI::Models::Beta::Threads::Run::IncompleteDetails }, nil?: true
 
           # @!attribute instructions
           #   The instructions that the
-          #     [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #     this run.
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   this run.
           #
           #   @return [String]
           required :instructions, String
@@ -75,33 +75,33 @@ module OpenAI
 
           # @!attribute max_completion_tokens
           #   The maximum number of completion tokens specified to have been used over the
-          #     course of the run.
+          #   course of the run.
           #
           #   @return [Integer, nil]
           required :max_completion_tokens, Integer, nil?: true
 
           # @!attribute max_prompt_tokens
           #   The maximum number of prompt tokens specified to have been used over the course
-          #     of the run.
+          #   of the run.
           #
           #   @return [Integer, nil]
           required :max_prompt_tokens, Integer, nil?: true
 
           # @!attribute metadata
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-          #     for storing additional information about the object in a structured format, and
-          #     querying for objects via API or the dashboard.
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
           #
-          #     Keys are strings with a maximum length of 64 characters. Values are strings with
-          #     a maximum length of 512 characters.
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
           #
           #   @return [Hash{Symbol=>String}, nil]
           required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!attribute model
           #   The model that the
-          #     [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #     this run.
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   this run.
           #
           #   @return [String]
           required :model, String
@@ -114,40 +114,40 @@ module OpenAI
 
           # @!attribute parallel_tool_calls
           #   Whether to enable
-          #     [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
-          #     during tool use.
+          #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+          #   during tool use.
           #
           #   @return [Boolean]
           required :parallel_tool_calls, OpenAI::Internal::Type::Boolean
 
           # @!attribute required_action
           #   Details on the action required to continue the run. Will be `null` if no action
-          #     is required.
+          #   is required.
           #
           #   @return [OpenAI::Models::Beta::Threads::Run::RequiredAction, nil]
           required :required_action, -> { OpenAI::Models::Beta::Threads::Run::RequiredAction }, nil?: true
 
           # @!attribute response_format
           #   Specifies the format that the model must output. Compatible with
-          #     [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          #     [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          #     and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
+          #   [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
+          #   and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
-          #     Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
-          #     Outputs which ensures the model will match your supplied JSON schema. Learn more
-          #     in the
-          #     [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+          #   Outputs which ensures the model will match your supplied JSON schema. Learn more
+          #   in the
+          #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
           #
-          #     Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
-          #     message the model generates is valid JSON.
+          #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+          #   message the model generates is valid JSON.
           #
-          #     **Important:** when using JSON mode, you **must** also instruct the model to
-          #     produce JSON yourself via a system or user message. Without this, the model may
-          #     generate an unending stream of whitespace until the generation reaches the token
-          #     limit, resulting in a long-running and seemingly "stuck" request. Also note that
-          #     the message content may be partially cut off if `finish_reason="length"`, which
-          #     indicates the generation exceeded `max_tokens` or the conversation exceeded the
-          #     max context length.
+          #   **Important:** when using JSON mode, you **must** also instruct the model to
+          #   produce JSON yourself via a system or user message. Without this, the model may
+          #   generate an unending stream of whitespace until the generation reaches the token
+          #   limit, resulting in a long-running and seemingly "stuck" request. Also note that
+          #   the message content may be partially cut off if `finish_reason="length"`, which
+          #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
+          #   max context length.
           #
           #   @return [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
           required :response_format, union: -> { OpenAI::Models::Beta::AssistantResponseFormatOption }, nil?: true
@@ -160,49 +160,49 @@ module OpenAI
 
           # @!attribute status
           #   The status of the run, which can be either `queued`, `in_progress`,
-          #     `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
-          #     `incomplete`, or `expired`.
+          #   `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
+          #   `incomplete`, or `expired`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Threads::RunStatus]
           required :status, enum: -> { OpenAI::Models::Beta::Threads::RunStatus }
 
           # @!attribute thread_id
           #   The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-          #     that was executed on as a part of this run.
+          #   that was executed on as a part of this run.
           #
           #   @return [String]
           required :thread_id, String
 
           # @!attribute tool_choice
           #   Controls which (if any) tool is called by the model. `none` means the model will
-          #     not call any tools and instead generates a message. `auto` is the default value
-          #     and means the model can pick between generating a message or calling one or more
-          #     tools. `required` means the model must call one or more tools before responding
-          #     to the user. Specifying a particular tool like `{"type": "file_search"}` or
-          #     `{"type": "function", "function": {"name": "my_function"}}` forces the model to
-          #     call that tool.
+          #   not call any tools and instead generates a message. `auto` is the default value
+          #   and means the model can pick between generating a message or calling one or more
+          #   tools. `required` means the model must call one or more tools before responding
+          #   to the user. Specifying a particular tool like `{"type": "file_search"}` or
+          #   `{"type": "function", "function": {"name": "my_function"}}` forces the model to
+          #   call that tool.
           #
           #   @return [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil]
           required :tool_choice, union: -> { OpenAI::Models::Beta::AssistantToolChoiceOption }, nil?: true
 
           # @!attribute tools
           #   The list of tools that the
-          #     [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
-          #     this run.
+          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+          #   this run.
           #
           #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
           required :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] }
 
           # @!attribute truncation_strategy
           #   Controls for how a thread will be truncated prior to the run. Use this to
-          #     control the intial context window of the run.
+          #   control the intial context window of the run.
           #
           #   @return [OpenAI::Models::Beta::Threads::Run::TruncationStrategy, nil]
           required :truncation_strategy, -> { OpenAI::Models::Beta::Threads::Run::TruncationStrategy }, nil?: true
 
           # @!attribute usage
           #   Usage statistics related to the run. This value will be `null` if the run is not
-          #     in a terminal state (i.e. `in_progress`, `queued`, etc.).
+          #   in a terminal state (i.e. `in_progress`, `queued`, etc.).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run::Usage, nil]
           required :usage, -> { OpenAI::Models::Beta::Threads::Run::Usage }, nil?: true
@@ -221,7 +221,7 @@ module OpenAI
 
           # @!parse
           #   # Represents an execution run on a
-          #   #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   # [thread](https://platform.openai.com/docs/api-reference/threads).
           #   #
           #   # @param id [String]
           #   # @param assistant_id [String]
@@ -290,7 +290,7 @@ module OpenAI
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] reason
             #   The reason why the run is incomplete. This will point to which specific token
-            #     limit was reached over the course of the run.
+            #   limit was reached over the course of the run.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason, nil]
             optional :reason, enum: -> { OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason }
@@ -301,7 +301,7 @@ module OpenAI
 
             # @!parse
             #   # Details on why the run is incomplete. Will be `null` if the run is not
-            #   #   incomplete.
+            #   # incomplete.
             #   #
             #   # @param reason [Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason]
             #   #
@@ -310,7 +310,7 @@ module OpenAI
             # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # The reason why the run is incomplete. This will point to which specific token
-            #   limit was reached over the course of the run.
+            # limit was reached over the course of the run.
             #
             # @see OpenAI::Models::Beta::Threads::Run::IncompleteDetails#reason
             module Reason
@@ -386,7 +386,7 @@ module OpenAI
 
             # @!parse
             #   # Details on the action required to continue the run. Will be `null` if no action
-            #   #   is required.
+            #   # is required.
             #   #
             #   # @param submit_tool_outputs [OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs]
             #   # @param type [Symbol, :submit_tool_outputs]
@@ -419,23 +419,23 @@ module OpenAI
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   The truncation strategy to use for the thread. The default is `auto`. If set to
-            #     `last_messages`, the thread will be truncated to the n most recent messages in
-            #     the thread. When set to `auto`, messages in the middle of the thread will be
-            #     dropped to fit the context length of the model, `max_prompt_tokens`.
+            #   `last_messages`, the thread will be truncated to the n most recent messages in
+            #   the thread. When set to `auto`, messages in the middle of the thread will be
+            #   dropped to fit the context length of the model, `max_prompt_tokens`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type]
             required :type, enum: -> { OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type }
 
             # @!attribute last_messages
             #   The number of most recent messages from the thread when constructing the context
-            #     for the run.
+            #   for the run.
             #
             #   @return [Integer, nil]
             optional :last_messages, Integer, nil?: true
 
             # @!parse
             #   # Controls for how a thread will be truncated prior to the run. Use this to
-            #   #   control the intial context window of the run.
+            #   # control the intial context window of the run.
             #   #
             #   # @param type [Symbol, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type]
             #   # @param last_messages [Integer, nil]
@@ -445,9 +445,9 @@ module OpenAI
             # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
-            #   `last_messages`, the thread will be truncated to the n most recent messages in
-            #   the thread. When set to `auto`, messages in the middle of the thread will be
-            #   dropped to fit the context length of the model, `max_prompt_tokens`.
+            # `last_messages`, the thread will be truncated to the n most recent messages in
+            # the thread. When set to `auto`, messages in the middle of the thread will be
+            # dropped to fit the context length of the model, `max_prompt_tokens`.
             #
             # @see OpenAI::Models::Beta::Threads::Run::TruncationStrategy#type
             module Type
@@ -486,7 +486,7 @@ module OpenAI
 
             # @!parse
             #   # Usage statistics related to the run. This value will be `null` if the run is not
-            #   #   in a terminal state (i.e. `in_progress`, `queued`, etc.).
+            #   # in a terminal state (i.e. `in_progress`, `queued`, etc.).
             #   #
             #   # @param completion_tokens [Integer]
             #   # @param prompt_tokens [Integer]

@@ -25,7 +25,7 @@ module OpenAI
 
         # @!attribute [r] status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #     Populated when items are returned via API.
+        #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseReasoningItem::Status }
@@ -36,7 +36,7 @@ module OpenAI
 
         # @!parse
         #   # A description of the chain of thought used by a reasoning model while generating
-        #   #   a response.
+        #   # a response.
         #   #
         #   # @param id [String]
         #   # @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>]
@@ -70,7 +70,7 @@ module OpenAI
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseReasoningItem#status
         module Status

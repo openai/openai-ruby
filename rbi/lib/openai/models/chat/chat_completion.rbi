@@ -9,7 +9,7 @@ module OpenAI
         attr_accessor :id
 
         # A list of chat completion choices. Can be more than one if `n` is greater
-        #   than 1.
+        # than 1.
         sig { returns(T::Array[OpenAI::Models::Chat::ChatCompletion::Choice]) }
         attr_accessor :choices
 
@@ -31,8 +31,8 @@ module OpenAI
 
         # This fingerprint represents the backend configuration that the model runs with.
         #
-        #   Can be used in conjunction with the `seed` request parameter to understand when
-        #   backend changes have been made that might impact determinism.
+        # Can be used in conjunction with the `seed` request parameter to understand when
+        # backend changes have been made that might impact determinism.
         sig { returns(T.nilable(String)) }
         attr_reader :system_fingerprint
 
@@ -47,7 +47,7 @@ module OpenAI
         attr_writer :usage
 
         # Represents a chat completion response returned by model, based on the provided
-        #   input.
+        # input.
         sig do
           params(
             id: String,
@@ -90,11 +90,11 @@ module OpenAI
 
         class Choice < OpenAI::Internal::Type::BaseModel
           # The reason the model stopped generating tokens. This will be `stop` if the model
-          #   hit a natural stop point or a provided stop sequence, `length` if the maximum
-          #   number of tokens specified in the request was reached, `content_filter` if
-          #   content was omitted due to a flag from our content filters, `tool_calls` if the
-          #   model called a tool, or `function_call` (deprecated) if the model called a
-          #   function.
+          # hit a natural stop point or a provided stop sequence, `length` if the maximum
+          # number of tokens specified in the request was reached, `content_filter` if
+          # content was omitted due to a flag from our content filters, `tool_calls` if the
+          # model called a tool, or `function_call` (deprecated) if the model called a
+          # function.
           sig { returns(OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol) }
           attr_accessor :finish_reason
 
@@ -146,11 +146,11 @@ module OpenAI
           def to_hash; end
 
           # The reason the model stopped generating tokens. This will be `stop` if the model
-          #   hit a natural stop point or a provided stop sequence, `length` if the maximum
-          #   number of tokens specified in the request was reached, `content_filter` if
-          #   content was omitted due to a flag from our content filters, `tool_calls` if the
-          #   model called a tool, or `function_call` (deprecated) if the model called a
-          #   function.
+          # hit a natural stop point or a provided stop sequence, `length` if the maximum
+          # number of tokens specified in the request was reached, `content_filter` if
+          # content was omitted due to a flag from our content filters, `tool_calls` if the
+          # model called a tool, or `function_call` (deprecated) if the model called a
+          # function.
           module FinishReason
             extend OpenAI::Internal::Type::Enum
 

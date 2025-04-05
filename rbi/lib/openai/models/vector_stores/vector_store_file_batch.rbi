@@ -9,7 +9,7 @@ module OpenAI
         attr_accessor :id
 
         # The Unix timestamp (in seconds) for when the vector store files batch was
-        #   created.
+        # created.
         sig { returns(Integer) }
         attr_accessor :created_at
 
@@ -29,14 +29,14 @@ module OpenAI
         attr_accessor :object
 
         # The status of the vector store files batch, which can be either `in_progress`,
-        #   `completed`, `cancelled` or `failed`.
+        # `completed`, `cancelled` or `failed`.
         sig { returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol) }
         attr_accessor :status
 
         # The ID of the
-        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
-        #   attached to.
+        # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+        # that the [File](https://platform.openai.com/docs/api-reference/files) is
+        # attached to.
         sig { returns(String) }
         attr_accessor :vector_store_id
 
@@ -124,7 +124,7 @@ module OpenAI
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,
-        #   `completed`, `cancelled` or `failed`.
+        # `completed`, `cancelled` or `failed`.
         module Status
           extend OpenAI::Internal::Type::Enum
 

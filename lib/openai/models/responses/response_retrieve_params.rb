@@ -11,7 +11,7 @@ module OpenAI
 
         # @!attribute [r] include
         #   Additional fields to include in the response. See the `include` parameter for
-        #     Response creation above for more information.
+        #   Response creation above for more information.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         optional :include,

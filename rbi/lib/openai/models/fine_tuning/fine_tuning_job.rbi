@@ -13,7 +13,7 @@ module OpenAI
         attr_accessor :created_at
 
         # For fine-tuning jobs that have `failed`, this will contain more information on
-        #   the cause of the failure.
+        # the cause of the failure.
         sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Error)) }
         attr_reader :error
 
@@ -26,17 +26,17 @@ module OpenAI
         attr_writer :error
 
         # The name of the fine-tuned model that is being created. The value will be null
-        #   if the fine-tuning job is still running.
+        # if the fine-tuning job is still running.
         sig { returns(T.nilable(String)) }
         attr_accessor :fine_tuned_model
 
         # The Unix timestamp (in seconds) for when the fine-tuning job was finished. The
-        #   value will be null if the fine-tuning job is still running.
+        # value will be null if the fine-tuning job is still running.
         sig { returns(T.nilable(Integer)) }
         attr_accessor :finished_at
 
         # The hyperparameters used for the fine-tuning job. This value will only be
-        #   returned when running `supervised` jobs.
+        # returned when running `supervised` jobs.
         sig { returns(OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters) }
         attr_reader :hyperparameters
 
@@ -61,8 +61,8 @@ module OpenAI
         attr_accessor :organization_id
 
         # The compiled results file ID(s) for the fine-tuning job. You can retrieve the
-        #   results with the
-        #   [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        # results with the
+        # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
         sig { returns(T::Array[String]) }
         attr_accessor :result_files
 
@@ -71,28 +71,28 @@ module OpenAI
         attr_accessor :seed
 
         # The current status of the fine-tuning job, which can be either
-        #   `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
+        # `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
         sig { returns(OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol) }
         attr_accessor :status
 
         # The total number of billable tokens processed by this fine-tuning job. The value
-        #   will be null if the fine-tuning job is still running.
+        # will be null if the fine-tuning job is still running.
         sig { returns(T.nilable(Integer)) }
         attr_accessor :trained_tokens
 
         # The file ID used for training. You can retrieve the training data with the
-        #   [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
         sig { returns(String) }
         attr_accessor :training_file
 
         # The file ID used for validation. You can retrieve the validation results with
-        #   the
-        #   [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        # the
+        # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
         sig { returns(T.nilable(String)) }
         attr_accessor :validation_file
 
         # The Unix timestamp (in seconds) for when the fine-tuning job is estimated to
-        #   finish. The value will be null if the fine-tuning job is not running.
+        # finish. The value will be null if the fine-tuning job is not running.
         sig { returns(T.nilable(Integer)) }
         attr_accessor :estimated_finish
 
@@ -101,11 +101,11 @@ module OpenAI
         attr_accessor :integrations
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #   for storing additional information about the object in a structured format, and
-        #   querying for objects via API or the dashboard.
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
         #
-        #   Keys are strings with a maximum length of 64 characters. Values are strings with
-        #   a maximum length of 512 characters.
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
@@ -117,7 +117,7 @@ module OpenAI
         attr_writer :method_
 
         # The `fine_tuning.job` object represents a fine-tuning job that has been created
-        #   through the API.
+        # through the API.
         sig do
           params(
             id: String,
@@ -203,12 +203,12 @@ module OpenAI
           attr_accessor :message
 
           # The parameter that was invalid, usually `training_file` or `validation_file`.
-          #   This field will be null if the failure was not parameter-specific.
+          # This field will be null if the failure was not parameter-specific.
           sig { returns(T.nilable(String)) }
           attr_accessor :param
 
           # For fine-tuning jobs that have `failed`, this will contain more information on
-          #   the cause of the failure.
+          # the cause of the failure.
           sig { params(code: String, message: String, param: T.nilable(String)).returns(T.attached_class) }
           def self.new(code:, message:, param:); end
 
@@ -218,7 +218,7 @@ module OpenAI
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
           # Number of examples in each batch. A larger batch size means that model
-          #   parameters are updated less frequently, but with lower variance.
+          # parameters are updated less frequently, but with lower variance.
           sig { returns(T.nilable(T.any(Symbol, Integer))) }
           attr_reader :batch_size
 
@@ -226,7 +226,7 @@ module OpenAI
           attr_writer :batch_size
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
-          #   avoid overfitting.
+          # avoid overfitting.
           sig { returns(T.nilable(T.any(Symbol, Float))) }
           attr_reader :learning_rate_multiplier
 
@@ -234,7 +234,7 @@ module OpenAI
           attr_writer :learning_rate_multiplier
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
-          #   through the training dataset.
+          # through the training dataset.
           sig { returns(T.nilable(T.any(Symbol, Integer))) }
           attr_reader :n_epochs
 
@@ -242,7 +242,7 @@ module OpenAI
           attr_writer :n_epochs
 
           # The hyperparameters used for the fine-tuning job. This value will only be
-          #   returned when running `supervised` jobs.
+          # returned when running `supervised` jobs.
           sig do
             params(
               batch_size: T.any(Symbol, Integer),
@@ -266,7 +266,7 @@ module OpenAI
           def to_hash; end
 
           # Number of examples in each batch. A larger batch size means that model
-          #   parameters are updated less frequently, but with lower variance.
+          # parameters are updated less frequently, but with lower variance.
           module BatchSize
             extend OpenAI::Internal::Type::Union
 
@@ -275,7 +275,7 @@ module OpenAI
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
-          #   avoid overfitting.
+          # avoid overfitting.
           module LearningRateMultiplier
             extend OpenAI::Internal::Type::Union
 
@@ -284,7 +284,7 @@ module OpenAI
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
-          #   through the training dataset.
+          # through the training dataset.
           module NEpochs
             extend OpenAI::Internal::Type::Union
 
@@ -294,7 +294,7 @@ module OpenAI
         end
 
         # The current status of the fine-tuning job, which can be either
-        #   `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
+        # `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
         module Status
           extend OpenAI::Internal::Type::Enum
 
@@ -394,7 +394,7 @@ module OpenAI
 
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # Number of examples in each batch. A larger batch size means that model
-              #   parameters are updated less frequently, but with lower variance.
+              # parameters are updated less frequently, but with lower variance.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               attr_reader :batch_size
 
@@ -402,7 +402,7 @@ module OpenAI
               attr_writer :batch_size
 
               # The beta value for the DPO method. A higher beta value will increase the weight
-              #   of the penalty between the policy and reference model.
+              # of the penalty between the policy and reference model.
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               attr_reader :beta
 
@@ -410,7 +410,7 @@ module OpenAI
               attr_writer :beta
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #   avoid overfitting.
+              # avoid overfitting.
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               attr_reader :learning_rate_multiplier
 
@@ -418,7 +418,7 @@ module OpenAI
               attr_writer :learning_rate_multiplier
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
-              #   through the training dataset.
+              # through the training dataset.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               attr_reader :n_epochs
 
@@ -451,7 +451,7 @@ module OpenAI
               def to_hash; end
 
               # Number of examples in each batch. A larger batch size means that model
-              #   parameters are updated less frequently, but with lower variance.
+              # parameters are updated less frequently, but with lower variance.
               module BatchSize
                 extend OpenAI::Internal::Type::Union
 
@@ -460,7 +460,7 @@ module OpenAI
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
-              #   of the penalty between the policy and reference model.
+              # of the penalty between the policy and reference model.
               module Beta
                 extend OpenAI::Internal::Type::Union
 
@@ -469,7 +469,7 @@ module OpenAI
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #   avoid overfitting.
+              # avoid overfitting.
               module LearningRateMultiplier
                 extend OpenAI::Internal::Type::Union
 
@@ -478,7 +478,7 @@ module OpenAI
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
-              #   through the training dataset.
+              # through the training dataset.
               module NEpochs
                 extend OpenAI::Internal::Type::Union
 
@@ -524,7 +524,7 @@ module OpenAI
 
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # Number of examples in each batch. A larger batch size means that model
-              #   parameters are updated less frequently, but with lower variance.
+              # parameters are updated less frequently, but with lower variance.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               attr_reader :batch_size
 
@@ -532,7 +532,7 @@ module OpenAI
               attr_writer :batch_size
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #   avoid overfitting.
+              # avoid overfitting.
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               attr_reader :learning_rate_multiplier
 
@@ -540,7 +540,7 @@ module OpenAI
               attr_writer :learning_rate_multiplier
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
-              #   through the training dataset.
+              # through the training dataset.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
               attr_reader :n_epochs
 
@@ -571,7 +571,7 @@ module OpenAI
               def to_hash; end
 
               # Number of examples in each batch. A larger batch size means that model
-              #   parameters are updated less frequently, but with lower variance.
+              # parameters are updated less frequently, but with lower variance.
               module BatchSize
                 extend OpenAI::Internal::Type::Union
 
@@ -580,7 +580,7 @@ module OpenAI
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #   avoid overfitting.
+              # avoid overfitting.
               module LearningRateMultiplier
                 extend OpenAI::Internal::Type::Union
 
@@ -589,7 +589,7 @@ module OpenAI
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
-              #   through the training dataset.
+              # through the training dataset.
               module NEpochs
                 extend OpenAI::Internal::Type::Union
 

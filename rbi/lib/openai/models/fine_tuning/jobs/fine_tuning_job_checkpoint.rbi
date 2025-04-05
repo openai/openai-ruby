@@ -42,7 +42,7 @@ module OpenAI
           attr_accessor :step_number
 
           # The `fine_tuning.job.checkpoint` object represents a model checkpoint for a
-          #   fine-tuning job that is ready to use.
+          # fine-tuning job that is ready to use.
           sig do
             params(
               id: String,

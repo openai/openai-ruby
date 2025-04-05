@@ -6,7 +6,7 @@ module OpenAI
       class ResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
         # @!attribute type
         #   Specifies the event type. For a computer screenshot, this property is always set
-        #     to `computer_screenshot`.
+        #   to `computer_screenshot`.
         #
         #   @return [Symbol, :computer_screenshot]
         required :type, const: :computer_screenshot

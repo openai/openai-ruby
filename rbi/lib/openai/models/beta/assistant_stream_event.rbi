@@ -5,30 +5,30 @@ module OpenAI
     module Beta
       # Represents an event emitted when streaming a Run.
       #
-      #   Each event in a server-sent events stream has an `event` and `data` property:
+      # Each event in a server-sent events stream has an `event` and `data` property:
       #
-      #   ```
-      #   event: thread.created
-      #   data: {"id": "thread_123", "object": "thread", ...}
-      #   ```
+      # ```
+      # event: thread.created
+      # data: {"id": "thread_123", "object": "thread", ...}
+      # ```
       #
-      #   We emit events whenever a new object is created, transitions to a new state, or
-      #   is being streamed in parts (deltas). For example, we emit `thread.run.created`
-      #   when a new run is created, `thread.run.completed` when a run completes, and so
-      #   on. When an Assistant chooses to create a message during a run, we emit a
-      #   `thread.message.created event`, a `thread.message.in_progress` event, many
-      #   `thread.message.delta` events, and finally a `thread.message.completed` event.
+      # We emit events whenever a new object is created, transitions to a new state, or
+      # is being streamed in parts (deltas). For example, we emit `thread.run.created`
+      # when a new run is created, `thread.run.completed` when a run completes, and so
+      # on. When an Assistant chooses to create a message during a run, we emit a
+      # `thread.message.created event`, a `thread.message.in_progress` event, many
+      # `thread.message.delta` events, and finally a `thread.message.completed` event.
       #
-      #   We may add additional events over time, so we recommend handling unknown events
-      #   gracefully in your code. See the
-      #   [Assistants API quickstart](https://platform.openai.com/docs/assistants/overview)
-      #   to learn how to integrate the Assistants API with streaming.
+      # We may add additional events over time, so we recommend handling unknown events
+      # gracefully in your code. See the
+      # [Assistants API quickstart](https://platform.openai.com/docs/assistants/overview)
+      # to learn how to integrate the Assistants API with streaming.
       module AssistantStreamEvent
         extend OpenAI::Internal::Type::Union
 
         class ThreadCreated < OpenAI::Internal::Type::BaseModel
           # Represents a thread that contains
-          #   [messages](https://platform.openai.com/docs/api-reference/messages).
+          # [messages](https://platform.openai.com/docs/api-reference/messages).
           sig { returns(OpenAI::Models::Beta::Thread) }
           attr_reader :data
 
@@ -46,8 +46,8 @@ module OpenAI
           attr_writer :enabled
 
           # Occurs when a new
-          #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
-          #   created.
+          # [thread](https://platform.openai.com/docs/api-reference/threads/object) is
+          # created.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Thread, OpenAI::Internal::AnyHash),
@@ -64,7 +64,7 @@ module OpenAI
 
         class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -75,7 +75,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a new
-          #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
+          # [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -88,7 +88,7 @@ module OpenAI
 
         class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -99,7 +99,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   moves to a `queued` status.
+          # moves to a `queued` status.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -112,7 +112,7 @@ module OpenAI
 
         class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -123,7 +123,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   moves to an `in_progress` status.
+          # moves to an `in_progress` status.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -136,7 +136,7 @@ module OpenAI
 
         class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -147,7 +147,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   moves to a `requires_action` status.
+          # moves to a `requires_action` status.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -160,7 +160,7 @@ module OpenAI
 
         class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -171,7 +171,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   is completed.
+          # is completed.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -184,7 +184,7 @@ module OpenAI
 
         class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -195,7 +195,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   ends with status `incomplete`.
+          # ends with status `incomplete`.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -208,7 +208,7 @@ module OpenAI
 
         class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -219,7 +219,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   fails.
+          # fails.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -232,7 +232,7 @@ module OpenAI
 
         class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -243,7 +243,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   moves to a `cancelling` status.
+          # moves to a `cancelling` status.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -256,7 +256,7 @@ module OpenAI
 
         class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -267,7 +267,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   is cancelled.
+          # is cancelled.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -280,7 +280,7 @@ module OpenAI
 
         class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
           # Represents an execution run on a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Run) }
           attr_reader :data
 
@@ -291,7 +291,7 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   expires.
+          # expires.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -314,8 +314,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   is created.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # is created.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -341,8 +341,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   moves to an `in_progress` state.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # moves to an `in_progress` state.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -358,7 +358,7 @@ module OpenAI
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           # Represents a run step delta i.e. any changed fields on a run step during
-          #   streaming.
+          # streaming.
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
           attr_reader :data
 
@@ -371,8 +371,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when parts of a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   are being streamed.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # are being streamed.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash),
@@ -398,8 +398,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   is completed.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # is completed.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -425,8 +425,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   fails.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # fails.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -452,8 +452,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   is cancelled.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # is cancelled.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -479,8 +479,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   expires.
+          # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          # expires.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
@@ -496,7 +496,7 @@ module OpenAI
 
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
@@ -507,8 +507,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   created.
+          # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          # created.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -521,7 +521,7 @@ module OpenAI
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
@@ -532,8 +532,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
-          #   to an `in_progress` state.
+          # [message](https://platform.openai.com/docs/api-reference/messages/object) moves
+          # to an `in_progress` state.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -546,7 +546,7 @@ module OpenAI
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           # Represents a message delta i.e. any changed fields on a message during
-          #   streaming.
+          # streaming.
           sig { returns(OpenAI::Models::Beta::Threads::MessageDeltaEvent) }
           attr_reader :data
 
@@ -557,8 +557,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when parts of a
-          #   [Message](https://platform.openai.com/docs/api-reference/messages/object) are
-          #   being streamed.
+          # [Message](https://platform.openai.com/docs/api-reference/messages/object) are
+          # being streamed.
           sig do
             params(
               data: T.any(OpenAI::Models::Beta::Threads::MessageDeltaEvent, OpenAI::Internal::AnyHash),
@@ -574,7 +574,7 @@ module OpenAI
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
@@ -585,8 +585,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   completed.
+          # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          # completed.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -599,7 +599,7 @@ module OpenAI
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           # Represents a message within a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig { returns(OpenAI::Models::Beta::Threads::Message) }
           attr_reader :data
 
@@ -610,8 +610,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when a
-          #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
-          #   before it is completed.
+          # [message](https://platform.openai.com/docs/api-reference/messages/object) ends
+          # before it is completed.
           sig do
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
@@ -633,8 +633,8 @@ module OpenAI
           attr_accessor :event
 
           # Occurs when an
-          #   [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs.
-          #   This can happen due to an internal server error or a timeout.
+          # [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs.
+          # This can happen due to an internal server error or a timeout.
           sig do
             params(data: T.any(OpenAI::Models::ErrorObject, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)

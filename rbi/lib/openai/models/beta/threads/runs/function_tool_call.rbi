@@ -23,7 +23,7 @@ module OpenAI
             attr_writer :function
 
             # The type of tool call. This is always going to be `function` for this type of
-            #   tool call.
+            # tool call.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -55,8 +55,8 @@ module OpenAI
               attr_accessor :name
 
               # The output of the function. This will be `null` if the outputs have not been
-              #   [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
-              #   yet.
+              # [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+              # yet.
               sig { returns(T.nilable(String)) }
               attr_accessor :output
 

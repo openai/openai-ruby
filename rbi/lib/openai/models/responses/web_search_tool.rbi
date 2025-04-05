@@ -6,13 +6,13 @@ module OpenAI
       class WebSearchTool < OpenAI::Internal::Type::BaseModel
         # The type of the web search tool. One of:
         #
-        #   - `web_search_preview`
-        #   - `web_search_preview_2025_03_11`
+        # - `web_search_preview`
+        # - `web_search_preview_2025_03_11`
         sig { returns(OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol) }
         attr_accessor :type
 
         # High level guidance for the amount of context window space to use for the
-        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
         sig { returns(T.nilable(OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol)) }
         attr_reader :search_context_size
 
@@ -31,8 +31,8 @@ module OpenAI
         attr_writer :user_location
 
         # This tool searches the web for relevant results to use in a response. Learn more
-        #   about the
-        #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        # about the
+        # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         sig do
           params(
             type: OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol,
@@ -57,8 +57,8 @@ module OpenAI
 
         # The type of the web search tool. One of:
         #
-        #   - `web_search_preview`
-        #   - `web_search_preview_2025_03_11`
+        # - `web_search_preview`
+        # - `web_search_preview_2025_03_11`
         module Type
           extend OpenAI::Internal::Type::Enum
 
@@ -76,7 +76,7 @@ module OpenAI
         end
 
         # High level guidance for the amount of context window space to use for the
-        #   search. One of `low`, `medium`, or `high`. `medium` is the default.
+        # search. One of `low`, `medium`, or `high`. `medium` is the default.
         module SearchContextSize
           extend OpenAI::Internal::Type::Enum
 
@@ -106,7 +106,7 @@ module OpenAI
           attr_writer :city
 
           # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
-          #   the user, e.g. `US`.
+          # the user, e.g. `US`.
           sig { returns(T.nilable(String)) }
           attr_reader :country
 
@@ -121,7 +121,7 @@ module OpenAI
           attr_writer :region
 
           # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
-          #   user, e.g. `America/Los_Angeles`.
+          # user, e.g. `America/Los_Angeles`.
           sig { returns(T.nilable(String)) }
           attr_reader :timezone
 

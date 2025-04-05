@@ -36,7 +36,7 @@ module OpenAI
 
         # @!parse
         #   # Represents token usage details including input tokens, output tokens, a
-        #   #   breakdown of output tokens, and the total tokens used.
+        #   # breakdown of output tokens, and the total tokens used.
         #   #
         #   # @param input_tokens [Integer]
         #   # @param input_tokens_details [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails]
@@ -52,7 +52,7 @@ module OpenAI
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute cached_tokens
           #   The number of tokens that were retrieved from the cache.
-          #     [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+          #   [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
           #
           #   @return [Integer]
           required :cached_tokens, Integer

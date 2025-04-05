@@ -18,7 +18,7 @@ module OpenAI
 
         # @!attribute [r] name
         #   An optional name for the participant. Provides the model information to
-        #     differentiate between participants of the same role.
+        #   differentiate between participants of the same role.
         #
         #   @return [String, nil]
         optional :name, String
@@ -29,7 +29,7 @@ module OpenAI
 
         # @!parse
         #   # Messages sent by an end user, containing prompts or additional context
-        #   #   information.
+        #   # information.
         #   #
         #   # @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>]
         #   # @param name [String]

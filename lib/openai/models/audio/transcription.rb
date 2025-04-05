@@ -12,8 +12,8 @@ module OpenAI
 
         # @!attribute [r] logprobs
         #   The log probabilities of the tokens in the transcription. Only returned with the
-        #     models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
-        #     to the `include` array.
+        #   models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
+        #   to the `include` array.
         #
         #   @return [Array<OpenAI::Models::Audio::Transcription::Logprob>, nil]
         optional :logprobs, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::Transcription::Logprob] }
@@ -24,7 +24,7 @@ module OpenAI
 
         # @!parse
         #   # Represents a transcription response returned by model, based on the provided
-        #   #   input.
+        #   # input.
         #   #
         #   # @param text [String]
         #   # @param logprobs [Array<OpenAI::Models::Audio::Transcription::Logprob>]

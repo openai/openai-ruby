@@ -35,7 +35,7 @@ module OpenAI
 
           # @!attribute [r] detail
           #   Specifies the detail level of the image. Learn more in the
-          #     [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           #
           #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail, nil]
           optional :detail, enum: -> { OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail }
@@ -53,7 +53,7 @@ module OpenAI
           # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Specifies the detail level of the image. Learn more in the
-          #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           #
           # @see OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL#detail
           module Detail

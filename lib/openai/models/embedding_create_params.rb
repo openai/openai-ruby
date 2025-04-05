@@ -10,30 +10,30 @@ module OpenAI
 
       # @!attribute input
       #   Input text to embed, encoded as a string or array of tokens. To embed multiple
-      #     inputs in a single request, pass an array of strings or array of token arrays.
-      #     The input must not exceed the max input tokens for the model (8192 tokens for
-      #     `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048
-      #     dimensions or less.
-      #     [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
-      #     for counting tokens. Some models may also impose a limit on total number of
-      #     tokens summed across inputs.
+      #   inputs in a single request, pass an array of strings or array of token arrays.
+      #   The input must not exceed the max input tokens for the model (8192 tokens for
+      #   `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048
+      #   dimensions or less.
+      #   [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
+      #   for counting tokens. Some models may also impose a limit on total number of
+      #   tokens summed across inputs.
       #
       #   @return [String, Array<String>, Array<Integer>, Array<Array<Integer>>]
       required :input, union: -> { OpenAI::Models::EmbeddingCreateParams::Input }
 
       # @!attribute model
       #   ID of the model to use. You can use the
-      #     [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-      #     see all of your available models, or see our
-      #     [Model overview](https://platform.openai.com/docs/models) for descriptions of
-      #     them.
+      #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
+      #   see all of your available models, or see our
+      #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
+      #   them.
       #
       #   @return [String, Symbol, OpenAI::Models::EmbeddingModel]
       required :model, union: -> { OpenAI::Models::EmbeddingCreateParams::Model }
 
       # @!attribute [r] dimensions
       #   The number of dimensions the resulting output embeddings should have. Only
-      #     supported in `text-embedding-3` and later models.
+      #   supported in `text-embedding-3` and later models.
       #
       #   @return [Integer, nil]
       optional :dimensions, Integer
@@ -44,7 +44,7 @@ module OpenAI
 
       # @!attribute [r] encoding_format
       #   The format to return the embeddings in. Can be either `float` or
-      #     [`base64`](https://pypi.org/project/pybase64/).
+      #   [`base64`](https://pypi.org/project/pybase64/).
       #
       #   @return [Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat, nil]
       optional :encoding_format, enum: -> { OpenAI::Models::EmbeddingCreateParams::EncodingFormat }
@@ -55,8 +55,8 @@ module OpenAI
 
       # @!attribute [r] user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #     and detect abuse.
-      #     [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+      #   and detect abuse.
+      #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
@@ -78,13 +78,13 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # Input text to embed, encoded as a string or array of tokens. To embed multiple
-      #   inputs in a single request, pass an array of strings or array of token arrays.
-      #   The input must not exceed the max input tokens for the model (8192 tokens for
-      #   `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048
-      #   dimensions or less.
-      #   [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
-      #   for counting tokens. Some models may also impose a limit on total number of
-      #   tokens summed across inputs.
+      # inputs in a single request, pass an array of strings or array of token arrays.
+      # The input must not exceed the max input tokens for the model (8192 tokens for
+      # `text-embedding-ada-002`), cannot be an empty string, and any array must be 2048
+      # dimensions or less.
+      # [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
+      # for counting tokens. Some models may also impose a limit on total number of
+      # tokens summed across inputs.
       module Input
         extend OpenAI::Internal::Type::Union
 
@@ -112,10 +112,10 @@ module OpenAI
       end
 
       # ID of the model to use. You can use the
-      #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-      #   see all of your available models, or see our
-      #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
-      #   them.
+      # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
+      # see all of your available models, or see our
+      # [Model overview](https://platform.openai.com/docs/models) for descriptions of
+      # them.
       module Model
         extend OpenAI::Internal::Type::Union
 
@@ -130,7 +130,7 @@ module OpenAI
       end
 
       # The format to return the embeddings in. Can be either `float` or
-      #   [`base64`](https://pypi.org/project/pybase64/).
+      # [`base64`](https://pypi.org/project/pybase64/).
       module EncodingFormat
         extend OpenAI::Internal::Type::Enum
 

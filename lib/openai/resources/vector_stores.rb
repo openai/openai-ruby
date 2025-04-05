@@ -122,7 +122,7 @@ module OpenAI
       end
 
       # Search a vector store for relevant chunks based on a query and file attributes
-      #   filter.
+      # filter.
       #
       # @overload search(vector_store_id, query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
       #

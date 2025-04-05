@@ -5,24 +5,24 @@ module OpenAI
     module Beta
       # Represents an event emitted when streaming a Run.
       #
-      #   Each event in a server-sent events stream has an `event` and `data` property:
+      # Each event in a server-sent events stream has an `event` and `data` property:
       #
-      #   ```
-      #   event: thread.created
-      #   data: {"id": "thread_123", "object": "thread", ...}
-      #   ```
+      # ```
+      # event: thread.created
+      # data: {"id": "thread_123", "object": "thread", ...}
+      # ```
       #
-      #   We emit events whenever a new object is created, transitions to a new state, or
-      #   is being streamed in parts (deltas). For example, we emit `thread.run.created`
-      #   when a new run is created, `thread.run.completed` when a run completes, and so
-      #   on. When an Assistant chooses to create a message during a run, we emit a
-      #   `thread.message.created event`, a `thread.message.in_progress` event, many
-      #   `thread.message.delta` events, and finally a `thread.message.completed` event.
+      # We emit events whenever a new object is created, transitions to a new state, or
+      # is being streamed in parts (deltas). For example, we emit `thread.run.created`
+      # when a new run is created, `thread.run.completed` when a run completes, and so
+      # on. When an Assistant chooses to create a message during a run, we emit a
+      # `thread.message.created event`, a `thread.message.in_progress` event, many
+      # `thread.message.delta` events, and finally a `thread.message.completed` event.
       #
-      #   We may add additional events over time, so we recommend handling unknown events
-      #   gracefully in your code. See the
-      #   [Assistants API quickstart](https://platform.openai.com/docs/assistants/overview)
-      #   to learn how to integrate the Assistants API with streaming.
+      # We may add additional events over time, so we recommend handling unknown events
+      # gracefully in your code. See the
+      # [Assistants API quickstart](https://platform.openai.com/docs/assistants/overview)
+      # to learn how to integrate the Assistants API with streaming.
       module AssistantStreamEvent
         extend OpenAI::Internal::Type::Union
 
@@ -112,7 +112,7 @@ module OpenAI
         class ThreadCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a thread that contains
-          #     [messages](https://platform.openai.com/docs/api-reference/messages).
+          #   [messages](https://platform.openai.com/docs/api-reference/messages).
           #
           #   @return [OpenAI::Models::Beta::Thread]
           required :data, -> { OpenAI::Models::Beta::Thread }
@@ -134,8 +134,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a new
-          #   #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
-          #   #   created.
+          #   # [thread](https://platform.openai.com/docs/api-reference/threads/object) is
+          #   # created.
           #   #
           #   # @param data [OpenAI::Models::Beta::Thread]
           #   # @param enabled [Boolean]
@@ -149,7 +149,7 @@ module OpenAI
         class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -161,7 +161,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a new
-          #   #   [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
+          #   # [run](https://platform.openai.com/docs/api-reference/runs/object) is created.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.created"]
@@ -174,7 +174,7 @@ module OpenAI
         class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -186,7 +186,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   moves to a `queued` status.
+          #   # moves to a `queued` status.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.queued"]
@@ -199,7 +199,7 @@ module OpenAI
         class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -211,7 +211,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   moves to an `in_progress` status.
+          #   # moves to an `in_progress` status.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.in_progress"]
@@ -224,7 +224,7 @@ module OpenAI
         class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -236,7 +236,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   moves to a `requires_action` status.
+          #   # moves to a `requires_action` status.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.requires_action"]
@@ -249,7 +249,7 @@ module OpenAI
         class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -261,7 +261,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   is completed.
+          #   # is completed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.completed"]
@@ -274,7 +274,7 @@ module OpenAI
         class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -286,7 +286,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   ends with status `incomplete`.
+          #   # ends with status `incomplete`.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.incomplete"]
@@ -299,7 +299,7 @@ module OpenAI
         class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -311,7 +311,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   fails.
+          #   # fails.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.failed"]
@@ -324,7 +324,7 @@ module OpenAI
         class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -336,7 +336,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   moves to a `cancelling` status.
+          #   # moves to a `cancelling` status.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.cancelling"]
@@ -349,7 +349,7 @@ module OpenAI
         class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -361,7 +361,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   is cancelled.
+          #   # is cancelled.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.cancelled"]
@@ -374,7 +374,7 @@ module OpenAI
         class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents an execution run on a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Run]
           required :data, -> { OpenAI::Models::Beta::Threads::Run }
@@ -386,7 +386,7 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a [run](https://platform.openai.com/docs/api-reference/runs/object)
-          #   #   expires.
+          #   # expires.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Run]
           #   # @param event [Symbol, :"thread.run.expired"]
@@ -410,8 +410,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   #   is created.
+          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   # is created.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
           #   # @param event [Symbol, :"thread.run.step.created"]
@@ -435,8 +435,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   #   moves to an `in_progress` state.
+          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   # moves to an `in_progress` state.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
           #   # @param event [Symbol, :"thread.run.step.in_progress"]
@@ -449,7 +449,7 @@ module OpenAI
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a run step delta i.e. any changed fields on a run step during
-          #     streaming.
+          #   streaming.
           #
           #   @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent]
           required :data, -> { OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent }
@@ -461,8 +461,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when parts of a
-          #   #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   #   are being streamed.
+          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   # are being streamed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent]
           #   # @param event [Symbol, :"thread.run.step.delta"]
@@ -486,8 +486,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   #   is completed.
+          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   # is completed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
           #   # @param event [Symbol, :"thread.run.step.completed"]
@@ -511,8 +511,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   #   fails.
+          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   # fails.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
           #   # @param event [Symbol, :"thread.run.step.failed"]
@@ -536,8 +536,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   #   is cancelled.
+          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   # is cancelled.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
           #   # @param event [Symbol, :"thread.run.step.cancelled"]
@@ -561,8 +561,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   #   expires.
+          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   # expires.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
           #   # @param event [Symbol, :"thread.run.step.expired"]
@@ -575,7 +575,7 @@ module OpenAI
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -587,8 +587,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   #   created.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          #   # created.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.created"]
@@ -601,7 +601,7 @@ module OpenAI
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -613,8 +613,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
-          #   #   to an `in_progress` state.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) moves
+          #   # to an `in_progress` state.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.in_progress"]
@@ -627,7 +627,7 @@ module OpenAI
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message delta i.e. any changed fields on a message during
-          #     streaming.
+          #   streaming.
           #
           #   @return [OpenAI::Models::Beta::Threads::MessageDeltaEvent]
           required :data, -> { OpenAI::Models::Beta::Threads::MessageDeltaEvent }
@@ -639,8 +639,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when parts of a
-          #   #   [Message](https://platform.openai.com/docs/api-reference/messages/object) are
-          #   #   being streamed.
+          #   # [Message](https://platform.openai.com/docs/api-reference/messages/object) are
+          #   # being streamed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::MessageDeltaEvent]
           #   # @param event [Symbol, :"thread.message.delta"]
@@ -653,7 +653,7 @@ module OpenAI
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -665,8 +665,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   #   completed.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          #   # completed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.completed"]
@@ -679,7 +679,7 @@ module OpenAI
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           # @!attribute data
           #   Represents a message within a
-          #     [thread](https://platform.openai.com/docs/api-reference/threads).
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
           #
           #   @return [OpenAI::Models::Beta::Threads::Message]
           required :data, -> { OpenAI::Models::Beta::Threads::Message }
@@ -691,8 +691,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when a
-          #   #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
-          #   #   before it is completed.
+          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) ends
+          #   # before it is completed.
           #   #
           #   # @param data [OpenAI::Models::Beta::Threads::Message]
           #   # @param event [Symbol, :"thread.message.incomplete"]
@@ -715,8 +715,8 @@ module OpenAI
 
           # @!parse
           #   # Occurs when an
-          #   #   [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs.
-          #   #   This can happen due to an internal server error or a timeout.
+          #   # [error](https://platform.openai.com/docs/guides/error-codes#api-errors) occurs.
+          #   # This can happen due to an internal server error or a timeout.
           #   #
           #   # @param data [OpenAI::Models::ErrorObject]
           #   # @param event [Symbol, :error]

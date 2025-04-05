@@ -16,12 +16,12 @@ module OpenAI
             attr_accessor :run_id
 
             # A list of additional fields to include in the response. Currently the only
-            #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
-            #   to fetch the file search result content.
+            # supported value is `step_details.tool_calls[*].file_search.results[*].content`
+            # to fetch the file search result content.
             #
-            #   See the
-            #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
-            #   for more information.
+            # See the
+            # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            # for more information.
             sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
             attr_reader :include
 

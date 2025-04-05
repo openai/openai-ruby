@@ -17,7 +17,7 @@ module OpenAI
 
         # @!parse
         #   # Specifies a tool the model should use. Use to force the model to call a specific
-        #   #   function.
+        #   # function.
         #   #
         #   # @param function [OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function]
         #   # @param type [Symbol, :function]

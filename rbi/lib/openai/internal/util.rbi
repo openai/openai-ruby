@@ -52,7 +52,7 @@ module OpenAI
         # @api private
         #
         # Recursively merge one hash with another. If the values at a given key are not
-        #   both hashes, just take the new value.
+        # both hashes, just take the new value.
         sig do
           params(values: T::Array[T.anything], sentinel: T.nilable(T.anything), concat: T::Boolean)
             .returns(T.anything)

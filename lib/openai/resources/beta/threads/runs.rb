@@ -9,9 +9,9 @@ module OpenAI
           attr_reader :steps
 
           # See {OpenAI::Resources::Beta::Threads::Runs#create_stream_raw} for streaming
-          #   counterpart.
+          # counterpart.
           #
-          #   Create a run.
+          # Create a run.
           #
           # @overload create(thread_id, assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
           #
@@ -56,9 +56,9 @@ module OpenAI
           end
 
           # See {OpenAI::Resources::Beta::Threads::Runs#create} for non-streaming
-          #   counterpart.
+          # counterpart.
           #
-          #   Create a run.
+          # Create a run.
           #
           # @overload create_stream_raw(thread_id, assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
           #
@@ -209,12 +209,12 @@ module OpenAI
           end
 
           # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_stream_raw} for
-          #   streaming counterpart.
+          # streaming counterpart.
           #
-          #   When a run has the `status: "requires_action"` and `required_action.type` is
-          #   `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
-          #   tool calls once they're all completed. All outputs must be submitted in a single
-          #   request.
+          # When a run has the `status: "requires_action"` and `required_action.type` is
+          # `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
+          # tool calls once they're all completed. All outputs must be submitted in a single
+          # request.
           #
           # @overload submit_tool_outputs(run_id, thread_id:, tool_outputs:, request_options: {})
           #
@@ -246,12 +246,12 @@ module OpenAI
           end
 
           # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs} for
-          #   non-streaming counterpart.
+          # non-streaming counterpart.
           #
-          #   When a run has the `status: "requires_action"` and `required_action.type` is
-          #   `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
-          #   tool calls once they're all completed. All outputs must be submitted in a single
-          #   request.
+          # When a run has the `status: "requires_action"` and `required_action.type` is
+          # `submit_tool_outputs`, this endpoint can be used to submit the outputs from the
+          # tool calls once they're all completed. All outputs must be submitted in a single
+          # request.
           #
           # @overload submit_tool_outputs_stream_raw(run_id, thread_id:, tool_outputs:, request_options: {})
           #

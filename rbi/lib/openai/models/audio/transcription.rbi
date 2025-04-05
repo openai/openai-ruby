@@ -9,8 +9,8 @@ module OpenAI
         attr_accessor :text
 
         # The log probabilities of the tokens in the transcription. Only returned with the
-        #   models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
-        #   to the `include` array.
+        # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
+        # to the `include` array.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::Transcription::Logprob])) }
         attr_reader :logprobs
 
@@ -23,7 +23,7 @@ module OpenAI
         attr_writer :logprobs
 
         # Represents a transcription response returned by model, based on the provided
-        #   input.
+        # input.
         sig do
           params(
             text: String,

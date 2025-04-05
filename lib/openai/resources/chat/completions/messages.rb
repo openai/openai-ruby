@@ -6,7 +6,7 @@ module OpenAI
       class Completions
         class Messages
           # Get the messages in a stored chat completion. Only Chat Completions that have
-          #   been created with the `store` parameter set to `true` will be returned.
+          # been created with the `store` parameter set to `true` will be returned.
           #
           # @overload list(completion_id, after: nil, limit: nil, order: nil, request_options: {})
           #

@@ -13,9 +13,9 @@ module OpenAI
         attr_accessor :type
 
         # The log probabilities of the individual tokens in the transcription. Only
-        #   included if you
-        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
-        #   with the `include[]` parameter set to `logprobs`.
+        # included if you
+        # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        # with the `include[]` parameter set to `logprobs`.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob])) }
         attr_reader :logprobs
 
@@ -28,9 +28,9 @@ module OpenAI
         attr_writer :logprobs
 
         # Emitted when the transcription is complete. Contains the complete transcription
-        #   text. Only emitted when you
-        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
-        #   with the `Stream` parameter set to `true`.
+        # text. Only emitted when you
+        # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        # with the `Stream` parameter set to `true`.
         sig do
           params(
             text: String,

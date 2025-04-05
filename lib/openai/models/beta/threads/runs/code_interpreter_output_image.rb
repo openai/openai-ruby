@@ -40,7 +40,7 @@ module OpenAI
             class Image < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] file_id
               #   The [file](https://platform.openai.com/docs/api-reference/files) ID of the
-              #     image.
+              #   image.
               #
               #   @return [String, nil]
               optional :file_id, String

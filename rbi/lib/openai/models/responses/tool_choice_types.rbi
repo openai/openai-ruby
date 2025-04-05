@@ -5,18 +5,18 @@ module OpenAI
     module Responses
       class ToolChoiceTypes < OpenAI::Internal::Type::BaseModel
         # The type of hosted tool the model should to use. Learn more about
-        #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+        # [built-in tools](https://platform.openai.com/docs/guides/tools).
         #
-        #   Allowed values are:
+        # Allowed values are:
         #
-        #   - `file_search`
-        #   - `web_search_preview`
-        #   - `computer_use_preview`
+        # - `file_search`
+        # - `web_search_preview`
+        # - `computer_use_preview`
         sig { returns(OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol) }
         attr_accessor :type
 
         # Indicates that the model should use a built-in tool to generate a response.
-        #   [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
+        # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
         sig { params(type: OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol).returns(T.attached_class) }
         def self.new(type:); end
 
@@ -24,13 +24,13 @@ module OpenAI
         def to_hash; end
 
         # The type of hosted tool the model should to use. Learn more about
-        #   [built-in tools](https://platform.openai.com/docs/guides/tools).
+        # [built-in tools](https://platform.openai.com/docs/guides/tools).
         #
-        #   Allowed values are:
+        # Allowed values are:
         #
-        #   - `file_search`
-        #   - `web_search_preview`
-        #   - `computer_use_preview`
+        # - `file_search`
+        # - `web_search_preview`
+        # - `computer_use_preview`
         module Type
           extend OpenAI::Internal::Type::Enum
 

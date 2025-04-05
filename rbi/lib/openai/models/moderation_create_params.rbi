@@ -7,7 +7,7 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
-      #   an array of multi-modal input objects similar to other models.
+      # an array of multi-modal input objects similar to other models.
       sig do
         returns(
           T.any(
@@ -20,9 +20,9 @@ module OpenAI
       attr_accessor :input
 
       # The content moderation model you would like to use. Learn more in
-      #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      #   learn about available models
-      #   [here](https://platform.openai.com/docs/models#moderation).
+      # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
+      # learn about available models
+      # [here](https://platform.openai.com/docs/models#moderation).
       sig { returns(T.nilable(T.any(String, OpenAI::Models::ModerationModel::OrSymbol))) }
       attr_reader :model
 
@@ -66,7 +66,7 @@ module OpenAI
       def to_hash; end
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
-      #   an array of multi-modal input objects similar to other models.
+      # an array of multi-modal input objects similar to other models.
       module Input
         extend OpenAI::Internal::Type::Union
 
@@ -88,9 +88,9 @@ module OpenAI
       end
 
       # The content moderation model you would like to use. Learn more in
-      #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
-      #   learn about available models
-      #   [here](https://platform.openai.com/docs/models#moderation).
+      # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
+      # learn about available models
+      # [here](https://platform.openai.com/docs/models#moderation).
       module Model
         extend OpenAI::Internal::Type::Union
 

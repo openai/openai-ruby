@@ -8,7 +8,7 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         # Additional fields to include in the response. See the `include` parameter for
-        #   Response creation above for more information.
+        # Response creation above for more information.
         sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])) }
         attr_reader :include
 

@@ -21,7 +21,7 @@ module OpenAI
 
         # @!parse
         #   # Specifies a tool the model should use. Use to force the model to call a specific
-        #   #   tool.
+        #   # tool.
         #   #
         #   # @param type [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type]
         #   # @param function [OpenAI::Models::Beta::AssistantToolChoiceFunction]

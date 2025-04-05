@@ -16,7 +16,7 @@ module OpenAI
           # @api private
           #
           # Assumes superclass fields are totally defined before fields are accessed /
-          #   defined on subclasses.
+          # defined on subclasses.
           sig do
             returns(
               T::Hash[
@@ -99,7 +99,7 @@ module OpenAI
           # @api private
           #
           # `request_only` attributes not excluded from `.#coerce` when receiving responses
-          #   even if well behaved servers should not send them
+          # even if well behaved servers should not send them
           sig { params(blk: T.proc.void).void }
           private def request_only(&blk); end
 
@@ -138,33 +138,33 @@ module OpenAI
         end
 
         # Returns the raw value associated with the given key, if found. Otherwise, nil is
-        #   returned.
+        # returned.
         #
-        #   It is valid to lookup keys that are not in the API spec, for example to access
-        #   undocumented features. This method does not parse response data into
-        #   higher-level types. Lookup by anything other than a Symbol is an ArgumentError.
+        # It is valid to lookup keys that are not in the API spec, for example to access
+        # undocumented features. This method does not parse response data into
+        # higher-level types. Lookup by anything other than a Symbol is an ArgumentError.
         sig { params(key: Symbol).returns(T.nilable(T.anything)) }
         def [](key); end
 
         # Returns a Hash of the data underlying this object. O(1)
         #
-        #   Keys are Symbols and values are the raw values from the response. The return
-        #   value indicates which values were ever set on the object. i.e. there will be a
-        #   key in this hash if they ever were, even if the set value was nil.
+        # Keys are Symbols and values are the raw values from the response. The return
+        # value indicates which values were ever set on the object. i.e. there will be a
+        # key in this hash if they ever were, even if the set value was nil.
         #
-        #   This method is not recursive. The returned value is shared by the object, so it
-        #   should not be mutated.
+        # This method is not recursive. The returned value is shared by the object, so it
+        # should not be mutated.
         sig { overridable.returns(OpenAI::Internal::AnyHash) }
         def to_h; end
 
         # Returns a Hash of the data underlying this object. O(1)
         #
-        #   Keys are Symbols and values are the raw values from the response. The return
-        #   value indicates which values were ever set on the object. i.e. there will be a
-        #   key in this hash if they ever were, even if the set value was nil.
+        # Keys are Symbols and values are the raw values from the response. The return
+        # value indicates which values were ever set on the object. i.e. there will be a
+        # key in this hash if they ever were, even if the set value was nil.
         #
-        #   This method is not recursive. The returned value is shared by the object, so it
-        #   should not be mutated.
+        # This method is not recursive. The returned value is shared by the object, so it
+        # should not be mutated.
         sig { overridable.returns(OpenAI::Internal::AnyHash) }
         def to_hash; end
 
