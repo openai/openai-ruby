@@ -38,8 +38,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(delta:, logprobs: nil, type: :"transcript.text.delta")
-        end
+        def self.new(delta:, logprobs: nil, type: :"transcript.text.delta"); end
 
         sig do
           override
@@ -47,8 +46,7 @@ module OpenAI
               {delta: String, type: Symbol, logprobs: T::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob]}
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # The token that was used to generate the log probability.
@@ -73,12 +71,10 @@ module OpenAI
           attr_writer :logprob
 
           sig { params(token: String, bytes: T::Array[T.anything], logprob: Float).returns(T.attached_class) }
-          def self.new(token: nil, bytes: nil, logprob: nil)
-          end
+          def self.new(token: nil, bytes: nil, logprob: nil); end
 
           sig { override.returns({token: String, bytes: T::Array[T.anything], logprob: Float}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

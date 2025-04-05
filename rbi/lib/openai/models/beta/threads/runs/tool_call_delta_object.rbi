@@ -17,11 +17,11 @@ module OpenAI
               returns(
                 T.nilable(
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
+                      OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+                    )
                   ]
                 )
               )
@@ -31,12 +31,12 @@ module OpenAI
             sig do
               params(
                 tool_calls: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
-                )
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                    OpenAI::Internal::AnyHash,
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
+                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+                  )
                 ]
               )
                 .void
@@ -47,19 +47,18 @@ module OpenAI
             sig do
               params(
                 tool_calls: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
-                )
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                    OpenAI::Internal::AnyHash,
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
+                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+                  )
                 ],
                 type: Symbol
               )
                 .returns(T.attached_class)
             end
-            def self.new(tool_calls: nil, type: :tool_calls)
-            end
+            def self.new(tool_calls: nil, type: :tool_calls); end
 
             sig do
               override
@@ -67,17 +66,16 @@ module OpenAI
                   {
                     type: Symbol,
                     tool_calls: T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                      OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
+                        OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+                      )
                     ]
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

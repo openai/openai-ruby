@@ -111,11 +111,11 @@ module OpenAI
           returns(
             T.nilable(
               T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
+                T.any(
+                  OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Models::Beta::FileSearchTool,
+                  OpenAI::Models::Beta::FunctionTool
+                )
               ]
             )
           )
@@ -125,12 +125,12 @@ module OpenAI
         sig do
           params(
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ]
           )
             .void
@@ -165,12 +165,12 @@ module OpenAI
             temperature: T.nilable(Float),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ],
             top_p: T.nilable(Float),
             request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
@@ -190,9 +190,7 @@ module OpenAI
           tools: nil,
           top_p: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -214,19 +212,18 @@ module OpenAI
                 temperature: T.nilable(Float),
                 tool_resources: T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources),
                 tools: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
-                )
+                  T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Models::Beta::FileSearchTool,
+                    OpenAI::Models::Beta::FunctionTool
+                  )
                 ],
                 top_p: T.nilable(Float),
                 request_options: OpenAI::RequestOptions
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -237,8 +234,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model) }
           OrSymbol =
@@ -335,8 +331,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil)
-          end
+          def self.new(code_interpreter: nil, file_search: nil); end
 
           sig do
             override
@@ -347,8 +342,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # Overrides the list of
@@ -362,12 +356,10 @@ module OpenAI
             attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(file_ids: nil)
-            end
+            def self.new(file_ids: nil); end
 
             sig { override.returns({file_ids: T::Array[String]}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -382,12 +374,10 @@ module OpenAI
             attr_writer :vector_store_ids
 
             sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(vector_store_ids: nil)
-            end
+            def self.new(vector_store_ids: nil); end
 
             sig { override.returns({vector_store_ids: T::Array[String]}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

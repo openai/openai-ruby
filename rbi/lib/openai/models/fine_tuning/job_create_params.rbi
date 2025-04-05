@@ -62,7 +62,9 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::FineTuning::JobCreateParams::Method)) }
         attr_reader :method_
 
-        sig { params(method_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Internal::AnyHash)).void }
+        sig do
+          params(method_: T.any(OpenAI::Models::FineTuning::JobCreateParams::Method, OpenAI::Internal::AnyHash)).void
+        end
         attr_writer :method_
 
         # The seed controls the reproducibility of the job. Passing in the same seed and
@@ -122,9 +124,7 @@ module OpenAI
           suffix: nil,
           validation_file: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -142,8 +142,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The name of the model to fine-tune. You can select one of the
         #   [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
@@ -151,8 +150,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model) }
           OrSymbol =
@@ -199,8 +197,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
-          end
+          def self.new(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil); end
 
           sig do
             override
@@ -212,8 +209,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # Number of examples in each batch. A larger batch size means that model
           #   parameters are updated less frequently, but with lower variance.
@@ -221,8 +217,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             sig { override.returns([Symbol, Integer]) }
-            def self.variants
-            end
+            def self.variants; end
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -231,8 +226,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             sig { override.returns([Symbol, Float]) }
-            def self.variants
-            end
+            def self.variants; end
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -241,8 +235,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             sig { override.returns([Symbol, Integer]) }
-            def self.variants
-            end
+            def self.variants; end
           end
         end
 
@@ -274,12 +267,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(wandb:, type: :wandb)
-          end
+          def self.new(wandb:, type: :wandb); end
 
           sig { override.returns({type: Symbol, wandb: OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb}) }
-          def to_hash
-          end
+          def to_hash; end
 
           class Wandb < OpenAI::Internal::Type::BaseModel
             # The name of the project that the new run will be created under.
@@ -319,8 +310,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(project:, entity: nil, name: nil, tags: nil)
-            end
+            def self.new(project:, entity: nil, name: nil, tags: nil); end
 
             sig do
               override
@@ -331,8 +321,7 @@ module OpenAI
                            tags: T::Array[String]
                          })
             end
-            def to_hash
-            end
+            def to_hash; end
           end
         end
 
@@ -375,8 +364,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(dpo: nil, supervised: nil, type: nil)
-          end
+          def self.new(dpo: nil, supervised: nil, type: nil); end
 
           sig do
             override
@@ -388,8 +376,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class Dpo < OpenAI::Internal::Type::BaseModel
             # The hyperparameters used for the fine-tuning job.
@@ -417,15 +404,13 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(hyperparameters: nil)
-            end
+            def self.new(hyperparameters: nil); end
 
             sig do
               override
                 .returns({hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters})
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # Number of examples in each batch. A larger batch size means that model
@@ -470,8 +455,7 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil)
-              end
+              def self.new(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil); end
 
               sig do
                 override
@@ -484,8 +468,7 @@ module OpenAI
                     }
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
@@ -493,8 +476,7 @@ module OpenAI
                 extend OpenAI::Internal::Type::Union
 
                 sig { override.returns([Symbol, Integer]) }
-                def self.variants
-                end
+                def self.variants; end
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
@@ -503,8 +485,7 @@ module OpenAI
                 extend OpenAI::Internal::Type::Union
 
                 sig { override.returns([Symbol, Float]) }
-                def self.variants
-                end
+                def self.variants; end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -513,8 +494,7 @@ module OpenAI
                 extend OpenAI::Internal::Type::Union
 
                 sig { override.returns([Symbol, Float]) }
-                def self.variants
-                end
+                def self.variants; end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -523,8 +503,7 @@ module OpenAI
                 extend OpenAI::Internal::Type::Union
 
                 sig { override.returns([Symbol, Integer]) }
-                def self.variants
-                end
+                def self.variants; end
               end
             end
           end
@@ -555,8 +534,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(hyperparameters: nil)
-            end
+            def self.new(hyperparameters: nil); end
 
             sig do
               override
@@ -564,8 +542,7 @@ module OpenAI
                   {hyperparameters: OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters}
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # Number of examples in each batch. A larger batch size means that model
@@ -601,8 +578,7 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
-              end
+              def self.new(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil); end
 
               sig do
                 override
@@ -614,8 +590,7 @@ module OpenAI
                     }
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               # Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
@@ -623,8 +598,7 @@ module OpenAI
                 extend OpenAI::Internal::Type::Union
 
                 sig { override.returns([Symbol, Integer]) }
-                def self.variants
-                end
+                def self.variants; end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -633,8 +607,7 @@ module OpenAI
                 extend OpenAI::Internal::Type::Union
 
                 sig { override.returns([Symbol, Float]) }
-                def self.variants
-                end
+                def self.variants; end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -643,8 +616,7 @@ module OpenAI
                 extend OpenAI::Internal::Type::Union
 
                 sig { override.returns([Symbol, Integer]) }
-                def self.variants
-                end
+                def self.variants; end
               end
             end
           end
@@ -661,8 +633,7 @@ module OpenAI
             DPO = T.let(:dpo, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

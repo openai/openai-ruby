@@ -33,8 +33,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(detail:, file_id: nil, image_url: nil, type: :input_image)
-        end
+        def self.new(detail:, file_id: nil, image_url: nil, type: :input_image); end
 
         sig do
           override
@@ -47,8 +46,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         #   `auto`. Defaults to `auto`.
@@ -64,8 +62,7 @@ module OpenAI
           AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

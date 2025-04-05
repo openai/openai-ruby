@@ -25,12 +25,10 @@ module OpenAI
 
         # A computer screenshot image used with the computer use tool.
         sig { params(file_id: String, image_url: String, type: Symbol).returns(T.attached_class) }
-        def self.new(file_id: nil, image_url: nil, type: :computer_screenshot)
-        end
+        def self.new(file_id: nil, image_url: nil, type: :computer_screenshot); end
 
         sig { override.returns({type: Symbol, file_id: String, image_url: String}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

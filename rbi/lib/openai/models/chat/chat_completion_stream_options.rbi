@@ -19,12 +19,10 @@ module OpenAI
 
         # Options for streaming response. Only set this when you set `stream: true`.
         sig { params(include_usage: T::Boolean).returns(T.attached_class) }
-        def self.new(include_usage: nil)
-        end
+        def self.new(include_usage: nil); end
 
         sig { override.returns({include_usage: T::Boolean}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

@@ -10,12 +10,12 @@ module OpenAI
             returns(
               T.nilable(
                 T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                  OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                  OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
-                )
+                  T.any(
+                    OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                    OpenAI::Models::Beta::Threads::TextDeltaBlock,
+                    OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
+                    OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+                  )
                 ]
               )
             )
@@ -25,13 +25,13 @@ module OpenAI
           sig do
             params(
               content: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Beta::Threads::TextDeltaBlock,
+                  OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
+                  OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+                )
               ]
             )
               .void
@@ -49,39 +49,37 @@ module OpenAI
           sig do
             params(
               content: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Beta::Threads::TextDeltaBlock,
+                  OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
+                  OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+                )
               ],
               role: OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol
             )
               .returns(T.attached_class)
           end
-          def self.new(content: nil, role: nil)
-          end
+          def self.new(content: nil, role: nil); end
 
           sig do
             override
               .returns(
                 {
                   content: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                    OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                    OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                    OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
+                      OpenAI::Models::Beta::Threads::TextDeltaBlock,
+                      OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
+                      OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+                    )
                   ],
                   role: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # The entity that produced the message. One of `user` or `assistant`.
           module Role
@@ -95,8 +93,7 @@ module OpenAI
             ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

@@ -12,11 +12,11 @@ module OpenAI
             sig do
               returns(
                 T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
-                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
-                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
-                )
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
+                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
+                  )
                 ]
               )
             end
@@ -30,37 +30,35 @@ module OpenAI
             sig do
               params(
                 tool_calls: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
-                  OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
-                )
+                  T.any(
+                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
+                    OpenAI::Internal::AnyHash,
+                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
+                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
+                  )
                 ],
                 type: Symbol
               )
                 .returns(T.attached_class)
             end
-            def self.new(tool_calls:, type: :tool_calls)
-            end
+            def self.new(tool_calls:, type: :tool_calls); end
 
             sig do
               override
                 .returns(
                   {
                     tool_calls: T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
-                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
-                      OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall,
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall,
+                        OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
+                      )
                     ],
                     type: Symbol
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

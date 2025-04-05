@@ -20,8 +20,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(filters:, type:)
-      end
+      def self.new(filters:, type:); end
 
       sig do
         override
@@ -32,8 +31,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
@@ -41,8 +39,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([OpenAI::Models::ComparisonFilter, T.anything]) }
-        def self.variants
-        end
+        def self.variants; end
       end
 
       # Type of operation: `and` or `or`.
@@ -56,8 +53,7 @@ module OpenAI
         OR = T.let(:or, OpenAI::Models::CompoundFilter::Type::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::CompoundFilter::Type::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

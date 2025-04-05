@@ -27,8 +27,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(input_audio:, type: :input_audio)
-        end
+        def self.new(input_audio:, type: :input_audio); end
 
         sig do
           override
@@ -36,8 +35,7 @@ module OpenAI
               {input_audio: OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio, type: Symbol}
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class InputAudio < OpenAI::Internal::Type::BaseModel
           # Base64 encoded audio data.
@@ -55,8 +53,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, format_:)
-          end
+          def self.new(data:, format_:); end
 
           sig do
             override
@@ -67,8 +64,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
           module Format
@@ -96,8 +92,7 @@ module OpenAI
                   T::Array[OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format::TaggedSymbol]
                 )
             end
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

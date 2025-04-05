@@ -15,8 +15,7 @@ module OpenAI
                   [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]
                 )
             end
-            def self.variants
-            end
+            def self.variants; end
           end
         end
       end

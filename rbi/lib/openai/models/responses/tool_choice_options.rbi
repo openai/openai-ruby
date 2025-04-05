@@ -23,8 +23,7 @@ module OpenAI
         REQUIRED = T.let(:required, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

@@ -80,8 +80,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             # The ID of the specific File the citation is from.
@@ -99,12 +98,10 @@ module OpenAI
             attr_writer :quote
 
             sig { params(file_id: String, quote: String).returns(T.attached_class) }
-            def self.new(file_id: nil, quote: nil)
-            end
+            def self.new(file_id: nil, quote: nil); end
 
             sig { override.returns({file_id: String, quote: String}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

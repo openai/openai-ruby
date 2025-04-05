@@ -15,8 +15,7 @@ module OpenAI
                 [OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
       end
     end

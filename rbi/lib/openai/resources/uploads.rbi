@@ -51,9 +51,7 @@ module OpenAI
         #   [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
         purpose:,
         request_options: {}
-      )
-      end
-
+      ); end
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
       sig do
         params(
@@ -66,9 +64,7 @@ module OpenAI
         # The ID of the Upload.
         upload_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # Completes the
       #   [Upload](https://platform.openai.com/docs/api-reference/uploads/object).
       #
@@ -100,13 +96,10 @@ module OpenAI
         #   matches what you expect.
         md5: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:)
-      end
+      def self.new(client:); end
     end
   end
 end

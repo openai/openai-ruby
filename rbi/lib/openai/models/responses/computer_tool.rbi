@@ -31,8 +31,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(display_height:, display_width:, environment:, type: :computer_use_preview)
-        end
+        def self.new(display_height:, display_width:, environment:, type: :computer_use_preview); end
 
         sig do
           override
@@ -45,8 +44,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The type of computer environment to control.
         module Environment
@@ -62,8 +60,7 @@ module OpenAI
           BROWSER = T.let(:browser, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

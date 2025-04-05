@@ -33,8 +33,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(key:, type:, value:)
-      end
+      def self.new(key:, type:, value:); end
 
       sig do
         override
@@ -42,8 +41,7 @@ module OpenAI
             {key: String, type: OpenAI::Models::ComparisonFilter::Type::OrSymbol, value: T.any(String, Float, T::Boolean)}
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
@@ -67,8 +65,7 @@ module OpenAI
         LTE = T.let(:lte, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::ComparisonFilter::Type::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
 
       # The value to compare against the attribute key; supports string, number, or
@@ -77,8 +74,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, Float, T::Boolean]) }
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

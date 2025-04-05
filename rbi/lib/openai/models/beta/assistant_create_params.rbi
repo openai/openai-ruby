@@ -108,11 +108,11 @@ module OpenAI
           returns(
             T.nilable(
               T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
+                T.any(
+                  OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Models::Beta::FileSearchTool,
+                  OpenAI::Models::Beta::FunctionTool
+                )
               ]
             )
           )
@@ -122,12 +122,12 @@ module OpenAI
         sig do
           params(
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ]
           )
             .void
@@ -162,12 +162,12 @@ module OpenAI
             temperature: T.nilable(Float),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ],
             top_p: T.nilable(Float),
             request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
@@ -187,9 +187,7 @@ module OpenAI
           tools: nil,
           top_p: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -211,19 +209,18 @@ module OpenAI
                 temperature: T.nilable(Float),
                 tool_resources: T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources),
                 tools: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
-                )
+                  T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Models::Beta::FileSearchTool,
+                    OpenAI::Models::Beta::FunctionTool
+                  )
                 ],
                 top_p: T.nilable(Float),
                 request_options: OpenAI::RequestOptions
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # ID of the model to use. You can use the
         #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -234,8 +231,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
         end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -278,8 +274,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil)
-          end
+          def self.new(code_interpreter: nil, file_search: nil); end
 
           sig do
             override
@@ -290,8 +285,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
@@ -304,12 +298,10 @@ module OpenAI
             attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(file_ids: nil)
-            end
+            def self.new(file_ids: nil); end
 
             sig { override.returns({file_ids: T::Array[String]}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -337,10 +329,10 @@ module OpenAI
             sig do
               params(
                 vector_stores: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
-                  OpenAI::Internal::AnyHash
-                )
+                  T.any(
+                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Internal::AnyHash
+                  )
                 ]
               )
                 .void
@@ -351,16 +343,15 @@ module OpenAI
               params(
                 vector_store_ids: T::Array[String],
                 vector_stores: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
-                  OpenAI::Internal::AnyHash
-                )
+                  T.any(
+                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Internal::AnyHash
+                  )
                 ]
               )
                 .returns(T.attached_class)
             end
-            def self.new(vector_store_ids: nil, vector_stores: nil)
-            end
+            def self.new(vector_store_ids: nil, vector_stores: nil); end
 
             sig do
               override
@@ -371,8 +362,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
@@ -431,8 +421,7 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(chunking_strategy: nil, file_ids: nil, metadata: nil)
-              end
+              def self.new(chunking_strategy: nil, file_ids: nil, metadata: nil); end
 
               sig do
                 override
@@ -447,8 +436,7 @@ module OpenAI
                     }
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               #   strategy.
@@ -463,12 +451,10 @@ module OpenAI
                   # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
                   #   `800` and `chunk_overlap_tokens` of `400`.
                   sig { params(type: Symbol).returns(T.attached_class) }
-                  def self.new(type: :auto)
-                  end
+                  def self.new(type: :auto); end
 
                   sig { override.returns({type: Symbol}) }
-                  def to_hash
-                  end
+                  def to_hash; end
                 end
 
                 class Static < OpenAI::Internal::Type::BaseModel
@@ -504,8 +490,7 @@ module OpenAI
                     )
                       .returns(T.attached_class)
                   end
-                  def self.new(static:, type: :static)
-                  end
+                  def self.new(static:, type: :static); end
 
                   sig do
                     override
@@ -516,8 +501,7 @@ module OpenAI
                         }
                       )
                   end
-                  def to_hash
-                  end
+                  def to_hash; end
 
                   class Static < OpenAI::Internal::Type::BaseModel
                     # The number of tokens that overlap between chunks. The default value is `400`.
@@ -537,12 +521,10 @@ module OpenAI
                         max_chunk_size_tokens: Integer
                       ).returns(T.attached_class)
                     end
-                    def self.new(chunk_overlap_tokens:, max_chunk_size_tokens:)
-                    end
+                    def self.new(chunk_overlap_tokens:, max_chunk_size_tokens:); end
 
                     sig { override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer}) }
-                    def to_hash
-                    end
+                    def to_hash; end
                   end
                 end
 
@@ -552,8 +534,7 @@ module OpenAI
                       [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
                     )
                 end
-                def self.variants
-                end
+                def self.variants; end
               end
             end
           end

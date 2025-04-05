@@ -50,8 +50,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(index:, id: nil, code_interpreter: nil, type: :code_interpreter)
-            end
+            def self.new(index:, id: nil, code_interpreter: nil, type: :code_interpreter); end
 
             sig do
               override
@@ -64,8 +63,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # The input to the Code Interpreter tool call.
@@ -82,10 +80,10 @@ module OpenAI
                 returns(
                   T.nilable(
                     T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
+                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
+                      )
                     ]
                   )
                 )
@@ -95,11 +93,11 @@ module OpenAI
               sig do
                 params(
                   outputs: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
+                      OpenAI::Internal::AnyHash,
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
+                    )
                   ]
                 )
                   .void
@@ -111,17 +109,16 @@ module OpenAI
                 params(
                   input: String,
                   outputs: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
+                      OpenAI::Internal::AnyHash,
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
+                    )
                   ]
                 )
                   .returns(T.attached_class)
               end
-              def self.new(input: nil, outputs: nil)
-              end
+              def self.new(input: nil, outputs: nil); end
 
               sig do
                 override
@@ -129,16 +126,15 @@ module OpenAI
                     {
                       input: String,
                       outputs: T::Array[
-                      T.any(
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
-                      )
+                        T.any(
+                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
+                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
+                        )
                       ]
                     }
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
@@ -150,8 +146,7 @@ module OpenAI
                       [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
                     )
                 end
-                def self.variants
-                end
+                def self.variants; end
               end
             end
           end

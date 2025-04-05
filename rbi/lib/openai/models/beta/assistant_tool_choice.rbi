@@ -23,8 +23,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(type:, function: nil)
-        end
+        def self.new(type:, function: nil); end
 
         sig do
           override
@@ -35,8 +34,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The type of the tool. If type is `function`, the function name must be set
         module Type
@@ -52,8 +50,7 @@ module OpenAI
           FILE_SEARCH = T.let(:file_search, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

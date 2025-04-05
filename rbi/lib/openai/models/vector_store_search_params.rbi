@@ -83,16 +83,14 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # A query string for a search
       module Query
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String]]) }
-        def self.variants
-        end
+        def self.variants; end
 
         StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
       end
@@ -102,8 +100,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
-        def self.variants
-        end
+        def self.variants; end
       end
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -127,8 +124,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(ranker: nil, score_threshold: nil)
-        end
+        def self.new(ranker: nil, score_threshold: nil); end
 
         sig do
           override
@@ -136,8 +132,7 @@ module OpenAI
               {ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol, score_threshold: Float}
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         module Ranker
           extend OpenAI::Internal::Type::Enum
@@ -155,8 +150,7 @@ module OpenAI
             )
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

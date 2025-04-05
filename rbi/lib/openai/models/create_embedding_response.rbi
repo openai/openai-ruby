@@ -31,8 +31,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(data:, model:, usage:, object: :list)
-      end
+      def self.new(data:, model:, usage:, object: :list); end
 
       sig do
         override
@@ -45,8 +44,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       class Usage < OpenAI::Internal::Type::BaseModel
         # The number of tokens used by the prompt.
@@ -59,12 +57,10 @@ module OpenAI
 
         # The usage information for the request.
         sig { params(prompt_tokens: Integer, total_tokens: Integer).returns(T.attached_class) }
-        def self.new(prompt_tokens:, total_tokens:)
-        end
+        def self.new(prompt_tokens:, total_tokens:); end
 
         sig { override.returns({prompt_tokens: Integer, total_tokens: Integer}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

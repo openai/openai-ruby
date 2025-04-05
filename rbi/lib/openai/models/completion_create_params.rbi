@@ -159,14 +159,7 @@ module OpenAI
       sig do
         params(
           model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
-          prompt: T.nilable(
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            )
-          ),
+          prompt: T.nilable(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -205,9 +198,7 @@ module OpenAI
         top_p: nil,
         user: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(
@@ -240,8 +231,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # ID of the model to use. You can use the
       #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -252,8 +242,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
-        def self.variants
-        end
+        def self.variants; end
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionCreateParams::Model) }
         OrSymbol =
@@ -275,8 +264,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-        def self.variants
-        end
+        def self.variants; end
 
         StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
@@ -295,8 +283,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String]]) }
-        def self.variants
-        end
+        def self.variants; end
 
         StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
       end

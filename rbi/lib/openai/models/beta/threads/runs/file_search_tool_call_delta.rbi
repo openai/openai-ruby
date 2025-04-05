@@ -34,12 +34,10 @@ module OpenAI
                 type: Symbol
               ).returns(T.attached_class)
             end
-            def self.new(file_search:, index:, id: nil, type: :file_search)
-            end
+            def self.new(file_search:, index:, id: nil, type: :file_search); end
 
             sig { override.returns({file_search: T.anything, index: Integer, type: Symbol, id: String}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

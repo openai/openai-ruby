@@ -33,8 +33,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(index:, image: nil, type: :image)
-            end
+            def self.new(index:, image: nil, type: :image); end
 
             sig do
               override
@@ -42,8 +41,7 @@ module OpenAI
                   {index: Integer, type: Symbol, image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image}
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class Image < OpenAI::Internal::Type::BaseModel
               # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
@@ -55,12 +53,10 @@ module OpenAI
               attr_writer :file_id
 
               sig { params(file_id: String).returns(T.attached_class) }
-              def self.new(file_id: nil)
-              end
+              def self.new(file_id: nil); end
 
               sig { override.returns({file_id: String}) }
-              def to_hash
-              end
+              def to_hash; end
             end
           end
         end

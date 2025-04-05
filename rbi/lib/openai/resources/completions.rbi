@@ -9,14 +9,7 @@ module OpenAI
       sig do
         params(
           model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
-          prompt: T.nilable(
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            )
-          ),
+          prompt: T.nilable(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -145,23 +138,14 @@ module OpenAI
         #   `#create` for streaming and non-streaming use cases, respectively.
         stream: false,
         request_options: {}
-      )
-      end
-
+      ); end
       # See {OpenAI::Resources::Completions#create} for non-streaming counterpart.
       #
       #   Creates a completion for the provided prompt and parameters.
       sig do
         params(
           model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
-          prompt: T.nilable(
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            )
-          ),
+          prompt: T.nilable(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -290,13 +274,10 @@ module OpenAI
         #   `#create` for streaming and non-streaming use cases, respectively.
         stream: true,
         request_options: {}
-      )
-      end
-
+      ); end
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:)
-      end
+      def self.new(client:); end
     end
   end
 end

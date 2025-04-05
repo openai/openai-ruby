@@ -19,14 +19,12 @@ module OpenAI
         params(code: T.nilable(String), message: String, param: T.nilable(String), type: String)
           .returns(T.attached_class)
       end
-      def self.new(code:, message:, param:, type:)
-      end
+      def self.new(code:, message:, param:, type:); end
 
       sig do
         override.returns({code: T.nilable(String), message: String, param: T.nilable(String), type: String})
       end
-      def to_hash
-      end
+      def to_hash; end
     end
   end
 end

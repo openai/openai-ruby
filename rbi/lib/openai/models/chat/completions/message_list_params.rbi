@@ -39,8 +39,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(after: nil, limit: nil, order: nil, request_options: {})
-          end
+          def self.new(after: nil, limit: nil, order: nil, request_options: {}); end
 
           sig do
             override
@@ -53,8 +52,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           #   for descending order. Defaults to `asc`.
@@ -70,8 +68,7 @@ module OpenAI
             DESC = T.let(:desc, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

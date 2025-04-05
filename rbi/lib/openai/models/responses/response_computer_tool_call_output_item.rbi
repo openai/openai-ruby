@@ -42,10 +42,10 @@ module OpenAI
         sig do
           params(
             acknowledged_safety_checks: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
-              OpenAI::Internal::AnyHash
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
+                OpenAI::Internal::AnyHash
+              )
             ]
           )
             .void
@@ -66,10 +66,10 @@ module OpenAI
             call_id: String,
             output: T.any(OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot, OpenAI::Internal::AnyHash),
             acknowledged_safety_checks: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
-              OpenAI::Internal::AnyHash
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
+                OpenAI::Internal::AnyHash
+              )
             ],
             status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::OrSymbol,
             type: Symbol
@@ -99,8 +99,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           # The ID of the pending safety check.
@@ -117,12 +116,10 @@ module OpenAI
 
           # A pending safety check for the computer call.
           sig { params(id: String, code: String, message: String).returns(T.attached_class) }
-          def self.new(id:, code:, message:)
-          end
+          def self.new(id:, code:, message:); end
 
           sig { override.returns({id: String, code: String, message: String}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
@@ -146,8 +143,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

@@ -17,12 +17,10 @@ module OpenAI
         attr_accessor :word
 
         sig { params(end_: Float, start: Float, word: String).returns(T.attached_class) }
-        def self.new(end_:, start:, word:)
-        end
+        def self.new(end_:, start:, word:); end
 
         sig { override.returns({end_: Float, start: Float, word: String}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

@@ -78,16 +78,14 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # A filter to apply based on file attributes.
         module Filters
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
-          def self.variants
-          end
+          def self.variants; end
         end
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -115,8 +113,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(ranker: nil, score_threshold: nil)
-          end
+          def self.new(ranker: nil, score_threshold: nil); end
 
           sig do
             override
@@ -124,8 +121,7 @@ module OpenAI
                 {ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol, score_threshold: Float}
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # The ranker to use for the file search.
           module Ranker
@@ -146,8 +142,7 @@ module OpenAI
             sig do
               override.returns(T::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol])
             end
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

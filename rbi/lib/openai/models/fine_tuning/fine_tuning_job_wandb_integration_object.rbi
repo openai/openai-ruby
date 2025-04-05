@@ -28,12 +28,10 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(wandb:, type: :wandb)
-        end
+        def self.new(wandb:, type: :wandb); end
 
         sig { override.returns({type: Symbol, wandb: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

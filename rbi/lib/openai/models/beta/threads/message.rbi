@@ -27,12 +27,12 @@ module OpenAI
           sig do
             returns(
               T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                OpenAI::Models::Beta::Threads::TextContentBlock,
-                OpenAI::Models::Beta::Threads::RefusalContentBlock
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                  OpenAI::Models::Beta::Threads::TextContentBlock,
+                  OpenAI::Models::Beta::Threads::RefusalContentBlock
+                )
               ]
             )
           end
@@ -100,13 +100,13 @@ module OpenAI
               attachments: T.nilable(T::Array[T.any(OpenAI::Models::Beta::Threads::Message::Attachment, OpenAI::Internal::AnyHash)]),
               completed_at: T.nilable(Integer),
               content: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                OpenAI::Models::Beta::Threads::TextContentBlock,
-                OpenAI::Models::Beta::Threads::RefusalContentBlock
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                  OpenAI::Models::Beta::Threads::TextContentBlock,
+                  OpenAI::Models::Beta::Threads::RefusalContentBlock
+                )
               ],
               created_at: Integer,
               incomplete_at: T.nilable(Integer),
@@ -135,9 +135,7 @@ module OpenAI
             status:,
             thread_id:,
             object: :"thread.message"
-          )
-          end
-
+          ); end
           sig do
             override
               .returns(
@@ -147,12 +145,12 @@ module OpenAI
                   attachments: T.nilable(T::Array[OpenAI::Models::Beta::Threads::Message::Attachment]),
                   completed_at: T.nilable(Integer),
                   content: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                    OpenAI::Models::Beta::Threads::TextContentBlock,
-                    OpenAI::Models::Beta::Threads::RefusalContentBlock
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                      OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                      OpenAI::Models::Beta::Threads::TextContentBlock,
+                      OpenAI::Models::Beta::Threads::RefusalContentBlock
+                    )
                   ],
                   created_at: Integer,
                   incomplete_at: T.nilable(Integer),
@@ -166,8 +164,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class Attachment < OpenAI::Internal::Type::BaseModel
             # The ID of the file to attach to the message.
@@ -182,10 +179,10 @@ module OpenAI
               returns(
                 T.nilable(
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::CodeInterpreterTool,
+                      OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+                    )
                   ]
                 )
               )
@@ -195,11 +192,11 @@ module OpenAI
             sig do
               params(
                 tools: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                )
+                  T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Internal::AnyHash,
+                    OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+                  )
                 ]
               )
                 .void
@@ -210,17 +207,16 @@ module OpenAI
               params(
                 file_id: String,
                 tools: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                )
+                  T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Internal::AnyHash,
+                    OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+                  )
                 ]
               )
                 .returns(T.attached_class)
             end
-            def self.new(file_id: nil, tools: nil)
-            end
+            def self.new(file_id: nil, tools: nil); end
 
             sig do
               override
@@ -228,16 +224,15 @@ module OpenAI
                   {
                     file_id: String,
                     tools: T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::CodeInterpreterTool,
-                      OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::CodeInterpreterTool,
+                        OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+                      )
                     ]
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -248,12 +243,10 @@ module OpenAI
                 attr_accessor :type
 
                 sig { params(type: Symbol).returns(T.attached_class) }
-                def self.new(type: :file_search)
-                end
+                def self.new(type: :file_search); end
 
                 sig { override.returns({type: Symbol}) }
-                def to_hash
-                end
+                def to_hash; end
               end
 
               sig do
@@ -262,8 +255,7 @@ module OpenAI
                     [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
                   )
               end
-              def self.variants
-              end
+              def self.variants; end
             end
           end
 
@@ -277,14 +269,12 @@ module OpenAI
               params(reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::OrSymbol)
                 .returns(T.attached_class)
             end
-            def self.new(reason:)
-            end
+            def self.new(reason:); end
 
             sig do
               override.returns({reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol})
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # The reason the message is incomplete.
             module Reason
@@ -309,8 +299,7 @@ module OpenAI
               sig do
                 override.returns(T::Array[OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol])
               end
-              def self.values
-              end
+              def self.values; end
             end
           end
 
@@ -326,8 +315,7 @@ module OpenAI
             ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Message::Role::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
@@ -344,8 +332,7 @@ module OpenAI
             COMPLETED = T.let(:completed, OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

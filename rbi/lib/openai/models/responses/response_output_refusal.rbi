@@ -14,12 +14,10 @@ module OpenAI
 
         # A refusal from the model.
         sig { params(refusal: String, type: Symbol).returns(T.attached_class) }
-        def self.new(refusal:, type: :refusal)
-        end
+        def self.new(refusal:, type: :refusal); end
 
         sig { override.returns({refusal: String, type: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

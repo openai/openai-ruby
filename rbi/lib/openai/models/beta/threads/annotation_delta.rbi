@@ -16,8 +16,7 @@ module OpenAI
                 [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
       end
     end

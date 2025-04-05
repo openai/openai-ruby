@@ -17,12 +17,10 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(vector_store_id:, request_options: {})
-        end
+        def self.new(vector_store_id:, request_options: {}); end
 
         sig { override.returns({vector_store_id: String, request_options: OpenAI::RequestOptions}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

@@ -24,12 +24,10 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(id:, model:, results:)
-      end
+      def self.new(id:, model:, results:); end
 
       sig { override.returns({id: String, model: String, results: T::Array[OpenAI::Models::Moderation]}) }
-      def to_hash
-      end
+      def to_hash; end
     end
   end
 end

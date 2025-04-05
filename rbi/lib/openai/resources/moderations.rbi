@@ -11,11 +11,11 @@ module OpenAI
             String,
             T::Array[String],
             T::Array[
-            T.any(
-              OpenAI::Models::ModerationImageURLInput,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::ModerationTextInput
-            )
+              T.any(
+                OpenAI::Models::ModerationImageURLInput,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::ModerationTextInput
+              )
             ]
           ),
           model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
@@ -33,13 +33,10 @@ module OpenAI
         #   [here](https://platform.openai.com/docs/models#moderation).
         model: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:)
-      end
+      def self.new(client:); end
     end
   end
 end

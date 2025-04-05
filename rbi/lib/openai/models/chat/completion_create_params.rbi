@@ -16,14 +16,14 @@ module OpenAI
         sig do
           returns(
             T::Array[
-            T.any(
-              OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-              OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-              OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-              OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-              OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-              OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-            )
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
+                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
+                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
+                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
+                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
+                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+              )
             ]
           )
         end
@@ -378,15 +378,15 @@ module OpenAI
         sig do
           params(
             messages: T::Array[
-            T.any(
-              OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-              OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-              OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-              OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-              OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-            )
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
+                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
+                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
+                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
+                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+              )
             ],
             model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
             audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Internal::AnyHash)),
@@ -466,22 +466,20 @@ module OpenAI
           user: nil,
           web_search_options: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
               {
                 messages: T::Array[
-                T.any(
-                  OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-                  OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-                  OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-                  OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-                  OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-                  OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-                )
+                  T.any(
+                    OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
+                    OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
+                    OpenAI::Models::Chat::ChatCompletionUserMessageParam,
+                    OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
+                    OpenAI::Models::Chat::ChatCompletionToolMessageParam,
+                    OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+                  )
                 ],
                 model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
                 audio: T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam),
@@ -526,8 +524,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
         #   wide range of models with different capabilities, performance characteristics,
@@ -538,8 +535,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # Deprecated in favor of `tool_choice`.
@@ -587,8 +583,7 @@ module OpenAI
                   T::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol]
                 )
             end
-            def self.values
-            end
+            def self.values; end
           end
 
           sig do
@@ -597,8 +592,7 @@ module OpenAI
                 [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
 
         class Function < OpenAI::Internal::Type::BaseModel
@@ -632,14 +626,12 @@ module OpenAI
             params(name: String, description: String, parameters: T::Hash[Symbol, T.anything])
               .returns(T.attached_class)
           end
-          def self.new(name:, description: nil, parameters: nil)
-          end
+          def self.new(name:, description: nil, parameters: nil); end
 
           sig do
             override.returns({name: String, description: String, parameters: T::Hash[Symbol, T.anything]})
           end
-          def to_hash
-          end
+          def to_hash; end
         end
 
         module Modality
@@ -653,8 +645,7 @@ module OpenAI
           AUDIO = T.let(:audio, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # An object specifying the format that the model must output.
@@ -676,8 +667,7 @@ module OpenAI
                 [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -705,8 +695,7 @@ module OpenAI
           DEFAULT = T.let(:default, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # Up to 4 sequences where the API will stop generating further tokens. The
@@ -715,8 +704,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, T::Array[String]]) }
-          def self.variants
-          end
+          def self.variants; end
 
           StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
         end
@@ -771,8 +759,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(search_context_size: nil, user_location: nil)
-          end
+          def self.new(search_context_size: nil, user_location: nil); end
 
           sig do
             override
@@ -783,8 +770,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # High level guidance for the amount of context window space to use for the
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -824,8 +810,7 @@ module OpenAI
                   T::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol]
                 )
             end
-            def self.values
-            end
+            def self.values; end
           end
 
           class UserLocation < OpenAI::Internal::Type::BaseModel
@@ -859,8 +844,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(approximate:, type: :approximate)
-            end
+            def self.new(approximate:, type: :approximate); end
 
             sig do
               override
@@ -871,8 +855,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class Approximate < OpenAI::Internal::Type::BaseModel
               # Free text input for the city of the user, e.g. `San Francisco`.
@@ -914,12 +897,10 @@ module OpenAI
                   timezone: String
                 ).returns(T.attached_class)
               end
-              def self.new(city: nil, country: nil, region: nil, timezone: nil)
-              end
+              def self.new(city: nil, country: nil, region: nil, timezone: nil); end
 
               sig { override.returns({city: String, country: String, region: String, timezone: String}) }
-              def to_hash
-              end
+              def to_hash; end
             end
           end
         end

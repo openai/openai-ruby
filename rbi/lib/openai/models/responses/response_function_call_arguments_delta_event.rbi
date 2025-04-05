@@ -29,12 +29,10 @@ module OpenAI
             type: Symbol
           ).returns(T.attached_class)
         end
-        def self.new(delta:, item_id:, output_index:, type: :"response.function_call_arguments.delta")
-        end
+        def self.new(delta:, item_id:, output_index:, type: :"response.function_call_arguments.delta"); end
 
         sig { override.returns({delta: String, item_id: String, output_index: Integer, type: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

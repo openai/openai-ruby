@@ -36,8 +36,7 @@ module OpenAI
           params(project: String, entity: T.nilable(String), name: T.nilable(String), tags: T::Array[String])
             .returns(T.attached_class)
         end
-        def self.new(project:, entity: nil, name: nil, tags: nil)
-        end
+        def self.new(project:, entity: nil, name: nil, tags: nil); end
 
         sig do
           override
@@ -48,8 +47,7 @@ module OpenAI
                        tags: T::Array[String]
                      })
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

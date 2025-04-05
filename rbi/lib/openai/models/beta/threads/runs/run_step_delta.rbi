@@ -42,8 +42,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(step_details: nil)
-            end
+            def self.new(step_details: nil); end
 
             sig do
               override
@@ -56,8 +55,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # The details of the run step.
             module StepDetails
@@ -69,8 +67,7 @@ module OpenAI
                     [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
                   )
               end
-              def self.variants
-              end
+              def self.variants; end
             end
           end
         end

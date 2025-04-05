@@ -76,8 +76,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The log level of the event.
         module Level
@@ -92,8 +91,7 @@ module OpenAI
           ERROR = T.let(:error, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # The type of event.
@@ -108,8 +106,7 @@ module OpenAI
           METRICS = T.let(:metrics, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

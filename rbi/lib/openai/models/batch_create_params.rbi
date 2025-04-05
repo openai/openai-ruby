@@ -49,8 +49,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
-      end
+      def self.new(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {}); end
 
       sig do
         override
@@ -64,8 +63,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
@@ -79,8 +77,7 @@ module OpenAI
         COMPLETION_WINDOW_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
 
       # The endpoint to be used for all requests in the batch. Currently
@@ -101,8 +98,7 @@ module OpenAI
         V1_COMPLETIONS = T.let(:"/v1/completions", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

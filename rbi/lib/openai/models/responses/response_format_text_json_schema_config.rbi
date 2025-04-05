@@ -47,8 +47,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(name:, schema:, description: nil, strict: nil, type: :json_schema)
-        end
+        def self.new(name:, schema:, description: nil, strict: nil, type: :json_schema); end
 
         sig do
           override
@@ -62,8 +61,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

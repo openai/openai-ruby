@@ -8,16 +8,16 @@ module OpenAI
         sig do
           returns(
             T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseInputMessageItem,
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-              OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseInputMessageItem,
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseFunctionToolCallItem,
+                OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
+              )
             ]
           )
         end
@@ -43,17 +43,17 @@ module OpenAI
         sig do
           params(
             data: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseInputMessageItem,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-              OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseInputMessageItem,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseFunctionToolCallItem,
+                OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
+              )
             ],
             first_id: String,
             has_more: T::Boolean,
@@ -62,24 +62,23 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data:, first_id:, has_more:, last_id:, object: :list)
-        end
+        def self.new(data:, first_id:, has_more:, last_id:, object: :list); end
 
         sig do
           override
             .returns(
               {
                 data: T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseInputMessageItem,
-                  OpenAI::Models::Responses::ResponseOutputMessage,
-                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Models::Responses::ResponseComputerToolCall,
-                  OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-                  OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-                )
+                  T.any(
+                    OpenAI::Models::Responses::ResponseInputMessageItem,
+                    OpenAI::Models::Responses::ResponseOutputMessage,
+                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Models::Responses::ResponseComputerToolCall,
+                    OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
+                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Models::Responses::ResponseFunctionToolCallItem,
+                    OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
+                  )
                 ],
                 first_id: String,
                 has_more: T::Boolean,
@@ -88,8 +87,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

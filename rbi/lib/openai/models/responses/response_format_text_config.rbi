@@ -25,8 +25,7 @@ module OpenAI
               [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

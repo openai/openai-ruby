@@ -32,8 +32,7 @@ module OpenAI
               [Symbol, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

@@ -35,8 +35,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content_index:, item_id:, output_index:, refusal:, type: :"response.refusal.done")
-        end
+        def self.new(content_index:, item_id:, output_index:, refusal:, type: :"response.refusal.done"); end
 
         sig do
           override
@@ -48,8 +47,7 @@ module OpenAI
                        type: Symbol
                      })
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end
