@@ -49,7 +49,7 @@ module OpenAI
       #   Echo back the prompt in addition to the completion
       #
       #   @return [Boolean, nil]
-      optional :echo, OpenAI::Internal::Type::BooleanModel, nil?: true
+      optional :echo, OpenAI::Internal::Type::Boolean, nil?: true
 
       # @!attribute frequency_penalty
       #   Number between -2.0 and 2.0. Positive values penalize new tokens based on their

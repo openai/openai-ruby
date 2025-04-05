@@ -42,7 +42,7 @@ module OpenAI
 
           variant Float
 
-          variant OpenAI::Internal::Type::BooleanModel
+          variant OpenAI::Internal::Type::Boolean
 
           # @!parse
           #   # @return [Array(String, Float, Boolean)]
