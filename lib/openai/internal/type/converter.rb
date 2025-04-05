@@ -64,7 +64,7 @@ module OpenAI
             in Hash
               type_info(spec.slice(:const, :enum, :union).first&.last)
             in true | false
-              -> { OpenAI::Internal::Type::BooleanModel }
+              -> { OpenAI::Internal::Type::Boolean }
             in OpenAI::Internal::Type::Converter | Class | Symbol
               -> { spec }
             in NilClass | Integer | Float

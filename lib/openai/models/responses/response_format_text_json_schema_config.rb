@@ -43,7 +43,7 @@ module OpenAI
         #     [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
         #   @return [Boolean, nil]
-        optional :strict, OpenAI::Internal::Type::BooleanModel, nil?: true
+        optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!parse
         #   # JSON Schema response format. Used to generate structured JSON responses. Learn

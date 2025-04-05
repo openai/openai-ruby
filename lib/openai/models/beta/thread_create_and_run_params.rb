@@ -72,7 +72,7 @@ module OpenAI
         #     during tool use.
         #
         #   @return [Boolean, nil]
-        optional :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel
+        optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
 
         # @!parse
         #   # @return [Boolean]

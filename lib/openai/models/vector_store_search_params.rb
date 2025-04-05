@@ -49,7 +49,7 @@ module OpenAI
       #   Whether to rewrite the natural language query for vector search.
       #
       #   @return [Boolean, nil]
-      optional :rewrite_query, OpenAI::Internal::Type::BooleanModel
+      optional :rewrite_query, OpenAI::Internal::Type::Boolean
 
       # @!parse
       #   # @return [Boolean]

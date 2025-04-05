@@ -113,7 +113,7 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
     assert_pattern do
       response => {
         id: String,
-        deleted: OpenAI::Internal::Type::BooleanModel,
+        deleted: OpenAI::Internal::Type::Boolean,
         object: Symbol
       }
     end
