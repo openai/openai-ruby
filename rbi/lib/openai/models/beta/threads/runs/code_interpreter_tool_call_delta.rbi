@@ -11,7 +11,7 @@ module OpenAI
             attr_accessor :index
 
             # The type of tool call. This is always going to be `code_interpreter` for this
-            #   type of tool call.
+            # type of tool call.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -74,8 +74,8 @@ module OpenAI
               attr_writer :input
 
               # The outputs from the Code Interpreter tool call. Code Interpreter can output one
-              #   or more items, including text (`logs`) or images (`image`). Each of these are
-              #   represented by a different object type.
+              # or more items, including text (`logs`) or images (`image`). Each of these are
+              # represented by a different object type.
               sig do
                 returns(
                   T.nilable(

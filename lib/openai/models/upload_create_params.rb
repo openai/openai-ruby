@@ -23,8 +23,8 @@ module OpenAI
       # @!attribute mime_type
       #   The MIME type of the file.
       #
-      #     This must fall within the supported MIME types for your file purpose. See the
-      #     supported MIME types for assistants and vision.
+      #   This must fall within the supported MIME types for your file purpose. See the
+      #   supported MIME types for assistants and vision.
       #
       #   @return [String]
       required :mime_type, String
@@ -32,8 +32,8 @@ module OpenAI
       # @!attribute purpose
       #   The intended purpose of the uploaded file.
       #
-      #     See the
-      #     [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
+      #   See the
+      #   [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
       #
       #   @return [Symbol, OpenAI::Models::FilePurpose]
       required :purpose, enum: -> { OpenAI::Models::FilePurpose }

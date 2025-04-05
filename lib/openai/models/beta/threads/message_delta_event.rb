@@ -25,7 +25,7 @@ module OpenAI
 
           # @!parse
           #   # Represents a message delta i.e. any changed fields on a message during
-          #   #   streaming.
+          #   # streaming.
           #   #
           #   # @param id [String]
           #   # @param delta [OpenAI::Models::Beta::Threads::MessageDelta]

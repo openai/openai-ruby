@@ -12,7 +12,7 @@ module OpenAI
 
         # @!attribute content
         #   A list of one or many input items to the model, containing different content
-        #     types.
+        #   types.
         #
         #   @return [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
         required :content,
@@ -26,7 +26,7 @@ module OpenAI
 
         # @!attribute [r] status
         #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
-        #     Populated when items are returned via API.
+        #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseInputMessageItem::Status }
@@ -74,7 +74,7 @@ module OpenAI
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseInputMessageItem#status
         module Status

@@ -21,7 +21,7 @@ module OpenAI
           attr_accessor :object
 
           # Represents a message delta i.e. any changed fields on a message during
-          #   streaming.
+          # streaming.
           sig do
             params(
               id: String,

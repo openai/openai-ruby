@@ -39,8 +39,8 @@ module OpenAI
       # @!attribute [r] system_fingerprint
       #   This fingerprint represents the backend configuration that the model runs with.
       #
-      #     Can be used in conjunction with the `seed` request parameter to understand when
-      #     backend changes have been made that might impact determinism.
+      #   Can be used in conjunction with the `seed` request parameter to understand when
+      #   backend changes have been made that might impact determinism.
       #
       #   @return [String, nil]
       optional :system_fingerprint, String
@@ -61,7 +61,7 @@ module OpenAI
 
       # @!parse
       #   # Represents a completion response from the API. Note: both the streamed and
-      #   #   non-streamed response objects share the same shape (unlike the chat endpoint).
+      #   # non-streamed response objects share the same shape (unlike the chat endpoint).
       #   #
       #   # @param id [String]
       #   # @param choices [Array<OpenAI::Models::CompletionChoice>]

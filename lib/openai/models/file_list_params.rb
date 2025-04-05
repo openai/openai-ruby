@@ -10,9 +10,9 @@ module OpenAI
 
       # @!attribute [r] after
       #   A cursor for use in pagination. `after` is an object ID that defines your place
-      #     in the list. For instance, if you make a list request and receive 100 objects,
-      #     ending with obj_foo, your subsequent call can include after=obj_foo in order to
-      #     fetch the next page of the list.
+      #   in the list. For instance, if you make a list request and receive 100 objects,
+      #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+      #   fetch the next page of the list.
       #
       #   @return [String, nil]
       optional :after, String
@@ -23,7 +23,7 @@ module OpenAI
 
       # @!attribute [r] limit
       #   A limit on the number of objects to be returned. Limit can range between 1 and
-      #     10,000, and the default is 10,000.
+      #   10,000, and the default is 10,000.
       #
       #   @return [Integer, nil]
       optional :limit, Integer
@@ -34,7 +34,7 @@ module OpenAI
 
       # @!attribute [r] order
       #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-      #     order and `desc` for descending order.
+      #   order and `desc` for descending order.
       #
       #   @return [Symbol, OpenAI::Models::FileListParams::Order, nil]
       optional :order, enum: -> { OpenAI::Models::FileListParams::Order }
@@ -65,7 +65,7 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-      #   order and `desc` for descending order.
+      # order and `desc` for descending order.
       module Order
         extend OpenAI::Internal::Type::Enum
 

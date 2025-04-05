@@ -4,7 +4,7 @@ module OpenAI
   module Models
     class Image < OpenAI::Internal::Type::BaseModel
       # The base64-encoded JSON of the generated image, if `response_format` is
-      #   `b64_json`.
+      # `b64_json`.
       sig { returns(T.nilable(String)) }
       attr_reader :b64_json
 
@@ -12,7 +12,7 @@ module OpenAI
       attr_writer :b64_json
 
       # The prompt that was used to generate the image, if there was any revision to the
-      #   prompt.
+      # prompt.
       sig { returns(T.nilable(String)) }
       attr_reader :revised_prompt
 

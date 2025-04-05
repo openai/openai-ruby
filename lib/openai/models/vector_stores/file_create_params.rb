@@ -11,18 +11,18 @@ module OpenAI
 
         # @!attribute file_id
         #   A [File](https://platform.openai.com/docs/api-reference/files) ID that the
-        #     vector store should use. Useful for tools like `file_search` that can access
-        #     files.
+        #   vector store should use. Useful for tools like `file_search` that can access
+        #   files.
         #
         #   @return [String]
         required :file_id, String
 
         # @!attribute attributes
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #     for storing additional information about the object in a structured format, and
-        #     querying for objects via API or the dashboard. Keys are strings with a maximum
-        #     length of 64 characters. Values are strings with a maximum length of 512
-        #     characters, booleans, or numbers.
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard. Keys are strings with a maximum
+        #   length of 64 characters. Values are strings with a maximum length of 512
+        #   characters, booleans, or numbers.
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         optional :attributes,
@@ -31,7 +31,7 @@ module OpenAI
 
         # @!attribute [r] chunking_strategy
         #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
-        #     strategy. Only applicable if `file_ids` is non-empty.
+        #   strategy. Only applicable if `file_ids` is non-empty.
         #
         #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
         optional :chunking_strategy, union: -> { OpenAI::Models::FileChunkingStrategyParam }

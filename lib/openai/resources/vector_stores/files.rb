@@ -5,8 +5,8 @@ module OpenAI
     class VectorStores
       class Files
         # Create a vector store file by attaching a
-        #   [File](https://platform.openai.com/docs/api-reference/files) to a
-        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object).
+        # [File](https://platform.openai.com/docs/api-reference/files) to a
+        # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object).
         #
         # @overload create(vector_store_id, file_id:, attributes: nil, chunking_strategy: nil, request_options: {})
         #
@@ -110,9 +110,9 @@ module OpenAI
         end
 
         # Delete a vector store file. This will remove the file from the vector store but
-        #   the file itself will not be deleted. To delete the file, use the
-        #   [delete file](https://platform.openai.com/docs/api-reference/files/delete)
-        #   endpoint.
+        # the file itself will not be deleted. To delete the file, use the
+        # [delete file](https://platform.openai.com/docs/api-reference/files/delete)
+        # endpoint.
         #
         # @overload delete(file_id, vector_store_id:, request_options: {})
         #

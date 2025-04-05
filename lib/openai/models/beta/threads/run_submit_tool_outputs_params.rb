@@ -46,7 +46,7 @@ module OpenAI
 
             # @!attribute [r] tool_call_id
             #   The ID of the tool call in the `required_action` object within the run object
-            #     the output is being submitted for.
+            #   the output is being submitted for.
             #
             #   @return [String, nil]
             optional :tool_call_id, String

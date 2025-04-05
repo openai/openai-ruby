@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Audio
       # Represents a transcription response returned by model, based on the provided
-      #   input.
+      # input.
       #
       # @see OpenAI::Resources::Audio::Transcriptions#create
       #

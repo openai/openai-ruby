@@ -8,21 +8,21 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         # A [File](https://platform.openai.com/docs/api-reference/files) ID that the
-        #   vector store should use. Useful for tools like `file_search` that can access
-        #   files.
+        # vector store should use. Useful for tools like `file_search` that can access
+        # files.
         sig { returns(String) }
         attr_accessor :file_id
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #   for storing additional information about the object in a structured format, and
-        #   querying for objects via API or the dashboard. Keys are strings with a maximum
-        #   length of 64 characters. Values are strings with a maximum length of 512
-        #   characters, booleans, or numbers.
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard. Keys are strings with a maximum
+        # length of 64 characters. Values are strings with a maximum length of 512
+        # characters, booleans, or numbers.
         sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
         attr_accessor :attributes
 
         # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
-        #   strategy. Only applicable if `file_ids` is non-empty.
+        # strategy. Only applicable if `file_ids` is non-empty.
         sig do
           returns(
             T.nilable(

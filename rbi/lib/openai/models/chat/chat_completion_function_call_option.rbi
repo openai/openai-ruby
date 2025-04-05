@@ -9,7 +9,7 @@ module OpenAI
         attr_accessor :name
 
         # Specifying a particular function via `{"name": "my_function"}` forces the model
-        #   to call that function.
+        # to call that function.
         sig { params(name: String).returns(T.attached_class) }
         def self.new(name:); end
 

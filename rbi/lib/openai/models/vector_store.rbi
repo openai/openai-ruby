@@ -22,11 +22,11 @@ module OpenAI
       attr_accessor :last_active_at
 
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
-      #   for storing additional information about the object in a structured format, and
-      #   querying for objects via API or the dashboard.
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
       #
-      #   Keys are strings with a maximum length of 64 characters. Values are strings with
-      #   a maximum length of 512 characters.
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
       attr_accessor :metadata
 
@@ -39,8 +39,8 @@ module OpenAI
       attr_accessor :object
 
       # The status of the vector store, which can be either `expired`, `in_progress`, or
-      #   `completed`. A status of `completed` indicates that the vector store is ready
-      #   for use.
+      # `completed`. A status of `completed` indicates that the vector store is ready
+      # for use.
       sig { returns(OpenAI::Models::VectorStore::Status::TaggedSymbol) }
       attr_accessor :status
 
@@ -60,7 +60,7 @@ module OpenAI
       attr_accessor :expires_at
 
       # A vector store is a collection of processed files can be used by the
-      #   `file_search` tool.
+      # `file_search` tool.
       sig do
         params(
           id: String,
@@ -157,8 +157,8 @@ module OpenAI
       end
 
       # The status of the vector store, which can be either `expired`, `in_progress`, or
-      #   `completed`. A status of `completed` indicates that the vector store is ready
-      #   for use.
+      # `completed`. A status of `completed` indicates that the vector store is ready
+      # for use.
       module Status
         extend OpenAI::Internal::Type::Enum
 
@@ -175,7 +175,7 @@ module OpenAI
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
-        #   `last_active_at`.
+        # `last_active_at`.
         sig { returns(Symbol) }
         attr_accessor :anchor
 

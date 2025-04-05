@@ -14,8 +14,8 @@ module OpenAI
 
             # @!attribute [r] tool_calls
             #   An array of tool calls the run step was involved in. These can be associated
-            #     with one of three types of tools: `code_interpreter`, `file_search`, or
-            #     `function`.
+            #   with one of three types of tools: `code_interpreter`, `file_search`, or
+            #   `function`.
             #
             #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>, nil]
             optional :tool_calls,

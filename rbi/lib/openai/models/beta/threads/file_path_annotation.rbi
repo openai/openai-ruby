@@ -31,7 +31,7 @@ module OpenAI
           attr_accessor :type
 
           # A URL for the file that's generated when the assistant used the
-          #   `code_interpreter` tool to generate a file.
+          # `code_interpreter` tool to generate a file.
           sig do
             params(
               end_index: Integer,

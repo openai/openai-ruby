@@ -16,7 +16,7 @@ module OpenAI
 
       # @!attribute [r] md5
       #   The optional md5 checksum for the file contents to verify if the bytes uploaded
-      #     matches what you expect.
+      #   matches what you expect.
       #
       #   @return [String, nil]
       optional :md5, String

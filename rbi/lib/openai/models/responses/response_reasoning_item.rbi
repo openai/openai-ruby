@@ -17,7 +17,7 @@ module OpenAI
         attr_accessor :type
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)) }
         attr_reader :status
 
@@ -25,7 +25,7 @@ module OpenAI
         attr_writer :status
 
         # A description of the chain of thought used by a reasoning model while generating
-        #   a response.
+        # a response.
         sig do
           params(
             id: String,
@@ -67,7 +67,7 @@ module OpenAI
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         module Status
           extend OpenAI::Internal::Type::Enum
 

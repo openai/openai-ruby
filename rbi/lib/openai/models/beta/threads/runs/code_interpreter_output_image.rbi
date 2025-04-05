@@ -45,7 +45,7 @@ module OpenAI
 
             class Image < OpenAI::Internal::Type::BaseModel
               # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
-              #   image.
+              # image.
               sig { returns(T.nilable(String)) }
               attr_reader :file_id
 

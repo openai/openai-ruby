@@ -6,12 +6,12 @@ module OpenAI
       module Threads
         class ImageURL < OpenAI::Internal::Type::BaseModel
           # The external URL of the image, must be a supported image types: jpeg, jpg, png,
-          #   gif, webp.
+          # gif, webp.
           sig { returns(String) }
           attr_accessor :url
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #   to high resolution using `high`. Default value is `auto`
+          # to high resolution using `high`. Default value is `auto`
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)) }
           attr_reader :detail
 
@@ -28,7 +28,7 @@ module OpenAI
           def to_hash; end
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #   to high resolution using `high`. Default value is `auto`
+          # to high resolution using `high`. Default value is `auto`
           module Detail
             extend OpenAI::Internal::Type::Enum
 

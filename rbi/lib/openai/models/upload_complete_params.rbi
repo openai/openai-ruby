@@ -11,7 +11,7 @@ module OpenAI
       attr_accessor :part_ids
 
       # The optional md5 checksum for the file contents to verify if the bytes uploaded
-      #   matches what you expect.
+      # matches what you expect.
       sig { returns(T.nilable(String)) }
       attr_reader :md5
 

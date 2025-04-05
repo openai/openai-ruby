@@ -4,7 +4,7 @@ module OpenAI
   module Resources
     class Moderations
       # Classifies if text and/or image inputs are potentially harmful. Learn more in
-      #   the [moderation guide](https://platform.openai.com/docs/guides/moderation).
+      # the [moderation guide](https://platform.openai.com/docs/guides/moderation).
       #
       # @overload create(input:, model: nil, request_options: {})
       #

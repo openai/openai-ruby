@@ -20,7 +20,7 @@ module OpenAI
 
             # @!attribute type
             #   The type of tool call. This is always going to be `function` for this type of
-            #     tool call.
+            #   tool call.
             #
             #   @return [Symbol, :function]
             required :type, const: :function
@@ -50,8 +50,8 @@ module OpenAI
 
               # @!attribute output
               #   The output of the function. This will be `null` if the outputs have not been
-              #     [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
-              #     yet.
+              #   [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+              #   yet.
               #
               #   @return [String, nil]
               required :output, String, nil?: true

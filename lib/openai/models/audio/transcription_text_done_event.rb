@@ -18,9 +18,9 @@ module OpenAI
 
         # @!attribute [r] logprobs
         #   The log probabilities of the individual tokens in the transcription. Only
-        #     included if you
-        #     [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
-        #     with the `include[]` parameter set to `logprobs`.
+        #   included if you
+        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        #   with the `include[]` parameter set to `logprobs`.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
         optional :logprobs,
@@ -32,9 +32,9 @@ module OpenAI
 
         # @!parse
         #   # Emitted when the transcription is complete. Contains the complete transcription
-        #   #   text. Only emitted when you
-        #   #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
-        #   #   with the `Stream` parameter set to `true`.
+        #   # text. Only emitted when you
+        #   # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        #   # with the `Stream` parameter set to `true`.
         #   #
         #   # @param text [String]
         #   # @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>]

@@ -15,7 +15,7 @@ module OpenAI
         attr_writer :function
 
         # Specifies a tool the model should use. Use to force the model to call a specific
-        #   tool.
+        # tool.
         sig do
           params(
             type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,

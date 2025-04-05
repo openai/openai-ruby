@@ -6,7 +6,7 @@ module OpenAI
       class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute data
         #   Represents a thread that contains
-        #     [messages](https://platform.openai.com/docs/api-reference/messages).
+        #   [messages](https://platform.openai.com/docs/api-reference/messages).
         #
         #   @return [OpenAI::Models::Beta::Thread]
         required :data, -> { OpenAI::Models::Beta::Thread }
@@ -28,8 +28,8 @@ module OpenAI
 
         # @!parse
         #   # Occurs when a new
-        #   #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
-        #   #   created.
+        #   # [thread](https://platform.openai.com/docs/api-reference/threads/object) is
+        #   # created.
         #   #
         #   # @param data [OpenAI::Models::Beta::Thread]
         #   # @param enabled [Boolean]

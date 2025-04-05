@@ -15,8 +15,8 @@ module OpenAI
 
             # @!attribute assistant_id
             #   The ID of the
-            #     [assistant](https://platform.openai.com/docs/api-reference/assistants)
-            #     associated with the run step.
+            #   [assistant](https://platform.openai.com/docs/api-reference/assistants)
+            #   associated with the run step.
             #
             #   @return [String]
             required :assistant_id, String
@@ -41,7 +41,7 @@ module OpenAI
 
             # @!attribute expired_at
             #   The Unix timestamp (in seconds) for when the run step expired. A step is
-            #     considered expired if the parent run is expired.
+            #   considered expired if the parent run is expired.
             #
             #   @return [Integer, nil]
             required :expired_at, Integer, nil?: true
@@ -54,18 +54,18 @@ module OpenAI
 
             # @!attribute last_error
             #   The last error associated with this run step. Will be `null` if there are no
-            #     errors.
+            #   errors.
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, nil]
             required :last_error, -> { OpenAI::Models::Beta::Threads::Runs::RunStep::LastError }, nil?: true
 
             # @!attribute metadata
             #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-            #     for storing additional information about the object in a structured format, and
-            #     querying for objects via API or the dashboard.
+            #   for storing additional information about the object in a structured format, and
+            #   querying for objects via API or the dashboard.
             #
-            #     Keys are strings with a maximum length of 64 characters. Values are strings with
-            #     a maximum length of 512 characters.
+            #   Keys are strings with a maximum length of 64 characters. Values are strings with
+            #   a maximum length of 512 characters.
             #
             #   @return [Hash{Symbol=>String}, nil]
             required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
@@ -78,14 +78,14 @@ module OpenAI
 
             # @!attribute run_id
             #   The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
-            #     this run step is a part of.
+            #   this run step is a part of.
             #
             #   @return [String]
             required :run_id, String
 
             # @!attribute status
             #   The status of the run step, which can be either `in_progress`, `cancelled`,
-            #     `failed`, `completed`, or `expired`.
+            #   `failed`, `completed`, or `expired`.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status]
             required :status, enum: -> { OpenAI::Models::Beta::Threads::Runs::RunStep::Status }
@@ -98,7 +98,7 @@ module OpenAI
 
             # @!attribute thread_id
             #   The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            #     that was run.
+            #   that was run.
             #
             #   @return [String]
             required :thread_id, String
@@ -111,7 +111,7 @@ module OpenAI
 
             # @!attribute usage
             #   Usage statistics related to the run step. This value will be `null` while the
-            #     run step's status is `in_progress`.
+            #   run step's status is `in_progress`.
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil]
             required :usage, -> { OpenAI::Models::Beta::Threads::Runs::RunStep::Usage }, nil?: true
@@ -176,7 +176,7 @@ module OpenAI
 
               # @!parse
               #   # The last error associated with this run step. Will be `null` if there are no
-              #   #   errors.
+              #   # errors.
               #   #
               #   # @param code [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code]
               #   # @param message [String]
@@ -203,7 +203,7 @@ module OpenAI
             end
 
             # The status of the run step, which can be either `in_progress`, `cancelled`,
-            #   `failed`, `completed`, or `expired`.
+            # `failed`, `completed`, or `expired`.
             #
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#status
             module Status
@@ -279,7 +279,7 @@ module OpenAI
 
               # @!parse
               #   # Usage statistics related to the run step. This value will be `null` while the
-              #   #   run step's status is `in_progress`.
+              #   # run step's status is `in_progress`.
               #   #
               #   # @param completion_tokens [Integer]
               #   # @param prompt_tokens [Integer]

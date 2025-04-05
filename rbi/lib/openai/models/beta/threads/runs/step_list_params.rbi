@@ -13,9 +13,9 @@ module OpenAI
             attr_accessor :thread_id
 
             # A cursor for use in pagination. `after` is an object ID that defines your place
-            #   in the list. For instance, if you make a list request and receive 100 objects,
-            #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
-            #   fetch the next page of the list.
+            # in the list. For instance, if you make a list request and receive 100 objects,
+            # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+            # fetch the next page of the list.
             sig { returns(T.nilable(String)) }
             attr_reader :after
 
@@ -23,9 +23,9 @@ module OpenAI
             attr_writer :after
 
             # A cursor for use in pagination. `before` is an object ID that defines your place
-            #   in the list. For instance, if you make a list request and receive 100 objects,
-            #   starting with obj_foo, your subsequent call can include before=obj_foo in order
-            #   to fetch the previous page of the list.
+            # in the list. For instance, if you make a list request and receive 100 objects,
+            # starting with obj_foo, your subsequent call can include before=obj_foo in order
+            # to fetch the previous page of the list.
             sig { returns(T.nilable(String)) }
             attr_reader :before
 
@@ -33,12 +33,12 @@ module OpenAI
             attr_writer :before
 
             # A list of additional fields to include in the response. Currently the only
-            #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
-            #   to fetch the file search result content.
+            # supported value is `step_details.tool_calls[*].file_search.results[*].content`
+            # to fetch the file search result content.
             #
-            #   See the
-            #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
-            #   for more information.
+            # See the
+            # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            # for more information.
             sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
             attr_reader :include
 
@@ -46,7 +46,7 @@ module OpenAI
             attr_writer :include
 
             # A limit on the number of objects to be returned. Limit can range between 1 and
-            #   100, and the default is 20.
+            # 100, and the default is 20.
             sig { returns(T.nilable(Integer)) }
             attr_reader :limit
 
@@ -54,7 +54,7 @@ module OpenAI
             attr_writer :limit
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-            #   order and `desc` for descending order.
+            # order and `desc` for descending order.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol)) }
             attr_reader :order
 
@@ -101,7 +101,7 @@ module OpenAI
             def to_hash; end
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-            #   order and `desc` for descending order.
+            # order and `desc` for descending order.
             module Order
               extend OpenAI::Internal::Type::Enum
 

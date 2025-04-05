@@ -30,15 +30,15 @@ module OpenAI
 
         # @!attribute description
         #   A description of the function. Used by the model to determine whether or not to
-        #     call the function.
+        #   call the function.
         #
         #   @return [String, nil]
         optional :description, String, nil?: true
 
         # @!parse
         #   # Defines a function in your own code the model can choose to call. Learn more
-        #   #   about
-        #   #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #   # about
+        #   # [function calling](https://platform.openai.com/docs/guides/function-calling).
         #   #
         #   # @param name [String]
         #   # @param parameters [Hash{Symbol=>Object}]

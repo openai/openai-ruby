@@ -10,7 +10,7 @@ module OpenAI
 
       # @!attribute [r] chunking_strategy
       #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
-      #     strategy. Only applicable if `file_ids` is non-empty.
+      #   strategy. Only applicable if `file_ids` is non-empty.
       #
       #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
       optional :chunking_strategy, union: -> { OpenAI::Models::FileChunkingStrategyParam }
@@ -31,8 +31,8 @@ module OpenAI
 
       # @!attribute [r] file_ids
       #   A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-      #     the vector store should use. Useful for tools like `file_search` that can access
-      #     files.
+      #   the vector store should use. Useful for tools like `file_search` that can access
+      #   files.
       #
       #   @return [Array<String>, nil]
       optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
@@ -43,11 +43,11 @@ module OpenAI
 
       # @!attribute metadata
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-      #     for storing additional information about the object in a structured format, and
-      #     querying for objects via API or the dashboard.
+      #   for storing additional information about the object in a structured format, and
+      #   querying for objects via API or the dashboard.
       #
-      #     Keys are strings with a maximum length of 64 characters. Values are strings with
-      #     a maximum length of 512 characters.
+      #   Keys are strings with a maximum length of 64 characters. Values are strings with
+      #   a maximum length of 512 characters.
       #
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
@@ -87,7 +87,7 @@ module OpenAI
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # @!attribute anchor
         #   Anchor timestamp after which the expiration policy applies. Supported anchors:
-        #     `last_active_at`.
+        #   `last_active_at`.
         #
         #   @return [Symbol, :last_active_at]
         required :anchor, const: :last_active_at

@@ -5,8 +5,8 @@ module OpenAI
     class Embedding < OpenAI::Internal::Type::BaseModel
       # @!attribute embedding
       #   The embedding vector, which is a list of floats. The length of vector depends on
-      #     the model as listed in the
-      #     [embedding guide](https://platform.openai.com/docs/guides/embeddings).
+      #   the model as listed in the
+      #   [embedding guide](https://platform.openai.com/docs/guides/embeddings).
       #
       #   @return [Array<Float>]
       required :embedding, OpenAI::Internal::Type::ArrayOf[Float]

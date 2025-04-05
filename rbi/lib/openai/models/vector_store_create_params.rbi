@@ -7,7 +7,7 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
-      #   strategy. Only applicable if `file_ids` is non-empty.
+      # strategy. Only applicable if `file_ids` is non-empty.
       sig do
         returns(
           T.nilable(
@@ -45,8 +45,8 @@ module OpenAI
       attr_writer :expires_after
 
       # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-      #   the vector store should use. Useful for tools like `file_search` that can access
-      #   files.
+      # the vector store should use. Useful for tools like `file_search` that can access
+      # files.
       sig { returns(T.nilable(T::Array[String])) }
       attr_reader :file_ids
 
@@ -54,11 +54,11 @@ module OpenAI
       attr_writer :file_ids
 
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
-      #   for storing additional information about the object in a structured format, and
-      #   querying for objects via API or the dashboard.
+      # for storing additional information about the object in a structured format, and
+      # querying for objects via API or the dashboard.
       #
-      #   Keys are strings with a maximum length of 64 characters. Values are strings with
-      #   a maximum length of 512 characters.
+      # Keys are strings with a maximum length of 64 characters. Values are strings with
+      # a maximum length of 512 characters.
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
       attr_accessor :metadata
 
@@ -114,7 +114,7 @@ module OpenAI
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
-        #   `last_active_at`.
+        # `last_active_at`.
         sig { returns(Symbol) }
         attr_accessor :anchor
 

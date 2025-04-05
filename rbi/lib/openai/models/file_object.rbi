@@ -24,13 +24,13 @@ module OpenAI
       attr_accessor :object
 
       # The intended purpose of the file. Supported values are `assistants`,
-      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      #   and `vision`.
+      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
+      # and `vision`.
       sig { returns(OpenAI::Models::FileObject::Purpose::TaggedSymbol) }
       attr_accessor :purpose
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
-      #   `processed`, or `error`.
+      # `processed`, or `error`.
       sig { returns(OpenAI::Models::FileObject::Status::TaggedSymbol) }
       attr_accessor :status
 
@@ -42,7 +42,7 @@ module OpenAI
       attr_writer :expires_at
 
       # Deprecated. For details on why a fine-tuning training file failed validation,
-      #   see the `error` field on `fine_tuning.job`.
+      # see the `error` field on `fine_tuning.job`.
       sig { returns(T.nilable(String)) }
       attr_reader :status_details
 
@@ -94,8 +94,8 @@ module OpenAI
       def to_hash; end
 
       # The intended purpose of the file. Supported values are `assistants`,
-      #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
-      #   and `vision`.
+      # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
+      # and `vision`.
       module Purpose
         extend OpenAI::Internal::Type::Enum
 
@@ -115,7 +115,7 @@ module OpenAI
       end
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
-      #   `processed`, or `error`.
+      # `processed`, or `error`.
       module Status
         extend OpenAI::Internal::Type::Enum
 

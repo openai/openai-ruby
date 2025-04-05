@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         class ImageFileDelta < OpenAI::Internal::Type::BaseModel
           # Specifies the detail level of the image if specified by the user. `low` uses
-          #   fewer tokens, you can opt in to high resolution using `high`.
+          # fewer tokens, you can opt in to high resolution using `high`.
           sig { returns(T.nilable(OpenAI::Models::Beta::Threads::ImageFileDelta::Detail::TaggedSymbol)) }
           attr_reader :detail
 
@@ -14,8 +14,8 @@ module OpenAI
           attr_writer :detail
 
           # The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
-          #   in the message content. Set `purpose="vision"` when uploading the File if you
-          #   need to later display the file content.
+          # in the message content. Set `purpose="vision"` when uploading the File if you
+          # need to later display the file content.
           sig { returns(T.nilable(String)) }
           attr_reader :file_id
 
@@ -35,7 +35,7 @@ module OpenAI
           def to_hash; end
 
           # Specifies the detail level of the image if specified by the user. `low` uses
-          #   fewer tokens, you can opt in to high resolution using `high`.
+          # fewer tokens, you can opt in to high resolution using `high`.
           module Detail
             extend OpenAI::Internal::Type::Enum
 

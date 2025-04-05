@@ -7,7 +7,7 @@ module OpenAI
         class ImageURLDelta < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] detail
           #   Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #     to high resolution using `high`.
+          #   to high resolution using `high`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail, nil]
           optional :detail, enum: -> { OpenAI::Models::Beta::Threads::ImageURLDelta::Detail }
@@ -18,7 +18,7 @@ module OpenAI
 
           # @!attribute [r] url
           #   The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
-          #     webp.
+          #   webp.
           #
           #   @return [String, nil]
           optional :url, String
@@ -36,7 +36,7 @@ module OpenAI
           # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
-          #   to high resolution using `high`.
+          # to high resolution using `high`.
           #
           # @see OpenAI::Models::Beta::Threads::ImageURLDelta#detail
           module Detail

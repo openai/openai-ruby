@@ -12,26 +12,26 @@ module OpenAI
       # @!attribute type
       #   Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
-      #     - `eq`: equals
-      #     - `ne`: not equal
-      #     - `gt`: greater than
-      #     - `gte`: greater than or equal
-      #     - `lt`: less than
-      #     - `lte`: less than or equal
+      #   - `eq`: equals
+      #   - `ne`: not equal
+      #   - `gt`: greater than
+      #   - `gte`: greater than or equal
+      #   - `lt`: less than
+      #   - `lte`: less than or equal
       #
       #   @return [Symbol, OpenAI::Models::ComparisonFilter::Type]
       required :type, enum: -> { OpenAI::Models::ComparisonFilter::Type }
 
       # @!attribute value
       #   The value to compare against the attribute key; supports string, number, or
-      #     boolean types.
+      #   boolean types.
       #
       #   @return [String, Float, Boolean]
       required :value, union: -> { OpenAI::Models::ComparisonFilter::Value }
 
       # @!parse
       #   # A filter used to compare a specified attribute key to a given value using a
-      #   #   defined comparison operation.
+      #   # defined comparison operation.
       #   #
       #   # @param key [String]
       #   # @param type [Symbol, OpenAI::Models::ComparisonFilter::Type]
@@ -43,12 +43,12 @@ module OpenAI
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
-      #   - `eq`: equals
-      #   - `ne`: not equal
-      #   - `gt`: greater than
-      #   - `gte`: greater than or equal
-      #   - `lt`: less than
-      #   - `lte`: less than or equal
+      # - `eq`: equals
+      # - `ne`: not equal
+      # - `gt`: greater than
+      # - `gte`: greater than or equal
+      # - `lt`: less than
+      # - `lte`: less than or equal
       #
       # @see OpenAI::Models::ComparisonFilter#type
       module Type
@@ -69,7 +69,7 @@ module OpenAI
       end
 
       # The value to compare against the attribute key; supports string, number, or
-      #   boolean types.
+      # boolean types.
       #
       # @see OpenAI::Models::ComparisonFilter#value
       module Value

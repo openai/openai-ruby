@@ -73,7 +73,7 @@ module OpenAI
 
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
         # When using Predicted Outputs, the number of tokens in the prediction that
-        #   appeared in the completion.
+        # appeared in the completion.
         sig { returns(T.nilable(Integer)) }
         attr_reader :accepted_prediction_tokens
 
@@ -95,9 +95,9 @@ module OpenAI
         attr_writer :reasoning_tokens
 
         # When using Predicted Outputs, the number of tokens in the prediction that did
-        #   not appear in the completion. However, like reasoning tokens, these tokens are
-        #   still counted in the total completion tokens for purposes of billing, output,
-        #   and context window limits.
+        # not appear in the completion. However, like reasoning tokens, these tokens are
+        # still counted in the total completion tokens for purposes of billing, output,
+        # and context window limits.
         sig { returns(T.nilable(Integer)) }
         attr_reader :rejected_prediction_tokens
 

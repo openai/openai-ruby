@@ -40,7 +40,7 @@ module OpenAI
 
         # @!attribute [r] status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #     Populated when items are returned via API.
+        #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseFunctionToolCall::Status }
@@ -51,8 +51,8 @@ module OpenAI
 
         # @!parse
         #   # A tool call to run a function. See the
-        #   #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
-        #   #   for more information.
+        #   # [function calling guide](https://platform.openai.com/docs/guides/function-calling)
+        #   # for more information.
         #   #
         #   # @param arguments [String]
         #   # @param call_id [String]
@@ -66,7 +66,7 @@ module OpenAI
         # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseFunctionToolCall#status
         module Status

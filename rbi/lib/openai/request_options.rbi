@@ -2,32 +2,32 @@
 
 module OpenAI
   # Specify HTTP behaviour to use for a specific request. These options supplement
-  #   or override those provided at the client level.
+  # or override those provided at the client level.
   #
-  #   When making a request, you can pass an actual {RequestOptions} instance, or
-  #   simply pass a Hash with symbol keys matching the attributes on this class.
+  # When making a request, you can pass an actual {RequestOptions} instance, or
+  # simply pass a Hash with symbol keys matching the attributes on this class.
   class RequestOptions < OpenAI::Internal::Type::BaseModel
     # @api private
     sig { params(opts: T.any(T.self_type, T::Hash[Symbol, T.anything])).void }
     def self.validate!(opts); end
 
     # Idempotency key to send with request and all associated retries. Will only be
-    #   sent for write requests.
+    # sent for write requests.
     sig { returns(T.nilable(String)) }
     attr_accessor :idempotency_key
 
     # Extra query params to send with the request. These are `.merge`’d into any
-    #   `query` given at the client level.
+    # `query` given at the client level.
     sig { returns(T.nilable(T::Hash[String, T.nilable(T.any(T::Array[String], String))])) }
     attr_accessor :extra_query
 
     # Extra headers to send with the request. These are `.merged`’d into any
-    #   `extra_headers` given at the client level.
+    # `extra_headers` given at the client level.
     sig { returns(T.nilable(T::Hash[String, T.nilable(String)])) }
     attr_accessor :extra_headers
 
     # Extra data to send with the request. These are deep merged into any data
-    #   generated as part of the normal request.
+    # generated as part of the normal request.
     sig { returns(T.nilable(T.anything)) }
     attr_accessor :extra_body
 

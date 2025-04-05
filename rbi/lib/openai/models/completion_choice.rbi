@@ -4,9 +4,9 @@ module OpenAI
   module Models
     class CompletionChoice < OpenAI::Internal::Type::BaseModel
       # The reason the model stopped generating tokens. This will be `stop` if the model
-      #   hit a natural stop point or a provided stop sequence, `length` if the maximum
-      #   number of tokens specified in the request was reached, or `content_filter` if
-      #   content was omitted due to a flag from our content filters.
+      # hit a natural stop point or a provided stop sequence, `length` if the maximum
+      # number of tokens specified in the request was reached, or `content_filter` if
+      # content was omitted due to a flag from our content filters.
       sig { returns(OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol) }
       attr_accessor :finish_reason
 
@@ -50,9 +50,9 @@ module OpenAI
       def to_hash; end
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
-      #   hit a natural stop point or a provided stop sequence, `length` if the maximum
-      #   number of tokens specified in the request was reached, or `content_filter` if
-      #   content was omitted due to a flag from our content filters.
+      # hit a natural stop point or a provided stop sequence, `length` if the maximum
+      # number of tokens specified in the request was reached, or `content_filter` if
+      # content was omitted due to a flag from our content filters.
       module FinishReason
         extend OpenAI::Internal::Type::Enum
 

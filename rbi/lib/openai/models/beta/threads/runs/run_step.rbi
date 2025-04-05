@@ -11,8 +11,8 @@ module OpenAI
             attr_accessor :id
 
             # The ID of the
-            #   [assistant](https://platform.openai.com/docs/api-reference/assistants)
-            #   associated with the run step.
+            # [assistant](https://platform.openai.com/docs/api-reference/assistants)
+            # associated with the run step.
             sig { returns(String) }
             attr_accessor :assistant_id
 
@@ -29,7 +29,7 @@ module OpenAI
             attr_accessor :created_at
 
             # The Unix timestamp (in seconds) for when the run step expired. A step is
-            #   considered expired if the parent run is expired.
+            # considered expired if the parent run is expired.
             sig { returns(T.nilable(Integer)) }
             attr_accessor :expired_at
 
@@ -38,7 +38,7 @@ module OpenAI
             attr_accessor :failed_at
 
             # The last error associated with this run step. Will be `null` if there are no
-            #   errors.
+            # errors.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::LastError)) }
             attr_reader :last_error
 
@@ -51,11 +51,11 @@ module OpenAI
             attr_writer :last_error
 
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
-            #   for storing additional information about the object in a structured format, and
-            #   querying for objects via API or the dashboard.
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard.
             #
-            #   Keys are strings with a maximum length of 64 characters. Values are strings with
-            #   a maximum length of 512 characters.
+            # Keys are strings with a maximum length of 64 characters. Values are strings with
+            # a maximum length of 512 characters.
             sig { returns(T.nilable(T::Hash[Symbol, String])) }
             attr_accessor :metadata
 
@@ -64,12 +64,12 @@ module OpenAI
             attr_accessor :object
 
             # The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
-            #   this run step is a part of.
+            # this run step is a part of.
             sig { returns(String) }
             attr_accessor :run_id
 
             # The status of the run step, which can be either `in_progress`, `cancelled`,
-            #   `failed`, `completed`, or `expired`.
+            # `failed`, `completed`, or `expired`.
             sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol) }
             attr_accessor :status
 
@@ -85,7 +85,7 @@ module OpenAI
             attr_accessor :step_details
 
             # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            #   that was run.
+            # that was run.
             sig { returns(String) }
             attr_accessor :thread_id
 
@@ -94,7 +94,7 @@ module OpenAI
             attr_accessor :type
 
             # Usage statistics related to the run step. This value will be `null` while the
-            #   run step's status is `in_progress`.
+            # run step's status is `in_progress`.
             sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStep::Usage)) }
             attr_reader :usage
 
@@ -188,7 +188,7 @@ module OpenAI
               attr_accessor :message
 
               # The last error associated with this run step. Will be `null` if there are no
-              #   errors.
+              # errors.
               sig do
                 params(code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::OrSymbol, message: String)
                   .returns(T.attached_class)
@@ -223,7 +223,7 @@ module OpenAI
             end
 
             # The status of the run step, which can be either `in_progress`, `cancelled`,
-            #   `failed`, `completed`, or `expired`.
+            # `failed`, `completed`, or `expired`.
             module Status
               extend OpenAI::Internal::Type::Enum
 
@@ -284,7 +284,7 @@ module OpenAI
               attr_accessor :total_tokens
 
               # Usage statistics related to the run step. This value will be `null` while the
-              #   run step's status is `in_progress`.
+              # run step's status is `in_progress`.
               sig do
                 params(
                   completion_tokens: Integer,
