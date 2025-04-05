@@ -41,8 +41,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(url:, status: nil, body: nil, request: nil, response: nil, message: nil)
-      end
+      def self.new(url:, status: nil, body: nil, request: nil, response: nil, message: nil); end
     end
 
     class APIConnectionError < OpenAI::Errors::APIError
@@ -107,8 +106,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.for(url:, status:, body:, request:, response:, message: nil)
-      end
+      def self.for(url:, status:, body:, request:, response:, message: nil); end
 
       sig { returns(Integer) }
       attr_accessor :status
@@ -134,8 +132,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(url:, status:, body:, request:, response:, message: nil)
-      end
+      def self.new(url:, status:, body:, request:, response:, message: nil); end
     end
 
     class BadRequestError < OpenAI::Errors::APIStatusError

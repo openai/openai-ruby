@@ -25,12 +25,10 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(file_search: nil, type: :file_search)
-        end
+        def self.new(file_search: nil, type: :file_search); end
 
         sig { override.returns({type: Symbol, file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch}) }
-        def to_hash
-        end
+        def to_hash; end
 
         class FileSearch < OpenAI::Internal::Type::BaseModel
           # The maximum number of results the file search tool should output. The default is
@@ -72,8 +70,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(max_num_results: nil, ranking_options: nil)
-          end
+          def self.new(max_num_results: nil, ranking_options: nil); end
 
           sig do
             override
@@ -81,8 +78,7 @@ module OpenAI
                 {max_num_results: Integer, ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions}
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class RankingOptions < OpenAI::Internal::Type::BaseModel
             # The score threshold for the file search. All values must be a floating point
@@ -111,8 +107,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(score_threshold:, ranker: nil)
-            end
+            def self.new(score_threshold:, ranker: nil); end
 
             sig do
               override
@@ -123,8 +118,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
@@ -154,8 +148,7 @@ module OpenAI
                 override
                   .returns(T::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol])
               end
-              def self.values
-              end
+              def self.values; end
             end
           end
         end

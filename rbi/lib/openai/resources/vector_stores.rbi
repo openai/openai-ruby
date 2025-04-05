@@ -45,9 +45,7 @@ module OpenAI
         # The name of the vector store.
         name: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # Retrieves a vector store.
       sig do
         params(
@@ -60,9 +58,7 @@ module OpenAI
         # The ID of the vector store to retrieve.
         vector_store_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # Modifies a vector store.
       sig do
         params(
@@ -89,9 +85,7 @@ module OpenAI
         # The name of the vector store.
         name: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # Returns a list of vector stores.
       sig do
         params(
@@ -121,9 +115,7 @@ module OpenAI
         #   order and `desc` for descending order.
         order: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # Delete a vector store.
       sig do
         params(
@@ -136,9 +128,7 @@ module OpenAI
         # The ID of the vector store to delete.
         vector_store_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # Search a vector store for relevant chunks based on a query and file attributes
       #   filter.
       sig do
@@ -168,13 +158,10 @@ module OpenAI
         # Whether to rewrite the natural language query for vector search.
         rewrite_query: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:)
-      end
+      def self.new(client:); end
     end
   end
 end

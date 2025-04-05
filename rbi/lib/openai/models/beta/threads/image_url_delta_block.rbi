@@ -28,12 +28,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(index:, image_url: nil, type: :image_url)
-          end
+          def self.new(index:, image_url: nil, type: :image_url); end
 
           sig { override.returns({index: Integer, type: Symbol, image_url: OpenAI::Models::Beta::Threads::ImageURLDelta}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

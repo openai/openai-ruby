@@ -24,8 +24,7 @@ module OpenAI
           EXPIRED = T.let(:expired, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

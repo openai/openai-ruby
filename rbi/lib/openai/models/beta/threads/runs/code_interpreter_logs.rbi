@@ -23,12 +23,10 @@ module OpenAI
 
             # Text output from the Code Interpreter tool call as part of a run step.
             sig { params(index: Integer, logs: String, type: Symbol).returns(T.attached_class) }
-            def self.new(index:, logs: nil, type: :logs)
-            end
+            def self.new(index:, logs: nil, type: :logs); end
 
             sig { override.returns({index: Integer, type: Symbol, logs: String}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

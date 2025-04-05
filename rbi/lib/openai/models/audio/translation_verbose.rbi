@@ -35,8 +35,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(duration:, language:, text:, segments: nil)
-        end
+        def self.new(duration:, language:, text:, segments: nil); end
 
         sig do
           override
@@ -44,8 +43,7 @@ module OpenAI
               {duration: Float, language: String, text: String, segments: T::Array[OpenAI::Models::Audio::TranscriptionSegment]}
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

@@ -29,8 +29,7 @@ module OpenAI
           params(content_index: Integer, item_id: String, output_index: Integer, text: String, type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(content_index:, item_id:, output_index:, text:, type: :"response.output_text.done")
-        end
+        def self.new(content_index:, item_id:, output_index:, text:, type: :"response.output_text.done"); end
 
         sig do
           override
@@ -42,8 +41,7 @@ module OpenAI
                        type: Symbol
                      })
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

@@ -73,8 +73,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
@@ -82,8 +81,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
@@ -104,8 +102,7 @@ module OpenAI
           VTT = T.let(:vtt, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

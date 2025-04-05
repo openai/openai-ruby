@@ -38,13 +38,10 @@ module OpenAI
           #   automatically increase the temperature until certain thresholds are hit.
           temperature: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

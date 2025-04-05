@@ -27,8 +27,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, tool_call_id:, role: :tool)
-        end
+        def self.new(content:, tool_call_id:, role: :tool); end
 
         sig do
           override
@@ -40,16 +39,14 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The contents of the tool message.
         module Content
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
-          def self.variants
-          end
+          def self.variants; end
 
           ChatCompletionContentPartTextArray =
             T.let(

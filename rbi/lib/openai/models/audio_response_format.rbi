@@ -18,8 +18,7 @@ module OpenAI
       VTT = T.let(:vtt, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::Models::AudioResponseFormat::TaggedSymbol]) }
-      def self.values
-      end
+      def self.values; end
     end
   end
 end

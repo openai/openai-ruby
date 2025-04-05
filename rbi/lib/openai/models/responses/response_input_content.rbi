@@ -13,8 +13,7 @@ module OpenAI
               [OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

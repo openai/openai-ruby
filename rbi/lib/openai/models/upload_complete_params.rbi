@@ -26,14 +26,12 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(part_ids:, md5: nil, request_options: {})
-      end
+      def self.new(part_ids:, md5: nil, request_options: {}); end
 
       sig do
         override.returns({part_ids: T::Array[String], md5: String, request_options: OpenAI::RequestOptions})
       end
-      def to_hash
-      end
+      def to_hash; end
     end
   end
 end

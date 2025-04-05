@@ -43,8 +43,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(index:, id: nil, function: nil, type: :function)
-            end
+            def self.new(index:, id: nil, function: nil, type: :function); end
 
             sig do
               override
@@ -57,8 +56,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class Function < OpenAI::Internal::Type::BaseModel
               # The arguments passed to the function.
@@ -85,12 +83,10 @@ module OpenAI
               sig do
                 params(arguments: String, name: String, output: T.nilable(String)).returns(T.attached_class)
               end
-              def self.new(arguments: nil, name: nil, output: nil)
-              end
+              def self.new(arguments: nil, name: nil, output: nil); end
 
               sig { override.returns({arguments: String, name: String, output: T.nilable(String)}) }
-              def to_hash
-              end
+              def to_hash; end
             end
           end
         end

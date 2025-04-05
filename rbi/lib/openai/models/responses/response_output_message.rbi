@@ -34,11 +34,11 @@ module OpenAI
           params(
             id: String,
             content: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseOutputText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseOutputRefusal
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseOutputText,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Responses::ResponseOutputRefusal
+              )
             ],
             status: OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol,
             role: Symbol,
@@ -46,8 +46,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, content:, status:, role: :assistant, type: :message)
-        end
+        def self.new(id:, content:, status:, role: :assistant, type: :message); end
 
         sig do
           override
@@ -61,8 +60,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # A text output from the model.
         module Content
@@ -72,8 +70,7 @@ module OpenAI
             override
               .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
           end
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
@@ -90,8 +87,7 @@ module OpenAI
           INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseOutputMessage::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

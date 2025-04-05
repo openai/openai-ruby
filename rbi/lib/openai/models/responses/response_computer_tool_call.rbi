@@ -68,8 +68,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, action:, call_id:, pending_safety_checks:, status:, type:)
-        end
+        def self.new(id:, action:, call_id:, pending_safety_checks:, status:, type:); end
 
         sig do
           override
@@ -94,8 +93,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # A click action.
         module Action
@@ -130,8 +128,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(button:, x:, y_:, type: :click)
-            end
+            def self.new(button:, x:, y_:, type: :click); end
 
             sig do
               override
@@ -144,8 +141,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             #   `right`, `wheel`, `back`, or `forward`.
@@ -180,8 +176,7 @@ module OpenAI
                     T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::TaggedSymbol]
                   )
               end
-              def self.values
-              end
+              def self.values; end
             end
           end
 
@@ -201,12 +196,10 @@ module OpenAI
 
             # A double click action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
-            def self.new(x:, y_:, type: :double_click)
-            end
+            def self.new(x:, y_:, type: :double_click); end
 
             sig { override.returns({type: Symbol, x: Integer, y_: Integer}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class Drag < OpenAI::Internal::Type::BaseModel
@@ -235,8 +228,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(path:, type: :drag)
-            end
+            def self.new(path:, type: :drag); end
 
             sig do
               override
@@ -244,8 +236,7 @@ module OpenAI
                   {path: T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path], type: Symbol}
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class Path < OpenAI::Internal::Type::BaseModel
               # The x-coordinate.
@@ -258,12 +249,10 @@ module OpenAI
 
               # A series of x/y coordinate pairs in the drag path.
               sig { params(x: Integer, y_: Integer).returns(T.attached_class) }
-              def self.new(x:, y_:)
-              end
+              def self.new(x:, y_:); end
 
               sig { override.returns({x: Integer, y_: Integer}) }
-              def to_hash
-              end
+              def to_hash; end
             end
           end
 
@@ -280,12 +269,10 @@ module OpenAI
 
             # A collection of keypresses the model would like to perform.
             sig { params(keys: T::Array[String], type: Symbol).returns(T.attached_class) }
-            def self.new(keys:, type: :keypress)
-            end
+            def self.new(keys:, type: :keypress); end
 
             sig { override.returns({keys: T::Array[String], type: Symbol}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class Move < OpenAI::Internal::Type::BaseModel
@@ -304,12 +291,10 @@ module OpenAI
 
             # A mouse move action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
-            def self.new(x:, y_:, type: :move)
-            end
+            def self.new(x:, y_:, type: :move); end
 
             sig { override.returns({type: Symbol, x: Integer, y_: Integer}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class Screenshot < OpenAI::Internal::Type::BaseModel
@@ -320,12 +305,10 @@ module OpenAI
 
             # A screenshot action.
             sig { params(type: Symbol).returns(T.attached_class) }
-            def self.new(type: :screenshot)
-            end
+            def self.new(type: :screenshot); end
 
             sig { override.returns({type: Symbol}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class Scroll < OpenAI::Internal::Type::BaseModel
@@ -355,14 +338,12 @@ module OpenAI
               params(scroll_x: Integer, scroll_y: Integer, x: Integer, y_: Integer, type: Symbol)
                 .returns(T.attached_class)
             end
-            def self.new(scroll_x:, scroll_y:, x:, y_:, type: :scroll)
-            end
+            def self.new(scroll_x:, scroll_y:, x:, y_:, type: :scroll); end
 
             sig do
               override.returns({scroll_x: Integer, scroll_y: Integer, type: Symbol, x: Integer, y_: Integer})
             end
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class Type < OpenAI::Internal::Type::BaseModel
@@ -377,12 +358,10 @@ module OpenAI
 
             # An action to type in text.
             sig { params(text: String, type: Symbol).returns(T.attached_class) }
-            def self.new(text:, type: :type)
-            end
+            def self.new(text:, type: :type); end
 
             sig { override.returns({text: String, type: Symbol}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class Wait < OpenAI::Internal::Type::BaseModel
@@ -393,12 +372,10 @@ module OpenAI
 
             # A wait action.
             sig { params(type: Symbol).returns(T.attached_class) }
-            def self.new(type: :wait)
-            end
+            def self.new(type: :wait); end
 
             sig { override.returns({type: Symbol}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           sig do
@@ -407,8 +384,7 @@ module OpenAI
                 [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
 
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
@@ -426,12 +402,10 @@ module OpenAI
 
           # A pending safety check for the computer call.
           sig { params(id: String, code: String, message: String).returns(T.attached_class) }
-          def self.new(id:, code:, message:)
-          end
+          def self.new(id:, code:, message:); end
 
           sig { override.returns({id: String, code: String, message: String}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -451,8 +425,7 @@ module OpenAI
             T.let(:incomplete, OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # The type of the computer call. Always `computer_call`.
@@ -467,8 +440,7 @@ module OpenAI
             T.let(:computer_call, OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Type::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

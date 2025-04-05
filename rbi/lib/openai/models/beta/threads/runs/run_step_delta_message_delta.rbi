@@ -35,8 +35,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(message_creation: nil, type: :message_creation)
-            end
+            def self.new(message_creation: nil, type: :message_creation); end
 
             sig do
               override
@@ -47,8 +46,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class MessageCreation < OpenAI::Internal::Type::BaseModel
               # The ID of the message that was created by this run step.
@@ -59,12 +57,10 @@ module OpenAI
               attr_writer :message_id
 
               sig { params(message_id: String).returns(T.attached_class) }
-              def self.new(message_id: nil)
-              end
+              def self.new(message_id: nil); end
 
               sig { override.returns({message_id: String}) }
-              def to_hash
-              end
+              def to_hash; end
             end
           end
         end

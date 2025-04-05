@@ -40,8 +40,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(expires_after: nil, metadata: nil, name: nil, request_options: {})
-      end
+      def self.new(expires_after: nil, metadata: nil, name: nil, request_options: {}); end
 
       sig do
         override
@@ -54,8 +53,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
@@ -69,12 +67,10 @@ module OpenAI
 
         # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
-        def self.new(days:, anchor: :last_active_at)
-        end
+        def self.new(days:, anchor: :last_active_at); end
 
         sig { override.returns({anchor: Symbol, days: Integer}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

@@ -6,8 +6,7 @@ module OpenAI
       extend OpenAI::Internal::Type::Union
 
       sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::AllModels::OrSymbol]) }
-      def self.variants
-      end
+      def self.variants; end
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::AllModels) }
       OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::AllModels::TaggedSymbol) }

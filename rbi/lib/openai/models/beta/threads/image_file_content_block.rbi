@@ -24,12 +24,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(image_file:, type: :image_file)
-          end
+          def self.new(image_file:, type: :image_file); end
 
           sig { override.returns({image_file: OpenAI::Models::Beta::Threads::ImageFile, type: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

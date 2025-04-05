@@ -34,8 +34,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(finish_reason:, index:, logprobs:, text:)
-      end
+      def self.new(finish_reason:, index:, logprobs:, text:); end
 
       sig do
         override
@@ -48,8 +47,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
       #   hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -67,8 +65,7 @@ module OpenAI
         CONTENT_FILTER = T.let(:content_filter, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
 
       class Logprobs < OpenAI::Internal::Type::BaseModel
@@ -105,8 +102,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(text_offset: nil, token_logprobs: nil, tokens: nil, top_logprobs: nil)
-        end
+        def self.new(text_offset: nil, token_logprobs: nil, tokens: nil, top_logprobs: nil); end
 
         sig do
           override
@@ -119,8 +115,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

@@ -31,12 +31,10 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(text:, logprobs: nil)
-        end
+        def self.new(text:, logprobs: nil); end
 
         sig { override.returns({text: String, logprobs: T::Array[OpenAI::Models::Audio::Transcription::Logprob]}) }
-        def to_hash
-        end
+        def to_hash; end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # The token in the transcription.
@@ -61,12 +59,10 @@ module OpenAI
           attr_writer :logprob
 
           sig { params(token: String, bytes: T::Array[Float], logprob: Float).returns(T.attached_class) }
-          def self.new(token: nil, bytes: nil, logprob: nil)
-          end
+          def self.new(token: nil, bytes: nil, logprob: nil); end
 
           sig { override.returns({token: String, bytes: T::Array[Float], logprob: Float}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

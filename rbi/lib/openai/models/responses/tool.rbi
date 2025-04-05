@@ -15,8 +15,7 @@ module OpenAI
               [OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

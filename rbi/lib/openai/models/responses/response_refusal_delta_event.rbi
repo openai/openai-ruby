@@ -29,8 +29,7 @@ module OpenAI
           params(content_index: Integer, delta: String, item_id: String, output_index: Integer, type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(content_index:, delta:, item_id:, output_index:, type: :"response.refusal.delta")
-        end
+        def self.new(content_index:, delta:, item_id:, output_index:, type: :"response.refusal.delta"); end
 
         sig do
           override
@@ -42,8 +41,7 @@ module OpenAI
                        type: Symbol
                      })
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

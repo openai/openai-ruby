@@ -24,8 +24,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(format_:, voice:)
-        end
+        def self.new(format_:, voice:); end
 
         sig do
           override
@@ -36,8 +35,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
@@ -55,8 +53,7 @@ module OpenAI
           PCM16 = T.let(:pcm16, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
@@ -65,8 +62,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice) }
           OrSymbol =

@@ -31,8 +31,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(effort: nil, generate_summary: nil)
-      end
+      def self.new(effort: nil, generate_summary: nil); end
 
       sig do
         override
@@ -43,8 +42,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # **computer_use_preview only**
       #
@@ -62,8 +60,7 @@ module OpenAI
         DETAILED = T.let(:detailed, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

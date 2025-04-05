@@ -17,12 +17,10 @@ module OpenAI
           params(code: OpenAI::Models::Responses::ResponseError::Code::OrSymbol, message: String)
             .returns(T.attached_class)
         end
-        def self.new(code:, message:)
-        end
+        def self.new(code:, message:); end
 
         sig { override.returns({code: OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol, message: String}) }
-        def to_hash
-        end
+        def to_hash; end
 
         # The error code for the response.
         module Code
@@ -64,8 +62,7 @@ module OpenAI
             T.let(:image_file_not_found, OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

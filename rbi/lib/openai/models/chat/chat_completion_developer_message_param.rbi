@@ -34,8 +34,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, name: nil, role: :developer)
-        end
+        def self.new(content:, name: nil, role: :developer); end
 
         sig do
           override
@@ -47,16 +46,14 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The contents of the developer message.
         module Content
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
-          def self.variants
-          end
+          def self.variants; end
 
           ChatCompletionContentPartTextArray =
             T.let(

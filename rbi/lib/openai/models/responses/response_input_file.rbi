@@ -33,12 +33,10 @@ module OpenAI
         sig do
           params(file_data: String, file_id: String, filename: String, type: Symbol).returns(T.attached_class)
         end
-        def self.new(file_data: nil, file_id: nil, filename: nil, type: :input_file)
-        end
+        def self.new(file_data: nil, file_id: nil, filename: nil, type: :input_file); end
 
         sig { override.returns({type: Symbol, file_data: String, file_id: String, filename: String}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

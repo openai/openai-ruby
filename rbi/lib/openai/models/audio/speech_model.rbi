@@ -14,8 +14,7 @@ module OpenAI
         GPT_4O_MINI_TTS = T.let(:"gpt-4o-mini-tts", OpenAI::Models::Audio::SpeechModel::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechModel::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

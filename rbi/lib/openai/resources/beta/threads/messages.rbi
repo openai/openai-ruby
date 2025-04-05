@@ -12,12 +12,12 @@ module OpenAI
               content: T.any(
                 String,
                 T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                  OpenAI::Models::Beta::Threads::TextContentBlockParam
-                )
+                  T.any(
+                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                    OpenAI::Internal::AnyHash,
+                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                    OpenAI::Models::Beta::Threads::TextContentBlockParam
+                  )
                 ]
               ),
               role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
@@ -52,9 +52,7 @@ module OpenAI
             #   a maximum length of 512 characters.
             metadata: nil,
             request_options: {}
-          )
-          end
-
+          ); end
           # Retrieve a message.
           sig do
             params(
@@ -71,9 +69,7 @@ module OpenAI
             #   to which this message belongs.
             thread_id:,
             request_options: {}
-          )
-          end
-
+          ); end
           # Modifies a message.
           sig do
             params(
@@ -97,9 +93,7 @@ module OpenAI
             #   a maximum length of 512 characters.
             metadata: nil,
             request_options: {}
-          )
-          end
-
+          ); end
           # Returns a list of messages for a given thread.
           sig do
             params(
@@ -136,9 +130,7 @@ module OpenAI
             # Filter messages by the run ID that generated them.
             run_id: nil,
             request_options: {}
-          )
-          end
-
+          ); end
           # Deletes a message.
           sig do
             params(
@@ -154,13 +146,10 @@ module OpenAI
             # The ID of the thread to which this message belongs.
             thread_id:,
             request_options: {}
-          )
-          end
-
+          ); end
           # @api private
           sig { params(client: OpenAI::Client).returns(T.attached_class) }
-          def self.new(client:)
-          end
+          def self.new(client:); end
         end
       end
     end

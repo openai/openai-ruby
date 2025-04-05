@@ -36,8 +36,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(token:, bytes:, logprob:, top_logprobs:)
-        end
+        def self.new(token:, bytes:, logprob:, top_logprobs:); end
 
         sig do
           override
@@ -50,8 +49,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
           # The token.
@@ -78,12 +76,10 @@ module OpenAI
               logprob: Float
             ).returns(T.attached_class)
           end
-          def self.new(token:, bytes:, logprob:)
-          end
+          def self.new(token:, bytes:, logprob:); end
 
           sig { override.returns({token: String, bytes: T.nilable(T::Array[Integer]), logprob: Float}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

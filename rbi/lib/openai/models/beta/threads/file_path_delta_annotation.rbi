@@ -72,8 +72,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
             # The ID of the file that was generated.
@@ -84,12 +83,10 @@ module OpenAI
             attr_writer :file_id
 
             sig { params(file_id: String).returns(T.attached_class) }
-            def self.new(file_id: nil)
-            end
+            def self.new(file_id: nil); end
 
             sig { override.returns({file_id: String}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

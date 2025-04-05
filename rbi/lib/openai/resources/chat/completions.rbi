@@ -29,15 +29,15 @@ module OpenAI
         sig do
           params(
             messages: T::Array[
-            T.any(
-              OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-              OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-              OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-              OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-              OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-            )
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
+                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
+                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
+                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
+                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+              )
             ],
             model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
             audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Internal::AnyHash)),
@@ -274,9 +274,7 @@ module OpenAI
           #   for streaming and non-streaming use cases, respectively.
           stream: false,
           request_options: {}
-        )
-        end
-
+        ); end
         # See {OpenAI::Resources::Chat::Completions#create} for non-streaming counterpart.
         #
         #   **Starting a new project?** We recommend trying
@@ -299,15 +297,15 @@ module OpenAI
         sig do
           params(
             messages: T::Array[
-            T.any(
-              OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-              OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-              OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-              OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-              OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-            )
+              T.any(
+                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
+                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
+                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
+                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
+                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+              )
             ],
             model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
             audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Internal::AnyHash)),
@@ -544,9 +542,7 @@ module OpenAI
           #   for streaming and non-streaming use cases, respectively.
           stream: true,
           request_options: {}
-        )
-        end
-
+        ); end
         # Get a stored chat completion. Only Chat Completions that have been created with
         #   the `store` parameter set to `true` will be returned.
         sig do
@@ -560,9 +556,7 @@ module OpenAI
           # The ID of the chat completion to retrieve.
           completion_id,
           request_options: {}
-        )
-        end
-
+        ); end
         # Modify a stored chat completion. Only Chat Completions that have been created
         #   with the `store` parameter set to `true` can be modified. Currently, the only
         #   supported modification is to update the `metadata` field.
@@ -585,9 +579,7 @@ module OpenAI
           #   a maximum length of 512 characters.
           metadata:,
           request_options: {}
-        )
-        end
-
+        ); end
         # List stored Chat Completions. Only Chat Completions that have been stored with
         #   the `store` parameter set to `true` will be returned.
         sig do
@@ -616,9 +608,7 @@ module OpenAI
           #   `desc` for descending order. Defaults to `asc`.
           order: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Delete a stored chat completion. Only Chat Completions that have been created
         #   with the `store` parameter set to `true` can be deleted.
         sig do
@@ -632,13 +622,10 @@ module OpenAI
           # The ID of the chat completion to delete.
           completion_id,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

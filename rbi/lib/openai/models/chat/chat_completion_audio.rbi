@@ -28,12 +28,10 @@ module OpenAI
         sig do
           params(id: String, data: String, expires_at: Integer, transcript: String).returns(T.attached_class)
         end
-        def self.new(id:, data:, expires_at:, transcript:)
-        end
+        def self.new(id:, data:, expires_at:, transcript:); end
 
         sig { override.returns({id: String, data: String, expires_at: Integer, transcript: String}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

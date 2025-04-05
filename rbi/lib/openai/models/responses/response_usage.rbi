@@ -73,8 +73,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # The number of tokens that were retrieved from the cache.
@@ -84,12 +83,10 @@ module OpenAI
 
           # A detailed breakdown of the input tokens.
           sig { params(cached_tokens: Integer).returns(T.attached_class) }
-          def self.new(cached_tokens:)
-          end
+          def self.new(cached_tokens:); end
 
           sig { override.returns({cached_tokens: Integer}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -99,12 +96,10 @@ module OpenAI
 
           # A detailed breakdown of the output tokens.
           sig { params(reasoning_tokens: Integer).returns(T.attached_class) }
-          def self.new(reasoning_tokens:)
-          end
+          def self.new(reasoning_tokens:); end
 
           sig { override.returns({reasoning_tokens: Integer}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

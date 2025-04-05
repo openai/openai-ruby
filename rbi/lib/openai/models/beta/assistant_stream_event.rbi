@@ -56,12 +56,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, enabled: nil, event: :"thread.created")
-          end
+          def self.new(data:, enabled: nil, event: :"thread.created"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Thread, event: Symbol, enabled: T::Boolean}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
@@ -82,12 +80,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.created")
-          end
+          def self.new(data:, event: :"thread.run.created"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
@@ -108,12 +104,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.queued")
-          end
+          def self.new(data:, event: :"thread.run.queued"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
@@ -134,12 +128,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.in_progress")
-          end
+          def self.new(data:, event: :"thread.run.in_progress"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
@@ -160,12 +152,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.requires_action")
-          end
+          def self.new(data:, event: :"thread.run.requires_action"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
@@ -186,12 +176,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.completed")
-          end
+          def self.new(data:, event: :"thread.run.completed"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
@@ -212,12 +200,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.incomplete")
-          end
+          def self.new(data:, event: :"thread.run.incomplete"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
@@ -238,12 +224,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.failed")
-          end
+          def self.new(data:, event: :"thread.run.failed"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
@@ -264,12 +248,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.cancelling")
-          end
+          def self.new(data:, event: :"thread.run.cancelling"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
@@ -290,12 +272,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.cancelled")
-          end
+          def self.new(data:, event: :"thread.run.cancelled"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
@@ -316,12 +296,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Run, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.expired")
-          end
+          def self.new(data:, event: :"thread.run.expired"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Run, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
@@ -345,12 +323,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.created")
-          end
+          def self.new(data:, event: :"thread.run.step.created"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
@@ -374,12 +350,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.in_progress")
-          end
+          def self.new(data:, event: :"thread.run.step.in_progress"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
@@ -388,7 +362,9 @@ module OpenAI
           sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash)).void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -404,12 +380,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.delta")
-          end
+          def self.new(data:, event: :"thread.run.step.delta"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
@@ -433,12 +407,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.completed")
-          end
+          def self.new(data:, event: :"thread.run.step.completed"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
@@ -462,12 +434,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.failed")
-          end
+          def self.new(data:, event: :"thread.run.step.failed"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
@@ -491,12 +461,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.cancelled")
-          end
+          def self.new(data:, event: :"thread.run.step.cancelled"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
@@ -520,12 +488,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.expired")
-          end
+          def self.new(data:, event: :"thread.run.step.expired"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
@@ -547,12 +513,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.created")
-          end
+          def self.new(data:, event: :"thread.message.created"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
@@ -574,12 +538,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.in_progress")
-          end
+          def self.new(data:, event: :"thread.message.in_progress"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
@@ -604,12 +566,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.delta")
-          end
+          def self.new(data:, event: :"thread.message.delta"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::MessageDeltaEvent, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
@@ -631,12 +591,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.completed")
-          end
+          def self.new(data:, event: :"thread.message.completed"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
@@ -658,12 +616,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.incomplete")
-          end
+          def self.new(data:, event: :"thread.message.incomplete"); end
 
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         class ErrorEvent < OpenAI::Internal::Type::BaseModel
@@ -683,12 +639,10 @@ module OpenAI
             params(data: T.any(OpenAI::Models::ErrorObject, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :error)
-          end
+          def self.new(data:, event: :error); end
 
           sig { override.returns({data: OpenAI::Models::ErrorObject, event: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         sig do
@@ -697,8 +651,7 @@ module OpenAI
               [OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

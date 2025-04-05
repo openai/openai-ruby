@@ -31,12 +31,10 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(id:, delta:, object: :"thread.run.step.delta")
-            end
+            def self.new(id:, delta:, object: :"thread.run.step.delta"); end
 
             sig { override.returns({id: String, delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta, object: Symbol}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
 

@@ -149,9 +149,7 @@ module OpenAI
               type:,
               usage:,
               object: :"thread.run.step"
-            )
-            end
-
+            ); end
             sig do
               override
                 .returns(
@@ -178,8 +176,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class LastError < OpenAI::Internal::Type::BaseModel
               # One of `server_error` or `rate_limit_exceeded`.
@@ -196,8 +193,7 @@ module OpenAI
                 params(code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::OrSymbol, message: String)
                   .returns(T.attached_class)
               end
-              def self.new(code:, message:)
-              end
+              def self.new(code:, message:); end
 
               sig do
                 override
@@ -205,8 +201,7 @@ module OpenAI
                     {code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol, message: String}
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               # One of `server_error` or `rate_limit_exceeded`.
               module Code
@@ -223,8 +218,7 @@ module OpenAI
                   T.let(:rate_limit_exceeded, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol)
 
                 sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::TaggedSymbol]) }
-                def self.values
-                end
+                def self.values; end
               end
             end
 
@@ -244,8 +238,7 @@ module OpenAI
               EXPIRED = T.let(:expired, OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol)
 
               sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Status::TaggedSymbol]) }
-              def self.values
-              end
+              def self.values; end
             end
 
             # The details of the run step.
@@ -258,8 +251,7 @@ module OpenAI
                     [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
                   )
               end
-              def self.variants
-              end
+              def self.variants; end
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
@@ -275,8 +267,7 @@ module OpenAI
               TOOL_CALLS = T.let(:tool_calls, OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol)
 
               sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStep::Type::TaggedSymbol]) }
-              def self.values
-              end
+              def self.values; end
             end
 
             class Usage < OpenAI::Internal::Type::BaseModel
@@ -301,14 +292,12 @@ module OpenAI
                   total_tokens: Integer
                 ).returns(T.attached_class)
               end
-              def self.new(completion_tokens:, prompt_tokens:, total_tokens:)
-              end
+              def self.new(completion_tokens:, prompt_tokens:, total_tokens:); end
 
               sig do
                 override.returns({completion_tokens: Integer, prompt_tokens: Integer, total_tokens: Integer})
               end
-              def to_hash
-              end
+              def to_hash; end
             end
           end
         end

@@ -19,12 +19,10 @@ module OpenAI
         attr_writer :type
 
         sig { params(text: String, type: String).returns(T.attached_class) }
-        def self.new(text: nil, type: nil)
-        end
+        def self.new(text: nil, type: nil); end
 
         sig { override.returns({text: String, type: String}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

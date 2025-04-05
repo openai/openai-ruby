@@ -18,12 +18,10 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data:, request_options: {})
-        end
+        def self.new(data:, request_options: {}); end
 
         sig { override.returns({data: T.any(IO, StringIO), request_options: OpenAI::RequestOptions}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

@@ -37,8 +37,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(attributes:, content:, file_id:, filename:, score:)
-      end
+      def self.new(attributes:, content:, file_id:, filename:, score:); end
 
       sig do
         override
@@ -52,15 +51,13 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       module Attribute
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, Float, T::Boolean]) }
-        def self.variants
-        end
+        def self.variants; end
       end
 
       class Content < OpenAI::Internal::Type::BaseModel
@@ -76,15 +73,13 @@ module OpenAI
           params(text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::OrSymbol)
             .returns(T.attached_class)
         end
-        def self.new(text:, type:)
-        end
+        def self.new(text:, type:); end
 
         sig do
           override
             .returns({text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol})
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The type of content.
         module Type
@@ -97,8 +92,7 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

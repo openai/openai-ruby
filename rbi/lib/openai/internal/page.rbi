@@ -14,8 +14,7 @@ module OpenAI
       attr_accessor :object
 
       sig { returns(String) }
-      def inspect
-      end
+      def inspect; end
     end
   end
 end
