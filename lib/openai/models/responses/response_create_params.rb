@@ -84,7 +84,7 @@ module OpenAI
         #   Whether to allow the model to run tool calls in parallel.
         #
         #   @return [Boolean, nil]
-        optional :parallel_tool_calls, OpenAI::Internal::Type::BooleanModel, nil?: true
+        optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
@@ -107,7 +107,7 @@ module OpenAI
         #   Whether to store the generated model response for later retrieval via API.
         #
         #   @return [Boolean, nil]
-        optional :store, OpenAI::Internal::Type::BooleanModel, nil?: true
+        optional :store, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!attribute temperature
         #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will

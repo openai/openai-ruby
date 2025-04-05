@@ -15,7 +15,7 @@ module OpenAI
         #   Whether the chat completion was deleted.
         #
         #   @return [Boolean]
-        required :deleted, OpenAI::Internal::Type::BooleanModel
+        required :deleted, OpenAI::Internal::Type::Boolean
 
         # @!attribute object
         #   The type of object being deleted.

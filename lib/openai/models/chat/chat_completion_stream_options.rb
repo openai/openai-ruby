@@ -14,7 +14,7 @@ module OpenAI
         #     chunk which contains the total token usage for the request.
         #
         #   @return [Boolean, nil]
-        optional :include_usage, OpenAI::Internal::Type::BooleanModel
+        optional :include_usage, OpenAI::Internal::Type::Boolean
 
         # @!parse
         #   # @return [Boolean]

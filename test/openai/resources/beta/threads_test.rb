@@ -67,7 +67,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        deleted: OpenAI::Internal::Type::BooleanModel,
+        deleted: OpenAI::Internal::Type::Boolean,
         object: Symbol
       }
     end
@@ -97,7 +97,7 @@ class OpenAI::Test::Resources::Beta::ThreadsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         model: String,
         object: Symbol,
-        parallel_tool_calls: OpenAI::Internal::Type::BooleanModel,
+        parallel_tool_calls: OpenAI::Internal::Type::Boolean,
         required_action: OpenAI::Models::Beta::Threads::Run::RequiredAction | nil,
         response_format: OpenAI::Models::Beta::AssistantResponseFormatOption | nil,
         started_at: Integer | nil,

@@ -20,7 +20,7 @@ module OpenAI
         #   Whether there are more items available.
         #
         #   @return [Boolean]
-        required :has_more, OpenAI::Internal::Type::BooleanModel
+        required :has_more, OpenAI::Internal::Type::Boolean
 
         # @!attribute last_id
         #   The ID of the last item in the list.

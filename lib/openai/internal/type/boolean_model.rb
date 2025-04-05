@@ -8,7 +8,7 @@ module OpenAI
       # @abstract
       #
       # Ruby has no Boolean class; this is something for models to refer to.
-      class BooleanModel
+      class Boolean
         extend OpenAI::Internal::Type::Converter
 
         # @param other [Object]
@@ -19,7 +19,7 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::BooleanModel
+        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::Boolean
 
         class << self
           # @api private

@@ -54,7 +54,7 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
     assert_pattern do
       response => {
         id: String,
-        deleted: OpenAI::Internal::Type::BooleanModel,
+        deleted: OpenAI::Internal::Type::Boolean,
         object: String
       }
     end
