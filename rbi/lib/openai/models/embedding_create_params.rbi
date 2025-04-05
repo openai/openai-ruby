@@ -61,8 +61,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(input:, model:, dimensions: nil, encoding_format: nil, user: nil, request_options: {})
-      end
+      def self.new(input:, model:, dimensions: nil, encoding_format: nil, user: nil, request_options: {}); end
 
       sig do
         override
@@ -77,8 +76,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # Input text to embed, encoded as a string or array of tokens. To embed multiple
       #   inputs in a single request, pass an array of strings or array of token arrays.
@@ -92,8 +90,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-        def self.variants
-        end
+        def self.variants; end
 
         StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
@@ -115,8 +112,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::EmbeddingModel::OrSymbol]) }
-        def self.variants
-        end
+        def self.variants; end
       end
 
       # The format to return the embeddings in. Can be either `float` or
@@ -132,8 +128,7 @@ module OpenAI
         BASE64 = T.let(:base64, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

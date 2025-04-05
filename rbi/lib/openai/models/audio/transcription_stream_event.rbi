@@ -16,8 +16,7 @@ module OpenAI
               [OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

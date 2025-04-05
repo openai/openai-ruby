@@ -36,9 +36,7 @@ module OpenAI
           #   strategy. Only applicable if `file_ids` is non-empty.
           chunking_strategy: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Retrieves a vector store file batch.
         sig do
           params(
@@ -54,9 +52,7 @@ module OpenAI
           # The ID of the vector store that the file batch belongs to.
           vector_store_id:,
           request_options: {}
-        )
-        end
-
+        ); end
         # Cancel a vector store file batch. This attempts to cancel the processing of
         #   files in this batch as soon as possible.
         sig do
@@ -73,9 +69,7 @@ module OpenAI
           # The ID of the vector store that the file batch belongs to.
           vector_store_id:,
           request_options: {}
-        )
-        end
-
+        ); end
         # Returns a list of vector store files in a batch.
         sig do
           params(
@@ -115,13 +109,10 @@ module OpenAI
           #   ascending order and `desc` for descending order.
           order: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

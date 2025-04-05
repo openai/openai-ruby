@@ -34,9 +34,7 @@ module OpenAI
               #   for more information.
               include: nil,
               request_options: {}
-            )
-            end
-
+            ); end
             # Returns a list of run steps belonging to a run.
             sig do
               params(
@@ -82,13 +80,10 @@ module OpenAI
               #   ascending order and `desc` for descending order.
               order: nil,
               request_options: {}
-            )
-            end
-
+            ); end
             # @api private
             sig { params(client: OpenAI::Client).returns(T.attached_class) }
-            def self.new(client:)
-            end
+            def self.new(client:); end
           end
         end
       end

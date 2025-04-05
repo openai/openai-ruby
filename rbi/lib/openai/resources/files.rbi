@@ -41,9 +41,7 @@ module OpenAI
         #   Flexible file type for any purpose - `evals`: Used for eval data sets
         purpose:,
         request_options: {}
-      )
-      end
-
+      ); end
       # Returns information about a specific file.
       sig do
         params(
@@ -56,9 +54,7 @@ module OpenAI
         # The ID of the file to use for this request.
         file_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # Returns a list of files.
       sig do
         params(
@@ -85,9 +81,7 @@ module OpenAI
         # Only return files with the given purpose.
         purpose: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # Delete a file.
       sig do
         params(
@@ -100,9 +94,7 @@ module OpenAI
         # The ID of the file to use for this request.
         file_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # Returns the contents of the specified file.
       sig do
         params(
@@ -115,13 +107,10 @@ module OpenAI
         # The ID of the file to use for this request.
         file_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:)
-      end
+      def self.new(client:); end
     end
   end
 end

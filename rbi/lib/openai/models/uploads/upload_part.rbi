@@ -24,12 +24,10 @@ module OpenAI
         sig do
           params(id: String, created_at: Integer, upload_id: String, object: Symbol).returns(T.attached_class)
         end
-        def self.new(id:, created_at:, upload_id:, object: :"upload.part")
-        end
+        def self.new(id:, created_at:, upload_id:, object: :"upload.part"); end
 
         sig { override.returns({id: String, created_at: Integer, object: Symbol, upload_id: String}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

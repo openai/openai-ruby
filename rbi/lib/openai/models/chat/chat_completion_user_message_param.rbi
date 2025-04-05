@@ -10,12 +10,12 @@ module OpenAI
             T.any(
               String,
               T::Array[
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                OpenAI::Models::Chat::ChatCompletionContentPart::File
-              )
+                T.any(
+                  OpenAI::Models::Chat::ChatCompletionContentPartText,
+                  OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                  OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                  OpenAI::Models::Chat::ChatCompletionContentPart::File
+                )
               ]
             )
           )
@@ -41,13 +41,13 @@ module OpenAI
             content: T.any(
               String,
               T::Array[
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionContentPartText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                OpenAI::Models::Chat::ChatCompletionContentPart::File
-              )
+                T.any(
+                  OpenAI::Models::Chat::ChatCompletionContentPartText,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                  OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                  OpenAI::Models::Chat::ChatCompletionContentPart::File
+                )
               ]
             ),
             name: String,
@@ -55,8 +55,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, name: nil, role: :user)
-        end
+        def self.new(content:, name: nil, role: :user); end
 
         sig do
           override
@@ -65,12 +64,12 @@ module OpenAI
                 content: T.any(
                   String,
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Chat::ChatCompletionContentPartText,
-                    OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                    OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                    OpenAI::Models::Chat::ChatCompletionContentPart::File
-                  )
+                    T.any(
+                      OpenAI::Models::Chat::ChatCompletionContentPartText,
+                      OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                      OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                      OpenAI::Models::Chat::ChatCompletionContentPart::File
+                    )
                   ]
                 ),
                 role: Symbol,
@@ -78,8 +77,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The contents of the user message.
         module Content
@@ -91,18 +89,17 @@ module OpenAI
                 [
                   String,
                   T::Array[
-                                  T.any(
-                                    OpenAI::Models::Chat::ChatCompletionContentPartText,
-                                    OpenAI::Models::Chat::ChatCompletionContentPartImage,
-                                    OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
-                                    OpenAI::Models::Chat::ChatCompletionContentPart::File
-                                  )
+                                    T.any(
+                                      OpenAI::Models::Chat::ChatCompletionContentPartText,
+                                      OpenAI::Models::Chat::ChatCompletionContentPartImage,
+                                      OpenAI::Models::Chat::ChatCompletionContentPartInputAudio,
+                                      OpenAI::Models::Chat::ChatCompletionContentPart::File
+                                    )
                                   ]
                 ]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
 
           ChatCompletionContentPartArray =
             T.let(

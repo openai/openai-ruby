@@ -19,12 +19,10 @@ module OpenAI
 
       # Represents an embedding vector returned by embedding endpoint.
       sig { params(embedding: T::Array[Float], index: Integer, object: Symbol).returns(T.attached_class) }
-      def self.new(embedding:, index:, object: :embedding)
-      end
+      def self.new(embedding:, index:, object: :embedding); end
 
       sig { override.returns({embedding: T::Array[Float], index: Integer, object: Symbol}) }
-      def to_hash
-      end
+      def to_hash; end
     end
   end
 end

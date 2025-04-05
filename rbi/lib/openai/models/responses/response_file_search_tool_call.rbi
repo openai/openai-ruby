@@ -40,8 +40,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, queries:, status:, results: nil, type: :file_search_call)
-        end
+        def self.new(id:, queries:, status:, results: nil, type: :file_search_call); end
 
         sig do
           override
@@ -55,8 +54,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
@@ -79,8 +77,7 @@ module OpenAI
           FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         class Result < OpenAI::Internal::Type::BaseModel
@@ -130,8 +127,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil)
-          end
+          def self.new(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil); end
 
           sig do
             override
@@ -145,15 +141,13 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           module Attribute
             extend OpenAI::Internal::Type::Union
 
             sig { override.returns([String, Float, T::Boolean]) }
-            def self.variants
-            end
+            def self.variants; end
           end
         end
       end

@@ -84,8 +84,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
@@ -93,8 +92,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Audio::SpeechModel::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
@@ -105,8 +103,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice) }
           OrSymbol =
@@ -142,8 +139,7 @@ module OpenAI
           PCM = T.let(:pcm, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

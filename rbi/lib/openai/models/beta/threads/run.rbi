@@ -188,11 +188,11 @@ module OpenAI
           sig do
             returns(
               T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
+                T.any(
+                  OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Models::Beta::FileSearchTool,
+                  OpenAI::Models::Beta::FunctionTool
+                )
               ]
             )
           end
@@ -267,12 +267,12 @@ module OpenAI
                 )
               ),
               tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
+                T.any(
+                  OpenAI::Models::Beta::CodeInterpreterTool,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Beta::FileSearchTool,
+                  OpenAI::Models::Beta::FunctionTool
+                )
               ],
               truncation_strategy: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::TruncationStrategy, OpenAI::Internal::AnyHash)),
               usage: T.nilable(T.any(OpenAI::Models::Beta::Threads::Run::Usage, OpenAI::Internal::AnyHash)),
@@ -310,9 +310,7 @@ module OpenAI
             temperature: nil,
             top_p: nil,
             object: :"thread.run"
-          )
-          end
-
+          ); end
           sig do
             override
               .returns(
@@ -352,11 +350,11 @@ module OpenAI
                     )
                   ),
                   tools: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Models::Beta::FileSearchTool,
-                    OpenAI::Models::Beta::FunctionTool
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::CodeInterpreterTool,
+                      OpenAI::Models::Beta::FileSearchTool,
+                      OpenAI::Models::Beta::FunctionTool
+                    )
                   ],
                   truncation_strategy: T.nilable(OpenAI::Models::Beta::Threads::Run::TruncationStrategy),
                   usage: T.nilable(OpenAI::Models::Beta::Threads::Run::Usage),
@@ -365,8 +363,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             # The reason why the run is incomplete. This will point to which specific token
@@ -383,12 +380,10 @@ module OpenAI
               params(reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol)
                 .returns(T.attached_class)
             end
-            def self.new(reason: nil)
-            end
+            def self.new(reason: nil); end
 
             sig { override.returns({reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol}) }
-            def to_hash
-            end
+            def to_hash; end
 
             # The reason why the run is incomplete. This will point to which specific token
             #   limit was reached over the course of the run.
@@ -406,8 +401,7 @@ module OpenAI
                 T.let(:max_prompt_tokens, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
 
               sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol]) }
-              def self.values
-              end
+              def self.values; end
             end
           end
 
@@ -425,15 +419,13 @@ module OpenAI
               params(code: OpenAI::Models::Beta::Threads::Run::LastError::Code::OrSymbol, message: String)
                 .returns(T.attached_class)
             end
-            def self.new(code:, message:)
-            end
+            def self.new(code:, message:); end
 
             sig do
               override
                 .returns({code: OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol, message: String})
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
             module Code
@@ -450,8 +442,7 @@ module OpenAI
                 T.let(:invalid_prompt, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
 
               sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol]) }
-              def self.values
-              end
+              def self.values; end
             end
           end
 
@@ -481,8 +472,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(submit_tool_outputs:, type: :submit_tool_outputs)
-            end
+            def self.new(submit_tool_outputs:, type: :submit_tool_outputs); end
 
             sig do
               override
@@ -490,8 +480,7 @@ module OpenAI
                   {submit_tool_outputs: OpenAI::Models::Beta::Threads::Run::RequiredAction::SubmitToolOutputs, type: Symbol}
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class SubmitToolOutputs < OpenAI::Internal::Type::BaseModel
               # A list of the relevant tool calls.
@@ -505,12 +494,10 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(tool_calls:)
-              end
+              def self.new(tool_calls:); end
 
               sig { override.returns({tool_calls: T::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]}) }
-              def to_hash
-              end
+              def to_hash; end
             end
           end
 
@@ -536,8 +523,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(type:, last_messages: nil)
-            end
+            def self.new(type:, last_messages: nil); end
 
             sig do
               override
@@ -548,8 +534,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             #   `last_messages`, the thread will be truncated to the n most recent messages in
@@ -568,8 +553,7 @@ module OpenAI
                 T.let(:last_messages, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
 
               sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol]) }
-              def self.values
-              end
+              def self.values; end
             end
           end
 
@@ -595,14 +579,12 @@ module OpenAI
                 total_tokens: Integer
               ).returns(T.attached_class)
             end
-            def self.new(completion_tokens:, prompt_tokens:, total_tokens:)
-            end
+            def self.new(completion_tokens:, prompt_tokens:, total_tokens:); end
 
             sig do
               override.returns({completion_tokens: Integer, prompt_tokens: Integer, total_tokens: Integer})
             end
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

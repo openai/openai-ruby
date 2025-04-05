@@ -46,8 +46,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(name:, description: nil, parameters: nil, strict: nil)
-      end
+      def self.new(name:, description: nil, parameters: nil, strict: nil); end
 
       sig do
         override
@@ -60,8 +59,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
     end
   end
 end

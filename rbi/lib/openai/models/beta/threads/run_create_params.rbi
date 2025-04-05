@@ -158,11 +158,11 @@ module OpenAI
             returns(
               T.nilable(
                 T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
-                )
+                  T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Models::Beta::FileSearchTool,
+                    OpenAI::Models::Beta::FunctionTool
+                  )
                 ]
               )
             )
@@ -226,12 +226,12 @@ module OpenAI
               ),
               tools: T.nilable(
                 T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
-                )
+                  T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Internal::AnyHash,
+                    OpenAI::Models::Beta::FileSearchTool,
+                    OpenAI::Models::Beta::FunctionTool
+                  )
                 ]
               ),
               top_p: T.nilable(Float),
@@ -261,9 +261,7 @@ module OpenAI
             top_p: nil,
             truncation_strategy: nil,
             request_options: {}
-          )
-          end
-
+          ); end
           sig do
             override
               .returns(
@@ -296,11 +294,11 @@ module OpenAI
                   ),
                   tools: T.nilable(
                     T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::CodeInterpreterTool,
-                      OpenAI::Models::Beta::FileSearchTool,
-                      OpenAI::Models::Beta::FunctionTool
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::CodeInterpreterTool,
+                        OpenAI::Models::Beta::FileSearchTool,
+                        OpenAI::Models::Beta::FunctionTool
+                      )
                     ]
                   ),
                   top_p: T.nilable(Float),
@@ -309,8 +307,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class AdditionalMessage < OpenAI::Internal::Type::BaseModel
             # The text contents of the message.
@@ -319,11 +316,11 @@ module OpenAI
                 T.any(
                   String,
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                    OpenAI::Models::Beta::Threads::TextContentBlockParam
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                      OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                      OpenAI::Models::Beta::Threads::TextContentBlockParam
+                    )
                   ]
                 )
               )
@@ -361,29 +358,28 @@ module OpenAI
                 content: T.any(
                   String,
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                    OpenAI::Models::Beta::Threads::TextContentBlockParam
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                      OpenAI::Internal::AnyHash,
+                      OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                      OpenAI::Models::Beta::Threads::TextContentBlockParam
+                    )
                   ]
                 ),
                 role: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol,
                 attachments: T.nilable(
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment,
-                    OpenAI::Internal::AnyHash
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment,
+                      OpenAI::Internal::AnyHash
+                    )
                   ]
                 ),
                 metadata: T.nilable(T::Hash[Symbol, String])
               )
                 .returns(T.attached_class)
             end
-            def self.new(content:, role:, attachments: nil, metadata: nil)
-            end
+            def self.new(content:, role:, attachments: nil, metadata: nil); end
 
             sig do
               override
@@ -392,11 +388,11 @@ module OpenAI
                     content: T.any(
                       String,
                       T::Array[
-                      T.any(
-                        OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                        OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                        OpenAI::Models::Beta::Threads::TextContentBlockParam
-                      )
+                        T.any(
+                          OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                          OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                          OpenAI::Models::Beta::Threads::TextContentBlockParam
+                        )
                       ]
                     ),
                     role: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::OrSymbol,
@@ -405,8 +401,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # The text contents of the message.
             module Content
@@ -418,17 +413,16 @@ module OpenAI
                     [
                       String,
                       T::Array[
-                                          T.any(
-                                            OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                                            OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                                            OpenAI::Models::Beta::Threads::TextContentBlockParam
-                                          )
+                                            T.any(
+                                              OpenAI::Models::Beta::Threads::ImageFileContentBlock,
+                                              OpenAI::Models::Beta::Threads::ImageURLContentBlock,
+                                              OpenAI::Models::Beta::Threads::TextContentBlockParam
+                                            )
                                           ]
                     ]
                   )
               end
-              def self.variants
-              end
+              def self.variants; end
 
               MessageContentPartParamArray =
                 T.let(
@@ -466,8 +460,7 @@ module OpenAI
                 override
                   .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol])
               end
-              def self.values
-              end
+              def self.values; end
             end
 
             class Attachment < OpenAI::Internal::Type::BaseModel
@@ -483,10 +476,10 @@ module OpenAI
                 returns(
                   T.nilable(
                     T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::CodeInterpreterTool,
-                      OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::CodeInterpreterTool,
+                        OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                      )
                     ]
                   )
                 )
@@ -496,11 +489,11 @@ module OpenAI
               sig do
                 params(
                   tools: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::CodeInterpreterTool,
+                      OpenAI::Internal::AnyHash,
+                      OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                    )
                   ]
                 )
                   .void
@@ -511,17 +504,16 @@ module OpenAI
                 params(
                   file_id: String,
                   tools: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::CodeInterpreterTool,
+                      OpenAI::Internal::AnyHash,
+                      OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                    )
                   ]
                 )
                   .returns(T.attached_class)
               end
-              def self.new(file_id: nil, tools: nil)
-              end
+              def self.new(file_id: nil, tools: nil); end
 
               sig do
                 override
@@ -529,16 +521,15 @@ module OpenAI
                     {
                       file_id: String,
                       tools: T::Array[
-                      T.any(
-                        OpenAI::Models::Beta::CodeInterpreterTool,
-                        OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                      )
+                        T.any(
+                          OpenAI::Models::Beta::CodeInterpreterTool,
+                          OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                        )
                       ]
                     }
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               module Tool
                 extend OpenAI::Internal::Type::Union
@@ -549,12 +540,10 @@ module OpenAI
                   attr_accessor :type
 
                   sig { params(type: Symbol).returns(T.attached_class) }
-                  def self.new(type: :file_search)
-                  end
+                  def self.new(type: :file_search); end
 
                   sig { override.returns({type: Symbol}) }
-                  def to_hash
-                  end
+                  def to_hash; end
                 end
 
                 sig do
@@ -563,8 +552,7 @@ module OpenAI
                       [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
                     )
                 end
-                def self.variants
-                end
+                def self.variants; end
               end
             end
           end
@@ -577,8 +565,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Union
 
             sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
-            def self.variants
-            end
+            def self.variants; end
           end
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
@@ -603,8 +590,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(type:, last_messages: nil)
-            end
+            def self.new(type:, last_messages: nil); end
 
             sig do
               override
@@ -615,8 +601,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             #   `last_messages`, the thread will be truncated to the n most recent messages in
@@ -648,8 +633,7 @@ module OpenAI
                 override
                   .returns(T::Array[OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol])
               end
-              def self.values
-              end
+              def self.values; end
             end
           end
         end

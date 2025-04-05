@@ -27,8 +27,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, type: :content)
-        end
+        def self.new(content:, type: :content); end
 
         sig do
           override
@@ -36,8 +35,7 @@ module OpenAI
               {content: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]), type: Symbol}
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The content that should be matched when generating a model response. If
         #   generated tokens would match this content, the entire model response can be
@@ -46,8 +44,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
-          def self.variants
-          end
+          def self.variants; end
 
           ChatCompletionContentPartTextArray =
             T.let(

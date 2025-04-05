@@ -66,9 +66,7 @@ module OpenAI
           #   `#create` for streaming and non-streaming use cases, respectively.
           stream: false,
           request_options: {}
-        )
-        end
-
+        ); end
         # See {OpenAI::Resources::Audio::Transcriptions#create} for non-streaming
         #   counterpart.
         #
@@ -88,10 +86,10 @@ module OpenAI
           )
             .returns(
               OpenAI::Internal::Stream[
-              T.any(
-                OpenAI::Models::Audio::TranscriptionTextDeltaEvent,
-                OpenAI::Models::Audio::TranscriptionTextDoneEvent
-              )
+                T.any(
+                  OpenAI::Models::Audio::TranscriptionTextDeltaEvent,
+                  OpenAI::Models::Audio::TranscriptionTextDoneEvent
+                )
               ]
             )
         end
@@ -138,13 +136,10 @@ module OpenAI
           #   `#create` for streaming and non-streaming use cases, respectively.
           stream: true,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

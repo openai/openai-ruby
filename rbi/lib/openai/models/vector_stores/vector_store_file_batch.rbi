@@ -75,8 +75,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class FileCounts < OpenAI::Internal::Type::BaseModel
           # The number of files that where cancelled.
@@ -109,8 +108,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(cancelled:, completed:, failed:, in_progress:, total:)
-          end
+          def self.new(cancelled:, completed:, failed:, in_progress:, total:); end
 
           sig do
             override
@@ -122,8 +120,7 @@ module OpenAI
                          total: Integer
                        })
           end
-          def to_hash
-          end
+          def to_hash; end
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,
@@ -142,8 +139,7 @@ module OpenAI
           FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

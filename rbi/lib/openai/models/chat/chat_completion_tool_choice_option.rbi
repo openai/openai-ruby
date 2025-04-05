@@ -30,8 +30,7 @@ module OpenAI
           REQUIRED = T.let(:required, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         sig do
@@ -40,8 +39,7 @@ module OpenAI
               [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
 

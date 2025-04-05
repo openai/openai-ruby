@@ -33,12 +33,10 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data:, enabled: nil, event: :"thread.created")
-        end
+        def self.new(data:, enabled: nil, event: :"thread.created"); end
 
         sig { override.returns({data: OpenAI::Models::Beta::Thread, event: Symbol, enabled: T::Boolean}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

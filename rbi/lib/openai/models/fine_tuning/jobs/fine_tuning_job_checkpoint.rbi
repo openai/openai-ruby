@@ -63,9 +63,7 @@ module OpenAI
             metrics:,
             step_number:,
             object: :"fine_tuning.job.checkpoint"
-          )
-          end
-
+          ); end
           sig do
             override
               .returns(
@@ -80,8 +78,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class Metrics < OpenAI::Internal::Type::BaseModel
             sig { returns(T.nilable(Float)) }
@@ -147,9 +144,7 @@ module OpenAI
               train_mean_token_accuracy: nil,
               valid_loss: nil,
               valid_mean_token_accuracy: nil
-            )
-            end
-
+            ); end
             sig do
               override
                 .returns(
@@ -164,8 +159,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

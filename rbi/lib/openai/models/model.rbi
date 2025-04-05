@@ -21,12 +21,10 @@ module OpenAI
 
       # Describes an OpenAI model offering that can be used with the API.
       sig { params(id: String, created: Integer, owned_by: String, object: Symbol).returns(T.attached_class) }
-      def self.new(id:, created:, owned_by:, object: :model)
-      end
+      def self.new(id:, created:, owned_by:, object: :model); end
 
       sig { override.returns({id: String, created: Integer, object: Symbol, owned_by: String}) }
-      def to_hash
-      end
+      def to_hash; end
     end
   end
 end

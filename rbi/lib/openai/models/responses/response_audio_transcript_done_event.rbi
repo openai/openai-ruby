@@ -10,12 +10,10 @@ module OpenAI
 
         # Emitted when the full audio transcript is completed.
         sig { params(type: Symbol).returns(T.attached_class) }
-        def self.new(type: :"response.audio.transcript.done")
-        end
+        def self.new(type: :"response.audio.transcript.done"); end
 
         sig { override.returns({type: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

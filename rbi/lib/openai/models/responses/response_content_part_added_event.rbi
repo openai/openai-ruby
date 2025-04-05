@@ -58,8 +58,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The content part that was added.
         module Part
@@ -69,8 +68,7 @@ module OpenAI
             override
               .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
           end
-          def self.variants
-          end
+          def self.variants; end
         end
       end
     end

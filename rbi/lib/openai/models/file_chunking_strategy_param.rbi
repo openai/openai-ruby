@@ -13,8 +13,7 @@ module OpenAI
             [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
           )
       end
-      def self.variants
-      end
+      def self.variants; end
     end
   end
 end

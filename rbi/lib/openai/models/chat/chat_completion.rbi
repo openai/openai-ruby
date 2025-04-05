@@ -70,9 +70,7 @@ module OpenAI
           system_fingerprint: nil,
           usage: nil,
           object: :"chat.completion"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -88,8 +86,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class Choice < OpenAI::Internal::Type::BaseModel
           # The reason the model stopped generating tokens. This will be `stop` if the model
@@ -133,8 +130,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(finish_reason:, index:, logprobs:, message:)
-          end
+          def self.new(finish_reason:, index:, logprobs:, message:); end
 
           sig do
             override
@@ -147,8 +143,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # The reason the model stopped generating tokens. This will be `stop` if the model
           #   hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -172,8 +167,7 @@ module OpenAI
               T.let(:function_call, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
 
           class Logprobs < OpenAI::Internal::Type::BaseModel
@@ -193,8 +187,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(content:, refusal:)
-            end
+            def self.new(content:, refusal:); end
 
             sig do
               override
@@ -205,8 +198,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
           end
         end
 
@@ -222,8 +214,7 @@ module OpenAI
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

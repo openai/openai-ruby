@@ -28,12 +28,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(index:, text: nil, type: :text)
-          end
+          def self.new(index:, text: nil, type: :text); end
 
           sig { override.returns({index: Integer, type: Symbol, text: OpenAI::Models::Beta::Threads::TextDelta}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

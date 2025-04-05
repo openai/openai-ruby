@@ -18,12 +18,10 @@ module OpenAI
 
         # An audio output from the model.
         sig { params(data: String, transcript: String, type: Symbol).returns(T.attached_class) }
-        def self.new(data:, transcript:, type: :output_audio)
-        end
+        def self.new(data:, transcript:, type: :output_audio); end
 
         sig { override.returns({data: String, transcript: String, type: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

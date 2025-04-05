@@ -19,8 +19,7 @@ module OpenAI
       HIGH = T.let(:high, OpenAI::Models::ReasoningEffort::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::Models::ReasoningEffort::TaggedSymbol]) }
-      def self.values
-      end
+      def self.values; end
     end
   end
 end

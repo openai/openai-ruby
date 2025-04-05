@@ -13,11 +13,11 @@ module OpenAI
         sig do
           returns(
             T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseInputText,
-              OpenAI::Models::Responses::ResponseInputImage,
-              OpenAI::Models::Responses::ResponseInputFile
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
             ]
           )
         end
@@ -46,12 +46,12 @@ module OpenAI
           params(
             id: String,
             content: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseInputText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseInputImage,
-              OpenAI::Models::Responses::ResponseInputFile
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseInputText,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Responses::ResponseInputImage,
+                OpenAI::Models::Responses::ResponseInputFile
+              )
             ],
             role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::OrSymbol,
             status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol,
@@ -59,8 +59,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, content:, role:, status: nil, type: nil)
-        end
+        def self.new(id:, content:, role:, status: nil, type: nil); end
 
         sig do
           override
@@ -68,11 +67,11 @@ module OpenAI
               {
                 id: String,
                 content: T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseInputText,
-                  OpenAI::Models::Responses::ResponseInputImage,
-                  OpenAI::Models::Responses::ResponseInputFile
-                )
+                  T.any(
+                    OpenAI::Models::Responses::ResponseInputText,
+                    OpenAI::Models::Responses::ResponseInputImage,
+                    OpenAI::Models::Responses::ResponseInputFile
+                  )
                 ],
                 role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
                 status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol,
@@ -80,8 +79,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         module Role
@@ -96,8 +94,7 @@ module OpenAI
           DEVELOPER = T.let(:developer, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -117,8 +114,7 @@ module OpenAI
             T.let(:incomplete, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # The type of the message input. Always set to `message`.
@@ -132,8 +128,7 @@ module OpenAI
           MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

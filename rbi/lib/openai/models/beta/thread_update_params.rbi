@@ -39,8 +39,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(metadata: nil, tool_resources: nil, request_options: {})
-        end
+        def self.new(metadata: nil, tool_resources: nil, request_options: {}); end
 
         sig do
           override
@@ -52,8 +51,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter)) }
@@ -89,8 +87,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil)
-          end
+          def self.new(code_interpreter: nil, file_search: nil); end
 
           sig do
             override
@@ -101,8 +98,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
@@ -115,12 +111,10 @@ module OpenAI
             attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(file_ids: nil)
-            end
+            def self.new(file_ids: nil); end
 
             sig { override.returns({file_ids: T::Array[String]}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -135,12 +129,10 @@ module OpenAI
             attr_writer :vector_store_ids
 
             sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(vector_store_ids: nil)
-            end
+            def self.new(vector_store_ids: nil); end
 
             sig { override.returns({vector_store_ids: T::Array[String]}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

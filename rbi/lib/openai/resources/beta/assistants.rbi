@@ -25,12 +25,12 @@ module OpenAI
             temperature: T.nilable(Float),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ],
             top_p: T.nilable(Float),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
@@ -106,9 +106,7 @@ module OpenAI
           #   We generally recommend altering this or temperature but not both.
           top_p: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Retrieves an assistant.
         sig do
           params(
@@ -121,9 +119,7 @@ module OpenAI
           # The ID of the assistant to retrieve.
           assistant_id,
           request_options: {}
-        )
-        end
-
+        ); end
         # Modifies an assistant.
         sig do
           params(
@@ -146,12 +142,12 @@ module OpenAI
             temperature: T.nilable(Float),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ],
             top_p: T.nilable(Float),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
@@ -229,9 +225,7 @@ module OpenAI
           #   We generally recommend altering this or temperature but not both.
           top_p: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Returns a list of assistants.
         sig do
           params(
@@ -261,9 +255,7 @@ module OpenAI
           #   order and `desc` for descending order.
           order: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Delete an assistant.
         sig do
           params(
@@ -276,13 +268,10 @@ module OpenAI
           # The ID of the assistant to delete.
           assistant_id,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

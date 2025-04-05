@@ -27,8 +27,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, status:, type: :web_search_call)
-        end
+        def self.new(id:, status:, type: :web_search_call); end
 
         sig do
           override
@@ -36,8 +35,7 @@ module OpenAI
               {id: String, status: OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::OrSymbol, type: Symbol}
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The status of the web search tool call.
         module Status
@@ -55,8 +53,7 @@ module OpenAI
           FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

@@ -41,8 +41,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(type:, search_context_size: nil, user_location: nil)
-        end
+        def self.new(type:, search_context_size: nil, user_location: nil); end
 
         sig do
           override
@@ -54,8 +53,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The type of the web search tool. One of:
         #
@@ -74,8 +72,7 @@ module OpenAI
             T.let(:web_search_preview_2025_03_11, OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::Type::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # High level guidance for the amount of context window space to use for the
@@ -93,8 +90,7 @@ module OpenAI
           HIGH = T.let(:high, OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::WebSearchTool::SearchContextSize::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
@@ -136,14 +132,12 @@ module OpenAI
             params(city: String, country: String, region: String, timezone: String, type: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(city: nil, country: nil, region: nil, timezone: nil, type: :approximate)
-          end
+          def self.new(city: nil, country: nil, region: nil, timezone: nil, type: :approximate); end
 
           sig do
             override.returns({type: Symbol, city: String, country: String, region: String, timezone: String})
           end
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

@@ -29,8 +29,7 @@ module OpenAI
           )
 
         sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

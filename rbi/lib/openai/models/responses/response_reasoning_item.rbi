@@ -35,8 +35,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, summary:, status: nil, type: :reasoning)
-        end
+        def self.new(id:, summary:, status: nil, type: :reasoning); end
 
         sig do
           override
@@ -49,8 +48,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class Summary < OpenAI::Internal::Type::BaseModel
           # A short summary of the reasoning used by the model when generating the response.
@@ -62,12 +60,10 @@ module OpenAI
           attr_accessor :type
 
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
-          def self.new(text:, type: :summary_text)
-          end
+          def self.new(text:, type: :summary_text); end
 
           sig { override.returns({text: String, type: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -84,8 +80,7 @@ module OpenAI
           INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

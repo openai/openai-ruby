@@ -17,12 +17,10 @@ module OpenAI
         attr_accessor :role
 
         sig { params(content: T.nilable(String), name: String, role: Symbol).returns(T.attached_class) }
-        def self.new(content:, name:, role: :function)
-        end
+        def self.new(content:, name:, role: :function); end
 
         sig { override.returns({content: T.nilable(String), name: String, role: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

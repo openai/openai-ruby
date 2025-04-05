@@ -8,10 +8,10 @@ module OpenAI
           sig do
             returns(
               T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                OpenAI::Models::Beta::Threads::FilePathAnnotation
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::FileCitationAnnotation,
+                  OpenAI::Models::Beta::Threads::FilePathAnnotation
+                )
               ]
             )
           end
@@ -24,35 +24,33 @@ module OpenAI
           sig do
             params(
               annotations: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::Threads::FilePathAnnotation
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::FileCitationAnnotation,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Beta::Threads::FilePathAnnotation
+                )
               ],
               value: String
             )
               .returns(T.attached_class)
           end
-          def self.new(annotations:, value:)
-          end
+          def self.new(annotations:, value:); end
 
           sig do
             override
               .returns(
                 {
                   annotations: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                    OpenAI::Models::Beta::Threads::FilePathAnnotation
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::FileCitationAnnotation,
+                      OpenAI::Models::Beta::Threads::FilePathAnnotation
+                    )
                   ],
                   value: String
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

@@ -35,11 +35,11 @@ module OpenAI
             String,
             T::Array[String],
             T::Array[
-            T.any(
-              OpenAI::Models::ModerationImageURLInput,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::ModerationTextInput
-            )
+              T.any(
+                OpenAI::Models::ModerationImageURLInput,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::ModerationTextInput
+              )
             ]
           ),
           model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
@@ -47,8 +47,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(input:, model: nil, request_options: {})
-      end
+      def self.new(input:, model: nil, request_options: {}); end
 
       sig do
         override
@@ -64,8 +63,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       #   an array of multi-modal input objects similar to other models.
@@ -78,8 +76,7 @@ module OpenAI
               [String, T::Array[String], T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
 
         StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
 
@@ -98,8 +95,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::ModerationModel::OrSymbol]) }
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

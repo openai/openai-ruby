@@ -38,8 +38,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(id:, function:, type: :function)
-          end
+          def self.new(id:, function:, type: :function); end
 
           sig do
             override
@@ -47,8 +46,7 @@ module OpenAI
                 {id: String, function: OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function, type: Symbol}
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class Function < OpenAI::Internal::Type::BaseModel
             # The arguments that the model expects you to pass to the function.
@@ -61,12 +59,10 @@ module OpenAI
 
             # The function definition.
             sig { params(arguments: String, name: String).returns(T.attached_class) }
-            def self.new(arguments:, name:)
-            end
+            def self.new(arguments:, name:); end
 
             sig { override.returns({arguments: String, name: String}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

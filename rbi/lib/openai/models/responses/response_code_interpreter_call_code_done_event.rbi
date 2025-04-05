@@ -18,12 +18,10 @@ module OpenAI
 
         # Emitted when code snippet output is finalized by the code interpreter.
         sig { params(code: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
-        def self.new(code:, output_index:, type: :"response.code_interpreter_call.code.done")
-        end
+        def self.new(code:, output_index:, type: :"response.code_interpreter_call.code.done"); end
 
         sig { override.returns({code: String, output_index: Integer, type: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

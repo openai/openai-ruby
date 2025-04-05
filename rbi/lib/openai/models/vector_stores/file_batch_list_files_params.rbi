@@ -90,8 +90,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         module Filter
@@ -111,8 +110,7 @@ module OpenAI
             T.let(:cancelled, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -129,8 +127,7 @@ module OpenAI
           DESC = T.let(:desc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

@@ -18,12 +18,10 @@ module OpenAI
           params(function: T.any(OpenAI::Models::FunctionDefinition, OpenAI::Internal::AnyHash), type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(function:, type: :function)
-        end
+        def self.new(function:, type: :function); end
 
         sig { override.returns({function: OpenAI::Models::FunctionDefinition, type: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
 

@@ -61,8 +61,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
-        end
+        def self.new(after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {}); end
 
         sig do
           override
@@ -77,8 +76,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         module Filter
@@ -94,8 +92,7 @@ module OpenAI
           CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -111,8 +108,7 @@ module OpenAI
           DESC = T.let(:desc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

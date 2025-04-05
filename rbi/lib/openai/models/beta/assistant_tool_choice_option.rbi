@@ -29,8 +29,7 @@ module OpenAI
           REQUIRED = T.let(:required, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         sig do
@@ -39,8 +38,7 @@ module OpenAI
               [OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Beta::AssistantToolChoice]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

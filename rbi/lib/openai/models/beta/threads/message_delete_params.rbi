@@ -21,12 +21,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(thread_id:, request_options: {})
-          end
+          def self.new(thread_id:, request_options: {}); end
 
           sig { override.returns({thread_id: String, request_options: OpenAI::RequestOptions}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

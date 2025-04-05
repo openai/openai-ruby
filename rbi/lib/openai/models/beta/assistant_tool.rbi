@@ -12,8 +12,7 @@ module OpenAI
               [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

@@ -38,9 +38,7 @@ module OpenAI
           #   strategy. Only applicable if `file_ids` is non-empty.
           chunking_strategy: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Retrieves a vector store file.
         sig do
           params(
@@ -56,9 +54,7 @@ module OpenAI
           # The ID of the vector store that the file belongs to.
           vector_store_id:,
           request_options: {}
-        )
-        end
-
+        ); end
         # Update attributes on a vector store file.
         sig do
           params(
@@ -81,9 +77,7 @@ module OpenAI
           #   maximum length of 512 characters, booleans, or numbers.
           attributes:,
           request_options: {}
-        )
-        end
-
+        ); end
         # Returns a list of vector store files.
         sig do
           params(
@@ -119,9 +113,7 @@ module OpenAI
           #   order and `desc` for descending order.
           order: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Delete a vector store file. This will remove the file from the vector store but
         #   the file itself will not be deleted. To delete the file, use the
         #   [delete file](https://platform.openai.com/docs/api-reference/files/delete)
@@ -140,9 +132,7 @@ module OpenAI
           # The ID of the vector store that the file belongs to.
           vector_store_id:,
           request_options: {}
-        )
-        end
-
+        ); end
         # Retrieve the parsed contents of a vector store file.
         sig do
           params(
@@ -158,13 +148,10 @@ module OpenAI
           # The ID of the vector store.
           vector_store_id:,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

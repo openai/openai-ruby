@@ -9,8 +9,7 @@ module OpenAI
   class RequestOptions < OpenAI::Internal::Type::BaseModel
     # @api private
     sig { params(opts: T.any(T.self_type, T::Hash[Symbol, T.anything])).void }
-    def self.validate!(opts)
-    end
+    def self.validate!(opts); end
 
     # Idempotency key to send with request and all associated retries. Will only be
     #   sent for write requests.
@@ -42,7 +41,6 @@ module OpenAI
 
     # Returns a new instance of RequestOptions.
     sig { params(values: OpenAI::Internal::AnyHash).returns(T.attached_class) }
-    def self.new(values = {})
-    end
+    def self.new(values = {}); end
   end
 end

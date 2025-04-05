@@ -20,8 +20,7 @@ module OpenAI
       EVALS = T.let(:evals, OpenAI::Models::FilePurpose::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::Models::FilePurpose::TaggedSymbol]) }
-      def self.values
-      end
+      def self.values; end
     end
   end
 end
