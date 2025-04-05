@@ -168,6 +168,9 @@ module OpenAI
                 in String | Symbol | Numeric
                   exactness[value.is_a?(Numeric) ? :maybe : :yes] += 1
                   return value.to_s
+                in StringIO
+                  exactness[:yes] += 1
+                  return value.string
                 else
                   if strictness == :strong
                     message = "no implicit conversion of #{value.class} into #{target.inspect}"
