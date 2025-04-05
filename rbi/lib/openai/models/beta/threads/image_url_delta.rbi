@@ -25,14 +25,12 @@ module OpenAI
             params(detail: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::OrSymbol, url: String)
               .returns(T.attached_class)
           end
-          def self.new(detail: nil, url: nil)
-          end
+          def self.new(detail: nil, url: nil); end
 
           sig do
             override.returns({detail: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol, url: String})
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`.
@@ -48,8 +46,7 @@ module OpenAI
             HIGH = T.let(:high, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

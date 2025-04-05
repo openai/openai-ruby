@@ -20,12 +20,10 @@ module OpenAI
             params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Internal::AnyHash), type: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(text:, type: :text)
-          end
+          def self.new(text:, type: :text); end
 
           sig { override.returns({text: OpenAI::Models::Beta::Threads::Text, type: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

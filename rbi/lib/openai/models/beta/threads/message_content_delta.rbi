@@ -15,8 +15,7 @@ module OpenAI
                 [OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
       end
     end

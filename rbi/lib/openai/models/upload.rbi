@@ -88,8 +88,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # The status of the Upload.
       module Status
@@ -104,8 +103,7 @@ module OpenAI
         EXPIRED = T.let(:expired, OpenAI::Models::Upload::Status::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::Upload::Status::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

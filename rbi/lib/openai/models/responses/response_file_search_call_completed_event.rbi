@@ -18,12 +18,10 @@ module OpenAI
 
         # Emitted when a file search call is completed (results found).
         sig { params(item_id: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
-        def self.new(item_id:, output_index:, type: :"response.file_search_call.completed")
-        end
+        def self.new(item_id:, output_index:, type: :"response.file_search_call.completed"); end
 
         sig { override.returns({item_id: String, output_index: Integer, type: Symbol}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

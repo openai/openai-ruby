@@ -74,9 +74,7 @@ module OpenAI
         expires_at: nil,
         status_details: nil,
         object: :file
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(
@@ -93,8 +91,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # The intended purpose of the file. Supported values are `assistants`,
       #   `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
@@ -114,8 +111,7 @@ module OpenAI
         VISION = T.let(:vision, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::FileObject::Purpose::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
@@ -131,8 +127,7 @@ module OpenAI
         ERROR = T.let(:error, OpenAI::Models::FileObject::Status::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::FileObject::Status::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

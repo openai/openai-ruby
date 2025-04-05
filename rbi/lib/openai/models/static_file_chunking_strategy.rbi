@@ -15,12 +15,10 @@ module OpenAI
       attr_accessor :max_chunk_size_tokens
 
       sig { params(chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer).returns(T.attached_class) }
-      def self.new(chunk_overlap_tokens:, max_chunk_size_tokens:)
-      end
+      def self.new(chunk_overlap_tokens:, max_chunk_size_tokens:); end
 
       sig { override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer}) }
-      def to_hash
-      end
+      def to_hash; end
     end
   end
 end

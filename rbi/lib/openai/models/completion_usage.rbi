@@ -56,9 +56,7 @@ module OpenAI
         total_tokens:,
         completion_tokens_details: nil,
         prompt_tokens_details: nil
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(
@@ -71,8 +69,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
         # When using Predicted Outputs, the number of tokens in the prediction that
@@ -136,8 +133,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
 
       class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -157,12 +153,10 @@ module OpenAI
 
         # Breakdown of tokens used in the prompt.
         sig { params(audio_tokens: Integer, cached_tokens: Integer).returns(T.attached_class) }
-        def self.new(audio_tokens: nil, cached_tokens: nil)
-        end
+        def self.new(audio_tokens: nil, cached_tokens: nil); end
 
         sig { override.returns({audio_tokens: Integer, cached_tokens: Integer}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

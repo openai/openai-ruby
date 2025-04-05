@@ -42,8 +42,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(id:, code_interpreter:, type: :code_interpreter)
-            end
+            def self.new(id:, code_interpreter:, type: :code_interpreter); end
 
             sig do
               override
@@ -55,8 +54,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               # The input to the Code Interpreter tool call.
@@ -69,10 +67,10 @@ module OpenAI
               sig do
                 returns(
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
+                    )
                   ]
                 )
               end
@@ -83,17 +81,16 @@ module OpenAI
                 params(
                   input: String,
                   outputs: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
+                      OpenAI::Internal::AnyHash,
+                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
+                    )
                   ]
                 )
                   .returns(T.attached_class)
               end
-              def self.new(input:, outputs:)
-              end
+              def self.new(input:, outputs:); end
 
               sig do
                 override
@@ -101,16 +98,15 @@ module OpenAI
                     {
                       input: String,
                       outputs: T::Array[
-                      T.any(
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                      )
+                        T.any(
+                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
+                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
+                        )
                       ]
                     }
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
@@ -127,12 +123,10 @@ module OpenAI
 
                   # Text output from the Code Interpreter tool call as part of a run step.
                   sig { params(logs: String, type: Symbol).returns(T.attached_class) }
-                  def self.new(logs:, type: :logs)
-                  end
+                  def self.new(logs:, type: :logs); end
 
                   sig { override.returns({logs: String, type: Symbol}) }
-                  def to_hash
-                  end
+                  def to_hash; end
                 end
 
                 class Image < OpenAI::Internal::Type::BaseModel
@@ -168,8 +162,7 @@ module OpenAI
                     )
                       .returns(T.attached_class)
                   end
-                  def self.new(image:, type: :image)
-                  end
+                  def self.new(image:, type: :image); end
 
                   sig do
                     override
@@ -180,8 +173,7 @@ module OpenAI
                         }
                       )
                   end
-                  def to_hash
-                  end
+                  def to_hash; end
 
                   class Image < OpenAI::Internal::Type::BaseModel
                     # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
@@ -190,12 +182,10 @@ module OpenAI
                     attr_accessor :file_id
 
                     sig { params(file_id: String).returns(T.attached_class) }
-                    def self.new(file_id:)
-                    end
+                    def self.new(file_id:); end
 
                     sig { override.returns({file_id: String}) }
-                    def to_hash
-                    end
+                    def to_hash; end
                   end
                 end
 
@@ -205,8 +195,7 @@ module OpenAI
                       [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image]
                     )
                 end
-                def self.variants
-                end
+                def self.variants; end
               end
             end
           end

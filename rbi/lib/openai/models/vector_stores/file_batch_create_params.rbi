@@ -60,8 +60,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(file_ids:, attributes: nil, chunking_strategy: nil, request_options: {})
-        end
+        def self.new(file_ids:, attributes: nil, chunking_strategy: nil, request_options: {}); end
 
         sig do
           override
@@ -77,15 +76,13 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         module Attribute
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, Float, T::Boolean]) }
-          def self.variants
-          end
+          def self.variants; end
         end
       end
     end

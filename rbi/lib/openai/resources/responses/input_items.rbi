@@ -17,16 +17,16 @@ module OpenAI
           )
             .returns(
               OpenAI::Internal::CursorPage[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputMessageItem,
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-                OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-              )
+                T.any(
+                  OpenAI::Models::Responses::ResponseInputMessageItem,
+                  OpenAI::Models::Responses::ResponseOutputMessage,
+                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                  OpenAI::Models::Responses::ResponseComputerToolCall,
+                  OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
+                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                  OpenAI::Models::Responses::ResponseFunctionToolCallItem,
+                  OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
+                )
               ]
             )
         end
@@ -49,13 +49,10 @@ module OpenAI
           #   - `desc`: Return the input items in descending order.
           order: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

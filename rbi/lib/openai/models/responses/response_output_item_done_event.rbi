@@ -44,8 +44,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(item:, output_index:, type: :"response.output_item.done")
-        end
+        def self.new(item:, output_index:, type: :"response.output_item.done"); end
 
         sig do
           override
@@ -64,8 +63,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

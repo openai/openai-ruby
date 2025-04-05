@@ -29,13 +29,10 @@ module OpenAI
           # The chunk of bytes for this Part.
           data:,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

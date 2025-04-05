@@ -43,8 +43,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done")
-        end
+        def self.new(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done"); end
 
         sig do
           override
@@ -58,8 +57,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The content part that is done.
         module Part
@@ -69,8 +67,7 @@ module OpenAI
             override
               .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
           end
-          def self.variants
-          end
+          def self.variants; end
         end
       end
     end

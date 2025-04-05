@@ -29,12 +29,10 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(json_schema:, type: :json_schema)
-      end
+      def self.new(json_schema:, type: :json_schema); end
 
       sig { override.returns({json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, type: Symbol}) }
-      def to_hash
-      end
+      def to_hash; end
 
       class JSONSchema < OpenAI::Internal::Type::BaseModel
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
@@ -76,8 +74,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(name:, description: nil, schema: nil, strict: nil)
-        end
+        def self.new(name:, description: nil, schema: nil, strict: nil); end
 
         sig do
           override
@@ -90,8 +87,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

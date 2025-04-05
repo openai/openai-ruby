@@ -78,8 +78,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
       #   time.
@@ -87,8 +86,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
-        def self.variants
-        end
+        def self.variants; end
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -105,8 +103,7 @@ module OpenAI
         B64_JSON = T.let(:b64_json, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -123,8 +120,7 @@ module OpenAI
         SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end

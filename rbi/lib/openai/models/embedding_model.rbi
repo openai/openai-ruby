@@ -13,8 +13,7 @@ module OpenAI
       TEXT_EMBEDDING_3_LARGE = T.let(:"text-embedding-3-large", OpenAI::Models::EmbeddingModel::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::Models::EmbeddingModel::TaggedSymbol]) }
-      def self.values
-      end
+      def self.values; end
     end
   end
 end

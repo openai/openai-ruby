@@ -33,7 +33,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.completed")
+        def self.new(
+          code_interpreter_call:,
+          output_index:,
+          type: :"response.code_interpreter_call.completed"
+        )
         end
 
         sig do
@@ -46,8 +50,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

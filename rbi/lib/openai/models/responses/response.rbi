@@ -75,14 +75,14 @@ module OpenAI
         sig do
           returns(
             T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseFunctionToolCall,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseReasoningItem
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseFunctionToolCall,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseReasoningItem
+              )
             ]
           )
         end
@@ -130,12 +130,12 @@ module OpenAI
         sig do
           returns(
             T::Array[
-            T.any(
-              OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Models::Responses::FunctionTool,
-              OpenAI::Models::Responses::ComputerTool,
-              OpenAI::Models::Responses::WebSearchTool
-            )
+              T.any(
+                OpenAI::Models::Responses::FileSearchTool,
+                OpenAI::Models::Responses::FunctionTool,
+                OpenAI::Models::Responses::ComputerTool,
+                OpenAI::Models::Responses::WebSearchTool
+              )
             ]
           )
         end
@@ -227,15 +227,15 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
             output: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseFunctionToolCall,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseReasoningItem
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseOutputMessage,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                OpenAI::Models::Responses::ResponseFunctionToolCall,
+                OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                OpenAI::Models::Responses::ResponseComputerToolCall,
+                OpenAI::Models::Responses::ResponseReasoningItem
+              )
             ],
             parallel_tool_calls: T::Boolean,
             temperature: T.nilable(Float),
@@ -246,13 +246,13 @@ module OpenAI
               OpenAI::Models::Responses::ToolChoiceFunction
             ),
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::FunctionTool,
-              OpenAI::Models::Responses::ComputerTool,
-              OpenAI::Models::Responses::WebSearchTool
-            )
+              T.any(
+                OpenAI::Models::Responses::FileSearchTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Responses::FunctionTool,
+                OpenAI::Models::Responses::ComputerTool,
+                OpenAI::Models::Responses::WebSearchTool
+              )
             ],
             top_p: T.nilable(Float),
             max_output_tokens: T.nilable(Integer),
@@ -290,9 +290,7 @@ module OpenAI
           usage: nil,
           user: nil,
           object: :response
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -306,14 +304,14 @@ module OpenAI
                 model: T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol),
                 object: Symbol,
                 output: T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseOutputMessage,
-                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Models::Responses::ResponseFunctionToolCall,
-                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Models::Responses::ResponseComputerToolCall,
-                  OpenAI::Models::Responses::ResponseReasoningItem
-                )
+                  T.any(
+                    OpenAI::Models::Responses::ResponseOutputMessage,
+                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Models::Responses::ResponseFunctionToolCall,
+                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Models::Responses::ResponseComputerToolCall,
+                    OpenAI::Models::Responses::ResponseReasoningItem
+                  )
                 ],
                 parallel_tool_calls: T::Boolean,
                 temperature: T.nilable(Float),
@@ -323,12 +321,12 @@ module OpenAI
                   OpenAI::Models::Responses::ToolChoiceFunction
                 ),
                 tools: T::Array[
-                T.any(
-                  OpenAI::Models::Responses::FileSearchTool,
-                  OpenAI::Models::Responses::FunctionTool,
-                  OpenAI::Models::Responses::ComputerTool,
-                  OpenAI::Models::Responses::WebSearchTool
-                )
+                  T.any(
+                    OpenAI::Models::Responses::FileSearchTool,
+                    OpenAI::Models::Responses::FunctionTool,
+                    OpenAI::Models::Responses::ComputerTool,
+                    OpenAI::Models::Responses::WebSearchTool
+                  )
                 ],
                 top_p: T.nilable(Float),
                 max_output_tokens: T.nilable(Integer),
@@ -342,8 +340,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
           # The reason why the response is incomplete.
@@ -358,12 +355,10 @@ module OpenAI
             params(reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::OrSymbol)
               .returns(T.attached_class)
           end
-          def self.new(reason: nil)
-          end
+          def self.new(reason: nil); end
 
           sig { override.returns({reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol}) }
-          def to_hash
-          end
+          def to_hash; end
 
           # The reason why the response is incomplete.
           module Reason
@@ -380,8 +375,7 @@ module OpenAI
               T.let(:content_filter, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
         end
 
@@ -397,8 +391,7 @@ module OpenAI
                 [OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # The truncation strategy to use for the model response.
@@ -419,8 +412,7 @@ module OpenAI
           DISABLED = T.let(:disabled, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::Response::Truncation::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

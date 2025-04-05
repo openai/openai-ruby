@@ -9,8 +9,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         sig { override.returns([OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]) }
-        def self.variants
-        end
+        def self.variants; end
       end
     end
   end

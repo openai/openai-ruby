@@ -52,11 +52,11 @@ module OpenAI
         sig do
           returns(
             T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ]
           )
         end
@@ -136,12 +136,12 @@ module OpenAI
             model: String,
             name: T.nilable(String),
             tools: T::Array[
-            T.any(
-              OpenAI::Models::Beta::CodeInterpreterTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Beta::FileSearchTool,
-              OpenAI::Models::Beta::FunctionTool
-            )
+              T.any(
+                OpenAI::Models::Beta::CodeInterpreterTool,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Beta::FileSearchTool,
+                OpenAI::Models::Beta::FunctionTool
+              )
             ],
             response_format: T.nilable(
               T.any(
@@ -173,9 +173,7 @@ module OpenAI
           tool_resources: nil,
           top_p: nil,
           object: :assistant
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -189,11 +187,11 @@ module OpenAI
                 name: T.nilable(String),
                 object: Symbol,
                 tools: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
-                )
+                  T.any(
+                    OpenAI::Models::Beta::CodeInterpreterTool,
+                    OpenAI::Models::Beta::FileSearchTool,
+                    OpenAI::Models::Beta::FunctionTool
+                  )
                 ],
                 response_format: T.nilable(
                   T.any(
@@ -209,8 +207,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
           sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter)) }
@@ -246,8 +243,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil)
-          end
+          def self.new(code_interpreter: nil, file_search: nil); end
 
           sig do
             override
@@ -258,8 +254,7 @@ module OpenAI
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
@@ -272,12 +267,10 @@ module OpenAI
             attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(file_ids: nil)
-            end
+            def self.new(file_ids: nil); end
 
             sig { override.returns({file_ids: T::Array[String]}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -292,12 +285,10 @@ module OpenAI
             attr_writer :vector_store_ids
 
             sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(vector_store_ids: nil)
-            end
+            def self.new(vector_store_ids: nil); end
 
             sig { override.returns({vector_store_ids: T::Array[String]}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
       end

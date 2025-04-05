@@ -28,13 +28,10 @@ module OpenAI
             #   for descending order. Defaults to `asc`.
             order: nil,
             request_options: {}
-          )
-          end
-
+          ); end
           # @api private
           sig { params(client: OpenAI::Client).returns(T.attached_class) }
-          def self.new(client:)
-          end
+          def self.new(client:); end
         end
       end
     end

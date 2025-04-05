@@ -49,8 +49,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call)
-        end
+        def self.new(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call); end
 
         sig do
           override
@@ -65,8 +64,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
@@ -85,8 +83,7 @@ module OpenAI
             T.let(:incomplete, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

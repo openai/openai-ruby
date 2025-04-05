@@ -89,9 +89,7 @@ module OpenAI
         expires_after: nil,
         expires_at: nil,
         object: :vector_store
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(
@@ -110,8 +108,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       class FileCounts < OpenAI::Internal::Type::BaseModel
         # The number of files that were cancelled.
@@ -144,8 +141,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(cancelled:, completed:, failed:, in_progress:, total:)
-        end
+        def self.new(cancelled:, completed:, failed:, in_progress:, total:); end
 
         sig do
           override
@@ -157,8 +153,7 @@ module OpenAI
                        total: Integer
                      })
         end
-        def to_hash
-        end
+        def to_hash; end
       end
 
       # The status of the vector store, which can be either `expired`, `in_progress`, or
@@ -175,8 +170,7 @@ module OpenAI
         COMPLETED = T.let(:completed, OpenAI::Models::VectorStore::Status::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::VectorStore::Status::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
@@ -191,12 +185,10 @@ module OpenAI
 
         # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
-        def self.new(days:, anchor: :last_active_at)
-        end
+        def self.new(days:, anchor: :last_active_at); end
 
         sig { override.returns({anchor: Symbol, days: Integer}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

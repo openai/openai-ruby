@@ -9,10 +9,10 @@ module OpenAI
             returns(
               T.nilable(
                 T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                  OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-                )
+                  T.any(
+                    OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
+                    OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
+                  )
                 ]
               )
             )
@@ -22,11 +22,11 @@ module OpenAI
           sig do
             params(
               annotations: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
+                )
               ]
             )
               .void
@@ -43,35 +43,33 @@ module OpenAI
           sig do
             params(
               annotations: T::Array[
-              T.any(
-                OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-              )
+                T.any(
+                  OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
+                )
               ],
               value: String
             )
               .returns(T.attached_class)
           end
-          def self.new(annotations: nil, value: nil)
-          end
+          def self.new(annotations: nil, value: nil); end
 
           sig do
             override
               .returns(
                 {
                   annotations: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                    OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
+                      OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
+                    )
                   ],
                   value: String
                 }
               )
           end
-          def to_hash
-          end
+          def to_hash; end
         end
       end
     end

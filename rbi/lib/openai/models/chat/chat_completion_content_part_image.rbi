@@ -27,14 +27,12 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(image_url:, type: :image_url)
-        end
+        def self.new(image_url:, type: :image_url); end
 
         sig do
           override.returns({image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, type: Symbol})
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class ImageURL < OpenAI::Internal::Type::BaseModel
           # Either a URL of the image or the base64 encoded image data.
@@ -56,8 +54,7 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(url:, detail: nil)
-          end
+          def self.new(url:, detail: nil); end
 
           sig do
             override
@@ -65,8 +62,7 @@ module OpenAI
                 {url: String, detail: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol}
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
@@ -92,8 +88,7 @@ module OpenAI
               override
                 .returns(T::Array[OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::TaggedSymbol])
             end
-            def self.values
-            end
+            def self.values; end
           end
         end
       end

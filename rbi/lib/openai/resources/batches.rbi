@@ -41,9 +41,7 @@ module OpenAI
         #   a maximum length of 512 characters.
         metadata: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # Retrieves a batch.
       sig do
         params(
@@ -56,9 +54,7 @@ module OpenAI
         # The ID of the batch to retrieve.
         batch_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # List your organization's batches.
       sig do
         params(
@@ -78,9 +74,7 @@ module OpenAI
         #   100, and the default is 20.
         limit: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       # Cancels an in-progress batch. The batch will be in status `cancelling` for up to
       #   10 minutes, before changing to `cancelled`, where it will have partial results
       #   (if any) available in the output file.
@@ -95,13 +89,10 @@ module OpenAI
         # The ID of the batch to cancel.
         batch_id,
         request_options: {}
-      )
-      end
-
+      ); end
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:)
-      end
+      def self.new(client:); end
     end
   end
 end

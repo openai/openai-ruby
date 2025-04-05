@@ -11,11 +11,11 @@ module OpenAI
             T.any(
               String,
               T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Models::Responses::ResponseInputImage,
-                OpenAI::Models::Responses::ResponseInputFile
-              )
+                T.any(
+                  OpenAI::Models::Responses::ResponseInputText,
+                  OpenAI::Models::Responses::ResponseInputImage,
+                  OpenAI::Models::Responses::ResponseInputFile
+                )
               ]
             )
           )
@@ -44,12 +44,12 @@ module OpenAI
             content: T.any(
               String,
               T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::ResponseInputImage,
-                OpenAI::Models::Responses::ResponseInputFile
-              )
+                T.any(
+                  OpenAI::Models::Responses::ResponseInputText,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::Responses::ResponseInputImage,
+                  OpenAI::Models::Responses::ResponseInputFile
+                )
               ]
             ),
             role: OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol,
@@ -57,8 +57,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, role:, type: nil)
-        end
+        def self.new(content:, role:, type: nil); end
 
         sig do
           override
@@ -67,11 +66,11 @@ module OpenAI
                 content: T.any(
                   String,
                   T::Array[
-                  T.any(
-                    OpenAI::Models::Responses::ResponseInputText,
-                    OpenAI::Models::Responses::ResponseInputImage,
-                    OpenAI::Models::Responses::ResponseInputFile
-                  )
+                    T.any(
+                      OpenAI::Models::Responses::ResponseInputText,
+                      OpenAI::Models::Responses::ResponseInputImage,
+                      OpenAI::Models::Responses::ResponseInputFile
+                    )
                   ]
                 ),
                 role: OpenAI::Models::Responses::EasyInputMessage::Role::OrSymbol,
@@ -79,8 +78,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # Text, image, or audio input to the model, used to generate a response. Can also
         #   contain previous assistant responses.
@@ -93,17 +91,16 @@ module OpenAI
                 [
                   String,
                   T::Array[
-                                  T.any(
-                                    OpenAI::Models::Responses::ResponseInputText,
-                                    OpenAI::Models::Responses::ResponseInputImage,
-                                    OpenAI::Models::Responses::ResponseInputFile
-                                  )
+                                    T.any(
+                                      OpenAI::Models::Responses::ResponseInputText,
+                                      OpenAI::Models::Responses::ResponseInputImage,
+                                      OpenAI::Models::Responses::ResponseInputFile
+                                    )
                                   ]
                 ]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -121,8 +118,7 @@ module OpenAI
           DEVELOPER = T.let(:developer, OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Role::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         # The type of the message input. Always `message`.
@@ -136,8 +132,7 @@ module OpenAI
           MESSAGE = T.let(:message, OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::EasyInputMessage::Type::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

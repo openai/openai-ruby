@@ -13,8 +13,7 @@ module OpenAI
         module Converter
           # @api private
           sig { params(params: T.anything).returns([T.anything, OpenAI::Internal::AnyHash]) }
-          def dump_request(params)
-          end
+          def dump_request(params); end
         end
       end
     end

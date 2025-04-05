@@ -168,9 +168,7 @@ module OpenAI
         output_file_id: nil,
         request_counts: nil,
         object: :batch
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(
@@ -198,8 +196,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       # The current status of the batch.
       module Status
@@ -218,8 +215,7 @@ module OpenAI
         CANCELLED = T.let(:cancelled, OpenAI::Models::Batch::Status::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::Batch::Status::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
 
       class Errors < OpenAI::Internal::Type::BaseModel
@@ -240,12 +236,10 @@ module OpenAI
           params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Internal::AnyHash)], object: String)
             .returns(T.attached_class)
         end
-        def self.new(data: nil, object: nil)
-        end
+        def self.new(data: nil, object: nil); end
 
         sig { override.returns({data: T::Array[OpenAI::Models::BatchError], object: String}) }
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

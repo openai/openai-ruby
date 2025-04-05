@@ -33,12 +33,10 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(file:, type: :file)
-          end
+          def self.new(file:, type: :file); end
 
           sig { override.returns({file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File, type: Symbol}) }
-          def to_hash
-          end
+          def to_hash; end
 
           class File < OpenAI::Internal::Type::BaseModel
             # The base64 encoded file data, used when passing the file to the model as a
@@ -64,12 +62,10 @@ module OpenAI
             attr_writer :filename
 
             sig { params(file_data: String, file_id: String, filename: String).returns(T.attached_class) }
-            def self.new(file_data: nil, file_id: nil, filename: nil)
-            end
+            def self.new(file_data: nil, file_id: nil, filename: nil); end
 
             sig { override.returns({file_data: String, file_id: String, filename: String}) }
-            def to_hash
-            end
+            def to_hash; end
           end
         end
 
@@ -79,8 +75,7 @@ module OpenAI
               [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
             )
         end
-        def self.variants
-        end
+        def self.variants; end
       end
     end
 

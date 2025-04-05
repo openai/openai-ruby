@@ -42,8 +42,7 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(categories:, category_applied_input_types:, category_scores:, flagged:)
-      end
+      def self.new(categories:, category_applied_input_types:, category_scores:, flagged:); end
 
       sig do
         override
@@ -56,8 +55,7 @@ module OpenAI
             }
           )
       end
-      def to_hash
-      end
+      def to_hash; end
 
       class Categories < OpenAI::Internal::Type::BaseModel
         # Content that expresses, incites, or promotes harassing language towards any
@@ -162,9 +160,7 @@ module OpenAI
           sexual_minors:,
           violence:,
           violence_graphic:
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -185,8 +181,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
 
       class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
@@ -283,9 +278,7 @@ module OpenAI
           sexual_minors:,
           violence:,
           violence_graphic:
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -306,8 +299,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         module Harassment
           extend OpenAI::Internal::Type::Enum
@@ -322,8 +314,7 @@ module OpenAI
           sig do
             override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
 
         module HarassmentThreatening
@@ -349,8 +340,7 @@ module OpenAI
                 T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol]
               )
           end
-          def self.values
-          end
+          def self.values; end
         end
 
         module Hate
@@ -364,8 +354,7 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         module HateThreatening
@@ -388,8 +377,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
 
         module Illicit
@@ -403,8 +391,7 @@ module OpenAI
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         module IllicitViolent
@@ -421,8 +408,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
 
         module SelfHarm
@@ -437,8 +423,7 @@ module OpenAI
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         module SelfHarmInstruction
@@ -466,8 +451,7 @@ module OpenAI
                 T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol]
               )
           end
-          def self.values
-          end
+          def self.values; end
         end
 
         module SelfHarmIntent
@@ -486,8 +470,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
 
         module Sexual
@@ -502,8 +485,7 @@ module OpenAI
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         module SexualMinor
@@ -520,8 +502,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
 
         module Violence
@@ -536,8 +517,7 @@ module OpenAI
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         module ViolenceGraphic
@@ -562,8 +542,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
       end
 
@@ -653,9 +632,7 @@ module OpenAI
           sexual_minors:,
           violence:,
           violence_graphic:
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -676,8 +653,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
       end
     end
   end

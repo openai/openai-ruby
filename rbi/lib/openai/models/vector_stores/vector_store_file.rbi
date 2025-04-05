@@ -106,9 +106,7 @@ module OpenAI
           attributes: nil,
           chunking_strategy: nil,
           object: :"vector_store.file"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -125,8 +123,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         class LastError < OpenAI::Internal::Type::BaseModel
           # One of `server_error` or `rate_limit_exceeded`.
@@ -143,8 +140,7 @@ module OpenAI
             params(code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::OrSymbol, message: String)
               .returns(T.attached_class)
           end
-          def self.new(code:, message:)
-          end
+          def self.new(code:, message:); end
 
           sig do
             override
@@ -152,8 +148,7 @@ module OpenAI
                 {code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol, message: String}
               )
           end
-          def to_hash
-          end
+          def to_hash; end
 
           # One of `server_error` or `rate_limit_exceeded`.
           module Code
@@ -172,8 +167,7 @@ module OpenAI
               T.let(:invalid_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol]) }
-            def self.values
-            end
+            def self.values; end
           end
         end
 
@@ -193,16 +187,14 @@ module OpenAI
           FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
 
         module Attribute
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, Float, T::Boolean]) }
-          def self.variants
-          end
+          def self.variants; end
         end
       end
     end

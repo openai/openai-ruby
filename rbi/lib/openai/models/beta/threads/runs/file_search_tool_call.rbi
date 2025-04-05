@@ -35,8 +35,7 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(id:, file_search:, type: :file_search)
-            end
+            def self.new(id:, file_search:, type: :file_search); end
 
             sig do
               override
@@ -44,8 +43,7 @@ module OpenAI
                   {id: String, file_search: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch, type: Symbol}
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class FileSearch < OpenAI::Internal::Type::BaseModel
               # The ranking options for the file search.
@@ -70,10 +68,10 @@ module OpenAI
               sig do
                 params(
                   results: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
-                    OpenAI::Internal::AnyHash
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
+                      OpenAI::Internal::AnyHash
+                    )
                   ]
                 )
                   .void
@@ -88,16 +86,15 @@ module OpenAI
                     OpenAI::Internal::AnyHash
                   ),
                   results: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
-                    OpenAI::Internal::AnyHash
-                  )
+                    T.any(
+                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
+                      OpenAI::Internal::AnyHash
+                    )
                   ]
                 )
                   .returns(T.attached_class)
               end
-              def self.new(ranking_options: nil, results: nil)
-              end
+              def self.new(ranking_options: nil, results: nil); end
 
               sig do
                 override
@@ -108,8 +105,7 @@ module OpenAI
                     }
                   )
               end
-              def to_hash
-              end
+              def to_hash; end
 
               class RankingOptions < OpenAI::Internal::Type::BaseModel
                 # The ranker to use for the file search. If not specified will use the `auto`
@@ -134,8 +130,7 @@ module OpenAI
                   )
                     .returns(T.attached_class)
                 end
-                def self.new(ranker:, score_threshold:)
-                end
+                def self.new(ranker:, score_threshold:); end
 
                 sig do
                   override
@@ -146,8 +141,7 @@ module OpenAI
                       }
                     )
                 end
-                def to_hash
-                end
+                def to_hash; end
 
                 # The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
@@ -182,8 +176,7 @@ module OpenAI
                         T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol]
                       )
                   end
-                  def self.values
-                  end
+                  def self.values; end
                 end
               end
 
@@ -213,10 +206,10 @@ module OpenAI
                 sig do
                   params(
                     content: T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                      OpenAI::Internal::AnyHash
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
+                        OpenAI::Internal::AnyHash
+                      )
                     ]
                   )
                     .void
@@ -230,16 +223,15 @@ module OpenAI
                     file_name: String,
                     score: Float,
                     content: T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                      OpenAI::Internal::AnyHash
-                    )
+                      T.any(
+                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
+                        OpenAI::Internal::AnyHash
+                      )
                     ]
                   )
                     .returns(T.attached_class)
                 end
-                def self.new(file_id:, file_name:, score:, content: nil)
-                end
+                def self.new(file_id:, file_name:, score:, content: nil); end
 
                 sig do
                   override
@@ -252,8 +244,7 @@ module OpenAI
                       }
                     )
                 end
-                def to_hash
-                end
+                def to_hash; end
 
                 class Content < OpenAI::Internal::Type::BaseModel
                   # The text content of the file.
@@ -288,8 +279,7 @@ module OpenAI
                     )
                       .returns(T.attached_class)
                   end
-                  def self.new(text: nil, type: nil)
-                  end
+                  def self.new(text: nil, type: nil); end
 
                   sig do
                     override
@@ -300,8 +290,7 @@ module OpenAI
                         }
                       )
                   end
-                  def to_hash
-                  end
+                  def to_hash; end
 
                   # The type of the content.
                   module Type
@@ -330,8 +319,7 @@ module OpenAI
                           T::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol]
                         )
                     end
-                    def self.values
-                    end
+                    def self.values; end
                   end
                 end
               end

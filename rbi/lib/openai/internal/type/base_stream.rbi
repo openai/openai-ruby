@@ -11,21 +11,17 @@ module OpenAI
         Elem = type_member(:out)
 
         sig { void }
-        def close
-        end
+        def close; end
 
         # @api private
         sig { overridable.returns(T::Enumerable[Elem]) }
-        private def iterator
-        end
+        private def iterator; end
 
         sig { params(blk: T.proc.params(arg0: Elem).void).void }
-        def each(&blk)
-        end
+        def each(&blk); end
 
         sig { returns(T::Enumerator[Elem]) }
-        def to_enum
-        end
+        def to_enum; end
 
         # @api private
         sig do
@@ -38,8 +34,7 @@ module OpenAI
           )
             .void
         end
-        def initialize(model:, url:, status:, response:, stream:)
-        end
+        def initialize(model:, url:, status:, response:, stream:); end
       end
     end
   end

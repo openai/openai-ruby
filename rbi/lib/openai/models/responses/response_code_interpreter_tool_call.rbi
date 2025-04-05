@@ -16,10 +16,10 @@ module OpenAI
         sig do
           returns(
             T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-              OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
+              )
             ]
           )
         end
@@ -39,19 +39,18 @@ module OpenAI
             id: String,
             code: String,
             results: T::Array[
-            T.any(
-              OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
-            )
+              T.any(
+                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+                OpenAI::Internal::AnyHash,
+                OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
+              )
             ],
             status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::OrSymbol,
             type: Symbol
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, code:, results:, status:, type: :code_interpreter_call)
-        end
+        def self.new(id:, code:, results:, status:, type: :code_interpreter_call); end
 
         sig do
           override
@@ -60,18 +59,17 @@ module OpenAI
                 id: String,
                 code: String,
                 results: T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
-                )
+                  T.any(
+                    OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+                    OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
+                  )
                 ],
                 status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,
                 type: Symbol
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The output of a code interpreter tool call that is text.
         module Result
@@ -88,12 +86,10 @@ module OpenAI
 
             # The output of a code interpreter tool call that is text.
             sig { params(logs: String, type: Symbol).returns(T.attached_class) }
-            def self.new(logs:, type: :logs)
-            end
+            def self.new(logs:, type: :logs); end
 
             sig { override.returns({logs: String, type: Symbol}) }
-            def to_hash
-            end
+            def to_hash; end
           end
 
           class Files < OpenAI::Internal::Type::BaseModel
@@ -108,17 +104,16 @@ module OpenAI
             sig do
               params(
                 files: T::Array[
-                T.any(
-                  OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File,
-                  OpenAI::Internal::AnyHash
-                )
+                  T.any(
+                    OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File,
+                    OpenAI::Internal::AnyHash
+                  )
                 ],
                 type: Symbol
               )
                 .returns(T.attached_class)
             end
-            def self.new(files:, type: :files)
-            end
+            def self.new(files:, type: :files); end
 
             sig do
               override
@@ -129,8 +124,7 @@ module OpenAI
                   }
                 )
             end
-            def to_hash
-            end
+            def to_hash; end
 
             class File < OpenAI::Internal::Type::BaseModel
               # The ID of the file.
@@ -142,12 +136,10 @@ module OpenAI
               attr_accessor :mime_type
 
               sig { params(file_id: String, mime_type: String).returns(T.attached_class) }
-              def self.new(file_id:, mime_type:)
-              end
+              def self.new(file_id:, mime_type:); end
 
               sig { override.returns({file_id: String, mime_type: String}) }
-              def to_hash
-              end
+              def to_hash; end
             end
           end
 
@@ -157,8 +149,7 @@ module OpenAI
                 [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]
               )
           end
-          def self.variants
-          end
+          def self.variants; end
         end
 
         # The status of the code interpreter tool call.
@@ -181,8 +172,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

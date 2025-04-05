@@ -112,9 +112,7 @@ module OpenAI
           temperature: nil,
           timestamp_granularities: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -131,8 +129,7 @@ module OpenAI
               }
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
@@ -141,8 +138,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
-          def self.variants
-          end
+          def self.variants; end
         end
 
         module TimestampGranularity
@@ -167,8 +163,7 @@ module OpenAI
             override
               .returns(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol])
           end
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

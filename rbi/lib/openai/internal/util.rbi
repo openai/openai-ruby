@@ -6,58 +6,48 @@ module OpenAI
     module Util
       # @api private
       sig { returns(Float) }
-      def self.monotonic_secs
-      end
+      def self.monotonic_secs; end
 
       class << self
         # @api private
         sig { returns(String) }
-        def arch
-        end
+        def arch; end
 
         # @api private
         sig { returns(String) }
-        def os
-        end
+        def os; end
       end
 
       class << self
         # @api private
         sig { params(input: T.anything).returns(T::Boolean) }
-        def primitive?(input)
-        end
+        def primitive?(input); end
 
         # @api private
         sig { params(input: T.any(String, T::Boolean)).returns(T.any(T::Boolean, T.anything)) }
-        def coerce_boolean(input)
-        end
+        def coerce_boolean(input); end
 
         # @api private
         sig { params(input: T.any(String, T::Boolean)).returns(T.nilable(T::Boolean)) }
-        def coerce_boolean!(input)
-        end
+        def coerce_boolean!(input); end
 
         # @api private
         sig { params(input: T.any(String, Integer)).returns(T.any(Integer, T.anything)) }
-        def coerce_integer(input)
-        end
+        def coerce_integer(input); end
 
         # @api private
         sig { params(input: T.any(String, Integer, Float)).returns(T.any(Float, T.anything)) }
-        def coerce_float(input)
-        end
+        def coerce_float(input); end
 
         # @api private
         sig { params(input: T.anything).returns(T.any(T::Hash[T.anything, T.anything], T.anything)) }
-        def coerce_hash(input)
-        end
+        def coerce_hash(input); end
       end
 
       class << self
         # @api private
         sig { params(lhs: T.anything, rhs: T.anything, concat: T::Boolean).returns(T.anything) }
-        private def deep_merge_lr(lhs, rhs, concat: false)
-        end
+        private def deep_merge_lr(lhs, rhs, concat: false); end
 
         # @api private
         #
@@ -73,9 +63,7 @@ module OpenAI
           sentinel: nil,
           # whether to merge sequences by concatenation.
           concat: false
-        )
-        end
-
+        ); end
         # @api private
         sig do
           params(
@@ -86,35 +74,30 @@ module OpenAI
           )
             .returns(T.nilable(T.anything))
         end
-        def dig(data, pick, sentinel = nil, &blk)
-        end
+        def dig(data, pick, sentinel = nil, &blk); end
       end
 
       class << self
         # @api private
         sig { params(uri: URI::Generic).returns(String) }
-        def uri_origin(uri)
-        end
+        def uri_origin(uri); end
 
         # @api private
         sig { params(path: T.any(String, T::Array[String])).returns(String) }
-        def interpolate_path(path)
-        end
+        def interpolate_path(path); end
       end
 
       class << self
         # @api private
         sig { params(query: T.nilable(String)).returns(T::Hash[String, T::Array[String]]) }
-        def decode_query(query)
-        end
+        def decode_query(query); end
 
         # @api private
         sig do
           params(query: T.nilable(T::Hash[String, T.nilable(T.any(T::Array[String], String))]))
             .returns(T.nilable(String))
         end
-        def encode_query(query)
-        end
+        def encode_query(query); end
       end
 
       ParsedUriShape =
@@ -131,21 +114,18 @@ module OpenAI
       class << self
         # @api private
         sig { params(url: T.any(URI::Generic, String)).returns(OpenAI::Internal::Util::ParsedUriShape) }
-        def parse_uri(url)
-        end
+        def parse_uri(url); end
 
         # @api private
         sig { params(parsed: OpenAI::Internal::Util::ParsedUriShape).returns(URI::Generic) }
-        def unparse_uri(parsed)
-        end
+        def unparse_uri(parsed); end
 
         # @api private
         sig do
           params(lhs: OpenAI::Internal::Util::ParsedUriShape, rhs: OpenAI::Internal::Util::ParsedUriShape)
             .returns(URI::Generic)
         end
-        def join_parsed_uri(lhs, rhs)
-        end
+        def join_parsed_uri(lhs, rhs); end
       end
 
       class << self
@@ -157,8 +137,7 @@ module OpenAI
           )
             .returns(T::Hash[String, String])
         end
-        def normalized_headers(*headers)
-        end
+        def normalized_headers(*headers); end
       end
 
       # @api private
@@ -167,13 +146,11 @@ module OpenAI
       class ReadIOAdapter
         # @api private
         sig { params(max_len: T.nilable(Integer)).returns(String) }
-        private def read_enum(max_len)
-        end
+        private def read_enum(max_len); end
 
         # @api private
         sig { params(max_len: T.nilable(Integer), out_string: T.nilable(String)).returns(T.nilable(String)) }
-        def read(max_len = nil, out_string = nil)
-        end
+        def read(max_len = nil, out_string = nil); end
 
         # @api private
         sig do
@@ -183,14 +160,12 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(stream, &blk)
-        end
+        def self.new(stream, &blk); end
       end
 
       class << self
         sig { params(blk: T.proc.params(y: Enumerator::Yielder).void).returns(T::Enumerable[String]) }
-        def writable_enum(&blk)
-        end
+        def writable_enum(&blk); end
       end
 
       class << self
@@ -198,18 +173,15 @@ module OpenAI
         sig do
           params(y: Enumerator::Yielder, boundary: String, key: T.any(Symbol, String), val: T.anything).void
         end
-        private def write_multipart_chunk(y, boundary:, key:, val:)
-        end
+        private def write_multipart_chunk(y, boundary:, key:, val:); end
 
         # @api private
         sig { params(body: T.anything).returns([String, T::Enumerable[String]]) }
-        private def encode_multipart_streaming(body)
-        end
+        private def encode_multipart_streaming(body); end
 
         # @api private
         sig { params(headers: T::Hash[String, String], body: T.anything).returns(T.anything) }
-        def encode_content(headers, body)
-        end
+        def encode_content(headers, body); end
 
         # @api private
         sig do
@@ -220,8 +192,7 @@ module OpenAI
           )
             .returns(T.anything)
         end
-        def decode_content(headers, stream:, suppress_error: false)
-        end
+        def decode_content(headers, stream:, suppress_error: false); end
       end
 
       class << self
@@ -232,13 +203,11 @@ module OpenAI
           params(enum: T::Enumerable[T.anything], external: T::Boolean, close: T.proc.void)
             .returns(T::Enumerable[T.anything])
         end
-        def fused_enum(enum, external: false, &close)
-        end
+        def fused_enum(enum, external: false, &close); end
 
         # @api private
         sig { params(enum: T.nilable(T::Enumerable[T.anything])).void }
-        def close_fused!(enum)
-        end
+        def close_fused!(enum); end
 
         # @api private
         sig do
@@ -248,8 +217,7 @@ module OpenAI
           )
             .returns(T::Enumerable[T.anything])
         end
-        def chain_fused(enum, &blk)
-        end
+        def chain_fused(enum, &blk); end
       end
 
       ServerSentEvent =
@@ -265,8 +233,7 @@ module OpenAI
       class << self
         # @api private
         sig { params(enum: T::Enumerable[String]).returns(T::Enumerable[String]) }
-        def decode_lines(enum)
-        end
+        def decode_lines(enum); end
 
         # @api private
         #
@@ -274,8 +241,7 @@ module OpenAI
         sig do
           params(lines: T::Enumerable[String]).returns(T::Enumerable[OpenAI::Internal::Util::ServerSentEvent])
         end
-        def decode_sse(lines)
-        end
+        def decode_sse(lines); end
       end
     end
   end

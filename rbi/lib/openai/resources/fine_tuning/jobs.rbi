@@ -91,9 +91,7 @@ module OpenAI
           #   for more details.
           validation_file: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Get info about a fine-tuning job.
         #
         #   [Learn more about fine-tuning](https://platform.openai.com/docs/guides/fine-tuning)
@@ -108,9 +106,7 @@ module OpenAI
           # The ID of the fine-tuning job.
           fine_tuning_job_id,
           request_options: {}
-        )
-        end
-
+        ); end
         # List your organization's fine-tuning jobs
         sig do
           params(
@@ -130,9 +126,7 @@ module OpenAI
           #   Alternatively, set `metadata=null` to indicate no metadata.
           metadata: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # Immediately cancel a fine-tune job.
         sig do
           params(
@@ -145,9 +139,7 @@ module OpenAI
           # The ID of the fine-tuning job to cancel.
           fine_tuning_job_id,
           request_options: {}
-        )
-        end
-
+        ); end
         # Get status updates for a fine-tuning job.
         sig do
           params(
@@ -166,13 +158,10 @@ module OpenAI
           # Number of events to retrieve.
           limit: nil,
           request_options: {}
-        )
-        end
-
+        ); end
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:)
-        end
+        def self.new(client:); end
       end
     end
   end

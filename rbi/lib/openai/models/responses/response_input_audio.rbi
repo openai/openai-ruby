@@ -25,8 +25,7 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data:, format_:, type: :input_audio)
-        end
+        def self.new(data:, format_:, type: :input_audio); end
 
         sig do
           override
@@ -34,8 +33,7 @@ module OpenAI
               {data: String, format_: OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol, type: Symbol}
             )
         end
-        def to_hash
-        end
+        def to_hash; end
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         module Format
@@ -49,8 +47,7 @@ module OpenAI
           WAV = T.let(:wav, OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol]) }
-          def self.values
-          end
+          def self.values; end
         end
       end
     end

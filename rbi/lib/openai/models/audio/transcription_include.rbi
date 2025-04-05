@@ -13,8 +13,7 @@ module OpenAI
         LOGPROBS = T.let(:logprobs, OpenAI::Models::Audio::TranscriptionInclude::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::Audio::TranscriptionInclude::TaggedSymbol]) }
-        def self.values
-        end
+        def self.values; end
       end
     end
   end
