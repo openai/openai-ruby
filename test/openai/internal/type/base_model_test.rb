@@ -154,11 +154,11 @@ class OpenAI::Test::EnumModelTest < Minitest::Test
 
   def test_coerce
     cases = {
-      # rubocop:disable Style/BooleanSymbol
+      # rubocop:disable Lint/BooleanSymbol
       [E1, true] => [{yes: 1}, true],
       [E1, false] => [{no: 1}, false],
       [E1, :true] => [{no: 1}, :true],
-      # rubocop:enable Style/BooleanSymbol
+      # rubocop:enable Lint/BooleanSymbol
 
       [E2, 1] => [{yes: 1}, 1],
       [E2, 1.0] => [{yes: 1}, 1],
