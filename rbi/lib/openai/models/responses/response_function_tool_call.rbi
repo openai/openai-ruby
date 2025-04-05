@@ -28,7 +28,7 @@ module OpenAI
         attr_writer :id
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)) }
         attr_reader :status
 
@@ -36,8 +36,8 @@ module OpenAI
         attr_writer :status
 
         # A tool call to run a function. See the
-        #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
-        #   for more information.
+        # [function calling guide](https://platform.openai.com/docs/guides/function-calling)
+        # for more information.
         sig do
           params(
             arguments: String,
@@ -67,7 +67,7 @@ module OpenAI
         def to_hash; end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         module Status
           extend OpenAI::Internal::Type::Enum
 

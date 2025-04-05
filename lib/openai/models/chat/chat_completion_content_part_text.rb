@@ -18,7 +18,7 @@ module OpenAI
 
         # @!parse
         #   # Learn about
-        #   #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
+        #   # [text inputs](https://platform.openai.com/docs/guides/text-generation).
         #   #
         #   # @param text [String]
         #   # @param type [Symbol, :text]

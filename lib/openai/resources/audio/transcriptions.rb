@@ -5,9 +5,9 @@ module OpenAI
     class Audio
       class Transcriptions
         # See {OpenAI::Resources::Audio::Transcriptions#create_streaming} for streaming
-        #   counterpart.
+        # counterpart.
         #
-        #   Transcribes audio into the input language.
+        # Transcribes audio into the input language.
         #
         # @overload create(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
@@ -41,9 +41,9 @@ module OpenAI
         end
 
         # See {OpenAI::Resources::Audio::Transcriptions#create} for non-streaming
-        #   counterpart.
+        # counterpart.
         #
-        #   Transcribes audio into the input language.
+        # Transcribes audio into the input language.
         #
         # @overload create_streaming(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #

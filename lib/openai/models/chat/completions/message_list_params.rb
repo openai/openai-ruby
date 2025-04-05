@@ -32,7 +32,7 @@ module OpenAI
 
           # @!attribute [r] order
           #   Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
-          #     for descending order. Defaults to `asc`.
+          #   for descending order. Defaults to `asc`.
           #
           #   @return [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Models::Chat::Completions::MessageListParams::Order }
@@ -52,7 +52,7 @@ module OpenAI
           # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
-          #   for descending order. Defaults to `asc`.
+          # for descending order. Defaults to `asc`.
           module Order
             extend OpenAI::Internal::Type::Enum
 

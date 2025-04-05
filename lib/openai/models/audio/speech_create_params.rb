@@ -17,23 +17,23 @@ module OpenAI
 
         # @!attribute model
         #   One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        #     `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
+        #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         #
         #   @return [String, Symbol, OpenAI::Models::Audio::SpeechModel]
         required :model, union: -> { OpenAI::Models::Audio::SpeechCreateParams::Model }
 
         # @!attribute voice
         #   The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
-        #     `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
-        #     `verse`. Previews of the voices are available in the
-        #     [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+        #   `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
+        #   `verse`. Previews of the voices are available in the
+        #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         #
         #   @return [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         required :voice, union: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice }
 
         # @!attribute [r] instructions
         #   Control the voice of your generated audio with additional instructions. Does not
-        #     work with `tts-1` or `tts-1-hd`.
+        #   work with `tts-1` or `tts-1-hd`.
         #
         #   @return [String, nil]
         optional :instructions, String
@@ -44,7 +44,7 @@ module OpenAI
 
         # @!attribute [r] response_format
         #   The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
-        #     `wav`, and `pcm`.
+        #   `wav`, and `pcm`.
         #
         #   @return [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat }
@@ -55,7 +55,7 @@ module OpenAI
 
         # @!attribute [r] speed
         #   The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
-        #     the default.
+        #   the default.
         #
         #   @return [Float, nil]
         optional :speed, Float
@@ -78,7 +78,7 @@ module OpenAI
         # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
-        #   `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
+        # `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
         module Model
           extend OpenAI::Internal::Type::Union
 
@@ -93,9 +93,9 @@ module OpenAI
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
-        #   `verse`. Previews of the voices are available in the
-        #   [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+        # `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
+        # `verse`. Previews of the voices are available in the
+        # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
         module Voice
           extend OpenAI::Internal::Type::Union
 
@@ -145,7 +145,7 @@ module OpenAI
         end
 
         # The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
-        #   `wav`, and `pcm`.
+        # `wav`, and `pcm`.
         module ResponseFormat
           extend OpenAI::Internal::Type::Enum
 

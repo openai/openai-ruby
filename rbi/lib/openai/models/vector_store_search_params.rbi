@@ -23,7 +23,7 @@ module OpenAI
       attr_writer :filters
 
       # The maximum number of results to return. This number should be between 1 and 50
-      #   inclusive.
+      # inclusive.
       sig { returns(T.nilable(Integer)) }
       attr_reader :max_num_results
 

@@ -31,7 +31,7 @@ module OpenAI
 
         # @!attribute [r] include
         #   Additional fields to include in the response. See the `include` parameter for
-        #     Response creation above for more information.
+        #   Response creation above for more information.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         optional :include,
@@ -43,7 +43,7 @@ module OpenAI
 
         # @!attribute [r] limit
         #   A limit on the number of objects to be returned. Limit can range between 1 and
-        #     100, and the default is 20.
+        #   100, and the default is 20.
         #
         #   @return [Integer, nil]
         optional :limit, Integer
@@ -55,8 +55,8 @@ module OpenAI
         # @!attribute [r] order
         #   The order to return the input items in. Default is `asc`.
         #
-        #     - `asc`: Return the input items in ascending order.
-        #     - `desc`: Return the input items in descending order.
+        #   - `asc`: Return the input items in ascending order.
+        #   - `desc`: Return the input items in descending order.
         #
         #   @return [Symbol, OpenAI::Models::Responses::InputItemListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Models::Responses::InputItemListParams::Order }
@@ -79,8 +79,8 @@ module OpenAI
 
         # The order to return the input items in. Default is `asc`.
         #
-        #   - `asc`: Return the input items in ascending order.
-        #   - `desc`: Return the input items in descending order.
+        # - `asc`: Return the input items in ascending order.
+        # - `desc`: Return the input items in descending order.
         module Order
           extend OpenAI::Internal::Type::Enum
 

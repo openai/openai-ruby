@@ -19,7 +19,7 @@ module OpenAI
 
         # @!attribute last_error
         #   The last error associated with this vector store file. Will be `null` if there
-        #     are no errors.
+        #   are no errors.
         #
         #   @return [OpenAI::Models::VectorStores::VectorStoreFile::LastError, nil]
         required :last_error, -> { OpenAI::Models::VectorStores::VectorStoreFile::LastError }, nil?: true
@@ -32,34 +32,34 @@ module OpenAI
 
         # @!attribute status
         #   The status of the vector store file, which can be either `in_progress`,
-        #     `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
-        #     vector store file is ready for use.
+        #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        #   vector store file is ready for use.
         #
         #   @return [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status]
         required :status, enum: -> { OpenAI::Models::VectorStores::VectorStoreFile::Status }
 
         # @!attribute usage_bytes
         #   The total vector store usage in bytes. Note that this may be different from the
-        #     original file size.
+        #   original file size.
         #
         #   @return [Integer]
         required :usage_bytes, Integer
 
         # @!attribute vector_store_id
         #   The ID of the
-        #     [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
-        #     that the [File](https://platform.openai.com/docs/api-reference/files) is
-        #     attached to.
+        #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+        #   that the [File](https://platform.openai.com/docs/api-reference/files) is
+        #   attached to.
         #
         #   @return [String]
         required :vector_store_id, String
 
         # @!attribute attributes
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #     for storing additional information about the object in a structured format, and
-        #     querying for objects via API or the dashboard. Keys are strings with a maximum
-        #     length of 64 characters. Values are strings with a maximum length of 512
-        #     characters, booleans, or numbers.
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard. Keys are strings with a maximum
+        #   length of 64 characters. Values are strings with a maximum length of 512
+        #   characters, booleans, or numbers.
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         optional :attributes,
@@ -122,7 +122,7 @@ module OpenAI
 
           # @!parse
           #   # The last error associated with this vector store file. Will be `null` if there
-          #   #   are no errors.
+          #   # are no errors.
           #   #
           #   # @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code]
           #   # @param message [String]
@@ -150,8 +150,8 @@ module OpenAI
         end
 
         # The status of the vector store file, which can be either `in_progress`,
-        #   `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
-        #   vector store file is ready for use.
+        # `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
+        # vector store file is ready for use.
         #
         # @see OpenAI::Models::VectorStores::VectorStoreFile#status
         module Status

@@ -35,7 +35,7 @@ module OpenAI
         attr_accessor :pending_safety_checks
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Status::OrSymbol) }
         attr_accessor :status
 
@@ -44,8 +44,8 @@ module OpenAI
         attr_accessor :type
 
         # A tool call to a computer use tool. See the
-        #   [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
-        #   for more information.
+        # [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        # for more information.
         sig do
           params(
             id: String,
@@ -101,12 +101,12 @@ module OpenAI
 
           class Click < OpenAI::Internal::Type::BaseModel
             # Indicates which mouse button was pressed during the click. One of `left`,
-            #   `right`, `wheel`, `back`, or `forward`.
+            # `right`, `wheel`, `back`, or `forward`.
             sig { returns(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button::OrSymbol) }
             attr_accessor :button
 
             # Specifies the event type. For a click action, this property is always set to
-            #   `click`.
+            # `click`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -144,7 +144,7 @@ module OpenAI
             def to_hash; end
 
             # Indicates which mouse button was pressed during the click. One of `left`,
-            #   `right`, `wheel`, `back`, or `forward`.
+            # `right`, `wheel`, `back`, or `forward`.
             module Button
               extend OpenAI::Internal::Type::Enum
 
@@ -182,7 +182,7 @@ module OpenAI
 
           class DoubleClick < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a double click action, this property is always set
-            #   to `double_click`.
+            # to `double_click`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -204,19 +204,19 @@ module OpenAI
 
           class Drag < OpenAI::Internal::Type::BaseModel
             # An array of coordinates representing the path of the drag action. Coordinates
-            #   will appear as an array of objects, eg
+            # will appear as an array of objects, eg
             #
-            #   ```
-            #   [
-            #     { x: 100, y: 200 },
-            #     { x: 200, y: 300 }
-            #   ]
-            #   ```
+            # ```
+            # [
+            #   { x: 100, y: 200 },
+            #   { x: 200, y: 300 }
+            # ]
+            # ```
             sig { returns(T::Array[OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path]) }
             attr_accessor :path
 
             # Specifies the event type. For a drag action, this property is always set to
-            #   `drag`.
+            # `drag`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -258,12 +258,12 @@ module OpenAI
 
           class Keypress < OpenAI::Internal::Type::BaseModel
             # The combination of keys the model is requesting to be pressed. This is an array
-            #   of strings, each representing a key.
+            # of strings, each representing a key.
             sig { returns(T::Array[String]) }
             attr_accessor :keys
 
             # Specifies the event type. For a keypress action, this property is always set to
-            #   `keypress`.
+            # `keypress`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -277,7 +277,7 @@ module OpenAI
 
           class Move < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a move action, this property is always set to
-            #   `move`.
+            # `move`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -299,7 +299,7 @@ module OpenAI
 
           class Screenshot < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a screenshot action, this property is always set
-            #   to `screenshot`.
+            # to `screenshot`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -321,7 +321,7 @@ module OpenAI
             attr_accessor :scroll_y
 
             # Specifies the event type. For a scroll action, this property is always set to
-            #   `scroll`.
+            # `scroll`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -352,7 +352,7 @@ module OpenAI
             attr_accessor :text
 
             # Specifies the event type. For a type action, this property is always set to
-            #   `type`.
+            # `type`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -366,7 +366,7 @@ module OpenAI
 
           class Wait < OpenAI::Internal::Type::BaseModel
             # Specifies the event type. For a wait action, this property is always set to
-            #   `wait`.
+            # `wait`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -409,7 +409,7 @@ module OpenAI
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         module Status
           extend OpenAI::Internal::Type::Enum
 

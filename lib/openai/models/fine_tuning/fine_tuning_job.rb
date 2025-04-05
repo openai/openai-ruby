@@ -19,28 +19,28 @@ module OpenAI
 
         # @!attribute error
         #   For fine-tuning jobs that have `failed`, this will contain more information on
-        #     the cause of the failure.
+        #   the cause of the failure.
         #
         #   @return [OpenAI::Models::FineTuning::FineTuningJob::Error, nil]
         required :error, -> { OpenAI::Models::FineTuning::FineTuningJob::Error }, nil?: true
 
         # @!attribute fine_tuned_model
         #   The name of the fine-tuned model that is being created. The value will be null
-        #     if the fine-tuning job is still running.
+        #   if the fine-tuning job is still running.
         #
         #   @return [String, nil]
         required :fine_tuned_model, String, nil?: true
 
         # @!attribute finished_at
         #   The Unix timestamp (in seconds) for when the fine-tuning job was finished. The
-        #     value will be null if the fine-tuning job is still running.
+        #   value will be null if the fine-tuning job is still running.
         #
         #   @return [Integer, nil]
         required :finished_at, Integer, nil?: true
 
         # @!attribute hyperparameters
         #   The hyperparameters used for the fine-tuning job. This value will only be
-        #     returned when running `supervised` jobs.
+        #   returned when running `supervised` jobs.
         #
         #   @return [OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters]
         required :hyperparameters, -> { OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters }
@@ -65,8 +65,8 @@ module OpenAI
 
         # @!attribute result_files
         #   The compiled results file ID(s) for the fine-tuning job. You can retrieve the
-        #     results with the
-        #     [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        #   results with the
+        #   [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
         #
         #   @return [Array<String>]
         required :result_files, OpenAI::Internal::Type::ArrayOf[String]
@@ -79,36 +79,36 @@ module OpenAI
 
         # @!attribute status
         #   The current status of the fine-tuning job, which can be either
-        #     `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
+        #   `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
         #
         #   @return [Symbol, OpenAI::Models::FineTuning::FineTuningJob::Status]
         required :status, enum: -> { OpenAI::Models::FineTuning::FineTuningJob::Status }
 
         # @!attribute trained_tokens
         #   The total number of billable tokens processed by this fine-tuning job. The value
-        #     will be null if the fine-tuning job is still running.
+        #   will be null if the fine-tuning job is still running.
         #
         #   @return [Integer, nil]
         required :trained_tokens, Integer, nil?: true
 
         # @!attribute training_file
         #   The file ID used for training. You can retrieve the training data with the
-        #     [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        #   [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
         #
         #   @return [String]
         required :training_file, String
 
         # @!attribute validation_file
         #   The file ID used for validation. You can retrieve the validation results with
-        #     the
-        #     [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
+        #   the
+        #   [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
         #
         #   @return [String, nil]
         required :validation_file, String, nil?: true
 
         # @!attribute estimated_finish
         #   The Unix timestamp (in seconds) for when the fine-tuning job is estimated to
-        #     finish. The value will be null if the fine-tuning job is not running.
+        #   finish. The value will be null if the fine-tuning job is not running.
         #
         #   @return [Integer, nil]
         optional :estimated_finish, Integer, nil?: true
@@ -123,11 +123,11 @@ module OpenAI
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #     for storing additional information about the object in a structured format, and
-        #     querying for objects via API or the dashboard.
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
         #
-        #     Keys are strings with a maximum length of 64 characters. Values are strings with
-        #     a maximum length of 512 characters.
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
         #
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
@@ -144,7 +144,7 @@ module OpenAI
 
         # @!parse
         #   # The `fine_tuning.job` object represents a fine-tuning job that has been created
-        #   #   through the API.
+        #   # through the API.
         #   #
         #   # @param id [String]
         #   # @param created_at [Integer]
@@ -209,14 +209,14 @@ module OpenAI
 
           # @!attribute param
           #   The parameter that was invalid, usually `training_file` or `validation_file`.
-          #     This field will be null if the failure was not parameter-specific.
+          #   This field will be null if the failure was not parameter-specific.
           #
           #   @return [String, nil]
           required :param, String, nil?: true
 
           # @!parse
           #   # For fine-tuning jobs that have `failed`, this will contain more information on
-          #   #   the cause of the failure.
+          #   # the cause of the failure.
           #   #
           #   # @param code [String]
           #   # @param message [String]
@@ -231,7 +231,7 @@ module OpenAI
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] batch_size
           #   Number of examples in each batch. A larger batch size means that model
-          #     parameters are updated less frequently, but with lower variance.
+          #   parameters are updated less frequently, but with lower variance.
           #
           #   @return [Symbol, :auto, Integer, nil]
           optional :batch_size, union: -> { OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::BatchSize }
@@ -242,7 +242,7 @@ module OpenAI
 
           # @!attribute [r] learning_rate_multiplier
           #   Scaling factor for the learning rate. A smaller learning rate may be useful to
-          #     avoid overfitting.
+          #   avoid overfitting.
           #
           #   @return [Symbol, :auto, Float, nil]
           optional :learning_rate_multiplier,
@@ -254,7 +254,7 @@ module OpenAI
 
           # @!attribute [r] n_epochs
           #   The number of epochs to train the model for. An epoch refers to one full cycle
-          #     through the training dataset.
+          #   through the training dataset.
           #
           #   @return [Symbol, :auto, Integer, nil]
           optional :n_epochs, union: -> { OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::NEpochs }
@@ -265,7 +265,7 @@ module OpenAI
 
           # @!parse
           #   # The hyperparameters used for the fine-tuning job. This value will only be
-          #   #   returned when running `supervised` jobs.
+          #   # returned when running `supervised` jobs.
           #   #
           #   # @param batch_size [Symbol, :auto, Integer]
           #   # @param learning_rate_multiplier [Symbol, :auto, Float]
@@ -276,7 +276,7 @@ module OpenAI
           # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
           # Number of examples in each batch. A larger batch size means that model
-          #   parameters are updated less frequently, but with lower variance.
+          # parameters are updated less frequently, but with lower variance.
           #
           # @see OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters#batch_size
           module BatchSize
@@ -292,7 +292,7 @@ module OpenAI
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
-          #   avoid overfitting.
+          # avoid overfitting.
           #
           # @see OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters#learning_rate_multiplier
           module LearningRateMultiplier
@@ -308,7 +308,7 @@ module OpenAI
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
-          #   through the training dataset.
+          # through the training dataset.
           #
           # @see OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters#n_epochs
           module NEpochs
@@ -325,7 +325,7 @@ module OpenAI
         end
 
         # The current status of the fine-tuning job, which can be either
-        #   `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
+        # `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
         #
         # @see OpenAI::Models::FineTuning::FineTuningJob#status
         module Status
@@ -413,7 +413,7 @@ module OpenAI
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] batch_size
               #   Number of examples in each batch. A larger batch size means that model
-              #     parameters are updated less frequently, but with lower variance.
+              #   parameters are updated less frequently, but with lower variance.
               #
               #   @return [Symbol, :auto, Integer, nil]
               optional :batch_size,
@@ -425,7 +425,7 @@ module OpenAI
 
               # @!attribute [r] beta
               #   The beta value for the DPO method. A higher beta value will increase the weight
-              #     of the penalty between the policy and reference model.
+              #   of the penalty between the policy and reference model.
               #
               #   @return [Symbol, :auto, Float, nil]
               optional :beta,
@@ -437,7 +437,7 @@ module OpenAI
 
               # @!attribute [r] learning_rate_multiplier
               #   Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #     avoid overfitting.
+              #   avoid overfitting.
               #
               #   @return [Symbol, :auto, Float, nil]
               optional :learning_rate_multiplier,
@@ -449,7 +449,7 @@ module OpenAI
 
               # @!attribute [r] n_epochs
               #   The number of epochs to train the model for. An epoch refers to one full cycle
-              #     through the training dataset.
+              #   through the training dataset.
               #
               #   @return [Symbol, :auto, Integer, nil]
               optional :n_epochs,
@@ -472,7 +472,7 @@ module OpenAI
               # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # Number of examples in each batch. A larger batch size means that model
-              #   parameters are updated less frequently, but with lower variance.
+              # parameters are updated less frequently, but with lower variance.
               #
               # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters#batch_size
               module BatchSize
@@ -488,7 +488,7 @@ module OpenAI
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
-              #   of the penalty between the policy and reference model.
+              # of the penalty between the policy and reference model.
               #
               # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters#beta
               module Beta
@@ -504,7 +504,7 @@ module OpenAI
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #   avoid overfitting.
+              # avoid overfitting.
               #
               # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters#learning_rate_multiplier
               module LearningRateMultiplier
@@ -520,7 +520,7 @@ module OpenAI
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
-              #   through the training dataset.
+              # through the training dataset.
               #
               # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters#n_epochs
               module NEpochs
@@ -563,7 +563,7 @@ module OpenAI
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] batch_size
               #   Number of examples in each batch. A larger batch size means that model
-              #     parameters are updated less frequently, but with lower variance.
+              #   parameters are updated less frequently, but with lower variance.
               #
               #   @return [Symbol, :auto, Integer, nil]
               optional :batch_size,
@@ -575,7 +575,7 @@ module OpenAI
 
               # @!attribute [r] learning_rate_multiplier
               #   Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #     avoid overfitting.
+              #   avoid overfitting.
               #
               #   @return [Symbol, :auto, Float, nil]
               optional :learning_rate_multiplier,
@@ -587,7 +587,7 @@ module OpenAI
 
               # @!attribute [r] n_epochs
               #   The number of epochs to train the model for. An epoch refers to one full cycle
-              #     through the training dataset.
+              #   through the training dataset.
               #
               #   @return [Symbol, :auto, Integer, nil]
               optional :n_epochs,
@@ -609,7 +609,7 @@ module OpenAI
               # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
               # Number of examples in each batch. A larger batch size means that model
-              #   parameters are updated less frequently, but with lower variance.
+              # parameters are updated less frequently, but with lower variance.
               #
               # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters#batch_size
               module BatchSize
@@ -625,7 +625,7 @@ module OpenAI
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
-              #   avoid overfitting.
+              # avoid overfitting.
               #
               # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters#learning_rate_multiplier
               module LearningRateMultiplier
@@ -641,7 +641,7 @@ module OpenAI
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
-              #   through the training dataset.
+              # through the training dataset.
               #
               # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters#n_epochs
               module NEpochs

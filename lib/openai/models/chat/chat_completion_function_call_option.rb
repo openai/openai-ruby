@@ -12,7 +12,7 @@ module OpenAI
 
         # @!parse
         #   # Specifying a particular function via `{"name": "my_function"}` forces the model
-        #   #   to call that function.
+        #   # to call that function.
         #   #
         #   # @param name [String]
         #   #

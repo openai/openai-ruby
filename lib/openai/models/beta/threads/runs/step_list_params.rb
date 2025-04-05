@@ -18,9 +18,9 @@ module OpenAI
 
             # @!attribute [r] after
             #   A cursor for use in pagination. `after` is an object ID that defines your place
-            #     in the list. For instance, if you make a list request and receive 100 objects,
-            #     ending with obj_foo, your subsequent call can include after=obj_foo in order to
-            #     fetch the next page of the list.
+            #   in the list. For instance, if you make a list request and receive 100 objects,
+            #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+            #   fetch the next page of the list.
             #
             #   @return [String, nil]
             optional :after, String
@@ -31,9 +31,9 @@ module OpenAI
 
             # @!attribute [r] before
             #   A cursor for use in pagination. `before` is an object ID that defines your place
-            #     in the list. For instance, if you make a list request and receive 100 objects,
-            #     starting with obj_foo, your subsequent call can include before=obj_foo in order
-            #     to fetch the previous page of the list.
+            #   in the list. For instance, if you make a list request and receive 100 objects,
+            #   starting with obj_foo, your subsequent call can include before=obj_foo in order
+            #   to fetch the previous page of the list.
             #
             #   @return [String, nil]
             optional :before, String
@@ -44,12 +44,12 @@ module OpenAI
 
             # @!attribute [r] include
             #   A list of additional fields to include in the response. Currently the only
-            #     supported value is `step_details.tool_calls[*].file_search.results[*].content`
-            #     to fetch the file search result content.
+            #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
+            #   to fetch the file search result content.
             #
-            #     See the
-            #     [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
-            #     for more information.
+            #   See the
+            #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            #   for more information.
             #
             #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
             optional :include,
@@ -61,7 +61,7 @@ module OpenAI
 
             # @!attribute [r] limit
             #   A limit on the number of objects to be returned. Limit can range between 1 and
-            #     100, and the default is 20.
+            #   100, and the default is 20.
             #
             #   @return [Integer, nil]
             optional :limit, Integer
@@ -72,7 +72,7 @@ module OpenAI
 
             # @!attribute [r] order
             #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-            #     order and `desc` for descending order.
+            #   order and `desc` for descending order.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order, nil]
             optional :order, enum: -> { OpenAI::Models::Beta::Threads::Runs::StepListParams::Order }
@@ -95,7 +95,7 @@ module OpenAI
             # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-            #   order and `desc` for descending order.
+            # order and `desc` for descending order.
             module Order
               extend OpenAI::Internal::Type::Enum
 

@@ -40,7 +40,7 @@ module OpenAI
           attr_accessor :url
 
           # Specifies the detail level of the image. Learn more in the
-          #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail::OrSymbol)) }
           attr_reader :detail
 
@@ -65,7 +65,7 @@ module OpenAI
           def to_hash; end
 
           # Specifies the detail level of the image. Learn more in the
-          #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+          # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           module Detail
             extend OpenAI::Internal::Type::Enum
 

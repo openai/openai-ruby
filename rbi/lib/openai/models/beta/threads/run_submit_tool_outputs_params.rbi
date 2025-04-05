@@ -46,7 +46,7 @@ module OpenAI
             attr_writer :output
 
             # The ID of the tool call in the `required_action` object within the run object
-            #   the output is being submitted for.
+            # the output is being submitted for.
             sig { returns(T.nilable(String)) }
             attr_reader :tool_call_id
 

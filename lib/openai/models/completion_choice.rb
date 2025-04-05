@@ -5,9 +5,9 @@ module OpenAI
     class CompletionChoice < OpenAI::Internal::Type::BaseModel
       # @!attribute finish_reason
       #   The reason the model stopped generating tokens. This will be `stop` if the model
-      #     hit a natural stop point or a provided stop sequence, `length` if the maximum
-      #     number of tokens specified in the request was reached, or `content_filter` if
-      #     content was omitted due to a flag from our content filters.
+      #   hit a natural stop point or a provided stop sequence, `length` if the maximum
+      #   number of tokens specified in the request was reached, or `content_filter` if
+      #   content was omitted due to a flag from our content filters.
       #
       #   @return [Symbol, OpenAI::Models::CompletionChoice::FinishReason]
       required :finish_reason, enum: -> { OpenAI::Models::CompletionChoice::FinishReason }
@@ -38,9 +38,9 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
-      #   hit a natural stop point or a provided stop sequence, `length` if the maximum
-      #   number of tokens specified in the request was reached, or `content_filter` if
-      #   content was omitted due to a flag from our content filters.
+      # hit a natural stop point or a provided stop sequence, `length` if the maximum
+      # number of tokens specified in the request was reached, or `content_filter` if
+      # content was omitted due to a flag from our content filters.
       #
       # @see OpenAI::Models::CompletionChoice#finish_reason
       module FinishReason

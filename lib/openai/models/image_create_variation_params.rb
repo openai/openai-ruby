@@ -10,29 +10,29 @@ module OpenAI
 
       # @!attribute image
       #   The image to use as the basis for the variation(s). Must be a valid PNG file,
-      #     less than 4MB, and square.
+      #   less than 4MB, and square.
       #
       #   @return [IO, StringIO]
       required :image, IO
 
       # @!attribute model
       #   The model to use for image generation. Only `dall-e-2` is supported at this
-      #     time.
+      #   time.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::Models::ImageCreateVariationParams::Model }, nil?: true
 
       # @!attribute n
       #   The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
-      #     `n=1` is supported.
+      #   `n=1` is supported.
       #
       #   @return [Integer, nil]
       optional :n, Integer, nil?: true
 
       # @!attribute response_format
       #   The format in which the generated images are returned. Must be one of `url` or
-      #     `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #     generated.
+      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
+      #   generated.
       #
       #   @return [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil]
       optional :response_format,
@@ -41,15 +41,15 @@ module OpenAI
 
       # @!attribute size
       #   The size of the generated images. Must be one of `256x256`, `512x512`, or
-      #     `1024x1024`.
+      #   `1024x1024`.
       #
       #   @return [Symbol, OpenAI::Models::ImageCreateVariationParams::Size, nil]
       optional :size, enum: -> { OpenAI::Models::ImageCreateVariationParams::Size }, nil?: true
 
       # @!attribute [r] user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #     and detect abuse.
-      #     [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
+      #   and detect abuse.
+      #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
@@ -72,7 +72,7 @@ module OpenAI
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
-      #   time.
+      # time.
       module Model
         extend OpenAI::Internal::Type::Union
 
@@ -87,8 +87,8 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
-      #   `b64_json`. URLs are only valid for 60 minutes after the image has been
-      #   generated.
+      # `b64_json`. URLs are only valid for 60 minutes after the image has been
+      # generated.
       module ResponseFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -103,7 +103,7 @@ module OpenAI
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
-      #   `1024x1024`.
+      # `1024x1024`.
       module Size
         extend OpenAI::Internal::Type::Enum
 

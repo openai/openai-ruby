@@ -28,8 +28,8 @@ module OpenAI
       attr_accessor :object
 
       # The intended purpose of the file.
-      #   [Please refer here](https://platform.openai.com/docs/api-reference/files/object#files/object-purpose)
-      #   for acceptable values.
+      # [Please refer here](https://platform.openai.com/docs/api-reference/files/object#files/object-purpose)
+      # for acceptable values.
       sig { returns(String) }
       attr_accessor :purpose
 

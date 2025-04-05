@@ -25,7 +25,7 @@ module OpenAI
         attr_writer :filters
 
         # The maximum number of results to return. This number should be between 1 and 50
-        #   inclusive.
+        # inclusive.
         sig { returns(T.nilable(Integer)) }
         attr_reader :max_num_results
 
@@ -45,8 +45,8 @@ module OpenAI
         attr_writer :ranking_options
 
         # A tool that searches for relevant content from uploaded files. Learn more about
-        #   the
-        #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
+        # the
+        # [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         sig do
           params(
             vector_store_ids: T::Array[String],
@@ -97,8 +97,8 @@ module OpenAI
           attr_writer :ranker
 
           # The score threshold for the file search, a number between 0 and 1. Numbers
-          #   closer to 1 will attempt to return only the most relevant results, but may
-          #   return fewer results.
+          # closer to 1 will attempt to return only the most relevant results, but may
+          # return fewer results.
           sig { returns(T.nilable(Float)) }
           attr_reader :score_threshold
 

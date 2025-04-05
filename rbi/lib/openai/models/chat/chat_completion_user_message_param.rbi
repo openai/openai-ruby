@@ -27,7 +27,7 @@ module OpenAI
         attr_accessor :role
 
         # An optional name for the participant. Provides the model information to
-        #   differentiate between participants of the same role.
+        # differentiate between participants of the same role.
         sig { returns(T.nilable(String)) }
         attr_reader :name
 
@@ -35,7 +35,7 @@ module OpenAI
         attr_writer :name
 
         # Messages sent by an end user, containing prompts or additional context
-        #   information.
+        # information.
         sig do
           params(
             content: T.any(

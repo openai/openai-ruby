@@ -9,22 +9,22 @@ module OpenAI
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
-      #   - `eq`: equals
-      #   - `ne`: not equal
-      #   - `gt`: greater than
-      #   - `gte`: greater than or equal
-      #   - `lt`: less than
-      #   - `lte`: less than or equal
+      # - `eq`: equals
+      # - `ne`: not equal
+      # - `gt`: greater than
+      # - `gte`: greater than or equal
+      # - `lt`: less than
+      # - `lte`: less than or equal
       sig { returns(OpenAI::Models::ComparisonFilter::Type::OrSymbol) }
       attr_accessor :type
 
       # The value to compare against the attribute key; supports string, number, or
-      #   boolean types.
+      # boolean types.
       sig { returns(T.any(String, Float, T::Boolean)) }
       attr_accessor :value
 
       # A filter used to compare a specified attribute key to a given value using a
-      #   defined comparison operation.
+      # defined comparison operation.
       sig do
         params(
           key: String,
@@ -45,12 +45,12 @@ module OpenAI
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
-      #   - `eq`: equals
-      #   - `ne`: not equal
-      #   - `gt`: greater than
-      #   - `gte`: greater than or equal
-      #   - `lt`: less than
-      #   - `lte`: less than or equal
+      # - `eq`: equals
+      # - `ne`: not equal
+      # - `gt`: greater than
+      # - `gte`: greater than or equal
+      # - `lt`: less than
+      # - `lte`: less than or equal
       module Type
         extend OpenAI::Internal::Type::Enum
 
@@ -69,7 +69,7 @@ module OpenAI
       end
 
       # The value to compare against the attribute key; supports string, number, or
-      #   boolean types.
+      # boolean types.
       module Value
         extend OpenAI::Internal::Type::Union
 

@@ -96,7 +96,7 @@ module OpenAI
 
         # See {OpenAI::Resources::Beta::Threads#stream_raw} for streaming counterpart.
         #
-        #   Create a thread and run it in one request.
+        # Create a thread and run it in one request.
         #
         # @overload create_and_run(assistant_id:, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, response_format: nil, temperature: nil, thread: nil, tool_choice: nil, tool_resources: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
         #
@@ -140,9 +140,9 @@ module OpenAI
         end
 
         # See {OpenAI::Resources::Beta::Threads#create_and_run} for non-streaming
-        #   counterpart.
+        # counterpart.
         #
-        #   Create a thread and run it in one request.
+        # Create a thread and run it in one request.
         #
         # @overload stream_raw(assistant_id:, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, response_format: nil, temperature: nil, thread: nil, tool_choice: nil, tool_resources: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
         #

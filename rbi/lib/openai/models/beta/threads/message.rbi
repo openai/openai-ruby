@@ -10,8 +10,8 @@ module OpenAI
           attr_accessor :id
 
           # If applicable, the ID of the
-          #   [assistant](https://platform.openai.com/docs/api-reference/assistants) that
-          #   authored this message.
+          # [assistant](https://platform.openai.com/docs/api-reference/assistants) that
+          # authored this message.
           sig { returns(T.nilable(String)) }
           attr_accessor :assistant_id
 
@@ -59,11 +59,11 @@ module OpenAI
           attr_writer :incomplete_details
 
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
-          #   for storing additional information about the object in a structured format, and
-          #   querying for objects via API or the dashboard.
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
           #
-          #   Keys are strings with a maximum length of 64 characters. Values are strings with
-          #   a maximum length of 512 characters.
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
@@ -76,23 +76,23 @@ module OpenAI
           attr_accessor :role
 
           # The ID of the [run](https://platform.openai.com/docs/api-reference/runs)
-          #   associated with the creation of this message. Value is `null` when messages are
-          #   created manually using the create message or create thread endpoints.
+          # associated with the creation of this message. Value is `null` when messages are
+          # created manually using the create message or create thread endpoints.
           sig { returns(T.nilable(String)) }
           attr_accessor :run_id
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
-          #   `completed`.
+          # `completed`.
           sig { returns(OpenAI::Models::Beta::Threads::Message::Status::TaggedSymbol) }
           attr_accessor :status
 
           # The [thread](https://platform.openai.com/docs/api-reference/threads) ID that
-          #   this message belongs to.
+          # this message belongs to.
           sig { returns(String) }
           attr_accessor :thread_id
 
           # Represents a message within a
-          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          # [thread](https://platform.openai.com/docs/api-reference/threads).
           sig do
             params(
               id: String,
@@ -319,7 +319,7 @@ module OpenAI
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
-          #   `completed`.
+          # `completed`.
           module Status
             extend OpenAI::Internal::Type::Enum
 

@@ -5,12 +5,12 @@ module OpenAI
     module Responses
       class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
-        #   and dashes, with a maximum length of 64.
+        # and dashes, with a maximum length of 64.
         sig { returns(String) }
         attr_accessor :name
 
         # The schema for the response format, described as a JSON Schema object. Learn how
-        #   to build JSON schemas [here](https://json-schema.org/).
+        # to build JSON schemas [here](https://json-schema.org/).
         sig { returns(T::Hash[Symbol, T.anything]) }
         attr_accessor :schema
 
@@ -19,7 +19,7 @@ module OpenAI
         attr_accessor :type
 
         # A description of what the response format is for, used by the model to determine
-        #   how to respond in the format.
+        # how to respond in the format.
         sig { returns(T.nilable(String)) }
         attr_reader :description
 
@@ -27,16 +27,16 @@ module OpenAI
         attr_writer :description
 
         # Whether to enable strict schema adherence when generating the output. If set to
-        #   true, the model will always follow the exact schema defined in the `schema`
-        #   field. Only a subset of JSON Schema is supported when `strict` is `true`. To
-        #   learn more, read the
-        #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+        # true, the model will always follow the exact schema defined in the `schema`
+        # field. Only a subset of JSON Schema is supported when `strict` is `true`. To
+        # learn more, read the
+        # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :strict
 
         # JSON Schema response format. Used to generate structured JSON responses. Learn
-        #   more about
-        #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+        # more about
+        # [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         sig do
           params(
             name: String,

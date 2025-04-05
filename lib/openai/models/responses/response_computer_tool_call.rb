@@ -31,7 +31,7 @@ module OpenAI
 
         # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #     Populated when items are returned via API.
+        #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status]
         required :status, enum: -> { OpenAI::Models::Responses::ResponseComputerToolCall::Status }
@@ -44,8 +44,8 @@ module OpenAI
 
         # @!parse
         #   # A tool call to a computer use tool. See the
-        #   #   [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
-        #   #   for more information.
+        #   # [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        #   # for more information.
         #   #
         #   # @param id [String]
         #   # @param action [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
@@ -96,14 +96,14 @@ module OpenAI
           class Click < OpenAI::Internal::Type::BaseModel
             # @!attribute button
             #   Indicates which mouse button was pressed during the click. One of `left`,
-            #     `right`, `wheel`, `back`, or `forward`.
+            #   `right`, `wheel`, `back`, or `forward`.
             #
             #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button]
             required :button, enum: -> { OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button }
 
             # @!attribute type
             #   Specifies the event type. For a click action, this property is always set to
-            #     `click`.
+            #   `click`.
             #
             #   @return [Symbol, :click]
             required :type, const: :click
@@ -133,7 +133,7 @@ module OpenAI
             # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
             # Indicates which mouse button was pressed during the click. One of `left`,
-            #   `right`, `wheel`, `back`, or `forward`.
+            # `right`, `wheel`, `back`, or `forward`.
             #
             # @see OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click#button
             module Button
@@ -156,7 +156,7 @@ module OpenAI
           class DoubleClick < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a double click action, this property is always set
-            #     to `double_click`.
+            #   to `double_click`.
             #
             #   @return [Symbol, :double_click]
             required :type, const: :double_click
@@ -188,14 +188,14 @@ module OpenAI
           class Drag < OpenAI::Internal::Type::BaseModel
             # @!attribute path
             #   An array of coordinates representing the path of the drag action. Coordinates
-            #     will appear as an array of objects, eg
+            #   will appear as an array of objects, eg
             #
-            #     ```
-            #     [
-            #       { x: 100, y: 200 },
-            #       { x: 200, y: 300 }
-            #     ]
-            #     ```
+            #   ```
+            #   [
+            #     { x: 100, y: 200 },
+            #     { x: 200, y: 300 }
+            #   ]
+            #   ```
             #
             #   @return [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>]
             required :path,
@@ -203,7 +203,7 @@ module OpenAI
 
             # @!attribute type
             #   Specifies the event type. For a drag action, this property is always set to
-            #     `drag`.
+            #   `drag`.
             #
             #   @return [Symbol, :drag]
             required :type, const: :drag
@@ -246,14 +246,14 @@ module OpenAI
           class Keypress < OpenAI::Internal::Type::BaseModel
             # @!attribute keys
             #   The combination of keys the model is requesting to be pressed. This is an array
-            #     of strings, each representing a key.
+            #   of strings, each representing a key.
             #
             #   @return [Array<String>]
             required :keys, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!attribute type
             #   Specifies the event type. For a keypress action, this property is always set to
-            #     `keypress`.
+            #   `keypress`.
             #
             #   @return [Symbol, :keypress]
             required :type, const: :keypress
@@ -272,7 +272,7 @@ module OpenAI
           class Move < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a move action, this property is always set to
-            #     `move`.
+            #   `move`.
             #
             #   @return [Symbol, :move]
             required :type, const: :move
@@ -304,7 +304,7 @@ module OpenAI
           class Screenshot < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a screenshot action, this property is always set
-            #     to `screenshot`.
+            #   to `screenshot`.
             #
             #   @return [Symbol, :screenshot]
             required :type, const: :screenshot
@@ -334,7 +334,7 @@ module OpenAI
 
             # @!attribute type
             #   Specifies the event type. For a scroll action, this property is always set to
-            #     `scroll`.
+            #   `scroll`.
             #
             #   @return [Symbol, :scroll]
             required :type, const: :scroll
@@ -374,7 +374,7 @@ module OpenAI
 
             # @!attribute type
             #   Specifies the event type. For a type action, this property is always set to
-            #     `type`.
+            #   `type`.
             #
             #   @return [Symbol, :type]
             required :type, const: :type
@@ -393,7 +393,7 @@ module OpenAI
           class Wait < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   Specifies the event type. For a wait action, this property is always set to
-            #     `wait`.
+            #   `wait`.
             #
             #   @return [Symbol, :wait]
             required :type, const: :wait
@@ -445,7 +445,7 @@ module OpenAI
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         #
         # @see OpenAI::Models::Responses::ResponseComputerToolCall#status
         module Status

@@ -23,7 +23,7 @@ module OpenAI
           attr_writer :limit
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
-          #   for descending order. Defaults to `asc`.
+          # for descending order. Defaults to `asc`.
           sig { returns(T.nilable(OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol)) }
           attr_reader :order
 
@@ -55,7 +55,7 @@ module OpenAI
           def to_hash; end
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
-          #   for descending order. Defaults to `asc`.
+          # for descending order. Defaults to `asc`.
           module Order
             extend OpenAI::Internal::Type::Enum
 

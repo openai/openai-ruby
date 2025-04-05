@@ -8,17 +8,17 @@ module OpenAI
 
       # See {OpenAI::Resources::Responses#stream_raw} for streaming counterpart.
       #
-      #   Creates a model response. Provide
-      #   [text](https://platform.openai.com/docs/guides/text) or
-      #   [image](https://platform.openai.com/docs/guides/images) inputs to generate
-      #   [text](https://platform.openai.com/docs/guides/text) or
-      #   [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
-      #   the model call your own
-      #   [custom code](https://platform.openai.com/docs/guides/function-calling) or use
-      #   built-in [tools](https://platform.openai.com/docs/guides/tools) like
-      #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-      #   [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
-      #   your own data as input for the model's response.
+      # Creates a model response. Provide
+      # [text](https://platform.openai.com/docs/guides/text) or
+      # [image](https://platform.openai.com/docs/guides/images) inputs to generate
+      # [text](https://platform.openai.com/docs/guides/text) or
+      # [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
+      # the model call your own
+      # [custom code](https://platform.openai.com/docs/guides/function-calling) or use
+      # built-in [tools](https://platform.openai.com/docs/guides/tools) like
+      # [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+      # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
+      # your own data as input for the model's response.
       #
       # @overload create(input:, model:, include: nil, instructions: nil, max_output_tokens: nil, metadata: nil, parallel_tool_calls: nil, previous_response_id: nil, reasoning: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
       #
@@ -65,17 +65,17 @@ module OpenAI
 
       # See {OpenAI::Resources::Responses#create} for non-streaming counterpart.
       #
-      #   Creates a model response. Provide
-      #   [text](https://platform.openai.com/docs/guides/text) or
-      #   [image](https://platform.openai.com/docs/guides/images) inputs to generate
-      #   [text](https://platform.openai.com/docs/guides/text) or
-      #   [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
-      #   the model call your own
-      #   [custom code](https://platform.openai.com/docs/guides/function-calling) or use
-      #   built-in [tools](https://platform.openai.com/docs/guides/tools) like
-      #   [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-      #   [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
-      #   your own data as input for the model's response.
+      # Creates a model response. Provide
+      # [text](https://platform.openai.com/docs/guides/text) or
+      # [image](https://platform.openai.com/docs/guides/images) inputs to generate
+      # [text](https://platform.openai.com/docs/guides/text) or
+      # [JSON](https://platform.openai.com/docs/guides/structured-outputs) outputs. Have
+      # the model call your own
+      # [custom code](https://platform.openai.com/docs/guides/function-calling) or use
+      # built-in [tools](https://platform.openai.com/docs/guides/tools) like
+      # [web search](https://platform.openai.com/docs/guides/tools-web-search) or
+      # [file search](https://platform.openai.com/docs/guides/tools-file-search) to use
+      # your own data as input for the model's response.
       #
       # @overload stream_raw(input:, model:, include: nil, instructions: nil, max_output_tokens: nil, metadata: nil, parallel_tool_calls: nil, previous_response_id: nil, reasoning: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
       #

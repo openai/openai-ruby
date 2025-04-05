@@ -5,7 +5,7 @@ module OpenAI
     class Image < OpenAI::Internal::Type::BaseModel
       # @!attribute [r] b64_json
       #   The base64-encoded JSON of the generated image, if `response_format` is
-      #     `b64_json`.
+      #   `b64_json`.
       #
       #   @return [String, nil]
       optional :b64_json, String
@@ -16,7 +16,7 @@ module OpenAI
 
       # @!attribute [r] revised_prompt
       #   The prompt that was used to generate the image, if there was any revision to the
-      #     prompt.
+      #   prompt.
       #
       #   @return [String, nil]
       optional :revised_prompt, String

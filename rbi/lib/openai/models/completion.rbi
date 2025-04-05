@@ -25,8 +25,8 @@ module OpenAI
 
       # This fingerprint represents the backend configuration that the model runs with.
       #
-      #   Can be used in conjunction with the `seed` request parameter to understand when
-      #   backend changes have been made that might impact determinism.
+      # Can be used in conjunction with the `seed` request parameter to understand when
+      # backend changes have been made that might impact determinism.
       sig { returns(T.nilable(String)) }
       attr_reader :system_fingerprint
 
@@ -41,7 +41,7 @@ module OpenAI
       attr_writer :usage
 
       # Represents a completion response from the API. Note: both the streamed and
-      #   non-streamed response objects share the same shape (unlike the chat endpoint).
+      # non-streamed response objects share the same shape (unlike the chat endpoint).
       sig do
         params(
           id: String,

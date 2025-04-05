@@ -20,7 +20,7 @@ module OpenAI
         attr_accessor :type
 
         # Specifies a tool the model should use. Use to force the model to call a specific
-        #   function.
+        # function.
         sig do
           params(
             function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::AnyHash),

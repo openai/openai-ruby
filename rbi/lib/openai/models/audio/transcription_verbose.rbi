@@ -34,7 +34,7 @@ module OpenAI
         attr_writer :words
 
         # Represents a verbose json transcription response returned by model, based on the
-        #   provided input.
+        # provided input.
         sig do
           params(
             duration: Float,

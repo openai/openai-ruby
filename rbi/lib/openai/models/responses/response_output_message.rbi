@@ -21,7 +21,7 @@ module OpenAI
         attr_accessor :role
 
         # The status of the message input. One of `in_progress`, `completed`, or
-        #   `incomplete`. Populated when input items are returned via API.
+        # `incomplete`. Populated when input items are returned via API.
         sig { returns(OpenAI::Models::Responses::ResponseOutputMessage::Status::OrSymbol) }
         attr_accessor :status
 
@@ -74,7 +74,7 @@ module OpenAI
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
-        #   `incomplete`. Populated when input items are returned via API.
+        # `incomplete`. Populated when input items are returned via API.
         module Status
           extend OpenAI::Internal::Type::Enum
 

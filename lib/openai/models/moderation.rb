@@ -41,77 +41,77 @@ module OpenAI
       class Categories < OpenAI::Internal::Type::BaseModel
         # @!attribute harassment
         #   Content that expresses, incites, or promotes harassing language towards any
-        #     target.
+        #   target.
         #
         #   @return [Boolean]
         required :harassment, OpenAI::Internal::Type::Boolean
 
         # @!attribute harassment_threatening
         #   Harassment content that also includes violence or serious harm towards any
-        #     target.
+        #   target.
         #
         #   @return [Boolean]
         required :harassment_threatening, OpenAI::Internal::Type::Boolean, api_name: :"harassment/threatening"
 
         # @!attribute hate
         #   Content that expresses, incites, or promotes hate based on race, gender,
-        #     ethnicity, religion, nationality, sexual orientation, disability status, or
-        #     caste. Hateful content aimed at non-protected groups (e.g., chess players) is
-        #     harassment.
+        #   ethnicity, religion, nationality, sexual orientation, disability status, or
+        #   caste. Hateful content aimed at non-protected groups (e.g., chess players) is
+        #   harassment.
         #
         #   @return [Boolean]
         required :hate, OpenAI::Internal::Type::Boolean
 
         # @!attribute hate_threatening
         #   Hateful content that also includes violence or serious harm towards the targeted
-        #     group based on race, gender, ethnicity, religion, nationality, sexual
-        #     orientation, disability status, or caste.
+        #   group based on race, gender, ethnicity, religion, nationality, sexual
+        #   orientation, disability status, or caste.
         #
         #   @return [Boolean]
         required :hate_threatening, OpenAI::Internal::Type::Boolean, api_name: :"hate/threatening"
 
         # @!attribute illicit
         #   Content that includes instructions or advice that facilitate the planning or
-        #     execution of wrongdoing, or that gives advice or instruction on how to commit
-        #     illicit acts. For example, "how to shoplift" would fit this category.
+        #   execution of wrongdoing, or that gives advice or instruction on how to commit
+        #   illicit acts. For example, "how to shoplift" would fit this category.
         #
         #   @return [Boolean, nil]
         required :illicit, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!attribute illicit_violent
         #   Content that includes instructions or advice that facilitate the planning or
-        #     execution of wrongdoing that also includes violence, or that gives advice or
-        #     instruction on the procurement of any weapon.
+        #   execution of wrongdoing that also includes violence, or that gives advice or
+        #   instruction on the procurement of any weapon.
         #
         #   @return [Boolean, nil]
         required :illicit_violent, OpenAI::Internal::Type::Boolean, api_name: :"illicit/violent", nil?: true
 
         # @!attribute self_harm
         #   Content that promotes, encourages, or depicts acts of self-harm, such as
-        #     suicide, cutting, and eating disorders.
+        #   suicide, cutting, and eating disorders.
         #
         #   @return [Boolean]
         required :self_harm, OpenAI::Internal::Type::Boolean, api_name: :"self-harm"
 
         # @!attribute self_harm_instructions
         #   Content that encourages performing acts of self-harm, such as suicide, cutting,
-        #     and eating disorders, or that gives instructions or advice on how to commit such
-        #     acts.
+        #   and eating disorders, or that gives instructions or advice on how to commit such
+        #   acts.
         #
         #   @return [Boolean]
         required :self_harm_instructions, OpenAI::Internal::Type::Boolean, api_name: :"self-harm/instructions"
 
         # @!attribute self_harm_intent
         #   Content where the speaker expresses that they are engaging or intend to engage
-        #     in acts of self-harm, such as suicide, cutting, and eating disorders.
+        #   in acts of self-harm, such as suicide, cutting, and eating disorders.
         #
         #   @return [Boolean]
         required :self_harm_intent, OpenAI::Internal::Type::Boolean, api_name: :"self-harm/intent"
 
         # @!attribute sexual
         #   Content meant to arouse sexual excitement, such as the description of sexual
-        #     activity, or that promotes sexual services (excluding sex education and
-        #     wellness).
+        #   activity, or that promotes sexual services (excluding sex education and
+        #   wellness).
         #
         #   @return [Boolean]
         required :sexual, OpenAI::Internal::Type::Boolean

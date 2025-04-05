@@ -21,7 +21,7 @@ module OpenAI
         attr_accessor :type
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status::TaggedSymbol)) }
         attr_reader :status
 
@@ -55,7 +55,7 @@ module OpenAI
         def to_hash; end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-        #   Populated when items are returned via API.
+        # Populated when items are returned via API.
         module Status
           extend OpenAI::Internal::Type::Enum
 

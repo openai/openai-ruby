@@ -26,7 +26,7 @@ module OpenAI
 
             # @!parse
             #   # Represents a run step delta i.e. any changed fields on a run step during
-            #   #   streaming.
+            #   # streaming.
             #   #
             #   # @param id [String]
             #   # @param delta [OpenAI::Models::Beta::Threads::Runs::RunStepDelta]

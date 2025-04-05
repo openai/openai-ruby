@@ -59,59 +59,59 @@ module OpenAI
 
       class Categories < OpenAI::Internal::Type::BaseModel
         # Content that expresses, incites, or promotes harassing language towards any
-        #   target.
+        # target.
         sig { returns(T::Boolean) }
         attr_accessor :harassment
 
         # Harassment content that also includes violence or serious harm towards any
-        #   target.
+        # target.
         sig { returns(T::Boolean) }
         attr_accessor :harassment_threatening
 
         # Content that expresses, incites, or promotes hate based on race, gender,
-        #   ethnicity, religion, nationality, sexual orientation, disability status, or
-        #   caste. Hateful content aimed at non-protected groups (e.g., chess players) is
-        #   harassment.
+        # ethnicity, religion, nationality, sexual orientation, disability status, or
+        # caste. Hateful content aimed at non-protected groups (e.g., chess players) is
+        # harassment.
         sig { returns(T::Boolean) }
         attr_accessor :hate
 
         # Hateful content that also includes violence or serious harm towards the targeted
-        #   group based on race, gender, ethnicity, religion, nationality, sexual
-        #   orientation, disability status, or caste.
+        # group based on race, gender, ethnicity, religion, nationality, sexual
+        # orientation, disability status, or caste.
         sig { returns(T::Boolean) }
         attr_accessor :hate_threatening
 
         # Content that includes instructions or advice that facilitate the planning or
-        #   execution of wrongdoing, or that gives advice or instruction on how to commit
-        #   illicit acts. For example, "how to shoplift" would fit this category.
+        # execution of wrongdoing, or that gives advice or instruction on how to commit
+        # illicit acts. For example, "how to shoplift" would fit this category.
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :illicit
 
         # Content that includes instructions or advice that facilitate the planning or
-        #   execution of wrongdoing that also includes violence, or that gives advice or
-        #   instruction on the procurement of any weapon.
+        # execution of wrongdoing that also includes violence, or that gives advice or
+        # instruction on the procurement of any weapon.
         sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :illicit_violent
 
         # Content that promotes, encourages, or depicts acts of self-harm, such as
-        #   suicide, cutting, and eating disorders.
+        # suicide, cutting, and eating disorders.
         sig { returns(T::Boolean) }
         attr_accessor :self_harm
 
         # Content that encourages performing acts of self-harm, such as suicide, cutting,
-        #   and eating disorders, or that gives instructions or advice on how to commit such
-        #   acts.
+        # and eating disorders, or that gives instructions or advice on how to commit such
+        # acts.
         sig { returns(T::Boolean) }
         attr_accessor :self_harm_instructions
 
         # Content where the speaker expresses that they are engaging or intend to engage
-        #   in acts of self-harm, such as suicide, cutting, and eating disorders.
+        # in acts of self-harm, such as suicide, cutting, and eating disorders.
         sig { returns(T::Boolean) }
         attr_accessor :self_harm_intent
 
         # Content meant to arouse sexual excitement, such as the description of sexual
-        #   activity, or that promotes sexual services (excluding sex education and
-        #   wellness).
+        # activity, or that promotes sexual services (excluding sex education and
+        # wellness).
         sig { returns(T::Boolean) }
         attr_accessor :sexual
 

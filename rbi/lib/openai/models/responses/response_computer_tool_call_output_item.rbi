@@ -29,7 +29,7 @@ module OpenAI
         attr_accessor :type
 
         # The safety checks reported by the API that have been acknowledged by the
-        #   developer.
+        # developer.
         sig do
           returns(
             T.nilable(
@@ -53,7 +53,7 @@ module OpenAI
         attr_writer :acknowledged_safety_checks
 
         # The status of the message input. One of `in_progress`, `completed`, or
-        #   `incomplete`. Populated when input items are returned via API.
+        # `incomplete`. Populated when input items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status::TaggedSymbol)) }
         attr_reader :status
 
@@ -123,7 +123,7 @@ module OpenAI
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
-        #   `incomplete`. Populated when input items are returned via API.
+        # `incomplete`. Populated when input items are returned via API.
         module Status
           extend OpenAI::Internal::Type::Enum
 

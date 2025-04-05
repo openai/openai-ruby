@@ -34,7 +34,7 @@ module OpenAI
 
           # @!parse
           #   # A URL for the file that's generated when the assistant used the
-          #   #   `code_interpreter` tool to generate a file.
+          #   # `code_interpreter` tool to generate a file.
           #   #
           #   # @param end_index [Integer]
           #   # @param file_path [OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath]

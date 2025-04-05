@@ -9,12 +9,12 @@ module OpenAI
         attr_accessor :id
 
         # Average logprob of the segment. If the value is lower than -1, consider the
-        #   logprobs failed.
+        # logprobs failed.
         sig { returns(Float) }
         attr_accessor :avg_logprob
 
         # Compression ratio of the segment. If the value is greater than 2.4, consider the
-        #   compression failed.
+        # compression failed.
         sig { returns(Float) }
         attr_accessor :compression_ratio
 
@@ -23,7 +23,7 @@ module OpenAI
         attr_accessor :end_
 
         # Probability of no speech in the segment. If the value is higher than 1.0 and the
-        #   `avg_logprob` is below -1, consider this segment silent.
+        # `avg_logprob` is below -1, consider this segment silent.
         sig { returns(Float) }
         attr_accessor :no_speech_prob
 

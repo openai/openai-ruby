@@ -4,7 +4,7 @@ module OpenAI
   module Resources
     class Models
       # Retrieves a model instance, providing basic information about the model such as
-      #   the owner and permissioning.
+      # the owner and permissioning.
       #
       # @overload retrieve(model, request_options: {})
       #
@@ -24,7 +24,7 @@ module OpenAI
       end
 
       # Lists the currently available models, and provides basic information about each
-      #   one such as the owner and availability.
+      # one such as the owner and availability.
       #
       # @overload list(request_options: {})
       #
@@ -44,7 +44,7 @@ module OpenAI
       end
 
       # Delete a fine-tuned model. You must have the Owner role in your organization to
-      #   delete a model.
+      # delete a model.
       #
       # @overload delete(model, request_options: {})
       #

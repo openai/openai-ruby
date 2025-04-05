@@ -26,7 +26,7 @@ module OpenAI
 
       # @!attribute [r] max_num_results
       #   The maximum number of results to return. This number should be between 1 and 50
-      #     inclusive.
+      #   inclusive.
       #
       #   @return [Integer, nil]
       optional :max_num_results, Integer

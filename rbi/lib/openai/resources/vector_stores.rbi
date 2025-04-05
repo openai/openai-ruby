@@ -27,20 +27,20 @@ module OpenAI
       end
       def create(
         # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
-        #   strategy. Only applicable if `file_ids` is non-empty.
+        # strategy. Only applicable if `file_ids` is non-empty.
         chunking_strategy: nil,
         # The expiration policy for a vector store.
         expires_after: nil,
         # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-        #   the vector store should use. Useful for tools like `file_search` that can access
-        #   files.
+        # the vector store should use. Useful for tools like `file_search` that can access
+        # files.
         file_ids: nil,
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #   for storing additional information about the object in a structured format, and
-        #   querying for objects via API or the dashboard.
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
         #
-        #   Keys are strings with a maximum length of 64 characters. Values are strings with
-        #   a maximum length of 512 characters.
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         metadata: nil,
         # The name of the vector store.
         name: nil,
@@ -76,11 +76,11 @@ module OpenAI
         # The expiration policy for a vector store.
         expires_after: nil,
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
-        #   for storing additional information about the object in a structured format, and
-        #   querying for objects via API or the dashboard.
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
         #
-        #   Keys are strings with a maximum length of 64 characters. Values are strings with
-        #   a maximum length of 512 characters.
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         metadata: nil,
         # The name of the vector store.
         name: nil,
@@ -99,20 +99,20 @@ module OpenAI
       end
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
-        #   in the list. For instance, if you make a list request and receive 100 objects,
-        #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
-        #   fetch the next page of the list.
+        # in the list. For instance, if you make a list request and receive 100 objects,
+        # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        # fetch the next page of the list.
         after: nil,
         # A cursor for use in pagination. `before` is an object ID that defines your place
-        #   in the list. For instance, if you make a list request and receive 100 objects,
-        #   starting with obj_foo, your subsequent call can include before=obj_foo in order
-        #   to fetch the previous page of the list.
+        # in the list. For instance, if you make a list request and receive 100 objects,
+        # starting with obj_foo, your subsequent call can include before=obj_foo in order
+        # to fetch the previous page of the list.
         before: nil,
         # A limit on the number of objects to be returned. Limit can range between 1 and
-        #   100, and the default is 20.
+        # 100, and the default is 20.
         limit: nil,
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
-        #   order and `desc` for descending order.
+        # order and `desc` for descending order.
         order: nil,
         request_options: {}
       ); end
@@ -130,7 +130,7 @@ module OpenAI
         request_options: {}
       ); end
       # Search a vector store for relevant chunks based on a query and file attributes
-      #   filter.
+      # filter.
       sig do
         params(
           vector_store_id: String,
@@ -151,7 +151,7 @@ module OpenAI
         # A filter to apply based on file attributes.
         filters: nil,
         # The maximum number of results to return. This number should be between 1 and 50
-        #   inclusive.
+        # inclusive.
         max_num_results: nil,
         # Ranking options for search.
         ranking_options: nil,

@@ -6,17 +6,17 @@ module OpenAI
       class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
         # An object specifying the format that the model must output.
         #
-        #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
-        #   ensures the model will match your supplied JSON schema. Learn more in the
-        #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+        # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
+        # ensures the model will match your supplied JSON schema. Learn more in the
+        # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #   The default format is `{ "type": "text" }` with no additional options.
+        # The default format is `{ "type": "text" }` with no additional options.
         #
-        #   **Not recommended for gpt-4o and newer models:**
+        # **Not recommended for gpt-4o and newer models:**
         #
-        #   Setting to `{ "type": "json_object" }` enables the older JSON mode, which
-        #   ensures the message the model generates is valid JSON. Using `json_schema` is
-        #   preferred for models that support it.
+        # Setting to `{ "type": "json_object" }` enables the older JSON mode, which
+        # ensures the message the model generates is valid JSON. Using `json_schema` is
+        # preferred for models that support it.
         sig do
           returns(
             T.nilable(
@@ -44,10 +44,10 @@ module OpenAI
         attr_writer :format_
 
         # Configuration options for a text response from the model. Can be plain text or
-        #   structured JSON data. Learn more:
+        # structured JSON data. Learn more:
         #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+        # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         sig do
           params(
             format_: T.any(

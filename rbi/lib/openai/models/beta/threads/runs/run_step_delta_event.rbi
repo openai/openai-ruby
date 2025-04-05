@@ -22,7 +22,7 @@ module OpenAI
             attr_accessor :object
 
             # Represents a run step delta i.e. any changed fields on a run step during
-            #   streaming.
+            # streaming.
             sig do
               params(
                 id: String,

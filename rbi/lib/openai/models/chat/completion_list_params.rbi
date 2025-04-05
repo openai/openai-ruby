@@ -23,7 +23,7 @@ module OpenAI
 
         # A list of metadata keys to filter the Chat Completions by. Example:
         #
-        #   `metadata[key1]=value1&metadata[key2]=value2`
+        # `metadata[key1]=value1&metadata[key2]=value2`
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
@@ -35,7 +35,7 @@ module OpenAI
         attr_writer :model
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
-        #   `desc` for descending order. Defaults to `asc`.
+        # `desc` for descending order. Defaults to `asc`.
         sig { returns(T.nilable(OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol)) }
         attr_reader :order
 
@@ -71,7 +71,7 @@ module OpenAI
         def to_hash; end
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
-        #   `desc` for descending order. Defaults to `asc`.
+        # `desc` for descending order. Defaults to `asc`.
         module Order
           extend OpenAI::Internal::Type::Enum
 
