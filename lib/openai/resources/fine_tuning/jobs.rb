@@ -36,7 +36,7 @@ module OpenAI
           @client.request(
             method: :post,
             path: "fine_tuning/jobs",
-            body: parsed.transform_keys(method_: :method),
+            body: parsed,
             model: OpenAI::Models::FineTuning::FineTuningJob,
             options: options
           )
