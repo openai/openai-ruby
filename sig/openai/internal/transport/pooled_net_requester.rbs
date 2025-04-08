@@ -21,7 +21,7 @@ module OpenAI
           OpenAI::Internal::Transport::PooledNetRequester::request request
         ) {
           (String arg0) -> void
-        } -> top
+        } -> [top, (^-> void)]
 
         private def with_pool: (
           URI::Generic url,

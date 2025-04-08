@@ -12,8 +12,8 @@ module OpenAI
       #   The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask
       #   is not provided, image must have transparency, which will be used as the mask.
       #
-      #   @return [IO, StringIO]
-      required :image, IO
+      #   @return [Pathname, StringIO]
+      required :image, OpenAI::Internal::Type::IOLike
 
       # @!attribute prompt
       #   A text description of the desired image(s). The maximum length is 1000
@@ -27,11 +27,11 @@ module OpenAI
       #   indicate where `image` should be edited. Must be a valid PNG file, less than
       #   4MB, and have the same dimensions as `image`.
       #
-      #   @return [IO, StringIO, nil]
-      optional :mask, IO
+      #   @return [Pathname, StringIO, nil]
+      optional :mask, OpenAI::Internal::Type::IOLike
 
       # @!parse
-      #   # @return [IO, StringIO]
+      #   # @return [Pathname, StringIO]
       #   attr_writer :mask
 
       # @!attribute model
@@ -75,9 +75,9 @@ module OpenAI
       #   attr_writer :user
 
       # @!parse
-      #   # @param image [IO, StringIO]
+      #   # @param image [Pathname, StringIO]
       #   # @param prompt [String]
-      #   # @param mask [IO, StringIO]
+      #   # @param mask [Pathname, StringIO]
       #   # @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
       #   # @param n [Integer, nil]
       #   # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]

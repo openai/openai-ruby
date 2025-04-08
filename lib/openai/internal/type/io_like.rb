@@ -7,26 +7,31 @@ module OpenAI
       #
       # @abstract
       #
-      # When we don't know what to expect for the value.
-      class Unknown
+      # Either `Pathname` or `StringIO`.
+      class IOLike
         extend OpenAI::Internal::Type::Converter
 
-        # rubocop:disable Lint/UnusedMethodArgument
+        # @param other [Object]
+        #
+        # @return [Boolean]
+        def self.===(other)
+          case other
+          in StringIO | Pathname | IO
+            true
+          else
+            false
+          end
+        end
 
         # @param other [Object]
         #
         # @return [Boolean]
-        def self.===(other) = true
-
-        # @param other [Object]
-        #
-        # @return [Boolean]
-        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::Unknown
+        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::IOLike
 
         class << self
           # @api private
           #
-          # @param value [Object]
+          # @param value [StringIO, String, Object]
           #
           # @param state [Hash{Symbol=>Object}] .
           #
@@ -36,26 +41,34 @@ module OpenAI
           #
           #   @option state [Integer] :branched
           #
-          # @return [Object]
+          # @return [StringIO, Object]
           def coerce(value, state:)
-            state.fetch(:exactness)[:yes] += 1
-            value
+            exactness = state.fetch(:exactness)
+            case value
+            in String
+              exactness[:yes] += 1
+              StringIO.new(value)
+            in StringIO
+              exactness[:yes] += 1
+              value
+            else
+              exactness[:no] += 1
+              value
+            end
           end
 
           # @!parse
           #   # @api private
           #   #
-          #   # @param value [Object]
+          #   # @param value [Pathname, StringIO, IO, String, Object]
           #   #
           #   # @param state [Hash{Symbol=>Object}] .
           #   #
           #   #   @option state [Boolean] :can_retry
           #   #
-          #   # @return [Object]
+          #   # @return [Pathname, StringIO, IO, String, Object]
           #   def dump(value, state:) = super
         end
-
-        # rubocop:enable Lint/UnusedMethodArgument
       end
     end
   end

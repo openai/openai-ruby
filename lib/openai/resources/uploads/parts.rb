@@ -19,7 +19,7 @@ module OpenAI
         # @overload create(upload_id, data:, request_options: {})
         #
         # @param upload_id [String]
-        # @param data [IO, StringIO]
+        # @param data [Pathname, StringIO]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::Uploads::UploadPart]

@@ -35,7 +35,7 @@ module OpenAI
               request: OpenAI::Internal::Transport::PooledNetRequester::RequestShape,
               blk: T.proc.params(arg0: String).void
             )
-              .returns(Net::HTTPGenericRequest)
+              .returns([Net::HTTPGenericRequest, T.proc.void])
           end
           def build_request(request, &blk); end
         end

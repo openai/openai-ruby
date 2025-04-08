@@ -32,10 +32,13 @@ module OpenAI
 
         def coerce: (
           top value,
-          state: OpenAI::Internal::Type::Converter::state
+          state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> top
 
-        def dump: (top value) -> top
+        def dump: (
+          top value,
+          state: OpenAI::Internal::Type::Converter::dump_state
+        ) -> top
       end
     end
   end

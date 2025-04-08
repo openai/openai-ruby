@@ -45,8 +45,12 @@ module OpenAI
           #   #
           #   # @param value [Boolean, Object]
           #   #
+          #   # @param state [Hash{Symbol=>Object}] .
+          #   #
+          #   #   @option state [Boolean] :can_retry
+          #   #
           #   # @return [Boolean, Object]
-          #   def dump(value) = super
+          #   def dump(value, state:) = super
         end
       end
     end

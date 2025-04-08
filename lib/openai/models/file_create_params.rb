@@ -11,8 +11,8 @@ module OpenAI
       # @!attribute file
       #   The File object (not file name) to be uploaded.
       #
-      #   @return [IO, StringIO]
-      required :file, IO
+      #   @return [Pathname, StringIO]
+      required :file, OpenAI::Internal::Type::IOLike
 
       # @!attribute purpose
       #   The intended purpose of the uploaded file. One of: - `assistants`: Used in the
@@ -24,7 +24,7 @@ module OpenAI
       required :purpose, enum: -> { OpenAI::Models::FilePurpose }
 
       # @!parse
-      #   # @param file [IO, StringIO]
+      #   # @param file [Pathname, StringIO]
       #   # @param purpose [Symbol, OpenAI::Models::FilePurpose]
       #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       #   #

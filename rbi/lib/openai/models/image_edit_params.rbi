@@ -8,7 +8,7 @@ module OpenAI
 
       # The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask
       # is not provided, image must have transparency, which will be used as the mask.
-      sig { returns(T.any(IO, StringIO)) }
+      sig { returns(T.any(Pathname, StringIO)) }
       attr_accessor :image
 
       # A text description of the desired image(s). The maximum length is 1000
@@ -19,10 +19,10 @@ module OpenAI
       # An additional image whose fully transparent areas (e.g. where alpha is zero)
       # indicate where `image` should be edited. Must be a valid PNG file, less than
       # 4MB, and have the same dimensions as `image`.
-      sig { returns(T.nilable(T.any(IO, StringIO))) }
+      sig { returns(T.nilable(T.any(Pathname, StringIO))) }
       attr_reader :mask
 
-      sig { params(mask: T.any(IO, StringIO)).void }
+      sig { params(mask: T.any(Pathname, StringIO)).void }
       attr_writer :mask
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
@@ -56,9 +56,9 @@ module OpenAI
 
       sig do
         params(
-          image: T.any(IO, StringIO),
+          image: T.any(Pathname, StringIO),
           prompt: String,
-          mask: T.any(IO, StringIO),
+          mask: T.any(Pathname, StringIO),
           model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           response_format: T.nilable(OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol),
@@ -83,9 +83,9 @@ module OpenAI
         override
           .returns(
             {
-              image: T.any(IO, StringIO),
+              image: T.any(Pathname, StringIO),
               prompt: String,
-              mask: T.any(IO, StringIO),
+              mask: T.any(Pathname, StringIO),
               model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
               n: T.nilable(Integer),
               response_format: T.nilable(OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol),

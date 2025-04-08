@@ -12,8 +12,8 @@ module OpenAI
       #   The image to use as the basis for the variation(s). Must be a valid PNG file,
       #   less than 4MB, and square.
       #
-      #   @return [IO, StringIO]
-      required :image, IO
+      #   @return [Pathname, StringIO]
+      required :image, OpenAI::Internal::Type::IOLike
 
       # @!attribute model
       #   The model to use for image generation. Only `dall-e-2` is supported at this
@@ -59,7 +59,7 @@ module OpenAI
       #   attr_writer :user
 
       # @!parse
-      #   # @param image [IO, StringIO]
+      #   # @param image [Pathname, StringIO]
       #   # @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
       #   # @param n [Integer, nil]
       #   # @param response_format [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil]
