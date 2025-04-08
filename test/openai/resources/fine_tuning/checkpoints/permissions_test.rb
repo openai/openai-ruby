@@ -50,6 +50,8 @@ class OpenAI::Test::Resources::FineTuning::Checkpoints::PermissionsTest < OpenAI
   end
 
   def test_delete
+    skip("OpenAPI spec is slightly incorrect")
+
     response =
       @openai.fine_tuning.checkpoints.permissions.delete("ft:gpt-4o-mini-2024-07-18:org:weather:B7R9VjQd")
 
