@@ -7,8 +7,7 @@ module OpenAI
         sig { returns(OpenAI::Resources::Chat::Completions::Messages) }
         attr_reader :messages
 
-        # See {OpenAI::Resources::Chat::Completions#create_streaming} for streaming
-        # counterpart.
+        # See {OpenAI::Resources::Chat::Completions#stream_raw} for streaming counterpart.
         #
         # **Starting a new project?** We recommend trying
         # [Responses](https://platform.openai.com/docs/api-reference/responses) to take
@@ -271,8 +270,8 @@ module OpenAI
           # about the
           # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           web_search_options: nil,
-          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
-          # `#create` for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
+          # for streaming and non-streaming use cases, respectively.
           stream: false,
           request_options: {}
         ); end
@@ -355,7 +354,7 @@ module OpenAI
           )
             .returns(OpenAI::Internal::Stream[OpenAI::Models::Chat::ChatCompletionChunk])
         end
-        def create_streaming(
+        def stream_raw(
           # A list of messages comprising the conversation so far. Depending on the
           # [model](https://platform.openai.com/docs/models) you use, different message
           # types (modalities) are supported, like
@@ -539,8 +538,8 @@ module OpenAI
           # about the
           # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           web_search_options: nil,
-          # There is no need to provide `stream:`. Instead, use `#create_streaming` or
-          # `#create` for streaming and non-streaming use cases, respectively.
+          # There is no need to provide `stream:`. Instead, use `#stream_raw` or `#create`
+          # for streaming and non-streaming use cases, respectively.
           stream: true,
           request_options: {}
         ); end
