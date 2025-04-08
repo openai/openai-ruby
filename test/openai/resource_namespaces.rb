@@ -18,10 +18,21 @@ module OpenAI
         end
       end
 
+      module Checkpoints
+      end
+
       module Completions
       end
 
+      module Evals
+        module Runs
+        end
+      end
+
       module FineTuning
+        module Checkpoints
+        end
+
         module Jobs
         end
       end

@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    class EvalAPIError = Evals::EvalAPIError
+
+    module Evals
+      type eval_api_error = { code: String, message: String }
+
+      class EvalAPIError < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: String
+
+        attr_accessor message: String
+
+        def initialize: (code: String, message: String) -> void
+
+        def to_hash: -> OpenAI::Models::Evals::eval_api_error
+      end
+    end
+  end
+end

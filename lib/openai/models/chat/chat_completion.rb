@@ -5,7 +5,7 @@ module OpenAI
     module Chat
       # @see OpenAI::Resources::Chat::Completions#create
       #
-      # @see OpenAI::Resources::Chat::Completions#stream_raw
+      # @see OpenAI::Resources::Chat::Completions#create_streaming
       class ChatCompletion < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   A unique identifier for the chat completion.

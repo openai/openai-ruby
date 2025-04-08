@@ -1,0 +1,28 @@
+module OpenAI
+  module Resources
+    class Evals
+      class Runs
+        class OutputItems
+          def retrieve: (
+            String output_item_id,
+            eval_id: String,
+            run_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse
+
+          def list: (
+            String run_id,
+            eval_id: String,
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Evals::Runs::OutputItemListParams::order,
+            ?status: OpenAI::Models::Evals::Runs::OutputItemListParams::status,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Evals::Runs::OutputItemListResponse]
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

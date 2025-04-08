@@ -9,26 +9,26 @@ module OpenAI
 
       variant enum: -> { OpenAI::Models::ChatModel }
 
-      variant const: -> { OpenAI::Models::AllModels::O1_PRO }
+      variant enum: -> { OpenAI::Models::AllModels::ResponsesOnlyModel }
 
-      variant const: -> { OpenAI::Models::AllModels::O1_PRO_2025_03_19 }
+      module ResponsesOnlyModel
+        extend OpenAI::Internal::Type::Enum
 
-      variant const: -> { OpenAI::Models::AllModels::COMPUTER_USE_PREVIEW }
+        O1_PRO = :"o1-pro"
+        O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
+        COMPUTER_USE_PREVIEW = :"computer-use-preview"
+        COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
 
-      variant const: -> { OpenAI::Models::AllModels::COMPUTER_USE_PREVIEW_2025_03_11 }
+        finalize!
+
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
+      end
 
       # @!parse
-      #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol)]
+      #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::AllModels::ResponsesOnlyModel)]
       #   def self.variants; end
-
-      # @!group
-
-      O1_PRO = :"o1-pro"
-      O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
-      COMPUTER_USE_PREVIEW = :"computer-use-preview"
-      COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
-
-      # @!endgroup
     end
   end
 end

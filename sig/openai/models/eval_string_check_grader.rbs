@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    type eval_string_check_grader =
+      {
+        input: String,
+        name: String,
+        operation: OpenAI::Models::EvalStringCheckGrader::operation,
+        reference: String,
+        type: :string_check
+      }
+
+    class EvalStringCheckGrader < OpenAI::Internal::Type::BaseModel
+      attr_accessor input: String
+
+      attr_accessor name: String
+
+      attr_accessor operation: OpenAI::Models::EvalStringCheckGrader::operation
+
+      attr_accessor reference: String
+
+      attr_accessor type: :string_check
+
+      def initialize: (
+        input: String,
+        name: String,
+        operation: OpenAI::Models::EvalStringCheckGrader::operation,
+        reference: String,
+        ?type: :string_check
+      ) -> void
+
+      def to_hash: -> OpenAI::Models::eval_string_check_grader
+
+      type operation = :eq | :ne | :like | :ilike
+
+      module Operation
+        extend OpenAI::Internal::Type::Enum
+
+        EQ: :eq
+        NE: :ne
+        LIKE: :like
+        ILIKE: :ilike
+
+        def self?.values: -> ::Array[OpenAI::Models::EvalStringCheckGrader::operation]
+      end
+    end
+  end
+end

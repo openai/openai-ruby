@@ -1,0 +1,67 @@
+module OpenAI
+  module Models
+    type eval_retrieve_response =
+      {
+        id: String,
+        created_at: Integer,
+        data_source_config: OpenAI::Models::EvalRetrieveResponse::data_source_config,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        object: :eval,
+        share_with_openai: bool,
+        testing_criteria: ::Array[OpenAI::Models::EvalRetrieveResponse::testing_criterion]
+      }
+
+    class EvalRetrieveResponse < OpenAI::Internal::Type::BaseModel
+      attr_accessor id: String
+
+      attr_accessor created_at: Integer
+
+      attr_accessor data_source_config: OpenAI::Models::EvalRetrieveResponse::data_source_config
+
+      attr_accessor metadata: OpenAI::Models::metadata?
+
+      attr_accessor name: String
+
+      attr_accessor object: :eval
+
+      attr_accessor share_with_openai: bool
+
+      attr_accessor testing_criteria: ::Array[OpenAI::Models::EvalRetrieveResponse::testing_criterion]
+
+      def initialize: (
+        id: String,
+        created_at: Integer,
+        data_source_config: OpenAI::Models::EvalRetrieveResponse::data_source_config,
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        share_with_openai: bool,
+        testing_criteria: ::Array[OpenAI::Models::EvalRetrieveResponse::testing_criterion],
+        ?object: :eval
+      ) -> void
+
+      def to_hash: -> OpenAI::Models::eval_retrieve_response
+
+      type data_source_config =
+        OpenAI::Models::EvalCustomDataSourceConfig
+        | OpenAI::Models::EvalStoredCompletionsDataSourceConfig
+
+      module DataSourceConfig
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
+      end
+
+      type testing_criterion =
+        OpenAI::Models::EvalLabelModelGrader
+        | OpenAI::Models::EvalStringCheckGrader
+        | OpenAI::Models::EvalTextSimilarityGrader
+
+      module TestingCriterion
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> [OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader]
+      end
+    end
+  end
+end
