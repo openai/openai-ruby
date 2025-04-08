@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # @see OpenAI::Resources::Responses#create
       #
-      # @see OpenAI::Resources::Responses#create_streaming
+      # @see OpenAI::Resources::Responses#stream_raw
       class Response < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   Unique identifier for this Response.
