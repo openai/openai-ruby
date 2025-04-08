@@ -11,7 +11,7 @@ module OpenAI
         #
         # @overload create(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
-        # @param file [IO, StringIO]
+        # @param file [Pathname, StringIO]
         # @param model [String, Symbol, OpenAI::Models::AudioModel]
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
         # @param language [String]
@@ -47,7 +47,7 @@ module OpenAI
         #
         # @overload create_streaming(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
-        # @param file [IO, StringIO]
+        # @param file [Pathname, StringIO]
         # @param model [String, Symbol, OpenAI::Models::AudioModel]
         # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
         # @param language [String]

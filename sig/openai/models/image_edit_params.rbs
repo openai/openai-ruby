@@ -2,9 +2,9 @@ module OpenAI
   module Models
     type image_edit_params =
       {
-        image: (IO | StringIO),
+        image: (Pathname | StringIO),
         prompt: String,
-        mask: (IO | StringIO),
+        mask: (Pathname | StringIO),
         model: OpenAI::Models::ImageEditParams::model?,
         n: Integer?,
         response_format: OpenAI::Models::ImageEditParams::response_format?,
@@ -17,13 +17,13 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      attr_accessor image: IO | StringIO
+      attr_accessor image: Pathname | StringIO
 
       attr_accessor prompt: String
 
-      attr_reader mask: (IO | StringIO)?
+      attr_reader mask: (Pathname | StringIO)?
 
-      def mask=: (IO | StringIO) -> (IO | StringIO)
+      def mask=: (Pathname | StringIO) -> (Pathname | StringIO)
 
       attr_accessor model: OpenAI::Models::ImageEditParams::model?
 
@@ -38,9 +38,9 @@ module OpenAI
       def user=: (String) -> String
 
       def initialize: (
-        image: IO | StringIO,
+        image: Pathname | StringIO,
         prompt: String,
-        ?mask: IO | StringIO,
+        ?mask: Pathname | StringIO,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
         ?response_format: OpenAI::Models::ImageEditParams::response_format?,

@@ -2,7 +2,7 @@ module OpenAI
   module Resources
     class Files
       def create: (
-        file: IO | StringIO,
+        file: Pathname | StringIO,
         purpose: OpenAI::Models::file_purpose,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Models::FileObject

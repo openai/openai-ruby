@@ -99,12 +99,16 @@ module OpenAI
         #
         # @param value [Hash{Object=>Object}, Object]
         #
+        # @param state [Hash{Symbol=>Object}] .
+        #
+        #   @option state [Boolean] :can_retry
+        #
         # @return [Hash{Symbol=>Object}, Object]
-        def dump(value)
+        def dump(value, state:)
           target = item_type
           if value.is_a?(Hash)
             value.transform_values do
-              OpenAI::Internal::Type::Converter.dump(target, _1)
+              OpenAI::Internal::Type::Converter.dump(target, _1, state: state)
             end
           else
             super

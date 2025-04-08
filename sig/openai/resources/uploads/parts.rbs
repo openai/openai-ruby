@@ -4,7 +4,7 @@ module OpenAI
       class Parts
         def create: (
           String upload_id,
-          data: IO | StringIO,
+          data: Pathname | StringIO,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Models::Uploads::UploadPart
 

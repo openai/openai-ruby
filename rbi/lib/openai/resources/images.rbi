@@ -6,7 +6,7 @@ module OpenAI
       # Creates a variation of a given image.
       sig do
         params(
-          image: T.any(IO, StringIO),
+          image: T.any(Pathname, StringIO),
           model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
@@ -42,9 +42,9 @@ module OpenAI
       # Creates an edited or extended image given an original image and a prompt.
       sig do
         params(
-          image: T.any(IO, StringIO),
+          image: T.any(Pathname, StringIO),
           prompt: String,
-          mask: T.any(IO, StringIO),
+          mask: T.any(Pathname, StringIO),
           model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           response_format: T.nilable(OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol),

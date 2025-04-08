@@ -27,7 +27,7 @@ module OpenAI
       #
       # @overload create(file:, purpose:, request_options: {})
       #
-      # @param file [IO, StringIO]
+      # @param file [Pathname, StringIO]
       # @param purpose [Symbol, OpenAI::Models::FilePurpose]
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #

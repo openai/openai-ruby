@@ -17,10 +17,13 @@ module OpenAI
 
         def coerce: (
           ::Array[top] | top value,
-          state: OpenAI::Internal::Type::Converter::state
+          state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> (::Array[top] | top)
 
-        def dump: (::Array[top] | top value) -> (::Array[top] | top)
+        def dump: (
+          ::Array[top] | top value,
+          state: OpenAI::Internal::Type::Converter::dump_state
+        ) -> (::Array[top] | top)
 
         def item_type: -> Elem
 

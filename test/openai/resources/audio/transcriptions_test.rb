@@ -4,8 +4,7 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Audio::TranscriptionsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response =
-      @openai.audio.transcriptions.create(file: StringIO.new("some file contents"), model: :"whisper-1")
+    response = @openai.audio.transcriptions.create(file: Pathname(__FILE__), model: :"whisper-1")
 
     assert_pattern do
       response => OpenAI::Models::Audio::TranscriptionCreateResponse

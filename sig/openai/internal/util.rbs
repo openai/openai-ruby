@@ -73,13 +73,27 @@ module OpenAI
         | ::Array[(String | Integer)?])?] headers
       ) -> ::Hash[String, String]
 
+      class SerializationAdapter
+        attr_reader inner: Pathname | IO
+
+        def to_json: (*top a) -> String
+
+        def to_yaml: (*top a) -> String
+
+        def initialize: (Pathname | IO inner) -> void
+      end
+
       class ReadIOAdapter
+        def close?: -> bool?
+
+        def close: -> void
+
         private def read_enum: (Integer? max_len) -> String
 
         def read: (?Integer? max_len, ?String? out_string) -> String?
 
         def initialize: (
-          String | IO | StringIO | Enumerable[String] stream
+          String | Pathname | StringIO | Enumerable[String] src
         ) {
           (String arg0) -> void
         } -> void
@@ -93,7 +107,8 @@ module OpenAI
         Enumerator::Yielder y,
         boundary: String,
         key: Symbol | String,
-        val: top
+        val: top,
+        closing: ::Array[^-> void]
       ) -> void
 
       def self?.encode_multipart_streaming: (
