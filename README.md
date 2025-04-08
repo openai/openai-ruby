@@ -182,6 +182,13 @@ After Solargraph is installed, **you must populate its index** either via the pr
 bundle exec solargraph gems
 ```
 
+Note: if you had installed the gem either using a `git:` or `github:` URL, or had vendored the gem using bundler, you will need to set up your [`.solargraph.yml`](https://solargraph.org/guides/configuration) to include the path to the gem's `lib` directory.
+
+```yaml
+include:
+  - 'vendor/bundle/ruby/*/gems/openai-*/lib/**/*.rb'
+```
+
 Otherwise Solargraph will not be able to provide type information or auto-completion for any non-indexed libraries.
 
 ### Sorbet
