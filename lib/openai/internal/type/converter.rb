@@ -149,9 +149,9 @@ module OpenAI
                 if value.is_a?(Integer)
                   exactness[:yes] += 1
                   return value
-                elsif strictness == :strong
+                elsif strictness == :strong && Integer(value, exception: false) != value
                   message = "no implicit conversion of #{value.class} into #{target.inspect}"
-                  raise TypeError.new(message)
+                  raise value.is_a?(Numeric) ? ArgumentError.new(message) : TypeError.new(message)
                 else
                   Kernel.then do
                     return Integer(value).tap { exactness[:maybe] += 1 }
@@ -197,12 +197,20 @@ module OpenAI
               else
               end
             in Symbol
-              if (value.is_a?(Symbol) || value.is_a?(String)) && value.to_sym == target
-                exactness[:yes] += 1
-                return target
-              elsif strictness == :strong
-                message = "cannot convert non-matching #{value.class} into #{target.inspect}"
-                raise ArgumentError.new(message)
+              case value
+              in Symbol | String
+                if value.to_sym == target
+                  exactness[:yes] += 1
+                  return target
+                else
+                  exactness[:maybe] += 1
+                  return value
+                end
+              else
+                if strictness == :strong
+                  message = "cannot convert non-matching #{value.class} into #{target.inspect}"
+                  raise ArgumentError.new(message)
+                end
               end
             else
             end

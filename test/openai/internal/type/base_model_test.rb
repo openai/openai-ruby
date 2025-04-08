@@ -111,7 +111,6 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
       [Integer, "one"] => TypeError,
       [Float, "one"] => TypeError,
       [String, Time] => TypeError,
-      [:a, "one"] => ArgumentError,
       [Date, "one"] => ArgumentError,
       [Time, "one"] => ArgumentError
     }
@@ -346,7 +345,7 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M2, {a: "1990-09-19", c: nil}] => [{yes: 2, maybe: 2}, {a: "1990-09-19", c: nil}],
 
       [M3, {c: "c", d: "d"}] => [{yes: 3}, {c: :c, d: :d}],
-      [M3, {c: "d", d: "c"}] => [{yes: 1, no: 2}, {c: "d", d: "c"}],
+      [M3, {c: "d", d: "c"}] => [{yes: 1, maybe: 2}, {c: "d", d: "c"}],
 
       [M4, {c: 2}] => [{yes: 5}, {c: 2}],
       [M4, {a: "1", c: 2}] => [{yes: 4, maybe: 1}, {a: "1", c: 2}],
@@ -404,7 +403,8 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
     cases = {
       M2.new({a: "1990-09-19", b: "1"}) => {a: Time.new(1990, 9, 19), b: TypeError},
       M2.new(a: "one", b: "one") => {a: ArgumentError, b: TypeError},
-      M2.new(a: nil, b: 2.0) => {a: TypeError, b: TypeError},
+      M2.new(a: nil, b: 2.0) => {a: TypeError},
+      M2.new(a: nil, b: 2.2) => {a: TypeError, b: ArgumentError},
 
       M3.new => {d: :d},
       M3.new(d: 1) => {d: ArgumentError},
@@ -520,8 +520,8 @@ class OpenAI::Test::UnionTest < Minitest::Test
       [U0, :""] => [{no: 1}, 0, :""],
 
       [U1, "a"] => [{yes: 1}, 1, :a],
-      [U1, "2"] => [{maybe: 1}, 2, 2],
-      [U1, :b] => [{no: 1}, 2, :b],
+      [U1, "2"] => [{maybe: 1}, 2, "2"],
+      [U1, :b] => [{maybe: 1}, 2, :b],
 
       [U2, {type: :a}] => [{yes: 3}, 0, {t: :a}],
       [U2, {type: "b"}] => [{yes: 3}, 0, {type: :b}],
