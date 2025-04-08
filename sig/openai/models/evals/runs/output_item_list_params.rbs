@@ -1,0 +1,77 @@
+module OpenAI
+  module Models
+    module Evals
+      module Runs
+        type output_item_list_params =
+          {
+            eval_id: String,
+            after: String,
+            limit: Integer,
+            order: OpenAI::Models::Evals::Runs::OutputItemListParams::order,
+            status: OpenAI::Models::Evals::Runs::OutputItemListParams::status
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class OutputItemListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor eval_id: String
+
+          attr_reader after: String?
+
+          def after=: (String) -> String
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader order: OpenAI::Models::Evals::Runs::OutputItemListParams::order?
+
+          def order=: (
+            OpenAI::Models::Evals::Runs::OutputItemListParams::order
+          ) -> OpenAI::Models::Evals::Runs::OutputItemListParams::order
+
+          attr_reader status: OpenAI::Models::Evals::Runs::OutputItemListParams::status?
+
+          def status=: (
+            OpenAI::Models::Evals::Runs::OutputItemListParams::status
+          ) -> OpenAI::Models::Evals::Runs::OutputItemListParams::status
+
+          def initialize: (
+            eval_id: String,
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Evals::Runs::OutputItemListParams::order,
+            ?status: OpenAI::Models::Evals::Runs::OutputItemListParams::status,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::Evals::Runs::output_item_list_params
+
+          type order = :asc | :desc
+
+          module Order
+            extend OpenAI::Internal::Type::Enum
+
+            ASC: :asc
+            DESC: :desc
+
+            def self?.values: -> ::Array[OpenAI::Models::Evals::Runs::OutputItemListParams::order]
+          end
+
+          type status = :fail | :pass
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            FAIL: :fail
+            PASS: :pass
+
+            def self?.values: -> ::Array[OpenAI::Models::Evals::Runs::OutputItemListParams::status]
+          end
+        end
+      end
+    end
+  end
+end

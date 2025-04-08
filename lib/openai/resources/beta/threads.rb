@@ -94,7 +94,8 @@ module OpenAI
           )
         end
 
-        # See {OpenAI::Resources::Beta::Threads#stream_raw} for streaming counterpart.
+        # See {OpenAI::Resources::Beta::Threads#create_and_run_streaming} for streaming
+        # counterpart.
         #
         # Create a thread and run it in one request.
         #
@@ -123,7 +124,7 @@ module OpenAI
         def create_and_run(params)
           parsed, options = OpenAI::Models::Beta::ThreadCreateAndRunParams.dump_request(params)
           if parsed[:stream]
-            message = "Please use `#stream_raw` for the streaming use case."
+            message = "Please use `#create_and_run_streaming` for the streaming use case."
             raise ArgumentError.new(message)
           end
           @client.request(
@@ -140,7 +141,7 @@ module OpenAI
         #
         # Create a thread and run it in one request.
         #
-        # @overload stream_raw(assistant_id:, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, response_format: nil, temperature: nil, thread: nil, tool_choice: nil, tool_resources: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
+        # @overload create_and_run_streaming(assistant_id:, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, response_format: nil, temperature: nil, thread: nil, tool_choice: nil, tool_resources: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
         #
         # @param assistant_id [String]
         # @param instructions [String, nil]
@@ -162,7 +163,7 @@ module OpenAI
         # @return [OpenAI::Internal::Stream<OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent>]
         #
         # @see OpenAI::Models::Beta::ThreadCreateAndRunParams
-        def stream_raw(params)
+        def create_and_run_streaming(params)
           parsed, options = OpenAI::Models::Beta::ThreadCreateAndRunParams.dump_request(params)
           unless parsed.fetch(:stream, true)
             message = "Please use `#create_and_run` for the non-streaming use case."

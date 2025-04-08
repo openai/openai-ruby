@@ -56,7 +56,11 @@ module OpenAI
         # available models.
         sig do
           returns(
-            T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol)
+            T.any(
+              String,
+              OpenAI::Models::ChatModel::TaggedSymbol,
+              OpenAI::Models::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+            )
           )
         end
         attr_accessor :model
@@ -225,7 +229,11 @@ module OpenAI
             incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Internal::AnyHash)),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::OrSymbol),
+            model: T.any(
+              String,
+              OpenAI::Models::ChatModel::OrSymbol,
+              OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol
+            ),
             output: T::Array[
               T.any(
                 OpenAI::Models::Responses::ResponseOutputMessage,
@@ -301,7 +309,11 @@ module OpenAI
                 incomplete_details: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails),
                 instructions: T.nilable(String),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.any(String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::TaggedSymbol),
+                model: T.any(
+                  String,
+                  OpenAI::Models::ChatModel::TaggedSymbol,
+                  OpenAI::Models::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+                ),
                 object: Symbol,
                 output: T::Array[
                   T.any(

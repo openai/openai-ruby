@@ -1,0 +1,45 @@
+module OpenAI
+  module Models
+    module Evals
+      type run_create_params =
+        {
+          data_source: OpenAI::Models::Evals::RunCreateParams::data_source,
+          metadata: OpenAI::Models::metadata?,
+          name: String
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class RunCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor data_source: OpenAI::Models::Evals::RunCreateParams::data_source
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        def initialize: (
+          data_source: OpenAI::Models::Evals::RunCreateParams::data_source,
+          ?metadata: OpenAI::Models::metadata?,
+          ?name: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> OpenAI::Models::Evals::run_create_params
+
+        type data_source =
+          OpenAI::Models::Evals::CreateEvalJSONLRunDataSource
+          | OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource
+
+        module DataSource
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
+        end
+      end
+    end
+  end
+end

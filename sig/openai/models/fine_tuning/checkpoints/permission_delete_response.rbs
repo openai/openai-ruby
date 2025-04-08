@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Checkpoints
+        type permission_delete_response =
+          { id: String, deleted: bool, object: :"checkpoint.permission" }
+
+        class PermissionDeleteResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor deleted: bool
+
+          attr_accessor object: :"checkpoint.permission"
+
+          def initialize: (
+            id: String,
+            deleted: bool,
+            ?object: :"checkpoint.permission"
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::Checkpoints::permission_delete_response
+        end
+      end
+    end
+  end
+end

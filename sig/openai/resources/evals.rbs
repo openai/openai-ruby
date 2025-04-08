@@ -1,0 +1,43 @@
+module OpenAI
+  module Resources
+    class Evals
+      attr_reader runs: OpenAI::Resources::Evals::Runs
+
+      def create: (
+        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
+        testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?share_with_openai: bool,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::EvalCreateResponse
+
+      def retrieve: (
+        String eval_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::EvalRetrieveResponse
+
+      def update: (
+        String eval_id,
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::EvalUpdateResponse
+
+      def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::EvalListParams::order,
+        ?order_by: OpenAI::Models::EvalListParams::order_by,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Models::EvalListResponse]
+
+      def delete: (
+        String eval_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::EvalDeleteResponse
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

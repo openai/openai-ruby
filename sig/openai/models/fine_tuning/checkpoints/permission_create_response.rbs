@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Checkpoints
+        type permission_create_response =
+          {
+            id: String,
+            created_at: Integer,
+            object: :"checkpoint.permission",
+            project_id: String
+          }
+
+        class PermissionCreateResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor object: :"checkpoint.permission"
+
+          attr_accessor project_id: String
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            project_id: String,
+            ?object: :"checkpoint.permission"
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::Checkpoints::permission_create_response
+        end
+      end
+    end
+  end
+end

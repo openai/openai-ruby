@@ -1,0 +1,22 @@
+module OpenAI
+  module Models
+    module Evals
+      type run_retrieve_params =
+        { eval_id: String } & OpenAI::Internal::Type::request_parameters
+
+      class RunRetrieveParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor eval_id: String
+
+        def initialize: (
+          eval_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> OpenAI::Models::Evals::run_retrieve_params
+      end
+    end
+  end
+end
