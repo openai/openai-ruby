@@ -24,7 +24,7 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Models::Responses::Response
 
-      def create_streaming: (
+      def stream_raw: (
         input: OpenAI::Models::Responses::ResponseCreateParams::input,
         model: OpenAI::Models::responses_model,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,

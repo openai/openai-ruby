@@ -73,7 +73,7 @@ We provide support for streaming responses using Server Side Events (SSE).
 
 ```ruby
 stream =
-  openai.chat.completions.create_streaming(
+  openai.chat.completions.stream_raw(
     messages: [{
       role: "user",
       content: "Say this is a test"
