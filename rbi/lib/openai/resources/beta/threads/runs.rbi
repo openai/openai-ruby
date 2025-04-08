@@ -8,7 +8,7 @@ module OpenAI
           sig { returns(OpenAI::Resources::Beta::Threads::Runs::Steps) }
           attr_reader :steps
 
-          # See {OpenAI::Resources::Beta::Threads::Runs#create_streaming} for streaming
+          # See {OpenAI::Resources::Beta::Threads::Runs#create_stream_raw} for streaming
           # counterpart.
           #
           # Create a run.
@@ -173,7 +173,7 @@ module OpenAI
             # Body param: Controls for how a thread will be truncated prior to the run. Use
             # this to control the intial context window of the run.
             truncation_strategy: nil,
-            # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+            # There is no need to provide `stream:`. Instead, use `#create_stream_raw` or
             # `#create` for streaming and non-streaming use cases, respectively.
             stream: false,
             request_options: {}
@@ -263,7 +263,7 @@ module OpenAI
                 ]
               )
           end
-          def create_streaming(
+          def create_stream_raw(
             # Path param: The ID of the thread to run.
             thread_id,
             # Body param: The ID of the
@@ -372,7 +372,7 @@ module OpenAI
             # Body param: Controls for how a thread will be truncated prior to the run. Use
             # this to control the intial context window of the run.
             truncation_strategy: nil,
-            # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+            # There is no need to provide `stream:`. Instead, use `#create_stream_raw` or
             # `#create` for streaming and non-streaming use cases, respectively.
             stream: true,
             request_options: {}
@@ -468,7 +468,7 @@ module OpenAI
             thread_id:,
             request_options: {}
           ); end
-          # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_streaming} for
+          # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_stream_raw} for
           # streaming counterpart.
           #
           # When a run has the `status: "requires_action"` and `required_action.type` is
@@ -495,7 +495,7 @@ module OpenAI
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
             # There is no need to provide `stream:`. Instead, use
-            # `#submit_tool_outputs_streaming` or `#submit_tool_outputs` for streaming and
+            # `#submit_tool_outputs_stream_raw` or `#submit_tool_outputs` for streaming and
             # non-streaming use cases, respectively.
             stream: false,
             request_options: {}
@@ -546,7 +546,7 @@ module OpenAI
                 ]
               )
           end
-          def submit_tool_outputs_streaming(
+          def submit_tool_outputs_stream_raw(
             # Path param: The ID of the run that requires the tool output submission.
             run_id,
             # Path param: The ID of the
@@ -556,7 +556,7 @@ module OpenAI
             # Body param: A list of tools for which the outputs are being submitted.
             tool_outputs:,
             # There is no need to provide `stream:`. Instead, use
-            # `#submit_tool_outputs_streaming` or `#submit_tool_outputs` for streaming and
+            # `#submit_tool_outputs_stream_raw` or `#submit_tool_outputs` for streaming and
             # non-streaming use cases, respectively.
             stream: true,
             request_options: {}
