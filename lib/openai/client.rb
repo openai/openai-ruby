@@ -66,6 +66,9 @@ module OpenAI
     # @return [OpenAI::Resources::Responses]
     attr_reader :responses
 
+    # @return [OpenAI::Resources::Evals]
+    attr_reader :evals
+
     # @api private
     #
     # @return [Hash{String=>String}]
@@ -138,6 +141,7 @@ module OpenAI
       @batches = OpenAI::Resources::Batches.new(client: self)
       @uploads = OpenAI::Resources::Uploads.new(client: self)
       @responses = OpenAI::Resources::Responses.new(client: self)
+      @evals = OpenAI::Resources::Evals.new(client: self)
     end
   end
 end

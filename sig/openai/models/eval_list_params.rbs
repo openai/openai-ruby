@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    type eval_list_params =
+      {
+        after: String,
+        limit: Integer,
+        order: OpenAI::Models::EvalListParams::order,
+        order_by: OpenAI::Models::EvalListParams::order_by
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class EvalListParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_reader after: String?
+
+      def after=: (String) -> String
+
+      attr_reader limit: Integer?
+
+      def limit=: (Integer) -> Integer
+
+      attr_reader order: OpenAI::Models::EvalListParams::order?
+
+      def order=: (
+        OpenAI::Models::EvalListParams::order
+      ) -> OpenAI::Models::EvalListParams::order
+
+      attr_reader order_by: OpenAI::Models::EvalListParams::order_by?
+
+      def order_by=: (
+        OpenAI::Models::EvalListParams::order_by
+      ) -> OpenAI::Models::EvalListParams::order_by
+
+      def initialize: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::EvalListParams::order,
+        ?order_by: OpenAI::Models::EvalListParams::order_by,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> OpenAI::Models::eval_list_params
+
+      type order = :asc | :desc
+
+      module Order
+        extend OpenAI::Internal::Type::Enum
+
+        ASC: :asc
+        DESC: :desc
+
+        def self?.values: -> ::Array[OpenAI::Models::EvalListParams::order]
+      end
+
+      type order_by = :created_at | :updated_at
+
+      module OrderBy
+        extend OpenAI::Internal::Type::Enum
+
+        CREATED_AT: :created_at
+        UPDATED_AT: :updated_at
+
+        def self?.values: -> ::Array[OpenAI::Models::EvalListParams::order_by]
+      end
+    end
+  end
+end

@@ -1,0 +1,184 @@
+module OpenAI
+  module Models
+    type eval_label_model_grader =
+      {
+        input: ::Array[OpenAI::Models::EvalLabelModelGrader::input],
+        labels: ::Array[String],
+        model: String,
+        name: String,
+        passing_labels: ::Array[String],
+        type: :label_model
+      }
+
+    class EvalLabelModelGrader < OpenAI::Internal::Type::BaseModel
+      attr_accessor input: ::Array[OpenAI::Models::EvalLabelModelGrader::input]
+
+      attr_accessor labels: ::Array[String]
+
+      attr_accessor model: String
+
+      attr_accessor name: String
+
+      attr_accessor passing_labels: ::Array[String]
+
+      attr_accessor type: :label_model
+
+      def initialize: (
+        input: ::Array[OpenAI::Models::EvalLabelModelGrader::input],
+        labels: ::Array[String],
+        model: String,
+        name: String,
+        passing_labels: ::Array[String],
+        ?type: :label_model
+      ) -> void
+
+      def to_hash: -> OpenAI::Models::eval_label_model_grader
+
+      type input =
+        OpenAI::Models::EvalLabelModelGrader::Input::Assistant
+        | OpenAI::Models::EvalLabelModelGrader::Input::InputMessage
+
+      module Input
+        extend OpenAI::Internal::Type::Union
+
+        type input_message =
+          {
+            content: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content,
+            role: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::role,
+            type: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::type_
+          }
+
+        class InputMessage < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content
+
+          attr_accessor role: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::role
+
+          attr_accessor type: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::type_
+
+          def initialize: (
+            content: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content,
+            role: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::role,
+            type: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::type_
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::EvalLabelModelGrader::Input::input_message
+
+          type content =
+            {
+              text: String,
+              type: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::type_
+            }
+
+          class Content < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::type_
+
+            def initialize: (
+              text: String,
+              type: OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::type_
+            ) -> void
+
+            def to_hash: -> OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::content
+
+            type type_ = :input_text
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              INPUT_TEXT: :input_text
+
+              def self?.values: -> ::Array[OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::type_]
+            end
+          end
+
+          type role = :user | :system | :developer
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            USER: :user
+            SYSTEM: :system
+            DEVELOPER: :developer
+
+            def self?.values: -> ::Array[OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::role]
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::type_]
+          end
+        end
+
+        type assistant =
+          {
+            content: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content,
+            role: :assistant,
+            type: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::type_
+          }
+
+        class Assistant < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content
+
+          attr_accessor role: :assistant
+
+          attr_accessor type: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::type_
+
+          def initialize: (
+            content: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content,
+            type: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::type_,
+            ?role: :assistant
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::EvalLabelModelGrader::Input::assistant
+
+          type content =
+            {
+              text: String,
+              type: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::type_
+            }
+
+          class Content < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::type_
+
+            def initialize: (
+              text: String,
+              type: OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::type_
+            ) -> void
+
+            def to_hash: -> OpenAI::Models::EvalLabelModelGrader::Input::Assistant::content
+
+            type type_ = :output_text
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              OUTPUT_TEXT: :output_text
+
+              def self?.values: -> ::Array[OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::type_]
+            end
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Models::EvalLabelModelGrader::Input::Assistant::type_]
+          end
+        end
+
+        def self?.variants: -> [OpenAI::Models::EvalLabelModelGrader::Input::Assistant, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage]
+      end
+    end
+  end
+end

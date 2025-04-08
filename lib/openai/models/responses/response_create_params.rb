@@ -5,7 +5,7 @@ module OpenAI
     module Responses
       # @see OpenAI::Resources::Responses#create
       #
-      # @see OpenAI::Resources::Responses#stream_raw
+      # @see OpenAI::Resources::Responses#create_streaming
       class ResponseCreateParams < OpenAI::Internal::Type::BaseModel
         # @!parse
         #   extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -32,7 +32,7 @@ module OpenAI
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
         #   available models.
         #
-        #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel]
+        #   @return [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel]
         required :model, union: -> { OpenAI::Models::ResponsesModel }
 
         # @!attribute include
@@ -203,7 +203,7 @@ module OpenAI
 
         # @!parse
         #   # @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>]
-        #   # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel]
+        #   # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel]
         #   # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         #   # @param instructions [String, nil]
         #   # @param max_output_tokens [Integer, nil]

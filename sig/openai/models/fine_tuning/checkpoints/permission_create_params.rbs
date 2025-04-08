@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Checkpoints
+        type permission_create_params =
+          { project_ids: ::Array[String] }
+          & OpenAI::Internal::Type::request_parameters
+
+        class PermissionCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor project_ids: ::Array[String]
+
+          def initialize: (
+            project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::FineTuning::Checkpoints::permission_create_params
+        end
+      end
+    end
+  end
+end
