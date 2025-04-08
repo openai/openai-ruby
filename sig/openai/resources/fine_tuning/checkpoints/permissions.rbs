@@ -1,0 +1,31 @@
+module OpenAI
+  module Resources
+    class FineTuning
+      class Checkpoints
+        class Permissions
+          def create: (
+            String fine_tuned_model_checkpoint,
+            project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::Page[OpenAI::Models::FineTuning::Checkpoints::PermissionCreateResponse]
+
+          def retrieve: (
+            String fine_tuned_model_checkpoint,
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::order,
+            ?project_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
+
+          def delete: (
+            String fine_tuned_model_checkpoint,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    type eval_delete_response =
+      { deleted: bool, eval_id: String, object: String }
+
+    class EvalDeleteResponse < OpenAI::Internal::Type::BaseModel
+      attr_accessor deleted: bool
+
+      attr_accessor eval_id: String
+
+      attr_accessor object: String
+
+      def initialize: (deleted: bool, eval_id: String, object: String) -> void
+
+      def to_hash: -> OpenAI::Models::eval_delete_response
+    end
+  end
+end

@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    type eval_custom_data_source_config =
+      { schema: ::Hash[Symbol, top], type: :custom }
+
+    class EvalCustomDataSourceConfig < OpenAI::Internal::Type::BaseModel
+      attr_accessor schema: ::Hash[Symbol, top]
+
+      attr_accessor type: :custom
+
+      def initialize: (schema: ::Hash[Symbol, top], ?type: :custom) -> void
+
+      def to_hash: -> OpenAI::Models::eval_custom_data_source_config
+    end
+  end
+end

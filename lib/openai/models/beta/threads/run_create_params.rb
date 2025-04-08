@@ -6,7 +6,7 @@ module OpenAI
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Runs#create
         #
-        # @see OpenAI::Resources::Beta::Threads::Runs#create_stream_raw
+        # @see OpenAI::Resources::Beta::Threads::Runs#create_streaming
         class RunCreateParams < OpenAI::Internal::Type::BaseModel
           # @!parse
           #   extend OpenAI::Internal::Type::RequestParameters::Converter

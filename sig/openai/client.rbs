@@ -42,6 +42,8 @@ module OpenAI
 
     attr_reader responses: OpenAI::Resources::Responses
 
+    attr_reader evals: OpenAI::Resources::Evals
+
     private def auth_headers: -> ::Hash[String, String]
 
     def initialize: (

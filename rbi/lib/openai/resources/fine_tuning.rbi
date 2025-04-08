@@ -6,6 +6,9 @@ module OpenAI
       sig { returns(OpenAI::Resources::FineTuning::Jobs) }
       attr_reader :jobs
 
+      sig { returns(OpenAI::Resources::FineTuning::Checkpoints) }
+      attr_reader :checkpoints
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:); end

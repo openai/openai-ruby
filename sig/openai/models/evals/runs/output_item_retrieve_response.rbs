@@ -1,0 +1,164 @@
+module OpenAI
+  module Models
+    module Evals
+      module Runs
+        type output_item_retrieve_response =
+          {
+            id: String,
+            created_at: Integer,
+            datasource_item: ::Hash[Symbol, top],
+            datasource_item_id: Integer,
+            eval_id: String,
+            object: :"eval.run.output_item",
+            results: ::Array[::Hash[Symbol, top]],
+            run_id: String,
+            sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
+            status: String
+          }
+
+        class OutputItemRetrieveResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor created_at: Integer
+
+          attr_accessor datasource_item: ::Hash[Symbol, top]
+
+          attr_accessor datasource_item_id: Integer
+
+          attr_accessor eval_id: String
+
+          attr_accessor object: :"eval.run.output_item"
+
+          attr_accessor results: ::Array[::Hash[Symbol, top]]
+
+          attr_accessor run_id: String
+
+          attr_accessor sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample
+
+          attr_accessor status: String
+
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            datasource_item: ::Hash[Symbol, top],
+            datasource_item_id: Integer,
+            eval_id: String,
+            results: ::Array[::Hash[Symbol, top]],
+            run_id: String,
+            sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
+            status: String,
+            ?object: :"eval.run.output_item"
+          ) -> void
+
+          def to_hash: -> OpenAI::Models::Evals::Runs::output_item_retrieve_response
+
+          type sample =
+            {
+              error: OpenAI::Models::Evals::EvalAPIError,
+              finish_reason: String,
+              input: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input],
+              max_completion_tokens: Integer,
+              model: String,
+              output: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output],
+              seed: Integer,
+              temperature: Float,
+              top_p: Float,
+              usage: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
+            }
+
+          class Sample < OpenAI::Internal::Type::BaseModel
+            attr_accessor error: OpenAI::Models::Evals::EvalAPIError
+
+            attr_accessor finish_reason: String
+
+            attr_accessor input: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input]
+
+            attr_accessor max_completion_tokens: Integer
+
+            attr_accessor model: String
+
+            attr_accessor output: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output]
+
+            attr_accessor seed: Integer
+
+            attr_accessor temperature: Float
+
+            attr_accessor top_p: Float
+
+            attr_accessor usage: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
+
+            def initialize: (
+              error: OpenAI::Models::Evals::EvalAPIError,
+              finish_reason: String,
+              input: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input],
+              max_completion_tokens: Integer,
+              model: String,
+              output: ::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output],
+              seed: Integer,
+              temperature: Float,
+              top_p: Float,
+              usage: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
+            ) -> void
+
+            def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::sample
+
+            type input = { content: String, role: String }
+
+            class Input < OpenAI::Internal::Type::BaseModel
+              attr_accessor content: String
+
+              attr_accessor role: String
+
+              def initialize: (content: String, role: String) -> void
+
+              def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::input
+            end
+
+            type output = { content: String, role: String }
+
+            class Output < OpenAI::Internal::Type::BaseModel
+              attr_reader content: String?
+
+              def content=: (String) -> String
+
+              attr_reader role: String?
+
+              def role=: (String) -> String
+
+              def initialize: (?content: String, ?role: String) -> void
+
+              def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::output
+            end
+
+            type usage =
+              {
+                cached_tokens: Integer,
+                completion_tokens: Integer,
+                prompt_tokens: Integer,
+                total_tokens: Integer
+              }
+
+            class Usage < OpenAI::Internal::Type::BaseModel
+              attr_accessor cached_tokens: Integer
+
+              attr_accessor completion_tokens: Integer
+
+              attr_accessor prompt_tokens: Integer
+
+              attr_accessor total_tokens: Integer
+
+              def initialize: (
+                cached_tokens: Integer,
+                completion_tokens: Integer,
+                prompt_tokens: Integer,
+                total_tokens: Integer
+              ) -> void
+
+              def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::usage
+            end
+          end
+        end
+      end
+    end
+  end
+end
