@@ -92,7 +92,9 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
       [String, "one"] => "one",
       [String, :one] => :one,
       [:a, :b] => :b,
-      [:a, "a"] => "a"
+      [:a, "a"] => "a",
+      [String, StringIO.new("one")] => "one",
+      [String, Pathname(__FILE__)] => OpenAI::Internal::Util::SerializationAdapter
     }
 
     cases.each do
@@ -119,6 +121,34 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
       state = {strictness: :strong, exactness: {yes: 0, no: 0, maybe: 0}, branched: 0}
       assert_raises(_2) do
         OpenAI::Internal::Type::Converter.coerce(target, input, state: state)
+      end
+    end
+  end
+
+  def test_dump_retry
+    types = [
+      OpenAI::Internal::Type::Unknown,
+      OpenAI::Internal::Type::Boolean,
+      A,
+      H,
+      E,
+      U,
+      B
+    ]
+    Pathname(__FILE__).open do |fd|
+      cases = [
+        fd,
+        [fd],
+        {a: fd},
+        {a: {b: fd}}
+      ]
+      types.product(cases).each do |target, input|
+        state = {can_retry: true}
+        OpenAI::Internal::Type::Converter.dump(target, input, state: state)
+
+        assert_pattern do
+          state => {can_retry: false}
+        end
       end
     end
   end

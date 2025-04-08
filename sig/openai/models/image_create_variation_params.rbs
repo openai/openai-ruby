@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type image_create_variation_params =
       {
-        image: (IO | StringIO),
+        image: (Pathname | StringIO),
         model: OpenAI::Models::ImageCreateVariationParams::model?,
         n: Integer?,
         response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
@@ -15,7 +15,7 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      attr_accessor image: IO | StringIO
+      attr_accessor image: Pathname | StringIO
 
       attr_accessor model: OpenAI::Models::ImageCreateVariationParams::model?
 
@@ -30,7 +30,7 @@ module OpenAI
       def user=: (String) -> String
 
       def initialize: (
-        image: IO | StringIO,
+        image: Pathname | StringIO,
         ?model: OpenAI::Models::ImageCreateVariationParams::model?,
         ?n: Integer?,
         ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,

@@ -53,10 +53,13 @@ module OpenAI
 
         def self.coerce: (
           OpenAI::Internal::Type::BaseModel | ::Hash[top, top] | top value,
-          state: OpenAI::Internal::Type::Converter::state
+          state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> (instance | top)
 
-        def self.dump: (instance | top value) -> (::Hash[top, top] | top)
+        def self.dump: (
+          instance | top value,
+          state: OpenAI::Internal::Type::Converter::dump_state
+        ) -> (::Hash[top, top] | top)
 
         def []: (Symbol key) -> top?
 

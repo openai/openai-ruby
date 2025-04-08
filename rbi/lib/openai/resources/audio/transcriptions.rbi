@@ -10,7 +10,7 @@ module OpenAI
         # Transcribes audio into the input language.
         sig do
           params(
-            file: T.any(IO, StringIO),
+            file: T.any(Pathname, StringIO),
             model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
             include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
             language: String,
@@ -73,7 +73,7 @@ module OpenAI
         # Transcribes audio into the input language.
         sig do
           params(
-            file: T.any(IO, StringIO),
+            file: T.any(Pathname, StringIO),
             model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
             include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
             language: String,

@@ -86,6 +86,23 @@ stream.each do |completion|
 end
 ```
 
+## File uploads
+
+Request parameters that correspond to file uploads can be passed as `StringIO`, or a [`Pathname`](https://rubyapi.org/3.1/o/pathname) instance.
+
+```ruby
+require "pathname"
+
+# using `Pathname`, the file will be lazily read, without reading everything in to memory
+file_object = openai.files.create(file: Pathname("input.jsonl"), purpose: "fine-tune")
+
+file = File.read("input.jsonl")
+# using `StringIO`, useful if you already have the data in memory
+file_object = openai.files.create(file: StringIO.new(file), purpose: "fine-tune")
+
+puts(file_object.id)
+```
+
 ### Errors
 
 When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `OpenAI::Error` will be thrown:

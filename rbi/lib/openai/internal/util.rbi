@@ -141,9 +141,33 @@ module OpenAI
       end
 
       # @api private
+      class SerializationAdapter
+        sig { returns(T.any(Pathname, IO)) }
+        attr_reader :inner
+
+        sig { params(a: T.anything).returns(String) }
+        def to_json(*a); end
+
+        sig { params(a: T.anything).returns(String) }
+        def to_yaml(*a); end
+
+        # @api private
+        sig { params(inner: T.any(Pathname, IO)).returns(T.attached_class) }
+        def self.new(inner); end
+      end
+
+      # @api private
       #
       # An adapter that satisfies the IO interface required by `::IO.copy_stream`
       class ReadIOAdapter
+        # @api private
+        sig { returns(T.nilable(T::Boolean)) }
+        def close?; end
+
+        # @api private
+        sig { void }
+        def close; end
+
         # @api private
         sig { params(max_len: T.nilable(Integer)).returns(String) }
         private def read_enum(max_len); end
@@ -155,12 +179,12 @@ module OpenAI
         # @api private
         sig do
           params(
-            stream: T.any(String, IO, StringIO, T::Enumerable[String]),
+            src: T.any(String, Pathname, StringIO, T::Enumerable[String]),
             blk: T.proc.params(arg0: String).void
           )
             .returns(T.attached_class)
         end
-        def self.new(stream, &blk); end
+        def self.new(src, &blk); end
       end
 
       class << self
@@ -171,9 +195,16 @@ module OpenAI
       class << self
         # @api private
         sig do
-          params(y: Enumerator::Yielder, boundary: String, key: T.any(Symbol, String), val: T.anything).void
+          params(
+            y: Enumerator::Yielder,
+            boundary: String,
+            key: T.any(Symbol, String),
+            val: T.anything,
+            closing: T::Array[T.proc.void]
+          )
+            .void
         end
-        private def write_multipart_chunk(y, boundary:, key:, val:); end
+        private def write_multipart_chunk(y, boundary:, key:, val:, closing:); end
 
         # @api private
         sig { params(body: T.anything).returns([String, T::Enumerable[String]]) }

@@ -8,7 +8,7 @@ module OpenAI
         #
         # @overload create(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {})
         #
-        # @param file [IO, StringIO]
+        # @param file [Pathname, StringIO]
         # @param model [String, Symbol, OpenAI::Models::AudioModel]
         # @param prompt [String]
         # @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat]
