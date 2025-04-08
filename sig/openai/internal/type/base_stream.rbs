@@ -4,6 +4,10 @@ module OpenAI
       module BaseStream[Message, Elem]
         include Enumerable[Elem]
 
+        def self.defer_closing: (
+          Enumerable[top] stream
+        ) -> (^(Integer arg0) -> void)
+
         def close: -> void
 
         private def iterator: -> Enumerable[Elem]
