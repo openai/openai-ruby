@@ -1,7 +1,7 @@
 module OpenAI
   module Internal
     module Type
-      class Boolean
+      class IOLike
         extend OpenAI::Internal::Type::Converter
 
         def self.===: (top other) -> bool
@@ -9,14 +9,14 @@ module OpenAI
         def self.==: (top other) -> bool
 
         def self.coerce: (
-          bool | top value,
+          StringIO | String | top value,
           state: OpenAI::Internal::Type::Converter::coerce_state
-        ) -> (bool | top)
+        ) -> (StringIO | top)
 
         def self.dump: (
-          bool | top value,
+          Pathname | StringIO | IO | String | top value,
           state: OpenAI::Internal::Type::Converter::dump_state
-        ) -> (bool | top)
+        ) -> (Pathname | StringIO | IO | String | top)
       end
     end
   end

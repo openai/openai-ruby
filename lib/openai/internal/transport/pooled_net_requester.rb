@@ -54,7 +54,7 @@ module OpenAI
           # @param blk [Proc]
           #
           # @yieldparam [String]
-          # @return [Net::HTTPGenericRequest]
+          # @return [Array(Net::HTTPGenericRequest, Proc)]
           def build_request(request, &blk)
             method, url, headers, body = request.fetch_values(:method, :url, :headers, :body)
             req = Net::HTTPGenericRequest.new(
@@ -75,12 +75,12 @@ module OpenAI
             in StringIO
               req["content-length"] ||= body.size.to_s unless req["transfer-encoding"]
               req.body_stream = OpenAI::Internal::Util::ReadIOAdapter.new(body, &blk)
-            in IO | Enumerator
+            in Pathname | IO | Enumerator
               req["transfer-encoding"] ||= "chunked" unless req["content-length"]
               req.body_stream = OpenAI::Internal::Util::ReadIOAdapter.new(body, &blk)
             end
 
-            req
+            [req, req.body_stream&.method(:close)]
           end
         end
 
@@ -125,11 +125,12 @@ module OpenAI
 
           eof = false
           finished = false
+          closing = nil
           enum = Enumerator.new do |y|
             with_pool(url, deadline: deadline) do |conn|
               next if finished
 
-              req = self.class.build_request(request) do
+              req, closing = self.class.build_request(request) do
                 self.class.calibrate_socket_timeout(conn, deadline)
               end
 
@@ -165,7 +166,9 @@ module OpenAI
             rescue StopIteration
               nil
             end
+          ensure
             conn.finish if !eof && conn&.started?
+            closing&.call
           end
           [Integer(response.code), response, (response.body = body)]
         end

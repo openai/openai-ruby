@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.files.create(file: StringIO.new("some file contents"), purpose: :assistants)
+    response = @openai.files.create(file: Pathname(__FILE__), purpose: :assistants)
 
     assert_pattern do
       response => OpenAI::Models::FileObject

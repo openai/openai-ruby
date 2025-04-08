@@ -160,11 +160,12 @@ end
 class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
   class FakeCGI < CGI
     def initialize(headers, io)
+      encoded = io.to_a
       @ctype = headers["content-type"]
       # rubocop:disable Lint/EmptyBlock
-      @io = OpenAI::Internal::Util::ReadIOAdapter.new(io) {}
+      @io = OpenAI::Internal::Util::ReadIOAdapter.new(encoded.to_enum) {}
       # rubocop:enable Lint/EmptyBlock
-      @c_len = io.to_a.join.bytesize.to_s
+      @c_len = encoded.join.bytesize.to_s
       super()
     end
 
@@ -180,15 +181,17 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
   end
 
   def test_file_encode
+    file = Pathname(__FILE__)
     headers = {"content-type" => "multipart/form-data"}
     cases = {
-      StringIO.new("abc") => "abc"
+      StringIO.new("abc") => "abc",
+      file => /^class OpenAI/
     }
     cases.each do |body, val|
       encoded = OpenAI::Internal::Util.encode_content(headers, body)
       cgi = FakeCGI.new(*encoded)
       assert_pattern do
-        cgi[""] => ^val
+        cgi[""].read => ^val
       end
     end
   end
@@ -199,13 +202,16 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       {a: 2, b: 3} => {"a" => "2", "b" => "3"},
       {a: 2, b: nil} => {"a" => "2", "b" => "null"},
       {a: 2, b: [1, 2, 3]} => {"a" => "2", "b" => "1"},
-      {file: StringIO.new("a")} => {"file" => "a"}
+      {strio: StringIO.new("a")} => {"strio" => "a"},
+      {pathname: Pathname(__FILE__)} => {"pathname" => -> { _1.read in /^class OpenAI/ }}
     }
     cases.each do |body, testcase|
       encoded = OpenAI::Internal::Util.encode_content(headers, body)
       cgi = FakeCGI.new(*encoded)
       testcase.each do |key, val|
-        assert_equal(val, cgi[key])
+        assert_pattern do
+          cgi[key] => ^val
+        end
       end
     end
   end

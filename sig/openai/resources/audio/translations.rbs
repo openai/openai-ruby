@@ -3,7 +3,7 @@ module OpenAI
     class Audio
       class Translations
         def create: (
-          file: IO | StringIO,
+          file: Pathname | StringIO,
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
           ?prompt: String,
           ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,

@@ -7,7 +7,7 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       # The File object (not file name) to be uploaded.
-      sig { returns(T.any(IO, StringIO)) }
+      sig { returns(T.any(Pathname, StringIO)) }
       attr_accessor :file
 
       # The intended purpose of the uploaded file. One of: - `assistants`: Used in the
@@ -19,7 +19,7 @@ module OpenAI
 
       sig do
         params(
-          file: T.any(IO, StringIO),
+          file: T.any(Pathname, StringIO),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
           request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
         )
@@ -31,7 +31,7 @@ module OpenAI
         override
           .returns(
             {
-              file: T.any(IO, StringIO),
+              file: T.any(Pathname, StringIO),
               purpose: OpenAI::Models::FilePurpose::OrSymbol,
               request_options: OpenAI::RequestOptions
             }

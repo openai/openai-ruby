@@ -9,7 +9,7 @@ module OpenAI
 
         # The audio file object (not file name) translate, in one of these formats: flac,
         # mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
-        sig { returns(T.any(IO, StringIO)) }
+        sig { returns(T.any(Pathname, StringIO)) }
         attr_accessor :file
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
@@ -48,7 +48,7 @@ module OpenAI
 
         sig do
           params(
-            file: T.any(IO, StringIO),
+            file: T.any(Pathname, StringIO),
             model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
             prompt: String,
             response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
@@ -64,7 +64,7 @@ module OpenAI
           override
             .returns(
               {
-                file: T.any(IO, StringIO),
+                file: T.any(Pathname, StringIO),
                 model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
                 prompt: String,
                 response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,

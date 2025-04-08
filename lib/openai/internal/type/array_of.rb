@@ -79,10 +79,20 @@ module OpenAI
         #
         # @param value [Array<Object>, Object]
         #
+        # @param state [Hash{Symbol=>Object}] .
+        #
+        #   @option state [Boolean] :can_retry
+        #
         # @return [Array<Object>, Object]
-        def dump(value)
+        def dump(value, state:)
           target = item_type
-          value.is_a?(Array) ? value.map { OpenAI::Internal::Type::Converter.dump(target, _1) } : super
+          if value.is_a?(Array)
+            value.map do
+              OpenAI::Internal::Type::Converter.dump(target, _1, state: state)
+            end
+          else
+            super
+          end
         end
 
         # @api private

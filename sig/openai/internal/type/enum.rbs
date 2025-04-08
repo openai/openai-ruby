@@ -14,10 +14,13 @@ module OpenAI
 
         def coerce: (
           String | Symbol | top value,
-          state: OpenAI::Internal::Type::Converter::state
+          state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> (Symbol | top)
 
-        def dump: (Symbol | top value) -> (Symbol | top)
+        def dump: (
+          Symbol | top value,
+          state: OpenAI::Internal::Type::Converter::dump_state
+        ) -> (Symbol | top)
       end
     end
   end

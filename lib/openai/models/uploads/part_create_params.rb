@@ -12,11 +12,11 @@ module OpenAI
         # @!attribute data
         #   The chunk of bytes for this Part.
         #
-        #   @return [IO, StringIO]
-        required :data, IO
+        #   @return [Pathname, StringIO]
+        required :data, OpenAI::Internal::Type::IOLike
 
         # @!parse
-        #   # @param data [IO, StringIO]
+        #   # @param data [Pathname, StringIO]
         #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         #   #
         #   def initialize(data:, request_options: {}, **) = super

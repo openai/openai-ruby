@@ -2,7 +2,7 @@ module OpenAI
   module Resources
     class Images
       def create_variation: (
-        image: IO | StringIO,
+        image: Pathname | StringIO,
         ?model: OpenAI::Models::ImageCreateVariationParams::model?,
         ?n: Integer?,
         ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
@@ -12,9 +12,9 @@ module OpenAI
       ) -> OpenAI::Models::ImagesResponse
 
       def edit: (
-        image: IO | StringIO,
+        image: Pathname | StringIO,
         prompt: String,
-        ?mask: IO | StringIO,
+        ?mask: Pathname | StringIO,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
         ?response_format: OpenAI::Models::ImageEditParams::response_format?,

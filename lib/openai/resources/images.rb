@@ -7,7 +7,7 @@ module OpenAI
       #
       # @overload create_variation(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
-      # @param image [IO, StringIO]
+      # @param image [Pathname, StringIO]
       # @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
       # @param n [Integer, nil]
       # @param response_format [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil]
@@ -34,9 +34,9 @@ module OpenAI
       #
       # @overload edit(image:, prompt:, mask: nil, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
-      # @param image [IO, StringIO]
+      # @param image [Pathname, StringIO]
       # @param prompt [String]
-      # @param mask [IO, StringIO]
+      # @param mask [Pathname, StringIO]
       # @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
       # @param n [Integer, nil]
       # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
