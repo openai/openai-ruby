@@ -11,6 +11,21 @@ module OpenAI
       module BaseStream
         include Enumerable
 
+        class << self
+          # Attempt to close the underlying transport when the stream itself is garbage
+          # collected.
+          #
+          # This should not be relied upon for resource clean up, as the garbage collector
+          # is not guaranteed to run.
+          #
+          # @param stream [Enumerable<Object>]
+          #
+          # @return [Proc]
+          #
+          # @see https://rubyapi.org/3.1/o/objectspace#method-c-define_finalizer
+          def defer_closing(stream) = ->(_id) { OpenAI::Internal::Util.close_fused!(stream) }
+        end
+
         # @return [void]
         def close = OpenAI::Internal::Util.close_fused!(@iterator)
 
@@ -49,6 +64,8 @@ module OpenAI
           @response = response
           @stream = stream
           @iterator = iterator
+
+          ObjectSpace.define_finalizer(self, OpenAI::Internal::Type::BaseStream.defer_closing(@stream))
         end
       end
     end
