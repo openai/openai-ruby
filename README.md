@@ -36,13 +36,14 @@ openai = OpenAI::Client.new(
   api_key: "My API Key" # defaults to ENV["OPENAI_API_KEY"]
 )
 
-chat_completion = openai.chat.completions.create(
-  messages: [{
-    role: "user",
-    content: "Say this is a test"
-  }],
-  model: "gpt-4o"
-)
+chat_completion =
+  openai.chat.completions.create(
+    messages: [{
+      role: "user",
+      content: "Say this is a test"
+    }],
+    model: "gpt-4o"
+  )
 
 puts(chat_completion)
 ```
@@ -73,13 +74,14 @@ We provide support for streaming responses using Server Side Events (SSE).
 **coming soon:** `openai.chat.completions.stream` will soon come with Python SDK style higher level streaming responses support.
 
 ```ruby
-stream = openai.chat.completions.stream_raw(
-  messages: [{
-    role: "user",
-    content: "Say this is a test"
-  }],
-  model: "gpt-4o"
-)
+stream =
+  openai.chat.completions.stream_raw(
+    messages: [{
+      role: "user",
+      content: "Say this is a test"
+    }],
+    model: "gpt-4o"
+  )
 
 stream.each do |completion|
   puts(completion)
@@ -193,13 +195,16 @@ Due to limitations with the Sorbet type system, where a method otherwise can tak
 Please follow Sorbet's [setup guides](https://sorbet.org/docs/adopting) for best experience.
 
 ```ruby
-params = OpenAI::Models::Chat::CompletionCreateParams.new(
-  messages: [OpenAI::Models::ChatCompletionUserMessageParam.new(
-    role: "user",
-    content: "Say this is a test"
-  )],
-  model: "gpt-4o"
-)
+params =
+  OpenAI::Models::Chat::CompletionCreateParams.new(
+    messages: [
+      OpenAI::Models::ChatCompletionUserMessageParam.new(
+        role: "user",
+        content: "Say this is a test"
+      )
+    ],
+    model: "gpt-4o"
+  )
 
 openai.chat.completions.create(**params)
 ```
