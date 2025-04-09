@@ -86,7 +86,7 @@ stream.each do |completion|
 end
 ```
 
-## File uploads
+### File uploads
 
 Request parameters that correspond to file uploads can be passed as `StringIO`, or a [`Pathname`](https://rubyapi.org/3.1/o/pathname) instance.
 
