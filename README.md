@@ -20,12 +20,6 @@ gem "openai", "~> 0.1.0.pre.alpha.3"
 
 <!-- x-release-please-end -->
 
-To fetch an initial copy of the gem:
-
-```sh
-bundle install
-```
-
 ## Usage
 
 ```ruby
@@ -36,14 +30,13 @@ openai = OpenAI::Client.new(
   api_key: "My API Key" # defaults to ENV["OPENAI_API_KEY"]
 )
 
-chat_completion =
-  openai.chat.completions.create(
-    messages: [{
-      role: "user",
-      content: "Say this is a test"
-    }],
-    model: "gpt-4o"
-  )
+chat_completion = openai.chat.completions.create(
+  messages: [{
+    role: "user",
+    content: "Say this is a test"
+  }],
+  model: "gpt-4o"
+)
 
 puts(chat_completion)
 ```
@@ -74,14 +67,13 @@ We provide support for streaming responses using Server Side Events (SSE).
 **coming soon:** `openai.chat.completions.stream` will soon come with Python SDK style higher level streaming responses support.
 
 ```ruby
-stream =
-  openai.chat.completions.stream_raw(
-    messages: [{
-      role: "user",
-      content: "Say this is a test"
-    }],
-    model: "gpt-4o"
-  )
+stream = openai.chat.completions.stream_raw(
+  messages: [{
+    role: "user",
+    content: "Say this is a test"
+  }],
+  model: "gpt-4o"
+)
 
 stream.each do |completion|
   puts(completion)
@@ -107,7 +99,7 @@ puts(file_object.id)
 
 ### Errors
 
-When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `OpenAI::Error` will be thrown:
+When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `OpenAI::Errors::APIError` will be thrown:
 
 ```ruby
 begin
@@ -219,8 +211,7 @@ Due to limitations with the Sorbet type system, where a method otherwise can tak
 Please follow Sorbet's [setup guides](https://sorbet.org/docs/adopting) for best experience.
 
 ```ruby
-params =
-  OpenAI::Models::Chat::CompletionCreateParams.new(
+params = OpenAI::Models::Chat::CompletionCreateParams.new(
     messages: [
       OpenAI::Models::ChatCompletionUserMessageParam.new(
         role: "user",
@@ -256,8 +247,7 @@ If you want to explicitly send an extra param, you can do so with the `extra_que
 To make requests to undocumented endpoints, you can make requests using `client.request`. Options on the client will be respected (such as retries) when making this request.
 
 ```ruby
-response =
-  client.request(
+response = client.request(
     method: :post,
     path: '/undocumented/endpoint',
     query: {"dog": "woof"},
