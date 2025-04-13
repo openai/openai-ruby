@@ -67,6 +67,15 @@ module OpenAI
 
           ObjectSpace.define_finalizer(self, OpenAI::Internal::Type::BaseStream.defer_closing(@stream))
         end
+
+        # @api private
+        #
+        # @return [String]
+        def inspect
+          model = OpenAI::Internal::Type::Converter.inspect(@model, depth: 1)
+
+          "#<#{self.class}[#{model}]:0x#{object_id.to_s(16)}>"
+        end
       end
     end
   end

@@ -13,6 +13,7 @@ module OpenAI
       sig { returns(T::Boolean) }
       attr_accessor :has_more
 
+      # @api private
       sig { returns(String) }
       def inspect; end
     end

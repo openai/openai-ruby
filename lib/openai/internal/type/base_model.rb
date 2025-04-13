@@ -63,7 +63,7 @@ module OpenAI
 
             setter = "#{name_sym}="
             api_name = info.fetch(:api_name, name_sym)
-            nilable = info[:nil?]
+            nilable = info.fetch(:nil?, false)
             const = required && !nilable ? info.fetch(:const, OpenAI::Internal::OMIT) : OpenAI::Internal::OMIT
 
             [name_sym, setter].each { undef_method(_1) } if known_fields.key?(name_sym)
@@ -361,14 +361,42 @@ module OpenAI
           end
         end
 
+        class << self
+          # @api private
+          #
+          # @param depth [Integer]
+          #
+          # @return [String]
+          def inspect(depth: 0)
+            return super() if depth.positive?
+
+            depth = depth.succ
+            deferred = fields.transform_values do |field|
+              type, required, nilable = field.fetch_values(:type, :required, :nilable)
+              -> do
+                [
+                  OpenAI::Internal::Type::Converter.inspect(type, depth: depth),
+                  !required || nilable ? "nil" : nil
+                ].compact.join(" | ")
+              end
+                .tap { _1.define_singleton_method(:inspect) { call } }
+            end
+
+            "#{name}[#{deferred.inspect}]"
+          end
+        end
+
+        # @api private
+        #
         # @return [String]
         def inspect
-          rows = self.class.known_fields.keys.map do
-            "#{_1}=#{@data.key?(_1) ? public_send(_1) : ''}"
+          rows = @data.map do
+            "#{_1}=#{self.class.known_fields.key?(_1) ? public_send(_1).inspect : ''}"
           rescue OpenAI::Errors::ConversionError
-            "#{_1}=#{@data.fetch(_1)}"
+            "#{_1}=#{_2.inspect}"
           end
-          "#<#{self.class.name}:0x#{object_id.to_s(16)} #{rows.join(' ')}>"
+
+          "#<#{self.class}:0x#{object_id.to_s(16)} #{rows.join(' ')}>"
         end
       end
     end

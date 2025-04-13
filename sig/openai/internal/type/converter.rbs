@@ -23,6 +23,8 @@ module OpenAI
           state: OpenAI::Internal::Type::Converter::dump_state
         ) -> top
 
+        def inspect: (?depth: Integer) -> String
+
         def self.type_info: (
           {
             const: (nil | bool | Integer | Float | Symbol)?,
@@ -44,6 +46,8 @@ module OpenAI
           top value,
           ?state: OpenAI::Internal::Type::Converter::dump_state
         ) -> top
+
+        def self.inspect: (top target, depth: Integer) -> String
       end
     end
   end
