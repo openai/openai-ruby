@@ -185,6 +185,13 @@ module OpenAI
         sig { params(data: T.any(T::Hash[Symbol, T.anything], T.self_type)).returns(T.attached_class) }
         def self.new(data = {}); end
 
+        class << self
+          # @api private
+          sig { params(depth: Integer).returns(String) }
+          def inspect(depth: 0); end
+        end
+
+        # @api private
         sig { returns(String) }
         def inspect; end
       end

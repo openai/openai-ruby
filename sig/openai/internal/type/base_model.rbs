@@ -75,6 +75,8 @@ module OpenAI
 
         def initialize: (?::Hash[Symbol, top] | self data) -> void
 
+        def self.inspect: (?depth: Integer) -> String
+
         def inspect: -> String
       end
     end

@@ -13,6 +13,7 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :object
 
+      # @api private
       sig { returns(String) }
       def inspect; end
     end

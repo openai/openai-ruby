@@ -35,6 +35,8 @@ module OpenAI
           | OpenAI::Internal::Type::Converter::input type_info,
           ?::Hash[Symbol, top] spec
         ) -> void
+
+        def inspect: (?depth: Integer) -> String
       end
     end
   end

@@ -34,6 +34,10 @@ module OpenAI
         end
         def dump(value, state:); end
 
+        # @api private
+        sig { params(depth: Integer).returns(String) }
+        def inspect(depth: 0); end
+
         class << self
           # @api private
           sig do
@@ -105,6 +109,10 @@ module OpenAI
               .returns(T.anything)
           end
           def self.dump(target, value, state: {can_retry: true}); end
+
+          # @api private
+          sig { params(target: T.anything, depth: Integer).returns(String) }
+          def self.inspect(target, depth:); end
         end
       end
     end
