@@ -217,11 +217,11 @@ module OpenAI
         #
         # @return [String]
         def inspect(depth: 0)
-          # rubocop:disable Layout/LineLength
           return super() if depth.positive?
 
-          "#{name}[#{variants.map { OpenAI::Internal::Type::Converter.inspect(_1, depth: depth.succ) }.join(' | ')}]"
-          # rubocop:enable Layout/LineLength
+          members = variants.map { OpenAI::Internal::Type::Converter.inspect(_1, depth: depth.succ) }
+
+          "#{name}[#{members.join(' | ')}]"
         end
       end
     end
