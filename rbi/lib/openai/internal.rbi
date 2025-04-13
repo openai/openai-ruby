@@ -7,6 +7,6 @@ module OpenAI
     # this alias might be refined in the future.
     AnyHash = T.type_alias { T::Hash[Symbol, T.anything] }
 
-    OMIT = T.let(T.anything, T.anything)
+    OMIT = T.let(Object.new.freeze, T.anything)
   end
 end

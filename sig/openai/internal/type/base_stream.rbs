@@ -25,6 +25,8 @@ module OpenAI
           response: top,
           stream: Enumerable[Message]
         ) -> void
+
+        def inspect: -> String
       end
     end
   end

@@ -49,6 +49,15 @@ module OpenAI
           end
         end
 
+        # @api private
+        #
+        # @param depth [Integer]
+        #
+        # @return [String]
+        def inspect(depth: 0)
+          super()
+        end
+
         # rubocop:enable Lint/UnusedMethodArgument
 
         class << self
@@ -238,6 +247,21 @@ module OpenAI
               target.dump(value, state: state)
             else
               OpenAI::Internal::Type::Unknown.dump(value, state: state)
+            end
+          end
+
+          # @api private
+          #
+          # @param target [Object]
+          # @param depth [Integer]
+          #
+          # @return [String]
+          def inspect(target, depth:)
+            case target
+            in OpenAI::Internal::Type::Converter
+              target.inspect(depth: depth.succ)
+            else
+              target.inspect
             end
           end
         end

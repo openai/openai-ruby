@@ -76,6 +76,10 @@ module OpenAI
             .void
         end
         def initialize(type_info, spec = {}); end
+
+        # @api private
+        sig(:final) { params(depth: Integer).returns(String) }
+        def inspect(depth: 0); end
       end
     end
   end
