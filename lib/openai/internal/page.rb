@@ -22,28 +22,6 @@ module OpenAI
       # @return [String]
       attr_accessor :object
 
-      # @api private
-      #
-      # @param client [OpenAI::Internal::Transport::BaseClient]
-      # @param req [Hash{Symbol=>Object}]
-      # @param headers [Hash{String=>String}, Net::HTTPHeader]
-      # @param page_data [Array<Object>]
-      def initialize(client:, req:, headers:, page_data:)
-        super
-
-        case page_data
-        in {data: Array | nil => data}
-          @data = data&.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
-        else
-        end
-
-        case page_data
-        in {object: String => object}
-          @object = object
-        else
-        end
-      end
-
       # @return [Boolean]
       def next_page?
         false
@@ -70,6 +48,23 @@ module OpenAI
           break unless page.next_page?
           page = page.next_page
         end
+      end
+
+      # @api private
+      #
+      # @param client [OpenAI::Internal::Transport::BaseClient]
+      # @param req [Hash{Symbol=>Object}]
+      # @param headers [Hash{String=>String}, Net::HTTPHeader]
+      # @param page_data [Array<Object>]
+      def initialize(client:, req:, headers:, page_data:)
+        super
+
+        case page_data
+        in {data: Array | nil => data}
+          @data = data&.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
+        else
+        end
+        @object = page_data[:object]
       end
 
       # @api private
