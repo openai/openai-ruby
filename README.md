@@ -4,7 +4,7 @@ The OpenAI Ruby library provides convenient access to the OpenAI REST API from a
 
 ## Documentation
 
-Documentation for released of this gem can be found [on RubyDoc](https://gemdocs.org/gems/openai).
+Documentation for releases of this gem can be found [on RubyDoc](https://gemdocs.org/gems/openai).
 
 The underlying REST API documentation can be found on [platform.openai.com](https://platform.openai.com/docs).
 
@@ -62,7 +62,7 @@ end
 
 ### Streaming
 
-We provide support for streaming responses using Server Side Events (SSE).
+We provide support for streaming responses using Server-Sent Events (SSE).
 
 ```ruby
 stream = openai.chat.completions.stream_raw(
