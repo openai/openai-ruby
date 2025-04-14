@@ -5,6 +5,12 @@ module OpenAI
     module ChatModel
       extend OpenAI::Internal::Type::Enum
 
+      GPT_4_1 = :"gpt-4.1"
+      GPT_4_1_MINI = :"gpt-4.1-mini"
+      GPT_4_1_NANO = :"gpt-4.1-nano"
+      GPT_4_1_2025_04_14 = :"gpt-4.1-2025-04-14"
+      GPT_4_1_MINI_2025_04_14 = :"gpt-4.1-mini-2025-04-14"
+      GPT_4_1_NANO_2025_04_14 = :"gpt-4.1-nano-2025-04-14"
       O3_MINI = :"o3-mini"
       O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
       O1 = :o1

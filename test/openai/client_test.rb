@@ -56,7 +56,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::Errors::InternalServerError) do
-      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
     end
 
     assert_equal(3, requester.attempts.length)
@@ -68,7 +68,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::Errors::InternalServerError) do
-      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
     end
 
     assert_equal(4, requester.attempts.length)
@@ -82,7 +82,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {max_retries: 3}
       )
     end
@@ -98,7 +98,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {max_retries: 4}
       )
     end
@@ -112,7 +112,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::Errors::InternalServerError) do
-      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
     end
 
     assert_equal(2, requester.attempts.length)
@@ -126,7 +126,7 @@ class OpenAITest < Minitest::Test
 
     assert_raises(OpenAI::Errors::InternalServerError) do
       Thread.current.thread_variable_set(:time_now, Time.now)
-      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
       Thread.current.thread_variable_set(:time_now, nil)
     end
 
@@ -140,7 +140,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::Errors::InternalServerError) do
-      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
     end
 
     assert_equal(2, requester.attempts.length)
@@ -153,7 +153,7 @@ class OpenAITest < Minitest::Test
     openai.requester = requester
 
     assert_raises(OpenAI::Errors::InternalServerError) do
-      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
+      openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
     end
 
     retry_count_headers = requester.attempts.map do
@@ -171,7 +171,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {extra_headers: {"x-stainless-retry-count" => nil}}
       )
     end
@@ -191,7 +191,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::InternalServerError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {extra_headers: {"x-stainless-retry-count" => "42"}}
       )
     end
@@ -211,7 +211,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {extra_headers: {}}
       )
     end
@@ -233,7 +233,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {extra_headers: {}}
       )
     end
@@ -252,7 +252,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {extra_headers: {"authorization" => "Bearer xyz"}}
       )
     end
@@ -271,7 +271,7 @@ class OpenAITest < Minitest::Test
     assert_raises(OpenAI::Errors::APIConnectionError) do
       openai.chat.completions.create(
         messages: [{content: "string", role: :developer}],
-        model: :"o3-mini",
+        model: :"gpt-4.1",
         request_options: {extra_headers: {"authorization" => "Bearer xyz"}}
       )
     end
@@ -283,7 +283,7 @@ class OpenAITest < Minitest::Test
     openai = OpenAI::Client.new(base_url: "http://localhost:4010", api_key: "My API Key")
     requester = MockRequester.new(200, {}, {})
     openai.requester = requester
-    openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"o3-mini")
+    openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
     headers = requester.attempts.first.fetch(:headers)
 
     refute_empty(headers["accept"])
