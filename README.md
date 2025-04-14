@@ -6,7 +6,7 @@ The OpenAI Ruby library provides convenient access to the OpenAI REST API from a
 
 Documentation for releases of this gem can be found [on RubyDoc](https://gemdocs.org/gems/openai).
 
-The underlying REST API documentation can be found on [platform.openai.com](https://platform.openai.com/docs).
+The REST API documentation can be found on [platform.openai.com](https://platform.openai.com/docs).
 
 ## Installation
 
