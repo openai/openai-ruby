@@ -244,6 +244,7 @@ Style/SafeNavigation:
 Style/SignalException:
   Exclude:
     - Rakefile
+    - "**/*.rake"
 
 # We use these sparingly, where we anticipate future branches for the
 # inner conditional.
