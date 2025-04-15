@@ -215,7 +215,9 @@ module OpenAI
         #
         # @return [String]
         def inspect(depth: 0)
-          return super() if depth.positive?
+          if depth.positive?
+            return is_a?(Module) ? super() : self.class.name
+          end
 
           members = variants.map { OpenAI::Internal::Type::Converter.inspect(_1, depth: depth.succ) }
           prefix = is_a?(Module) ? name : self.class.name
