@@ -76,7 +76,7 @@ stream = openai.chat.completions.stream_raw(
 )
 
 stream.each do |completion|
-  puts(completion)
+  print(completion.choices.first.delta.content)
 end
 ```
 
