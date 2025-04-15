@@ -368,6 +368,24 @@ class OpenAI::Test::UtilFusedEnumTest < Minitest::Test
   end
 end
 
+class OpenAI::Test::UtilContentDecodingTest < Minitest::Test
+  def test_charset
+    cases = {
+      "application/json" => Encoding::BINARY,
+      "application/json; charset=utf-8" => Encoding::UTF_8,
+      "charset=uTf-8 application/json; " => Encoding::UTF_8,
+      "charset=UTF-8; application/json; " => Encoding::UTF_8,
+      "charset=ISO-8859-1 ;application/json; " => Encoding::ISO_8859_1,
+      "charset=EUC-KR ;application/json; " => Encoding::EUC_KR
+    }
+    text = String.new.force_encoding(Encoding::BINARY)
+    cases.each do |content_type, encoding|
+      OpenAI::Internal::Util.force_charset!(content_type, text: text)
+      assert_equal(encoding, text.encoding)
+    end
+  end
+end
+
 class OpenAI::Test::UtilSseTest < Minitest::Test
   def test_decode_lines
     cases = {
@@ -381,7 +399,9 @@ class OpenAI::Test::UtilSseTest < Minitest::Test
       %W[\na b\n\n] => %W[\n ab\n \n],
       %W[\na b] => %W[\n ab],
       %W[\u1F62E\u200D\u1F4A8] => %W[\u1F62E\u200D\u1F4A8],
-      %W[\u1F62E \u200D \u1F4A8] => %W[\u1F62E\u200D\u1F4A8]
+      %W[\u1F62E \u200D \u1F4A8] => %W[\u1F62E\u200D\u1F4A8],
+      ["\xf0\x9f".b, "\xa5\xba".b] => ["\xf0\x9f\xa5\xba".b],
+      ["\xf0".b, "\x9f".b, "\xa5".b, "\xba".b] => ["\xf0\x9f\xa5\xba".b]
     }
     eols = %W[\n \r \r\n]
     cases.each do |enum, expected|

@@ -120,6 +120,8 @@ module OpenAI
         top body
       ) -> top
 
+      def self?.force_charset!: (String content_type, text: String) -> void
+
       def self?.decode_content: (
         ::Hash[String, String] headers,
         stream: Enumerable[String],

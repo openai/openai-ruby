@@ -448,7 +448,7 @@ module OpenAI
             else
               src
             end
-          @buf = String.new.b
+          @buf = String.new
           @blk = blk
         end
       end
@@ -460,7 +460,7 @@ module OpenAI
         # @return [Enumerable<String>]
         def writable_enum(&blk)
           Enumerator.new do |y|
-            buf = String.new.b
+            buf = String.new
             y.define_singleton_method(:write) do
               self << buf.replace(_1)
               buf.bytesize
@@ -582,6 +582,27 @@ module OpenAI
 
         # @api private
         #
+        # https://www.iana.org/assignments/character-sets/character-sets.xhtml
+        #
+        # @param content_type [String]
+        # @param text [String]
+        def force_charset!(content_type, text:)
+          charset = /charset=([^;\s]+)/.match(content_type)&.captures&.first
+
+          return unless charset
+
+          begin
+            encoding = Encoding.find(charset)
+            text.force_encoding(encoding)
+          rescue ArgumentError
+            nil
+          end
+        end
+
+        # @api private
+        #
+        # Assumes each chunk in stream has `Encoding::BINARY`.
+        #
         # @param headers [Hash{String=>String}, Net::HTTPHeader]
         # @param stream [Enumerable<String>]
         # @param suppress_error [Boolean]
@@ -589,7 +610,7 @@ module OpenAI
         # @raise [JSON::ParserError]
         # @return [Object]
         def decode_content(headers, stream:, suppress_error: false)
-          case headers["content-type"]
+          case (content_type = headers["content-type"])
           in %r{^application/(?:vnd\.api\+)?json}
             json = stream.to_a.join
             begin
@@ -606,11 +627,10 @@ module OpenAI
           in %r{^text/event-stream}
             lines = decode_lines(stream)
             decode_sse(lines)
-          in %r{^text/}
-            stream.to_a.join
           else
-            # TODO: parsing other response types
-            StringIO.new(stream.to_a.join)
+            text = stream.to_a.join
+            force_charset!(content_type, text: text)
+            StringIO.new(text)
           end
         end
       end
@@ -675,12 +695,17 @@ module OpenAI
       class << self
         # @api private
         #
+        # Assumes Strings have been forced into having `Encoding::BINARY`.
+        #
+        # This decoder is responsible for reassembling lines split across multiple
+        # fragments.
+        #
         # @param enum [Enumerable<String>]
         #
         # @return [Enumerable<String>]
         def decode_lines(enum)
           re = /(\r\n|\r|\n)/
-          buffer = String.new.b
+          buffer = String.new
           cr_seen = nil
 
           chain_fused(enum) do |y|
@@ -711,6 +736,8 @@ module OpenAI
         #
         # https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream
         #
+        # Assumes that `lines` has been decoded with `#decode_lines`.
+        #
         # @param lines [Enumerable<String>]
         #
         # @return [Enumerable<Hash{Symbol=>Object}>]
@@ -734,7 +761,7 @@ module OpenAI
                 in "event"
                   current.merge!(event: value)
                 in "data"
-                  (current[:data] ||= String.new.b) << (value << "\n")
+                  (current[:data] ||= String.new) << (value << "\n")
                 in "id" unless value.include?("\0")
                   current.merge!(id: value)
                 in "retry" if /^\d+$/ =~ value
