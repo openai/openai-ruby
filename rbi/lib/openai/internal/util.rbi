@@ -215,6 +215,14 @@ module OpenAI
         def encode_content(headers, body); end
 
         # @api private
+        #
+        # https://www.iana.org/assignments/character-sets/character-sets.xhtml
+        sig { params(content_type: String, text: String).void }
+        def force_charset!(content_type, text:); end
+
+        # @api private
+        #
+        # Assumes each chunk in stream has `Encoding::BINARY`.
         sig do
           params(
             headers: T.any(T::Hash[String, String], Net::HTTPHeader),
@@ -263,12 +271,19 @@ module OpenAI
 
       class << self
         # @api private
+        #
+        # Assumes Strings have been forced into having `Encoding::BINARY`.
+        #
+        # This decoder is responsible for reassembling lines split across multiple
+        # fragments.
         sig { params(enum: T::Enumerable[String]).returns(T::Enumerable[String]) }
         def decode_lines(enum); end
 
         # @api private
         #
         # https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream
+        #
+        # Assumes that `lines` has been decoded with `#decode_lines`.
         sig do
           params(lines: T::Enumerable[String]).returns(T::Enumerable[OpenAI::Internal::Util::ServerSentEvent])
         end

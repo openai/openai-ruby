@@ -149,7 +149,7 @@ module OpenAI
                 break if finished
 
                 rsp.read_body do |bytes|
-                  y << bytes
+                  y << bytes.force_encoding(Encoding::BINARY)
                   break if finished
 
                   self.class.calibrate_socket_timeout(conn, deadline)
