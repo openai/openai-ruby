@@ -94,7 +94,7 @@ module OpenAI
           # [images](https://platform.openai.com/docs/guides/vision), and
           # [audio](https://platform.openai.com/docs/guides/audio).
           messages:,
-          # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+          # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
           # wide range of models with different capabilities, performance characteristics,
           # and price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -150,7 +150,7 @@ module OpenAI
           #
           # This value is now deprecated in favor of `max_completion_tokens`, and is not
           # compatible with
-          # [o1 series models](https://platform.openai.com/docs/guides/reasoning).
+          # [o-series models](https://platform.openai.com/docs/guides/reasoning).
           max_tokens: nil,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
@@ -219,11 +219,16 @@ module OpenAI
           #   latency guarentee.
           # - If set to 'default', the request will be processed using the default service
           #   tier with a lower uptime SLA and no latency guarentee.
+          # - If set to 'flex', the request will be processed with the Flex Processing
+          #   service tier.
+          #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
           # - When not set, the default behavior is 'auto'.
           #
           # When this parameter is set, the response body will include the `service_tier`
           # utilized.
           service_tier: nil,
+          # Not supported with latest reasoning models `o3` and `o4-mini`.
+          #
           # Up to 4 sequences where the API will stop generating further tokens. The
           # returned text will not contain the stop sequence.
           stop: nil,
@@ -362,7 +367,7 @@ module OpenAI
           # [images](https://platform.openai.com/docs/guides/vision), and
           # [audio](https://platform.openai.com/docs/guides/audio).
           messages:,
-          # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+          # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
           # wide range of models with different capabilities, performance characteristics,
           # and price points. Refer to the
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -418,7 +423,7 @@ module OpenAI
           #
           # This value is now deprecated in favor of `max_completion_tokens`, and is not
           # compatible with
-          # [o1 series models](https://platform.openai.com/docs/guides/reasoning).
+          # [o-series models](https://platform.openai.com/docs/guides/reasoning).
           max_tokens: nil,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
@@ -487,11 +492,16 @@ module OpenAI
           #   latency guarentee.
           # - If set to 'default', the request will be processed using the default service
           #   tier with a lower uptime SLA and no latency guarentee.
+          # - If set to 'flex', the request will be processed with the Flex Processing
+          #   service tier.
+          #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
           # - When not set, the default behavior is 'auto'.
           #
           # When this parameter is set, the response body will include the `service_tier`
           # utilized.
           service_tier: nil,
+          # Not supported with latest reasoning models `o3` and `o4-mini`.
+          #
           # Up to 4 sequences where the API will stop generating further tokens. The
           # returned text will not contain the stop sequence.
           stop: nil,

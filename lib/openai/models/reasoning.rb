@@ -15,14 +15,22 @@ module OpenAI
       optional :effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
 
       # @!attribute generate_summary
-      #   **computer_use_preview only**
+      #   **Deprecated:** use `summary` instead.
       #
       #   A summary of the reasoning performed by the model. This can be useful for
-      #   debugging and understanding the model's reasoning process. One of `concise` or
-      #   `detailed`.
+      #   debugging and understanding the model's reasoning process. One of `auto`,
+      #   `concise`, or `detailed`.
       #
       #   @return [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
       optional :generate_summary, enum: -> { OpenAI::Models::Reasoning::GenerateSummary }, nil?: true
+
+      # @!attribute summary
+      #   A summary of the reasoning performed by the model. This can be useful for
+      #   debugging and understanding the model's reasoning process. One of `auto`,
+      #   `concise`, or `detailed`.
+      #
+      #   @return [Symbol, OpenAI::Models::Reasoning::Summary, nil]
+      optional :summary, enum: -> { OpenAI::Models::Reasoning::Summary }, nil?: true
 
       # @!parse
       #   # **o-series models only**
@@ -32,21 +40,44 @@ module OpenAI
       #   #
       #   # @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
       #   # @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
+      #   # @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil]
       #   #
-      #   def initialize(effort: nil, generate_summary: nil, **) = super
+      #   def initialize(effort: nil, generate_summary: nil, summary: nil, **) = super
 
       # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
 
-      # **computer_use_preview only**
+      # @deprecated
+      #
+      # **Deprecated:** use `summary` instead.
       #
       # A summary of the reasoning performed by the model. This can be useful for
-      # debugging and understanding the model's reasoning process. One of `concise` or
-      # `detailed`.
+      # debugging and understanding the model's reasoning process. One of `auto`,
+      # `concise`, or `detailed`.
       #
       # @see OpenAI::Models::Reasoning#generate_summary
       module GenerateSummary
         extend OpenAI::Internal::Type::Enum
 
+        AUTO = :auto
+        CONCISE = :concise
+        DETAILED = :detailed
+
+        finalize!
+
+        # @!parse
+        #   # @return [Array<Symbol>]
+        #   def self.values; end
+      end
+
+      # A summary of the reasoning performed by the model. This can be useful for
+      # debugging and understanding the model's reasoning process. One of `auto`,
+      # `concise`, or `detailed`.
+      #
+      # @see OpenAI::Models::Reasoning#summary
+      module Summary
+        extend OpenAI::Internal::Type::Enum
+
+        AUTO = :auto
         CONCISE = :concise
         DETAILED = :detailed
 

@@ -26,7 +26,7 @@ module OpenAI
         required :input, union: -> { OpenAI::Models::Responses::ResponseCreateParams::Input }
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        #   Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         #   wide range of models with different capabilities, performance characteristics,
         #   and price points. Refer to the
         #   [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -102,6 +102,30 @@ module OpenAI
         #
         #   @return [OpenAI::Models::Reasoning, nil]
         optional :reasoning, -> { OpenAI::Models::Reasoning }, nil?: true
+
+        # @!attribute service_tier
+        #   Specifies the latency tier to use for processing the request. This parameter is
+        #   relevant for customers subscribed to the scale tier service:
+        #
+        #   - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #     utilize scale tier credits until they are exhausted.
+        #   - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #     be processed using the default service tier with a lower uptime SLA and no
+        #     latency guarentee.
+        #   - If set to 'default', the request will be processed using the default service
+        #     tier with a lower uptime SLA and no latency guarentee.
+        #   - If set to 'flex', the request will be processed with the Flex Processing
+        #     service tier.
+        #     [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        #   - When not set, the default behavior is 'auto'.
+        #
+        #   When this parameter is set, the response body will include the `service_tier`
+        #   utilized.
+        #
+        #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil]
+        optional :service_tier,
+                 enum: -> { OpenAI::Models::Responses::ResponseCreateParams::ServiceTier },
+                 nil?: true
 
         # @!attribute store
         #   Whether to store the generated model response for later retrieval via API.
@@ -211,6 +235,7 @@ module OpenAI
         #   # @param parallel_tool_calls [Boolean, nil]
         #   # @param previous_response_id [String, nil]
         #   # @param reasoning [OpenAI::Models::Reasoning, nil]
+        #   # @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier, nil]
         #   # @param store [Boolean, nil]
         #   # @param temperature [Float, nil]
         #   # @param text [OpenAI::Models::Responses::ResponseTextConfig]
@@ -231,6 +256,7 @@ module OpenAI
         #     parallel_tool_calls: nil,
         #     previous_response_id: nil,
         #     reasoning: nil,
+        #     service_tier: nil,
         #     store: nil,
         #     temperature: nil,
         #     text: nil,
@@ -270,6 +296,37 @@ module OpenAI
           # @!parse
           #   # @return [Array(String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>)]
           #   def self.variants; end
+        end
+
+        # Specifies the latency tier to use for processing the request. This parameter is
+        # relevant for customers subscribed to the scale tier service:
+        #
+        # - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #   utilize scale tier credits until they are exhausted.
+        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #   be processed using the default service tier with a lower uptime SLA and no
+        #   latency guarentee.
+        # - If set to 'default', the request will be processed using the default service
+        #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When this parameter is set, the response body will include the `service_tier`
+        # utilized.
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO = :auto
+          DEFAULT = :default
+          FLEX = :flex
+
+          finalize!
+
+          # @!parse
+          #   # @return [Array<Symbol>]
+          #   def self.values; end
         end
 
         # How the model should select which tool (or tools) to use when generating a
