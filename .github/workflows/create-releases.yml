@@ -1,16 +1,30 @@
-# Workflow for re-publishing to rubygems.org in case it failed for some reason.
-# You can run this workflow by navigating to https://www.github.com/openai/openai-python/actions/workflows/publish-gem.yml
-name: Publish Gem
+name: Create releases
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * *' # every day at 5am UTC
+  push:
+    branches:
+      - main
 
 jobs:
-  publish:
-    name: publish
+  release:
+    name: release
+    if: github.ref == 'refs/heads/main' && github.repository == 'openai/openai-ruby'
     runs-on: ubuntu-latest
+    environment: publish
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: stainless-api/trigger-release-please@v1
+        id: release
+        with:
+          repo: ${{ github.event.repository.full_name }}
+          stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
