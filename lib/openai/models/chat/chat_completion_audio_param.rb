@@ -13,7 +13,7 @@ module OpenAI
 
         # @!attribute voice
         #   The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        #   `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        #   `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
         #
         #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         required :voice, union: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
@@ -38,6 +38,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           WAV = :wav
+          AAC = :aac
           MP3 = :mp3
           FLAC = :flac
           OPUS = :opus
@@ -51,7 +52,7 @@ module OpenAI
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
         #
         # @see OpenAI::Models::Chat::ChatCompletionAudioParam#voice
         module Voice

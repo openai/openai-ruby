@@ -29,7 +29,7 @@ module OpenAI
         end
         attr_accessor :messages
 
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -136,7 +136,7 @@ module OpenAI
         #
         # This value is now deprecated in favor of `max_completion_tokens`, and is not
         # compatible with
-        # [o1 series models](https://platform.openai.com/docs/guides/reasoning).
+        # [o-series models](https://platform.openai.com/docs/guides/reasoning).
         sig { returns(T.nilable(Integer)) }
         attr_accessor :max_tokens
 
@@ -259,6 +259,9 @@ module OpenAI
         #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
         #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
         # - When not set, the default behavior is 'auto'.
         #
         # When this parameter is set, the response body will include the `service_tier`
@@ -266,6 +269,8 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol)) }
         attr_accessor :service_tier
 
+        # Not supported with latest reasoning models `o3` and `o4-mini`.
+        #
         # Up to 4 sequences where the API will stop generating further tokens. The
         # returned text will not contain the stop sequence.
         sig { returns(T.nilable(T.any(String, T::Array[String]))) }
@@ -526,7 +531,7 @@ module OpenAI
         end
         def to_hash; end
 
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -680,6 +685,9 @@ module OpenAI
         #   latency guarentee.
         # - If set to 'default', the request will be processed using the default service
         #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
         # - When not set, the default behavior is 'auto'.
         #
         # When this parameter is set, the response body will include the `service_tier`
@@ -693,11 +701,14 @@ module OpenAI
 
           AUTO = T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
+          FLEX = T.let(:flex, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol]) }
           def self.values; end
         end
 
+        # Not supported with latest reasoning models `o3` and `o4-mini`.
+        #
         # Up to 4 sequences where the API will stop generating further tokens. The
         # returned text will not contain the stop sequence.
         module Stop

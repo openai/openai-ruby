@@ -49,7 +49,7 @@ module OpenAI
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -175,6 +175,26 @@ module OpenAI
         sig { params(reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash))).void }
         attr_writer :reasoning
 
+        # Specifies the latency tier to use for processing the request. This parameter is
+        # relevant for customers subscribed to the scale tier service:
+        #
+        # - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #   utilize scale tier credits until they are exhausted.
+        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #   be processed using the default service tier with a lower uptime SLA and no
+        #   latency guarentee.
+        # - If set to 'default', the request will be processed using the default service
+        #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When this parameter is set, the response body will include the `service_tier`
+        # utilized.
+        sig { returns(T.nilable(OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)) }
+        attr_accessor :service_tier
+
         # The status of the response generation. One of `completed`, `failed`,
         # `in_progress`, or `incomplete`.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)) }
@@ -266,6 +286,7 @@ module OpenAI
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
+            service_tier: T.nilable(OpenAI::Models::Responses::Response::ServiceTier::OrSymbol),
             status: OpenAI::Models::Responses::ResponseStatus::OrSymbol,
             text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
             truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::OrSymbol),
@@ -292,6 +313,7 @@ module OpenAI
           max_output_tokens: nil,
           previous_response_id: nil,
           reasoning: nil,
+          service_tier: nil,
           status: nil,
           text: nil,
           truncation: nil,
@@ -344,6 +366,7 @@ module OpenAI
                 max_output_tokens: T.nilable(Integer),
                 previous_response_id: T.nilable(String),
                 reasoning: T.nilable(OpenAI::Models::Reasoning),
+                service_tier: T.nilable(OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol),
                 status: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol,
                 text: OpenAI::Models::Responses::ResponseTextConfig,
                 truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol),
@@ -404,6 +427,38 @@ module OpenAI
               )
           end
           def self.variants; end
+        end
+
+        # Specifies the latency tier to use for processing the request. This parameter is
+        # relevant for customers subscribed to the scale tier service:
+        #
+        # - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #   utilize scale tier credits until they are exhausted.
+        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #   be processed using the default service tier with a lower uptime SLA and no
+        #   latency guarentee.
+        # - If set to 'default', the request will be processed using the default service
+        #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When this parameter is set, the response body will include the `service_tier`
+        # utilized.
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::ServiceTier) }
+          OrSymbol =
+            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol) }
+
+          AUTO = T.let(:auto, OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)
+          DEFAULT = T.let(:default, OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)
+          FLEX = T.let(:flex, OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol]) }
+          def self.values; end
         end
 
         # The truncation strategy to use for the model response.

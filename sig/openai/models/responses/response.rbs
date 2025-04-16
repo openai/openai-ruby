@@ -20,6 +20,7 @@ module OpenAI
           max_output_tokens: Integer?,
           previous_response_id: String?,
           reasoning: OpenAI::Models::Reasoning?,
+          service_tier: OpenAI::Models::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
           text: OpenAI::Models::Responses::ResponseTextConfig,
           truncation: OpenAI::Models::Responses::Response::truncation?,
@@ -62,6 +63,8 @@ module OpenAI
 
         attr_accessor reasoning: OpenAI::Models::Reasoning?
 
+        attr_accessor service_tier: OpenAI::Models::Responses::Response::service_tier?
+
         attr_reader status: OpenAI::Models::Responses::response_status?
 
         def status=: (
@@ -103,6 +106,7 @@ module OpenAI
           ?max_output_tokens: Integer?,
           ?previous_response_id: String?,
           ?reasoning: OpenAI::Models::Reasoning?,
+          ?service_tier: OpenAI::Models::Responses::Response::service_tier?,
           ?status: OpenAI::Models::Responses::response_status,
           ?text: OpenAI::Models::Responses::ResponseTextConfig,
           ?truncation: OpenAI::Models::Responses::Response::truncation?,
@@ -152,6 +156,18 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+        end
+
+        type service_tier = :auto | :default | :flex
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DEFAULT: :default
+          FLEX: :flex
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::Response::service_tier]
         end
 
         type truncation = :auto | :disabled

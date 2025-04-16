@@ -244,13 +244,14 @@ module OpenAI
           def self?.variants: -> [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
         end
 
-        type service_tier = :auto | :default
+        type service_tier = :auto | :default | :flex
 
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
           AUTO: :auto
           DEFAULT: :default
+          FLEX: :flex
 
           def self?.values: -> ::Array[OpenAI::Models::Chat::CompletionCreateParams::service_tier]
         end
