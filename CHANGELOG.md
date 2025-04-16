@@ -1,5 +1,95 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2025-04-16)
+
+Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/openai/openai-ruby/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
+
+### ⚠ BREAKING CHANGES
+
+* bump min supported ruby version to 3.1 (oldest non-EOL) ([#93](https://github.com/openai/openai-ruby/issues/93))
+* remove top level type aliases to relocated classes ([#91](https://github.com/openai/openai-ruby/issues/91))
+* use descriptive prefixes for enum names that start with otherwise illegal identifiers ([#89](https://github.com/openai/openai-ruby/issues/89))
+
+### Features
+
+* add reference links in yard ([#79](https://github.com/openai/openai-ruby/issues/79)) ([98262c8](https://github.com/openai/openai-ruby/commit/98262c8dac11599791892eb70d0f84bc449fac92))
+* add stubs documenting coming soon streaming helpers ([d455e9b](https://github.com/openai/openai-ruby/commit/d455e9b54cb8b218eef751ced83a495cce10d14d))
+* allow all valid `JSON` types to be encoded ([#102](https://github.com/openai/openai-ruby/issues/102)) ([5f5ee8b](https://github.com/openai/openai-ruby/commit/5f5ee8b1cb3e849f15b30160c1d7af624f151788))
+* **api:** Add evalapi to sdk ([#113](https://github.com/openai/openai-ruby/issues/113)) ([230bbfd](https://github.com/openai/openai-ruby/commit/230bbfdf8e7dbf2f1a44c33142cd7235bcbe0339))
+* **api:** add o3 and o4-mini model IDs ([4d3d4b7](https://github.com/openai/openai-ruby/commit/4d3d4b7f2e0fae12f24d57d287f2c9c4520eda76))
+* **api:** adding gpt-4.1 family of model IDs ([b4183d5](https://github.com/openai/openai-ruby/commit/b4183d5c93f776044a8a2de55f46ede75e5f9d2e))
+* **api:** manual updates ([#116](https://github.com/openai/openai-ruby/issues/116)) ([aef32b1](https://github.com/openai/openai-ruby/commit/aef32b15e84beadd56690d8e216c7370e526618c))
+* **api:** manual updates ([#83](https://github.com/openai/openai-ruby/issues/83)) ([33c9252](https://github.com/openai/openai-ruby/commit/33c92528e9d996e2fde5bffebeb718d6c6dbac8e))
+* **api:** manual updates ([#84](https://github.com/openai/openai-ruby/issues/84)) ([4755fff](https://github.com/openai/openai-ruby/commit/4755fff8b720f7e7afcfc452b2ad103b5e0a3c85))
+* **api:** manual updates ([#88](https://github.com/openai/openai-ruby/issues/88)) ([2db2fb6](https://github.com/openai/openai-ruby/commit/2db2fb60507fc71ad51b875b956d1fb3f43bc263))
+* **api:** manual updates ([#92](https://github.com/openai/openai-ruby/issues/92)) ([5b6d96e](https://github.com/openai/openai-ruby/commit/5b6d96ea61826256832395e644ff0351b939e133))
+* bump min supported ruby version to 3.1 (oldest non-EOL) ([#93](https://github.com/openai/openai-ruby/issues/93)) ([5c4feaa](https://github.com/openai/openai-ruby/commit/5c4feaaf6dfae40e2a32591bfa8ac30cb4cfbddb))
+* **client:** enable setting base URL from environment variable ([b9da54b](https://github.com/openai/openai-ruby/commit/b9da54b1f0ddae4af6404a11436b7daf21c47f6f))
+* example code snippets ([67c590b](https://github.com/openai/openai-ruby/commit/67c590b17efa59900fa3e893773fa2ac8ad92f45))
+* implement `to_json` for base model ([#86](https://github.com/openai/openai-ruby/issues/86)) ([f333c1c](https://github.com/openai/openai-ruby/commit/f333c1c68d8469fcf5714856063df7fe2c0a5d1e))
+* link response models to their methods in yard doc ([#81](https://github.com/openai/openai-ruby/issues/81)) ([0f4332a](https://github.com/openai/openai-ruby/commit/0f4332a08bf3b41f338b31d4b5b95ce15b5e4c4e))
+* remove top level type aliases to relocated classes ([#91](https://github.com/openai/openai-ruby/issues/91)) ([4588640](https://github.com/openai/openai-ruby/commit/4588640c6f367490721e5584a9207e9c8169c409))
+* support query, header, and body params that have identical names ([#101](https://github.com/openai/openai-ruby/issues/101)) ([f70c567](https://github.com/openai/openai-ruby/commit/f70c5673f3ab5127e74834b073367cd1b2c6868e))
+* support solargraph generics ([#96](https://github.com/openai/openai-ruby/issues/96)) ([80829ad](https://github.com/openai/openai-ruby/commit/80829ad0c12256b96a1a65f3938276cc38c3d4f4))
+* use Pathname alongside raw IO handles for file uploads ([#119](https://github.com/openai/openai-ruby/issues/119)) ([8728785](https://github.com/openai/openai-ruby/commit/8728785e80fdeb9d2b4beb526fc4c5ef4890fc82))
+
+
+### Bug Fixes
+
+* converter should transform stringio into string where applicable ([#104](https://github.com/openai/openai-ruby/issues/104)) ([c2f3c12](https://github.com/openai/openai-ruby/commit/c2f3c125d08c2c32b189bb2808779ef818db5844))
+* inaccuracies in the README.md ([7d42afa](https://github.com/openai/openai-ruby/commit/7d42afa3747ee6cfeb437580f7ff21dd26d505e2))
+* **internal:** update release-please to use ruby strategy for README.md ([#123](https://github.com/openai/openai-ruby/issues/123)) ([27f89a9](https://github.com/openai/openai-ruby/commit/27f89a9bc3b2255584b77af81da0cb3393b11b8f))
+* pre-release version string should match ruby, not semver conventions ([#95](https://github.com/openai/openai-ruby/issues/95)) ([18c01b1](https://github.com/openai/openai-ruby/commit/18c01b11ef59eecd67866bbeab92f70bdeef9578))
+* raise connection error for errors that result from HTTP transports ([#120](https://github.com/openai/openai-ruby/issues/120)) ([d7d7a54](https://github.com/openai/openai-ruby/commit/d7d7a543b54e7048b94bfeb3705c3cce38f5e60b))
+* use descriptive prefixes for enum names that start with otherwise illegal identifiers ([#89](https://github.com/openai/openai-ruby/issues/89)) ([647efa0](https://github.com/openai/openai-ruby/commit/647efa0ab24e92c2ab643f81f9ac6acce71390ba))
+
+
+### Chores
+
+* add README docs for using solargraph when installing gem from git ([#118](https://github.com/openai/openai-ruby/issues/118)) ([368c337](https://github.com/openai/openai-ruby/commit/368c3377d901ffe33c70ada5cb2bec73c3645c91))
+* always fold up method bodies in sorbet type definitions ([#108](https://github.com/openai/openai-ruby/issues/108)) ([1967acc](https://github.com/openai/openai-ruby/commit/1967accf07c8548226d482844e8b5d9fa2a8728c))
+* attempt to clean up underlying transport when streams are GC'd ([#117](https://github.com/openai/openai-ruby/issues/117)) ([4a43313](https://github.com/openai/openai-ruby/commit/4a43313d36a87949894cbdc5020363db84b98917))
+* demonstrate how to make undocumented requests in README ([#94](https://github.com/openai/openai-ruby/issues/94)) ([fbd8130](https://github.com/openai/openai-ruby/commit/fbd8130d7b6da0577bf79538c5e57eb59c760038))
+* do not use literals for version in type definitions ([#97](https://github.com/openai/openai-ruby/issues/97)) ([57bc1e7](https://github.com/openai/openai-ruby/commit/57bc1e79c782047df423c4300eb3657dbfe3fd06))
+* docs/README tweaks ([#570](https://github.com/openai/openai-ruby/issues/570)) ([ccbf6a2](https://github.com/openai/openai-ruby/commit/ccbf6a2f31bd925f66b1fd409533f91efb6f7091))
+* document LSP support in read me ([#100](https://github.com/openai/openai-ruby/issues/100)) ([1a0a335](https://github.com/openai/openai-ruby/commit/1a0a335e1a43b7f4354357a0bd9fc4b1e3bc362b))
+* easier to read examples in README.md ([#111](https://github.com/openai/openai-ruby/issues/111)) ([2435ef5](https://github.com/openai/openai-ruby/commit/2435ef547b8d62495268b84be59aaaf9c7ca65b8))
+* ensure readme.md is bumped when release please updates versions ([#122](https://github.com/openai/openai-ruby/issues/122)) ([0431cff](https://github.com/openai/openai-ruby/commit/0431cff6bd112eaa59c7b1edc12c445cbb40d62d))
+* extract error classes into own module ([#87](https://github.com/openai/openai-ruby/issues/87)) ([a8595ff](https://github.com/openai/openai-ruby/commit/a8595ffe8131130677d0fc3a6437ab5cb97c9814))
+* fix readme typo ([#125](https://github.com/openai/openai-ruby/issues/125)) ([f329b13](https://github.com/openai/openai-ruby/commit/f329b1395613da0a44bfa9c200bd1ce17e80cf27))
+* improve yard docs readability ([#80](https://github.com/openai/openai-ruby/issues/80)) ([76cf765](https://github.com/openai/openai-ruby/commit/76cf7656934c07ac0937586106dcbe7ac2ab22be))
+* **internal:** always run post-processing when formatting when syntax_tree ([15fff97](https://github.com/openai/openai-ruby/commit/15fff9792998379c7968ed84c54dcfab3a89bb74))
+* **internal:** expand CI branch coverage ([#124](https://github.com/openai/openai-ruby/issues/124)) ([5e73790](https://github.com/openai/openai-ruby/commit/5e73790b50d53e32ae510a3ff8ca324aa32b363f))
+* **internal:** fix examples ([#114](https://github.com/openai/openai-ruby/issues/114)) ([8abe02b](https://github.com/openai/openai-ruby/commit/8abe02b356a7a16c372ce963a90f1552beefa029))
+* **internal:** loosen internal type restrictions ([35babf9](https://github.com/openai/openai-ruby/commit/35babf91517944246a8099673a2e0b5f290e6da0))
+* **internal:** minor touch ups on sdk internals ([1d828d1](https://github.com/openai/openai-ruby/commit/1d828d12fad59167ada3a87b43998cccbd3031e9))
+* **internal:** misc small improvements ([#105](https://github.com/openai/openai-ruby/issues/105)) ([fa32836](https://github.com/openai/openai-ruby/commit/fa32836fb4ca72b9d2c5cf1f5b33bb94c8284caa))
+* **internal:** more concise handling of parameter naming conflicts ([#110](https://github.com/openai/openai-ruby/issues/110)) ([a6c4233](https://github.com/openai/openai-ruby/commit/a6c42335f7de10ed64bc270928f60c5bb3e78551))
+* **internal:** mostly README touch ups ([eaf6038](https://github.com/openai/openai-ruby/commit/eaf6038a541c896d60c9121fe3170b17c64fba28))
+* **internal:** protect SSE parsing pipeline from broken UTF-8 characters ([334b99e](https://github.com/openai/openai-ruby/commit/334b99e29d7c05cd0d81f7a2b5da7aca5ea0b1f8))
+* **internal:** reduce CI branch coverage ([0737020](https://github.com/openai/openai-ruby/commit/0737020941d6832c448da78ac8da1ed40b7de2c7))
+* **internal:** rubocop rules ([#107](https://github.com/openai/openai-ruby/issues/107)) ([036211d](https://github.com/openai/openai-ruby/commit/036211d98ec3aff3b6a1a4056545d97443702af4))
+* **internal:** run rubocop linter in parallel ([#106](https://github.com/openai/openai-ruby/issues/106)) ([bc4e591](https://github.com/openai/openai-ruby/commit/bc4e591a3984b22d6753f28bb4b9c8e65430e4d6))
+* **internal:** skip broken test ([#115](https://github.com/openai/openai-ruby/issues/115)) ([1e39fe5](https://github.com/openai/openai-ruby/commit/1e39fe5a706f17d65abe929bae95681dbb20c0ae))
+* **internal:** version bump ([#78](https://github.com/openai/openai-ruby/issues/78)) ([2126d20](https://github.com/openai/openai-ruby/commit/2126d201cd465f6b1fd7863edcadf3242d5e7bec))
+* loosen const and integer coercion rules ([#121](https://github.com/openai/openai-ruby/issues/121)) ([c95e3d8](https://github.com/openai/openai-ruby/commit/c95e3d88461e2a0a3784cf4f53dc68df5bd85ff7))
+* make client tests look prettier ([#112](https://github.com/openai/openai-ruby/issues/112)) ([5d78108](https://github.com/openai/openai-ruby/commit/5d7810839a084fd5c709bdd2ff4c4678643d372a))
+* make internal types pretty print ([655a382](https://github.com/openai/openai-ruby/commit/655a38204053a77a2b4135deed8c7a0ace4a63c3))
+* misc sdk polish ([#99](https://github.com/openai/openai-ruby/issues/99)) ([bedd502](https://github.com/openai/openai-ruby/commit/bedd502be3018a8a6c135c0ee95f9fb7a2f46f1a))
+* move private classes into internal module ([#90](https://github.com/openai/openai-ruby/issues/90)) ([9c96bde](https://github.com/openai/openai-ruby/commit/9c96bdee7f242a039d104bc6bf10115289267f80))
+* order client variables by "importance" ([#85](https://github.com/openai/openai-ruby/issues/85)) ([03c5192](https://github.com/openai/openai-ruby/commit/03c5192590469f8e0ed8aec590fc307e821d6d7b))
+* relax sorbet enum parameters to allow `String` in addition to `Symbol` ([#82](https://github.com/openai/openai-ruby/issues/82)) ([5ddeea8](https://github.com/openai/openai-ruby/commit/5ddeea81a64a8e3a60de4eda17ff71bf03132604))
+* rename confusing `Type::BooleanModel` to `Type::Boolean` ([#103](https://github.com/openai/openai-ruby/issues/103)) ([d98024f](https://github.com/openai/openai-ruby/commit/d98024ff8468de90215b31d829495891752899db))
+* simplify internal utils ([#98](https://github.com/openai/openai-ruby/issues/98)) ([7c09129](https://github.com/openai/openai-ruby/commit/7c091297160bbd953f15ea3219171b7e47293d2c))
+* touch up readme sorbet example ([b4d1d9e](https://github.com/openai/openai-ruby/commit/b4d1d9e264eb602548d4d76e057147871cd6ab02))
+* update yard comment formatting ([#109](https://github.com/openai/openai-ruby/issues/109)) ([8d9ee28](https://github.com/openai/openai-ruby/commit/8d9ee28357c153d2cef5b5f11a8329e5ad7e4a22))
+* workaround build errors ([42a052c](https://github.com/openai/openai-ruby/commit/42a052ce03c425d17b8546544532cd46065dcfdb))
+
+
+### Documentation
+
+* update documentation links to be more uniform ([e6d53dc](https://github.com/openai/openai-ruby/commit/e6d53dcaa4d7b77850dabd2889039887d4ec39ae))
+
 ## 0.1.0-alpha.3 (2025-04-01)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/openai/openai-ruby/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
