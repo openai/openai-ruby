@@ -10,7 +10,7 @@ module OpenAI
         attr_accessor :format_
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
         sig { returns(T.any(String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol)) }
         attr_accessor :voice
 
@@ -47,6 +47,7 @@ module OpenAI
             T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol) }
 
           WAV = T.let(:wav, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
+          AAC = T.let(:aac, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
           MP3 = T.let(:mp3, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
           FLAC = T.let(:flac, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
           OPUS = T.let(:opus, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
@@ -57,7 +58,7 @@ module OpenAI
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
-        # `ballad`, `coral`, `echo`, `sage`, and `shimmer`.
+        # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
         module Voice
           extend OpenAI::Internal::Type::Union
 

@@ -3,7 +3,8 @@ module OpenAI
     type reasoning =
       {
         effort: OpenAI::Models::reasoning_effort?,
-        generate_summary: OpenAI::Models::Reasoning::generate_summary?
+        generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        summary: OpenAI::Models::Reasoning::summary?
       }
 
     class Reasoning < OpenAI::Internal::Type::BaseModel
@@ -11,22 +12,38 @@ module OpenAI
 
       attr_accessor generate_summary: OpenAI::Models::Reasoning::generate_summary?
 
+      attr_accessor summary: OpenAI::Models::Reasoning::summary?
+
       def initialize: (
         ?effort: OpenAI::Models::reasoning_effort?,
-        ?generate_summary: OpenAI::Models::Reasoning::generate_summary?
+        ?generate_summary: OpenAI::Models::Reasoning::generate_summary?,
+        ?summary: OpenAI::Models::Reasoning::summary?
       ) -> void
 
       def to_hash: -> OpenAI::Models::reasoning
 
-      type generate_summary = :concise | :detailed
+      type generate_summary = :auto | :concise | :detailed
 
       module GenerateSummary
         extend OpenAI::Internal::Type::Enum
 
+        AUTO: :auto
         CONCISE: :concise
         DETAILED: :detailed
 
         def self?.values: -> ::Array[OpenAI::Models::Reasoning::generate_summary]
+      end
+
+      type summary = :auto | :concise | :detailed
+
+      module Summary
+        extend OpenAI::Internal::Type::Enum
+
+        AUTO: :auto
+        CONCISE: :concise
+        DETAILED: :detailed
+
+        def self?.values: -> ::Array[OpenAI::Models::Reasoning::summary]
       end
     end
   end

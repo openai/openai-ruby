@@ -27,7 +27,23 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :object
 
-        # The service tier used for processing the request.
+        # Specifies the latency tier to use for processing the request. This parameter is
+        # relevant for customers subscribed to the scale tier service:
+        #
+        # - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #   utilize scale tier credits until they are exhausted.
+        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #   be processed using the default service tier with a lower uptime SLA and no
+        #   latency guarentee.
+        # - If set to 'default', the request will be processed using the default service
+        #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When this parameter is set, the response body will include the `service_tier`
+        # utilized.
         sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)) }
         attr_accessor :service_tier
 
@@ -441,7 +457,23 @@ module OpenAI
           end
         end
 
-        # The service tier used for processing the request.
+        # Specifies the latency tier to use for processing the request. This parameter is
+        # relevant for customers subscribed to the scale tier service:
+        #
+        # - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #   utilize scale tier credits until they are exhausted.
+        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #   be processed using the default service tier with a lower uptime SLA and no
+        #   latency guarentee.
+        # - If set to 'default', the request will be processed using the default service
+        #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When this parameter is set, the response body will include the `service_tier`
+        # utilized.
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
@@ -449,8 +481,9 @@ module OpenAI
           OrSymbol =
             T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol) }
 
-          SCALE = T.let(:scale, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
+          AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
+          FLEX = T.let(:flex, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol]) }
           def self.values; end

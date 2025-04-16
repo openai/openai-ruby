@@ -133,6 +133,8 @@ module OpenAI
       optional :seed, Integer, nil?: true
 
       # @!attribute stop
+      #   Not supported with latest reasoning models `o3` and `o4-mini`.
+      #
       #   Up to 4 sequences where the API will stop generating further tokens. The
       #   returned text will not contain the stop sequence.
       #
@@ -288,6 +290,8 @@ module OpenAI
         ArrayOfToken2DArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]]
       end
 
+      # Not supported with latest reasoning models `o3` and `o4-mini`.
+      #
       # Up to 4 sequences where the API will stop generating further tokens. The
       # returned text will not contain the stop sequence.
       module Stop

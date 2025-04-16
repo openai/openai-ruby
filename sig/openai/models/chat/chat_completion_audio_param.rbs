@@ -21,12 +21,13 @@ module OpenAI
 
         def to_hash: -> OpenAI::Models::Chat::chat_completion_audio_param
 
-        type format_ = :wav | :mp3 | :flac | :opus | :pcm16
+        type format_ = :wav | :aac | :mp3 | :flac | :opus | :pcm16
 
         module Format
           extend OpenAI::Internal::Type::Enum
 
           WAV: :wav
+          AAC: :aac
           MP3: :mp3
           FLAC: :flac
           OPUS: :opus

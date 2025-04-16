@@ -12,6 +12,7 @@ module OpenAI
           parallel_tool_calls: bool?,
           previous_response_id: String?,
           reasoning: OpenAI::Models::Reasoning?,
+          service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           store: bool?,
           temperature: Float?,
           text: OpenAI::Models::Responses::ResponseTextConfig,
@@ -44,6 +45,8 @@ module OpenAI
         attr_accessor previous_response_id: String?
 
         attr_accessor reasoning: OpenAI::Models::Reasoning?
+
+        attr_accessor service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?
 
         attr_accessor store: bool?
 
@@ -85,6 +88,7 @@ module OpenAI
           ?parallel_tool_calls: bool?,
           ?previous_response_id: String?,
           ?reasoning: OpenAI::Models::Reasoning?,
+          ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           ?store: bool?,
           ?temperature: Float?,
           ?text: OpenAI::Models::Responses::ResponseTextConfig,
@@ -104,6 +108,18 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           def self?.variants: -> [String, OpenAI::Models::Responses::response_input]
+        end
+
+        type service_tier = :auto | :default | :flex
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DEFAULT: :default
+          FLEX: :flex
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::service_tier]
         end
 
         type tool_choice =

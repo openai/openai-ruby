@@ -52,6 +52,7 @@ module OpenAI
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
+          service_tier: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
           text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
@@ -89,7 +90,7 @@ module OpenAI
         # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         input:,
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -133,6 +134,24 @@ module OpenAI
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         reasoning: nil,
+        # Specifies the latency tier to use for processing the request. This parameter is
+        # relevant for customers subscribed to the scale tier service:
+        #
+        # - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #   utilize scale tier credits until they are exhausted.
+        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #   be processed using the default service tier with a lower uptime SLA and no
+        #   latency guarentee.
+        # - If set to 'default', the request will be processed using the default service
+        #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When this parameter is set, the response body will include the `service_tier`
+        # utilized.
+        service_tier: nil,
         # Whether to store the generated model response for later retrieval via API.
         store: nil,
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -234,6 +253,7 @@ module OpenAI
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
           reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
+          service_tier: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
           text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
@@ -308,7 +328,7 @@ module OpenAI
         # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         input:,
-        # Model ID used to generate the response, like `gpt-4o` or `o1`. OpenAI offers a
+        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
@@ -352,6 +372,24 @@ module OpenAI
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
         reasoning: nil,
+        # Specifies the latency tier to use for processing the request. This parameter is
+        # relevant for customers subscribed to the scale tier service:
+        #
+        # - If set to 'auto', and the Project is Scale tier enabled, the system will
+        #   utilize scale tier credits until they are exhausted.
+        # - If set to 'auto', and the Project is not Scale tier enabled, the request will
+        #   be processed using the default service tier with a lower uptime SLA and no
+        #   latency guarentee.
+        # - If set to 'default', the request will be processed using the default service
+        #   tier with a lower uptime SLA and no latency guarentee.
+        # - If set to 'flex', the request will be processed with the Flex Processing
+        #   service tier.
+        #   [Learn more](https://platform.openai.com/docs/guides/flex-processing).
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When this parameter is set, the response body will include the `service_tier`
+        # utilized.
+        service_tier: nil,
         # Whether to store the generated model response for later retrieval via API.
         store: nil,
         # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will

@@ -108,6 +108,8 @@ module OpenAI
       sig { returns(T.nilable(Integer)) }
       attr_accessor :seed
 
+      # Not supported with latest reasoning models `o3` and `o4-mini`.
+      #
       # Up to 4 sequences where the API will stop generating further tokens. The
       # returned text will not contain the stop sequence.
       sig { returns(T.nilable(T.any(String, T::Array[String]))) }
@@ -277,6 +279,8 @@ module OpenAI
           )
       end
 
+      # Not supported with latest reasoning models `o3` and `o4-mini`.
+      #
       # Up to 4 sequences where the API will stop generating further tokens. The
       # returned text will not contain the stop sequence.
       module Stop
