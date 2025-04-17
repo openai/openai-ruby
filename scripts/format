@@ -5,4 +5,5 @@ set -e
 cd -- "$(dirname -- "$0")/.."
 
 echo "==> Running formatters"
+
 exec -- bundle exec rake format "$@"
