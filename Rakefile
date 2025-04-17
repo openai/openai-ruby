@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pathname"
 require "securerandom"
 require "shellwords"
 
@@ -7,10 +8,23 @@ require "minitest/test_task"
 require "rake/clean"
 require "rubocop/rake_task"
 
-CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/])
+tapioca = "sorbet/tapioca"
+ignore_file = ".ignore"
 
-multitask(default: [:test])
+CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/], *FileList["*.gem"], ignore_file)
 
+CLOBBER.push(*%w[sorbet/rbi/annotations/ sorbet/rbi/gems/], tapioca)
+
+multitask(:default) do
+  sh(*%w[rake --tasks])
+end
+
+desc("Preview docs; use `PORT=<PORT>` to change the port")
+multitask(:"docs:preview") do
+  sh(*%w[yard server --bind [::] --reload --quiet --port], ENV.fetch("PORT", "8808"))
+end
+
+desc("Run test suites; use `TEST=path/to/test.rb` to run a specific test file")
 multitask(:test) do
   rb =
     FileList[ENV.fetch("TEST", "./test/**/*_test.rb")]
@@ -23,17 +37,20 @@ end
 rubo_find = %w[find ./lib ./test ./rbi -type f -and ( -name *.rb -or -name *.rbi ) -print0]
 xargs = %w[xargs --no-run-if-empty --null --max-procs=0 --max-args=300 --]
 
-multitask(:rubocop) do
+desc("Lint `*.rb(i)`")
+multitask(:"lint:rubocop") do
   lint = xargs + %w[rubocop --fail-level E] + (ENV.key?("CI") ? %w[--format github] : [])
   sh("#{rubo_find.shelljoin} | #{lint.shelljoin}")
 end
 
-multitask(:ruboformat) do
+desc("Format `*.rb(i)`")
+multitask(:"format:rubocop") do
   fmt = xargs + %w[rubocop --fail-level F --autocorrect --format simple --]
   sh("#{rubo_find.shelljoin} | #{fmt.shelljoin}")
 end
 
-multitask(:syntax_tree) do
+desc("Format `*.rbs`")
+multitask(:"format:syntax_tree") do
   find = %w[find ./sig -type f -name *.rbs -print0]
   inplace = /darwin|bsd/ =~ RUBY_PLATFORM ? %w[-i''] : %w[-i]
   uuid = SecureRandom.uuid
@@ -74,27 +91,49 @@ multitask(:syntax_tree) do
   fail unless success
 end
 
-multitask(format: [:ruboformat, :syntax_tree])
+desc("Format everything")
+multitask(format: [:"format:rubocop", :"format:syntax_tree"])
 
-multitask(:steep) do
+desc("Typecheck `*.rbs`")
+multitask(:"typecheck:steep") do
   sh(*%w[steep check])
 end
 
-multitask(:sorbet) do
+desc("Typecheck `*.rbi`")
+multitask(:"typecheck:sorbet") do
   sh(*%w[srb typecheck])
 end
 
-file("sorbet/tapioca") do
+file(tapioca) do
   sh(*%w[tapioca init])
 end
 
-multitask(typecheck: [:steep, :sorbet])
-multitask(lint: [:rubocop, :typecheck])
+desc("Typecheck everything")
+multitask(typecheck: [:"typecheck:steep", :"typecheck:sorbet"])
 
-multitask(:build) do
-  sh(*%w[gem build -- openai.gemspec])
+desc("Lint everything")
+multitask(lint: [:"lint:rubocop", :typecheck])
+
+desc("Build yard docs")
+multitask(:"build:docs") do
+  sh(*%w[yard])
 end
 
-multitask(release: [:build]) do
+desc("Build ruby gem")
+multitask(:"build:gem") do
+  # optimizing for grepping through the gem bundle: many tools honour `.ignore` files, including VSCode
+  #
+  # both `rbi` and `sig` directories are navigable by their respective tool chains and therefore can be ignored by tools such as `rg`
+  Pathname(ignore_file).write(<<~GLOB)
+    rbi/*
+    sig/*
+  GLOB
+
+  sh(*%w[gem build -- openai.gemspec])
+  rm_rf(ignore_file)
+end
+
+desc("Release ruby gem")
+multitask(release: [:"build:gem"]) do
   sh(*%w[gem push], *FileList["openai-*.gem"])
 end
