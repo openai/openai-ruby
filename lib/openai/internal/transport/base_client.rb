@@ -253,7 +253,7 @@ module OpenAI
 
           if @idempotency_header &&
              !headers.key?(@idempotency_header) &&
-             !Net::HTTP::IDEMPOTENT_METHODS_.include?(method.to_s.upcase)
+             (!Net::HTTP::IDEMPOTENT_METHODS_.include?(method.to_s.upcase) || opts.key?(:idempotency_key))
             headers[@idempotency_header] = opts.fetch(:idempotency_key) { generate_idempotency_key }
           end
 
