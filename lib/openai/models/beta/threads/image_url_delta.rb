@@ -27,13 +27,9 @@ module OpenAI
           #   # @return [String]
           #   attr_writer :url
 
-          # @!parse
-          #   # @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail]
-          #   # @param url [String]
-          #   #
-          #   def initialize(detail: nil, url: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(detail: nil, url: nil)
+          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageURLDelta::Detail]
+          #   @param url [String]
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           # to high resolution using `high`.
@@ -46,11 +42,8 @@ module OpenAI
             LOW = :low
             HIGH = :high
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

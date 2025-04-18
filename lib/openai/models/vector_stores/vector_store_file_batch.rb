@@ -45,19 +45,15 @@ module OpenAI
         #   @return [String]
         required :vector_store_id, String
 
-        # @!parse
-        #   # A batch of files attached to a vector store.
-        #   #
-        #   # @param id [String]
-        #   # @param created_at [Integer]
-        #   # @param file_counts [OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts]
-        #   # @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status]
-        #   # @param vector_store_id [String]
-        #   # @param object [Symbol, :"vector_store.files_batch"]
-        #   #
-        #   def initialize(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch")
+        #   A batch of files attached to a vector store.
+        #
+        #   @param id [String]
+        #   @param created_at [Integer]
+        #   @param file_counts [OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts]
+        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status]
+        #   @param vector_store_id [String]
+        #   @param object [Symbol, :"vector_store.files_batch"]
 
         # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#file_counts
         class FileCounts < OpenAI::Internal::Type::BaseModel
@@ -91,16 +87,12 @@ module OpenAI
           #   @return [Integer]
           required :total, Integer
 
-          # @!parse
-          #   # @param cancelled [Integer]
-          #   # @param completed [Integer]
-          #   # @param failed [Integer]
-          #   # @param in_progress [Integer]
-          #   # @param total [Integer]
-          #   #
-          #   def initialize(cancelled:, completed:, failed:, in_progress:, total:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(cancelled:, completed:, failed:, in_progress:, total:)
+          #   @param cancelled [Integer]
+          #   @param completed [Integer]
+          #   @param failed [Integer]
+          #   @param in_progress [Integer]
+          #   @param total [Integer]
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,
@@ -115,11 +107,8 @@ module OpenAI
           CANCELLED = :cancelled
           FAILED = :failed
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

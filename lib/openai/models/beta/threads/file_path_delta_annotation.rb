@@ -54,20 +54,16 @@ module OpenAI
           #   # @return [String]
           #   attr_writer :text
 
-          # @!parse
-          #   # A URL for the file that's generated when the assistant used the
-          #   # `code_interpreter` tool to generate a file.
-          #   #
-          #   # @param index [Integer]
-          #   # @param end_index [Integer]
-          #   # @param file_path [OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath]
-          #   # @param start_index [Integer]
-          #   # @param text [String]
-          #   # @param type [Symbol, :file_path]
-          #   #
-          #   def initialize(index:, end_index: nil, file_path: nil, start_index: nil, text: nil, type: :file_path, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(index:, end_index: nil, file_path: nil, start_index: nil, text: nil, type: :file_path)
+          #   A URL for the file that's generated when the assistant used the
+          #   `code_interpreter` tool to generate a file.
+          #
+          #   @param index [Integer]
+          #   @param end_index [Integer]
+          #   @param file_path [OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath]
+          #   @param start_index [Integer]
+          #   @param text [String]
+          #   @param type [Symbol, :file_path]
 
           # @see OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation#file_path
           class FilePath < OpenAI::Internal::Type::BaseModel
@@ -81,12 +77,8 @@ module OpenAI
             #   # @return [String]
             #   attr_writer :file_id
 
-            # @!parse
-            #   # @param file_id [String]
-            #   #
-            #   def initialize(file_id: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_id: nil)
+            #   @param file_id [String]
           end
         end
       end

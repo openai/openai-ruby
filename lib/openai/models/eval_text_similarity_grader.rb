@@ -44,19 +44,15 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :name
 
-      # @!parse
-      #   # A TextSimilarityGrader object which grades text based on similarity metrics.
-      #   #
-      #   # @param evaluation_metric [Symbol, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric]
-      #   # @param input [String]
-      #   # @param pass_threshold [Float]
-      #   # @param reference [String]
-      #   # @param name [String]
-      #   # @param type [Symbol, :text_similarity]
-      #   #
-      #   def initialize(evaluation_metric:, input:, pass_threshold:, reference:, name: nil, type: :text_similarity, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(evaluation_metric:, input:, pass_threshold:, reference:, name: nil, type: :text_similarity)
+      #   A TextSimilarityGrader object which grades text based on similarity metrics.
+      #
+      #   @param evaluation_metric [Symbol, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric]
+      #   @param input [String]
+      #   @param pass_threshold [Float]
+      #   @param reference [String]
+      #   @param name [String]
+      #   @param type [Symbol, :text_similarity]
 
       # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
       # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
@@ -77,11 +73,8 @@ module OpenAI
         ROUGE_L = :rouge_l
         COSINE = :cosine
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

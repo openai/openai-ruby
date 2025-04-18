@@ -30,18 +30,14 @@ module OpenAI
           #   @return [String]
           required :project_id, String
 
-          # @!parse
-          #   # The `checkpoint.permission` object represents a permission for a fine-tuned
-          #   # model checkpoint.
-          #   #
-          #   # @param id [String]
-          #   # @param created_at [Integer]
-          #   # @param project_id [String]
-          #   # @param object [Symbol, :"checkpoint.permission"]
-          #   #
-          #   def initialize(id:, created_at:, project_id:, object: :"checkpoint.permission", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, created_at:, project_id:, object: :"checkpoint.permission")
+          #   The `checkpoint.permission` object represents a permission for a fine-tuned
+          #   model checkpoint.
+          #
+          #   @param id [String]
+          #   @param created_at [Integer]
+          #   @param project_id [String]
+          #   @param object [Symbol, :"checkpoint.permission"]
         end
       end
     end

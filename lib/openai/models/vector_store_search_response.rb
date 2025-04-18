@@ -41,16 +41,12 @@ module OpenAI
       #   @return [Float]
       required :score, Float
 
-      # @!parse
-      #   # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
-      #   # @param content [Array<OpenAI::Models::VectorStoreSearchResponse::Content>]
-      #   # @param file_id [String]
-      #   # @param filename [String]
-      #   # @param score [Float]
-      #   #
-      #   def initialize(attributes:, content:, file_id:, filename:, score:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(attributes:, content:, file_id:, filename:, score:)
+      #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+      #   @param content [Array<OpenAI::Models::VectorStoreSearchResponse::Content>]
+      #   @param file_id [String]
+      #   @param filename [String]
+      #   @param score [Float]
 
       module Attribute
         extend OpenAI::Internal::Type::Union
@@ -61,9 +57,8 @@ module OpenAI
 
         variant OpenAI::Internal::Type::Boolean
 
-        # @!parse
-        #   # @return [Array(String, Float, Boolean)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Float, Boolean)]
       end
 
       class Content < OpenAI::Internal::Type::BaseModel
@@ -79,13 +74,9 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type]
         required :type, enum: -> { OpenAI::Models::VectorStoreSearchResponse::Content::Type }
 
-        # @!parse
-        #   # @param text [String]
-        #   # @param type [Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type]
-        #   #
-        #   def initialize(text:, type:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(text:, type:)
+        #   @param text [String]
+        #   @param type [Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type]
 
         # The type of content.
         #
@@ -95,11 +86,8 @@ module OpenAI
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.web_search_call.searching"]
         required :type, const: :"response.web_search_call.searching"
 
-        # @!parse
-        #   # Emitted when a web search call is executing.
-        #   #
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.web_search_call.searching"]
-        #   #
-        #   def initialize(item_id:, output_index:, type: :"response.web_search_call.searching", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(item_id:, output_index:, type: :"response.web_search_call.searching")
+        #   Emitted when a web search call is executing.
+        #
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.web_search_call.searching"]
       end
     end
   end

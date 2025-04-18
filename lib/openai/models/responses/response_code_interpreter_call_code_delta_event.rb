@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.code_interpreter_call.code.delta"]
         required :type, const: :"response.code_interpreter_call.code.delta"
 
-        # @!parse
-        #   # Emitted when a partial code snippet is added by the code interpreter.
-        #   #
-        #   # @param delta [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.code_interpreter_call.code.delta"]
-        #   #
-        #   def initialize(delta:, output_index:, type: :"response.code_interpreter_call.code.delta", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(delta:, output_index:, type: :"response.code_interpreter_call.code.delta")
+        #   Emitted when a partial code snippet is added by the code interpreter.
+        #
+        #   @param delta [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.code_interpreter_call.code.delta"]
       end
     end
   end

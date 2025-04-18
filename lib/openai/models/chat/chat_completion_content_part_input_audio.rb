@@ -15,15 +15,11 @@ module OpenAI
         #   @return [Symbol, :input_audio]
         required :type, const: :input_audio
 
-        # @!parse
-        #   # Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
-        #   #
-        #   # @param input_audio [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio]
-        #   # @param type [Symbol, :input_audio]
-        #   #
-        #   def initialize(input_audio:, type: :input_audio, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(input_audio:, type: :input_audio)
+        #   Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
+        #
+        #   @param input_audio [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio]
+        #   @param type [Symbol, :input_audio]
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartInputAudio#input_audio
         class InputAudio < OpenAI::Internal::Type::BaseModel
@@ -41,13 +37,9 @@ module OpenAI
                    enum: -> { OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format },
                    api_name: :format
 
-          # @!parse
-          #   # @param data [String]
-          #   # @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format]
-          #   #
-          #   def initialize(data:, format_:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, format_:)
+          #   @param data [String]
+          #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format]
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
           #
@@ -58,11 +50,8 @@ module OpenAI
             WAV = :wav
             MP3 = :mp3
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

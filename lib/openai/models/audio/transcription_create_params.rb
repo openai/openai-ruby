@@ -107,33 +107,16 @@ module OpenAI
         #   # @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>]
         #   attr_writer :timestamp_granularities
 
-        # @!parse
-        #   # @param file [Pathname, StringIO]
-        #   # @param model [String, Symbol, OpenAI::Models::AudioModel]
-        #   # @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
-        #   # @param language [String]
-        #   # @param prompt [String]
-        #   # @param response_format [Symbol, OpenAI::Models::AudioResponseFormat]
-        #   # @param temperature [Float]
-        #   # @param timestamp_granularities [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(
-        #     file:,
-        #     model:,
-        #     include: nil,
-        #     language: nil,
-        #     prompt: nil,
-        #     response_format: nil,
-        #     temperature: nil,
-        #     timestamp_granularities: nil,
-        #     request_options: {},
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
+        #   @param file [Pathname, StringIO]
+        #   @param model [String, Symbol, OpenAI::Models::AudioModel]
+        #   @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
+        #   @param language [String]
+        #   @param prompt [String]
+        #   @param response_format [Symbol, OpenAI::Models::AudioResponseFormat]
+        #   @param temperature [Float]
+        #   @param timestamp_granularities [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
@@ -146,9 +129,8 @@ module OpenAI
           # ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source Whisper V2 model).
           variant enum: -> { OpenAI::Models::AudioModel }
 
-          # @!parse
-          #   # @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
         end
 
         module TimestampGranularity
@@ -157,11 +139,8 @@ module OpenAI
           WORD = :word
           SEGMENT = :segment
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

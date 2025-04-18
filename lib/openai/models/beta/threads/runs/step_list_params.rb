@@ -81,18 +81,14 @@ module OpenAI
             #   # @return [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order]
             #   attr_writer :order
 
-            # @!parse
-            #   # @param thread_id [String]
-            #   # @param after [String]
-            #   # @param before [String]
-            #   # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
-            #   # @param limit [Integer]
-            #   # @param order [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order]
-            #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-            #   #
-            #   def initialize(thread_id:, after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {}, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(thread_id:, after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
+            #   @param thread_id [String]
+            #   @param after [String]
+            #   @param before [String]
+            #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
+            #   @param limit [Integer]
+            #   @param order [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order]
+            #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
             # order and `desc` for descending order.
@@ -102,11 +98,8 @@ module OpenAI
               ASC = :asc
               DESC = :desc
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
         end

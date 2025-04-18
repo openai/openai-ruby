@@ -83,34 +83,18 @@ module OpenAI
         #   # @return [OpenAI::Models::CompletionUsage]
         #   attr_writer :usage
 
-        # @!parse
-        #   # Represents a chat completion response returned by model, based on the provided
-        #   # input.
-        #   #
-        #   # @param id [String]
-        #   # @param choices [Array<OpenAI::Models::Chat::ChatCompletion::Choice>]
-        #   # @param created [Integer]
-        #   # @param model [String]
-        #   # @param service_tier [Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier, nil]
-        #   # @param system_fingerprint [String]
-        #   # @param usage [OpenAI::Models::CompletionUsage]
-        #   # @param object [Symbol, :"chat.completion"]
-        #   #
-        #   def initialize(
-        #     id:,
-        #     choices:,
-        #     created:,
-        #     model:,
-        #     service_tier: nil,
-        #     system_fingerprint: nil,
-        #     usage: nil,
-        #     object: :"chat.completion",
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, choices:, created:, model:, service_tier: nil, system_fingerprint: nil, usage: nil, object: :"chat.completion")
+        #   Represents a chat completion response returned by model, based on the provided
+        #   input.
+        #
+        #   @param id [String]
+        #   @param choices [Array<OpenAI::Models::Chat::ChatCompletion::Choice>]
+        #   @param created [Integer]
+        #   @param model [String]
+        #   @param service_tier [Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier, nil]
+        #   @param system_fingerprint [String]
+        #   @param usage [OpenAI::Models::CompletionUsage]
+        #   @param object [Symbol, :"chat.completion"]
 
         class Choice < OpenAI::Internal::Type::BaseModel
           # @!attribute finish_reason
@@ -142,15 +126,11 @@ module OpenAI
           #   @return [OpenAI::Models::Chat::ChatCompletionMessage]
           required :message, -> { OpenAI::Models::Chat::ChatCompletionMessage }
 
-          # @!parse
-          #   # @param finish_reason [Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason]
-          #   # @param index [Integer]
-          #   # @param logprobs [OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, nil]
-          #   # @param message [OpenAI::Models::Chat::ChatCompletionMessage]
-          #   #
-          #   def initialize(finish_reason:, index:, logprobs:, message:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(finish_reason:, index:, logprobs:, message:)
+          #   @param finish_reason [Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason]
+          #   @param index [Integer]
+          #   @param logprobs [OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs, nil]
+          #   @param message [OpenAI::Models::Chat::ChatCompletionMessage]
 
           # The reason the model stopped generating tokens. This will be `stop` if the model
           # hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -169,11 +149,8 @@ module OpenAI
             CONTENT_FILTER = :content_filter
             FUNCTION_CALL = :function_call
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # @see OpenAI::Models::Chat::ChatCompletion::Choice#logprobs
@@ -194,15 +171,11 @@ module OpenAI
                      -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob] },
                      nil?: true
 
-            # @!parse
-            #   # Log probability information for the choice.
-            #   #
-            #   # @param content [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            #   # @param refusal [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            #   #
-            #   def initialize(content:, refusal:, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(content:, refusal:)
+            #   Log probability information for the choice.
+            #
+            #   @param content [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
+            #   @param refusal [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
           end
         end
 
@@ -232,11 +205,8 @@ module OpenAI
           DEFAULT = :default
           FLEX = :flex
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.code_interpreter_call.interpreting"]
         required :type, const: :"response.code_interpreter_call.interpreting"
 
-        # @!parse
-        #   # Emitted when the code interpreter is actively interpreting the code snippet.
-        #   #
-        #   # @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.code_interpreter_call.interpreting"]
-        #   #
-        #   def initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.interpreting", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.interpreting")
+        #   Emitted when the code interpreter is actively interpreting the code snippet.
+        #
+        #   @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.code_interpreter_call.interpreting"]
       end
     end
   end

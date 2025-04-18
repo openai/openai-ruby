@@ -40,17 +40,13 @@ module OpenAI
             #   # @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter]
             #   attr_writer :code_interpreter
 
-            # @!parse
-            #   # Details of the Code Interpreter tool call the run step was involved in.
-            #   #
-            #   # @param index [Integer]
-            #   # @param id [String]
-            #   # @param code_interpreter [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter]
-            #   # @param type [Symbol, :code_interpreter]
-            #   #
-            #   def initialize(index:, id: nil, code_interpreter: nil, type: :code_interpreter, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(index:, id: nil, code_interpreter: nil, type: :code_interpreter)
+            #   Details of the Code Interpreter tool call the run step was involved in.
+            #
+            #   @param index [Integer]
+            #   @param id [String]
+            #   @param code_interpreter [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter]
+            #   @param type [Symbol, :code_interpreter]
 
             # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta#code_interpreter
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -77,15 +73,11 @@ module OpenAI
               #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>]
               #   attr_writer :outputs
 
-              # @!parse
-              #   # The Code Interpreter tool call definition.
-              #   #
-              #   # @param input [String]
-              #   # @param outputs [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>]
-              #   #
-              #   def initialize(input: nil, outputs: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(input: nil, outputs: nil)
+              #   The Code Interpreter tool call definition.
+              #
+              #   @param input [String]
+              #   @param outputs [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage>]
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
@@ -98,9 +90,8 @@ module OpenAI
 
                 variant :image, -> { OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage }
 
-                # @!parse
-                #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage)]
               end
             end
           end

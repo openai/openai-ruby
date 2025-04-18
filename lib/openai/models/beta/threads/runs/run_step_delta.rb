@@ -16,14 +16,10 @@ module OpenAI
             #   # @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
             #   attr_writer :step_details
 
-            # @!parse
-            #   # The delta containing the fields that have changed on the run step.
-            #   #
-            #   # @param step_details [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
-            #   #
-            #   def initialize(step_details: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(step_details: nil)
+            #   The delta containing the fields that have changed on the run step.
+            #
+            #   @param step_details [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
 
             # The details of the run step.
             #
@@ -39,9 +35,8 @@ module OpenAI
               # Details of the tool call.
               variant :tool_calls, -> { OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject }
 
-              # @!parse
-              #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject)]
-              #   def self.variants; end
+              # @!method self.variants
+              #   @return [Array(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject)]
             end
           end
         end

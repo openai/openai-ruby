@@ -18,17 +18,13 @@ module OpenAI
         #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
         required :voice, union: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
 
-        # @!parse
-        #   # Parameters for audio output. Required when audio output is requested with
-        #   # `modalities: ["audio"]`.
-        #   # [Learn more](https://platform.openai.com/docs/guides/audio).
-        #   #
-        #   # @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
-        #   # @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
-        #   #
-        #   def initialize(format_:, voice:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(format_:, voice:)
+        #   Parameters for audio output. Required when audio output is requested with
+        #   `modalities: ["audio"]`.
+        #   [Learn more](https://platform.openai.com/docs/guides/audio).
+        #
+        #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
+        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.
@@ -44,11 +40,8 @@ module OpenAI
           OPUS = :opus
           PCM16 = :pcm16
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
@@ -82,9 +75,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::VERSE }
 
-          # @!parse
-          #   # @return [Array(String, Symbol)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Symbol)]
 
           # @!group
 

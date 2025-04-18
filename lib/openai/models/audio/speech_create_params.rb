@@ -64,18 +64,14 @@ module OpenAI
         #   # @return [Float]
         #   attr_writer :speed
 
-        # @!parse
-        #   # @param input [String]
-        #   # @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel]
-        #   # @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
-        #   # @param instructions [String]
-        #   # @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat]
-        #   # @param speed [Float]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {})
+        #   @param input [String]
+        #   @param model [String, Symbol, OpenAI::Models::Audio::SpeechModel]
+        #   @param voice [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
+        #   @param instructions [String]
+        #   @param response_format [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat]
+        #   @param speed [Float]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         # `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
@@ -87,9 +83,8 @@ module OpenAI
           # One of the available [TTS models](https://platform.openai.com/docs/models#tts): `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
           variant enum: -> { OpenAI::Models::Audio::SpeechModel }
 
-          # @!parse
-          #   # @return [Array(String, Symbol, OpenAI::Models::Audio::SpeechModel)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Symbol, OpenAI::Models::Audio::SpeechModel)]
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
@@ -123,9 +118,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice::VERSE }
 
-          # @!parse
-          #   # @return [Array(String, Symbol)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Symbol)]
 
           # @!group
 
@@ -156,11 +150,8 @@ module OpenAI
           WAV = :wav
           PCM = :pcm
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

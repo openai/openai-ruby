@@ -104,46 +104,24 @@ module OpenAI
           #   @return [String]
           required :thread_id, String
 
-          # @!parse
-          #   # Represents a message within a
-          #   # [thread](https://platform.openai.com/docs/api-reference/threads).
-          #   #
-          #   # @param id [String]
-          #   # @param assistant_id [String, nil]
-          #   # @param attachments [Array<OpenAI::Models::Beta::Threads::Message::Attachment>, nil]
-          #   # @param completed_at [Integer, nil]
-          #   # @param content [Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock>]
-          #   # @param created_at [Integer]
-          #   # @param incomplete_at [Integer, nil]
-          #   # @param incomplete_details [OpenAI::Models::Beta::Threads::Message::IncompleteDetails, nil]
-          #   # @param metadata [Hash{Symbol=>String}, nil]
-          #   # @param role [Symbol, OpenAI::Models::Beta::Threads::Message::Role]
-          #   # @param run_id [String, nil]
-          #   # @param status [Symbol, OpenAI::Models::Beta::Threads::Message::Status]
-          #   # @param thread_id [String]
-          #   # @param object [Symbol, :"thread.message"]
-          #   #
-          #   def initialize(
-          #     id:,
-          #     assistant_id:,
-          #     attachments:,
-          #     completed_at:,
-          #     content:,
-          #     created_at:,
-          #     incomplete_at:,
-          #     incomplete_details:,
-          #     metadata:,
-          #     role:,
-          #     run_id:,
-          #     status:,
-          #     thread_id:,
-          #     object: :"thread.message",
-          #     **
-          #   )
-          #     super
-          #   end
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, assistant_id:, attachments:, completed_at:, content:, created_at:, incomplete_at:, incomplete_details:, metadata:, role:, run_id:, status:, thread_id:, object: :"thread.message")
+          #   Represents a message within a
+          #   [thread](https://platform.openai.com/docs/api-reference/threads).
+          #
+          #   @param id [String]
+          #   @param assistant_id [String, nil]
+          #   @param attachments [Array<OpenAI::Models::Beta::Threads::Message::Attachment>, nil]
+          #   @param completed_at [Integer, nil]
+          #   @param content [Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock>]
+          #   @param created_at [Integer]
+          #   @param incomplete_at [Integer, nil]
+          #   @param incomplete_details [OpenAI::Models::Beta::Threads::Message::IncompleteDetails, nil]
+          #   @param metadata [Hash{Symbol=>String}, nil]
+          #   @param role [Symbol, OpenAI::Models::Beta::Threads::Message::Role]
+          #   @param run_id [String, nil]
+          #   @param status [Symbol, OpenAI::Models::Beta::Threads::Message::Status]
+          #   @param thread_id [String]
+          #   @param object [Symbol, :"thread.message"]
 
           class Attachment < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] file_id
@@ -167,13 +145,9 @@ module OpenAI
             #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>]
             #   attr_writer :tools
 
-            # @!parse
-            #   # @param file_id [String]
-            #   # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>]
-            #   #
-            #   def initialize(file_id: nil, tools: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_id: nil, tools: nil)
+            #   @param file_id [String]
+            #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>]
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -189,17 +163,12 @@ module OpenAI
                 #   @return [Symbol, :file_search]
                 required :type, const: :file_search
 
-                # @!parse
-                #   # @param type [Symbol, :file_search]
-                #   #
-                #   def initialize(type: :file_search, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(type: :file_search)
+                #   @param type [Symbol, :file_search]
               end
 
-              # @!parse
-              #   # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly)]
-              #   def self.variants; end
+              # @!method self.variants
+              #   @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly)]
             end
           end
 
@@ -211,14 +180,10 @@ module OpenAI
             #   @return [Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason]
             required :reason, enum: -> { OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason }
 
-            # @!parse
-            #   # On an incomplete message, details about why the message is incomplete.
-            #   #
-            #   # @param reason [Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason]
-            #   #
-            #   def initialize(reason:, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(reason:)
+            #   On an incomplete message, details about why the message is incomplete.
+            #
+            #   @param reason [Symbol, OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason]
 
             # The reason the message is incomplete.
             #
@@ -232,11 +197,8 @@ module OpenAI
               RUN_EXPIRED = :run_expired
               RUN_FAILED = :run_failed
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
 
@@ -249,11 +211,8 @@ module OpenAI
             USER = :user
             ASSISTANT = :assistant
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # The status of the message, which can be either `in_progress`, `incomplete`, or
@@ -267,11 +226,8 @@ module OpenAI
             INCOMPLETE = :incomplete
             COMPLETED = :completed
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

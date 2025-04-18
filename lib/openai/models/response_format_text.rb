@@ -9,14 +9,10 @@ module OpenAI
       #   @return [Symbol, :text]
       required :type, const: :text
 
-      # @!parse
-      #   # Default response format. Used to generate text responses.
-      #   #
-      #   # @param type [Symbol, :text]
-      #   #
-      #   def initialize(type: :text, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(type: :text)
+      #   Default response format. Used to generate text responses.
+      #
+      #   @param type [Symbol, :text]
     end
   end
 end

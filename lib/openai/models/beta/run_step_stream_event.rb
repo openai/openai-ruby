@@ -47,17 +47,13 @@ module OpenAI
           #   @return [Symbol, :"thread.run.step.created"]
           required :event, const: :"thread.run.step.created"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   # is created.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
-          #   # @param event [Symbol, :"thread.run.step.created"]
-          #   #
-          #   def initialize(data:, event: :"thread.run.step.created", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.run.step.created")
+          #   Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   is created.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param event [Symbol, :"thread.run.step.created"]
         end
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
@@ -72,17 +68,13 @@ module OpenAI
           #   @return [Symbol, :"thread.run.step.in_progress"]
           required :event, const: :"thread.run.step.in_progress"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   # moves to an `in_progress` state.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
-          #   # @param event [Symbol, :"thread.run.step.in_progress"]
-          #   #
-          #   def initialize(data:, event: :"thread.run.step.in_progress", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.run.step.in_progress")
+          #   Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   moves to an `in_progress` state.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param event [Symbol, :"thread.run.step.in_progress"]
         end
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
@@ -98,17 +90,13 @@ module OpenAI
           #   @return [Symbol, :"thread.run.step.delta"]
           required :event, const: :"thread.run.step.delta"
 
-          # @!parse
-          #   # Occurs when parts of a
-          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   # are being streamed.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent]
-          #   # @param event [Symbol, :"thread.run.step.delta"]
-          #   #
-          #   def initialize(data:, event: :"thread.run.step.delta", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.run.step.delta")
+          #   Occurs when parts of a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   are being streamed.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent]
+          #   @param event [Symbol, :"thread.run.step.delta"]
         end
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
@@ -123,17 +111,13 @@ module OpenAI
           #   @return [Symbol, :"thread.run.step.completed"]
           required :event, const: :"thread.run.step.completed"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   # is completed.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
-          #   # @param event [Symbol, :"thread.run.step.completed"]
-          #   #
-          #   def initialize(data:, event: :"thread.run.step.completed", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.run.step.completed")
+          #   Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   is completed.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param event [Symbol, :"thread.run.step.completed"]
         end
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
@@ -148,17 +132,13 @@ module OpenAI
           #   @return [Symbol, :"thread.run.step.failed"]
           required :event, const: :"thread.run.step.failed"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   # fails.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
-          #   # @param event [Symbol, :"thread.run.step.failed"]
-          #   #
-          #   def initialize(data:, event: :"thread.run.step.failed", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.run.step.failed")
+          #   Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   fails.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param event [Symbol, :"thread.run.step.failed"]
         end
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
@@ -173,17 +153,13 @@ module OpenAI
           #   @return [Symbol, :"thread.run.step.cancelled"]
           required :event, const: :"thread.run.step.cancelled"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   # is cancelled.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
-          #   # @param event [Symbol, :"thread.run.step.cancelled"]
-          #   #
-          #   def initialize(data:, event: :"thread.run.step.cancelled", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.run.step.cancelled")
+          #   Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   is cancelled.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param event [Symbol, :"thread.run.step.cancelled"]
         end
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
@@ -198,22 +174,17 @@ module OpenAI
           #   @return [Symbol, :"thread.run.step.expired"]
           required :event, const: :"thread.run.step.expired"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
-          #   # expires.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
-          #   # @param event [Symbol, :"thread.run.step.expired"]
-          #   #
-          #   def initialize(data:, event: :"thread.run.step.expired", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.run.step.expired")
+          #   Occurs when a
+          #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
+          #   expires.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param event [Symbol, :"thread.run.step.expired"]
         end
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired)]
       end
     end
   end

@@ -26,16 +26,12 @@ module OpenAI
           #   # @return [OpenAI::Models::Beta::Threads::TextDelta]
           #   attr_writer :text
 
-          # @!parse
-          #   # The text content that is part of a message.
-          #   #
-          #   # @param index [Integer]
-          #   # @param text [OpenAI::Models::Beta::Threads::TextDelta]
-          #   # @param type [Symbol, :text]
-          #   #
-          #   def initialize(index:, text: nil, type: :text, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(index:, text: nil, type: :text)
+          #   The text content that is part of a message.
+          #
+          #   @param index [Integer]
+          #   @param text [OpenAI::Models::Beta::Threads::TextDelta]
+          #   @param type [Symbol, :text]
         end
       end
     end

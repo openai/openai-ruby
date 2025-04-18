@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :output_audio]
         required :type, const: :output_audio
 
-        # @!parse
-        #   # An audio output from the model.
-        #   #
-        #   # @param data [String]
-        #   # @param transcript [String]
-        #   # @param type [Symbol, :output_audio]
-        #   #
-        #   def initialize(data:, transcript:, type: :output_audio, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(data:, transcript:, type: :output_audio)
+        #   An audio output from the model.
+        #
+        #   @param data [String]
+        #   @param transcript [String]
+        #   @param type [Symbol, :output_audio]
       end
     end
   end

@@ -15,13 +15,9 @@ module OpenAI
         #   @return [Pathname, StringIO]
         required :data, OpenAI::Internal::Type::IOLike
 
-        # @!parse
-        #   # @param data [Pathname, StringIO]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(data:, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(data:, request_options: {})
+        #   @param data [Pathname, StringIO]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end
   end

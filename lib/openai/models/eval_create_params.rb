@@ -52,27 +52,13 @@ module OpenAI
       #   # @return [Boolean]
       #   attr_writer :share_with_openai
 
-      # @!parse
-      #   # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
-      #   # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
-      #   # @param metadata [Hash{Symbol=>String}, nil]
-      #   # @param name [String]
-      #   # @param share_with_openai [Boolean]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(
-      #     data_source_config:,
-      #     testing_criteria:,
-      #     metadata: nil,
-      #     name: nil,
-      #     share_with_openai: nil,
-      #     request_options: {},
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(data_source_config:, testing_criteria:, metadata: nil, name: nil, share_with_openai: nil, request_options: {})
+      #   @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
+      #   @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #   @param name [String]
+      #   @param share_with_openai [Boolean]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # The configuration for the data source used for the evaluation runs.
       module DataSourceConfig
@@ -113,21 +99,17 @@ module OpenAI
           #   # @return [Boolean]
           #   attr_writer :include_sample_schema
 
-          # @!parse
-          #   # A CustomDataSourceConfig object that defines the schema for the data source used
-          #   # for the evaluation runs. This schema is used to define the shape of the data
-          #   # that will be:
-          #   #
-          #   # - Used to define your testing criteria and
-          #   # - What data is required when creating a run
-          #   #
-          #   # @param item_schema [Hash{Symbol=>Object}]
-          #   # @param include_sample_schema [Boolean]
-          #   # @param type [Symbol, :custom]
-          #   #
-          #   def initialize(item_schema:, include_sample_schema: nil, type: :custom, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(item_schema:, include_sample_schema: nil, type: :custom)
+          #   A CustomDataSourceConfig object that defines the schema for the data source used
+          #   for the evaluation runs. This schema is used to define the shape of the data
+          #   that will be:
+          #
+          #   - Used to define your testing criteria and
+          #   - What data is required when creating a run
+          #
+          #   @param item_schema [Hash{Symbol=>Object}]
+          #   @param include_sample_schema [Boolean]
+          #   @param type [Symbol, :custom]
         end
 
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
@@ -148,22 +130,17 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-          # @!parse
-          #   # A data source config which specifies the metadata property of your stored
-          #   # completions query. This is usually metadata like `usecase=chatbot` or
-          #   # `prompt-version=v2`, etc.
-          #   #
-          #   # @param metadata [Hash{Symbol=>String}, nil]
-          #   # @param type [Symbol, :stored_completions]
-          #   #
-          #   def initialize(metadata: nil, type: :stored_completions, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(metadata: nil, type: :stored_completions)
+          #   A data source config which specifies the metadata property of your stored
+          #   completions query. This is usually metadata like `usecase=chatbot` or
+          #   `prompt-version=v2`, etc.
+          #
+          #   @param metadata [Hash{Symbol=>String}, nil]
+          #   @param type [Symbol, :stored_completions]
         end
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions)]
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -220,20 +197,16 @@ module OpenAI
           #   @return [Symbol, :label_model]
           required :type, const: :label_model
 
-          # @!parse
-          #   # A LabelModelGrader object which uses a model to assign labels to each item in
-          #   # the evaluation.
-          #   #
-          #   # @param input [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage>]
-          #   # @param labels [Array<String>]
-          #   # @param model [String]
-          #   # @param name [String]
-          #   # @param passing_labels [Array<String>]
-          #   # @param type [Symbol, :label_model]
-          #   #
-          #   def initialize(input:, labels:, model:, name:, passing_labels:, type: :label_model, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(input:, labels:, model:, name:, passing_labels:, type: :label_model)
+          #   A LabelModelGrader object which uses a model to assign labels to each item in
+          #   the evaluation.
+          #
+          #   @param input [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage>]
+          #   @param labels [Array<String>]
+          #   @param model [String]
+          #   @param name [String]
+          #   @param passing_labels [Array<String>]
+          #   @param type [Symbol, :label_model]
 
           module Input
             extend OpenAI::Internal::Type::Union
@@ -257,13 +230,9 @@ module OpenAI
               #   @return [String]
               required :role, String
 
-              # @!parse
-              #   # @param content [String]
-              #   # @param role [String]
-              #   #
-              #   def initialize(content:, role:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(content:, role:)
+              #   @param content [String]
+              #   @param role [String]
             end
 
             class InputMessage < OpenAI::Internal::Type::BaseModel
@@ -287,14 +256,10 @@ module OpenAI
               required :type,
                        enum: -> { OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Type }
 
-              # @!parse
-              #   # @param content [OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Content]
-              #   # @param role [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Role]
-              #   # @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Type]
-              #   #
-              #   def initialize(content:, role:, type:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(content:, role:, type:)
+              #   @param content [OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Content]
+              #   @param role [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Role]
+              #   @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Type]
 
               # @see OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage#content
               class Content < OpenAI::Internal::Type::BaseModel
@@ -311,13 +276,9 @@ module OpenAI
                 required :type,
                          enum: -> { OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Content::Type }
 
-                # @!parse
-                #   # @param text [String]
-                #   # @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Content::Type]
-                #   #
-                #   def initialize(text:, type:, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(text:, type:)
+                #   @param text [String]
+                #   @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Content::Type]
 
                 # The type of content, which is always `input_text`.
                 #
@@ -327,11 +288,8 @@ module OpenAI
 
                   INPUT_TEXT = :input_text
 
-                  finalize!
-
-                  # @!parse
-                  #   # @return [Array<Symbol>]
-                  #   def self.values; end
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
               end
 
@@ -345,11 +303,8 @@ module OpenAI
                 SYSTEM = :system
                 DEVELOPER = :developer
 
-                finalize!
-
-                # @!parse
-                #   # @return [Array<Symbol>]
-                #   def self.values; end
+                # @!method self.values
+                #   @return [Array<Symbol>]
               end
 
               # The type of item, which is always `message`.
@@ -360,11 +315,8 @@ module OpenAI
 
                 MESSAGE = :message
 
-                finalize!
-
-                # @!parse
-                #   # @return [Array<Symbol>]
-                #   def self.values; end
+                # @!method self.values
+                #   @return [Array<Symbol>]
               end
             end
 
@@ -389,14 +341,10 @@ module OpenAI
               required :type,
                        enum: -> { OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Type }
 
-              # @!parse
-              #   # @param content [OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Content]
-              #   # @param role [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Role]
-              #   # @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Type]
-              #   #
-              #   def initialize(content:, role:, type:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(content:, role:, type:)
+              #   @param content [OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Content]
+              #   @param role [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Role]
+              #   @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Type]
 
               # @see OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage#content
               class Content < OpenAI::Internal::Type::BaseModel
@@ -413,13 +361,9 @@ module OpenAI
                 required :type,
                          enum: -> { OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Content::Type }
 
-                # @!parse
-                #   # @param text [String]
-                #   # @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Content::Type]
-                #   #
-                #   def initialize(text:, type:, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(text:, type:)
+                #   @param text [String]
+                #   @param type [Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Content::Type]
 
                 # The type of content, which is always `output_text`.
                 #
@@ -429,11 +373,8 @@ module OpenAI
 
                   OUTPUT_TEXT = :output_text
 
-                  finalize!
-
-                  # @!parse
-                  #   # @return [Array<Symbol>]
-                  #   def self.values; end
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
               end
 
@@ -445,11 +386,8 @@ module OpenAI
 
                 ASSISTANT = :assistant
 
-                finalize!
-
-                # @!parse
-                #   # @return [Array<Symbol>]
-                #   def self.values; end
+                # @!method self.values
+                #   @return [Array<Symbol>]
               end
 
               # The type of item, which is always `message`.
@@ -460,23 +398,18 @@ module OpenAI
 
                 MESSAGE = :message
 
-                finalize!
-
-                # @!parse
-                #   # @return [Array<Symbol>]
-                #   def self.values; end
+                # @!method self.values
+                #   @return [Array<Symbol>]
               end
             end
 
-            # @!parse
-            #   # @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage)]
           end
         end
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader)]
       end
     end
   end

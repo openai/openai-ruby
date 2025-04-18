@@ -24,14 +24,10 @@ module OpenAI
           required :tool_outputs,
                    -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput] }
 
-          # @!parse
-          #   # @param thread_id [String]
-          #   # @param tool_outputs [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>]
-          #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(thread_id:, tool_outputs:, request_options: {}, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(thread_id:, tool_outputs:, request_options: {})
+          #   @param thread_id [String]
+          #   @param tool_outputs [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           class ToolOutput < OpenAI::Internal::Type::BaseModel
             # @!attribute [r] output
@@ -55,13 +51,9 @@ module OpenAI
             #   # @return [String]
             #   attr_writer :tool_call_id
 
-            # @!parse
-            #   # @param output [String]
-            #   # @param tool_call_id [String]
-            #   #
-            #   def initialize(output: nil, tool_call_id: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(output: nil, tool_call_id: nil)
+            #   @param output [String]
+            #   @param tool_call_id [String]
           end
         end
       end

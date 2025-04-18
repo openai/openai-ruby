@@ -19,13 +19,9 @@ module OpenAI
         #   @return [OpenAI::Models::FineTuning::FineTuningJobWandbIntegration]
         required :wandb, -> { OpenAI::Models::FineTuning::FineTuningJobWandbIntegration }
 
-        # @!parse
-        #   # @param wandb [OpenAI::Models::FineTuning::FineTuningJobWandbIntegration]
-        #   # @param type [Symbol, :wandb]
-        #   #
-        #   def initialize(wandb:, type: :wandb, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(wandb:, type: :wandb)
+        #   @param wandb [OpenAI::Models::FineTuning::FineTuningJobWandbIntegration]
+        #   @param type [Symbol, :wandb]
       end
     end
 

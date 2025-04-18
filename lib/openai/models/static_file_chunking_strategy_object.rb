@@ -14,13 +14,9 @@ module OpenAI
       #   @return [Symbol, :static]
       required :type, const: :static
 
-      # @!parse
-      #   # @param static [OpenAI::Models::StaticFileChunkingStrategy]
-      #   # @param type [Symbol, :static]
-      #   #
-      #   def initialize(static:, type: :static, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(static:, type: :static)
+      #   @param static [OpenAI::Models::StaticFileChunkingStrategy]
+      #   @param type [Symbol, :static]
     end
   end
 end

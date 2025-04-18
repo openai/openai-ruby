@@ -24,14 +24,10 @@ module OpenAI
           #   @return [Symbol, :"checkpoint.permission"]
           required :object, const: :"checkpoint.permission"
 
-          # @!parse
-          #   # @param id [String]
-          #   # @param deleted [Boolean]
-          #   # @param object [Symbol, :"checkpoint.permission"]
-          #   #
-          #   def initialize(id:, deleted:, object: :"checkpoint.permission", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, deleted:, object: :"checkpoint.permission")
+          #   @param id [String]
+          #   @param deleted [Boolean]
+          #   @param object [Symbol, :"checkpoint.permission"]
         end
       end
     end

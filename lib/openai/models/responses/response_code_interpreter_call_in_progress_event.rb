@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.code_interpreter_call.in_progress"]
         required :type, const: :"response.code_interpreter_call.in_progress"
 
-        # @!parse
-        #   # Emitted when a code interpreter call is in progress.
-        #   #
-        #   # @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.code_interpreter_call.in_progress"]
-        #   #
-        #   def initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.in_progress", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.in_progress")
+        #   Emitted when a code interpreter call is in progress.
+        #
+        #   @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.code_interpreter_call.in_progress"]
       end
     end
   end

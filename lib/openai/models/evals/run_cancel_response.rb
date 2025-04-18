@@ -96,45 +96,23 @@ module OpenAI
         #   @return [String]
         required :status, String
 
-        # @!parse
-        #   # A schema representing an evaluation run.
-        #   #
-        #   # @param id [String]
-        #   # @param created_at [Integer]
-        #   # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
-        #   # @param error [OpenAI::Models::Evals::EvalAPIError]
-        #   # @param eval_id [String]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String]
-        #   # @param name [String]
-        #   # @param per_model_usage [Array<OpenAI::Models::Evals::RunCancelResponse::PerModelUsage>]
-        #   # @param per_testing_criteria_results [Array<OpenAI::Models::Evals::RunCancelResponse::PerTestingCriteriaResult>]
-        #   # @param report_url [String]
-        #   # @param result_counts [OpenAI::Models::Evals::RunCancelResponse::ResultCounts]
-        #   # @param status [String]
-        #   # @param object [Symbol, :"eval.run"]
-        #   #
-        #   def initialize(
-        #     id:,
-        #     created_at:,
-        #     data_source:,
-        #     error:,
-        #     eval_id:,
-        #     metadata:,
-        #     model:,
-        #     name:,
-        #     per_model_usage:,
-        #     per_testing_criteria_results:,
-        #     report_url:,
-        #     result_counts:,
-        #     status:,
-        #     object: :"eval.run",
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, data_source:, error:, eval_id:, metadata:, model:, name:, per_model_usage:, per_testing_criteria_results:, report_url:, result_counts:, status:, object: :"eval.run")
+        #   A schema representing an evaluation run.
+        #
+        #   @param id [String]
+        #   @param created_at [Integer]
+        #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
+        #   @param error [OpenAI::Models::Evals::EvalAPIError]
+        #   @param eval_id [String]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param model [String]
+        #   @param name [String]
+        #   @param per_model_usage [Array<OpenAI::Models::Evals::RunCancelResponse::PerModelUsage>]
+        #   @param per_testing_criteria_results [Array<OpenAI::Models::Evals::RunCancelResponse::PerTestingCriteriaResult>]
+        #   @param report_url [String]
+        #   @param result_counts [OpenAI::Models::Evals::RunCancelResponse::ResultCounts]
+        #   @param status [String]
+        #   @param object [Symbol, :"eval.run"]
 
         # Information about the run's data source.
         #
@@ -150,9 +128,8 @@ module OpenAI
           # A CompletionsRunDataSource object describing a model sampling configuration.
           variant :completions, -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource)]
         end
 
         class PerModelUsage < OpenAI::Internal::Type::BaseModel
@@ -192,17 +169,13 @@ module OpenAI
           #   @return [Integer]
           required :total_tokens, Integer
 
-          # @!parse
-          #   # @param cached_tokens [Integer]
-          #   # @param completion_tokens [Integer]
-          #   # @param invocation_count [Integer]
-          #   # @param model_name [String]
-          #   # @param prompt_tokens [Integer]
-          #   # @param total_tokens [Integer]
-          #   #
-          #   def initialize(cached_tokens:, completion_tokens:, invocation_count:, model_name:, prompt_tokens:, total_tokens:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(cached_tokens:, completion_tokens:, invocation_count:, model_name:, prompt_tokens:, total_tokens:)
+          #   @param cached_tokens [Integer]
+          #   @param completion_tokens [Integer]
+          #   @param invocation_count [Integer]
+          #   @param model_name [String]
+          #   @param prompt_tokens [Integer]
+          #   @param total_tokens [Integer]
         end
 
         class PerTestingCriteriaResult < OpenAI::Internal::Type::BaseModel
@@ -224,14 +197,10 @@ module OpenAI
           #   @return [String]
           required :testing_criteria, String
 
-          # @!parse
-          #   # @param failed [Integer]
-          #   # @param passed [Integer]
-          #   # @param testing_criteria [String]
-          #   #
-          #   def initialize(failed:, passed:, testing_criteria:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(failed:, passed:, testing_criteria:)
+          #   @param failed [Integer]
+          #   @param passed [Integer]
+          #   @param testing_criteria [String]
         end
 
         # @see OpenAI::Models::Evals::RunCancelResponse#result_counts
@@ -260,17 +229,13 @@ module OpenAI
           #   @return [Integer]
           required :total, Integer
 
-          # @!parse
-          #   # Counters summarizing the outcomes of the evaluation run.
-          #   #
-          #   # @param errored [Integer]
-          #   # @param failed [Integer]
-          #   # @param passed [Integer]
-          #   # @param total [Integer]
-          #   #
-          #   def initialize(errored:, failed:, passed:, total:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(errored:, failed:, passed:, total:)
+          #   Counters summarizing the outcomes of the evaluation run.
+          #
+          #   @param errored [Integer]
+          #   @param failed [Integer]
+          #   @param passed [Integer]
+          #   @param total [Integer]
         end
       end
     end

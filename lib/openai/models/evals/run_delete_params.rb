@@ -14,13 +14,9 @@ module OpenAI
         #   @return [String]
         required :eval_id, String
 
-        # @!parse
-        #   # @param eval_id [String]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(eval_id:, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(eval_id:, request_options: {})
+        #   @param eval_id [String]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end
   end

@@ -42,9 +42,8 @@ module OpenAI
         # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         variant -> { OpenAI::Models::ResponseFormatJSONSchema }
 
-        # @!parse
-        #   # @return [Array(Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema)]
       end
     end
   end

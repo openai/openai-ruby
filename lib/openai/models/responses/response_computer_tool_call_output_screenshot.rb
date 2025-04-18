@@ -31,16 +31,12 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :image_url
 
-        # @!parse
-        #   # A computer screenshot image used with the computer use tool.
-        #   #
-        #   # @param file_id [String]
-        #   # @param image_url [String]
-        #   # @param type [Symbol, :computer_screenshot]
-        #   #
-        #   def initialize(file_id: nil, image_url: nil, type: :computer_screenshot, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(file_id: nil, image_url: nil, type: :computer_screenshot)
+        #   A computer screenshot image used with the computer use tool.
+        #
+        #   @param file_id [String]
+        #   @param image_url [String]
+        #   @param type [Symbol, :computer_screenshot]
       end
     end
   end

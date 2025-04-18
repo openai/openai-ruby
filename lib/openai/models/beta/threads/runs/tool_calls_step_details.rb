@@ -21,15 +21,11 @@ module OpenAI
             #   @return [Symbol, :tool_calls]
             required :type, const: :tool_calls
 
-            # @!parse
-            #   # Details of the tool call.
-            #   #
-            #   # @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>]
-            #   # @param type [Symbol, :tool_calls]
-            #   #
-            #   def initialize(tool_calls:, type: :tool_calls, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(tool_calls:, type: :tool_calls)
+            #   Details of the tool call.
+            #
+            #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>]
+            #   @param type [Symbol, :tool_calls]
           end
         end
       end

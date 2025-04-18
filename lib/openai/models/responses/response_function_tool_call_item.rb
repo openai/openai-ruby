@@ -10,16 +10,12 @@ module OpenAI
         #   @return [String]
         required :id, String
 
-        # @!parse
-        #   # A tool call to run a function. See the
-        #   # [function calling guide](https://platform.openai.com/docs/guides/function-calling)
-        #   # for more information.
-        #   #
-        #   # @param id [String]
-        #   #
-        #   def initialize(id:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:)
+        #   A tool call to run a function. See the
+        #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
+        #   for more information.
+        #
+        #   @param id [String]
       end
     end
   end

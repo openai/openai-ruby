@@ -42,21 +42,17 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type]
         required :type, enum: -> { OpenAI::Models::Responses::ResponseComputerToolCall::Type }
 
-        # @!parse
-        #   # A tool call to a computer use tool. See the
-        #   # [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
-        #   # for more information.
-        #   #
-        #   # @param id [String]
-        #   # @param action [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
-        #   # @param call_id [String]
-        #   # @param pending_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck>]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status]
-        #   # @param type [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type]
-        #   #
-        #   def initialize(id:, action:, call_id:, pending_safety_checks:, status:, type:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, action:, call_id:, pending_safety_checks:, status:, type:)
+        #   A tool call to a computer use tool. See the
+        #   [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use)
+        #   for more information.
+        #
+        #   @param id [String]
+        #   @param action [OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait]
+        #   @param call_id [String]
+        #   @param pending_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCall::PendingSafetyCheck>]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Status]
+        #   @param type [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Type]
 
         # A click action.
         #
@@ -120,17 +116,13 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!parse
-            #   # A click action.
-            #   #
-            #   # @param button [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button]
-            #   # @param x [Integer]
-            #   # @param y_ [Integer]
-            #   # @param type [Symbol, :click]
-            #   #
-            #   def initialize(button:, x:, y_:, type: :click, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(button:, x:, y_:, type: :click)
+            #   A click action.
+            #
+            #   @param button [Symbol, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::Button]
+            #   @param x [Integer]
+            #   @param y_ [Integer]
+            #   @param type [Symbol, :click]
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             # `right`, `wheel`, `back`, or `forward`.
@@ -145,11 +137,8 @@ module OpenAI
               BACK = :back
               FORWARD = :forward
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
 
@@ -173,16 +162,12 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!parse
-            #   # A double click action.
-            #   #
-            #   # @param x [Integer]
-            #   # @param y_ [Integer]
-            #   # @param type [Symbol, :double_click]
-            #   #
-            #   def initialize(x:, y_:, type: :double_click, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(x:, y_:, type: :double_click)
+            #   A double click action.
+            #
+            #   @param x [Integer]
+            #   @param y_ [Integer]
+            #   @param type [Symbol, :double_click]
           end
 
           class Drag < OpenAI::Internal::Type::BaseModel
@@ -208,15 +193,11 @@ module OpenAI
             #   @return [Symbol, :drag]
             required :type, const: :drag
 
-            # @!parse
-            #   # A drag action.
-            #   #
-            #   # @param path [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>]
-            #   # @param type [Symbol, :drag]
-            #   #
-            #   def initialize(path:, type: :drag, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(path:, type: :drag)
+            #   A drag action.
+            #
+            #   @param path [Array<OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag::Path>]
+            #   @param type [Symbol, :drag]
 
             class Path < OpenAI::Internal::Type::BaseModel
               # @!attribute x
@@ -231,15 +212,11 @@ module OpenAI
               #   @return [Integer]
               required :y_, Integer, api_name: :y
 
-              # @!parse
-              #   # A series of x/y coordinate pairs in the drag path.
-              #   #
-              #   # @param x [Integer]
-              #   # @param y_ [Integer]
-              #   #
-              #   def initialize(x:, y_:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(x:, y_:)
+              #   A series of x/y coordinate pairs in the drag path.
+              #
+              #   @param x [Integer]
+              #   @param y_ [Integer]
             end
           end
 
@@ -258,15 +235,11 @@ module OpenAI
             #   @return [Symbol, :keypress]
             required :type, const: :keypress
 
-            # @!parse
-            #   # A collection of keypresses the model would like to perform.
-            #   #
-            #   # @param keys [Array<String>]
-            #   # @param type [Symbol, :keypress]
-            #   #
-            #   def initialize(keys:, type: :keypress, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(keys:, type: :keypress)
+            #   A collection of keypresses the model would like to perform.
+            #
+            #   @param keys [Array<String>]
+            #   @param type [Symbol, :keypress]
           end
 
           class Move < OpenAI::Internal::Type::BaseModel
@@ -289,16 +262,12 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!parse
-            #   # A mouse move action.
-            #   #
-            #   # @param x [Integer]
-            #   # @param y_ [Integer]
-            #   # @param type [Symbol, :move]
-            #   #
-            #   def initialize(x:, y_:, type: :move, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(x:, y_:, type: :move)
+            #   A mouse move action.
+            #
+            #   @param x [Integer]
+            #   @param y_ [Integer]
+            #   @param type [Symbol, :move]
           end
 
           class Screenshot < OpenAI::Internal::Type::BaseModel
@@ -309,14 +278,10 @@ module OpenAI
             #   @return [Symbol, :screenshot]
             required :type, const: :screenshot
 
-            # @!parse
-            #   # A screenshot action.
-            #   #
-            #   # @param type [Symbol, :screenshot]
-            #   #
-            #   def initialize(type: :screenshot, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(type: :screenshot)
+            #   A screenshot action.
+            #
+            #   @param type [Symbol, :screenshot]
           end
 
           class Scroll < OpenAI::Internal::Type::BaseModel
@@ -351,18 +316,14 @@ module OpenAI
             #   @return [Integer]
             required :y_, Integer, api_name: :y
 
-            # @!parse
-            #   # A scroll action.
-            #   #
-            #   # @param scroll_x [Integer]
-            #   # @param scroll_y [Integer]
-            #   # @param x [Integer]
-            #   # @param y_ [Integer]
-            #   # @param type [Symbol, :scroll]
-            #   #
-            #   def initialize(scroll_x:, scroll_y:, x:, y_:, type: :scroll, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(scroll_x:, scroll_y:, x:, y_:, type: :scroll)
+            #   A scroll action.
+            #
+            #   @param scroll_x [Integer]
+            #   @param scroll_y [Integer]
+            #   @param x [Integer]
+            #   @param y_ [Integer]
+            #   @param type [Symbol, :scroll]
           end
 
           class Type < OpenAI::Internal::Type::BaseModel
@@ -379,15 +340,11 @@ module OpenAI
             #   @return [Symbol, :type]
             required :type, const: :type
 
-            # @!parse
-            #   # An action to type in text.
-            #   #
-            #   # @param text [String]
-            #   # @param type [Symbol, :type]
-            #   #
-            #   def initialize(text:, type: :type, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(text:, type: :type)
+            #   An action to type in text.
+            #
+            #   @param text [String]
+            #   @param type [Symbol, :type]
           end
 
           class Wait < OpenAI::Internal::Type::BaseModel
@@ -398,19 +355,14 @@ module OpenAI
             #   @return [Symbol, :wait]
             required :type, const: :wait
 
-            # @!parse
-            #   # A wait action.
-            #   #
-            #   # @param type [Symbol, :wait]
-            #   #
-            #   def initialize(type: :wait, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(type: :wait)
+            #   A wait action.
+            #
+            #   @param type [Symbol, :wait]
           end
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Models::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Models::Responses::ResponseComputerToolCall::Action::Wait)]
         end
 
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
@@ -432,16 +384,12 @@ module OpenAI
           #   @return [String]
           required :message, String
 
-          # @!parse
-          #   # A pending safety check for the computer call.
-          #   #
-          #   # @param id [String]
-          #   # @param code [String]
-          #   # @param message [String]
-          #   #
-          #   def initialize(id:, code:, message:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, code:, message:)
+          #   A pending safety check for the computer call.
+          #
+          #   @param id [String]
+          #   @param code [String]
+          #   @param message [String]
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -455,11 +403,8 @@ module OpenAI
           COMPLETED = :completed
           INCOMPLETE = :incomplete
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # The type of the computer call. Always `computer_call`.
@@ -470,11 +415,8 @@ module OpenAI
 
           COMPUTER_CALL = :computer_call
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -46,16 +46,12 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-          # @!parse
-          #   # @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
-          #   # @param role [Symbol, OpenAI::Models::Beta::Threads::MessageCreateParams::Role]
-          #   # @param attachments [Array<OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment>, nil]
-          #   # @param metadata [Hash{Symbol=>String}, nil]
-          #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(content:, role:, attachments: nil, metadata: nil, request_options: {}, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(content:, role:, attachments: nil, metadata: nil, request_options: {})
+          #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
+          #   @param role [Symbol, OpenAI::Models::Beta::Threads::MessageCreateParams::Role]
+          #   @param attachments [Array<OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment>, nil]
+          #   @param metadata [Hash{Symbol=>String}, nil]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           # The text contents of the message.
           module Content
@@ -67,9 +63,8 @@ module OpenAI
             # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
             variant -> { OpenAI::Models::Beta::Threads::MessageCreateParams::Content::MessageContentPartParamArray }
 
-            # @!parse
-            #   # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
             MessageContentPartParamArray =
               OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
@@ -87,11 +82,8 @@ module OpenAI
             USER = :user
             ASSISTANT = :assistant
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           class Attachment < OpenAI::Internal::Type::BaseModel
@@ -116,13 +108,9 @@ module OpenAI
             #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>]
             #   attr_writer :tools
 
-            # @!parse
-            #   # @param file_id [String]
-            #   # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>]
-            #   #
-            #   def initialize(file_id: nil, tools: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_id: nil, tools: nil)
+            #   @param file_id [String]
+            #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>]
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -141,17 +129,12 @@ module OpenAI
                 #   @return [Symbol, :file_search]
                 required :type, const: :file_search
 
-                # @!parse
-                #   # @param type [Symbol, :file_search]
-                #   #
-                #   def initialize(type: :file_search, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(type: :file_search)
+                #   @param type [Symbol, :file_search]
               end
 
-              # @!parse
-              #   # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch)]
-              #   def self.variants; end
+              # @!method self.variants
+              #   @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch)]
             end
           end
         end

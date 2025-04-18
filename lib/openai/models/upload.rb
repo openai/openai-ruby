@@ -60,22 +60,18 @@ module OpenAI
       #   @return [OpenAI::Models::FileObject, nil]
       optional :file, -> { OpenAI::Models::FileObject }, nil?: true
 
-      # @!parse
-      #   # The Upload object can accept byte chunks in the form of Parts.
-      #   #
-      #   # @param id [String]
-      #   # @param bytes [Integer]
-      #   # @param created_at [Integer]
-      #   # @param expires_at [Integer]
-      #   # @param filename [String]
-      #   # @param purpose [String]
-      #   # @param status [Symbol, OpenAI::Models::Upload::Status]
-      #   # @param file [OpenAI::Models::FileObject, nil]
-      #   # @param object [Symbol, :upload]
-      #   #
-      #   def initialize(id:, bytes:, created_at:, expires_at:, filename:, purpose:, status:, file: nil, object: :upload, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, bytes:, created_at:, expires_at:, filename:, purpose:, status:, file: nil, object: :upload)
+      #   The Upload object can accept byte chunks in the form of Parts.
+      #
+      #   @param id [String]
+      #   @param bytes [Integer]
+      #   @param created_at [Integer]
+      #   @param expires_at [Integer]
+      #   @param filename [String]
+      #   @param purpose [String]
+      #   @param status [Symbol, OpenAI::Models::Upload::Status]
+      #   @param file [OpenAI::Models::FileObject, nil]
+      #   @param object [Symbol, :upload]
 
       # The status of the Upload.
       #
@@ -88,11 +84,8 @@ module OpenAI
         CANCELLED = :cancelled
         EXPIRED = :expired
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

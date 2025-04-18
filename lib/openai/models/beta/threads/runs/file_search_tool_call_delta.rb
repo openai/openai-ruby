@@ -35,15 +35,11 @@ module OpenAI
             #   # @return [String]
             #   attr_writer :id
 
-            # @!parse
-            #   # @param file_search [Object]
-            #   # @param index [Integer]
-            #   # @param id [String]
-            #   # @param type [Symbol, :file_search]
-            #   #
-            #   def initialize(file_search:, index:, id: nil, type: :file_search, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_search:, index:, id: nil, type: :file_search)
+            #   @param file_search [Object]
+            #   @param index [Integer]
+            #   @param id [String]
+            #   @param type [Symbol, :file_search]
           end
         end
       end

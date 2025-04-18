@@ -16,15 +16,11 @@ module OpenAI
         #   @return [String]
         required :message, String
 
-        # @!parse
-        #   # An object representing an error response from the Eval API.
-        #   #
-        #   # @param code [String]
-        #   # @param message [String]
-        #   #
-        #   def initialize(code:, message:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(code:, message:)
+        #   An object representing an error response from the Eval API.
+        #
+        #   @param code [String]
+        #   @param message [String]
       end
     end
 

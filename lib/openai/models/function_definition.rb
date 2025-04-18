@@ -47,15 +47,11 @@ module OpenAI
       #   @return [Boolean, nil]
       optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
-      # @!parse
-      #   # @param name [String]
-      #   # @param description [String]
-      #   # @param parameters [Hash{Symbol=>Object}]
-      #   # @param strict [Boolean, nil]
-      #   #
-      #   def initialize(name:, description: nil, parameters: nil, strict: nil, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(name:, description: nil, parameters: nil, strict: nil)
+      #   @param name [String]
+      #   @param description [String]
+      #   @param parameters [Hash{Symbol=>Object}]
+      #   @param strict [Boolean, nil]
     end
   end
 end

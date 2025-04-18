@@ -175,55 +175,27 @@ module OpenAI
       #   # @return [OpenAI::Models::BatchRequestCounts]
       #   attr_writer :request_counts
 
-      # @!parse
-      #   # @param id [String]
-      #   # @param completion_window [String]
-      #   # @param created_at [Integer]
-      #   # @param endpoint [String]
-      #   # @param input_file_id [String]
-      #   # @param status [Symbol, OpenAI::Models::Batch::Status]
-      #   # @param cancelled_at [Integer]
-      #   # @param cancelling_at [Integer]
-      #   # @param completed_at [Integer]
-      #   # @param error_file_id [String]
-      #   # @param errors [OpenAI::Models::Batch::Errors]
-      #   # @param expired_at [Integer]
-      #   # @param expires_at [Integer]
-      #   # @param failed_at [Integer]
-      #   # @param finalizing_at [Integer]
-      #   # @param in_progress_at [Integer]
-      #   # @param metadata [Hash{Symbol=>String}, nil]
-      #   # @param output_file_id [String]
-      #   # @param request_counts [OpenAI::Models::BatchRequestCounts]
-      #   # @param object [Symbol, :batch]
-      #   #
-      #   def initialize(
-      #     id:,
-      #     completion_window:,
-      #     created_at:,
-      #     endpoint:,
-      #     input_file_id:,
-      #     status:,
-      #     cancelled_at: nil,
-      #     cancelling_at: nil,
-      #     completed_at: nil,
-      #     error_file_id: nil,
-      #     errors: nil,
-      #     expired_at: nil,
-      #     expires_at: nil,
-      #     failed_at: nil,
-      #     finalizing_at: nil,
-      #     in_progress_at: nil,
-      #     metadata: nil,
-      #     output_file_id: nil,
-      #     request_counts: nil,
-      #     object: :batch,
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, completion_window:, created_at:, endpoint:, input_file_id:, status:, cancelled_at: nil, cancelling_at: nil, completed_at: nil, error_file_id: nil, errors: nil, expired_at: nil, expires_at: nil, failed_at: nil, finalizing_at: nil, in_progress_at: nil, metadata: nil, output_file_id: nil, request_counts: nil, object: :batch)
+      #   @param id [String]
+      #   @param completion_window [String]
+      #   @param created_at [Integer]
+      #   @param endpoint [String]
+      #   @param input_file_id [String]
+      #   @param status [Symbol, OpenAI::Models::Batch::Status]
+      #   @param cancelled_at [Integer]
+      #   @param cancelling_at [Integer]
+      #   @param completed_at [Integer]
+      #   @param error_file_id [String]
+      #   @param errors [OpenAI::Models::Batch::Errors]
+      #   @param expired_at [Integer]
+      #   @param expires_at [Integer]
+      #   @param failed_at [Integer]
+      #   @param finalizing_at [Integer]
+      #   @param in_progress_at [Integer]
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #   @param output_file_id [String]
+      #   @param request_counts [OpenAI::Models::BatchRequestCounts]
+      #   @param object [Symbol, :batch]
 
       # The current status of the batch.
       #
@@ -240,11 +212,8 @@ module OpenAI
         CANCELLING = :cancelling
         CANCELLED = :cancelled
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # @see OpenAI::Models::Batch#errors
@@ -268,13 +237,9 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :object
 
-        # @!parse
-        #   # @param data [Array<OpenAI::Models::BatchError>]
-        #   # @param object [String]
-        #   #
-        #   def initialize(data: nil, object: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(data: nil, object: nil)
+        #   @param data [Array<OpenAI::Models::BatchError>]
+        #   @param object [String]
       end
     end
   end

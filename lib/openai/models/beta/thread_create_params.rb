@@ -41,15 +41,11 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::ThreadCreateParams::ToolResources, nil]
         optional :tool_resources, -> { OpenAI::Models::Beta::ThreadCreateParams::ToolResources }, nil?: true
 
-        # @!parse
-        #   # @param messages [Array<OpenAI::Models::Beta::ThreadCreateParams::Message>]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param tool_resources [OpenAI::Models::Beta::ThreadCreateParams::ToolResources, nil]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(messages: nil, metadata: nil, tool_resources: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(messages: nil, metadata: nil, tool_resources: nil, request_options: {})
+        #   @param messages [Array<OpenAI::Models::Beta::ThreadCreateParams::Message>]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param tool_resources [OpenAI::Models::Beta::ThreadCreateParams::ToolResources, nil]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         class Message < OpenAI::Internal::Type::BaseModel
           # @!attribute content
@@ -88,15 +84,11 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-          # @!parse
-          #   # @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
-          #   # @param role [Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role]
-          #   # @param attachments [Array<OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment>, nil]
-          #   # @param metadata [Hash{Symbol=>String}, nil]
-          #   #
-          #   def initialize(content:, role:, attachments: nil, metadata: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(content:, role:, attachments: nil, metadata: nil)
+          #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
+          #   @param role [Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role]
+          #   @param attachments [Array<OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment>, nil]
+          #   @param metadata [Hash{Symbol=>String}, nil]
 
           # The text contents of the message.
           #
@@ -110,9 +102,8 @@ module OpenAI
             # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
             variant -> { OpenAI::Models::Beta::ThreadCreateParams::Message::Content::MessageContentPartParamArray }
 
-            # @!parse
-            #   # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
             MessageContentPartParamArray =
               OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
@@ -132,11 +123,8 @@ module OpenAI
             USER = :user
             ASSISTANT = :assistant
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           class Attachment < OpenAI::Internal::Type::BaseModel
@@ -161,13 +149,9 @@ module OpenAI
             #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch>]
             #   attr_writer :tools
 
-            # @!parse
-            #   # @param file_id [String]
-            #   # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch>]
-            #   #
-            #   def initialize(file_id: nil, tools: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_id: nil, tools: nil)
+            #   @param file_id [String]
+            #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch>]
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -186,17 +170,12 @@ module OpenAI
                 #   @return [Symbol, :file_search]
                 required :type, const: :file_search
 
-                # @!parse
-                #   # @param type [Symbol, :file_search]
-                #   #
-                #   def initialize(type: :file_search, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(type: :file_search)
+                #   @param type [Symbol, :file_search]
               end
 
-              # @!parse
-              #   # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch)]
-              #   def self.variants; end
+              # @!method self.variants
+              #   @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch)]
             end
           end
         end
@@ -221,18 +200,14 @@ module OpenAI
           #   # @return [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch]
           #   attr_writer :file_search
 
-          # @!parse
-          #   # A set of resources that are made available to the assistant's tools in this
-          #   # thread. The resources are specific to the type of tool. For example, the
-          #   # `code_interpreter` tool requires a list of file IDs, while the `file_search`
-          #   # tool requires a list of vector store IDs.
-          #   #
-          #   # @param code_interpreter [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter]
-          #   # @param file_search [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch]
-          #   #
-          #   def initialize(code_interpreter: nil, file_search: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(code_interpreter: nil, file_search: nil)
+          #   A set of resources that are made available to the assistant's tools in this
+          #   thread. The resources are specific to the type of tool. For example, the
+          #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
+          #   tool requires a list of vector store IDs.
+          #
+          #   @param code_interpreter [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter]
+          #   @param file_search [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch]
 
           # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -248,12 +223,8 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :file_ids
 
-            # @!parse
-            #   # @param file_ids [Array<String>]
-            #   #
-            #   def initialize(file_ids: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_ids: nil)
+            #   @param file_ids [Array<String>]
           end
 
           # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources#file_search
@@ -285,13 +256,9 @@ module OpenAI
             #   # @return [Array<OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore>]
             #   attr_writer :vector_stores
 
-            # @!parse
-            #   # @param vector_store_ids [Array<String>]
-            #   # @param vector_stores [Array<OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore>]
-            #   #
-            #   def initialize(vector_store_ids: nil, vector_stores: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(vector_store_ids: nil, vector_stores: nil)
+            #   @param vector_store_ids [Array<String>]
+            #   @param vector_stores [Array<OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore>]
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
               # @!attribute [r] chunking_strategy
@@ -329,14 +296,10 @@ module OpenAI
               #   @return [Hash{Symbol=>String}, nil]
               optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-              # @!parse
-              #   # @param chunking_strategy [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-              #   # @param file_ids [Array<String>]
-              #   # @param metadata [Hash{Symbol=>String}, nil]
-              #   #
-              #   def initialize(chunking_strategy: nil, file_ids: nil, metadata: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(chunking_strategy: nil, file_ids: nil, metadata: nil)
+              #   @param chunking_strategy [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+              #   @param file_ids [Array<String>]
+              #   @param metadata [Hash{Symbol=>String}, nil]
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               # strategy.
@@ -361,15 +324,11 @@ module OpenAI
                   #   @return [Symbol, :auto]
                   required :type, const: :auto
 
-                  # @!parse
-                  #   # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
-                  #   # `800` and `chunk_overlap_tokens` of `400`.
-                  #   #
-                  #   # @param type [Symbol, :auto]
-                  #   #
-                  #   def initialize(type: :auto, **) = super
-
-                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                  # @!method initialize(type: :auto)
+                  #   The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
+                  #   `800` and `chunk_overlap_tokens` of `400`.
+                  #
+                  #   @param type [Symbol, :auto]
                 end
 
                 class Static < OpenAI::Internal::Type::BaseModel
@@ -385,13 +344,9 @@ module OpenAI
                   #   @return [Symbol, :static]
                   required :type, const: :static
 
-                  # @!parse
-                  #   # @param static [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
-                  #   # @param type [Symbol, :static]
-                  #   #
-                  #   def initialize(static:, type: :static, **) = super
-
-                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                  # @!method initialize(static:, type: :static)
+                  #   @param static [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
+                  #   @param type [Symbol, :static]
 
                   # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static#static
                   class Static < OpenAI::Internal::Type::BaseModel
@@ -410,19 +365,14 @@ module OpenAI
                     #   @return [Integer]
                     required :max_chunk_size_tokens, Integer
 
-                    # @!parse
-                    #   # @param chunk_overlap_tokens [Integer]
-                    #   # @param max_chunk_size_tokens [Integer]
-                    #   #
-                    #   def initialize(chunk_overlap_tokens:, max_chunk_size_tokens:, **) = super
-
-                    # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                    # @!method initialize(chunk_overlap_tokens:, max_chunk_size_tokens:)
+                    #   @param chunk_overlap_tokens [Integer]
+                    #   @param max_chunk_size_tokens [Integer]
                   end
                 end
 
-                # @!parse
-                #   # @return [Array(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
               end
             end
           end

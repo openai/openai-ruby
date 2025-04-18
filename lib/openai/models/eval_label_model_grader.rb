@@ -39,20 +39,16 @@ module OpenAI
       #   @return [Symbol, :label_model]
       required :type, const: :label_model
 
-      # @!parse
-      #   # A LabelModelGrader object which uses a model to assign labels to each item in
-      #   # the evaluation.
-      #   #
-      #   # @param input [Array<OpenAI::Models::EvalLabelModelGrader::Input::Assistant, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage>]
-      #   # @param labels [Array<String>]
-      #   # @param model [String]
-      #   # @param name [String]
-      #   # @param passing_labels [Array<String>]
-      #   # @param type [Symbol, :label_model]
-      #   #
-      #   def initialize(input:, labels:, model:, name:, passing_labels:, type: :label_model, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(input:, labels:, model:, name:, passing_labels:, type: :label_model)
+      #   A LabelModelGrader object which uses a model to assign labels to each item in
+      #   the evaluation.
+      #
+      #   @param input [Array<OpenAI::Models::EvalLabelModelGrader::Input::Assistant, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage>]
+      #   @param labels [Array<String>]
+      #   @param model [String]
+      #   @param name [String]
+      #   @param passing_labels [Array<String>]
+      #   @param type [Symbol, :label_model]
 
       # An item can either be an input message or an output message.
       module Input
@@ -82,14 +78,10 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Type]
           required :type, enum: -> { OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Type }
 
-          # @!parse
-          #   # @param content [OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content]
-          #   # @param role [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Role]
-          #   # @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Type]
-          #   #
-          #   def initialize(content:, role:, type:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(content:, role:, type:)
+          #   @param content [OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content]
+          #   @param role [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Role]
+          #   @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Type]
 
           # @see OpenAI::Models::EvalLabelModelGrader::Input::InputMessage#content
           class Content < OpenAI::Internal::Type::BaseModel
@@ -105,13 +97,9 @@ module OpenAI
             #   @return [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::Type]
             required :type, enum: -> { OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::Type }
 
-            # @!parse
-            #   # @param text [String]
-            #   # @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::Type]
-            #   #
-            #   def initialize(text:, type:, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(text:, type:)
+            #   @param text [String]
+            #   @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::Type]
 
             # The type of content, which is always `input_text`.
             #
@@ -121,11 +109,8 @@ module OpenAI
 
               INPUT_TEXT = :input_text
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
 
@@ -139,11 +124,8 @@ module OpenAI
             SYSTEM = :system
             DEVELOPER = :developer
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # The type of item, which is always `message`.
@@ -154,11 +136,8 @@ module OpenAI
 
             MESSAGE = :message
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 
@@ -180,14 +159,10 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Type]
           required :type, enum: -> { OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Type }
 
-          # @!parse
-          #   # @param content [OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content]
-          #   # @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Type]
-          #   # @param role [Symbol, :assistant]
-          #   #
-          #   def initialize(content:, type:, role: :assistant, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(content:, type:, role: :assistant)
+          #   @param content [OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content]
+          #   @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Type]
+          #   @param role [Symbol, :assistant]
 
           # @see OpenAI::Models::EvalLabelModelGrader::Input::Assistant#content
           class Content < OpenAI::Internal::Type::BaseModel
@@ -203,13 +178,9 @@ module OpenAI
             #   @return [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::Type]
             required :type, enum: -> { OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::Type }
 
-            # @!parse
-            #   # @param text [String]
-            #   # @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::Type]
-            #   #
-            #   def initialize(text:, type:, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(text:, type:)
+            #   @param text [String]
+            #   @param type [Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::Type]
 
             # The type of content, which is always `output_text`.
             #
@@ -219,11 +190,8 @@ module OpenAI
 
               OUTPUT_TEXT = :output_text
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
 
@@ -235,17 +203,13 @@ module OpenAI
 
             MESSAGE = :message
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::EvalLabelModelGrader::Input::Assistant, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::EvalLabelModelGrader::Input::Assistant, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage)]
       end
     end
   end

@@ -32,19 +32,15 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::Reasoning::Summary, nil]
       optional :summary, enum: -> { OpenAI::Models::Reasoning::Summary }, nil?: true
 
-      # @!parse
-      #   # **o-series models only**
-      #   #
-      #   # Configuration options for
-      #   # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-      #   #
-      #   # @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
-      #   # @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
-      #   # @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil]
-      #   #
-      #   def initialize(effort: nil, generate_summary: nil, summary: nil, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(effort: nil, generate_summary: nil, summary: nil)
+      #   **o-series models only**
+      #
+      #   Configuration options for
+      #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+      #
+      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+      #   @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
+      #   @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil]
 
       # @deprecated
       #
@@ -62,11 +58,8 @@ module OpenAI
         CONCISE = :concise
         DETAILED = :detailed
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # A summary of the reasoning performed by the model. This can be useful for
@@ -81,11 +74,8 @@ module OpenAI
         CONCISE = :concise
         DETAILED = :detailed
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

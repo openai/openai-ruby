@@ -19,14 +19,10 @@ module OpenAI
       #   @return [String]
       required :object, String
 
-      # @!parse
-      #   # @param id [String]
-      #   # @param deleted [Boolean]
-      #   # @param object [String]
-      #   #
-      #   def initialize(id:, deleted:, object:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, deleted:, object:)
+      #   @param id [String]
+      #   @param deleted [Boolean]
+      #   @param object [String]
     end
   end
 end

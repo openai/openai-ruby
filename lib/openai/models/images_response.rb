@@ -14,13 +14,9 @@ module OpenAI
       #   @return [Array<OpenAI::Models::Image>]
       required :data, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image] }
 
-      # @!parse
-      #   # @param created [Integer]
-      #   # @param data [Array<OpenAI::Models::Image>]
-      #   #
-      #   def initialize(created:, data:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(created:, data:)
+      #   @param created [Integer]
+      #   @param data [Array<OpenAI::Models::Image>]
     end
   end
 end

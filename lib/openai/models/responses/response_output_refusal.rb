@@ -16,15 +16,11 @@ module OpenAI
         #   @return [Symbol, :refusal]
         required :type, const: :refusal
 
-        # @!parse
-        #   # A refusal from the model.
-        #   #
-        #   # @param refusal [String]
-        #   # @param type [Symbol, :refusal]
-        #   #
-        #   def initialize(refusal:, type: :refusal, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(refusal:, type: :refusal)
+        #   A refusal from the model.
+        #
+        #   @param refusal [String]
+        #   @param type [Symbol, :refusal]
       end
     end
   end

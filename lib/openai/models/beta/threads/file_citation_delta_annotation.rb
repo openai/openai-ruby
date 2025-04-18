@@ -54,21 +54,17 @@ module OpenAI
           #   # @return [String]
           #   attr_writer :text
 
-          # @!parse
-          #   # A citation within the message that points to a specific quote from a specific
-          #   # File associated with the assistant or the message. Generated when the assistant
-          #   # uses the "file_search" tool to search files.
-          #   #
-          #   # @param index [Integer]
-          #   # @param end_index [Integer]
-          #   # @param file_citation [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation]
-          #   # @param start_index [Integer]
-          #   # @param text [String]
-          #   # @param type [Symbol, :file_citation]
-          #   #
-          #   def initialize(index:, end_index: nil, file_citation: nil, start_index: nil, text: nil, type: :file_citation, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(index:, end_index: nil, file_citation: nil, start_index: nil, text: nil, type: :file_citation)
+          #   A citation within the message that points to a specific quote from a specific
+          #   File associated with the assistant or the message. Generated when the assistant
+          #   uses the "file_search" tool to search files.
+          #
+          #   @param index [Integer]
+          #   @param end_index [Integer]
+          #   @param file_citation [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation]
+          #   @param start_index [Integer]
+          #   @param text [String]
+          #   @param type [Symbol, :file_citation]
 
           # @see OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation#file_citation
           class FileCitation < OpenAI::Internal::Type::BaseModel
@@ -92,13 +88,9 @@ module OpenAI
             #   # @return [String]
             #   attr_writer :quote
 
-            # @!parse
-            #   # @param file_id [String]
-            #   # @param quote [String]
-            #   #
-            #   def initialize(file_id: nil, quote: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_id: nil, quote: nil)
+            #   @param file_id [String]
+            #   @param quote [String]
           end
         end
       end

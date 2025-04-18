@@ -34,18 +34,14 @@ module OpenAI
         #   @return [Symbol, :"response.refusal.delta"]
         required :type, const: :"response.refusal.delta"
 
-        # @!parse
-        #   # Emitted when there is a partial refusal text.
-        #   #
-        #   # @param content_index [Integer]
-        #   # @param delta [String]
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.refusal.delta"]
-        #   #
-        #   def initialize(content_index:, delta:, item_id:, output_index:, type: :"response.refusal.delta", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content_index:, delta:, item_id:, output_index:, type: :"response.refusal.delta")
+        #   Emitted when there is a partial refusal text.
+        #
+        #   @param content_index [Integer]
+        #   @param delta [String]
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.refusal.delta"]
       end
     end
   end

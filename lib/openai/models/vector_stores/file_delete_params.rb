@@ -14,13 +14,9 @@ module OpenAI
         #   @return [String]
         required :vector_store_id, String
 
-        # @!parse
-        #   # @param vector_store_id [String]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(vector_store_id:, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(vector_store_id:, request_options: {})
+        #   @param vector_store_id [String]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end
   end

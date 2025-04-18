@@ -16,15 +16,11 @@ module OpenAI
         #   @return [Symbol, :"response.incomplete"]
         required :type, const: :"response.incomplete"
 
-        # @!parse
-        #   # An event that is emitted when a response finishes as incomplete.
-        #   #
-        #   # @param response [OpenAI::Models::Responses::Response]
-        #   # @param type [Symbol, :"response.incomplete"]
-        #   #
-        #   def initialize(response:, type: :"response.incomplete", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(response:, type: :"response.incomplete")
+        #   An event that is emitted when a response finishes as incomplete.
+        #
+        #   @param response [OpenAI::Models::Responses::Response]
+        #   @param type [Symbol, :"response.incomplete"]
       end
     end
   end

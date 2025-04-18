@@ -43,19 +43,15 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::Thread::ToolResources, nil]
         required :tool_resources, -> { OpenAI::Models::Beta::Thread::ToolResources }, nil?: true
 
-        # @!parse
-        #   # Represents a thread that contains
-        #   # [messages](https://platform.openai.com/docs/api-reference/messages).
-        #   #
-        #   # @param id [String]
-        #   # @param created_at [Integer]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param tool_resources [OpenAI::Models::Beta::Thread::ToolResources, nil]
-        #   # @param object [Symbol, :thread]
-        #   #
-        #   def initialize(id:, created_at:, metadata:, tool_resources:, object: :thread, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, metadata:, tool_resources:, object: :thread)
+        #   Represents a thread that contains
+        #   [messages](https://platform.openai.com/docs/api-reference/messages).
+        #
+        #   @param id [String]
+        #   @param created_at [Integer]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param tool_resources [OpenAI::Models::Beta::Thread::ToolResources, nil]
+        #   @param object [Symbol, :thread]
 
         # @see OpenAI::Models::Beta::Thread#tool_resources
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -77,18 +73,14 @@ module OpenAI
           #   # @return [OpenAI::Models::Beta::Thread::ToolResources::FileSearch]
           #   attr_writer :file_search
 
-          # @!parse
-          #   # A set of resources that are made available to the assistant's tools in this
-          #   # thread. The resources are specific to the type of tool. For example, the
-          #   # `code_interpreter` tool requires a list of file IDs, while the `file_search`
-          #   # tool requires a list of vector store IDs.
-          #   #
-          #   # @param code_interpreter [OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter]
-          #   # @param file_search [OpenAI::Models::Beta::Thread::ToolResources::FileSearch]
-          #   #
-          #   def initialize(code_interpreter: nil, file_search: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(code_interpreter: nil, file_search: nil)
+          #   A set of resources that are made available to the assistant's tools in this
+          #   thread. The resources are specific to the type of tool. For example, the
+          #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
+          #   tool requires a list of vector store IDs.
+          #
+          #   @param code_interpreter [OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter]
+          #   @param file_search [OpenAI::Models::Beta::Thread::ToolResources::FileSearch]
 
           # @see OpenAI::Models::Beta::Thread::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -104,12 +96,8 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :file_ids
 
-            # @!parse
-            #   # @param file_ids [Array<String>]
-            #   #
-            #   def initialize(file_ids: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_ids: nil)
+            #   @param file_ids [Array<String>]
           end
 
           # @see OpenAI::Models::Beta::Thread::ToolResources#file_search
@@ -127,12 +115,8 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :vector_store_ids
 
-            # @!parse
-            #   # @param vector_store_ids [Array<String>]
-            #   #
-            #   def initialize(vector_store_ids: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(vector_store_ids: nil)
+            #   @param vector_store_ids [Array<String>]
           end
         end
       end

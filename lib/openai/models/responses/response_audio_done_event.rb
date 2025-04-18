@@ -10,14 +10,10 @@ module OpenAI
         #   @return [Symbol, :"response.audio.done"]
         required :type, const: :"response.audio.done"
 
-        # @!parse
-        #   # Emitted when the audio response is complete.
-        #   #
-        #   # @param type [Symbol, :"response.audio.done"]
-        #   #
-        #   def initialize(type: :"response.audio.done", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(type: :"response.audio.done")
+        #   Emitted when the audio response is complete.
+        #
+        #   @param type [Symbol, :"response.audio.done"]
       end
     end
   end

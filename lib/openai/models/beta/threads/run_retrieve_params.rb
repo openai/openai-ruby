@@ -15,13 +15,9 @@ module OpenAI
           #   @return [String]
           required :thread_id, String
 
-          # @!parse
-          #   # @param thread_id [String]
-          #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(thread_id:, request_options: {}, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(thread_id:, request_options: {})
+          #   @param thread_id [String]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end
     end

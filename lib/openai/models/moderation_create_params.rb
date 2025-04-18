@@ -28,14 +28,10 @@ module OpenAI
       #   # @return [String, Symbol, OpenAI::Models::ModerationModel]
       #   attr_writer :model
 
-      # @!parse
-      #   # @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
-      #   # @param model [String, Symbol, OpenAI::Models::ModerationModel]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(input:, model: nil, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(input:, model: nil, request_options: {})
+      #   @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
+      #   @param model [String, Symbol, OpenAI::Models::ModerationModel]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       # an array of multi-modal input objects similar to other models.
@@ -51,9 +47,8 @@ module OpenAI
         # An array of multi-modal inputs to the moderation model.
         variant -> { OpenAI::Models::ModerationCreateParams::Input::ModerationMultiModalInputArray }
 
-        # @!parse
-        #   # @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
 
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
@@ -75,9 +70,8 @@ module OpenAI
         # available models [here](https://platform.openai.com/docs/models#moderation).
         variant enum: -> { OpenAI::Models::ModerationModel }
 
-        # @!parse
-        #   # @return [Array(String, Symbol, OpenAI::Models::ModerationModel)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Symbol, OpenAI::Models::ModerationModel)]
       end
     end
   end

@@ -55,20 +55,16 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type]
         #   attr_writer :type
 
-        # @!parse
-        #   # Fine-tuning job event object
-        #   #
-        #   # @param id [String]
-        #   # @param created_at [Integer]
-        #   # @param level [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level]
-        #   # @param message [String]
-        #   # @param data [Object]
-        #   # @param type [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type]
-        #   # @param object [Symbol, :"fine_tuning.job.event"]
-        #   #
-        #   def initialize(id:, created_at:, level:, message:, data: nil, type: nil, object: :"fine_tuning.job.event", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, level:, message:, data: nil, type: nil, object: :"fine_tuning.job.event")
+        #   Fine-tuning job event object
+        #
+        #   @param id [String]
+        #   @param created_at [Integer]
+        #   @param level [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level]
+        #   @param message [String]
+        #   @param data [Object]
+        #   @param type [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type]
+        #   @param object [Symbol, :"fine_tuning.job.event"]
 
         # The log level of the event.
         #
@@ -80,11 +76,8 @@ module OpenAI
           WARN = :warn
           ERROR = :error
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # The type of event.
@@ -96,11 +89,8 @@ module OpenAI
           MESSAGE = :message
           METRICS = :metrics
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.code_interpreter_call.completed"]
         required :type, const: :"response.code_interpreter_call.completed"
 
-        # @!parse
-        #   # Emitted when the code interpreter call is completed.
-        #   #
-        #   # @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.code_interpreter_call.completed"]
-        #   #
-        #   def initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.completed", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.completed")
+        #   Emitted when the code interpreter call is completed.
+        #
+        #   @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.code_interpreter_call.completed"]
       end
     end
   end

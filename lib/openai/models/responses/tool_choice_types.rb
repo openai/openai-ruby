@@ -17,15 +17,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type]
         required :type, enum: -> { OpenAI::Models::Responses::ToolChoiceTypes::Type }
 
-        # @!parse
-        #   # Indicates that the model should use a built-in tool to generate a response.
-        #   # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
-        #   #
-        #   # @param type [Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type]
-        #   #
-        #   def initialize(type:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(type:)
+        #   Indicates that the model should use a built-in tool to generate a response.
+        #   [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
+        #
+        #   @param type [Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type]
 
         # The type of hosted tool the model should to use. Learn more about
         # [built-in tools](https://platform.openai.com/docs/guides/tools).
@@ -45,11 +41,8 @@ module OpenAI
           COMPUTER_USE_PREVIEW = :computer_use_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

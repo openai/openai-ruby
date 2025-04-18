@@ -26,16 +26,12 @@ module OpenAI
           #   # @return [String]
           #   attr_writer :refusal
 
-          # @!parse
-          #   # The refusal content that is part of a message.
-          #   #
-          #   # @param index [Integer]
-          #   # @param refusal [String]
-          #   # @param type [Symbol, :refusal]
-          #   #
-          #   def initialize(index:, refusal: nil, type: :refusal, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(index:, refusal: nil, type: :refusal)
+          #   The refusal content that is part of a message.
+          #
+          #   @param index [Integer]
+          #   @param refusal [String]
+          #   @param type [Symbol, :refusal]
         end
       end
     end

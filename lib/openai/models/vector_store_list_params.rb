@@ -56,16 +56,12 @@ module OpenAI
       #   # @return [Symbol, OpenAI::Models::VectorStoreListParams::Order]
       #   attr_writer :order
 
-      # @!parse
-      #   # @param after [String]
-      #   # @param before [String]
-      #   # @param limit [Integer]
-      #   # @param order [Symbol, OpenAI::Models::VectorStoreListParams::Order]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(after: nil, before: nil, limit: nil, order: nil, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(after: nil, before: nil, limit: nil, order: nil, request_options: {})
+      #   @param after [String]
+      #   @param before [String]
+      #   @param limit [Integer]
+      #   @param order [Symbol, OpenAI::Models::VectorStoreListParams::Order]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
       # order and `desc` for descending order.
@@ -75,11 +71,8 @@ module OpenAI
         ASC = :asc
         DESC = :desc
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

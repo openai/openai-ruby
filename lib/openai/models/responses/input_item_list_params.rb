@@ -65,17 +65,13 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
         #   attr_writer :order
 
-        # @!parse
-        #   # @param after [String]
-        #   # @param before [String]
-        #   # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
-        #   # @param limit [Integer]
-        #   # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
+        #   @param after [String]
+        #   @param before [String]
+        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   @param limit [Integer]
+        #   @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # The order to return the input items in. Default is `asc`.
         #
@@ -87,11 +83,8 @@ module OpenAI
           ASC = :asc
           DESC = :desc
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

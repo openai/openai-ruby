@@ -25,14 +25,10 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :md5
 
-      # @!parse
-      #   # @param part_ids [Array<String>]
-      #   # @param md5 [String]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(part_ids:, md5: nil, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(part_ids:, md5: nil, request_options: {})
+      #   @param part_ids [Array<String>]
+      #   @param md5 [String]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end
 end

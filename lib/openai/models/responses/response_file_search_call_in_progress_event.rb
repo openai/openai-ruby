@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.file_search_call.in_progress"]
         required :type, const: :"response.file_search_call.in_progress"
 
-        # @!parse
-        #   # Emitted when a file search call is initiated.
-        #   #
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.file_search_call.in_progress"]
-        #   #
-        #   def initialize(item_id:, output_index:, type: :"response.file_search_call.in_progress", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(item_id:, output_index:, type: :"response.file_search_call.in_progress")
+        #   Emitted when a file search call is initiated.
+        #
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.file_search_call.in_progress"]
       end
     end
   end

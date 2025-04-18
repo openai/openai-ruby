@@ -26,15 +26,11 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role]
           #   attr_writer :role
 
-          # @!parse
-          #   # The delta containing the fields that have changed on the Message.
-          #   #
-          #   # @param content [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>]
-          #   # @param role [Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role]
-          #   #
-          #   def initialize(content: nil, role: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(content: nil, role: nil)
+          #   The delta containing the fields that have changed on the Message.
+          #
+          #   @param content [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>]
+          #   @param role [Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role]
 
           # The entity that produced the message. One of `user` or `assistant`.
           #
@@ -45,11 +41,8 @@ module OpenAI
             USER = :user
             ASSISTANT = :assistant
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

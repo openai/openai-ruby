@@ -24,17 +24,13 @@ module OpenAI
             #   @return [Symbol, :"thread.run.step.delta"]
             required :object, const: :"thread.run.step.delta"
 
-            # @!parse
-            #   # Represents a run step delta i.e. any changed fields on a run step during
-            #   # streaming.
-            #   #
-            #   # @param id [String]
-            #   # @param delta [OpenAI::Models::Beta::Threads::Runs::RunStepDelta]
-            #   # @param object [Symbol, :"thread.run.step.delta"]
-            #   #
-            #   def initialize(id:, delta:, object: :"thread.run.step.delta", **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(id:, delta:, object: :"thread.run.step.delta")
+            #   Represents a run step delta i.e. any changed fields on a run step during
+            #   streaming.
+            #
+            #   @param id [String]
+            #   @param delta [OpenAI::Models::Beta::Threads::Runs::RunStepDelta]
+            #   @param object [Symbol, :"thread.run.step.delta"]
           end
         end
 

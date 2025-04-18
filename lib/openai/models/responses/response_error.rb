@@ -16,15 +16,11 @@ module OpenAI
         #   @return [String]
         required :message, String
 
-        # @!parse
-        #   # An error object returned when the model fails to generate a Response.
-        #   #
-        #   # @param code [Symbol, OpenAI::Models::Responses::ResponseError::Code]
-        #   # @param message [String]
-        #   #
-        #   def initialize(code:, message:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(code:, message:)
+        #   An error object returned when the model fails to generate a Response.
+        #
+        #   @param code [Symbol, OpenAI::Models::Responses::ResponseError::Code]
+        #   @param message [String]
 
         # The error code for the response.
         #
@@ -51,11 +47,8 @@ module OpenAI
           FAILED_TO_DOWNLOAD_IMAGE = :failed_to_download_image
           IMAGE_FILE_NOT_FOUND = :image_file_not_found
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

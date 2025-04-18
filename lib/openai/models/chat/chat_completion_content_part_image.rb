@@ -15,15 +15,11 @@ module OpenAI
         #   @return [Symbol, :image_url]
         required :type, const: :image_url
 
-        # @!parse
-        #   # Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
-        #   #
-        #   # @param image_url [OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL]
-        #   # @param type [Symbol, :image_url]
-        #   #
-        #   def initialize(image_url:, type: :image_url, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(image_url:, type: :image_url)
+        #   Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+        #
+        #   @param image_url [OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL]
+        #   @param type [Symbol, :image_url]
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartImage#image_url
         class ImageURL < OpenAI::Internal::Type::BaseModel
@@ -44,13 +40,9 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail]
           #   attr_writer :detail
 
-          # @!parse
-          #   # @param url [String]
-          #   # @param detail [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail]
-          #   #
-          #   def initialize(url:, detail: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(url:, detail: nil)
+          #   @param url [String]
+          #   @param detail [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail]
 
           # Specifies the detail level of the image. Learn more in the
           # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
@@ -63,11 +55,8 @@ module OpenAI
             LOW = :low
             HIGH = :high
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

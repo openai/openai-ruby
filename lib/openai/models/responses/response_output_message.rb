@@ -36,18 +36,14 @@ module OpenAI
         #   @return [Symbol, :message]
         required :type, const: :message
 
-        # @!parse
-        #   # An output message from the model.
-        #   #
-        #   # @param id [String]
-        #   # @param content [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status]
-        #   # @param role [Symbol, :assistant]
-        #   # @param type [Symbol, :message]
-        #   #
-        #   def initialize(id:, content:, status:, role: :assistant, type: :message, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, content:, status:, role: :assistant, type: :message)
+        #   An output message from the model.
+        #
+        #   @param id [String]
+        #   @param content [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status]
+        #   @param role [Symbol, :assistant]
+        #   @param type [Symbol, :message]
 
         # A text output from the model.
         module Content
@@ -61,9 +57,8 @@ module OpenAI
           # A refusal from the model.
           variant :refusal, -> { OpenAI::Models::Responses::ResponseOutputRefusal }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
@@ -77,11 +72,8 @@ module OpenAI
           COMPLETED = :completed
           INCOMPLETE = :incomplete
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -42,17 +42,13 @@ module OpenAI
           #   @return [Symbol, :"thread.message.created"]
           required :event, const: :"thread.message.created"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   # created.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Message]
-          #   # @param event [Symbol, :"thread.message.created"]
-          #   #
-          #   def initialize(data:, event: :"thread.message.created", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.message.created")
+          #   Occurs when a
+          #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          #   created.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Message]
+          #   @param event [Symbol, :"thread.message.created"]
         end
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
@@ -68,17 +64,13 @@ module OpenAI
           #   @return [Symbol, :"thread.message.in_progress"]
           required :event, const: :"thread.message.in_progress"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) moves
-          #   # to an `in_progress` state.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Message]
-          #   # @param event [Symbol, :"thread.message.in_progress"]
-          #   #
-          #   def initialize(data:, event: :"thread.message.in_progress", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.message.in_progress")
+          #   Occurs when a
+          #   [message](https://platform.openai.com/docs/api-reference/messages/object) moves
+          #   to an `in_progress` state.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Message]
+          #   @param event [Symbol, :"thread.message.in_progress"]
         end
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
@@ -94,17 +86,13 @@ module OpenAI
           #   @return [Symbol, :"thread.message.delta"]
           required :event, const: :"thread.message.delta"
 
-          # @!parse
-          #   # Occurs when parts of a
-          #   # [Message](https://platform.openai.com/docs/api-reference/messages/object) are
-          #   # being streamed.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::MessageDeltaEvent]
-          #   # @param event [Symbol, :"thread.message.delta"]
-          #   #
-          #   def initialize(data:, event: :"thread.message.delta", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.message.delta")
+          #   Occurs when parts of a
+          #   [Message](https://platform.openai.com/docs/api-reference/messages/object) are
+          #   being streamed.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::MessageDeltaEvent]
+          #   @param event [Symbol, :"thread.message.delta"]
         end
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
@@ -120,17 +108,13 @@ module OpenAI
           #   @return [Symbol, :"thread.message.completed"]
           required :event, const: :"thread.message.completed"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) is
-          #   # completed.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Message]
-          #   # @param event [Symbol, :"thread.message.completed"]
-          #   #
-          #   def initialize(data:, event: :"thread.message.completed", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.message.completed")
+          #   Occurs when a
+          #   [message](https://platform.openai.com/docs/api-reference/messages/object) is
+          #   completed.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Message]
+          #   @param event [Symbol, :"thread.message.completed"]
         end
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
@@ -146,22 +130,17 @@ module OpenAI
           #   @return [Symbol, :"thread.message.incomplete"]
           required :event, const: :"thread.message.incomplete"
 
-          # @!parse
-          #   # Occurs when a
-          #   # [message](https://platform.openai.com/docs/api-reference/messages/object) ends
-          #   # before it is completed.
-          #   #
-          #   # @param data [OpenAI::Models::Beta::Threads::Message]
-          #   # @param event [Symbol, :"thread.message.incomplete"]
-          #   #
-          #   def initialize(data:, event: :"thread.message.incomplete", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(data:, event: :"thread.message.incomplete")
+          #   Occurs when a
+          #   [message](https://platform.openai.com/docs/api-reference/messages/object) ends
+          #   before it is completed.
+          #
+          #   @param data [OpenAI::Models::Beta::Threads::Message]
+          #   @param event [Symbol, :"thread.message.incomplete"]
         end
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::MessageStreamEvent::ThreadMessageIncomplete)]
       end
     end
   end

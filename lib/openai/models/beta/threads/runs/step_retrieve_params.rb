@@ -38,15 +38,11 @@ module OpenAI
             #   # @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
             #   attr_writer :include
 
-            # @!parse
-            #   # @param thread_id [String]
-            #   # @param run_id [String]
-            #   # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
-            #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-            #   #
-            #   def initialize(thread_id:, run_id:, include: nil, request_options: {}, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(thread_id:, run_id:, include: nil, request_options: {})
+            #   @param thread_id [String]
+            #   @param run_id [String]
+            #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
+            #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end
         end
       end

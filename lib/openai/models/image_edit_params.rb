@@ -74,33 +74,16 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :user
 
-      # @!parse
-      #   # @param image [Pathname, StringIO]
-      #   # @param prompt [String]
-      #   # @param mask [Pathname, StringIO]
-      #   # @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
-      #   # @param n [Integer, nil]
-      #   # @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
-      #   # @param size [Symbol, OpenAI::Models::ImageEditParams::Size, nil]
-      #   # @param user [String]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(
-      #     image:,
-      #     prompt:,
-      #     mask: nil,
-      #     model: nil,
-      #     n: nil,
-      #     response_format: nil,
-      #     size: nil,
-      #     user: nil,
-      #     request_options: {},
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(image:, prompt:, mask: nil, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      #   @param image [Pathname, StringIO]
+      #   @param prompt [String]
+      #   @param mask [Pathname, StringIO]
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
+      #   @param n [Integer, nil]
+      #   @param response_format [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
+      #   @param size [Symbol, OpenAI::Models::ImageEditParams::Size, nil]
+      #   @param user [String]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
       # time.
@@ -112,9 +95,8 @@ module OpenAI
         # The model to use for image generation. Only `dall-e-2` is supported at this time.
         variant enum: -> { OpenAI::Models::ImageModel }
 
-        # @!parse
-        #   # @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -126,11 +108,8 @@ module OpenAI
         URL = :url
         B64_JSON = :b64_json
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -142,11 +121,8 @@ module OpenAI
         SIZE_512X512 = :"512x512"
         SIZE_1024X1024 = :"1024x1024"
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

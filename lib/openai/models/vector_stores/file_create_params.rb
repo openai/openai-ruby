@@ -40,15 +40,11 @@ module OpenAI
         #   # @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
         #   attr_writer :chunking_strategy
 
-        # @!parse
-        #   # @param file_id [String]
-        #   # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
-        #   # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(file_id:, attributes: nil, chunking_strategy: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(file_id:, attributes: nil, chunking_strategy: nil, request_options: {})
+        #   @param file_id [String]
+        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+        #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         module Attribute
           extend OpenAI::Internal::Type::Union
@@ -59,9 +55,8 @@ module OpenAI
 
           variant OpenAI::Internal::Type::Boolean
 
-          # @!parse
-          #   # @return [Array(String, Float, Boolean)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Float, Boolean)]
         end
       end
     end

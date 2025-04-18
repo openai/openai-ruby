@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :input_audio]
         required :type, const: :input_audio
 
-        # @!parse
-        #   # An audio input to the model.
-        #   #
-        #   # @param data [String]
-        #   # @param format_ [Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format]
-        #   # @param type [Symbol, :input_audio]
-        #   #
-        #   def initialize(data:, format_:, type: :input_audio, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(data:, format_:, type: :input_audio)
+        #   An audio input to the model.
+        #
+        #   @param data [String]
+        #   @param format_ [Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format]
+        #   @param type [Symbol, :input_audio]
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         #
@@ -42,11 +38,8 @@ module OpenAI
           MP3 = :mp3
           WAV = :wav
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -18,9 +18,8 @@ module OpenAI
         # Emitted when the transcription is complete. Contains the complete transcription text. Only emitted when you [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription) with the `Stream` parameter set to `true`.
         variant :"transcript.text.done", -> { OpenAI::Models::Audio::TranscriptionTextDoneEvent }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent)]
       end
     end
   end

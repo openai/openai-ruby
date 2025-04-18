@@ -29,17 +29,13 @@ module OpenAI
       #   @return [String, Float, Boolean]
       required :value, union: -> { OpenAI::Models::ComparisonFilter::Value }
 
-      # @!parse
-      #   # A filter used to compare a specified attribute key to a given value using a
-      #   # defined comparison operation.
-      #   #
-      #   # @param key [String]
-      #   # @param type [Symbol, OpenAI::Models::ComparisonFilter::Type]
-      #   # @param value [String, Float, Boolean]
-      #   #
-      #   def initialize(key:, type:, value:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(key:, type:, value:)
+      #   A filter used to compare a specified attribute key to a given value using a
+      #   defined comparison operation.
+      #
+      #   @param key [String]
+      #   @param type [Symbol, OpenAI::Models::ComparisonFilter::Type]
+      #   @param value [String, Float, Boolean]
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
@@ -61,11 +57,8 @@ module OpenAI
         LT = :lt
         LTE = :lte
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # The value to compare against the attribute key; supports string, number, or
@@ -81,9 +74,8 @@ module OpenAI
 
         variant OpenAI::Internal::Type::Boolean
 
-        # @!parse
-        #   # @return [Array(String, Float, Boolean)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Float, Boolean)]
       end
     end
   end

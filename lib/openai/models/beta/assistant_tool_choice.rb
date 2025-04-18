@@ -19,16 +19,12 @@ module OpenAI
         #   # @return [OpenAI::Models::Beta::AssistantToolChoiceFunction]
         #   attr_writer :function
 
-        # @!parse
-        #   # Specifies a tool the model should use. Use to force the model to call a specific
-        #   # tool.
-        #   #
-        #   # @param type [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type]
-        #   # @param function [OpenAI::Models::Beta::AssistantToolChoiceFunction]
-        #   #
-        #   def initialize(type:, function: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(type:, function: nil)
+        #   Specifies a tool the model should use. Use to force the model to call a specific
+        #   tool.
+        #
+        #   @param type [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type]
+        #   @param function [OpenAI::Models::Beta::AssistantToolChoiceFunction]
 
         # The type of the tool. If type is `function`, the function name must be set
         #
@@ -40,11 +36,8 @@ module OpenAI
           CODE_INTERPRETER = :code_interpreter
           FILE_SEARCH = :file_search
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

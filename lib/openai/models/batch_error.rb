@@ -35,15 +35,11 @@ module OpenAI
       #   @return [String, nil]
       optional :param, String, nil?: true
 
-      # @!parse
-      #   # @param code [String]
-      #   # @param line [Integer, nil]
-      #   # @param message [String]
-      #   # @param param [String, nil]
-      #   #
-      #   def initialize(code: nil, line: nil, message: nil, param: nil, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(code: nil, line: nil, message: nil, param: nil)
+      #   @param code [String]
+      #   @param line [Integer, nil]
+      #   @param message [String]
+      #   @param param [String, nil]
     end
   end
 end

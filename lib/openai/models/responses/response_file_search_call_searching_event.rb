@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.file_search_call.searching"]
         required :type, const: :"response.file_search_call.searching"
 
-        # @!parse
-        #   # Emitted when a file search is currently searching.
-        #   #
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.file_search_call.searching"]
-        #   #
-        #   def initialize(item_id:, output_index:, type: :"response.file_search_call.searching", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(item_id:, output_index:, type: :"response.file_search_call.searching")
+        #   Emitted when a file search is currently searching.
+        #
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.file_search_call.searching"]
       end
     end
   end

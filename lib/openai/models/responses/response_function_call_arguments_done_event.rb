@@ -27,17 +27,13 @@ module OpenAI
         #   @return [Symbol, :"response.function_call_arguments.done"]
         required :type, const: :"response.function_call_arguments.done"
 
-        # @!parse
-        #   # Emitted when function-call arguments are finalized.
-        #   #
-        #   # @param arguments [String]
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.function_call_arguments.done"]
-        #   #
-        #   def initialize(arguments:, item_id:, output_index:, type: :"response.function_call_arguments.done", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(arguments:, item_id:, output_index:, type: :"response.function_call_arguments.done")
+        #   Emitted when function-call arguments are finalized.
+        #
+        #   @param arguments [String]
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.function_call_arguments.done"]
       end
     end
   end

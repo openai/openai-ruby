@@ -34,19 +34,15 @@ module OpenAI
         #   @return [Integer]
         required :total_tokens, Integer
 
-        # @!parse
-        #   # Represents token usage details including input tokens, output tokens, a
-        #   # breakdown of output tokens, and the total tokens used.
-        #   #
-        #   # @param input_tokens [Integer]
-        #   # @param input_tokens_details [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails]
-        #   # @param output_tokens [Integer]
-        #   # @param output_tokens_details [OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails]
-        #   # @param total_tokens [Integer]
-        #   #
-        #   def initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, output_tokens_details:, total_tokens:)
+        #   Represents token usage details including input tokens, output tokens, a
+        #   breakdown of output tokens, and the total tokens used.
+        #
+        #   @param input_tokens [Integer]
+        #   @param input_tokens_details [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails]
+        #   @param output_tokens [Integer]
+        #   @param output_tokens_details [OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails]
+        #   @param total_tokens [Integer]
 
         # @see OpenAI::Models::Responses::ResponseUsage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -57,14 +53,10 @@ module OpenAI
           #   @return [Integer]
           required :cached_tokens, Integer
 
-          # @!parse
-          #   # A detailed breakdown of the input tokens.
-          #   #
-          #   # @param cached_tokens [Integer]
-          #   #
-          #   def initialize(cached_tokens:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(cached_tokens:)
+          #   A detailed breakdown of the input tokens.
+          #
+          #   @param cached_tokens [Integer]
         end
 
         # @see OpenAI::Models::Responses::ResponseUsage#output_tokens_details
@@ -75,14 +67,10 @@ module OpenAI
           #   @return [Integer]
           required :reasoning_tokens, Integer
 
-          # @!parse
-          #   # A detailed breakdown of the output tokens.
-          #   #
-          #   # @param reasoning_tokens [Integer]
-          #   #
-          #   def initialize(reasoning_tokens:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(reasoning_tokens:)
+          #   A detailed breakdown of the output tokens.
+          #
+          #   @param reasoning_tokens [Integer]
         end
       end
     end

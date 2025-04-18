@@ -16,15 +16,11 @@ module OpenAI
         #   @return [Symbol, :function]
         required :type, const: :function
 
-        # @!parse
-        #   # Use this option to force the model to call a specific function.
-        #   #
-        #   # @param name [String]
-        #   # @param type [Symbol, :function]
-        #   #
-        #   def initialize(name:, type: :function, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(name:, type: :function)
+        #   Use this option to force the model to call a specific function.
+        #
+        #   @param name [String]
+        #   @param type [Symbol, :function]
       end
     end
   end

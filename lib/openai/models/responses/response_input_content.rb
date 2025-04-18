@@ -18,9 +18,8 @@ module OpenAI
         # A file input to the model.
         variant :input_file, -> { OpenAI::Models::Responses::ResponseInputFile }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile)]
       end
     end
   end

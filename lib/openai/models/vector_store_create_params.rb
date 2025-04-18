@@ -62,27 +62,13 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :name
 
-      # @!parse
-      #   # @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
-      #   # @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter]
-      #   # @param file_ids [Array<String>]
-      #   # @param metadata [Hash{Symbol=>String}, nil]
-      #   # @param name [String]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(
-      #     chunking_strategy: nil,
-      #     expires_after: nil,
-      #     file_ids: nil,
-      #     metadata: nil,
-      #     name: nil,
-      #     request_options: {},
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(chunking_strategy: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
+      #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+      #   @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter]
+      #   @param file_ids [Array<String>]
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #   @param name [String]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
         # @!attribute anchor
@@ -98,15 +84,11 @@ module OpenAI
         #   @return [Integer]
         required :days, Integer
 
-        # @!parse
-        #   # The expiration policy for a vector store.
-        #   #
-        #   # @param days [Integer]
-        #   # @param anchor [Symbol, :last_active_at]
-        #   #
-        #   def initialize(days:, anchor: :last_active_at, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(days:, anchor: :last_active_at)
+        #   The expiration policy for a vector store.
+        #
+        #   @param days [Integer]
+        #   @param anchor [Symbol, :last_active_at]
       end
     end
   end
