@@ -19,15 +19,6 @@ require "uri"
 # We already ship the preferred sorbet manifests in the package itself.
 # `tapioca` currently does not offer us a way to opt out of unnecessary compilation.
 if Object.const_defined?(:Tapioca) && caller.chain([$PROGRAM_NAME]).chain(ARGV).grep(/tapioca/)
-  Warning.warn(
-    <<~WARN
-      \n
-      ⚠️ skipped loading of "openai" gem under `tapioca`.
-
-      This message is normal and expected if you are running a `tapioca` command, and does not impact `.rbi` generation.
-      \n
-    WARN
-  )
   return
 end
 
