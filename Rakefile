@@ -21,7 +21,7 @@ end
 
 desc("Preview docs; use `PORT=<PORT>` to change the port")
 multitask(:"docs:preview") do
-  sh(*%w[yard server --bind [::] --reload --quiet --port], ENV.fetch("PORT", "8808"))
+  sh(*%w[yard server --reload --quiet --bind [::] --port], ENV.fetch("PORT", "8808"))
 end
 
 desc("Run test suites; use `TEST=path/to/test.rb` to run a specific test file")
@@ -111,7 +111,7 @@ end
 desc("Typecheck everything")
 multitask(typecheck: [:"typecheck:steep", :"typecheck:sorbet"])
 
-desc("Lint everything")
+desc("Lint and typecheck")
 multitask(lint: [:"lint:rubocop", :typecheck])
 
 desc("Build yard docs")
