@@ -647,14 +647,17 @@ class OpenAI::Test::BaseModelQoLTest < Minitest::Test
       [U0.new(String, Float), U0.new(String, Integer)] => false,
       [U1, U2] => true,
       [M1, M2] => false,
-      [M1, M3] => true
+      [M1, M3] => true,
+      [M1.new(a: 1), M1.new(a: 1)] => true
     }
 
     cases.each do
       if _2
         assert_equal(*_1)
+        assert_equal(*_1.map(&:hash))
       else
         refute_equal(*_1)
+        refute_equal(*_1.map(&:hash))
       end
     end
   end
