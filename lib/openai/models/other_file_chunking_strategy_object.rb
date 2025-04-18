@@ -9,16 +9,12 @@ module OpenAI
       #   @return [Symbol, :other]
       required :type, const: :other
 
-      # @!parse
-      #   # This is returned when the chunking strategy is unknown. Typically, this is
-      #   # because the file was indexed before the `chunking_strategy` concept was
-      #   # introduced in the API.
-      #   #
-      #   # @param type [Symbol, :other]
-      #   #
-      #   def initialize(type: :other, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(type: :other)
+      #   This is returned when the chunking strategy is unknown. Typically, this is
+      #   because the file was indexed before the `chunking_strategy` concept was
+      #   introduced in the API.
+      #
+      #   @param type [Symbol, :other]
     end
   end
 end

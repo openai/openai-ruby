@@ -15,9 +15,8 @@ module OpenAI
       # Customize your own chunking strategy by setting chunk size and chunk overlap.
       variant :static, -> { OpenAI::Models::StaticFileChunkingStrategyObjectParam }
 
-      # @!parse
-      #   # @return [Array(OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam)]
-      #   def self.variants; end
+      # @!method self.variants
+      #   @return [Array(OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam)]
     end
   end
 end

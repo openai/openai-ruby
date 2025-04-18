@@ -76,35 +76,18 @@ module OpenAI
         #   # @return [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
         #   attr_writer :chunking_strategy
 
-        # @!parse
-        #   # A list of files attached to a vector store.
-        #   #
-        #   # @param id [String]
-        #   # @param created_at [Integer]
-        #   # @param last_error [OpenAI::Models::VectorStores::VectorStoreFile::LastError, nil]
-        #   # @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status]
-        #   # @param usage_bytes [Integer]
-        #   # @param vector_store_id [String]
-        #   # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
-        #   # @param chunking_strategy [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
-        #   # @param object [Symbol, :"vector_store.file"]
-        #   #
-        #   def initialize(
-        #     id:,
-        #     created_at:,
-        #     last_error:,
-        #     status:,
-        #     usage_bytes:,
-        #     vector_store_id:,
-        #     attributes: nil,
-        #     chunking_strategy: nil,
-        #     object: :"vector_store.file",
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, last_error:, status:, usage_bytes:, vector_store_id:, attributes: nil, chunking_strategy: nil, object: :"vector_store.file")
+        #   A list of files attached to a vector store.
+        #
+        #   @param id [String]
+        #   @param created_at [Integer]
+        #   @param last_error [OpenAI::Models::VectorStores::VectorStoreFile::LastError, nil]
+        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status]
+        #   @param usage_bytes [Integer]
+        #   @param vector_store_id [String]
+        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+        #   @param chunking_strategy [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
+        #   @param object [Symbol, :"vector_store.file"]
 
         # @see OpenAI::Models::VectorStores::VectorStoreFile#last_error
         class LastError < OpenAI::Internal::Type::BaseModel
@@ -120,16 +103,12 @@ module OpenAI
           #   @return [String]
           required :message, String
 
-          # @!parse
-          #   # The last error associated with this vector store file. Will be `null` if there
-          #   # are no errors.
-          #   #
-          #   # @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code]
-          #   # @param message [String]
-          #   #
-          #   def initialize(code:, message:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(code:, message:)
+          #   The last error associated with this vector store file. Will be `null` if there
+          #   are no errors.
+          #
+          #   @param code [Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code]
+          #   @param message [String]
 
           # One of `server_error` or `rate_limit_exceeded`.
           #
@@ -141,11 +120,8 @@ module OpenAI
             UNSUPPORTED_FILE = :unsupported_file
             INVALID_FILE = :invalid_file
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 
@@ -162,11 +138,8 @@ module OpenAI
           CANCELLED = :cancelled
           FAILED = :failed
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module Attribute
@@ -178,9 +151,8 @@ module OpenAI
 
           variant OpenAI::Internal::Type::Boolean
 
-          # @!parse
-          #   # @return [Array(String, Float, Boolean)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Float, Boolean)]
         end
       end
     end

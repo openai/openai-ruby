@@ -45,20 +45,16 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
-        # @!parse
-        #   # JSON Schema response format. Used to generate structured JSON responses. Learn
-        #   # more about
-        #   # [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
-        #   #
-        #   # @param name [String]
-        #   # @param schema [Hash{Symbol=>Object}]
-        #   # @param description [String]
-        #   # @param strict [Boolean, nil]
-        #   # @param type [Symbol, :json_schema]
-        #   #
-        #   def initialize(name:, schema:, description: nil, strict: nil, type: :json_schema, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(name:, schema:, description: nil, strict: nil, type: :json_schema)
+        #   JSON Schema response format. Used to generate structured JSON responses. Learn
+        #   more about
+        #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+        #
+        #   @param name [String]
+        #   @param schema [Hash{Symbol=>Object}]
+        #   @param description [String]
+        #   @param strict [Boolean, nil]
+        #   @param type [Symbol, :json_schema]
       end
     end
   end

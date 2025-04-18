@@ -13,9 +13,8 @@ module OpenAI
       # This is returned when the chunking strategy is unknown. Typically, this is because the file was indexed before the `chunking_strategy` concept was introduced in the API.
       variant :other, -> { OpenAI::Models::OtherFileChunkingStrategyObject }
 
-      # @!parse
-      #   # @return [Array(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)]
-      #   def self.variants; end
+      # @!method self.variants
+      #   @return [Array(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)]
     end
   end
 end

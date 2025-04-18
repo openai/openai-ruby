@@ -19,14 +19,10 @@ module OpenAI
       #   @return [Symbol, :file]
       required :object, const: :file
 
-      # @!parse
-      #   # @param id [String]
-      #   # @param deleted [Boolean]
-      #   # @param object [Symbol, :file]
-      #   #
-      #   def initialize(id:, deleted:, object: :file, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, deleted:, object: :file)
+      #   @param id [String]
+      #   @param deleted [Boolean]
+      #   @param object [Symbol, :file]
     end
   end
 end

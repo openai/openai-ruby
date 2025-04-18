@@ -19,16 +19,12 @@ module OpenAI
         #   @return [Symbol, :content]
         required :type, const: :content
 
-        # @!parse
-        #   # Static predicted output content, such as the content of a text file that is
-        #   # being regenerated.
-        #   #
-        #   # @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        #   # @param type [Symbol, :content]
-        #   #
-        #   def initialize(content:, type: :content, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content:, type: :content)
+        #   Static predicted output content, such as the content of a text file that is
+        #   being regenerated.
+        #
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
+        #   @param type [Symbol, :content]
 
         # The content that should be matched when generating a model response. If
         # generated tokens would match this content, the entire model response can be
@@ -45,9 +41,8 @@ module OpenAI
           # An array of content parts with a defined type. Supported options differ based on the [model](https://platform.openai.com/docs/models) being used to generate the response. Can contain text inputs.
           variant -> { OpenAI::Models::Chat::ChatCompletionPredictionContent::Content::ChatCompletionContentPartTextArray }
 
-          # @!parse
-          #   # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
           ChatCompletionContentPartTextArray =
             OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]

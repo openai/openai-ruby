@@ -28,16 +28,12 @@ module OpenAI
             #   # @return [String]
             #   attr_writer :logs
 
-            # @!parse
-            #   # Text output from the Code Interpreter tool call as part of a run step.
-            #   #
-            #   # @param index [Integer]
-            #   # @param logs [String]
-            #   # @param type [Symbol, :logs]
-            #   #
-            #   def initialize(index:, logs: nil, type: :logs, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(index:, logs: nil, type: :logs)
+            #   Text output from the Code Interpreter tool call as part of a run step.
+            #
+            #   @param index [Integer]
+            #   @param logs [String]
+            #   @param type [Symbol, :logs]
           end
         end
       end

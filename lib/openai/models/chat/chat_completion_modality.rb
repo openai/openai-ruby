@@ -9,11 +9,8 @@ module OpenAI
         TEXT = :text
         AUDIO = :audio
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
 

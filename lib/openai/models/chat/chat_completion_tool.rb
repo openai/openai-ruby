@@ -15,13 +15,9 @@ module OpenAI
         #   @return [Symbol, :function]
         required :type, const: :function
 
-        # @!parse
-        #   # @param function [OpenAI::Models::FunctionDefinition]
-        #   # @param type [Symbol, :function]
-        #   #
-        #   def initialize(function:, type: :function, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(function:, type: :function)
+        #   @param function [OpenAI::Models::FunctionDefinition]
+        #   @param type [Symbol, :function]
       end
     end
 

@@ -49,16 +49,12 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-      # @!parse
-      #   # @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow]
-      #   # @param endpoint [Symbol, OpenAI::Models::BatchCreateParams::Endpoint]
-      #   # @param input_file_id [String]
-      #   # @param metadata [Hash{Symbol=>String}, nil]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
+      #   @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow]
+      #   @param endpoint [Symbol, OpenAI::Models::BatchCreateParams::Endpoint]
+      #   @param input_file_id [String]
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # The time frame within which the batch should be processed. Currently only `24h`
       # is supported.
@@ -67,11 +63,8 @@ module OpenAI
 
         COMPLETION_WINDOW_24H = :"24h"
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # The endpoint to be used for all requests in the batch. Currently
@@ -86,11 +79,8 @@ module OpenAI
         V1_EMBEDDINGS = :"/v1/embeddings"
         V1_COMPLETIONS = :"/v1/completions"
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

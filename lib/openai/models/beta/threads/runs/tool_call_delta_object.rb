@@ -25,15 +25,11 @@ module OpenAI
             #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>]
             #   attr_writer :tool_calls
 
-            # @!parse
-            #   # Details of the tool call.
-            #   #
-            #   # @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>]
-            #   # @param type [Symbol, :tool_calls]
-            #   #
-            #   def initialize(tool_calls: nil, type: :tool_calls, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(tool_calls: nil, type: :tool_calls)
+            #   Details of the tool call.
+            #
+            #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta>]
+            #   @param type [Symbol, :tool_calls]
           end
         end
       end

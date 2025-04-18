@@ -34,18 +34,14 @@ module OpenAI
         #   @return [Symbol, :"response.output_text.done"]
         required :type, const: :"response.output_text.done"
 
-        # @!parse
-        #   # Emitted when text content is finalized.
-        #   #
-        #   # @param content_index [Integer]
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param text [String]
-        #   # @param type [Symbol, :"response.output_text.done"]
-        #   #
-        #   def initialize(content_index:, item_id:, output_index:, text:, type: :"response.output_text.done", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content_index:, item_id:, output_index:, text:, type: :"response.output_text.done")
+        #   Emitted when text content is finalized.
+        #
+        #   @param content_index [Integer]
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param text [String]
+        #   @param type [Symbol, :"response.output_text.done"]
       end
     end
   end

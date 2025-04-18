@@ -28,17 +28,13 @@ module OpenAI
         #   @return [Symbol, :error]
         required :type, const: :error
 
-        # @!parse
-        #   # Emitted when an error occurs.
-        #   #
-        #   # @param code [String, nil]
-        #   # @param message [String]
-        #   # @param param [String, nil]
-        #   # @param type [Symbol, :error]
-        #   #
-        #   def initialize(code:, message:, param:, type: :error, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(code:, message:, param:, type: :error)
+        #   Emitted when an error occurs.
+        #
+        #   @param code [String, nil]
+        #   @param message [String]
+        #   @param param [String, nil]
+        #   @param type [Symbol, :error]
       end
     end
   end

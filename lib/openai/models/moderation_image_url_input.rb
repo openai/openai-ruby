@@ -15,15 +15,11 @@ module OpenAI
       #   @return [Symbol, :image_url]
       required :type, const: :image_url
 
-      # @!parse
-      #   # An object describing an image to classify.
-      #   #
-      #   # @param image_url [OpenAI::Models::ModerationImageURLInput::ImageURL]
-      #   # @param type [Symbol, :image_url]
-      #   #
-      #   def initialize(image_url:, type: :image_url, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(image_url:, type: :image_url)
+      #   An object describing an image to classify.
+      #
+      #   @param image_url [OpenAI::Models::ModerationImageURLInput::ImageURL]
+      #   @param type [Symbol, :image_url]
 
       # @see OpenAI::Models::ModerationImageURLInput#image_url
       class ImageURL < OpenAI::Internal::Type::BaseModel
@@ -33,14 +29,10 @@ module OpenAI
         #   @return [String]
         required :url, String
 
-        # @!parse
-        #   # Contains either an image URL or a data URL for a base64 encoded image.
-        #   #
-        #   # @param url [String]
-        #   #
-        #   def initialize(url:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(url:)
+        #   Contains either an image URL or a data URL for a base64 encoded image.
+        #
+        #   @param url [String]
       end
     end
   end

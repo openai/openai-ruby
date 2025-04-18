@@ -15,17 +15,13 @@ module OpenAI
       #   @return [Symbol, :json_schema]
       required :type, const: :json_schema
 
-      # @!parse
-      #   # JSON Schema response format. Used to generate structured JSON responses. Learn
-      #   # more about
-      #   # [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
-      #   #
-      #   # @param json_schema [OpenAI::Models::ResponseFormatJSONSchema::JSONSchema]
-      #   # @param type [Symbol, :json_schema]
-      #   #
-      #   def initialize(json_schema:, type: :json_schema, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(json_schema:, type: :json_schema)
+      #   JSON Schema response format. Used to generate structured JSON responses. Learn
+      #   more about
+      #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+      #
+      #   @param json_schema [OpenAI::Models::ResponseFormatJSONSchema::JSONSchema]
+      #   @param type [Symbol, :json_schema]
 
       # @see OpenAI::Models::ResponseFormatJSONSchema#json_schema
       class JSONSchema < OpenAI::Internal::Type::BaseModel
@@ -68,17 +64,13 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
-        # @!parse
-        #   # Structured Outputs configuration options, including a JSON Schema.
-        #   #
-        #   # @param name [String]
-        #   # @param description [String]
-        #   # @param schema [Hash{Symbol=>Object}]
-        #   # @param strict [Boolean, nil]
-        #   #
-        #   def initialize(name:, description: nil, schema: nil, strict: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(name:, description: nil, schema: nil, strict: nil)
+        #   Structured Outputs configuration options, including a JSON Schema.
+        #
+        #   @param name [String]
+        #   @param description [String]
+        #   @param schema [Hash{Symbol=>Object}]
+        #   @param strict [Boolean, nil]
       end
     end
   end

@@ -67,35 +67,17 @@ module OpenAI
         #   @return [Array<Integer>]
         required :tokens, OpenAI::Internal::Type::ArrayOf[Integer]
 
-        # @!parse
-        #   # @param id [Integer]
-        #   # @param avg_logprob [Float]
-        #   # @param compression_ratio [Float]
-        #   # @param end_ [Float]
-        #   # @param no_speech_prob [Float]
-        #   # @param seek [Integer]
-        #   # @param start [Float]
-        #   # @param temperature [Float]
-        #   # @param text [String]
-        #   # @param tokens [Array<Integer>]
-        #   #
-        #   def initialize(
-        #     id:,
-        #     avg_logprob:,
-        #     compression_ratio:,
-        #     end_:,
-        #     no_speech_prob:,
-        #     seek:,
-        #     start:,
-        #     temperature:,
-        #     text:,
-        #     tokens:,
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, avg_logprob:, compression_ratio:, end_:, no_speech_prob:, seek:, start:, temperature:, text:, tokens:)
+        #   @param id [Integer]
+        #   @param avg_logprob [Float]
+        #   @param compression_ratio [Float]
+        #   @param end_ [Float]
+        #   @param no_speech_prob [Float]
+        #   @param seek [Integer]
+        #   @param start [Float]
+        #   @param temperature [Float]
+        #   @param text [String]
+        #   @param tokens [Array<Integer>]
       end
     end
   end

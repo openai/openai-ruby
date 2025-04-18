@@ -28,15 +28,11 @@ module OpenAI
       #   @return [OpenAI::Models::CreateEmbeddingResponse::Usage]
       required :usage, -> { OpenAI::Models::CreateEmbeddingResponse::Usage }
 
-      # @!parse
-      #   # @param data [Array<OpenAI::Models::Embedding>]
-      #   # @param model [String]
-      #   # @param usage [OpenAI::Models::CreateEmbeddingResponse::Usage]
-      #   # @param object [Symbol, :list]
-      #   #
-      #   def initialize(data:, model:, usage:, object: :list, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(data:, model:, usage:, object: :list)
+      #   @param data [Array<OpenAI::Models::Embedding>]
+      #   @param model [String]
+      #   @param usage [OpenAI::Models::CreateEmbeddingResponse::Usage]
+      #   @param object [Symbol, :list]
 
       # @see OpenAI::Models::CreateEmbeddingResponse#usage
       class Usage < OpenAI::Internal::Type::BaseModel
@@ -52,15 +48,11 @@ module OpenAI
         #   @return [Integer]
         required :total_tokens, Integer
 
-        # @!parse
-        #   # The usage information for the request.
-        #   #
-        #   # @param prompt_tokens [Integer]
-        #   # @param total_tokens [Integer]
-        #   #
-        #   def initialize(prompt_tokens:, total_tokens:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(prompt_tokens:, total_tokens:)
+        #   The usage information for the request.
+        #
+        #   @param prompt_tokens [Integer]
+        #   @param total_tokens [Integer]
       end
     end
   end

@@ -10,12 +10,8 @@ module OpenAI
         #   @return [String]
         required :name, String
 
-        # @!parse
-        #   # @param name [String]
-        #   #
-        #   def initialize(name:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(name:)
+        #   @param name [String]
       end
     end
   end

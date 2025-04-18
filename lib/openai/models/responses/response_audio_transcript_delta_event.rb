@@ -16,15 +16,11 @@ module OpenAI
         #   @return [Symbol, :"response.audio.transcript.delta"]
         required :type, const: :"response.audio.transcript.delta"
 
-        # @!parse
-        #   # Emitted when there is a partial transcript of audio.
-        #   #
-        #   # @param delta [String]
-        #   # @param type [Symbol, :"response.audio.transcript.delta"]
-        #   #
-        #   def initialize(delta:, type: :"response.audio.transcript.delta", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(delta:, type: :"response.audio.transcript.delta")
+        #   Emitted when there is a partial transcript of audio.
+        #
+        #   @param delta [String]
+        #   @param type [Symbol, :"response.audio.transcript.delta"]
       end
     end
   end

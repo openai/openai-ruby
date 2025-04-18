@@ -59,21 +59,17 @@ module OpenAI
       #   # @return [OpenAI::Models::CompletionUsage]
       #   attr_writer :usage
 
-      # @!parse
-      #   # Represents a completion response from the API. Note: both the streamed and
-      #   # non-streamed response objects share the same shape (unlike the chat endpoint).
-      #   #
-      #   # @param id [String]
-      #   # @param choices [Array<OpenAI::Models::CompletionChoice>]
-      #   # @param created [Integer]
-      #   # @param model [String]
-      #   # @param system_fingerprint [String]
-      #   # @param usage [OpenAI::Models::CompletionUsage]
-      #   # @param object [Symbol, :text_completion]
-      #   #
-      #   def initialize(id:, choices:, created:, model:, system_fingerprint: nil, usage: nil, object: :text_completion, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, choices:, created:, model:, system_fingerprint: nil, usage: nil, object: :text_completion)
+      #   Represents a completion response from the API. Note: both the streamed and
+      #   non-streamed response objects share the same shape (unlike the chat endpoint).
+      #
+      #   @param id [String]
+      #   @param choices [Array<OpenAI::Models::CompletionChoice>]
+      #   @param created [Integer]
+      #   @param model [String]
+      #   @param system_fingerprint [String]
+      #   @param usage [OpenAI::Models::CompletionUsage]
+      #   @param object [Symbol, :text_completion]
     end
   end
 end

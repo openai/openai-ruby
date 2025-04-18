@@ -93,19 +93,15 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type]
           #   attr_writer :type
 
-          # @!parse
-          #   # A message input to the model with a role indicating instruction following
-          #   # hierarchy. Instructions given with the `developer` or `system` role take
-          #   # precedence over instructions given with the `user` role.
-          #   #
-          #   # @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
-          #   # @param role [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Role]
-          #   # @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status]
-          #   # @param type [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type]
-          #   #
-          #   def initialize(content:, role:, status: nil, type: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(content:, role:, status: nil, type: nil)
+          #   A message input to the model with a role indicating instruction following
+          #   hierarchy. Instructions given with the `developer` or `system` role take
+          #   precedence over instructions given with the `user` role.
+          #
+          #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
+          #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Role]
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status]
+          #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type]
 
           # The role of the message input. One of `user`, `system`, or `developer`.
           #
@@ -117,11 +113,8 @@ module OpenAI
             SYSTEM = :system
             DEVELOPER = :developer
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -135,11 +128,8 @@ module OpenAI
             COMPLETED = :completed
             INCOMPLETE = :incomplete
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # The type of the message input. Always set to `message`.
@@ -150,11 +140,8 @@ module OpenAI
 
             MESSAGE = :message
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 
@@ -210,19 +197,15 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status]
           #   attr_writer :status
 
-          # @!parse
-          #   # The output of a computer tool call.
-          #   #
-          #   # @param call_id [String]
-          #   # @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
-          #   # @param id [String]
-          #   # @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>]
-          #   # @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status]
-          #   # @param type [Symbol, :computer_call_output]
-          #   #
-          #   def initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
+          #   The output of a computer tool call.
+          #
+          #   @param call_id [String]
+          #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
+          #   @param id [String]
+          #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>]
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status]
+          #   @param type [Symbol, :computer_call_output]
 
           class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
             # @!attribute id
@@ -243,16 +226,12 @@ module OpenAI
             #   @return [String]
             required :message, String
 
-            # @!parse
-            #   # A pending safety check for the computer call.
-            #   #
-            #   # @param id [String]
-            #   # @param code [String]
-            #   # @param message [String]
-            #   #
-            #   def initialize(id:, code:, message:, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(id:, code:, message:)
+            #   A pending safety check for the computer call.
+            #
+            #   @param id [String]
+            #   @param code [String]
+            #   @param message [String]
           end
 
           # The status of the message input. One of `in_progress`, `completed`, or
@@ -266,11 +245,8 @@ module OpenAI
             COMPLETED = :completed
             INCOMPLETE = :incomplete
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 
@@ -315,18 +291,14 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status]
           #   attr_writer :status
 
-          # @!parse
-          #   # The output of a function tool call.
-          #   #
-          #   # @param call_id [String]
-          #   # @param output [String]
-          #   # @param id [String]
-          #   # @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status]
-          #   # @param type [Symbol, :function_call_output]
-          #   #
-          #   def initialize(call_id:, output:, id: nil, status: nil, type: :function_call_output, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(call_id:, output:, id: nil, status: nil, type: :function_call_output)
+          #   The output of a function tool call.
+          #
+          #   @param call_id [String]
+          #   @param output [String]
+          #   @param id [String]
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status]
+          #   @param type [Symbol, :function_call_output]
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
@@ -339,11 +311,8 @@ module OpenAI
             COMPLETED = :completed
             INCOMPLETE = :incomplete
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 
@@ -360,20 +329,15 @@ module OpenAI
           #   @return [Symbol, :item_reference]
           required :type, const: :item_reference
 
-          # @!parse
-          #   # An internal identifier for an item to reference.
-          #   #
-          #   # @param id [String]
-          #   # @param type [Symbol, :item_reference]
-          #   #
-          #   def initialize(id:, type: :item_reference, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, type: :item_reference)
+          #   An internal identifier for an item to reference.
+          #
+          #   @param id [String]
+          #   @param type [Symbol, :item_reference]
         end
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference)]
       end
     end
   end

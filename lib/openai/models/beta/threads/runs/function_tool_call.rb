@@ -25,14 +25,10 @@ module OpenAI
             #   @return [Symbol, :function]
             required :type, const: :function
 
-            # @!parse
-            #   # @param id [String]
-            #   # @param function [OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function]
-            #   # @param type [Symbol, :function]
-            #   #
-            #   def initialize(id:, function:, type: :function, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(id:, function:, type: :function)
+            #   @param id [String]
+            #   @param function [OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function]
+            #   @param type [Symbol, :function]
 
             # @see OpenAI::Models::Beta::Threads::Runs::FunctionToolCall#function
             class Function < OpenAI::Internal::Type::BaseModel
@@ -56,16 +52,12 @@ module OpenAI
               #   @return [String, nil]
               required :output, String, nil?: true
 
-              # @!parse
-              #   # The definition of the function that was called.
-              #   #
-              #   # @param arguments [String]
-              #   # @param name [String]
-              #   # @param output [String, nil]
-              #   #
-              #   def initialize(arguments:, name:, output:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(arguments:, name:, output:)
+              #   The definition of the function that was called.
+              #
+              #   @param arguments [String]
+              #   @param name [String]
+              #   @param output [String, nil]
             end
           end
         end

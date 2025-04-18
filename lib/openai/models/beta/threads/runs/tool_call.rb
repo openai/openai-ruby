@@ -18,9 +18,8 @@ module OpenAI
 
             variant :function, -> { OpenAI::Models::Beta::Threads::Runs::FunctionToolCall }
 
-            # @!parse
-            #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall)]
           end
         end
       end

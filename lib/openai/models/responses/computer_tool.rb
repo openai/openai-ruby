@@ -28,18 +28,14 @@ module OpenAI
         #   @return [Symbol, :computer_use_preview]
         required :type, const: :computer_use_preview
 
-        # @!parse
-        #   # A tool that controls a virtual computer. Learn more about the
-        #   # [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
-        #   #
-        #   # @param display_height [Float]
-        #   # @param display_width [Float]
-        #   # @param environment [Symbol, OpenAI::Models::Responses::ComputerTool::Environment]
-        #   # @param type [Symbol, :computer_use_preview]
-        #   #
-        #   def initialize(display_height:, display_width:, environment:, type: :computer_use_preview, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(display_height:, display_width:, environment:, type: :computer_use_preview)
+        #   A tool that controls a virtual computer. Learn more about the
+        #   [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
+        #
+        #   @param display_height [Float]
+        #   @param display_width [Float]
+        #   @param environment [Symbol, OpenAI::Models::Responses::ComputerTool::Environment]
+        #   @param type [Symbol, :computer_use_preview]
 
         # The type of computer environment to control.
         #
@@ -52,11 +48,8 @@ module OpenAI
           UBUNTU = :ubuntu
           BROWSER = :browser
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

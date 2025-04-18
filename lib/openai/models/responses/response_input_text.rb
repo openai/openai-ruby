@@ -16,15 +16,11 @@ module OpenAI
         #   @return [Symbol, :input_text]
         required :type, const: :input_text
 
-        # @!parse
-        #   # A text input to the model.
-        #   #
-        #   # @param text [String]
-        #   # @param type [Symbol, :input_text]
-        #   #
-        #   def initialize(text:, type: :input_text, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(text:, type: :input_text)
+        #   A text input to the model.
+        #
+        #   @param text [String]
+        #   @param type [Symbol, :input_text]
       end
     end
   end

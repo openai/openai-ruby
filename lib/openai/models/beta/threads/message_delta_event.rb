@@ -23,17 +23,13 @@ module OpenAI
           #   @return [Symbol, :"thread.message.delta"]
           required :object, const: :"thread.message.delta"
 
-          # @!parse
-          #   # Represents a message delta i.e. any changed fields on a message during
-          #   # streaming.
-          #   #
-          #   # @param id [String]
-          #   # @param delta [OpenAI::Models::Beta::Threads::MessageDelta]
-          #   # @param object [Symbol, :"thread.message.delta"]
-          #   #
-          #   def initialize(id:, delta:, object: :"thread.message.delta", **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, delta:, object: :"thread.message.delta")
+          #   Represents a message delta i.e. any changed fields on a message during
+          #   streaming.
+          #
+          #   @param id [String]
+          #   @param delta [OpenAI::Models::Beta::Threads::MessageDelta]
+          #   @param object [Symbol, :"thread.message.delta"]
         end
       end
     end

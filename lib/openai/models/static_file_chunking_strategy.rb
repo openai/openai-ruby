@@ -18,13 +18,9 @@ module OpenAI
       #   @return [Integer]
       required :max_chunk_size_tokens, Integer
 
-      # @!parse
-      #   # @param chunk_overlap_tokens [Integer]
-      #   # @param max_chunk_size_tokens [Integer]
-      #   #
-      #   def initialize(chunk_overlap_tokens:, max_chunk_size_tokens:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(chunk_overlap_tokens:, max_chunk_size_tokens:)
+      #   @param chunk_overlap_tokens [Integer]
+      #   @param max_chunk_size_tokens [Integer]
     end
   end
 end

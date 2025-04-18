@@ -20,9 +20,8 @@ module OpenAI
           # The text content that is part of a message.
           variant :text, -> { OpenAI::Models::Beta::Threads::TextContentBlockParam }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam)]
         end
       end
     end

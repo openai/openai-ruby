@@ -14,11 +14,8 @@ module OpenAI
       VERBOSE_JSON = :verbose_json
       VTT = :vtt
 
-      finalize!
-
-      # @!parse
-      #   # @return [Array<Symbol>]
-      #   def self.values; end
+      # @!method self.values
+      #   @return [Array<Symbol>]
     end
   end
 end

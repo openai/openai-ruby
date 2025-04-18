@@ -51,17 +51,13 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status]
         #   attr_writer :status
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param call_id [String]
-        #   # @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
-        #   # @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status]
-        #   # @param type [Symbol, :computer_call_output]
-        #   #
-        #   def initialize(id:, call_id:, output:, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, call_id:, output:, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
+        #   @param id [String]
+        #   @param call_id [String]
+        #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
+        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status]
+        #   @param type [Symbol, :computer_call_output]
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           # @!attribute id
@@ -82,16 +78,12 @@ module OpenAI
           #   @return [String]
           required :message, String
 
-          # @!parse
-          #   # A pending safety check for the computer call.
-          #   #
-          #   # @param id [String]
-          #   # @param code [String]
-          #   # @param message [String]
-          #   #
-          #   def initialize(id:, code:, message:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, code:, message:)
+          #   A pending safety check for the computer call.
+          #
+          #   @param id [String]
+          #   @param code [String]
+          #   @param message [String]
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
@@ -105,11 +97,8 @@ module OpenAI
           COMPLETED = :completed
           INCOMPLETE = :incomplete
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

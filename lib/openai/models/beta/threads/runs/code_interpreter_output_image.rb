@@ -27,14 +27,10 @@ module OpenAI
             #   # @return [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image]
             #   attr_writer :image
 
-            # @!parse
-            #   # @param index [Integer]
-            #   # @param image [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image]
-            #   # @param type [Symbol, :image]
-            #   #
-            #   def initialize(index:, image: nil, type: :image, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(index:, image: nil, type: :image)
+            #   @param index [Integer]
+            #   @param image [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image]
+            #   @param type [Symbol, :image]
 
             # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage#image
             class Image < OpenAI::Internal::Type::BaseModel
@@ -49,12 +45,8 @@ module OpenAI
               #   # @return [String]
               #   attr_writer :file_id
 
-              # @!parse
-              #   # @param file_id [String]
-              #   #
-              #   def initialize(file_id: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(file_id: nil)
+              #   @param file_id [String]
             end
           end
         end

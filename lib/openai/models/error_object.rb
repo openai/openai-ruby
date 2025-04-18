@@ -23,15 +23,11 @@ module OpenAI
       #   @return [String]
       required :type, String
 
-      # @!parse
-      #   # @param code [String, nil]
-      #   # @param message [String]
-      #   # @param param [String, nil]
-      #   # @param type [String]
-      #   #
-      #   def initialize(code:, message:, param:, type:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(code:, message:, param:, type:)
+      #   @param code [String, nil]
+      #   @param message [String]
+      #   @param param [String, nil]
+      #   @param type [String]
     end
   end
 end

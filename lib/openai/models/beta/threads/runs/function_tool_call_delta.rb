@@ -39,15 +39,11 @@ module OpenAI
             #   # @return [OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function]
             #   attr_writer :function
 
-            # @!parse
-            #   # @param index [Integer]
-            #   # @param id [String]
-            #   # @param function [OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function]
-            #   # @param type [Symbol, :function]
-            #   #
-            #   def initialize(index:, id: nil, function: nil, type: :function, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(index:, id: nil, function: nil, type: :function)
+            #   @param index [Integer]
+            #   @param id [String]
+            #   @param function [OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function]
+            #   @param type [Symbol, :function]
 
             # @see OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta#function
             class Function < OpenAI::Internal::Type::BaseModel
@@ -79,16 +75,12 @@ module OpenAI
               #   @return [String, nil]
               optional :output, String, nil?: true
 
-              # @!parse
-              #   # The definition of the function that was called.
-              #   #
-              #   # @param arguments [String]
-              #   # @param name [String]
-              #   # @param output [String, nil]
-              #   #
-              #   def initialize(arguments: nil, name: nil, output: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(arguments: nil, name: nil, output: nil)
+              #   The definition of the function that was called.
+              #
+              #   @param arguments [String]
+              #   @param name [String]
+              #   @param output [String, nil]
             end
           end
         end

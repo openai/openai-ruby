@@ -16,13 +16,9 @@ module OpenAI
           #   @return [Array<String>]
           required :project_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-          # @!parse
-          #   # @param project_ids [Array<String>]
-          #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(project_ids:, request_options: {}, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(project_ids:, request_options: {})
+          #   @param project_ids [Array<String>]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end
     end

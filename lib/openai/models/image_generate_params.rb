@@ -77,33 +77,16 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :user
 
-      # @!parse
-      #   # @param prompt [String]
-      #   # @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
-      #   # @param n [Integer, nil]
-      #   # @param quality [Symbol, OpenAI::Models::ImageGenerateParams::Quality]
-      #   # @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil]
-      #   # @param size [Symbol, OpenAI::Models::ImageGenerateParams::Size, nil]
-      #   # @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil]
-      #   # @param user [String]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(
-      #     prompt:,
-      #     model: nil,
-      #     n: nil,
-      #     quality: nil,
-      #     response_format: nil,
-      #     size: nil,
-      #     style: nil,
-      #     user: nil,
-      #     request_options: {},
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(prompt:, model: nil, n: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
+      #   @param prompt [String]
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
+      #   @param n [Integer, nil]
+      #   @param quality [Symbol, OpenAI::Models::ImageGenerateParams::Quality]
+      #   @param response_format [Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat, nil]
+      #   @param size [Symbol, OpenAI::Models::ImageGenerateParams::Size, nil]
+      #   @param style [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil]
+      #   @param user [String]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # The model to use for image generation.
       module Model
@@ -114,9 +97,8 @@ module OpenAI
         # The model to use for image generation.
         variant enum: -> { OpenAI::Models::ImageModel }
 
-        # @!parse
-        #   # @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Symbol, OpenAI::Models::ImageModel)]
       end
 
       # The quality of the image that will be generated. `hd` creates images with finer
@@ -128,11 +110,8 @@ module OpenAI
         STANDARD = :standard
         HD = :hd
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # The format in which the generated images are returned. Must be one of `url` or
@@ -144,11 +123,8 @@ module OpenAI
         URL = :url
         B64_JSON = :b64_json
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # The size of the generated images. Must be one of `256x256`, `512x512`, or
@@ -163,11 +139,8 @@ module OpenAI
         SIZE_1792X1024 = :"1792x1024"
         SIZE_1024X1792 = :"1024x1792"
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # The style of the generated images. Must be one of `vivid` or `natural`. Vivid
@@ -180,11 +153,8 @@ module OpenAI
         VIVID = :vivid
         NATURAL = :natural
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

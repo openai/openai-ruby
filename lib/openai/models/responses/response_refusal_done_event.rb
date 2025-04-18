@@ -34,18 +34,14 @@ module OpenAI
         #   @return [Symbol, :"response.refusal.done"]
         required :type, const: :"response.refusal.done"
 
-        # @!parse
-        #   # Emitted when refusal text is finalized.
-        #   #
-        #   # @param content_index [Integer]
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param refusal [String]
-        #   # @param type [Symbol, :"response.refusal.done"]
-        #   #
-        #   def initialize(content_index:, item_id:, output_index:, refusal:, type: :"response.refusal.done", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content_index:, item_id:, output_index:, refusal:, type: :"response.refusal.done")
+        #   Emitted when refusal text is finalized.
+        #
+        #   @param content_index [Integer]
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param refusal [String]
+        #   @param type [Symbol, :"response.refusal.done"]
       end
     end
   end

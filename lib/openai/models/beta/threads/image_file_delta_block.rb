@@ -26,17 +26,13 @@ module OpenAI
           #   # @return [OpenAI::Models::Beta::Threads::ImageFileDelta]
           #   attr_writer :image_file
 
-          # @!parse
-          #   # References an image [File](https://platform.openai.com/docs/api-reference/files)
-          #   # in the content of a message.
-          #   #
-          #   # @param index [Integer]
-          #   # @param image_file [OpenAI::Models::Beta::Threads::ImageFileDelta]
-          #   # @param type [Symbol, :image_file]
-          #   #
-          #   def initialize(index:, image_file: nil, type: :image_file, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(index:, image_file: nil, type: :image_file)
+          #   References an image [File](https://platform.openai.com/docs/api-reference/files)
+          #   in the content of a message.
+          #
+          #   @param index [Integer]
+          #   @param image_file [OpenAI::Models::Beta::Threads::ImageFileDelta]
+          #   @param type [Symbol, :image_file]
         end
       end
     end

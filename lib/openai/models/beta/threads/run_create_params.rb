@@ -197,51 +197,25 @@ module OpenAI
                    -> { OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy },
                    nil?: true
 
-          # @!parse
-          #   # @param assistant_id [String]
-          #   # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
-          #   # @param additional_instructions [String, nil]
-          #   # @param additional_messages [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage>, nil]
-          #   # @param instructions [String, nil]
-          #   # @param max_completion_tokens [Integer, nil]
-          #   # @param max_prompt_tokens [Integer, nil]
-          #   # @param metadata [Hash{Symbol=>String}, nil]
-          #   # @param model [String, Symbol, OpenAI::Models::ChatModel, nil]
-          #   # @param parallel_tool_calls [Boolean]
-          #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
-          #   # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
-          #   # @param temperature [Float, nil]
-          #   # @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil]
-          #   # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
-          #   # @param top_p [Float, nil]
-          #   # @param truncation_strategy [OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, nil]
-          #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(
-          #     assistant_id:,
-          #     include: nil,
-          #     additional_instructions: nil,
-          #     additional_messages: nil,
-          #     instructions: nil,
-          #     max_completion_tokens: nil,
-          #     max_prompt_tokens: nil,
-          #     metadata: nil,
-          #     model: nil,
-          #     parallel_tool_calls: nil,
-          #     reasoning_effort: nil,
-          #     response_format: nil,
-          #     temperature: nil,
-          #     tool_choice: nil,
-          #     tools: nil,
-          #     top_p: nil,
-          #     truncation_strategy: nil,
-          #     request_options: {},
-          #     **
-          #   )
-          #     super
-          #   end
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
+          #   @param assistant_id [String]
+          #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
+          #   @param additional_instructions [String, nil]
+          #   @param additional_messages [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage>, nil]
+          #   @param instructions [String, nil]
+          #   @param max_completion_tokens [Integer, nil]
+          #   @param max_prompt_tokens [Integer, nil]
+          #   @param metadata [Hash{Symbol=>String}, nil]
+          #   @param model [String, Symbol, OpenAI::Models::ChatModel, nil]
+          #   @param parallel_tool_calls [Boolean]
+          #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+          #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
+          #   @param temperature [Float, nil]
+          #   @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil]
+          #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
+          #   @param top_p [Float, nil]
+          #   @param truncation_strategy [OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, nil]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           class AdditionalMessage < OpenAI::Internal::Type::BaseModel
             # @!attribute content
@@ -281,15 +255,11 @@ module OpenAI
             #   @return [Hash{Symbol=>String}, nil]
             optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-            # @!parse
-            #   # @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
-            #   # @param role [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role]
-            #   # @param attachments [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment>, nil]
-            #   # @param metadata [Hash{Symbol=>String}, nil]
-            #   #
-            #   def initialize(content:, role:, attachments: nil, metadata: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(content:, role:, attachments: nil, metadata: nil)
+            #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
+            #   @param role [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role]
+            #   @param attachments [Array<OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment>, nil]
+            #   @param metadata [Hash{Symbol=>String}, nil]
 
             # The text contents of the message.
             #
@@ -303,9 +273,8 @@ module OpenAI
               # An array of content parts with a defined type, each can be of type `text` or images can be passed with `image_url` or `image_file`. Image types are only supported on [Vision-compatible models](https://platform.openai.com/docs/models).
               variant -> { OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Content::MessageContentPartParamArray }
 
-              # @!parse
-              #   # @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
-              #   def self.variants; end
+              # @!method self.variants
+              #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
               MessageContentPartParamArray =
                 OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
@@ -325,11 +294,8 @@ module OpenAI
               USER = :user
               ASSISTANT = :assistant
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
 
             class Attachment < OpenAI::Internal::Type::BaseModel
@@ -354,13 +320,9 @@ module OpenAI
               #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>]
               #   attr_writer :tools
 
-              # @!parse
-              #   # @param file_id [String]
-              #   # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>]
-              #   #
-              #   def initialize(file_id: nil, tools: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(file_id: nil, tools: nil)
+              #   @param file_id [String]
+              #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>]
 
               module Tool
                 extend OpenAI::Internal::Type::Union
@@ -379,17 +341,12 @@ module OpenAI
                   #   @return [Symbol, :file_search]
                   required :type, const: :file_search
 
-                  # @!parse
-                  #   # @param type [Symbol, :file_search]
-                  #   #
-                  #   def initialize(type: :file_search, **) = super
-
-                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                  # @!method initialize(type: :file_search)
+                  #   @param type [Symbol, :file_search]
                 end
 
-                # @!parse
-                #   # @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch)]
               end
             end
           end
@@ -406,9 +363,8 @@ module OpenAI
             # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to be used to execute this run. If a value is provided here, it will override the model associated with the assistant. If not, the model associated with the assistant will be used.
             variant enum: -> { OpenAI::Models::ChatModel }
 
-            # @!parse
-            #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
           end
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
@@ -428,16 +384,12 @@ module OpenAI
             #   @return [Integer, nil]
             optional :last_messages, Integer, nil?: true
 
-            # @!parse
-            #   # Controls for how a thread will be truncated prior to the run. Use this to
-            #   # control the intial context window of the run.
-            #   #
-            #   # @param type [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type]
-            #   # @param last_messages [Integer, nil]
-            #   #
-            #   def initialize(type:, last_messages: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(type:, last_messages: nil)
+            #   Controls for how a thread will be truncated prior to the run. Use this to
+            #   control the intial context window of the run.
+            #
+            #   @param type [Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type]
+            #   @param last_messages [Integer, nil]
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             # `last_messages`, the thread will be truncated to the n most recent messages in
@@ -451,11 +403,8 @@ module OpenAI
               AUTO = :auto
               LAST_MESSAGES = :last_messages
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
         end

@@ -22,18 +22,14 @@ module OpenAI
         #   @return [Symbol, :web_search_call]
         required :type, const: :web_search_call
 
-        # @!parse
-        #   # The results of a web search tool call. See the
-        #   # [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for
-        #   # more information.
-        #   #
-        #   # @param id [String]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status]
-        #   # @param type [Symbol, :web_search_call]
-        #   #
-        #   def initialize(id:, status:, type: :web_search_call, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, status:, type: :web_search_call)
+        #   The results of a web search tool call. See the
+        #   [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for
+        #   more information.
+        #
+        #   @param id [String]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status]
+        #   @param type [Symbol, :web_search_call]
 
         # The status of the web search tool call.
         #
@@ -46,11 +42,8 @@ module OpenAI
           COMPLETED = :completed
           FAILED = :failed
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

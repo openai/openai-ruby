@@ -29,14 +29,10 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :name
 
-      # @!parse
-      #   # @param metadata [Hash{Symbol=>String}, nil]
-      #   # @param name [String]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(metadata: nil, name: nil, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(metadata: nil, name: nil, request_options: {})
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #   @param name [String]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end
 end

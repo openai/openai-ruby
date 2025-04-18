@@ -37,20 +37,16 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result] },
                  nil?: true
 
-        # @!parse
-        #   # The results of a file search tool call. See the
-        #   # [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
-        #   # for more information.
-        #   #
-        #   # @param id [String]
-        #   # @param queries [Array<String>]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status]
-        #   # @param results [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil]
-        #   # @param type [Symbol, :file_search_call]
-        #   #
-        #   def initialize(id:, queries:, status:, results: nil, type: :file_search_call, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, queries:, status:, results: nil, type: :file_search_call)
+        #   The results of a file search tool call. See the
+        #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
+        #   for more information.
+        #
+        #   @param id [String]
+        #   @param queries [Array<String>]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status]
+        #   @param results [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil]
+        #   @param type [Symbol, :file_search_call]
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
@@ -65,11 +61,8 @@ module OpenAI
           INCOMPLETE = :incomplete
           FAILED = :failed
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         class Result < OpenAI::Internal::Type::BaseModel
@@ -125,16 +118,12 @@ module OpenAI
           #   # @return [String]
           #   attr_writer :text
 
-          # @!parse
-          #   # @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
-          #   # @param file_id [String]
-          #   # @param filename [String]
-          #   # @param score [Float]
-          #   # @param text [String]
-          #   #
-          #   def initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil)
+          #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
+          #   @param file_id [String]
+          #   @param filename [String]
+          #   @param score [Float]
+          #   @param text [String]
 
           module Attribute
             extend OpenAI::Internal::Type::Union
@@ -145,9 +134,8 @@ module OpenAI
 
             variant OpenAI::Internal::Type::Boolean
 
-            # @!parse
-            #   # @return [Array(String, Float, Boolean)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(String, Float, Boolean)]
           end
         end
       end

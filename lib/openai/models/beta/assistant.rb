@@ -123,43 +123,22 @@ module OpenAI
         #   @return [Float, nil]
         optional :top_p, Float, nil?: true
 
-        # @!parse
-        #   # Represents an `assistant` that can call the model and use tools.
-        #   #
-        #   # @param id [String]
-        #   # @param created_at [Integer]
-        #   # @param description [String, nil]
-        #   # @param instructions [String, nil]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String]
-        #   # @param name [String, nil]
-        #   # @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
-        #   # @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
-        #   # @param temperature [Float, nil]
-        #   # @param tool_resources [OpenAI::Models::Beta::Assistant::ToolResources, nil]
-        #   # @param top_p [Float, nil]
-        #   # @param object [Symbol, :assistant]
-        #   #
-        #   def initialize(
-        #     id:,
-        #     created_at:,
-        #     description:,
-        #     instructions:,
-        #     metadata:,
-        #     model:,
-        #     name:,
-        #     tools:,
-        #     response_format: nil,
-        #     temperature: nil,
-        #     tool_resources: nil,
-        #     top_p: nil,
-        #     object: :assistant,
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, description:, instructions:, metadata:, model:, name:, tools:, response_format: nil, temperature: nil, tool_resources: nil, top_p: nil, object: :assistant)
+        #   Represents an `assistant` that can call the model and use tools.
+        #
+        #   @param id [String]
+        #   @param created_at [Integer]
+        #   @param description [String, nil]
+        #   @param instructions [String, nil]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param model [String]
+        #   @param name [String, nil]
+        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
+        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
+        #   @param temperature [Float, nil]
+        #   @param tool_resources [OpenAI::Models::Beta::Assistant::ToolResources, nil]
+        #   @param top_p [Float, nil]
+        #   @param object [Symbol, :assistant]
 
         # @see OpenAI::Models::Beta::Assistant#tool_resources
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -181,18 +160,14 @@ module OpenAI
           #   # @return [OpenAI::Models::Beta::Assistant::ToolResources::FileSearch]
           #   attr_writer :file_search
 
-          # @!parse
-          #   # A set of resources that are used by the assistant's tools. The resources are
-          #   # specific to the type of tool. For example, the `code_interpreter` tool requires
-          #   # a list of file IDs, while the `file_search` tool requires a list of vector store
-          #   # IDs.
-          #   #
-          #   # @param code_interpreter [OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter]
-          #   # @param file_search [OpenAI::Models::Beta::Assistant::ToolResources::FileSearch]
-          #   #
-          #   def initialize(code_interpreter: nil, file_search: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(code_interpreter: nil, file_search: nil)
+          #   A set of resources that are used by the assistant's tools. The resources are
+          #   specific to the type of tool. For example, the `code_interpreter` tool requires
+          #   a list of file IDs, while the `file_search` tool requires a list of vector store
+          #   IDs.
+          #
+          #   @param code_interpreter [OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter]
+          #   @param file_search [OpenAI::Models::Beta::Assistant::ToolResources::FileSearch]
 
           # @see OpenAI::Models::Beta::Assistant::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -208,12 +183,8 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :file_ids
 
-            # @!parse
-            #   # @param file_ids [Array<String>]
-            #   #
-            #   def initialize(file_ids: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_ids: nil)
+            #   @param file_ids [Array<String>]
           end
 
           # @see OpenAI::Models::Beta::Assistant::ToolResources#file_search
@@ -231,12 +202,8 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :vector_store_ids
 
-            # @!parse
-            #   # @param vector_store_ids [Array<String>]
-            #   #
-            #   def initialize(vector_store_ids: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(vector_store_ids: nil)
+            #   @param vector_store_ids [Array<String>]
           end
         end
       end

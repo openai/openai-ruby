@@ -26,18 +26,14 @@ module OpenAI
         #   # @return [Boolean]
         #   attr_writer :enabled
 
-        # @!parse
-        #   # Occurs when a new
-        #   # [thread](https://platform.openai.com/docs/api-reference/threads/object) is
-        #   # created.
-        #   #
-        #   # @param data [OpenAI::Models::Beta::Thread]
-        #   # @param enabled [Boolean]
-        #   # @param event [Symbol, :"thread.created"]
-        #   #
-        #   def initialize(data:, enabled: nil, event: :"thread.created", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(data:, enabled: nil, event: :"thread.created")
+        #   Occurs when a new
+        #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
+        #   created.
+        #
+        #   @param data [OpenAI::Models::Beta::Thread]
+        #   @param enabled [Boolean]
+        #   @param event [Symbol, :"thread.created"]
       end
     end
   end

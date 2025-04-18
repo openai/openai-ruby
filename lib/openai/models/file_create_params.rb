@@ -23,14 +23,10 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::FilePurpose]
       required :purpose, enum: -> { OpenAI::Models::FilePurpose }
 
-      # @!parse
-      #   # @param file [Pathname, StringIO]
-      #   # @param purpose [Symbol, OpenAI::Models::FilePurpose]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(file:, purpose:, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(file:, purpose:, request_options: {})
+      #   @param file [Pathname, StringIO]
+      #   @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end
 end

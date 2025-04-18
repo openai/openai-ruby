@@ -24,13 +24,9 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail]
           #   attr_writer :detail
 
-          # @!parse
-          #   # @param file_id [String]
-          #   # @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail]
-          #   #
-          #   def initialize(file_id:, detail: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(file_id:, detail: nil)
+          #   @param file_id [String]
+          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail]
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           # fewer tokens, you can opt in to high resolution using `high`.
@@ -43,11 +39,8 @@ module OpenAI
             LOW = :low
             HIGH = :high
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

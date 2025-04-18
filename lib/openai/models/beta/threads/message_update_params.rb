@@ -26,14 +26,10 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-          # @!parse
-          #   # @param thread_id [String]
-          #   # @param metadata [Hash{Symbol=>String}, nil]
-          #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(thread_id:, metadata: nil, request_options: {}, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(thread_id:, metadata: nil, request_options: {})
+          #   @param thread_id [String]
+          #   @param metadata [Hash{Symbol=>String}, nil]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end
     end

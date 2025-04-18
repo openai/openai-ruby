@@ -20,14 +20,10 @@ module OpenAI
         #   @return [Symbol, :"vector_store.file.deleted"]
         required :object, const: :"vector_store.file.deleted"
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param deleted [Boolean]
-        #   # @param object [Symbol, :"vector_store.file.deleted"]
-        #   #
-        #   def initialize(id:, deleted:, object: :"vector_store.file.deleted", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, deleted:, object: :"vector_store.file.deleted")
+        #   @param id [String]
+        #   @param deleted [Boolean]
+        #   @param object [Symbol, :"vector_store.file.deleted"]
       end
     end
 

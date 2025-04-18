@@ -67,37 +67,19 @@ module OpenAI
           #   @return [String]
           required :status, String
 
-          # @!parse
-          #   # A schema representing an evaluation run output item.
-          #   #
-          #   # @param id [String]
-          #   # @param created_at [Integer]
-          #   # @param datasource_item [Hash{Symbol=>Object}]
-          #   # @param datasource_item_id [Integer]
-          #   # @param eval_id [String]
-          #   # @param results [Array<Hash{Symbol=>Object}>]
-          #   # @param run_id [String]
-          #   # @param sample [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample]
-          #   # @param status [String]
-          #   # @param object [Symbol, :"eval.run.output_item"]
-          #   #
-          #   def initialize(
-          #     id:,
-          #     created_at:,
-          #     datasource_item:,
-          #     datasource_item_id:,
-          #     eval_id:,
-          #     results:,
-          #     run_id:,
-          #     sample:,
-          #     status:,
-          #     object: :"eval.run.output_item",
-          #     **
-          #   )
-          #     super
-          #   end
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, created_at:, datasource_item:, datasource_item_id:, eval_id:, results:, run_id:, sample:, status:, object: :"eval.run.output_item")
+          #   A schema representing an evaluation run output item.
+          #
+          #   @param id [String]
+          #   @param created_at [Integer]
+          #   @param datasource_item [Hash{Symbol=>Object}]
+          #   @param datasource_item_id [Integer]
+          #   @param eval_id [String]
+          #   @param results [Array<Hash{Symbol=>Object}>]
+          #   @param run_id [String]
+          #   @param sample [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample]
+          #   @param status [String]
+          #   @param object [Symbol, :"eval.run.output_item"]
 
           # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse#sample
           class Sample < OpenAI::Internal::Type::BaseModel
@@ -163,37 +145,19 @@ module OpenAI
             #   @return [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage]
             required :usage, -> { OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage }
 
-            # @!parse
-            #   # A sample containing the input and output of the evaluation run.
-            #   #
-            #   # @param error [OpenAI::Models::Evals::EvalAPIError]
-            #   # @param finish_reason [String]
-            #   # @param input [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input>]
-            #   # @param max_completion_tokens [Integer]
-            #   # @param model [String]
-            #   # @param output [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output>]
-            #   # @param seed [Integer]
-            #   # @param temperature [Float]
-            #   # @param top_p [Float]
-            #   # @param usage [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage]
-            #   #
-            #   def initialize(
-            #     error:,
-            #     finish_reason:,
-            #     input:,
-            #     max_completion_tokens:,
-            #     model:,
-            #     output:,
-            #     seed:,
-            #     temperature:,
-            #     top_p:,
-            #     usage:,
-            #     **
-            #   )
-            #     super
-            #   end
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(error:, finish_reason:, input:, max_completion_tokens:, model:, output:, seed:, temperature:, top_p:, usage:)
+            #   A sample containing the input and output of the evaluation run.
+            #
+            #   @param error [OpenAI::Models::Evals::EvalAPIError]
+            #   @param finish_reason [String]
+            #   @param input [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input>]
+            #   @param max_completion_tokens [Integer]
+            #   @param model [String]
+            #   @param output [Array<OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output>]
+            #   @param seed [Integer]
+            #   @param temperature [Float]
+            #   @param top_p [Float]
+            #   @param usage [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage]
 
             class Input < OpenAI::Internal::Type::BaseModel
               # @!attribute content
@@ -208,15 +172,11 @@ module OpenAI
               #   @return [String]
               required :role, String
 
-              # @!parse
-              #   # An input message.
-              #   #
-              #   # @param content [String]
-              #   # @param role [String]
-              #   #
-              #   def initialize(content:, role:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(content:, role:)
+              #   An input message.
+              #
+              #   @param content [String]
+              #   @param role [String]
             end
 
             class Output < OpenAI::Internal::Type::BaseModel
@@ -240,13 +200,9 @@ module OpenAI
               #   # @return [String]
               #   attr_writer :role
 
-              # @!parse
-              #   # @param content [String]
-              #   # @param role [String]
-              #   #
-              #   def initialize(content: nil, role: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(content: nil, role: nil)
+              #   @param content [String]
+              #   @param role [String]
             end
 
             # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample#usage
@@ -275,17 +231,13 @@ module OpenAI
               #   @return [Integer]
               required :total_tokens, Integer
 
-              # @!parse
-              #   # Token usage details for the sample.
-              #   #
-              #   # @param cached_tokens [Integer]
-              #   # @param completion_tokens [Integer]
-              #   # @param prompt_tokens [Integer]
-              #   # @param total_tokens [Integer]
-              #   #
-              #   def initialize(cached_tokens:, completion_tokens:, prompt_tokens:, total_tokens:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(cached_tokens:, completion_tokens:, prompt_tokens:, total_tokens:)
+              #   Token usage details for the sample.
+              #
+              #   @param cached_tokens [Integer]
+              #   @param completion_tokens [Integer]
+              #   @param prompt_tokens [Integer]
+              #   @param total_tokens [Integer]
             end
           end
         end

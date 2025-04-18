@@ -26,16 +26,12 @@ module OpenAI
             #   @return [Symbol, :code_interpreter]
             required :type, const: :code_interpreter
 
-            # @!parse
-            #   # Details of the Code Interpreter tool call the run step was involved in.
-            #   #
-            #   # @param id [String]
-            #   # @param code_interpreter [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter]
-            #   # @param type [Symbol, :code_interpreter]
-            #   #
-            #   def initialize(id:, code_interpreter:, type: :code_interpreter, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(id:, code_interpreter:, type: :code_interpreter)
+            #   Details of the Code Interpreter tool call the run step was involved in.
+            #
+            #   @param id [String]
+            #   @param code_interpreter [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter]
+            #   @param type [Symbol, :code_interpreter]
 
             # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall#code_interpreter
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -54,15 +50,11 @@ module OpenAI
               required :outputs,
                        -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output] }
 
-              # @!parse
-              #   # The Code Interpreter tool call definition.
-              #   #
-              #   # @param input [String]
-              #   # @param outputs [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
-              #   #
-              #   def initialize(input:, outputs:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(input:, outputs:)
+              #   The Code Interpreter tool call definition.
+              #
+              #   @param input [String]
+              #   @param outputs [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image>]
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
@@ -90,15 +82,11 @@ module OpenAI
                   #   @return [Symbol, :logs]
                   required :type, const: :logs
 
-                  # @!parse
-                  #   # Text output from the Code Interpreter tool call as part of a run step.
-                  #   #
-                  #   # @param logs [String]
-                  #   # @param type [Symbol, :logs]
-                  #   #
-                  #   def initialize(logs:, type: :logs, **) = super
-
-                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                  # @!method initialize(logs:, type: :logs)
+                  #   Text output from the Code Interpreter tool call as part of a run step.
+                  #
+                  #   @param logs [String]
+                  #   @param type [Symbol, :logs]
                 end
 
                 class Image < OpenAI::Internal::Type::BaseModel
@@ -114,13 +102,9 @@ module OpenAI
                   #   @return [Symbol, :image]
                   required :type, const: :image
 
-                  # @!parse
-                  #   # @param image [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
-                  #   # @param type [Symbol, :image]
-                  #   #
-                  #   def initialize(image:, type: :image, **) = super
-
-                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                  # @!method initialize(image:, type: :image)
+                  #   @param image [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image]
+                  #   @param type [Symbol, :image]
 
                   # @see OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image#image
                   class Image < OpenAI::Internal::Type::BaseModel
@@ -131,18 +115,13 @@ module OpenAI
                     #   @return [String]
                     required :file_id, String
 
-                    # @!parse
-                    #   # @param file_id [String]
-                    #   #
-                    #   def initialize(file_id:, **) = super
-
-                    # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                    # @!method initialize(file_id:)
+                    #   @param file_id [String]
                   end
                 end
 
-                # @!parse
-                #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image)]
               end
             end
           end

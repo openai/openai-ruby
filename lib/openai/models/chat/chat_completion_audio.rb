@@ -30,19 +30,15 @@ module OpenAI
         #   @return [String]
         required :transcript, String
 
-        # @!parse
-        #   # If the audio output modality is requested, this object contains data about the
-        #   # audio response from the model.
-        #   # [Learn more](https://platform.openai.com/docs/guides/audio).
-        #   #
-        #   # @param id [String]
-        #   # @param data [String]
-        #   # @param expires_at [Integer]
-        #   # @param transcript [String]
-        #   #
-        #   def initialize(id:, data:, expires_at:, transcript:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, data:, expires_at:, transcript:)
+        #   If the audio output modality is requested, this object contains data about the
+        #   audio response from the model.
+        #   [Learn more](https://platform.openai.com/docs/guides/audio).
+        #
+        #   @param id [String]
+        #   @param data [String]
+        #   @param expires_at [Integer]
+        #   @param transcript [String]
       end
     end
 

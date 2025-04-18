@@ -25,13 +25,9 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :type
 
-        # @!parse
-        #   # @param text [String]
-        #   # @param type [String]
-        #   #
-        #   def initialize(text: nil, type: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(text: nil, type: nil)
+        #   @param text [String]
+        #   @param type [String]
       end
     end
   end

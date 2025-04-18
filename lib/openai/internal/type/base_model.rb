@@ -339,6 +339,8 @@ module OpenAI
         end
 
         class << self
+          # @api private
+          #
           # @param model [OpenAI::Internal::Type::BaseModel]
           #
           # @return [Hash{Symbol=>Object}]

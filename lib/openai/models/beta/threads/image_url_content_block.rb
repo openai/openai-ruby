@@ -16,15 +16,11 @@ module OpenAI
           #   @return [Symbol, :image_url]
           required :type, const: :image_url
 
-          # @!parse
-          #   # References an image URL in the content of a message.
-          #   #
-          #   # @param image_url [OpenAI::Models::Beta::Threads::ImageURL]
-          #   # @param type [Symbol, :image_url]
-          #   #
-          #   def initialize(image_url:, type: :image_url, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(image_url:, type: :image_url)
+          #   References an image URL in the content of a message.
+          #
+          #   @param image_url [OpenAI::Models::Beta::Threads::ImageURL]
+          #   @param type [Symbol, :image_url]
         end
       end
     end

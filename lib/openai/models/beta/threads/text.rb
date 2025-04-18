@@ -17,13 +17,9 @@ module OpenAI
           #   @return [String]
           required :value, String
 
-          # @!parse
-          #   # @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation>]
-          #   # @param value [String]
-          #   #
-          #   def initialize(annotations:, value:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(annotations:, value:)
+          #   @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation>]
+          #   @param value [String]
         end
       end
     end

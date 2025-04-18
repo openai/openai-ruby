@@ -15,16 +15,12 @@ module OpenAI
         #   @return [Symbol, :jsonl]
         required :type, const: :jsonl
 
-        # @!parse
-        #   # A JsonlRunDataSource object with that specifies a JSONL file that matches the
-        #   # eval
-        #   #
-        #   # @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
-        #   # @param type [Symbol, :jsonl]
-        #   #
-        #   def initialize(source:, type: :jsonl, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(source:, type: :jsonl)
+        #   A JsonlRunDataSource object with that specifies a JSONL file that matches the
+        #   eval
+        #
+        #   @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
+        #   @param type [Symbol, :jsonl]
 
         # @see OpenAI::Models::Evals::CreateEvalJSONLRunDataSource#source
         module Source
@@ -50,13 +46,9 @@ module OpenAI
             #   @return [Symbol, :file_content]
             required :type, const: :file_content
 
-            # @!parse
-            #   # @param content [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>]
-            #   # @param type [Symbol, :file_content]
-            #   #
-            #   def initialize(content:, type: :file_content, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(content:, type: :file_content)
+            #   @param content [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>]
+            #   @param type [Symbol, :file_content]
 
             class Content < OpenAI::Internal::Type::BaseModel
               # @!attribute item
@@ -73,13 +65,9 @@ module OpenAI
               #   # @return [Hash{Symbol=>Object}]
               #   attr_writer :sample
 
-              # @!parse
-              #   # @param item [Hash{Symbol=>Object}]
-              #   # @param sample [Hash{Symbol=>Object}]
-              #   #
-              #   def initialize(item:, sample: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(item:, sample: nil)
+              #   @param item [Hash{Symbol=>Object}]
+              #   @param sample [Hash{Symbol=>Object}]
             end
           end
 
@@ -96,18 +84,13 @@ module OpenAI
             #   @return [Symbol, :file_id]
             required :type, const: :file_id
 
-            # @!parse
-            #   # @param id [String]
-            #   # @param type [Symbol, :file_id]
-            #   #
-            #   def initialize(id:, type: :file_id, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(id:, type: :file_id)
+            #   @param id [String]
+            #   @param type [Symbol, :file_id]
           end
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID)]
         end
       end
     end

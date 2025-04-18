@@ -14,15 +14,11 @@ module OpenAI
       #   @return [Symbol, :static]
       required :type, const: :static
 
-      # @!parse
-      #   # Customize your own chunking strategy by setting chunk size and chunk overlap.
-      #   #
-      #   # @param static [OpenAI::Models::StaticFileChunkingStrategy]
-      #   # @param type [Symbol, :static]
-      #   #
-      #   def initialize(static:, type: :static, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(static:, type: :static)
+      #   Customize your own chunking strategy by setting chunk size and chunk overlap.
+      #
+      #   @param static [OpenAI::Models::StaticFileChunkingStrategy]
+      #   @param type [Symbol, :static]
     end
   end
 end
