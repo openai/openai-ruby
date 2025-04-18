@@ -45,16 +45,12 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type]
         #   attr_writer :type
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
-        #   # @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status]
-        #   # @param type [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type]
-        #   #
-        #   def initialize(id:, content:, role:, status: nil, type: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, content:, role:, status: nil, type: nil)
+        #   @param id [String]
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
+        #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status]
+        #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type]
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         #
@@ -66,11 +62,8 @@ module OpenAI
           SYSTEM = :system
           DEVELOPER = :developer
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -84,11 +77,8 @@ module OpenAI
           COMPLETED = :completed
           INCOMPLETE = :incomplete
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # The type of the message input. Always set to `message`.
@@ -99,11 +89,8 @@ module OpenAI
 
           MESSAGE = :message
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -29,17 +29,13 @@ module OpenAI
         #   @return [String]
         required :upload_id, String
 
-        # @!parse
-        #   # The upload Part represents a chunk of bytes we can add to an Upload object.
-        #   #
-        #   # @param id [String]
-        #   # @param created_at [Integer]
-        #   # @param upload_id [String]
-        #   # @param object [Symbol, :"upload.part"]
-        #   #
-        #   def initialize(id:, created_at:, upload_id:, object: :"upload.part", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, upload_id:, object: :"upload.part")
+        #   The upload Part represents a chunk of bytes we can add to an Upload object.
+        #
+        #   @param id [String]
+        #   @param created_at [Integer]
+        #   @param upload_id [String]
+        #   @param object [Symbol, :"upload.part"]
       end
     end
 

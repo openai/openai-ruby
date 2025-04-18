@@ -16,15 +16,11 @@ module OpenAI
         #   @return [Symbol, :"response.created"]
         required :type, const: :"response.created"
 
-        # @!parse
-        #   # An event that is emitted when a response is created.
-        #   #
-        #   # @param response [OpenAI::Models::Responses::Response]
-        #   # @param type [Symbol, :"response.created"]
-        #   #
-        #   def initialize(response:, type: :"response.created", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(response:, type: :"response.created")
+        #   An event that is emitted when a response is created.
+        #
+        #   @param response [OpenAI::Models::Responses::Response]
+        #   @param type [Symbol, :"response.created"]
       end
     end
   end

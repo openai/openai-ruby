@@ -10,11 +10,8 @@ module OpenAI
       TEXT_MODERATION_LATEST = :"text-moderation-latest"
       TEXT_MODERATION_STABLE = :"text-moderation-stable"
 
-      finalize!
-
-      # @!parse
-      #   # @return [Array<Symbol>]
-      #   def self.values; end
+      # @!method self.values
+      #   @return [Array<Symbol>]
     end
   end
 end

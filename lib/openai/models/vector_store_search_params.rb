@@ -55,27 +55,13 @@ module OpenAI
       #   # @return [Boolean]
       #   attr_writer :rewrite_query
 
-      # @!parse
-      #   # @param query [String, Array<String>]
-      #   # @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-      #   # @param max_num_results [Integer]
-      #   # @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions]
-      #   # @param rewrite_query [Boolean]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(
-      #     query:,
-      #     filters: nil,
-      #     max_num_results: nil,
-      #     ranking_options: nil,
-      #     rewrite_query: nil,
-      #     request_options: {},
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
+      #   @param query [String, Array<String>]
+      #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
+      #   @param max_num_results [Integer]
+      #   @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions]
+      #   @param rewrite_query [Boolean]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # A query string for a search
       module Query
@@ -85,9 +71,8 @@ module OpenAI
 
         variant -> { OpenAI::Models::VectorStoreSearchParams::Query::StringArray }
 
-        # @!parse
-        #   # @return [Array(String, Array<String>)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Array<String>)]
 
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end
@@ -102,9 +87,8 @@ module OpenAI
         # Combine multiple filters using `and` or `or`.
         variant -> { OpenAI::Models::CompoundFilter }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
       end
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -126,15 +110,11 @@ module OpenAI
         #   # @return [Float]
         #   attr_writer :score_threshold
 
-        # @!parse
-        #   # Ranking options for search.
-        #   #
-        #   # @param ranker [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker]
-        #   # @param score_threshold [Float]
-        #   #
-        #   def initialize(ranker: nil, score_threshold: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(ranker: nil, score_threshold: nil)
+        #   Ranking options for search.
+        #
+        #   @param ranker [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker]
+        #   @param score_threshold [Float]
 
         # @see OpenAI::Models::VectorStoreSearchParams::RankingOptions#ranker
         module Ranker
@@ -143,11 +123,8 @@ module OpenAI
           AUTO = :auto
           DEFAULT_2024_11_15 = :"default-2024-11-15"
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

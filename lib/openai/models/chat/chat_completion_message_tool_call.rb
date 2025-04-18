@@ -22,14 +22,10 @@ module OpenAI
         #   @return [Symbol, :function]
         required :type, const: :function
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param function [OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function]
-        #   # @param type [Symbol, :function]
-        #   #
-        #   def initialize(id:, function:, type: :function, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, function:, type: :function)
+        #   @param id [String]
+        #   @param function [OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function]
+        #   @param type [Symbol, :function]
 
         # @see OpenAI::Models::Chat::ChatCompletionMessageToolCall#function
         class Function < OpenAI::Internal::Type::BaseModel
@@ -48,15 +44,11 @@ module OpenAI
           #   @return [String]
           required :name, String
 
-          # @!parse
-          #   # The function that the model called.
-          #   #
-          #   # @param arguments [String]
-          #   # @param name [String]
-          #   #
-          #   def initialize(arguments:, name:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(arguments:, name:)
+          #   The function that the model called.
+          #
+          #   @param arguments [String]
+          #   @param name [String]
         end
       end
     end

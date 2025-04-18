@@ -34,18 +34,14 @@ module OpenAI
         #   @return [Symbol, :list]
         required :object, const: :list
 
-        # @!parse
-        #   # A list of Response items.
-        #   #
-        #   # @param data [Array<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
-        #   # @param first_id [String]
-        #   # @param has_more [Boolean]
-        #   # @param last_id [String]
-        #   # @param object [Symbol, :list]
-        #   #
-        #   def initialize(data:, first_id:, has_more:, last_id:, object: :list, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(data:, first_id:, has_more:, last_id:, object: :list)
+        #   A list of Response items.
+        #
+        #   @param data [Array<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
+        #   @param first_id [String]
+        #   @param has_more [Boolean]
+        #   @param last_id [String]
+        #   @param object [Symbol, :list]
       end
     end
 

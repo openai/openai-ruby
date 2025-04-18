@@ -9,11 +9,8 @@ module OpenAI
       TEXT_EMBEDDING_3_SMALL = :"text-embedding-3-small"
       TEXT_EMBEDDING_3_LARGE = :"text-embedding-3-large"
 
-      finalize!
-
-      # @!parse
-      #   # @return [Array<Symbol>]
-      #   def self.values; end
+      # @!method self.values
+      #   @return [Array<Symbol>]
     end
   end
 end

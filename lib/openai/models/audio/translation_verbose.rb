@@ -32,15 +32,11 @@ module OpenAI
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionSegment>]
         #   attr_writer :segments
 
-        # @!parse
-        #   # @param duration [Float]
-        #   # @param language [String]
-        #   # @param text [String]
-        #   # @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>]
-        #   #
-        #   def initialize(duration:, language:, text:, segments: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(duration:, language:, text:, segments: nil)
+        #   @param duration [Float]
+        #   @param language [String]
+        #   @param text [String]
+        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>]
       end
     end
   end

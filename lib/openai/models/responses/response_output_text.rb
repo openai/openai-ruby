@@ -23,16 +23,12 @@ module OpenAI
         #   @return [Symbol, :output_text]
         required :type, const: :output_text
 
-        # @!parse
-        #   # A text output from the model.
-        #   #
-        #   # @param annotations [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
-        #   # @param text [String]
-        #   # @param type [Symbol, :output_text]
-        #   #
-        #   def initialize(annotations:, text:, type: :output_text, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(annotations:, text:, type: :output_text)
+        #   A text output from the model.
+        #
+        #   @param annotations [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
+        #   @param text [String]
+        #   @param type [Symbol, :output_text]
 
         # A citation to a file.
         module Annotation
@@ -68,16 +64,12 @@ module OpenAI
             #   @return [Symbol, :file_citation]
             required :type, const: :file_citation
 
-            # @!parse
-            #   # A citation to a file.
-            #   #
-            #   # @param file_id [String]
-            #   # @param index [Integer]
-            #   # @param type [Symbol, :file_citation]
-            #   #
-            #   def initialize(file_id:, index:, type: :file_citation, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_id:, index:, type: :file_citation)
+            #   A citation to a file.
+            #
+            #   @param file_id [String]
+            #   @param index [Integer]
+            #   @param type [Symbol, :file_citation]
           end
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
@@ -111,18 +103,14 @@ module OpenAI
             #   @return [String]
             required :url, String
 
-            # @!parse
-            #   # A citation for a web resource used to generate a model response.
-            #   #
-            #   # @param end_index [Integer]
-            #   # @param start_index [Integer]
-            #   # @param title [String]
-            #   # @param url [String]
-            #   # @param type [Symbol, :url_citation]
-            #   #
-            #   def initialize(end_index:, start_index:, title:, url:, type: :url_citation, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(end_index:, start_index:, title:, url:, type: :url_citation)
+            #   A citation for a web resource used to generate a model response.
+            #
+            #   @param end_index [Integer]
+            #   @param start_index [Integer]
+            #   @param title [String]
+            #   @param url [String]
+            #   @param type [Symbol, :url_citation]
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
@@ -144,21 +132,16 @@ module OpenAI
             #   @return [Symbol, :file_path]
             required :type, const: :file_path
 
-            # @!parse
-            #   # A path to a file.
-            #   #
-            #   # @param file_id [String]
-            #   # @param index [Integer]
-            #   # @param type [Symbol, :file_path]
-            #   #
-            #   def initialize(file_id:, index:, type: :file_path, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_id:, index:, type: :file_path)
+            #   A path to a file.
+            #
+            #   @param file_id [String]
+            #   @param index [Integer]
+            #   @param type [Symbol, :file_path]
           end
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
         end
       end
     end

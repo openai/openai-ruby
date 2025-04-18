@@ -38,18 +38,14 @@ module OpenAI
         #   # @return [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams]
         #   attr_writer :sampling_params
 
-        # @!parse
-        #   # A CompletionsRunDataSource object describing a model sampling configuration.
-        #   #
-        #   # @param input_messages [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference]
-        #   # @param model [String]
-        #   # @param source [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions]
-        #   # @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type]
-        #   # @param sampling_params [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams]
-        #   #
-        #   def initialize(input_messages:, model:, source:, type:, sampling_params: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(input_messages:, model:, source:, type:, sampling_params: nil)
+        #   A CompletionsRunDataSource object describing a model sampling configuration.
+        #
+        #   @param input_messages [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference]
+        #   @param model [String]
+        #   @param source [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions]
+        #   @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type]
+        #   @param sampling_params [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams]
 
         # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource#input_messages
         module InputMessages
@@ -78,13 +74,9 @@ module OpenAI
             #   @return [Symbol, :template]
             required :type, const: :template
 
-            # @!parse
-            #   # @param template [Array<OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage>]
-            #   # @param type [Symbol, :template]
-            #   #
-            #   def initialize(template:, type: :template, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(template:, type: :template)
+            #   @param template [Array<OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage>]
+            #   @param type [Symbol, :template]
 
             module Template
               extend OpenAI::Internal::Type::Union
@@ -108,13 +100,9 @@ module OpenAI
                 #   @return [String]
                 required :role, String
 
-                # @!parse
-                #   # @param content [String]
-                #   # @param role [String]
-                #   #
-                #   def initialize(content:, role:, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(content:, role:)
+                #   @param content [String]
+                #   @param role [String]
               end
 
               class InputMessage < OpenAI::Internal::Type::BaseModel
@@ -138,14 +126,10 @@ module OpenAI
                 required :type,
                          enum: -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Type }
 
-                # @!parse
-                #   # @param content [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Content]
-                #   # @param role [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Role]
-                #   # @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Type]
-                #   #
-                #   def initialize(content:, role:, type:, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(content:, role:, type:)
+                #   @param content [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Content]
+                #   @param role [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Role]
+                #   @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Type]
 
                 # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage#content
                 class Content < OpenAI::Internal::Type::BaseModel
@@ -162,13 +146,9 @@ module OpenAI
                   required :type,
                            enum: -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Content::Type }
 
-                  # @!parse
-                  #   # @param text [String]
-                  #   # @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Content::Type]
-                  #   #
-                  #   def initialize(text:, type:, **) = super
-
-                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                  # @!method initialize(text:, type:)
+                  #   @param text [String]
+                  #   @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Content::Type]
 
                   # The type of content, which is always `input_text`.
                   #
@@ -178,11 +158,8 @@ module OpenAI
 
                     INPUT_TEXT = :input_text
 
-                    finalize!
-
-                    # @!parse
-                    #   # @return [Array<Symbol>]
-                    #   def self.values; end
+                    # @!method self.values
+                    #   @return [Array<Symbol>]
                   end
                 end
 
@@ -196,11 +173,8 @@ module OpenAI
                   SYSTEM = :system
                   DEVELOPER = :developer
 
-                  finalize!
-
-                  # @!parse
-                  #   # @return [Array<Symbol>]
-                  #   def self.values; end
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
 
                 # The type of item, which is always `message`.
@@ -211,11 +185,8 @@ module OpenAI
 
                   MESSAGE = :message
 
-                  finalize!
-
-                  # @!parse
-                  #   # @return [Array<Symbol>]
-                  #   def self.values; end
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
               end
 
@@ -240,14 +211,10 @@ module OpenAI
                 required :type,
                          enum: -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Type }
 
-                # @!parse
-                #   # @param content [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Content]
-                #   # @param role [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Role]
-                #   # @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Type]
-                #   #
-                #   def initialize(content:, role:, type:, **) = super
-
-                # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                # @!method initialize(content:, role:, type:)
+                #   @param content [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Content]
+                #   @param role [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Role]
+                #   @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Type]
 
                 # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage#content
                 class Content < OpenAI::Internal::Type::BaseModel
@@ -264,13 +231,9 @@ module OpenAI
                   required :type,
                            enum: -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Content::Type }
 
-                  # @!parse
-                  #   # @param text [String]
-                  #   # @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Content::Type]
-                  #   #
-                  #   def initialize(text:, type:, **) = super
-
-                  # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+                  # @!method initialize(text:, type:)
+                  #   @param text [String]
+                  #   @param type [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Content::Type]
 
                   # The type of content, which is always `output_text`.
                   #
@@ -280,11 +243,8 @@ module OpenAI
 
                     OUTPUT_TEXT = :output_text
 
-                    finalize!
-
-                    # @!parse
-                    #   # @return [Array<Symbol>]
-                    #   def self.values; end
+                    # @!method self.values
+                    #   @return [Array<Symbol>]
                   end
                 end
 
@@ -296,11 +256,8 @@ module OpenAI
 
                   ASSISTANT = :assistant
 
-                  finalize!
-
-                  # @!parse
-                  #   # @return [Array<Symbol>]
-                  #   def self.values; end
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
 
                 # The type of item, which is always `message`.
@@ -311,17 +268,13 @@ module OpenAI
 
                   MESSAGE = :message
 
-                  finalize!
-
-                  # @!parse
-                  #   # @return [Array<Symbol>]
-                  #   def self.values; end
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
                 end
               end
 
-              # @!parse
-              #   # @return [Array(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage)]
-              #   def self.variants; end
+              # @!method self.variants
+              #   @return [Array(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage)]
             end
           end
 
@@ -338,18 +291,13 @@ module OpenAI
             #   @return [Symbol, :item_reference]
             required :type, const: :item_reference
 
-            # @!parse
-            #   # @param item_reference [String]
-            #   # @param type [Symbol, :item_reference]
-            #   #
-            #   def initialize(item_reference:, type: :item_reference, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(item_reference:, type: :item_reference)
+            #   @param item_reference [String]
+            #   @param type [Symbol, :item_reference]
           end
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference)]
         end
 
         # A StoredCompletionsRunDataSource configuration describing a set of filters
@@ -383,13 +331,9 @@ module OpenAI
             #   @return [Symbol, :file_content]
             required :type, const: :file_content
 
-            # @!parse
-            #   # @param content [Array<OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content>]
-            #   # @param type [Symbol, :file_content]
-            #   #
-            #   def initialize(content:, type: :file_content, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(content:, type: :file_content)
+            #   @param content [Array<OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content>]
+            #   @param type [Symbol, :file_content]
 
             class Content < OpenAI::Internal::Type::BaseModel
               # @!attribute item
@@ -406,13 +350,9 @@ module OpenAI
               #   # @return [Hash{Symbol=>Object}]
               #   attr_writer :sample
 
-              # @!parse
-              #   # @param item [Hash{Symbol=>Object}]
-              #   # @param sample [Hash{Symbol=>Object}]
-              #   #
-              #   def initialize(item:, sample: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(item:, sample: nil)
+              #   @param item [Hash{Symbol=>Object}]
+              #   @param sample [Hash{Symbol=>Object}]
             end
           end
 
@@ -429,13 +369,9 @@ module OpenAI
             #   @return [Symbol, :file_id]
             required :type, const: :file_id
 
-            # @!parse
-            #   # @param id [String]
-            #   # @param type [Symbol, :file_id]
-            #   #
-            #   def initialize(id:, type: :file_id, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(id:, type: :file_id)
+            #   @param id [String]
+            #   @param type [Symbol, :file_id]
           end
 
           class StoredCompletions < OpenAI::Internal::Type::BaseModel
@@ -480,24 +416,19 @@ module OpenAI
             #   @return [Symbol, :stored_completions]
             required :type, const: :stored_completions
 
-            # @!parse
-            #   # A StoredCompletionsRunDataSource configuration describing a set of filters
-            #   #
-            #   # @param created_after [Integer, nil]
-            #   # @param created_before [Integer, nil]
-            #   # @param limit [Integer, nil]
-            #   # @param metadata [Hash{Symbol=>String}, nil]
-            #   # @param model [String, nil]
-            #   # @param type [Symbol, :stored_completions]
-            #   #
-            #   def initialize(created_after:, created_before:, limit:, metadata:, model:, type: :stored_completions, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(created_after:, created_before:, limit:, metadata:, model:, type: :stored_completions)
+            #   A StoredCompletionsRunDataSource configuration describing a set of filters
+            #
+            #   @param created_after [Integer, nil]
+            #   @param created_before [Integer, nil]
+            #   @param limit [Integer, nil]
+            #   @param metadata [Hash{Symbol=>String}, nil]
+            #   @param model [String, nil]
+            #   @param type [Symbol, :stored_completions]
           end
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions)]
         end
 
         # The type of run data source. Always `completions`.
@@ -508,11 +439,8 @@ module OpenAI
 
           COMPLETIONS = :completions
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource#sampling_params
@@ -557,15 +485,11 @@ module OpenAI
           #   # @return [Float]
           #   attr_writer :top_p
 
-          # @!parse
-          #   # @param max_completion_tokens [Integer]
-          #   # @param seed [Integer]
-          #   # @param temperature [Float]
-          #   # @param top_p [Float]
-          #   #
-          #   def initialize(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil)
+          #   @param max_completion_tokens [Integer]
+          #   @param seed [Integer]
+          #   @param temperature [Float]
+          #   @param top_p [Float]
         end
       end
     end

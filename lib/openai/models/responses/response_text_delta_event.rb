@@ -34,18 +34,14 @@ module OpenAI
         #   @return [Symbol, :"response.output_text.delta"]
         required :type, const: :"response.output_text.delta"
 
-        # @!parse
-        #   # Emitted when there is an additional text delta.
-        #   #
-        #   # @param content_index [Integer]
-        #   # @param delta [String]
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.output_text.delta"]
-        #   #
-        #   def initialize(content_index:, delta:, item_id:, output_index:, type: :"response.output_text.delta", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content_index:, delta:, item_id:, output_index:, type: :"response.output_text.delta")
+        #   Emitted when there is an additional text delta.
+        #
+        #   @param content_index [Integer]
+        #   @param delta [String]
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.output_text.delta"]
       end
     end
   end

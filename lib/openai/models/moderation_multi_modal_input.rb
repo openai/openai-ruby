@@ -14,9 +14,8 @@ module OpenAI
       # An object describing text to classify.
       variant :text, -> { OpenAI::Models::ModerationTextInput }
 
-      # @!parse
-      #   # @return [Array(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
-      #   def self.variants; end
+      # @!method self.variants
+      #   @return [Array(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
     end
   end
 end

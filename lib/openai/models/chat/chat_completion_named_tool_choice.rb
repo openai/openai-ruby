@@ -15,16 +15,12 @@ module OpenAI
         #   @return [Symbol, :function]
         required :type, const: :function
 
-        # @!parse
-        #   # Specifies a tool the model should use. Use to force the model to call a specific
-        #   # function.
-        #   #
-        #   # @param function [OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function]
-        #   # @param type [Symbol, :function]
-        #   #
-        #   def initialize(function:, type: :function, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(function:, type: :function)
+        #   Specifies a tool the model should use. Use to force the model to call a specific
+        #   function.
+        #
+        #   @param function [OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function]
+        #   @param type [Symbol, :function]
 
         # @see OpenAI::Models::Chat::ChatCompletionNamedToolChoice#function
         class Function < OpenAI::Internal::Type::BaseModel
@@ -34,12 +30,8 @@ module OpenAI
           #   @return [String]
           required :name, String
 
-          # @!parse
-          #   # @param name [String]
-          #   #
-          #   def initialize(name:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(name:)
+          #   @param name [String]
         end
       end
     end

@@ -20,13 +20,9 @@ module OpenAI
         #   @return [Hash{Symbol=>String}, nil]
         required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-        # @!parse
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(metadata:, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(metadata:, request_options: {})
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end
   end

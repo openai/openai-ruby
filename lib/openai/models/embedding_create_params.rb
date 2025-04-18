@@ -65,17 +65,13 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :user
 
-      # @!parse
-      #   # @param input [String, Array<String>, Array<Integer>, Array<Array<Integer>>]
-      #   # @param model [String, Symbol, OpenAI::Models::EmbeddingModel]
-      #   # @param dimensions [Integer]
-      #   # @param encoding_format [Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat]
-      #   # @param user [String]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(input:, model:, dimensions: nil, encoding_format: nil, user: nil, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(input:, model:, dimensions: nil, encoding_format: nil, user: nil, request_options: {})
+      #   @param input [String, Array<String>, Array<Integer>, Array<Array<Integer>>]
+      #   @param model [String, Symbol, OpenAI::Models::EmbeddingModel]
+      #   @param dimensions [Integer]
+      #   @param encoding_format [Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat]
+      #   @param user [String]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Input text to embed, encoded as a string or array of tokens. To embed multiple
       # inputs in a single request, pass an array of strings or array of token arrays.
@@ -100,9 +96,8 @@ module OpenAI
         # The array of arrays containing integers that will be turned into an embedding.
         variant -> { OpenAI::Models::EmbeddingCreateParams::Input::ArrayOfToken2DArray }
 
-        # @!parse
-        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
 
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
@@ -124,9 +119,8 @@ module OpenAI
         # ID of the model to use. You can use the [List models](https://platform.openai.com/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](https://platform.openai.com/docs/models) for descriptions of them.
         variant enum: -> { OpenAI::Models::EmbeddingModel }
 
-        # @!parse
-        #   # @return [Array(String, Symbol, OpenAI::Models::EmbeddingModel)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Symbol, OpenAI::Models::EmbeddingModel)]
       end
 
       # The format to return the embeddings in. Can be either `float` or
@@ -137,11 +131,8 @@ module OpenAI
         FLOAT = :float
         BASE64 = :base64
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

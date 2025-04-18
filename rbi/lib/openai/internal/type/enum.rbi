@@ -22,12 +22,6 @@ module OpenAI
         sig { overridable.returns(T::Array[T.any(NilClass, T::Boolean, Integer, Float, Symbol)]) }
         def values; end
 
-        # @api private
-        #
-        # Guard against thread safety issues by instantiating `@values`.
-        sig { void }
-        private def finalize!; end
-
         sig { params(other: T.anything).returns(T::Boolean) }
         def ===(other); end
 

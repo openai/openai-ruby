@@ -34,9 +34,8 @@ module OpenAI
         # to do so.
         variant :json_object, -> { OpenAI::Models::ResponseFormatJSONObject }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject)]
       end
     end
   end

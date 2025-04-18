@@ -32,14 +32,10 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :run_id
 
-        # @!parse
-        #   # @param deleted [Boolean]
-        #   # @param object [String]
-        #   # @param run_id [String]
-        #   #
-        #   def initialize(deleted: nil, object: nil, run_id: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(deleted: nil, object: nil, run_id: nil)
+        #   @param deleted [Boolean]
+        #   @param object [String]
+        #   @param run_id [String]
       end
     end
   end

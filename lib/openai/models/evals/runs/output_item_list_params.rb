@@ -57,17 +57,13 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status]
           #   attr_writer :status
 
-          # @!parse
-          #   # @param eval_id [String]
-          #   # @param after [String]
-          #   # @param limit [Integer]
-          #   # @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order]
-          #   # @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status]
-          #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {}, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
+          #   @param eval_id [String]
+          #   @param after [String]
+          #   @param limit [Integer]
+          #   @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order]
+          #   @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           # Sort order for output items by timestamp. Use `asc` for ascending order or
           # `desc` for descending order. Defaults to `asc`.
@@ -77,11 +73,8 @@ module OpenAI
             ASC = :asc
             DESC = :desc
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # Filter output items by status. Use `failed` to filter by failed output items or
@@ -92,11 +85,8 @@ module OpenAI
             FAIL = :fail
             PASS = :pass
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

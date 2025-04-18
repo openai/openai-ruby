@@ -67,17 +67,13 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::VectorStores::FileListParams::Order]
         #   attr_writer :order
 
-        # @!parse
-        #   # @param after [String]
-        #   # @param before [String]
-        #   # @param filter [Symbol, OpenAI::Models::VectorStores::FileListParams::Filter]
-        #   # @param limit [Integer]
-        #   # @param order [Symbol, OpenAI::Models::VectorStores::FileListParams::Order]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
+        #   @param after [String]
+        #   @param before [String]
+        #   @param filter [Symbol, OpenAI::Models::VectorStores::FileListParams::Filter]
+        #   @param limit [Integer]
+        #   @param order [Symbol, OpenAI::Models::VectorStores::FileListParams::Order]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         module Filter
@@ -88,11 +84,8 @@ module OpenAI
           FAILED = :failed
           CANCELLED = :cancelled
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -103,11 +96,8 @@ module OpenAI
           ASC = :asc
           DESC = :desc
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

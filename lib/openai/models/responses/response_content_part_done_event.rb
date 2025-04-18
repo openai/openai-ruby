@@ -34,18 +34,14 @@ module OpenAI
         #   @return [Symbol, :"response.content_part.done"]
         required :type, const: :"response.content_part.done"
 
-        # @!parse
-        #   # Emitted when a content part is done.
-        #   #
-        #   # @param content_index [Integer]
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
-        #   # @param type [Symbol, :"response.content_part.done"]
-        #   #
-        #   def initialize(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done")
+        #   Emitted when a content part is done.
+        #
+        #   @param content_index [Integer]
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
+        #   @param type [Symbol, :"response.content_part.done"]
 
         # The content part that is done.
         #
@@ -61,9 +57,8 @@ module OpenAI
           # A refusal from the model.
           variant :refusal, -> { OpenAI::Models::Responses::ResponseOutputRefusal }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
         end
       end
     end

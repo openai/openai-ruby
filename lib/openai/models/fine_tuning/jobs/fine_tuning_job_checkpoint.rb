@@ -48,32 +48,17 @@ module OpenAI
           #   @return [Integer]
           required :step_number, Integer
 
-          # @!parse
-          #   # The `fine_tuning.job.checkpoint` object represents a model checkpoint for a
-          #   # fine-tuning job that is ready to use.
-          #   #
-          #   # @param id [String]
-          #   # @param created_at [Integer]
-          #   # @param fine_tuned_model_checkpoint [String]
-          #   # @param fine_tuning_job_id [String]
-          #   # @param metrics [OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics]
-          #   # @param step_number [Integer]
-          #   # @param object [Symbol, :"fine_tuning.job.checkpoint"]
-          #   #
-          #   def initialize(
-          #     id:,
-          #     created_at:,
-          #     fine_tuned_model_checkpoint:,
-          #     fine_tuning_job_id:,
-          #     metrics:,
-          #     step_number:,
-          #     object: :"fine_tuning.job.checkpoint",
-          #     **
-          #   )
-          #     super
-          #   end
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(id:, created_at:, fine_tuned_model_checkpoint:, fine_tuning_job_id:, metrics:, step_number:, object: :"fine_tuning.job.checkpoint")
+          #   The `fine_tuning.job.checkpoint` object represents a model checkpoint for a
+          #   fine-tuning job that is ready to use.
+          #
+          #   @param id [String]
+          #   @param created_at [Integer]
+          #   @param fine_tuned_model_checkpoint [String]
+          #   @param fine_tuning_job_id [String]
+          #   @param metrics [OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics]
+          #   @param step_number [Integer]
+          #   @param object [Symbol, :"fine_tuning.job.checkpoint"]
 
           # @see OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
           class Metrics < OpenAI::Internal::Type::BaseModel
@@ -140,31 +125,16 @@ module OpenAI
             #   # @return [Float]
             #   attr_writer :valid_mean_token_accuracy
 
-            # @!parse
-            #   # Metrics at the step number during the fine-tuning job.
-            #   #
-            #   # @param full_valid_loss [Float]
-            #   # @param full_valid_mean_token_accuracy [Float]
-            #   # @param step [Float]
-            #   # @param train_loss [Float]
-            #   # @param train_mean_token_accuracy [Float]
-            #   # @param valid_loss [Float]
-            #   # @param valid_mean_token_accuracy [Float]
-            #   #
-            #   def initialize(
-            #     full_valid_loss: nil,
-            #     full_valid_mean_token_accuracy: nil,
-            #     step: nil,
-            #     train_loss: nil,
-            #     train_mean_token_accuracy: nil,
-            #     valid_loss: nil,
-            #     valid_mean_token_accuracy: nil,
-            #     **
-            #   )
-            #     super
-            #   end
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(full_valid_loss: nil, full_valid_mean_token_accuracy: nil, step: nil, train_loss: nil, train_mean_token_accuracy: nil, valid_loss: nil, valid_mean_token_accuracy: nil)
+            #   Metrics at the step number during the fine-tuning job.
+            #
+            #   @param full_valid_loss [Float]
+            #   @param full_valid_mean_token_accuracy [Float]
+            #   @param step [Float]
+            #   @param train_loss [Float]
+            #   @param train_mean_token_accuracy [Float]
+            #   @param valid_loss [Float]
+            #   @param valid_mean_token_accuracy [Float]
           end
         end
       end

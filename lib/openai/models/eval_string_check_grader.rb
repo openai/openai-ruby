@@ -33,19 +33,15 @@ module OpenAI
       #   @return [Symbol, :string_check]
       required :type, const: :string_check
 
-      # @!parse
-      #   # A StringCheckGrader object that performs a string comparison between input and
-      #   # reference using a specified operation.
-      #   #
-      #   # @param input [String]
-      #   # @param name [String]
-      #   # @param operation [Symbol, OpenAI::Models::EvalStringCheckGrader::Operation]
-      #   # @param reference [String]
-      #   # @param type [Symbol, :string_check]
-      #   #
-      #   def initialize(input:, name:, operation:, reference:, type: :string_check, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(input:, name:, operation:, reference:, type: :string_check)
+      #   A StringCheckGrader object that performs a string comparison between input and
+      #   reference using a specified operation.
+      #
+      #   @param input [String]
+      #   @param name [String]
+      #   @param operation [Symbol, OpenAI::Models::EvalStringCheckGrader::Operation]
+      #   @param reference [String]
+      #   @param type [Symbol, :string_check]
 
       # The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
       #
@@ -58,11 +54,8 @@ module OpenAI
         LIKE = :like
         ILIKE = :ilike
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

@@ -241,61 +241,30 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :user
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param created_at [Float]
-        #   # @param error [OpenAI::Models::Responses::ResponseError, nil]
-        #   # @param incomplete_details [OpenAI::Models::Responses::Response::IncompleteDetails, nil]
-        #   # @param instructions [String, nil]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel]
-        #   # @param output [Array<OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem>]
-        #   # @param parallel_tool_calls [Boolean]
-        #   # @param temperature [Float, nil]
-        #   # @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
-        #   # @param tools [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>]
-        #   # @param top_p [Float, nil]
-        #   # @param max_output_tokens [Integer, nil]
-        #   # @param previous_response_id [String, nil]
-        #   # @param reasoning [OpenAI::Models::Reasoning, nil]
-        #   # @param service_tier [Symbol, OpenAI::Models::Responses::Response::ServiceTier, nil]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseStatus]
-        #   # @param text [OpenAI::Models::Responses::ResponseTextConfig]
-        #   # @param truncation [Symbol, OpenAI::Models::Responses::Response::Truncation, nil]
-        #   # @param usage [OpenAI::Models::Responses::ResponseUsage]
-        #   # @param user [String]
-        #   # @param object [Symbol, :response]
-        #   #
-        #   def initialize(
-        #     id:,
-        #     created_at:,
-        #     error:,
-        #     incomplete_details:,
-        #     instructions:,
-        #     metadata:,
-        #     model:,
-        #     output:,
-        #     parallel_tool_calls:,
-        #     temperature:,
-        #     tool_choice:,
-        #     tools:,
-        #     top_p:,
-        #     max_output_tokens: nil,
-        #     previous_response_id: nil,
-        #     reasoning: nil,
-        #     service_tier: nil,
-        #     status: nil,
-        #     text: nil,
-        #     truncation: nil,
-        #     usage: nil,
-        #     user: nil,
-        #     object: :response,
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, max_output_tokens: nil, previous_response_id: nil, reasoning: nil, service_tier: nil, status: nil, text: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        #   @param id [String]
+        #   @param created_at [Float]
+        #   @param error [OpenAI::Models::Responses::ResponseError, nil]
+        #   @param incomplete_details [OpenAI::Models::Responses::Response::IncompleteDetails, nil]
+        #   @param instructions [String, nil]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel]
+        #   @param output [Array<OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem>]
+        #   @param parallel_tool_calls [Boolean]
+        #   @param temperature [Float, nil]
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+        #   @param tools [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>]
+        #   @param top_p [Float, nil]
+        #   @param max_output_tokens [Integer, nil]
+        #   @param previous_response_id [String, nil]
+        #   @param reasoning [OpenAI::Models::Reasoning, nil]
+        #   @param service_tier [Symbol, OpenAI::Models::Responses::Response::ServiceTier, nil]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseStatus]
+        #   @param text [OpenAI::Models::Responses::ResponseTextConfig]
+        #   @param truncation [Symbol, OpenAI::Models::Responses::Response::Truncation, nil]
+        #   @param usage [OpenAI::Models::Responses::ResponseUsage]
+        #   @param user [String]
+        #   @param object [Symbol, :response]
 
         # @see OpenAI::Models::Responses::Response#incomplete_details
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
@@ -309,14 +278,10 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason]
           #   attr_writer :reason
 
-          # @!parse
-          #   # Details about why the response is incomplete.
-          #   #
-          #   # @param reason [Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason]
-          #   #
-          #   def initialize(reason: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(reason: nil)
+          #   Details about why the response is incomplete.
+          #
+          #   @param reason [Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason]
 
           # The reason why the response is incomplete.
           #
@@ -327,11 +292,8 @@ module OpenAI
             MAX_OUTPUT_TOKENS = :max_output_tokens
             CONTENT_FILTER = :content_filter
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
 
@@ -360,9 +322,8 @@ module OpenAI
           # Use this option to force the model to call a specific function.
           variant -> { OpenAI::Models::Responses::ToolChoiceFunction }
 
-          # @!parse
-          #   # @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction)]
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -391,11 +352,8 @@ module OpenAI
           DEFAULT = :default
           FLEX = :flex
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # The truncation strategy to use for the model response.
@@ -413,11 +371,8 @@ module OpenAI
           AUTO = :auto
           DISABLED = :disabled
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

@@ -34,18 +34,14 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status]
         #   attr_writer :status
 
-        # @!parse
-        #   # A description of the chain of thought used by a reasoning model while generating
-        #   # a response.
-        #   #
-        #   # @param id [String]
-        #   # @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status]
-        #   # @param type [Symbol, :reasoning]
-        #   #
-        #   def initialize(id:, summary:, status: nil, type: :reasoning, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, summary:, status: nil, type: :reasoning)
+        #   A description of the chain of thought used by a reasoning model while generating
+        #   a response.
+        #
+        #   @param id [String]
+        #   @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status]
+        #   @param type [Symbol, :reasoning]
 
         class Summary < OpenAI::Internal::Type::BaseModel
           # @!attribute text
@@ -60,13 +56,9 @@ module OpenAI
           #   @return [Symbol, :summary_text]
           required :type, const: :summary_text
 
-          # @!parse
-          #   # @param text [String]
-          #   # @param type [Symbol, :summary_text]
-          #   #
-          #   def initialize(text:, type: :summary_text, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(text:, type: :summary_text)
+          #   @param text [String]
+          #   @param type [Symbol, :summary_text]
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -80,11 +72,8 @@ module OpenAI
           COMPLETED = :completed
           INCOMPLETE = :incomplete
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

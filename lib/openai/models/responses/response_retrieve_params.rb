@@ -21,13 +21,9 @@ module OpenAI
         #   # @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
         #   attr_writer :include
 
-        # @!parse
-        #   # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(include: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(include: nil, request_options: {})
+        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end
   end

@@ -20,13 +20,9 @@ module OpenAI
         #   # @return [OpenAI::Models::Beta::FileSearchTool::FileSearch]
         #   attr_writer :file_search
 
-        # @!parse
-        #   # @param file_search [OpenAI::Models::Beta::FileSearchTool::FileSearch]
-        #   # @param type [Symbol, :file_search]
-        #   #
-        #   def initialize(file_search: nil, type: :file_search, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(file_search: nil, type: :file_search)
+        #   @param file_search [OpenAI::Models::Beta::FileSearchTool::FileSearch]
+        #   @param type [Symbol, :file_search]
 
         # @see OpenAI::Models::Beta::FileSearchTool#file_search
         class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -62,15 +58,11 @@ module OpenAI
           #   # @return [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions]
           #   attr_writer :ranking_options
 
-          # @!parse
-          #   # Overrides for the file search tool.
-          #   #
-          #   # @param max_num_results [Integer]
-          #   # @param ranking_options [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions]
-          #   #
-          #   def initialize(max_num_results: nil, ranking_options: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(max_num_results: nil, ranking_options: nil)
+          #   Overrides for the file search tool.
+          #
+          #   @param max_num_results [Integer]
+          #   @param ranking_options [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions]
 
           # @see OpenAI::Models::Beta::FileSearchTool::FileSearch#ranking_options
           class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -92,20 +84,16 @@ module OpenAI
             #   # @return [Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker]
             #   attr_writer :ranker
 
-            # @!parse
-            #   # The ranking options for the file search. If not specified, the file search tool
-            #   # will use the `auto` ranker and a score_threshold of 0.
-            #   #
-            #   # See the
-            #   # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
-            #   # for more information.
-            #   #
-            #   # @param score_threshold [Float]
-            #   # @param ranker [Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker]
-            #   #
-            #   def initialize(score_threshold:, ranker: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(score_threshold:, ranker: nil)
+            #   The ranking options for the file search. If not specified, the file search tool
+            #   will use the `auto` ranker and a score_threshold of 0.
+            #
+            #   See the
+            #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            #   for more information.
+            #
+            #   @param score_threshold [Float]
+            #   @param ranker [Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker]
 
             # The ranker to use for the file search. If not specified will use the `auto`
             # ranker.
@@ -117,11 +105,8 @@ module OpenAI
               AUTO = :auto
               DEFAULT_2024_08_21 = :default_2024_08_21
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
           end
         end

@@ -80,40 +80,21 @@ module OpenAI
       #   @return [Integer, nil]
       optional :expires_at, Integer, nil?: true
 
-      # @!parse
-      #   # A vector store is a collection of processed files can be used by the
-      #   # `file_search` tool.
-      #   #
-      #   # @param id [String]
-      #   # @param created_at [Integer]
-      #   # @param file_counts [OpenAI::Models::VectorStore::FileCounts]
-      #   # @param last_active_at [Integer, nil]
-      #   # @param metadata [Hash{Symbol=>String}, nil]
-      #   # @param name [String]
-      #   # @param status [Symbol, OpenAI::Models::VectorStore::Status]
-      #   # @param usage_bytes [Integer]
-      #   # @param expires_after [OpenAI::Models::VectorStore::ExpiresAfter]
-      #   # @param expires_at [Integer, nil]
-      #   # @param object [Symbol, :vector_store]
-      #   #
-      #   def initialize(
-      #     id:,
-      #     created_at:,
-      #     file_counts:,
-      #     last_active_at:,
-      #     metadata:,
-      #     name:,
-      #     status:,
-      #     usage_bytes:,
-      #     expires_after: nil,
-      #     expires_at: nil,
-      #     object: :vector_store,
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, created_at:, file_counts:, last_active_at:, metadata:, name:, status:, usage_bytes:, expires_after: nil, expires_at: nil, object: :vector_store)
+      #   A vector store is a collection of processed files can be used by the
+      #   `file_search` tool.
+      #
+      #   @param id [String]
+      #   @param created_at [Integer]
+      #   @param file_counts [OpenAI::Models::VectorStore::FileCounts]
+      #   @param last_active_at [Integer, nil]
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #   @param name [String]
+      #   @param status [Symbol, OpenAI::Models::VectorStore::Status]
+      #   @param usage_bytes [Integer]
+      #   @param expires_after [OpenAI::Models::VectorStore::ExpiresAfter]
+      #   @param expires_at [Integer, nil]
+      #   @param object [Symbol, :vector_store]
 
       # @see OpenAI::Models::VectorStore#file_counts
       class FileCounts < OpenAI::Internal::Type::BaseModel
@@ -147,16 +128,12 @@ module OpenAI
         #   @return [Integer]
         required :total, Integer
 
-        # @!parse
-        #   # @param cancelled [Integer]
-        #   # @param completed [Integer]
-        #   # @param failed [Integer]
-        #   # @param in_progress [Integer]
-        #   # @param total [Integer]
-        #   #
-        #   def initialize(cancelled:, completed:, failed:, in_progress:, total:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(cancelled:, completed:, failed:, in_progress:, total:)
+        #   @param cancelled [Integer]
+        #   @param completed [Integer]
+        #   @param failed [Integer]
+        #   @param in_progress [Integer]
+        #   @param total [Integer]
       end
 
       # The status of the vector store, which can be either `expired`, `in_progress`, or
@@ -171,11 +148,8 @@ module OpenAI
         IN_PROGRESS = :in_progress
         COMPLETED = :completed
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # @see OpenAI::Models::VectorStore#expires_after
@@ -193,15 +167,11 @@ module OpenAI
         #   @return [Integer]
         required :days, Integer
 
-        # @!parse
-        #   # The expiration policy for a vector store.
-        #   #
-        #   # @param days [Integer]
-        #   # @param anchor [Symbol, :last_active_at]
-        #   #
-        #   def initialize(days:, anchor: :last_active_at, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(days:, anchor: :last_active_at)
+        #   The expiration policy for a vector store.
+        #
+        #   @param days [Integer]
+        #   @param anchor [Symbol, :last_active_at]
       end
     end
   end

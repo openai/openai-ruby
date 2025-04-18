@@ -47,20 +47,16 @@ module OpenAI
         #   # @return [OpenAI::Models::Responses::FileSearchTool::RankingOptions]
         #   attr_writer :ranking_options
 
-        # @!parse
-        #   # A tool that searches for relevant content from uploaded files. Learn more about
-        #   # the
-        #   # [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
-        #   #
-        #   # @param vector_store_ids [Array<String>]
-        #   # @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-        #   # @param max_num_results [Integer]
-        #   # @param ranking_options [OpenAI::Models::Responses::FileSearchTool::RankingOptions]
-        #   # @param type [Symbol, :file_search]
-        #   #
-        #   def initialize(vector_store_ids:, filters: nil, max_num_results: nil, ranking_options: nil, type: :file_search, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(vector_store_ids:, filters: nil, max_num_results: nil, ranking_options: nil, type: :file_search)
+        #   A tool that searches for relevant content from uploaded files. Learn more about
+        #   the
+        #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
+        #
+        #   @param vector_store_ids [Array<String>]
+        #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
+        #   @param max_num_results [Integer]
+        #   @param ranking_options [OpenAI::Models::Responses::FileSearchTool::RankingOptions]
+        #   @param type [Symbol, :file_search]
 
         # A filter to apply based on file attributes.
         #
@@ -74,9 +70,8 @@ module OpenAI
           # Combine multiple filters using `and` or `or`.
           variant -> { OpenAI::Models::CompoundFilter }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
         end
 
         # @see OpenAI::Models::Responses::FileSearchTool#ranking_options
@@ -103,15 +98,11 @@ module OpenAI
           #   # @return [Float]
           #   attr_writer :score_threshold
 
-          # @!parse
-          #   # Ranking options for search.
-          #   #
-          #   # @param ranker [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker]
-          #   # @param score_threshold [Float]
-          #   #
-          #   def initialize(ranker: nil, score_threshold: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(ranker: nil, score_threshold: nil)
+          #   Ranking options for search.
+          #
+          #   @param ranker [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker]
+          #   @param score_threshold [Float]
 
           # The ranker to use for the file search.
           #
@@ -122,11 +113,8 @@ module OpenAI
             AUTO = :auto
             DEFAULT_2024_11_15 = :"default-2024-11-15"
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

@@ -28,17 +28,13 @@ module OpenAI
       #   @return [String]
       required :owned_by, String
 
-      # @!parse
-      #   # Describes an OpenAI model offering that can be used with the API.
-      #   #
-      #   # @param id [String]
-      #   # @param created [Integer]
-      #   # @param owned_by [String]
-      #   # @param object [Symbol, :model]
-      #   #
-      #   def initialize(id:, created:, owned_by:, object: :model, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, created:, owned_by:, object: :model)
+      #   Describes an OpenAI model offering that can be used with the API.
+      #
+      #   @param id [String]
+      #   @param created [Integer]
+      #   @param owned_by [String]
+      #   @param object [Symbol, :model]
     end
   end
 end

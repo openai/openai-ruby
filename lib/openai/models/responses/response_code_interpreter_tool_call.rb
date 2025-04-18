@@ -35,18 +35,14 @@ module OpenAI
         #   @return [Symbol, :code_interpreter_call]
         required :type, const: :code_interpreter_call
 
-        # @!parse
-        #   # A tool call to run code.
-        #   #
-        #   # @param id [String]
-        #   # @param code [String]
-        #   # @param results [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files>]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status]
-        #   # @param type [Symbol, :code_interpreter_call]
-        #   #
-        #   def initialize(id:, code:, results:, status:, type: :code_interpreter_call, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, code:, results:, status:, type: :code_interpreter_call)
+        #   A tool call to run code.
+        #
+        #   @param id [String]
+        #   @param code [String]
+        #   @param results [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files>]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status]
+        #   @param type [Symbol, :code_interpreter_call]
 
         # The output of a code interpreter tool call that is text.
         module Result
@@ -73,15 +69,11 @@ module OpenAI
             #   @return [Symbol, :logs]
             required :type, const: :logs
 
-            # @!parse
-            #   # The output of a code interpreter tool call that is text.
-            #   #
-            #   # @param logs [String]
-            #   # @param type [Symbol, :logs]
-            #   #
-            #   def initialize(logs:, type: :logs, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(logs:, type: :logs)
+            #   The output of a code interpreter tool call that is text.
+            #
+            #   @param logs [String]
+            #   @param type [Symbol, :logs]
           end
 
           class Files < OpenAI::Internal::Type::BaseModel
@@ -97,15 +89,11 @@ module OpenAI
             #   @return [Symbol, :files]
             required :type, const: :files
 
-            # @!parse
-            #   # The output of a code interpreter tool call that is a file.
-            #   #
-            #   # @param files [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
-            #   # @param type [Symbol, :files]
-            #   #
-            #   def initialize(files:, type: :files, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(files:, type: :files)
+            #   The output of a code interpreter tool call that is a file.
+            #
+            #   @param files [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
+            #   @param type [Symbol, :files]
 
             class File < OpenAI::Internal::Type::BaseModel
               # @!attribute file_id
@@ -120,19 +108,14 @@ module OpenAI
               #   @return [String]
               required :mime_type, String
 
-              # @!parse
-              #   # @param file_id [String]
-              #   # @param mime_type [String]
-              #   #
-              #   def initialize(file_id:, mime_type:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(file_id:, mime_type:)
+              #   @param file_id [String]
+              #   @param mime_type [String]
             end
           end
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files)]
         end
 
         # The status of the code interpreter tool call.
@@ -145,11 +128,8 @@ module OpenAI
           INTERPRETING = :interpreting
           COMPLETED = :completed
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

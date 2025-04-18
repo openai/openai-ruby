@@ -27,15 +27,11 @@ module OpenAI
       #   @return [String]
       required :text, String
 
-      # @!parse
-      #   # @param finish_reason [Symbol, OpenAI::Models::CompletionChoice::FinishReason]
-      #   # @param index [Integer]
-      #   # @param logprobs [OpenAI::Models::CompletionChoice::Logprobs, nil]
-      #   # @param text [String]
-      #   #
-      #   def initialize(finish_reason:, index:, logprobs:, text:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(finish_reason:, index:, logprobs:, text:)
+      #   @param finish_reason [Symbol, OpenAI::Models::CompletionChoice::FinishReason]
+      #   @param index [Integer]
+      #   @param logprobs [OpenAI::Models::CompletionChoice::Logprobs, nil]
+      #   @param text [String]
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
       # hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -50,11 +46,8 @@ module OpenAI
         LENGTH = :length
         CONTENT_FILTER = :content_filter
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # @see OpenAI::Models::CompletionChoice#logprobs
@@ -95,15 +88,11 @@ module OpenAI
         #   # @return [Array<Hash{Symbol=>Float}>]
         #   attr_writer :top_logprobs
 
-        # @!parse
-        #   # @param text_offset [Array<Integer>]
-        #   # @param token_logprobs [Array<Float>]
-        #   # @param tokens [Array<String>]
-        #   # @param top_logprobs [Array<Hash{Symbol=>Float}>]
-        #   #
-        #   def initialize(text_offset: nil, token_logprobs: nil, tokens: nil, top_logprobs: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(text_offset: nil, token_logprobs: nil, tokens: nil, top_logprobs: nil)
+        #   @param text_offset [Array<Integer>]
+        #   @param token_logprobs [Array<Float>]
+        #   @param tokens [Array<String>]
+        #   @param top_logprobs [Array<Hash{Symbol=>Float}>]
       end
     end
   end

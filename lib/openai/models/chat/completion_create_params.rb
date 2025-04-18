@@ -355,77 +355,38 @@ module OpenAI
         #   # @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
         #   attr_writer :web_search_options
 
-        # @!parse
-        #   # @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
-        #   # @param model [String, Symbol, OpenAI::Models::ChatModel]
-        #   # @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil]
-        #   # @param frequency_penalty [Float, nil]
-        #   # @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
-        #   # @param functions [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>]
-        #   # @param logit_bias [Hash{Symbol=>Integer}, nil]
-        #   # @param logprobs [Boolean, nil]
-        #   # @param max_completion_tokens [Integer, nil]
-        #   # @param max_tokens [Integer, nil]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil]
-        #   # @param n [Integer, nil]
-        #   # @param parallel_tool_calls [Boolean]
-        #   # @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil]
-        #   # @param presence_penalty [Float, nil]
-        #   # @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
-        #   # @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
-        #   # @param seed [Integer, nil]
-        #   # @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil]
-        #   # @param stop [String, Array<String>, nil]
-        #   # @param store [Boolean, nil]
-        #   # @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil]
-        #   # @param temperature [Float, nil]
-        #   # @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
-        #   # @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>]
-        #   # @param top_logprobs [Integer, nil]
-        #   # @param top_p [Float, nil]
-        #   # @param user [String]
-        #   # @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(
-        #     messages:,
-        #     model:,
-        #     audio: nil,
-        #     frequency_penalty: nil,
-        #     function_call: nil,
-        #     functions: nil,
-        #     logit_bias: nil,
-        #     logprobs: nil,
-        #     max_completion_tokens: nil,
-        #     max_tokens: nil,
-        #     metadata: nil,
-        #     modalities: nil,
-        #     n: nil,
-        #     parallel_tool_calls: nil,
-        #     prediction: nil,
-        #     presence_penalty: nil,
-        #     reasoning_effort: nil,
-        #     response_format: nil,
-        #     seed: nil,
-        #     service_tier: nil,
-        #     stop: nil,
-        #     store: nil,
-        #     stream_options: nil,
-        #     temperature: nil,
-        #     tool_choice: nil,
-        #     tools: nil,
-        #     top_logprobs: nil,
-        #     top_p: nil,
-        #     user: nil,
-        #     web_search_options: nil,
-        #     request_options: {},
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, reasoning_effort: nil, response_format: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
+        #   @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
+        #   @param model [String, Symbol, OpenAI::Models::ChatModel]
+        #   @param audio [OpenAI::Models::Chat::ChatCompletionAudioParam, nil]
+        #   @param frequency_penalty [Float, nil]
+        #   @param function_call [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+        #   @param functions [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>]
+        #   @param logit_bias [Hash{Symbol=>Integer}, nil]
+        #   @param logprobs [Boolean, nil]
+        #   @param max_completion_tokens [Integer, nil]
+        #   @param max_tokens [Integer, nil]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param modalities [Array<Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality>, nil]
+        #   @param n [Integer, nil]
+        #   @param parallel_tool_calls [Boolean]
+        #   @param prediction [OpenAI::Models::Chat::ChatCompletionPredictionContent, nil]
+        #   @param presence_penalty [Float, nil]
+        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+        #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+        #   @param seed [Integer, nil]
+        #   @param service_tier [Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier, nil]
+        #   @param stop [String, Array<String>, nil]
+        #   @param store [Boolean, nil]
+        #   @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil]
+        #   @param temperature [Float, nil]
+        #   @param tool_choice [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
+        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionTool>]
+        #   @param top_logprobs [Integer, nil]
+        #   @param top_p [Float, nil]
+        #   @param user [String]
+        #   @param web_search_options [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
@@ -443,9 +404,8 @@ module OpenAI
           # to browse and compare available models.
           variant enum: -> { OpenAI::Models::ChatModel }
 
-          # @!parse
-          #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Symbol, OpenAI::Models::ChatModel)]
         end
 
         # @deprecated
@@ -482,16 +442,12 @@ module OpenAI
             NONE = :none
             AUTO = :auto
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
-          # @!parse
-          #   # @return [Array(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption)]
         end
 
         # @deprecated
@@ -530,14 +486,10 @@ module OpenAI
           #   # @return [Hash{Symbol=>Object}]
           #   attr_writer :parameters
 
-          # @!parse
-          #   # @param name [String]
-          #   # @param description [String]
-          #   # @param parameters [Hash{Symbol=>Object}]
-          #   #
-          #   def initialize(name:, description: nil, parameters: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(name:, description: nil, parameters: nil)
+          #   @param name [String]
+          #   @param description [String]
+          #   @param parameters [Hash{Symbol=>Object}]
         end
 
         module Modality
@@ -546,11 +498,8 @@ module OpenAI
           TEXT = :text
           AUDIO = :audio
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # An object specifying the format that the model must output.
@@ -579,9 +528,8 @@ module OpenAI
           # to do so.
           variant -> { OpenAI::Models::ResponseFormatJSONObject }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject)]
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -608,11 +556,8 @@ module OpenAI
           DEFAULT = :default
           FLEX = :flex
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # Not supported with latest reasoning models `o3` and `o4-mini`.
@@ -626,9 +571,8 @@ module OpenAI
 
           variant -> { OpenAI::Models::Chat::CompletionCreateParams::Stop::StringArray }
 
-          # @!parse
-          #   # @return [Array(String, Array<String>)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Array<String>)]
 
           StringArray = OpenAI::Internal::Type::ArrayOf[String]
         end
@@ -654,17 +598,13 @@ module OpenAI
                    -> { OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation },
                    nil?: true
 
-          # @!parse
-          #   # This tool searches the web for relevant results to use in a response. Learn more
-          #   # about the
-          #   # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
-          #   #
-          #   # @param search_context_size [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize]
-          #   # @param user_location [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, nil]
-          #   #
-          #   def initialize(search_context_size: nil, user_location: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(search_context_size: nil, user_location: nil)
+          #   This tool searches the web for relevant results to use in a response. Learn more
+          #   about the
+          #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+          #
+          #   @param search_context_size [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize]
+          #   @param user_location [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation, nil]
 
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -677,11 +617,8 @@ module OpenAI
             MEDIUM = :medium
             HIGH = :high
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions#user_location
@@ -699,15 +636,11 @@ module OpenAI
             #   @return [Symbol, :approximate]
             required :type, const: :approximate
 
-            # @!parse
-            #   # Approximate location parameters for the search.
-            #   #
-            #   # @param approximate [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate]
-            #   # @param type [Symbol, :approximate]
-            #   #
-            #   def initialize(approximate:, type: :approximate, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(approximate:, type: :approximate)
+            #   Approximate location parameters for the search.
+            #
+            #   @param approximate [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate]
+            #   @param type [Symbol, :approximate]
 
             # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation#approximate
             class Approximate < OpenAI::Internal::Type::BaseModel
@@ -753,17 +686,13 @@ module OpenAI
               #   # @return [String]
               #   attr_writer :timezone
 
-              # @!parse
-              #   # Approximate location parameters for the search.
-              #   #
-              #   # @param city [String]
-              #   # @param country [String]
-              #   # @param region [String]
-              #   # @param timezone [String]
-              #   #
-              #   def initialize(city: nil, country: nil, region: nil, timezone: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(city: nil, country: nil, region: nil, timezone: nil)
+              #   Approximate location parameters for the search.
+              #
+              #   @param city [String]
+              #   @param country [String]
+              #   @param region [String]
+              #   @param timezone [String]
             end
           end
         end

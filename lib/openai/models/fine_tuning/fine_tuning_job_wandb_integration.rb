@@ -37,20 +37,16 @@ module OpenAI
         #   # @return [Array<String>]
         #   attr_writer :tags
 
-        # @!parse
-        #   # The settings for your integration with Weights and Biases. This payload
-        #   # specifies the project that metrics will be sent to. Optionally, you can set an
-        #   # explicit display name for your run, add tags to your run, and set a default
-        #   # entity (team, username, etc) to be associated with your run.
-        #   #
-        #   # @param project [String]
-        #   # @param entity [String, nil]
-        #   # @param name [String, nil]
-        #   # @param tags [Array<String>]
-        #   #
-        #   def initialize(project:, entity: nil, name: nil, tags: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(project:, entity: nil, name: nil, tags: nil)
+        #   The settings for your integration with Weights and Biases. This payload
+        #   specifies the project that metrics will be sent to. Optionally, you can set an
+        #   explicit display name for your run, add tags to your run, and set a default
+        #   entity (team, username, etc) to be associated with your run.
+        #
+        #   @param project [String]
+        #   @param entity [String, nil]
+        #   @param name [String, nil]
+        #   @param tags [Array<String>]
       end
     end
 

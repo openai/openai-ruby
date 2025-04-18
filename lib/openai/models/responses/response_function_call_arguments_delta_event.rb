@@ -28,17 +28,13 @@ module OpenAI
         #   @return [Symbol, :"response.function_call_arguments.delta"]
         required :type, const: :"response.function_call_arguments.delta"
 
-        # @!parse
-        #   # Emitted when there is a partial function-call arguments delta.
-        #   #
-        #   # @param delta [String]
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.function_call_arguments.delta"]
-        #   #
-        #   def initialize(delta:, item_id:, output_index:, type: :"response.function_call_arguments.delta", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(delta:, item_id:, output_index:, type: :"response.function_call_arguments.delta")
+        #   Emitted when there is a partial function-call arguments delta.
+        #
+        #   @param delta [String]
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.function_call_arguments.delta"]
       end
     end
   end

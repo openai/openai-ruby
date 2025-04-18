@@ -27,9 +27,8 @@ module OpenAI
         # Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         variant -> { OpenAI::Models::Responses::WebSearchTool }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool)]
       end
     end
   end

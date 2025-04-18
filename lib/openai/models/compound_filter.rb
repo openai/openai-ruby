@@ -16,15 +16,11 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::CompoundFilter::Type]
       required :type, enum: -> { OpenAI::Models::CompoundFilter::Type }
 
-      # @!parse
-      #   # Combine multiple filters using `and` or `or`.
-      #   #
-      #   # @param filters [Array<OpenAI::Models::ComparisonFilter, Object>]
-      #   # @param type [Symbol, OpenAI::Models::CompoundFilter::Type]
-      #   #
-      #   def initialize(filters:, type:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(filters:, type:)
+      #   Combine multiple filters using `and` or `or`.
+      #
+      #   @param filters [Array<OpenAI::Models::ComparisonFilter, Object>]
+      #   @param type [Symbol, OpenAI::Models::CompoundFilter::Type]
 
       # A filter used to compare a specified attribute key to a given value using a
       # defined comparison operation.
@@ -36,9 +32,8 @@ module OpenAI
 
         variant OpenAI::Internal::Type::Unknown
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::ComparisonFilter, Object)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::ComparisonFilter, Object)]
       end
 
       # Type of operation: `and` or `or`.
@@ -50,11 +45,8 @@ module OpenAI
         AND = :and
         OR = :or
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

@@ -10,11 +10,8 @@ module OpenAI
         TTS_1_HD = :"tts-1-hd"
         GPT_4O_MINI_TTS = :"gpt-4o-mini-tts"
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

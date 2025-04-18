@@ -23,14 +23,10 @@ module OpenAI
         #   @return [Symbol, :"chat.completion.deleted"]
         required :object, const: :"chat.completion.deleted"
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param deleted [Boolean]
-        #   # @param object [Symbol, :"chat.completion.deleted"]
-        #   #
-        #   def initialize(id:, deleted:, object: :"chat.completion.deleted", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, deleted:, object: :"chat.completion.deleted")
+        #   @param id [String]
+        #   @param deleted [Boolean]
+        #   @param object [Symbol, :"chat.completion.deleted"]
       end
     end
 

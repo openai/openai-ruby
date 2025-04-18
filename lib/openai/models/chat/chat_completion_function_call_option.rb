@@ -10,15 +10,11 @@ module OpenAI
         #   @return [String]
         required :name, String
 
-        # @!parse
-        #   # Specifying a particular function via `{"name": "my_function"}` forces the model
-        #   # to call that function.
-        #   #
-        #   # @param name [String]
-        #   #
-        #   def initialize(name:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(name:)
+        #   Specifying a particular function via `{"name": "my_function"}` forces the model
+        #   to call that function.
+        #
+        #   @param name [String]
       end
     end
 

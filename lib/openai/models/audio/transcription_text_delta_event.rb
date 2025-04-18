@@ -29,19 +29,15 @@ module OpenAI
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>]
         #   attr_writer :logprobs
 
-        # @!parse
-        #   # Emitted when there is an additional text delta. This is also the first event
-        #   # emitted when the transcription starts. Only emitted when you
-        #   # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
-        #   # with the `Stream` parameter set to `true`.
-        #   #
-        #   # @param delta [String]
-        #   # @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>]
-        #   # @param type [Symbol, :"transcript.text.delta"]
-        #   #
-        #   def initialize(delta:, logprobs: nil, type: :"transcript.text.delta", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(delta:, logprobs: nil, type: :"transcript.text.delta")
+        #   Emitted when there is an additional text delta. This is also the first event
+        #   emitted when the transcription starts. Only emitted when you
+        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        #   with the `Stream` parameter set to `true`.
+        #
+        #   @param delta [String]
+        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>]
+        #   @param type [Symbol, :"transcript.text.delta"]
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] token
@@ -74,14 +70,10 @@ module OpenAI
           #   # @return [Float]
           #   attr_writer :logprob
 
-          # @!parse
-          #   # @param token [String]
-          #   # @param bytes [Array<Object>]
-          #   # @param logprob [Float]
-          #   #
-          #   def initialize(token: nil, bytes: nil, logprob: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(token: nil, bytes: nil, logprob: nil)
+          #   @param token [String]
+          #   @param bytes [Array<Object>]
+          #   @param logprob [Float]
         end
       end
     end

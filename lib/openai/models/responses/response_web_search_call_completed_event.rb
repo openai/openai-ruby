@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.web_search_call.completed"]
         required :type, const: :"response.web_search_call.completed"
 
-        # @!parse
-        #   # Emitted when a web search call is completed.
-        #   #
-        #   # @param item_id [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.web_search_call.completed"]
-        #   #
-        #   def initialize(item_id:, output_index:, type: :"response.web_search_call.completed", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(item_id:, output_index:, type: :"response.web_search_call.completed")
+        #   Emitted when a web search call is completed.
+        #
+        #   @param item_id [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.web_search_call.completed"]
       end
     end
   end

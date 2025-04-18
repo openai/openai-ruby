@@ -22,9 +22,8 @@ module OpenAI
         # A refusal from the model.
         variant -> { OpenAI::Models::Responses::ResponseOutputRefusal }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
       end
     end
   end

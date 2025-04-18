@@ -23,14 +23,10 @@ module OpenAI
         #   @return [Symbol, :function]
         required :role, const: :function
 
-        # @!parse
-        #   # @param content [String, nil]
-        #   # @param name [String]
-        #   # @param role [Symbol, :function]
-        #   #
-        #   def initialize(content:, name:, role: :function, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content:, name:, role: :function)
+        #   @param content [String, nil]
+        #   @param name [String]
+        #   @param role [Symbol, :function]
       end
     end
 

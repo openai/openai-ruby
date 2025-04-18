@@ -29,18 +29,14 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
         optional :user_location, -> { OpenAI::Models::Responses::WebSearchTool::UserLocation }, nil?: true
 
-        # @!parse
-        #   # This tool searches the web for relevant results to use in a response. Learn more
-        #   # about the
-        #   # [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
-        #   #
-        #   # @param type [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
-        #   # @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize]
-        #   # @param user_location [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
-        #   #
-        #   def initialize(type:, search_context_size: nil, user_location: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(type:, search_context_size: nil, user_location: nil)
+        #   This tool searches the web for relevant results to use in a response. Learn more
+        #   about the
+        #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        #
+        #   @param type [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
+        #   @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize]
+        #   @param user_location [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
 
         # The type of the web search tool. One of:
         #
@@ -54,11 +50,8 @@ module OpenAI
           WEB_SEARCH_PREVIEW = :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # High level guidance for the amount of context window space to use for the
@@ -72,11 +65,8 @@ module OpenAI
           MEDIUM = :medium
           HIGH = :high
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         # @see OpenAI::Models::Responses::WebSearchTool#user_location
@@ -129,16 +119,12 @@ module OpenAI
           #   # @return [String]
           #   attr_writer :timezone
 
-          # @!parse
-          #   # @param city [String]
-          #   # @param country [String]
-          #   # @param region [String]
-          #   # @param timezone [String]
-          #   # @param type [Symbol, :approximate]
-          #   #
-          #   def initialize(city: nil, country: nil, region: nil, timezone: nil, type: :approximate, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(city: nil, country: nil, region: nil, timezone: nil, type: :approximate)
+          #   @param city [String]
+          #   @param country [String]
+          #   @param region [String]
+          #   @param timezone [String]
+          #   @param type [Symbol, :approximate]
         end
       end
     end

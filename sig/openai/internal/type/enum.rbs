@@ -6,8 +6,6 @@ module OpenAI
 
         def self.values: -> ::Array[(nil | bool | Integer | Float | Symbol)]
 
-        private def self.finalize!: -> void
-
         def ===: (top other) -> bool
 
         def ==: (top other) -> bool

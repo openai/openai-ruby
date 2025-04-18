@@ -20,14 +20,10 @@ module OpenAI
         #   # @return [Boolean]
         #   attr_writer :include_usage
 
-        # @!parse
-        #   # Options for streaming response. Only set this when you set `stream: true`.
-        #   #
-        #   # @param include_usage [Boolean]
-        #   #
-        #   def initialize(include_usage: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(include_usage: nil)
+        #   Options for streaming response. Only set this when you set `stream: true`.
+        #
+        #   @param include_usage [Boolean]
       end
     end
 

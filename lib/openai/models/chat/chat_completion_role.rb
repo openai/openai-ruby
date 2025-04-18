@@ -14,11 +14,8 @@ module OpenAI
         TOOL = :tool
         FUNCTION = :function
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
 

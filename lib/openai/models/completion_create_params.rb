@@ -187,51 +187,25 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :user
 
-      # @!parse
-      #   # @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
-      #   # @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
-      #   # @param best_of [Integer, nil]
-      #   # @param echo [Boolean, nil]
-      #   # @param frequency_penalty [Float, nil]
-      #   # @param logit_bias [Hash{Symbol=>Integer}, nil]
-      #   # @param logprobs [Integer, nil]
-      #   # @param max_tokens [Integer, nil]
-      #   # @param n [Integer, nil]
-      #   # @param presence_penalty [Float, nil]
-      #   # @param seed [Integer, nil]
-      #   # @param stop [String, Array<String>, nil]
-      #   # @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil]
-      #   # @param suffix [String, nil]
-      #   # @param temperature [Float, nil]
-      #   # @param top_p [Float, nil]
-      #   # @param user [String]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(
-      #     model:,
-      #     prompt:,
-      #     best_of: nil,
-      #     echo: nil,
-      #     frequency_penalty: nil,
-      #     logit_bias: nil,
-      #     logprobs: nil,
-      #     max_tokens: nil,
-      #     n: nil,
-      #     presence_penalty: nil,
-      #     seed: nil,
-      #     stop: nil,
-      #     stream_options: nil,
-      #     suffix: nil,
-      #     temperature: nil,
-      #     top_p: nil,
-      #     user: nil,
-      #     request_options: {},
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
+      #   @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
+      #   @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
+      #   @param best_of [Integer, nil]
+      #   @param echo [Boolean, nil]
+      #   @param frequency_penalty [Float, nil]
+      #   @param logit_bias [Hash{Symbol=>Integer}, nil]
+      #   @param logprobs [Integer, nil]
+      #   @param max_tokens [Integer, nil]
+      #   @param n [Integer, nil]
+      #   @param presence_penalty [Float, nil]
+      #   @param seed [Integer, nil]
+      #   @param stop [String, Array<String>, nil]
+      #   @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil]
+      #   @param suffix [String, nil]
+      #   @param temperature [Float, nil]
+      #   @param top_p [Float, nil]
+      #   @param user [String]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # ID of the model to use. You can use the
       # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -249,9 +223,8 @@ module OpenAI
 
         variant const: -> { OpenAI::Models::CompletionCreateParams::Model::BABBAGE_002 }
 
-        # @!parse
-        #   # @return [Array(String, Symbol)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
 
         # @!group
 
@@ -279,9 +252,8 @@ module OpenAI
 
         variant -> { OpenAI::Models::CompletionCreateParams::Prompt::ArrayOfToken2DArray }
 
-        # @!parse
-        #   # @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
 
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
@@ -301,9 +273,8 @@ module OpenAI
 
         variant -> { OpenAI::Models::CompletionCreateParams::Stop::StringArray }
 
-        # @!parse
-        #   # @return [Array(String, Array<String>)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(String, Array<String>)]
 
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end

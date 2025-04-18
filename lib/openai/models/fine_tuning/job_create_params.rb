@@ -113,35 +113,17 @@ module OpenAI
         #   @return [String, nil]
         optional :validation_file, String, nil?: true
 
-        # @!parse
-        #   # @param model [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model]
-        #   # @param training_file [String]
-        #   # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters]
-        #   # @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param method_ [OpenAI::Models::FineTuning::JobCreateParams::Method]
-        #   # @param seed [Integer, nil]
-        #   # @param suffix [String, nil]
-        #   # @param validation_file [String, nil]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(
-        #     model:,
-        #     training_file:,
-        #     hyperparameters: nil,
-        #     integrations: nil,
-        #     metadata: nil,
-        #     method_: nil,
-        #     seed: nil,
-        #     suffix: nil,
-        #     validation_file: nil,
-        #     request_options: {},
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(model:, training_file:, hyperparameters: nil, integrations: nil, metadata: nil, method_: nil, seed: nil, suffix: nil, validation_file: nil, request_options: {})
+        #   @param model [String, Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model]
+        #   @param training_file [String]
+        #   @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Hyperparameters]
+        #   @param integrations [Array<OpenAI::Models::FineTuning::JobCreateParams::Integration>, nil]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param method_ [OpenAI::Models::FineTuning::JobCreateParams::Method]
+        #   @param seed [Integer, nil]
+        #   @param suffix [String, nil]
+        #   @param validation_file [String, nil]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # The name of the model to fine-tune. You can select one of the
         # [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
@@ -158,9 +140,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_4O_MINI }
 
-          # @!parse
-          #   # @return [Array(String, Symbol)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Symbol)]
 
           # @!group
 
@@ -209,17 +190,13 @@ module OpenAI
           #   # @return [Symbol, :auto, Integer]
           #   attr_writer :n_epochs
 
-          # @!parse
-          #   # The hyperparameters used for the fine-tuning job. This value is now deprecated
-          #   # in favor of `method`, and should be passed in under the `method` parameter.
-          #   #
-          #   # @param batch_size [Symbol, :auto, Integer]
-          #   # @param learning_rate_multiplier [Symbol, :auto, Float]
-          #   # @param n_epochs [Symbol, :auto, Integer]
-          #   #
-          #   def initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
+          #   The hyperparameters used for the fine-tuning job. This value is now deprecated
+          #   in favor of `method`, and should be passed in under the `method` parameter.
+          #
+          #   @param batch_size [Symbol, :auto, Integer]
+          #   @param learning_rate_multiplier [Symbol, :auto, Float]
+          #   @param n_epochs [Symbol, :auto, Integer]
 
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
@@ -232,9 +209,8 @@ module OpenAI
 
             variant Integer
 
-            # @!parse
-            #   # @return [Array(Symbol, :auto, Integer)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(Symbol, :auto, Integer)]
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -248,9 +224,8 @@ module OpenAI
 
             variant Float
 
-            # @!parse
-            #   # @return [Array(Symbol, :auto, Float)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(Symbol, :auto, Float)]
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -264,9 +239,8 @@ module OpenAI
 
             variant Integer
 
-            # @!parse
-            #   # @return [Array(Symbol, :auto, Integer)]
-            #   def self.variants; end
+            # @!method self.variants
+            #   @return [Array(Symbol, :auto, Integer)]
           end
         end
 
@@ -287,13 +261,9 @@ module OpenAI
           #   @return [OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb]
           required :wandb, -> { OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb }
 
-          # @!parse
-          #   # @param wandb [OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb]
-          #   # @param type [Symbol, :wandb]
-          #   #
-          #   def initialize(wandb:, type: :wandb, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(wandb:, type: :wandb)
+          #   @param wandb [OpenAI::Models::FineTuning::JobCreateParams::Integration::Wandb]
+          #   @param type [Symbol, :wandb]
 
           # @see OpenAI::Models::FineTuning::JobCreateParams::Integration#wandb
           class Wandb < OpenAI::Internal::Type::BaseModel
@@ -330,20 +300,16 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :tags
 
-            # @!parse
-            #   # The settings for your integration with Weights and Biases. This payload
-            #   # specifies the project that metrics will be sent to. Optionally, you can set an
-            #   # explicit display name for your run, add tags to your run, and set a default
-            #   # entity (team, username, etc) to be associated with your run.
-            #   #
-            #   # @param project [String]
-            #   # @param entity [String, nil]
-            #   # @param name [String, nil]
-            #   # @param tags [Array<String>]
-            #   #
-            #   def initialize(project:, entity: nil, name: nil, tags: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(project:, entity: nil, name: nil, tags: nil)
+            #   The settings for your integration with Weights and Biases. This payload
+            #   specifies the project that metrics will be sent to. Optionally, you can set an
+            #   explicit display name for your run, add tags to your run, and set a default
+            #   entity (team, username, etc) to be associated with your run.
+            #
+            #   @param project [String]
+            #   @param entity [String, nil]
+            #   @param name [String, nil]
+            #   @param tags [Array<String>]
           end
         end
 
@@ -378,16 +344,12 @@ module OpenAI
           #   # @return [Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type]
           #   attr_writer :type
 
-          # @!parse
-          #   # The method used for fine-tuning.
-          #   #
-          #   # @param dpo [OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo]
-          #   # @param supervised [OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised]
-          #   # @param type [Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type]
-          #   #
-          #   def initialize(dpo: nil, supervised: nil, type: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(dpo: nil, supervised: nil, type: nil)
+          #   The method used for fine-tuning.
+          #
+          #   @param dpo [OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo]
+          #   @param supervised [OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised]
+          #   @param type [Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type]
 
           # @see OpenAI::Models::FineTuning::JobCreateParams::Method#dpo
           class Dpo < OpenAI::Internal::Type::BaseModel
@@ -402,14 +364,10 @@ module OpenAI
             #   # @return [OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters]
             #   attr_writer :hyperparameters
 
-            # @!parse
-            #   # Configuration for the DPO fine-tuning method.
-            #   #
-            #   # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters]
-            #   #
-            #   def initialize(hyperparameters: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(hyperparameters: nil)
+            #   Configuration for the DPO fine-tuning method.
+            #
+            #   @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo::Hyperparameters]
 
             # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Dpo#hyperparameters
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
@@ -461,17 +419,13 @@ module OpenAI
               #   # @return [Symbol, :auto, Integer]
               #   attr_writer :n_epochs
 
-              # @!parse
-              #   # The hyperparameters used for the fine-tuning job.
-              #   #
-              #   # @param batch_size [Symbol, :auto, Integer]
-              #   # @param beta [Symbol, :auto, Float]
-              #   # @param learning_rate_multiplier [Symbol, :auto, Float]
-              #   # @param n_epochs [Symbol, :auto, Integer]
-              #   #
-              #   def initialize(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil)
+              #   The hyperparameters used for the fine-tuning job.
+              #
+              #   @param batch_size [Symbol, :auto, Integer]
+              #   @param beta [Symbol, :auto, Float]
+              #   @param learning_rate_multiplier [Symbol, :auto, Float]
+              #   @param n_epochs [Symbol, :auto, Integer]
 
               # Number of examples in each batch. A larger batch size means that model
               # parameters are updated less frequently, but with lower variance.
@@ -484,9 +438,8 @@ module OpenAI
 
                 variant Integer
 
-                # @!parse
-                #   # @return [Array(Symbol, :auto, Integer)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(Symbol, :auto, Integer)]
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
@@ -500,9 +453,8 @@ module OpenAI
 
                 variant Float
 
-                # @!parse
-                #   # @return [Array(Symbol, :auto, Float)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(Symbol, :auto, Float)]
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -516,9 +468,8 @@ module OpenAI
 
                 variant Float
 
-                # @!parse
-                #   # @return [Array(Symbol, :auto, Float)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(Symbol, :auto, Float)]
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -532,9 +483,8 @@ module OpenAI
 
                 variant Integer
 
-                # @!parse
-                #   # @return [Array(Symbol, :auto, Integer)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(Symbol, :auto, Integer)]
               end
             end
           end
@@ -552,14 +502,10 @@ module OpenAI
             #   # @return [OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters]
             #   attr_writer :hyperparameters
 
-            # @!parse
-            #   # Configuration for the supervised fine-tuning method.
-            #   #
-            #   # @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters]
-            #   #
-            #   def initialize(hyperparameters: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(hyperparameters: nil)
+            #   Configuration for the supervised fine-tuning method.
+            #
+            #   @param hyperparameters [OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised::Hyperparameters]
 
             # @see OpenAI::Models::FineTuning::JobCreateParams::Method::Supervised#hyperparameters
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
@@ -599,16 +545,12 @@ module OpenAI
               #   # @return [Symbol, :auto, Integer]
               #   attr_writer :n_epochs
 
-              # @!parse
-              #   # The hyperparameters used for the fine-tuning job.
-              #   #
-              #   # @param batch_size [Symbol, :auto, Integer]
-              #   # @param learning_rate_multiplier [Symbol, :auto, Float]
-              #   # @param n_epochs [Symbol, :auto, Integer]
-              #   #
-              #   def initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
+              #   The hyperparameters used for the fine-tuning job.
+              #
+              #   @param batch_size [Symbol, :auto, Integer]
+              #   @param learning_rate_multiplier [Symbol, :auto, Float]
+              #   @param n_epochs [Symbol, :auto, Integer]
 
               # Number of examples in each batch. A larger batch size means that model
               # parameters are updated less frequently, but with lower variance.
@@ -621,9 +563,8 @@ module OpenAI
 
                 variant Integer
 
-                # @!parse
-                #   # @return [Array(Symbol, :auto, Integer)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(Symbol, :auto, Integer)]
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -637,9 +578,8 @@ module OpenAI
 
                 variant Float
 
-                # @!parse
-                #   # @return [Array(Symbol, :auto, Float)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(Symbol, :auto, Float)]
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -653,9 +593,8 @@ module OpenAI
 
                 variant Integer
 
-                # @!parse
-                #   # @return [Array(Symbol, :auto, Integer)]
-                #   def self.variants; end
+                # @!method self.variants
+                #   @return [Array(Symbol, :auto, Integer)]
               end
             end
           end
@@ -669,11 +608,8 @@ module OpenAI
             SUPERVISED = :supervised
             DPO = :dpo
 
-            finalize!
-
-            # @!parse
-            #   # @return [Array<Symbol>]
-            #   def self.values; end
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
         end
       end

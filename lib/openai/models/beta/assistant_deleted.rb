@@ -20,14 +20,10 @@ module OpenAI
         #   @return [Symbol, :"assistant.deleted"]
         required :object, const: :"assistant.deleted"
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param deleted [Boolean]
-        #   # @param object [Symbol, :"assistant.deleted"]
-        #   #
-        #   def initialize(id:, deleted:, object: :"assistant.deleted", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, deleted:, object: :"assistant.deleted")
+        #   @param id [String]
+        #   @param deleted [Boolean]
+        #   @param object [Symbol, :"assistant.deleted"]
       end
     end
   end

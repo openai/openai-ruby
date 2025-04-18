@@ -34,16 +34,12 @@ module OpenAI
           #   @return [Symbol, :file]
           required :type, const: :file
 
-          # @!parse
-          #   # Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
-          #   # generation.
-          #   #
-          #   # @param file [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
-          #   # @param type [Symbol, :file]
-          #   #
-          #   def initialize(file:, type: :file, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(file:, type: :file)
+          #   Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text
+          #   generation.
+          #
+          #   @param file [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
+          #   @param type [Symbol, :file]
 
           # @see OpenAI::Models::Chat::ChatCompletionContentPart::File#file
           class File < OpenAI::Internal::Type::BaseModel
@@ -78,20 +74,15 @@ module OpenAI
             #   # @return [String]
             #   attr_writer :filename
 
-            # @!parse
-            #   # @param file_data [String]
-            #   # @param file_id [String]
-            #   # @param filename [String]
-            #   #
-            #   def initialize(file_data: nil, file_id: nil, filename: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_data: nil, file_id: nil, filename: nil)
+            #   @param file_data [String]
+            #   @param file_id [String]
+            #   @param filename [String]
           end
         end
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File)]
       end
     end
 

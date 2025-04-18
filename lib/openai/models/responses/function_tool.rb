@@ -35,20 +35,16 @@ module OpenAI
         #   @return [String, nil]
         optional :description, String, nil?: true
 
-        # @!parse
-        #   # Defines a function in your own code the model can choose to call. Learn more
-        #   # about
-        #   # [function calling](https://platform.openai.com/docs/guides/function-calling).
-        #   #
-        #   # @param name [String]
-        #   # @param parameters [Hash{Symbol=>Object}]
-        #   # @param strict [Boolean]
-        #   # @param description [String, nil]
-        #   # @param type [Symbol, :function]
-        #   #
-        #   def initialize(name:, parameters:, strict:, description: nil, type: :function, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(name:, parameters:, strict:, description: nil, type: :function)
+        #   Defines a function in your own code the model can choose to call. Learn more
+        #   about
+        #   [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #
+        #   @param name [String]
+        #   @param parameters [Hash{Symbol=>Object}]
+        #   @param strict [Boolean]
+        #   @param description [String, nil]
+        #   @param type [Symbol, :function]
       end
     end
   end

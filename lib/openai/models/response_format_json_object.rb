@@ -9,16 +9,12 @@ module OpenAI
       #   @return [Symbol, :json_object]
       required :type, const: :json_object
 
-      # @!parse
-      #   # JSON object response format. An older method of generating JSON responses. Using
-      #   # `json_schema` is recommended for models that support it. Note that the model
-      #   # will not generate JSON without a system or user message instructing it to do so.
-      #   #
-      #   # @param type [Symbol, :json_object]
-      #   #
-      #   def initialize(type: :json_object, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(type: :json_object)
+      #   JSON object response format. An older method of generating JSON responses. Using
+      #   `json_schema` is recommended for models that support it. Note that the model
+      #   will not generate JSON without a system or user message instructing it to do so.
+      #
+      #   @param type [Symbol, :json_object]
     end
   end
 end

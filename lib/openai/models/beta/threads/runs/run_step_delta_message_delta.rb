@@ -22,15 +22,11 @@ module OpenAI
             #   # @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation]
             #   attr_writer :message_creation
 
-            # @!parse
-            #   # Details of the message creation by the run step.
-            #   #
-            #   # @param message_creation [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation]
-            #   # @param type [Symbol, :message_creation]
-            #   #
-            #   def initialize(message_creation: nil, type: :message_creation, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(message_creation: nil, type: :message_creation)
+            #   Details of the message creation by the run step.
+            #
+            #   @param message_creation [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation]
+            #   @param type [Symbol, :message_creation]
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta#message_creation
             class MessageCreation < OpenAI::Internal::Type::BaseModel
@@ -44,12 +40,8 @@ module OpenAI
               #   # @return [String]
               #   attr_writer :message_id
 
-              # @!parse
-              #   # @param message_id [String]
-              #   #
-              #   def initialize(message_id: nil, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(message_id: nil)
+              #   @param message_id [String]
             end
           end
         end

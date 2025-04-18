@@ -25,13 +25,9 @@ module OpenAI
           #   # @return [String]
           #   attr_writer :value
 
-          # @!parse
-          #   # @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation>]
-          #   # @param value [String]
-          #   #
-          #   def initialize(annotations: nil, value: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(annotations: nil, value: nil)
+          #   @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation, OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation>]
+          #   @param value [String]
         end
       end
     end

@@ -27,17 +27,13 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :name
 
-        # @!parse
-        #   # Messages sent by an end user, containing prompts or additional context
-        #   # information.
-        #   #
-        #   # @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>]
-        #   # @param name [String]
-        #   # @param role [Symbol, :user]
-        #   #
-        #   def initialize(content:, name: nil, role: :user, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content:, name: nil, role: :user)
+        #   Messages sent by an end user, containing prompts or additional context
+        #   information.
+        #
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>]
+        #   @param name [String]
+        #   @param role [Symbol, :user]
 
         # The contents of the user message.
         #
@@ -51,9 +47,8 @@ module OpenAI
           # An array of content parts with a defined type. Supported options differ based on the [model](https://platform.openai.com/docs/models) being used to generate the response. Can contain text, image, or audio inputs.
           variant -> { OpenAI::Models::Chat::ChatCompletionUserMessageParam::Content::ChatCompletionContentPartArray }
 
-          # @!parse
-          #   # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
 
           ChatCompletionContentPartArray =
             OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionContentPart }]

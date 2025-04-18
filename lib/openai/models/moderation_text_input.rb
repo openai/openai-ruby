@@ -15,15 +15,11 @@ module OpenAI
       #   @return [Symbol, :text]
       required :type, const: :text
 
-      # @!parse
-      #   # An object describing text to classify.
-      #   #
-      #   # @param text [String]
-      #   # @param type [Symbol, :text]
-      #   #
-      #   def initialize(text:, type: :text, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(text:, type: :text)
+      #   An object describing text to classify.
+      #
+      #   @param text [String]
+      #   @param type [Symbol, :text]
     end
   end
 end

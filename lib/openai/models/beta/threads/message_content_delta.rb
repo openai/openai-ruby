@@ -23,9 +23,8 @@ module OpenAI
           # References an image URL in the content of a message.
           variant :image_url, -> { OpenAI::Models::Beta::Threads::ImageURLDeltaBlock }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock)]
         end
       end
     end

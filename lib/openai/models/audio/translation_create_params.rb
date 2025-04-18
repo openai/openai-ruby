@@ -61,17 +61,13 @@ module OpenAI
         #   # @return [Float]
         #   attr_writer :temperature
 
-        # @!parse
-        #   # @param file [Pathname, StringIO]
-        #   # @param model [String, Symbol, OpenAI::Models::AudioModel]
-        #   # @param prompt [String]
-        #   # @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat]
-        #   # @param temperature [Float]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {})
+        #   @param file [Pathname, StringIO]
+        #   @param model [String, Symbol, OpenAI::Models::AudioModel]
+        #   @param prompt [String]
+        #   @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat]
+        #   @param temperature [Float]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source
         # Whisper V2 model) is currently available.
@@ -83,9 +79,8 @@ module OpenAI
           # ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.
           variant enum: -> { OpenAI::Models::AudioModel }
 
-          # @!parse
-          #   # @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,
@@ -99,11 +94,8 @@ module OpenAI
           VERBOSE_JSON = :verbose_json
           VTT = :vtt
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

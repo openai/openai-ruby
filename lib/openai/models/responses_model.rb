@@ -19,16 +19,12 @@ module OpenAI
         COMPUTER_USE_PREVIEW = :"computer-use-preview"
         COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
-      # @!parse
-      #   # @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::ResponsesModel::ResponsesOnlyModel)]
-      #   def self.variants; end
+      # @!method self.variants
+      #   @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::ResponsesModel::ResponsesOnlyModel)]
     end
   end
 end

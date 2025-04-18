@@ -29,14 +29,10 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, nil]
         optional :tool_resources, -> { OpenAI::Models::Beta::ThreadUpdateParams::ToolResources }, nil?: true
 
-        # @!parse
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param tool_resources [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, nil]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(metadata: nil, tool_resources: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(metadata: nil, tool_resources: nil, request_options: {})
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param tool_resources [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, nil]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] code_interpreter
@@ -58,18 +54,14 @@ module OpenAI
           #   # @return [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch]
           #   attr_writer :file_search
 
-          # @!parse
-          #   # A set of resources that are made available to the assistant's tools in this
-          #   # thread. The resources are specific to the type of tool. For example, the
-          #   # `code_interpreter` tool requires a list of file IDs, while the `file_search`
-          #   # tool requires a list of vector store IDs.
-          #   #
-          #   # @param code_interpreter [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter]
-          #   # @param file_search [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch]
-          #   #
-          #   def initialize(code_interpreter: nil, file_search: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(code_interpreter: nil, file_search: nil)
+          #   A set of resources that are made available to the assistant's tools in this
+          #   thread. The resources are specific to the type of tool. For example, the
+          #   `code_interpreter` tool requires a list of file IDs, while the `file_search`
+          #   tool requires a list of vector store IDs.
+          #
+          #   @param code_interpreter [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter]
+          #   @param file_search [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch]
 
           # @see OpenAI::Models::Beta::ThreadUpdateParams::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
@@ -85,12 +77,8 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :file_ids
 
-            # @!parse
-            #   # @param file_ids [Array<String>]
-            #   #
-            #   def initialize(file_ids: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(file_ids: nil)
+            #   @param file_ids [Array<String>]
           end
 
           # @see OpenAI::Models::Beta::ThreadUpdateParams::ToolResources#file_search
@@ -108,12 +96,8 @@ module OpenAI
             #   # @return [Array<String>]
             #   attr_writer :vector_store_ids
 
-            # @!parse
-            #   # @param vector_store_ids [Array<String>]
-            #   #
-            #   def initialize(vector_store_ids: nil, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(vector_store_ids: nil)
+            #   @param vector_store_ids [Array<String>]
           end
         end
       end

@@ -16,16 +16,12 @@ module OpenAI
           #   @return [Symbol, :image_file]
           required :type, const: :image_file
 
-          # @!parse
-          #   # References an image [File](https://platform.openai.com/docs/api-reference/files)
-          #   # in the content of a message.
-          #   #
-          #   # @param image_file [OpenAI::Models::Beta::Threads::ImageFile]
-          #   # @param type [Symbol, :image_file]
-          #   #
-          #   def initialize(image_file:, type: :image_file, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(image_file:, type: :image_file)
+          #   References an image [File](https://platform.openai.com/docs/api-reference/files)
+          #   in the content of a message.
+          #
+          #   @param image_file [OpenAI::Models::Beta::Threads::ImageFile]
+          #   @param type [Symbol, :image_file]
         end
       end
     end

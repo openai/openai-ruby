@@ -50,16 +50,12 @@ module OpenAI
       #   # @return [Symbol, OpenAI::Models::EvalListParams::OrderBy]
       #   attr_writer :order_by
 
-      # @!parse
-      #   # @param after [String]
-      #   # @param limit [Integer]
-      #   # @param order [Symbol, OpenAI::Models::EvalListParams::Order]
-      #   # @param order_by [Symbol, OpenAI::Models::EvalListParams::OrderBy]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(after: nil, limit: nil, order: nil, order_by: nil, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(after: nil, limit: nil, order: nil, order_by: nil, request_options: {})
+      #   @param after [String]
+      #   @param limit [Integer]
+      #   @param order [Symbol, OpenAI::Models::EvalListParams::Order]
+      #   @param order_by [Symbol, OpenAI::Models::EvalListParams::OrderBy]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for
       # descending order.
@@ -69,11 +65,8 @@ module OpenAI
         ASC = :asc
         DESC = :desc
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # Evals can be ordered by creation time or last updated time. Use `created_at` for
@@ -84,11 +77,8 @@ module OpenAI
         CREATED_AT = :created_at
         UPDATED_AT = :updated_at
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

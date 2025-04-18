@@ -58,17 +58,13 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::Chat::CompletionListParams::Order]
         #   attr_writer :order
 
-        # @!parse
-        #   # @param after [String]
-        #   # @param limit [Integer]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param model [String]
-        #   # @param order [Symbol, OpenAI::Models::Chat::CompletionListParams::Order]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(after: nil, limit: nil, metadata: nil, model: nil, order: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(after: nil, limit: nil, metadata: nil, model: nil, order: nil, request_options: {})
+        #   @param after [String]
+        #   @param limit [Integer]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param model [String]
+        #   @param order [Symbol, OpenAI::Models::Chat::CompletionListParams::Order]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         # `desc` for descending order. Defaults to `asc`.
@@ -78,11 +74,8 @@ module OpenAI
           ASC = :asc
           DESC = :desc
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

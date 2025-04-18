@@ -36,15 +36,11 @@ module OpenAI
         #   # @return [String]
         #   attr_writer :name
 
-        # @!parse
-        #   # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param name [String]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(data_source:, metadata: nil, name: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(data_source:, metadata: nil, name: nil, request_options: {})
+        #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param name [String]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Details about the run's data source.
         module DataSource
@@ -56,9 +52,8 @@ module OpenAI
           # A CompletionsRunDataSource object describing a model sampling configuration.
           variant -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource }
 
-          # @!parse
-          #   # @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource)]
         end
       end
     end

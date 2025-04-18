@@ -116,49 +116,25 @@ module OpenAI
             #   @return [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil]
             required :usage, -> { OpenAI::Models::Beta::Threads::Runs::RunStep::Usage }, nil?: true
 
-            # @!parse
-            #   # Represents a step in execution of a run.
-            #   #
-            #   # @param id [String]
-            #   # @param assistant_id [String]
-            #   # @param cancelled_at [Integer, nil]
-            #   # @param completed_at [Integer, nil]
-            #   # @param created_at [Integer]
-            #   # @param expired_at [Integer, nil]
-            #   # @param failed_at [Integer, nil]
-            #   # @param last_error [OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, nil]
-            #   # @param metadata [Hash{Symbol=>String}, nil]
-            #   # @param run_id [String]
-            #   # @param status [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status]
-            #   # @param step_details [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
-            #   # @param thread_id [String]
-            #   # @param type [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type]
-            #   # @param usage [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil]
-            #   # @param object [Symbol, :"thread.run.step"]
-            #   #
-            #   def initialize(
-            #     id:,
-            #     assistant_id:,
-            #     cancelled_at:,
-            #     completed_at:,
-            #     created_at:,
-            #     expired_at:,
-            #     failed_at:,
-            #     last_error:,
-            #     metadata:,
-            #     run_id:,
-            #     status:,
-            #     step_details:,
-            #     thread_id:,
-            #     type:,
-            #     usage:,
-            #     object: :"thread.run.step",
-            #     **
-            #   )
-            #     super
-            #   end
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(id:, assistant_id:, cancelled_at:, completed_at:, created_at:, expired_at:, failed_at:, last_error:, metadata:, run_id:, status:, step_details:, thread_id:, type:, usage:, object: :"thread.run.step")
+            #   Represents a step in execution of a run.
+            #
+            #   @param id [String]
+            #   @param assistant_id [String]
+            #   @param cancelled_at [Integer, nil]
+            #   @param completed_at [Integer, nil]
+            #   @param created_at [Integer]
+            #   @param expired_at [Integer, nil]
+            #   @param failed_at [Integer, nil]
+            #   @param last_error [OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, nil]
+            #   @param metadata [Hash{Symbol=>String}, nil]
+            #   @param run_id [String]
+            #   @param status [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status]
+            #   @param step_details [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
+            #   @param thread_id [String]
+            #   @param type [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type]
+            #   @param usage [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil]
+            #   @param object [Symbol, :"thread.run.step"]
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#last_error
             class LastError < OpenAI::Internal::Type::BaseModel
@@ -174,16 +150,12 @@ module OpenAI
               #   @return [String]
               required :message, String
 
-              # @!parse
-              #   # The last error associated with this run step. Will be `null` if there are no
-              #   # errors.
-              #   #
-              #   # @param code [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code]
-              #   # @param message [String]
-              #   #
-              #   def initialize(code:, message:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(code:, message:)
+              #   The last error associated with this run step. Will be `null` if there are no
+              #   errors.
+              #
+              #   @param code [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code]
+              #   @param message [String]
 
               # One of `server_error` or `rate_limit_exceeded`.
               #
@@ -194,11 +166,8 @@ module OpenAI
                 SERVER_ERROR = :server_error
                 RATE_LIMIT_EXCEEDED = :rate_limit_exceeded
 
-                finalize!
-
-                # @!parse
-                #   # @return [Array<Symbol>]
-                #   def self.values; end
+                # @!method self.values
+                #   @return [Array<Symbol>]
               end
             end
 
@@ -215,11 +184,8 @@ module OpenAI
               COMPLETED = :completed
               EXPIRED = :expired
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
 
             # The details of the run step.
@@ -236,9 +202,8 @@ module OpenAI
               # Details of the tool call.
               variant :tool_calls, -> { OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails }
 
-              # @!parse
-              #   # @return [Array(OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails)]
-              #   def self.variants; end
+              # @!method self.variants
+              #   @return [Array(OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails)]
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.
@@ -250,11 +215,8 @@ module OpenAI
               MESSAGE_CREATION = :message_creation
               TOOL_CALLS = :tool_calls
 
-              finalize!
-
-              # @!parse
-              #   # @return [Array<Symbol>]
-              #   def self.values; end
+              # @!method self.values
+              #   @return [Array<Symbol>]
             end
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#usage
@@ -277,17 +239,13 @@ module OpenAI
               #   @return [Integer]
               required :total_tokens, Integer
 
-              # @!parse
-              #   # Usage statistics related to the run step. This value will be `null` while the
-              #   # run step's status is `in_progress`.
-              #   #
-              #   # @param completion_tokens [Integer]
-              #   # @param prompt_tokens [Integer]
-              #   # @param total_tokens [Integer]
-              #   #
-              #   def initialize(completion_tokens:, prompt_tokens:, total_tokens:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(completion_tokens:, prompt_tokens:, total_tokens:)
+              #   Usage statistics related to the run step. This value will be `null` while the
+              #   run step's status is `in_progress`.
+              #
+              #   @param completion_tokens [Integer]
+              #   @param prompt_tokens [Integer]
+              #   @param total_tokens [Integer]
             end
           end
         end

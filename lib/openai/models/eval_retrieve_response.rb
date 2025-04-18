@@ -58,38 +58,22 @@ module OpenAI
       required :testing_criteria,
                -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalRetrieveResponse::TestingCriterion] }
 
-      # @!parse
-      #   # An Eval object with a data source config and testing criteria. An Eval
-      #   # represents a task to be done for your LLM integration. Like:
-      #   #
-      #   # - Improve the quality of my chatbot
-      #   # - See how well my chatbot handles customer support
-      #   # - Check if o3-mini is better at my usecase than gpt-4o
-      #   #
-      #   # @param id [String]
-      #   # @param created_at [Integer]
-      #   # @param data_source_config [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
-      #   # @param metadata [Hash{Symbol=>String}, nil]
-      #   # @param name [String]
-      #   # @param share_with_openai [Boolean]
-      #   # @param testing_criteria [Array<OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
-      #   # @param object [Symbol, :eval]
-      #   #
-      #   def initialize(
-      #     id:,
-      #     created_at:,
-      #     data_source_config:,
-      #     metadata:,
-      #     name:,
-      #     share_with_openai:,
-      #     testing_criteria:,
-      #     object: :eval,
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, created_at:, data_source_config:, metadata:, name:, share_with_openai:, testing_criteria:, object: :eval)
+      #   An Eval object with a data source config and testing criteria. An Eval
+      #   represents a task to be done for your LLM integration. Like:
+      #
+      #   - Improve the quality of my chatbot
+      #   - See how well my chatbot handles customer support
+      #   - Check if o3-mini is better at my usecase than gpt-4o
+      #
+      #   @param id [String]
+      #   @param created_at [Integer]
+      #   @param data_source_config [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #   @param name [String]
+      #   @param share_with_openai [Boolean]
+      #   @param testing_criteria [Array<OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
+      #   @param object [Symbol, :eval]
 
       # Configuration of data sources used in runs of the evaluation.
       #
@@ -111,9 +95,8 @@ module OpenAI
         # `item` and `sample` are both defined when using this data source config.
         variant :stored_completions, -> { OpenAI::Models::EvalStoredCompletionsDataSourceConfig }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig)]
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -133,9 +116,8 @@ module OpenAI
         # A TextSimilarityGrader object which grades text based on similarity metrics.
         variant :text_similarity, -> { OpenAI::Models::EvalTextSimilarityGrader }
 
-        # @!parse
-        #   # @return [Array(OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader)]
-        #   def self.variants; end
+        # @!method self.variants
+        #   @return [Array(OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader)]
       end
     end
   end

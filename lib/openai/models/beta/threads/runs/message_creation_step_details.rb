@@ -18,15 +18,11 @@ module OpenAI
             #   @return [Symbol, :message_creation]
             required :type, const: :message_creation
 
-            # @!parse
-            #   # Details of the message creation by the run step.
-            #   #
-            #   # @param message_creation [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation]
-            #   # @param type [Symbol, :message_creation]
-            #   #
-            #   def initialize(message_creation:, type: :message_creation, **) = super
-
-            # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+            # @!method initialize(message_creation:, type: :message_creation)
+            #   Details of the message creation by the run step.
+            #
+            #   @param message_creation [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation]
+            #   @param type [Symbol, :message_creation]
 
             # @see OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails#message_creation
             class MessageCreation < OpenAI::Internal::Type::BaseModel
@@ -36,12 +32,8 @@ module OpenAI
               #   @return [String]
               required :message_id, String
 
-              # @!parse
-              #   # @param message_id [String]
-              #   #
-              #   def initialize(message_id:, **) = super
-
-              # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+              # @!method initialize(message_id:)
+              #   @param message_id [String]
             end
           end
         end

@@ -21,16 +21,12 @@ module OpenAI
       #   @return [Integer]
       required :total, Integer
 
-      # @!parse
-      #   # The request counts for different statuses within the batch.
-      #   #
-      #   # @param completed [Integer]
-      #   # @param failed [Integer]
-      #   # @param total [Integer]
-      #   #
-      #   def initialize(completed:, failed:, total:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(completed:, failed:, total:)
+      #   The request counts for different statuses within the batch.
+      #
+      #   @param completed [Integer]
+      #   @param failed [Integer]
+      #   @param total [Integer]
     end
   end
 end

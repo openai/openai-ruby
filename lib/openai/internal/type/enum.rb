@@ -46,12 +46,7 @@ module OpenAI
         # All of the valid Symbol values for this enum.
         #
         # @return [Array<NilClass, Boolean, Integer, Float, Symbol>]
-        def values = (@values ||= constants.map { const_get(_1) })
-
-        # @api private
-        #
-        # Guard against thread safety issues by instantiating `@values`.
-        private def finalize! = values
+        def values = constants.map { const_get(_1) }
 
         # @param other [Object]
         #

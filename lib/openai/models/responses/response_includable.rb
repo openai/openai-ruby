@@ -18,11 +18,8 @@ module OpenAI
         MESSAGE_INPUT_IMAGE_IMAGE_URL = :"message.input_image.image_url"
         COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL = :"computer_call_output.output.image_url"
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

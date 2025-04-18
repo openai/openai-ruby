@@ -22,14 +22,10 @@ module OpenAI
         #   @return [String]
         required :tool_call_id, String
 
-        # @!parse
-        #   # @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        #   # @param tool_call_id [String]
-        #   # @param role [Symbol, :tool]
-        #   #
-        #   def initialize(content:, tool_call_id:, role: :tool, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(content:, tool_call_id:, role: :tool)
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
+        #   @param tool_call_id [String]
+        #   @param role [Symbol, :tool]
 
         # The contents of the tool message.
         #
@@ -43,9 +39,8 @@ module OpenAI
           # An array of content parts with a defined type. For tool messages, only type `text` is supported.
           variant -> { OpenAI::Models::Chat::ChatCompletionToolMessageParam::Content::ChatCompletionContentPartTextArray }
 
-          # @!parse
-          #   # @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
-          #   def self.variants; end
+          # @!method self.variants
+          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
           ChatCompletionContentPartTextArray =
             OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]

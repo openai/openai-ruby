@@ -22,16 +22,12 @@ module OpenAI
         #   @return [Symbol, :"response.code_interpreter_call.code.done"]
         required :type, const: :"response.code_interpreter_call.code.done"
 
-        # @!parse
-        #   # Emitted when code snippet output is finalized by the code interpreter.
-        #   #
-        #   # @param code [String]
-        #   # @param output_index [Integer]
-        #   # @param type [Symbol, :"response.code_interpreter_call.code.done"]
-        #   #
-        #   def initialize(code:, output_index:, type: :"response.code_interpreter_call.code.done", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(code:, output_index:, type: :"response.code_interpreter_call.code.done")
+        #   Emitted when code snippet output is finalized by the code interpreter.
+        #
+        #   @param code [String]
+        #   @param output_index [Integer]
+        #   @param type [Symbol, :"response.code_interpreter_call.code.done"]
       end
     end
   end

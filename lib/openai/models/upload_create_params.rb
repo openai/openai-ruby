@@ -38,16 +38,12 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::FilePurpose]
       required :purpose, enum: -> { OpenAI::Models::FilePurpose }
 
-      # @!parse
-      #   # @param bytes [Integer]
-      #   # @param filename [String]
-      #   # @param mime_type [String]
-      #   # @param purpose [Symbol, OpenAI::Models::FilePurpose]
-      #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-      #   #
-      #   def initialize(bytes:, filename:, mime_type:, purpose:, request_options: {}, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(bytes:, filename:, mime_type:, purpose:, request_options: {})
+      #   @param bytes [Integer]
+      #   @param filename [String]
+      #   @param mime_type [String]
+      #   @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end
 end

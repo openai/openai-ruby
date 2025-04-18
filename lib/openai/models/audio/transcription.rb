@@ -22,16 +22,12 @@ module OpenAI
         #   # @return [Array<OpenAI::Models::Audio::Transcription::Logprob>]
         #   attr_writer :logprobs
 
-        # @!parse
-        #   # Represents a transcription response returned by model, based on the provided
-        #   # input.
-        #   #
-        #   # @param text [String]
-        #   # @param logprobs [Array<OpenAI::Models::Audio::Transcription::Logprob>]
-        #   #
-        #   def initialize(text:, logprobs: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(text:, logprobs: nil)
+        #   Represents a transcription response returned by model, based on the provided
+        #   input.
+        #
+        #   @param text [String]
+        #   @param logprobs [Array<OpenAI::Models::Audio::Transcription::Logprob>]
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] token
@@ -64,14 +60,10 @@ module OpenAI
           #   # @return [Float]
           #   attr_writer :logprob
 
-          # @!parse
-          #   # @param token [String]
-          #   # @param bytes [Array<Float>]
-          #   # @param logprob [Float]
-          #   #
-          #   def initialize(token: nil, bytes: nil, logprob: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(token: nil, bytes: nil, logprob: nil)
+          #   @param token [String]
+          #   @param bytes [Array<Float>]
+          #   @param logprob [Float]
         end
       end
     end

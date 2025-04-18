@@ -42,19 +42,15 @@ module OpenAI
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionWord>]
         #   attr_writer :words
 
-        # @!parse
-        #   # Represents a verbose json transcription response returned by model, based on the
-        #   # provided input.
-        #   #
-        #   # @param duration [Float]
-        #   # @param language [String]
-        #   # @param text [String]
-        #   # @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>]
-        #   # @param words [Array<OpenAI::Models::Audio::TranscriptionWord>]
-        #   #
-        #   def initialize(duration:, language:, text:, segments: nil, words: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(duration:, language:, text:, segments: nil, words: nil)
+        #   Represents a verbose json transcription response returned by model, based on the
+        #   provided input.
+        #
+        #   @param duration [Float]
+        #   @param language [String]
+        #   @param text [String]
+        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>]
+        #   @param words [Array<OpenAI::Models::Audio::TranscriptionWord>]
       end
     end
   end

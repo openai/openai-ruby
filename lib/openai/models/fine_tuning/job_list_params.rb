@@ -36,15 +36,11 @@ module OpenAI
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-        # @!parse
-        #   # @param after [String]
-        #   # @param limit [Integer]
-        #   # @param metadata [Hash{Symbol=>String}, nil]
-        #   # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-        #   #
-        #   def initialize(after: nil, limit: nil, metadata: nil, request_options: {}, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(after: nil, limit: nil, metadata: nil, request_options: {})
+        #   @param after [String]
+        #   @param limit [Integer]
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end
   end

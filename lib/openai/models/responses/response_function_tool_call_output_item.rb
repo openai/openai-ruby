@@ -39,16 +39,12 @@ module OpenAI
         #   # @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status]
         #   attr_writer :status
 
-        # @!parse
-        #   # @param id [String]
-        #   # @param call_id [String]
-        #   # @param output [String]
-        #   # @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status]
-        #   # @param type [Symbol, :function_call_output]
-        #   #
-        #   def initialize(id:, call_id:, output:, status: nil, type: :function_call_output, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(id:, call_id:, output:, status: nil, type: :function_call_output)
+        #   @param id [String]
+        #   @param call_id [String]
+        #   @param output [String]
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status]
+        #   @param type [Symbol, :function_call_output]
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
@@ -61,11 +57,8 @@ module OpenAI
           COMPLETED = :completed
           INCOMPLETE = :incomplete
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
     end

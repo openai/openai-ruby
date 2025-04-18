@@ -27,15 +27,11 @@ module OpenAI
       #   @return [Boolean]
       required :flagged, OpenAI::Internal::Type::Boolean
 
-      # @!parse
-      #   # @param categories [OpenAI::Models::Moderation::Categories]
-      #   # @param category_applied_input_types [OpenAI::Models::Moderation::CategoryAppliedInputTypes]
-      #   # @param category_scores [OpenAI::Models::Moderation::CategoryScores]
-      #   # @param flagged [Boolean]
-      #   #
-      #   def initialize(categories:, category_applied_input_types:, category_scores:, flagged:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:)
+      #   @param categories [OpenAI::Models::Moderation::Categories]
+      #   @param category_applied_input_types [OpenAI::Models::Moderation::CategoryAppliedInputTypes]
+      #   @param category_scores [OpenAI::Models::Moderation::CategoryScores]
+      #   @param flagged [Boolean]
 
       # @see OpenAI::Models::Moderation#categories
       class Categories < OpenAI::Internal::Type::BaseModel
@@ -134,43 +130,22 @@ module OpenAI
         #   @return [Boolean]
         required :violence_graphic, OpenAI::Internal::Type::Boolean, api_name: :"violence/graphic"
 
-        # @!parse
-        #   # A list of the categories, and whether they are flagged or not.
-        #   #
-        #   # @param harassment [Boolean]
-        #   # @param harassment_threatening [Boolean]
-        #   # @param hate [Boolean]
-        #   # @param hate_threatening [Boolean]
-        #   # @param illicit [Boolean, nil]
-        #   # @param illicit_violent [Boolean, nil]
-        #   # @param self_harm [Boolean]
-        #   # @param self_harm_instructions [Boolean]
-        #   # @param self_harm_intent [Boolean]
-        #   # @param sexual [Boolean]
-        #   # @param sexual_minors [Boolean]
-        #   # @param violence [Boolean]
-        #   # @param violence_graphic [Boolean]
-        #   #
-        #   def initialize(
-        #     harassment:,
-        #     harassment_threatening:,
-        #     hate:,
-        #     hate_threatening:,
-        #     illicit:,
-        #     illicit_violent:,
-        #     self_harm:,
-        #     self_harm_instructions:,
-        #     self_harm_intent:,
-        #     sexual:,
-        #     sexual_minors:,
-        #     violence:,
-        #     violence_graphic:,
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
+        #   A list of the categories, and whether they are flagged or not.
+        #
+        #   @param harassment [Boolean]
+        #   @param harassment_threatening [Boolean]
+        #   @param hate [Boolean]
+        #   @param hate_threatening [Boolean]
+        #   @param illicit [Boolean, nil]
+        #   @param illicit_violent [Boolean, nil]
+        #   @param self_harm [Boolean]
+        #   @param self_harm_instructions [Boolean]
+        #   @param self_harm_intent [Boolean]
+        #   @param sexual [Boolean]
+        #   @param sexual_minors [Boolean]
+        #   @param violence [Boolean]
+        #   @param violence_graphic [Boolean]
       end
 
       # @see OpenAI::Models::Moderation#category_applied_input_types
@@ -274,54 +249,30 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic] },
                  api_name: :"violence/graphic"
 
-        # @!parse
-        #   # A list of the categories along with the input type(s) that the score applies to.
-        #   #
-        #   # @param harassment [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>]
-        #   # @param harassment_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>]
-        #   # @param hate [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>]
-        #   # @param hate_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening>]
-        #   # @param illicit [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>]
-        #   # @param illicit_violent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent>]
-        #   # @param self_harm [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm>]
-        #   # @param self_harm_instructions [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>]
-        #   # @param self_harm_intent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>]
-        #   # @param sexual [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>]
-        #   # @param sexual_minors [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor>]
-        #   # @param violence [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>]
-        #   # @param violence_graphic [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>]
-        #   #
-        #   def initialize(
-        #     harassment:,
-        #     harassment_threatening:,
-        #     hate:,
-        #     hate_threatening:,
-        #     illicit:,
-        #     illicit_violent:,
-        #     self_harm:,
-        #     self_harm_instructions:,
-        #     self_harm_intent:,
-        #     sexual:,
-        #     sexual_minors:,
-        #     violence:,
-        #     violence_graphic:,
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
+        #   A list of the categories along with the input type(s) that the score applies to.
+        #
+        #   @param harassment [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment>]
+        #   @param harassment_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening>]
+        #   @param hate [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate>]
+        #   @param hate_threatening [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening>]
+        #   @param illicit [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit>]
+        #   @param illicit_violent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent>]
+        #   @param self_harm [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm>]
+        #   @param self_harm_instructions [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction>]
+        #   @param self_harm_intent [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent>]
+        #   @param sexual [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual>]
+        #   @param sexual_minors [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor>]
+        #   @param violence [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence>]
+        #   @param violence_graphic [Array<Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic>]
 
         module Harassment
           extend OpenAI::Internal::Type::Enum
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module HarassmentThreatening
@@ -329,11 +280,8 @@ module OpenAI
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module Hate
@@ -341,11 +289,8 @@ module OpenAI
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module HateThreatening
@@ -353,11 +298,8 @@ module OpenAI
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module Illicit
@@ -365,11 +307,8 @@ module OpenAI
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module IllicitViolent
@@ -377,11 +316,8 @@ module OpenAI
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module SelfHarm
@@ -390,11 +326,8 @@ module OpenAI
           TEXT = :text
           IMAGE = :image
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module SelfHarmInstruction
@@ -403,11 +336,8 @@ module OpenAI
           TEXT = :text
           IMAGE = :image
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module SelfHarmIntent
@@ -416,11 +346,8 @@ module OpenAI
           TEXT = :text
           IMAGE = :image
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module Sexual
@@ -429,11 +356,8 @@ module OpenAI
           TEXT = :text
           IMAGE = :image
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module SexualMinor
@@ -441,11 +365,8 @@ module OpenAI
 
           TEXT = :text
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module Violence
@@ -454,11 +375,8 @@ module OpenAI
           TEXT = :text
           IMAGE = :image
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
 
         module ViolenceGraphic
@@ -467,11 +385,8 @@ module OpenAI
           TEXT = :text
           IMAGE = :image
 
-          finalize!
-
-          # @!parse
-          #   # @return [Array<Symbol>]
-          #   def self.values; end
+          # @!method self.values
+          #   @return [Array<Symbol>]
         end
       end
 
@@ -555,43 +470,22 @@ module OpenAI
         #   @return [Float]
         required :violence_graphic, Float, api_name: :"violence/graphic"
 
-        # @!parse
-        #   # A list of the categories along with their scores as predicted by model.
-        #   #
-        #   # @param harassment [Float]
-        #   # @param harassment_threatening [Float]
-        #   # @param hate [Float]
-        #   # @param hate_threatening [Float]
-        #   # @param illicit [Float]
-        #   # @param illicit_violent [Float]
-        #   # @param self_harm [Float]
-        #   # @param self_harm_instructions [Float]
-        #   # @param self_harm_intent [Float]
-        #   # @param sexual [Float]
-        #   # @param sexual_minors [Float]
-        #   # @param violence [Float]
-        #   # @param violence_graphic [Float]
-        #   #
-        #   def initialize(
-        #     harassment:,
-        #     harassment_threatening:,
-        #     hate:,
-        #     hate_threatening:,
-        #     illicit:,
-        #     illicit_violent:,
-        #     self_harm:,
-        #     self_harm_instructions:,
-        #     self_harm_intent:,
-        #     sexual:,
-        #     sexual_minors:,
-        #     violence:,
-        #     violence_graphic:,
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(harassment:, harassment_threatening:, hate:, hate_threatening:, illicit:, illicit_violent:, self_harm:, self_harm_instructions:, self_harm_intent:, sexual:, sexual_minors:, violence:, violence_graphic:)
+        #   A list of the categories along with their scores as predicted by model.
+        #
+        #   @param harassment [Float]
+        #   @param harassment_threatening [Float]
+        #   @param hate [Float]
+        #   @param hate_threatening [Float]
+        #   @param illicit [Float]
+        #   @param illicit_violent [Float]
+        #   @param self_harm [Float]
+        #   @param self_harm_instructions [Float]
+        #   @param self_harm_intent [Float]
+        #   @param sexual [Float]
+        #   @param sexual_minors [Float]
+        #   @param violence [Float]
+        #   @param violence_graphic [Float]
       end
     end
   end

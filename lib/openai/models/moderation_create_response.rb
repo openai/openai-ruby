@@ -22,16 +22,12 @@ module OpenAI
       #   @return [Array<OpenAI::Models::Moderation>]
       required :results, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Moderation] }
 
-      # @!parse
-      #   # Represents if a given text input is potentially harmful.
-      #   #
-      #   # @param id [String]
-      #   # @param model [String]
-      #   # @param results [Array<OpenAI::Models::Moderation>]
-      #   #
-      #   def initialize(id:, model:, results:, **) = super
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, model:, results:)
+      #   Represents if a given text input is potentially harmful.
+      #
+      #   @param id [String]
+      #   @param model [String]
+      #   @param results [Array<OpenAI::Models::Moderation>]
     end
   end
 end

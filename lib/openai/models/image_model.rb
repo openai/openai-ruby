@@ -8,11 +8,8 @@ module OpenAI
       DALL_E_2 = :"dall-e-2"
       DALL_E_3 = :"dall-e-3"
 
-      finalize!
-
-      # @!parse
-      #   # @return [Array<Symbol>]
-      #   def self.values; end
+      # @!method self.values
+      #   @return [Array<Symbol>]
     end
   end
 end

@@ -70,35 +70,18 @@ module OpenAI
       #   # @return [String]
       #   attr_writer :status_details
 
-      # @!parse
-      #   # The `File` object represents a document that has been uploaded to OpenAI.
-      #   #
-      #   # @param id [String]
-      #   # @param bytes [Integer]
-      #   # @param created_at [Integer]
-      #   # @param filename [String]
-      #   # @param purpose [Symbol, OpenAI::Models::FileObject::Purpose]
-      #   # @param status [Symbol, OpenAI::Models::FileObject::Status]
-      #   # @param expires_at [Integer]
-      #   # @param status_details [String]
-      #   # @param object [Symbol, :file]
-      #   #
-      #   def initialize(
-      #     id:,
-      #     bytes:,
-      #     created_at:,
-      #     filename:,
-      #     purpose:,
-      #     status:,
-      #     expires_at: nil,
-      #     status_details: nil,
-      #     object: :file,
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(id:, bytes:, created_at:, filename:, purpose:, status:, expires_at: nil, status_details: nil, object: :file)
+      #   The `File` object represents a document that has been uploaded to OpenAI.
+      #
+      #   @param id [String]
+      #   @param bytes [Integer]
+      #   @param created_at [Integer]
+      #   @param filename [String]
+      #   @param purpose [Symbol, OpenAI::Models::FileObject::Purpose]
+      #   @param status [Symbol, OpenAI::Models::FileObject::Status]
+      #   @param expires_at [Integer]
+      #   @param status_details [String]
+      #   @param object [Symbol, :file]
 
       # The intended purpose of the file. Supported values are `assistants`,
       # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
@@ -116,11 +99,8 @@ module OpenAI
         FINE_TUNE_RESULTS = :"fine-tune-results"
         VISION = :vision
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
 
       # @deprecated
@@ -136,11 +116,8 @@ module OpenAI
         PROCESSED = :processed
         ERROR = :error
 
-        finalize!
-
-        # @!parse
-        #   # @return [Array<Symbol>]
-        #   def self.values; end
+        # @!method self.values
+        #   @return [Array<Symbol>]
       end
     end
   end

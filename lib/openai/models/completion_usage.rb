@@ -41,27 +41,14 @@ module OpenAI
       #   # @return [OpenAI::Models::CompletionUsage::PromptTokensDetails]
       #   attr_writer :prompt_tokens_details
 
-      # @!parse
-      #   # Usage statistics for the completion request.
-      #   #
-      #   # @param completion_tokens [Integer]
-      #   # @param prompt_tokens [Integer]
-      #   # @param total_tokens [Integer]
-      #   # @param completion_tokens_details [OpenAI::Models::CompletionUsage::CompletionTokensDetails]
-      #   # @param prompt_tokens_details [OpenAI::Models::CompletionUsage::PromptTokensDetails]
-      #   #
-      #   def initialize(
-      #     completion_tokens:,
-      #     prompt_tokens:,
-      #     total_tokens:,
-      #     completion_tokens_details: nil,
-      #     prompt_tokens_details: nil,
-      #     **
-      #   )
-      #     super
-      #   end
-
-      # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+      # @!method initialize(completion_tokens:, prompt_tokens:, total_tokens:, completion_tokens_details: nil, prompt_tokens_details: nil)
+      #   Usage statistics for the completion request.
+      #
+      #   @param completion_tokens [Integer]
+      #   @param prompt_tokens [Integer]
+      #   @param total_tokens [Integer]
+      #   @param completion_tokens_details [OpenAI::Models::CompletionUsage::CompletionTokensDetails]
+      #   @param prompt_tokens_details [OpenAI::Models::CompletionUsage::PromptTokensDetails]
 
       # @see OpenAI::Models::CompletionUsage#completion_tokens_details
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -109,25 +96,13 @@ module OpenAI
         #   # @return [Integer]
         #   attr_writer :rejected_prediction_tokens
 
-        # @!parse
-        #   # Breakdown of tokens used in a completion.
-        #   #
-        #   # @param accepted_prediction_tokens [Integer]
-        #   # @param audio_tokens [Integer]
-        #   # @param reasoning_tokens [Integer]
-        #   # @param rejected_prediction_tokens [Integer]
-        #   #
-        #   def initialize(
-        #     accepted_prediction_tokens: nil,
-        #     audio_tokens: nil,
-        #     reasoning_tokens: nil,
-        #     rejected_prediction_tokens: nil,
-        #     **
-        #   )
-        #     super
-        #   end
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(accepted_prediction_tokens: nil, audio_tokens: nil, reasoning_tokens: nil, rejected_prediction_tokens: nil)
+        #   Breakdown of tokens used in a completion.
+        #
+        #   @param accepted_prediction_tokens [Integer]
+        #   @param audio_tokens [Integer]
+        #   @param reasoning_tokens [Integer]
+        #   @param rejected_prediction_tokens [Integer]
       end
 
       # @see OpenAI::Models::CompletionUsage#prompt_tokens_details
@@ -152,15 +127,11 @@ module OpenAI
         #   # @return [Integer]
         #   attr_writer :cached_tokens
 
-        # @!parse
-        #   # Breakdown of tokens used in the prompt.
-        #   #
-        #   # @param audio_tokens [Integer]
-        #   # @param cached_tokens [Integer]
-        #   #
-        #   def initialize(audio_tokens: nil, cached_tokens: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(audio_tokens: nil, cached_tokens: nil)
+        #   Breakdown of tokens used in the prompt.
+        #
+        #   @param audio_tokens [Integer]
+        #   @param cached_tokens [Integer]
       end
     end
   end

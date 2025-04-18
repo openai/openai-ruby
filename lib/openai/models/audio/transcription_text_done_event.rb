@@ -30,19 +30,15 @@ module OpenAI
         #   # @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>]
         #   attr_writer :logprobs
 
-        # @!parse
-        #   # Emitted when the transcription is complete. Contains the complete transcription
-        #   # text. Only emitted when you
-        #   # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
-        #   # with the `Stream` parameter set to `true`.
-        #   #
-        #   # @param text [String]
-        #   # @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>]
-        #   # @param type [Symbol, :"transcript.text.done"]
-        #   #
-        #   def initialize(text:, logprobs: nil, type: :"transcript.text.done", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(text:, logprobs: nil, type: :"transcript.text.done")
+        #   Emitted when the transcription is complete. Contains the complete transcription
+        #   text. Only emitted when you
+        #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+        #   with the `Stream` parameter set to `true`.
+        #
+        #   @param text [String]
+        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>]
+        #   @param type [Symbol, :"transcript.text.done"]
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute [r] token
@@ -75,14 +71,10 @@ module OpenAI
           #   # @return [Float]
           #   attr_writer :logprob
 
-          # @!parse
-          #   # @param token [String]
-          #   # @param bytes [Array<Object>]
-          #   # @param logprob [Float]
-          #   #
-          #   def initialize(token: nil, bytes: nil, logprob: nil, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(token: nil, bytes: nil, logprob: nil)
+          #   @param token [String]
+          #   @param bytes [Array<Object>]
+          #   @param logprob [Float]
         end
       end
     end

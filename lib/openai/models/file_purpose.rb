@@ -16,11 +16,8 @@ module OpenAI
       USER_DATA = :user_data
       EVALS = :evals
 
-      finalize!
-
-      # @!parse
-      #   # @return [Array<Symbol>]
-      #   def self.values; end
+      # @!method self.values
+      #   @return [Array<Symbol>]
     end
   end
 end

@@ -36,15 +36,11 @@ module OpenAI
         required :top_logprobs,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob] }
 
-        # @!parse
-        #   # @param token [String]
-        #   # @param bytes [Array<Integer>, nil]
-        #   # @param logprob [Float]
-        #   # @param top_logprobs [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
-        #   #
-        #   def initialize(token:, bytes:, logprob:, top_logprobs:, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
+        #   @param token [String]
+        #   @param bytes [Array<Integer>, nil]
+        #   @param logprob [Float]
+        #   @param top_logprobs [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
@@ -70,14 +66,10 @@ module OpenAI
           #   @return [Float]
           required :logprob, Float
 
-          # @!parse
-          #   # @param token [String]
-          #   # @param bytes [Array<Integer>, nil]
-          #   # @param logprob [Float]
-          #   #
-          #   def initialize(token:, bytes:, logprob:, **) = super
-
-          # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+          # @!method initialize(token:, bytes:, logprob:)
+          #   @param token [String]
+          #   @param bytes [Array<Integer>, nil]
+          #   @param logprob [Float]
         end
       end
     end

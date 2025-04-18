@@ -16,15 +16,11 @@ module OpenAI
         #   @return [Symbol, :"response.in_progress"]
         required :type, const: :"response.in_progress"
 
-        # @!parse
-        #   # Emitted when the response is in progress.
-        #   #
-        #   # @param response [OpenAI::Models::Responses::Response]
-        #   # @param type [Symbol, :"response.in_progress"]
-        #   #
-        #   def initialize(response:, type: :"response.in_progress", **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(response:, type: :"response.in_progress")
+        #   Emitted when the response is in progress.
+        #
+        #   @param response [OpenAI::Models::Responses::Response]
+        #   @param type [Symbol, :"response.in_progress"]
       end
     end
   end

@@ -26,18 +26,14 @@ module OpenAI
         #   # @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
         #   attr_writer :format_
 
-        # @!parse
-        #   # Configuration options for a text response from the model. Can be plain text or
-        #   # structured JSON data. Learn more:
-        #   #
-        #   # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-        #   #
-        #   # @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
-        #   #
-        #   def initialize(format_: nil, **) = super
-
-        # def initialize: (Hash | OpenAI::Internal::Type::BaseModel) -> void
+        # @!method initialize(format_: nil)
+        #   Configuration options for a text response from the model. Can be plain text or
+        #   structured JSON data. Learn more:
+        #
+        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
+        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+        #
+        #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
       end
     end
   end
