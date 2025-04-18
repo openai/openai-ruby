@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.1.0-alpha.5 (2025-04-18)
+
+Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/openai/openai-ruby/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
+
+### Features
+
+* implement `#hash` for data containers ([924fcb4](https://github.com/openai/openai-ruby/commit/924fcb42fa0991c491246df7667c72022190f1ee))
+
+
+### Bug Fixes
+
+* always send idempotency header when specified as a request option ([548bfaf](https://github.com/openai/openai-ruby/commit/548bfaf81a4947860ec35ff7efafb144da4863bb))
+* **client:** send correct HTTP path ([896142a](https://github.com/openai/openai-ruby/commit/896142abf1bb03f1eb48e0754cbff04edd081a0e))
+
+
+### Chores
+
+* documentation improvements ([ff43d73](https://github.com/openai/openai-ruby/commit/ff43d73fe6e514d5b9f110892c3880998df8dacf))
+* **internal:** configure releases ([7eb9185](https://github.com/openai/openai-ruby/commit/7eb91852c03eaba177464060631c2645d3db63d0))
+* **internal:** contribute.md and contributor QoL improvements ([d060adf](https://github.com/openai/openai-ruby/commit/d060adf81aadb6b138428bdbde79633fd0dff230))
+* make sorbet enums easier to read ([7c03213](https://github.com/openai/openai-ruby/commit/7c0321329658a6d2823f9022a77be5965186b94c))
+* refine `#inspect` and `#to_s` for model classes ([84308a6](https://github.com/openai/openai-ruby/commit/84308a6683e6ed9d520b05e0ac828de662fe0198))
+* simplify yard annotations by removing most `@!parse` directives ([16ec2e3](https://github.com/openai/openai-ruby/commit/16ec2e391b0cfdf49727099be9afa220c7ab16e5))
+* update README with recommended editor plugins ([c745aef](https://github.com/openai/openai-ruby/commit/c745aef51359e1df2118006dd69470fc4714de5a))
+* update readme with temporary install instructions ([8a79cc0](https://github.com/openai/openai-ruby/commit/8a79cc0a6396f0989feaefb2d4d30b6c1dc75dfe))
+* use `@!method` instead of `@!parse` for virtual method type definitions ([b5fba2e](https://github.com/openai/openai-ruby/commit/b5fba2e689884dc011dec9fd2d8349c9c842d274))
+
 ## 0.1.0-alpha.4 (2025-04-16)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/openai/openai-ruby/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
