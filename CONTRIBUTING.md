@@ -96,20 +96,17 @@ $ bundle exec rake format
 
 ## Editor Support
 
+### Ruby LSP
+
+[Ruby LSP](https://github.com/Shopify/ruby-lsp) has quite good support for go to definition, but not auto-completion.
+
+This can be installed along side Solargraph.
+
 ### Solargraph
 
-This library includes [Solargraph](https://solargraph.org) support for both auto-completion and go to definition.
+[Solargraph](https://solargraph.org) has quite good support for auto-completion, but not go to definition.
 
-```ruby
-gem "solargraph", group: :development
-```
-
-Note: if you had installed the gem locally using `git: "..."` or `path: "..."`, you must update your [`.solargraph.yml`](https://solargraph.org/guides/configuration) to include the path to where the gem is located:
-
-```yaml
-include:
-  - '<path-to-repo>/lib/**/*.rb'
-```
+This can be installed along side Ruby LSP.
 
 ### Sorbet
 
@@ -118,10 +115,6 @@ include:
 1. For go to definition usages, sorbet might get confused and may not always navigate to the correct location.
 
 2. For each generic type in `*.rbi` files, a spurious "Duplicate type member" error is present.
-
-### Ruby LSP
-
-The Ruby LSP has [best effort support](https://shopify.github.io/ruby-lsp/#guessed-types) for inferring type information from Ruby code, and as such it may not always be able to provide accurate type information.
 
 ## Documentation Preview
 
