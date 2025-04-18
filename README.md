@@ -174,19 +174,11 @@ openai.chat.completions.create(
 )
 ```
 
-## Editor support
+## Model DSL
 
-Some editor language services like [Solargraph](https://github.com/castwide/solargraph?tab=readme-ov-file#gem-support) or [Sorbet](https://sorbet.org/docs/rbi#the-hidden-definitions-rbi) require a manually triggered indexing step before functionalities like auto-completion and go to definition can operate.
+This library uses a simple DSL to represent request parameters and response shapes in `lib/openai/models`.
 
-Please refer to their respective documentation for details. This library also includes a [short guide](https://github.com/openai/openai-ruby/tree/main/CONTRIBUTING.md#editor-support) on how to set up various editor services for internal development.
-
-## Advanced Concepts
-
-### Model DSL
-
-This library uses a Model DSL to represent request parameters and response shapes in `lib/openai/models`.
-
-The model classes service as anchor points for both toolchain readable documentation, and language service assisted navigation links. This information also allows the SDK's internals to perform translation between plain and rich data types; e.g., conversion between a `Time` instance and an ISO8601 `String`, and vice versa.
+With the right [editor plugins](https://shopify.github.io/ruby-lsp), you can ctrl-click on elements of the DSL to navigate around and explore the library.
 
 In all places where a `BaseModel` type is specified, vanilla Ruby `Hash` can also be used. For example, the following are interchangeable as arguments:
 
@@ -203,6 +195,12 @@ params = {
   model: :"gpt-4.1"
 }
 ```
+
+## Editor support
+
+A combination of [Shopify LSP](https://shopify.github.io/ruby-lsp) and [Solargraph](https://solargraph.org/) is recommended for non-[Sorbet](https://sorbet.org) users. The former is especially good at go to definition, while the latter has much better auto-completion support.
+
+## Advanced concepts
 
 ### Making custom/undocumented requests
 
