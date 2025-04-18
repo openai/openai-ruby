@@ -10,12 +10,14 @@ The REST API documentation can be found on [platform.openai.com](https://platfor
 
 ## Installation
 
+ℹ️ The `openai` gem is not yet available on [rubygems.org](https://rubygems.org).
+
 To use this gem, install via Bundler by adding the following to your application's `Gemfile`:
 
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.1.0.pre.alpha.4"
+gem "openai", github: "openai/openai-ruby", branch: "main"
 ```
 
 <!-- x-release-please-end -->
