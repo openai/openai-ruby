@@ -24,16 +24,12 @@ module OpenAI
         #   @return [Symbol, :json_schema]
         required :type, const: :json_schema
 
-        # @!attribute [r] description
+        # @!attribute description
         #   A description of what the response format is for, used by the model to determine
         #   how to respond in the format.
         #
         #   @return [String, nil]
         optional :description, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :description
 
         # @!attribute strict
         #   Whether to enable strict schema adherence when generating the output. If set to

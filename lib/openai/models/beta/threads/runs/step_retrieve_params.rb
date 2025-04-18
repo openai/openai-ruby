@@ -7,8 +7,7 @@ module OpenAI
         module Runs
           # @see OpenAI::Resources::Beta::Threads::Runs::Steps#retrieve
           class StepRetrieveParams < OpenAI::Internal::Type::BaseModel
-            # @!parse
-            #   extend OpenAI::Internal::Type::RequestParameters::Converter
+            extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
             # @!attribute thread_id
@@ -21,7 +20,7 @@ module OpenAI
             #   @return [String]
             required :run_id, String
 
-            # @!attribute [r] include
+            # @!attribute include
             #   A list of additional fields to include in the response. Currently the only
             #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
             #   to fetch the file search result content.
@@ -33,10 +32,6 @@ module OpenAI
             #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
             optional :include,
                      -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Beta::Threads::Runs::RunStepInclude] }
-
-            # @!parse
-            #   # @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
-            #   attr_writer :include
 
             # @!method initialize(thread_id:, run_id:, include: nil, request_options: {})
             #   @param thread_id [String]

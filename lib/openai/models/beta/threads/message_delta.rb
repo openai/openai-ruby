@@ -5,26 +5,18 @@ module OpenAI
     module Beta
       module Threads
         class MessageDelta < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] content
+          # @!attribute content
           #   The content of the message in array of text and/or images.
           #
           #   @return [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>, nil]
           optional :content,
                    -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContentDelta] }
 
-          # @!parse
-          #   # @return [Array<OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock>]
-          #   attr_writer :content
-
-          # @!attribute [r] role
+          # @!attribute role
           #   The entity that produced the message. One of `user` or `assistant`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role, nil]
           optional :role, enum: -> { OpenAI::Models::Beta::Threads::MessageDelta::Role }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role]
-          #   attr_writer :role
 
           # @!method initialize(content: nil, role: nil)
           #   The delta containing the fields that have changed on the Message.

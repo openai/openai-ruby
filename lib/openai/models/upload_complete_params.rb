@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Uploads#complete
     class UploadCompleteParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute part_ids
@@ -14,16 +13,12 @@ module OpenAI
       #   @return [Array<String>]
       required :part_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-      # @!attribute [r] md5
+      # @!attribute md5
       #   The optional md5 checksum for the file contents to verify if the bytes uploaded
       #   matches what you expect.
       #
       #   @return [String, nil]
       optional :md5, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :md5
 
       # @!method initialize(part_ids:, md5: nil, request_options: {})
       #   @param part_ids [Array<String>]

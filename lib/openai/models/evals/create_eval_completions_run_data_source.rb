@@ -28,15 +28,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type]
         required :type, enum: -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type }
 
-        # @!attribute [r] sampling_params
+        # @!attribute sampling_params
         #
         #   @return [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams, nil]
         optional :sampling_params,
                  -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams]
-        #   attr_writer :sampling_params
 
         # @!method initialize(input_messages:, model:, source:, type:, sampling_params: nil)
         #   A CompletionsRunDataSource object describing a model sampling configuration.
@@ -341,14 +337,10 @@ module OpenAI
               #   @return [Hash{Symbol=>Object}]
               required :item, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
-              # @!attribute [r] sample
+              # @!attribute sample
               #
               #   @return [Hash{Symbol=>Object}, nil]
               optional :sample, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
-              # @!parse
-              #   # @return [Hash{Symbol=>Object}]
-              #   attr_writer :sample
 
               # @!method initialize(item:, sample: nil)
               #   @param item [Hash{Symbol=>Object}]
@@ -445,45 +437,29 @@ module OpenAI
 
         # @see OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource#sampling_params
         class SamplingParams < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] max_completion_tokens
+          # @!attribute max_completion_tokens
           #   The maximum number of tokens in the generated output.
           #
           #   @return [Integer, nil]
           optional :max_completion_tokens, Integer
 
-          # @!parse
-          #   # @return [Integer]
-          #   attr_writer :max_completion_tokens
-
-          # @!attribute [r] seed
+          # @!attribute seed
           #   A seed value to initialize the randomness, during sampling.
           #
           #   @return [Integer, nil]
           optional :seed, Integer
 
-          # @!parse
-          #   # @return [Integer]
-          #   attr_writer :seed
-
-          # @!attribute [r] temperature
+          # @!attribute temperature
           #   A higher temperature increases randomness in the outputs.
           #
           #   @return [Float, nil]
           optional :temperature, Float
 
-          # @!parse
-          #   # @return [Float]
-          #   attr_writer :temperature
-
-          # @!attribute [r] top_p
+          # @!attribute top_p
           #   An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
           #
           #   @return [Float, nil]
           optional :top_p, Float
-
-          # @!parse
-          #   # @return [Float]
-          #   attr_writer :top_p
 
           # @!method initialize(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil)
           #   @param max_completion_tokens [Integer]

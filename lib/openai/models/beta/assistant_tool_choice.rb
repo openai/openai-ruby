@@ -10,14 +10,10 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type]
         required :type, enum: -> { OpenAI::Models::Beta::AssistantToolChoice::Type }
 
-        # @!attribute [r] function
+        # @!attribute function
         #
         #   @return [OpenAI::Models::Beta::AssistantToolChoiceFunction, nil]
         optional :function, -> { OpenAI::Models::Beta::AssistantToolChoiceFunction }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Beta::AssistantToolChoiceFunction]
-        #   attr_writer :function
 
         # @!method initialize(type:, function: nil)
         #   Specifies a tool the model should use. Use to force the model to call a specific

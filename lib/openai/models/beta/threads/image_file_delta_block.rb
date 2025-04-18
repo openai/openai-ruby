@@ -17,14 +17,10 @@ module OpenAI
           #   @return [Symbol, :image_file]
           required :type, const: :image_file
 
-          # @!attribute [r] image_file
+          # @!attribute image_file
           #
           #   @return [OpenAI::Models::Beta::Threads::ImageFileDelta, nil]
           optional :image_file, -> { OpenAI::Models::Beta::Threads::ImageFileDelta }
-
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::Threads::ImageFileDelta]
-          #   attr_writer :image_file
 
           # @!method initialize(index:, image_file: nil, type: :image_file)
           #   References an image [File](https://platform.openai.com/docs/api-reference/files)

@@ -180,25 +180,17 @@ module OpenAI
             end
 
             class Output < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] content
+              # @!attribute content
               #   The content of the message.
               #
               #   @return [String, nil]
               optional :content, String
 
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :content
-
-              # @!attribute [r] role
+              # @!attribute role
               #   The role of the message (e.g. "system", "assistant", "user").
               #
               #   @return [String, nil]
               optional :role, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :role
 
               # @!method initialize(content: nil, role: nil)
               #   @param content [String]

@@ -4,42 +4,29 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::VectorStores#create
     class VectorStoreCreateParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # @!attribute [r] chunking_strategy
+      # @!attribute chunking_strategy
       #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
       #   strategy. Only applicable if `file_ids` is non-empty.
       #
       #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
       optional :chunking_strategy, union: -> { OpenAI::Models::FileChunkingStrategyParam }
 
-      # @!parse
-      #   # @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
-      #   attr_writer :chunking_strategy
-
-      # @!attribute [r] expires_after
+      # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
       #   @return [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, nil]
       optional :expires_after, -> { OpenAI::Models::VectorStoreCreateParams::ExpiresAfter }
 
-      # @!parse
-      #   # @return [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter]
-      #   attr_writer :expires_after
-
-      # @!attribute [r] file_ids
+      # @!attribute file_ids
       #   A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
       #   the vector store should use. Useful for tools like `file_search` that can access
       #   files.
       #
       #   @return [Array<String>, nil]
       optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
-
-      # @!parse
-      #   # @return [Array<String>]
-      #   attr_writer :file_ids
 
       # @!attribute metadata
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -52,15 +39,11 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-      # @!attribute [r] name
+      # @!attribute name
       #   The name of the vector store.
       #
       #   @return [String, nil]
       optional :name, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :name
 
       # @!method initialize(chunking_strategy: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
       #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]

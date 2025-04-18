@@ -62,68 +62,40 @@ module OpenAI
 
           # @see OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
           class Metrics < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] full_valid_loss
+            # @!attribute full_valid_loss
             #
             #   @return [Float, nil]
             optional :full_valid_loss, Float
 
-            # @!parse
-            #   # @return [Float]
-            #   attr_writer :full_valid_loss
-
-            # @!attribute [r] full_valid_mean_token_accuracy
+            # @!attribute full_valid_mean_token_accuracy
             #
             #   @return [Float, nil]
             optional :full_valid_mean_token_accuracy, Float
 
-            # @!parse
-            #   # @return [Float]
-            #   attr_writer :full_valid_mean_token_accuracy
-
-            # @!attribute [r] step
+            # @!attribute step
             #
             #   @return [Float, nil]
             optional :step, Float
 
-            # @!parse
-            #   # @return [Float]
-            #   attr_writer :step
-
-            # @!attribute [r] train_loss
+            # @!attribute train_loss
             #
             #   @return [Float, nil]
             optional :train_loss, Float
 
-            # @!parse
-            #   # @return [Float]
-            #   attr_writer :train_loss
-
-            # @!attribute [r] train_mean_token_accuracy
+            # @!attribute train_mean_token_accuracy
             #
             #   @return [Float, nil]
             optional :train_mean_token_accuracy, Float
 
-            # @!parse
-            #   # @return [Float]
-            #   attr_writer :train_mean_token_accuracy
-
-            # @!attribute [r] valid_loss
+            # @!attribute valid_loss
             #
             #   @return [Float, nil]
             optional :valid_loss, Float
 
-            # @!parse
-            #   # @return [Float]
-            #   attr_writer :valid_loss
-
-            # @!attribute [r] valid_mean_token_accuracy
+            # @!attribute valid_mean_token_accuracy
             #
             #   @return [Float, nil]
             optional :valid_mean_token_accuracy, Float
-
-            # @!parse
-            #   # @return [Float]
-            #   attr_writer :valid_mean_token_accuracy
 
             # @!method initialize(full_valid_loss: nil, full_valid_mean_token_accuracy: nil, step: nil, train_loss: nil, train_mean_token_accuracy: nil, valid_loss: nil, valid_mean_token_accuracy: nil)
             #   Metrics at the step number during the fine-tuning job.

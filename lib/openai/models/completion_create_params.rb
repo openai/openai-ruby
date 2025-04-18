@@ -6,8 +6,7 @@ module OpenAI
     #
     # @see OpenAI::Resources::Completions#create_streaming
     class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute model
@@ -175,17 +174,13 @@ module OpenAI
       #   @return [Float, nil]
       optional :top_p, Float, nil?: true
 
-      # @!attribute [r] user
+      # @!attribute user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
       #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :user
 
       # @!method initialize(model:, prompt:, best_of: nil, echo: nil, frequency_penalty: nil, logit_bias: nil, logprobs: nil, max_tokens: nil, n: nil, presence_penalty: nil, seed: nil, stop: nil, stream_options: nil, suffix: nil, temperature: nil, top_p: nil, user: nil, request_options: {})
       #   @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]

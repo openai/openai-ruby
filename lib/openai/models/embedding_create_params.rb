@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Embeddings#create
     class EmbeddingCreateParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute input
@@ -31,39 +30,27 @@ module OpenAI
       #   @return [String, Symbol, OpenAI::Models::EmbeddingModel]
       required :model, union: -> { OpenAI::Models::EmbeddingCreateParams::Model }
 
-      # @!attribute [r] dimensions
+      # @!attribute dimensions
       #   The number of dimensions the resulting output embeddings should have. Only
       #   supported in `text-embedding-3` and later models.
       #
       #   @return [Integer, nil]
       optional :dimensions, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :dimensions
-
-      # @!attribute [r] encoding_format
+      # @!attribute encoding_format
       #   The format to return the embeddings in. Can be either `float` or
       #   [`base64`](https://pypi.org/project/pybase64/).
       #
       #   @return [Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat, nil]
       optional :encoding_format, enum: -> { OpenAI::Models::EmbeddingCreateParams::EncodingFormat }
 
-      # @!parse
-      #   # @return [Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat]
-      #   attr_writer :encoding_format
-
-      # @!attribute [r] user
+      # @!attribute user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
       #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :user
 
       # @!method initialize(input:, model:, dimensions: nil, encoding_format: nil, user: nil, request_options: {})
       #   @param input [String, Array<String>, Array<Integer>, Array<Array<Integer>>]

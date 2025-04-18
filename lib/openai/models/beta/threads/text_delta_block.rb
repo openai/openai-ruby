@@ -17,14 +17,10 @@ module OpenAI
           #   @return [Symbol, :text]
           required :type, const: :text
 
-          # @!attribute [r] text
+          # @!attribute text
           #
           #   @return [OpenAI::Models::Beta::Threads::TextDelta, nil]
           optional :text, -> { OpenAI::Models::Beta::Threads::TextDelta }
-
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::Threads::TextDelta]
-          #   attr_writer :text
 
           # @!method initialize(index:, text: nil, type: :text)
           #   The text content that is part of a message.

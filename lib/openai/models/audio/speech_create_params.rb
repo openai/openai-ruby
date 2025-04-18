@@ -5,8 +5,7 @@ module OpenAI
     module Audio
       # @see OpenAI::Resources::Audio::Speech#create
       class SpeechCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute input
@@ -31,38 +30,26 @@ module OpenAI
         #   @return [String, Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice]
         required :voice, union: -> { OpenAI::Models::Audio::SpeechCreateParams::Voice }
 
-        # @!attribute [r] instructions
+        # @!attribute instructions
         #   Control the voice of your generated audio with additional instructions. Does not
         #   work with `tts-1` or `tts-1-hd`.
         #
         #   @return [String, nil]
         optional :instructions, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :instructions
-
-        # @!attribute [r] response_format
+        # @!attribute response_format
         #   The format to audio in. Supported formats are `mp3`, `opus`, `aac`, `flac`,
         #   `wav`, and `pcm`.
         #
         #   @return [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat]
-        #   attr_writer :response_format
-
-        # @!attribute [r] speed
+        # @!attribute speed
         #   The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
         #   the default.
         #
         #   @return [Float, nil]
         optional :speed, Float
-
-        # @!parse
-        #   # @return [Float]
-        #   attr_writer :speed
 
         # @!method initialize(input:, model:, voice:, instructions: nil, response_format: nil, speed: nil, request_options: {})
         #   @param input [String]

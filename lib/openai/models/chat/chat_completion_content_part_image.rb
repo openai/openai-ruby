@@ -29,16 +29,12 @@ module OpenAI
           #   @return [String]
           required :url, String
 
-          # @!attribute [r] detail
+          # @!attribute detail
           #   Specifies the detail level of the image. Learn more in the
           #   [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
           #
           #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail, nil]
           optional :detail, enum: -> { OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail]
-          #   attr_writer :detail
 
           # @!method initialize(url:, detail: nil)
           #   @param url [String]

@@ -12,16 +12,12 @@ module OpenAI
           #   @return [String]
           required :url, String
 
-          # @!attribute [r] detail
+          # @!attribute detail
           #   Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           #   to high resolution using `high`. Default value is `auto`
           #
           #   @return [Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail, nil]
           optional :detail, enum: -> { OpenAI::Models::Beta::Threads::ImageURL::Detail }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail]
-          #   attr_writer :detail
 
           # @!method initialize(url:, detail: nil)
           #   @param url [String]

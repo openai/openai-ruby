@@ -4,51 +4,34 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Evals#list
     class EvalListParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # @!attribute [r] after
+      # @!attribute after
       #   Identifier for the last eval from the previous pagination request.
       #
       #   @return [String, nil]
       optional :after, String
 
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :after
-
-      # @!attribute [r] limit
+      # @!attribute limit
       #   Number of evals to retrieve.
       #
       #   @return [Integer, nil]
       optional :limit, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :limit
-
-      # @!attribute [r] order
+      # @!attribute order
       #   Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for
       #   descending order.
       #
       #   @return [Symbol, OpenAI::Models::EvalListParams::Order, nil]
       optional :order, enum: -> { OpenAI::Models::EvalListParams::Order }
 
-      # @!parse
-      #   # @return [Symbol, OpenAI::Models::EvalListParams::Order]
-      #   attr_writer :order
-
-      # @!attribute [r] order_by
+      # @!attribute order_by
       #   Evals can be ordered by creation time or last updated time. Use `created_at` for
       #   creation time or `updated_at` for last updated time.
       #
       #   @return [Symbol, OpenAI::Models::EvalListParams::OrderBy, nil]
       optional :order_by, enum: -> { OpenAI::Models::EvalListParams::OrderBy }
-
-      # @!parse
-      #   # @return [Symbol, OpenAI::Models::EvalListParams::OrderBy]
-      #   attr_writer :order_by
 
       # @!method initialize(after: nil, limit: nil, order: nil, order_by: nil, request_options: {})
       #   @param after [String]

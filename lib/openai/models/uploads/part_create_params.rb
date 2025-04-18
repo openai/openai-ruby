@@ -5,8 +5,7 @@ module OpenAI
     module Uploads
       # @see OpenAI::Resources::Uploads::Parts#create
       class PartCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute data

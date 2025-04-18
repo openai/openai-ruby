@@ -18,15 +18,11 @@ module OpenAI
             #   @return [Symbol, :logs]
             required :type, const: :logs
 
-            # @!attribute [r] logs
+            # @!attribute logs
             #   The text output from the Code Interpreter tool call.
             #
             #   @return [String, nil]
             optional :logs, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :logs
 
             # @!method initialize(index:, logs: nil, type: :logs)
             #   Text output from the Code Interpreter tool call as part of a run step.

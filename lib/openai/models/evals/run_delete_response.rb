@@ -5,32 +5,20 @@ module OpenAI
     module Evals
       # @see OpenAI::Resources::Evals::Runs#delete
       class RunDeleteResponse < OpenAI::Internal::Type::BaseModel
-        # @!attribute [r] deleted
+        # @!attribute deleted
         #
         #   @return [Boolean, nil]
         optional :deleted, OpenAI::Internal::Type::Boolean
 
-        # @!parse
-        #   # @return [Boolean]
-        #   attr_writer :deleted
-
-        # @!attribute [r] object
+        # @!attribute object
         #
         #   @return [String, nil]
         optional :object, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :object
-
-        # @!attribute [r] run_id
+        # @!attribute run_id
         #
         #   @return [String, nil]
         optional :run_id, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :run_id
 
         # @!method initialize(deleted: nil, object: nil, run_id: nil)
         #   @param deleted [Boolean]

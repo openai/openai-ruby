@@ -5,51 +5,34 @@ module OpenAI
     module Evals
       # @see OpenAI::Resources::Evals::Runs#list
       class RunListParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        # @!attribute [r] after
+        # @!attribute after
         #   Identifier for the last run from the previous pagination request.
         #
         #   @return [String, nil]
         optional :after, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :after
-
-        # @!attribute [r] limit
+        # @!attribute limit
         #   Number of runs to retrieve.
         #
         #   @return [Integer, nil]
         optional :limit, Integer
 
-        # @!parse
-        #   # @return [Integer]
-        #   attr_writer :limit
-
-        # @!attribute [r] order
+        # @!attribute order
         #   Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
         #   descending order. Defaults to `asc`.
         #
         #   @return [Symbol, OpenAI::Models::Evals::RunListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Models::Evals::RunListParams::Order }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Evals::RunListParams::Order]
-        #   attr_writer :order
-
-        # @!attribute [r] status
+        # @!attribute status
         #   Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
         #   "canceled".
         #
         #   @return [Symbol, OpenAI::Models::Evals::RunListParams::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Evals::RunListParams::Status }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Evals::RunListParams::Status]
-        #   attr_writer :status
 
         # @!method initialize(after: nil, limit: nil, order: nil, status: nil, request_options: {})
         #   @param after [String]

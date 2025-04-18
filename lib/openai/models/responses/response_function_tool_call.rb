@@ -28,26 +28,18 @@ module OpenAI
         #   @return [Symbol, :function_call]
         required :type, const: :function_call
 
-        # @!attribute [r] id
+        # @!attribute id
         #   The unique ID of the function tool call.
         #
         #   @return [String, nil]
         optional :id, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :id
-
-        # @!attribute [r] status
+        # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseFunctionToolCall::Status }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status]
-        #   attr_writer :status
 
         # @!method initialize(arguments:, call_id:, name:, id: nil, status: nil, type: :function_call)
         #   A tool call to run a function. See the
