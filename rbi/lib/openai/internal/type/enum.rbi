@@ -28,6 +28,9 @@ module OpenAI
         sig { params(other: T.anything).returns(T::Boolean) }
         def ==(other); end
 
+        sig { returns(Integer) }
+        def hash; end
+
         # @api private
         #
         # Unlike with primitives, `Enum` additionally validates that the value is a member
