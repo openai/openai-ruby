@@ -33,8 +33,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::ImageURL::Detail::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::ImageURL::Detail::TaggedSymbol)
             LOW = T.let(:low, OpenAI::Models::Beta::Threads::ImageURL::Detail::TaggedSymbol)

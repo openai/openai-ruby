@@ -270,14 +270,7 @@ module OpenAI
                       T.type_alias do
                         T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Content::Type)
                       end
-                    OrSymbol =
-                      T.type_alias do
-                        T.any(
-                          Symbol,
-                          String,
-                          OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Content::Type::TaggedSymbol
-                        )
-                      end
+                    OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                     INPUT_TEXT =
                       T.let(
@@ -305,14 +298,7 @@ module OpenAI
                     T.type_alias do
                       T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Role)
                     end
-                  OrSymbol =
-                    T.type_alias do
-                      T.any(
-                        Symbol,
-                        String,
-                        OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Role::TaggedSymbol
-                      )
-                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   USER =
                     T.let(
@@ -349,14 +335,7 @@ module OpenAI
                     T.type_alias do
                       T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Type)
                     end
-                  OrSymbol =
-                    T.type_alias do
-                      T.any(
-                        Symbol,
-                        String,
-                        OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::InputMessage::Type::TaggedSymbol
-                      )
-                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   MESSAGE =
                     T.let(
@@ -477,14 +456,7 @@ module OpenAI
                       T.type_alias do
                         T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Content::Type)
                       end
-                    OrSymbol =
-                      T.type_alias do
-                        T.any(
-                          Symbol,
-                          String,
-                          OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Content::Type::TaggedSymbol
-                        )
-                      end
+                    OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                     OUTPUT_TEXT =
                       T.let(
@@ -512,14 +484,7 @@ module OpenAI
                     T.type_alias do
                       T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Role)
                     end
-                  OrSymbol =
-                    T.type_alias do
-                      T.any(
-                        Symbol,
-                        String,
-                        OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Role::TaggedSymbol
-                      )
-                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   ASSISTANT =
                     T.let(
@@ -546,14 +511,7 @@ module OpenAI
                     T.type_alias do
                       T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Type)
                     end
-                  OrSymbol =
-                    T.type_alias do
-                      T.any(
-                        Symbol,
-                        String,
-                        OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::OutputMessage::Type::TaggedSymbol
-                      )
-                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   MESSAGE =
                     T.let(
@@ -770,8 +728,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           COMPLETIONS =
             T.let(:completions, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type::TaggedSymbol)

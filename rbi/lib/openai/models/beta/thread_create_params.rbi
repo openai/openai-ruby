@@ -191,8 +191,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             USER = T.let(:user, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol)
             ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::ThreadCreateParams::Message::Role::TaggedSymbol)

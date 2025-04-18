@@ -69,8 +69,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Evals::RunListParams::Order) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Evals::RunListParams::Order::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           ASC = T.let(:asc, OpenAI::Models::Evals::RunListParams::Order::TaggedSymbol)
           DESC = T.let(:desc, OpenAI::Models::Evals::RunListParams::Order::TaggedSymbol)
@@ -85,8 +84,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Evals::RunListParams::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Evals::RunListParams::Status::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           QUEUED = T.let(:queued, OpenAI::Models::Evals::RunListParams::Status::TaggedSymbol)
           IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Evals::RunListParams::Status::TaggedSymbol)

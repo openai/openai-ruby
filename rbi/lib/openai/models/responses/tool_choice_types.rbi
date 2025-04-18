@@ -35,8 +35,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           FILE_SEARCH = T.let(:file_search, OpenAI::Models::Responses::ToolChoiceTypes::Type::TaggedSymbol)
           WEB_SEARCH_PREVIEW =

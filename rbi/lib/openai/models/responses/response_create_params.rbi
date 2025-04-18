@@ -455,8 +455,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol)
@@ -475,7 +474,7 @@ module OpenAI
           sig do
             override
               .returns(
-                [OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+                [OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
               )
           end
           def self.variants; end
@@ -493,8 +492,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)
           DISABLED = T.let(:disabled, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)

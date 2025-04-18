@@ -15,8 +15,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ToolChoiceOptions) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         NONE = T.let(:none, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol)
         AUTO = T.let(:auto, OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol)

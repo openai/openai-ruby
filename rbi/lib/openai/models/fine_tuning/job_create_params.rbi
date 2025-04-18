@@ -149,12 +149,11 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol]) }
           def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Model) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
           DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::FineTuning::JobCreateParams::Model::TaggedSymbol)
@@ -626,8 +625,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::JobCreateParams::Method::Type) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)
             DPO = T.let(:dpo, OpenAI::Models::FineTuning::JobCreateParams::Method::Type::TaggedSymbol)

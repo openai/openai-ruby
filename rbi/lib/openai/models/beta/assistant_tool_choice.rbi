@@ -41,8 +41,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           FUNCTION = T.let(:function, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
           CODE_INTERPRETER =

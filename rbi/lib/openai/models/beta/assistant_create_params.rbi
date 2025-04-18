@@ -230,7 +230,7 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::ChatModel::TaggedSymbol]) }
           def self.variants; end
         end
 

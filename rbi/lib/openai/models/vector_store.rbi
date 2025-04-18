@@ -163,7 +163,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStore::Status) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStore::Status::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         EXPIRED = T.let(:expired, OpenAI::Models::VectorStore::Status::TaggedSymbol)
         IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStore::Status::TaggedSymbol)

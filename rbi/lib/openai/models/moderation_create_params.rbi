@@ -94,7 +94,7 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, OpenAI::Models::ModerationModel::OrSymbol]) }
+        sig { override.returns([String, OpenAI::Models::ModerationModel::TaggedSymbol]) }
         def self.variants; end
       end
     end

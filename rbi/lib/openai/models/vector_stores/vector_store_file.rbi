@@ -156,8 +156,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             SERVER_ERROR =
               T.let(:server_error, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
@@ -178,8 +177,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
           COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)

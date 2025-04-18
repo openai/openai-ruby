@@ -11,7 +11,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::RunStatus) }
-          OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           QUEUED = T.let(:queued, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)
           IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Beta::Threads::RunStatus::TaggedSymbol)

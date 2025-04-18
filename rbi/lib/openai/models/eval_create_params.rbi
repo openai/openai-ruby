@@ -382,14 +382,7 @@ module OpenAI
                     T.type_alias do
                       T.all(Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Content::Type)
                     end
-                  OrSymbol =
-                    T.type_alias do
-                      T.any(
-                        Symbol,
-                        String,
-                        OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Content::Type::TaggedSymbol
-                      )
-                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   INPUT_TEXT =
                     T.let(
@@ -415,14 +408,7 @@ module OpenAI
 
                 TaggedSymbol =
                   T.type_alias { T.all(Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Role) }
-                OrSymbol =
-                  T.type_alias do
-                    T.any(
-                      Symbol,
-                      String,
-                      OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Role::TaggedSymbol
-                    )
-                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                 USER =
                   T.let(
@@ -455,14 +441,7 @@ module OpenAI
 
                 TaggedSymbol =
                   T.type_alias { T.all(Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Type) }
-                OrSymbol =
-                  T.type_alias do
-                    T.any(
-                      Symbol,
-                      String,
-                      OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::InputMessage::Type::TaggedSymbol
-                    )
-                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                 MESSAGE =
                   T.let(
@@ -577,14 +556,7 @@ module OpenAI
                     T.type_alias do
                       T.all(Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Content::Type)
                     end
-                  OrSymbol =
-                    T.type_alias do
-                      T.any(
-                        Symbol,
-                        String,
-                        OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Content::Type::TaggedSymbol
-                      )
-                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   OUTPUT_TEXT =
                     T.let(
@@ -610,14 +582,7 @@ module OpenAI
 
                 TaggedSymbol =
                   T.type_alias { T.all(Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Role) }
-                OrSymbol =
-                  T.type_alias do
-                    T.any(
-                      Symbol,
-                      String,
-                      OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Role::TaggedSymbol
-                    )
-                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                 ASSISTANT =
                   T.let(
@@ -640,14 +605,7 @@ module OpenAI
 
                 TaggedSymbol =
                   T.type_alias { T.all(Symbol, OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Type) }
-                OrSymbol =
-                  T.type_alias do
-                    T.any(
-                      Symbol,
-                      String,
-                      OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::OutputMessage::Type::TaggedSymbol
-                    )
-                  end
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                 MESSAGE =
                   T.let(

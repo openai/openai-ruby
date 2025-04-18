@@ -91,7 +91,7 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::Audio::SpeechModel::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::Audio::SpeechModel::TaggedSymbol]) }
           def self.variants; end
         end
 
@@ -102,12 +102,11 @@ module OpenAI
         module Voice
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol]) }
           def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::Voice) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           ALLOY = T.let(:alloy, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
           ASH = T.let(:ash, OpenAI::Models::Audio::SpeechCreateParams::Voice::TaggedSymbol)
@@ -128,8 +127,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           MP3 = T.let(:mp3, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)
           OPUS = T.let(:opus, OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::TaggedSymbol)

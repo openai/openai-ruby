@@ -137,7 +137,7 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::AudioModel::TaggedSymbol]) }
           def self.variants; end
         end
 
@@ -146,14 +146,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity) }
-          OrSymbol =
-            T.type_alias do
-              T.any(
-                Symbol,
-                String,
-                OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol
-              )
-            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           WORD = T.let(:word, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol)
           SEGMENT =

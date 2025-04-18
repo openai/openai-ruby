@@ -61,8 +61,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             ASC = T.let(:asc, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol)
             DESC = T.let(:desc, OpenAI::Models::Chat::Completions::MessageListParams::Order::TaggedSymbol)
