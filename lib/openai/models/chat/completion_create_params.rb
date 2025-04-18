@@ -7,8 +7,7 @@ module OpenAI
       #
       # @see OpenAI::Resources::Chat::Completions#stream_raw
       class CompletionCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute messages
@@ -49,7 +48,7 @@ module OpenAI
         #   @return [Float, nil]
         optional :frequency_penalty, Float, nil?: true
 
-        # @!attribute [r] function_call
+        # @!attribute function_call
         #   Deprecated in favor of `tool_choice`.
         #
         #   Controls which (if any) function is called by the model.
@@ -68,11 +67,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption, nil]
         optional :function_call, union: -> { OpenAI::Models::Chat::CompletionCreateParams::FunctionCall }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
-        #   attr_writer :function_call
-
-        # @!attribute [r] functions
+        # @!attribute functions
         #   Deprecated in favor of `tools`.
         #
         #   A list of functions the model may generate JSON inputs for.
@@ -80,10 +75,6 @@ module OpenAI
         #   @return [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>, nil]
         optional :functions,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::CompletionCreateParams::Function] }
-
-        # @!parse
-        #   # @return [Array<OpenAI::Models::Chat::CompletionCreateParams::Function>]
-        #   attr_writer :functions
 
         # @!attribute logit_bias
         #   Modify the likelihood of specified tokens appearing in the completion.
@@ -162,17 +153,13 @@ module OpenAI
         #   @return [Integer, nil]
         optional :n, Integer, nil?: true
 
-        # @!attribute [r] parallel_tool_calls
+        # @!attribute parallel_tool_calls
         #   Whether to enable
         #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
         #   during tool use.
         #
         #   @return [Boolean, nil]
         optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
-
-        # @!parse
-        #   # @return [Boolean]
-        #   attr_writer :parallel_tool_calls
 
         # @!attribute prediction
         #   Static predicted output content, such as the content of a text file that is
@@ -200,7 +187,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
         optional :reasoning_effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
 
-        # @!attribute [r] response_format
+        # @!attribute response_format
         #   An object specifying the format that the model must output.
         #
         #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
@@ -214,10 +201,6 @@ module OpenAI
         #
         #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject, nil]
         optional :response_format, union: -> { OpenAI::Models::Chat::CompletionCreateParams::ResponseFormat }
-
-        # @!parse
-        #   # @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
-        #   attr_writer :response_format
 
         # @!attribute seed
         #   This feature is in Beta. If specified, our system will make a best effort to
@@ -283,7 +266,7 @@ module OpenAI
         #   @return [Float, nil]
         optional :temperature, Float, nil?: true
 
-        # @!attribute [r] tool_choice
+        # @!attribute tool_choice
         #   Controls which (if any) tool is called by the model. `none` means the model will
         #   not call any tool and instead generates a message. `auto` means the model can
         #   pick between generating a message or calling one or more tools. `required` means
@@ -297,21 +280,13 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice, nil]
         optional :tool_choice, union: -> { OpenAI::Models::Chat::ChatCompletionToolChoiceOption }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
-        #   attr_writer :tool_choice
-
-        # @!attribute [r] tools
+        # @!attribute tools
         #   A list of tools the model may call. Currently, only functions are supported as a
         #   tool. Use this to provide a list of functions the model may generate JSON inputs
         #   for. A max of 128 functions are supported.
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTool] }
-
-        # @!parse
-        #   # @return [Array<OpenAI::Models::Chat::ChatCompletionTool>]
-        #   attr_writer :tools
 
         # @!attribute top_logprobs
         #   An integer between 0 and 20 specifying the number of most likely tokens to
@@ -331,7 +306,7 @@ module OpenAI
         #   @return [Float, nil]
         optional :top_p, Float, nil?: true
 
-        # @!attribute [r] user
+        # @!attribute user
         #   A unique identifier representing your end-user, which can help OpenAI to monitor
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
@@ -339,21 +314,13 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :user
-
-        # @!attribute [r] web_search_options
+        # @!attribute web_search_options
         #   This tool searches the web for relevant results to use in a response. Learn more
         #   about the
         #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
         #
         #   @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, nil]
         optional :web_search_options, -> { OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions]
-        #   attr_writer :web_search_options
 
         # @!method initialize(messages:, model:, audio: nil, frequency_penalty: nil, function_call: nil, functions: nil, logit_bias: nil, logprobs: nil, max_completion_tokens: nil, max_tokens: nil, metadata: nil, modalities: nil, n: nil, parallel_tool_calls: nil, prediction: nil, presence_penalty: nil, reasoning_effort: nil, response_format: nil, seed: nil, service_tier: nil, stop: nil, store: nil, stream_options: nil, temperature: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, user: nil, web_search_options: nil, request_options: {})
         #   @param messages [Array<OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam>]
@@ -459,18 +426,14 @@ module OpenAI
           #   @return [String]
           required :name, String
 
-          # @!attribute [r] description
+          # @!attribute description
           #   A description of what the function does, used by the model to choose when and
           #   how to call the function.
           #
           #   @return [String, nil]
           optional :description, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :description
-
-          # @!attribute [r] parameters
+          # @!attribute parameters
           #   The parameters the functions accepts, described as a JSON Schema object. See the
           #   [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
           #   and the
@@ -481,10 +444,6 @@ module OpenAI
           #
           #   @return [Hash{Symbol=>Object}, nil]
           optional :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
-          # @!parse
-          #   # @return [Hash{Symbol=>Object}]
-          #   attr_writer :parameters
 
           # @!method initialize(name:, description: nil, parameters: nil)
           #   @param name [String]
@@ -578,17 +537,13 @@ module OpenAI
         end
 
         class WebSearchOptions < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] search_context_size
+          # @!attribute search_context_size
           #   High level guidance for the amount of context window space to use for the
           #   search. One of `low`, `medium`, or `high`. `medium` is the default.
           #
           #   @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize, nil]
           optional :search_context_size,
                    enum: -> { OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize]
-          #   attr_writer :search_context_size
 
           # @!attribute user_location
           #   Approximate location parameters for the search.
@@ -644,47 +599,31 @@ module OpenAI
 
             # @see OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation#approximate
             class Approximate < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] city
+              # @!attribute city
               #   Free text input for the city of the user, e.g. `San Francisco`.
               #
               #   @return [String, nil]
               optional :city, String
 
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :city
-
-              # @!attribute [r] country
+              # @!attribute country
               #   The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
               #   the user, e.g. `US`.
               #
               #   @return [String, nil]
               optional :country, String
 
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :country
-
-              # @!attribute [r] region
+              # @!attribute region
               #   Free text input for the region of the user, e.g. `California`.
               #
               #   @return [String, nil]
               optional :region, String
 
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :region
-
-              # @!attribute [r] timezone
+              # @!attribute timezone
               #   The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
               #   user, e.g. `America/Los_Angeles`.
               #
               #   @return [String, nil]
               optional :timezone, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :timezone
 
               # @!method initialize(city: nil, country: nil, region: nil, timezone: nil)
               #   Approximate location parameters for the search.

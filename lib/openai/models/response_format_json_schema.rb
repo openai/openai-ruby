@@ -32,27 +32,19 @@ module OpenAI
         #   @return [String]
         required :name, String
 
-        # @!attribute [r] description
+        # @!attribute description
         #   A description of what the response format is for, used by the model to determine
         #   how to respond in the format.
         #
         #   @return [String, nil]
         optional :description, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :description
-
-        # @!attribute [r] schema
+        # @!attribute schema
         #   The schema for the response format, described as a JSON Schema object. Learn how
         #   to build JSON schemas [here](https://json-schema.org/).
         #
         #   @return [Hash{Symbol=>Object}, nil]
         optional :schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
-        # @!parse
-        #   # @return [Hash{Symbol=>Object}]
-        #   attr_writer :schema
 
         # @!attribute strict
         #   Whether to enable strict schema adherence when generating the output. If set to

@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Evals#update
     class EvalUpdateParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute metadata
@@ -19,15 +18,11 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-      # @!attribute [r] name
+      # @!attribute name
       #   Rename the evaluation.
       #
       #   @return [String, nil]
       optional :name, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :name
 
       # @!method initialize(metadata: nil, name: nil, request_options: {})
       #   @param metadata [Hash{Symbol=>String}, nil]

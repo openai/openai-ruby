@@ -5,31 +5,22 @@ module OpenAI
     module Responses
       # @see OpenAI::Resources::Responses::InputItems#list
       class InputItemListParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        # @!attribute [r] after
+        # @!attribute after
         #   An item ID to list items after, used in pagination.
         #
         #   @return [String, nil]
         optional :after, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :after
-
-        # @!attribute [r] before
+        # @!attribute before
         #   An item ID to list items before, used in pagination.
         #
         #   @return [String, nil]
         optional :before, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :before
-
-        # @!attribute [r] include
+        # @!attribute include
         #   Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
         #
@@ -37,22 +28,14 @@ module OpenAI
         optional :include,
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
 
-        # @!parse
-        #   # @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
-        #   attr_writer :include
-
-        # @!attribute [r] limit
+        # @!attribute limit
         #   A limit on the number of objects to be returned. Limit can range between 1 and
         #   100, and the default is 20.
         #
         #   @return [Integer, nil]
         optional :limit, Integer
 
-        # @!parse
-        #   # @return [Integer]
-        #   attr_writer :limit
-
-        # @!attribute [r] order
+        # @!attribute order
         #   The order to return the input items in. Default is `asc`.
         #
         #   - `asc`: Return the input items in ascending order.
@@ -60,10 +43,6 @@ module OpenAI
         #
         #   @return [Symbol, OpenAI::Models::Responses::InputItemListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Models::Responses::InputItemListParams::Order }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::InputItemListParams::Order]
-        #   attr_writer :order
 
         # @!method initialize(after: nil, before: nil, include: nil, limit: nil, order: nil, request_options: {})
         #   @param after [String]

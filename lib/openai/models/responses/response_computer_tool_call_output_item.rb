@@ -28,7 +28,7 @@ module OpenAI
         #   @return [Symbol, :computer_call_output]
         required :type, const: :computer_call_output
 
-        # @!attribute [r] acknowledged_safety_checks
+        # @!attribute acknowledged_safety_checks
         #   The safety checks reported by the API that have been acknowledged by the
         #   developer.
         #
@@ -36,20 +36,12 @@ module OpenAI
         optional :acknowledged_safety_checks,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck] }
 
-        # @!parse
-        #   # @return [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>]
-        #   attr_writer :acknowledged_safety_checks
-
-        # @!attribute [r] status
+        # @!attribute status
         #   The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status]
-        #   attr_writer :status
 
         # @!method initialize(id:, call_id:, output:, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
         #   @param id [String]

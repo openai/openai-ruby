@@ -7,8 +7,7 @@ module OpenAI
       #
       # @see OpenAI::Resources::Audio::Transcriptions#create_streaming
       class TranscriptionCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute file
@@ -26,7 +25,7 @@ module OpenAI
         #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Models::Audio::TranscriptionCreateParams::Model }
 
-        # @!attribute [r] include
+        # @!attribute include
         #   Additional information to include in the transcription response. `logprobs` will
         #   return the log probabilities of the tokens in the response to understand the
         #   model's confidence in the transcription. `logprobs` only works with
@@ -37,11 +36,7 @@ module OpenAI
         optional :include,
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionInclude] }
 
-        # @!parse
-        #   # @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
-        #   attr_writer :include
-
-        # @!attribute [r] language
+        # @!attribute language
         #   The language of the input audio. Supplying the input language in
         #   [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`)
         #   format will improve accuracy and latency.
@@ -49,11 +44,7 @@ module OpenAI
         #   @return [String, nil]
         optional :language, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :language
-
-        # @!attribute [r] prompt
+        # @!attribute prompt
         #   An optional text to guide the model's style or continue a previous audio
         #   segment. The
         #   [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
@@ -62,11 +53,7 @@ module OpenAI
         #   @return [String, nil]
         optional :prompt, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :prompt
-
-        # @!attribute [r] response_format
+        # @!attribute response_format
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
         #   the only supported format is `json`.
@@ -74,11 +61,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::AudioResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Models::AudioResponseFormat }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::AudioResponseFormat]
-        #   attr_writer :response_format
-
-        # @!attribute [r] temperature
+        # @!attribute temperature
         #   The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
         #   output more random, while lower values like 0.2 will make it more focused and
         #   deterministic. If set to 0, the model will use
@@ -88,11 +71,7 @@ module OpenAI
         #   @return [Float, nil]
         optional :temperature, Float
 
-        # @!parse
-        #   # @return [Float]
-        #   attr_writer :temperature
-
-        # @!attribute [r] timestamp_granularities
+        # @!attribute timestamp_granularities
         #   The timestamp granularities to populate for this transcription.
         #   `response_format` must be set `verbose_json` to use timestamp granularities.
         #   Either or both of these options are supported: `word`, or `segment`. Note: There
@@ -102,10 +81,6 @@ module OpenAI
         #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
         optional :timestamp_granularities,
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity] }
-
-        # @!parse
-        #   # @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>]
-        #   attr_writer :timestamp_granularities
 
         # @!method initialize(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #   @param file [Pathname, StringIO]

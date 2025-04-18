@@ -8,8 +8,7 @@ module OpenAI
         #
         # @see OpenAI::Resources::Beta::Threads::Runs#create_stream_raw
         class RunCreateParams < OpenAI::Internal::Type::BaseModel
-          # @!parse
-          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute assistant_id
@@ -20,7 +19,7 @@ module OpenAI
           #   @return [String]
           required :assistant_id, String
 
-          # @!attribute [r] include
+          # @!attribute include
           #   A list of additional fields to include in the response. Currently the only
           #   supported value is `step_details.tool_calls[*].file_search.results[*].content`
           #   to fetch the file search result content.
@@ -32,10 +31,6 @@ module OpenAI
           #   @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>, nil]
           optional :include,
                    -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Beta::Threads::Runs::RunStepInclude] }
-
-          # @!parse
-          #   # @return [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
-          #   attr_writer :include
 
           # @!attribute additional_instructions
           #   Appends additional instructions at the end of the instructions for the run. This
@@ -101,17 +96,13 @@ module OpenAI
           #   @return [String, Symbol, OpenAI::Models::ChatModel, nil]
           optional :model, union: -> { OpenAI::Models::Beta::Threads::RunCreateParams::Model }, nil?: true
 
-          # @!attribute [r] parallel_tool_calls
+          # @!attribute parallel_tool_calls
           #   Whether to enable
           #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
           #   during tool use.
           #
           #   @return [Boolean, nil]
           optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
-
-          # @!parse
-          #   # @return [Boolean]
-          #   attr_writer :parallel_tool_calls
 
           # @!attribute reasoning_effort
           #   **o-series models only**
@@ -299,26 +290,18 @@ module OpenAI
             end
 
             class Attachment < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] file_id
+              # @!attribute file_id
               #   The ID of the file to attach to the message.
               #
               #   @return [String, nil]
               optional :file_id, String
 
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :file_id
-
-              # @!attribute [r] tools
+              # @!attribute tools
               #   The tools to add this file to.
               #
               #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>, nil]
               optional :tools,
                        -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool] }
-
-              # @!parse
-              #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch>]
-              #   attr_writer :tools
 
               # @!method initialize(file_id: nil, tools: nil)
               #   @param file_id [String]

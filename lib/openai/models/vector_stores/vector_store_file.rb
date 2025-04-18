@@ -66,15 +66,11 @@ module OpenAI
                  -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute] },
                  nil?: true
 
-        # @!attribute [r] chunking_strategy
+        # @!attribute chunking_strategy
         #   The strategy used to chunk the file.
         #
         #   @return [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject, nil]
         optional :chunking_strategy, union: -> { OpenAI::Models::FileChunkingStrategy }
-
-        # @!parse
-        #   # @return [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
-        #   attr_writer :chunking_strategy
 
         # @!method initialize(id:, created_at:, last_error:, status:, usage_bytes:, vector_store_id:, attributes: nil, chunking_strategy: nil, object: :"vector_store.file")
         #   A list of files attached to a vector store.

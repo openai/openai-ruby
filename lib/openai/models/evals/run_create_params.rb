@@ -5,8 +5,7 @@ module OpenAI
     module Evals
       # @see OpenAI::Resources::Evals::Runs#create
       class RunCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute data_source
@@ -26,15 +25,11 @@ module OpenAI
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-        # @!attribute [r] name
+        # @!attribute name
         #   The name of the run.
         #
         #   @return [String, nil]
         optional :name, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :name
 
         # @!method initialize(data_source:, metadata: nil, name: nil, request_options: {})
         #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]

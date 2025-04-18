@@ -10,15 +10,11 @@ module OpenAI
         #   @return [Symbol, :file_search]
         required :type, const: :file_search
 
-        # @!attribute [r] file_search
+        # @!attribute file_search
         #   Overrides for the file search tool.
         #
         #   @return [OpenAI::Models::Beta::FileSearchTool::FileSearch, nil]
         optional :file_search, -> { OpenAI::Models::Beta::FileSearchTool::FileSearch }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Beta::FileSearchTool::FileSearch]
-        #   attr_writer :file_search
 
         # @!method initialize(file_search: nil, type: :file_search)
         #   @param file_search [OpenAI::Models::Beta::FileSearchTool::FileSearch]
@@ -26,7 +22,7 @@ module OpenAI
 
         # @see OpenAI::Models::Beta::FileSearchTool#file_search
         class FileSearch < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] max_num_results
+          # @!attribute max_num_results
           #   The maximum number of results the file search tool should output. The default is
           #   20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
           #   1 and 50 inclusive.
@@ -39,11 +35,7 @@ module OpenAI
           #   @return [Integer, nil]
           optional :max_num_results, Integer
 
-          # @!parse
-          #   # @return [Integer]
-          #   attr_writer :max_num_results
-
-          # @!attribute [r] ranking_options
+          # @!attribute ranking_options
           #   The ranking options for the file search. If not specified, the file search tool
           #   will use the `auto` ranker and a score_threshold of 0.
           #
@@ -53,10 +45,6 @@ module OpenAI
           #
           #   @return [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, nil]
           optional :ranking_options, -> { OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions }
-
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions]
-          #   attr_writer :ranking_options
 
           # @!method initialize(max_num_results: nil, ranking_options: nil)
           #   Overrides for the file search tool.
@@ -73,16 +61,12 @@ module OpenAI
             #   @return [Float]
             required :score_threshold, Float
 
-            # @!attribute [r] ranker
+            # @!attribute ranker
             #   The ranker to use for the file search. If not specified will use the `auto`
             #   ranker.
             #
             #   @return [Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker, nil]
             optional :ranker, enum: -> { OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker }
-
-            # @!parse
-            #   # @return [Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker]
-            #   attr_writer :ranker
 
             # @!method initialize(score_threshold:, ranker: nil)
             #   The ranking options for the file search. If not specified, the file search tool

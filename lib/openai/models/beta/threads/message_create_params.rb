@@ -6,8 +6,7 @@ module OpenAI
       module Threads
         # @see OpenAI::Resources::Beta::Threads::Messages#create
         class MessageCreateParams < OpenAI::Internal::Type::BaseModel
-          # @!parse
-          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute content
@@ -87,26 +86,18 @@ module OpenAI
           end
 
           class Attachment < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] file_id
+            # @!attribute file_id
             #   The ID of the file to attach to the message.
             #
             #   @return [String, nil]
             optional :file_id, String
 
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_id
-
-            # @!attribute [r] tools
+            # @!attribute tools
             #   The tools to add this file to.
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>, nil]
             optional :tools,
                      -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool] }
-
-            # @!parse
-            #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>]
-            #   attr_writer :tools
 
             # @!method initialize(file_id: nil, tools: nil)
             #   @param file_id [String]

@@ -23,16 +23,12 @@ module OpenAI
         #   @return [Symbol, :reasoning]
         required :type, const: :reasoning
 
-        # @!attribute [r] status
+        # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseReasoningItem::Status }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status]
-        #   attr_writer :status
 
         # @!method initialize(id:, summary:, status: nil, type: :reasoning)
         #   A description of the chain of thought used by a reasoning model while generating

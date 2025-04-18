@@ -5,21 +5,16 @@ module OpenAI
     module Responses
       # @see OpenAI::Resources::Responses#retrieve
       class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        # @!attribute [r] include
+        # @!attribute include
         #   Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         optional :include,
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
-
-        # @!parse
-        #   # @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
-        #   attr_writer :include
 
         # @!method initialize(include: nil, request_options: {})
         #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]

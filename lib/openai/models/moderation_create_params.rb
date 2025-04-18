@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Moderations#create
     class ModerationCreateParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute input
@@ -15,7 +14,7 @@ module OpenAI
       #   @return [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
       required :input, union: -> { OpenAI::Models::ModerationCreateParams::Input }
 
-      # @!attribute [r] model
+      # @!attribute model
       #   The content moderation model you would like to use. Learn more in
       #   [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
       #   learn about available models
@@ -23,10 +22,6 @@ module OpenAI
       #
       #   @return [String, Symbol, OpenAI::Models::ModerationModel, nil]
       optional :model, union: -> { OpenAI::Models::ModerationCreateParams::Model }
-
-      # @!parse
-      #   # @return [String, Symbol, OpenAI::Models::ModerationModel]
-      #   attr_writer :model
 
       # @!method initialize(input:, model: nil, request_options: {})
       #   @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]

@@ -16,36 +16,24 @@ module OpenAI
         #   @return [Array<String>]
         required :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-        # @!attribute [r] filters
+        # @!attribute filters
         #   A filter to apply based on file attributes.
         #
         #   @return [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter, nil]
         optional :filters, union: -> { OpenAI::Models::Responses::FileSearchTool::Filters }
 
-        # @!parse
-        #   # @return [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-        #   attr_writer :filters
-
-        # @!attribute [r] max_num_results
+        # @!attribute max_num_results
         #   The maximum number of results to return. This number should be between 1 and 50
         #   inclusive.
         #
         #   @return [Integer, nil]
         optional :max_num_results, Integer
 
-        # @!parse
-        #   # @return [Integer]
-        #   attr_writer :max_num_results
-
-        # @!attribute [r] ranking_options
+        # @!attribute ranking_options
         #   Ranking options for search.
         #
         #   @return [OpenAI::Models::Responses::FileSearchTool::RankingOptions, nil]
         optional :ranking_options, -> { OpenAI::Models::Responses::FileSearchTool::RankingOptions }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Responses::FileSearchTool::RankingOptions]
-        #   attr_writer :ranking_options
 
         # @!method initialize(vector_store_ids:, filters: nil, max_num_results: nil, ranking_options: nil, type: :file_search)
         #   A tool that searches for relevant content from uploaded files. Learn more about
@@ -76,27 +64,19 @@ module OpenAI
 
         # @see OpenAI::Models::Responses::FileSearchTool#ranking_options
         class RankingOptions < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] ranker
+          # @!attribute ranker
           #   The ranker to use for the file search.
           #
           #   @return [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker, nil]
           optional :ranker, enum: -> { OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker }
 
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker]
-          #   attr_writer :ranker
-
-          # @!attribute [r] score_threshold
+          # @!attribute score_threshold
           #   The score threshold for the file search, a number between 0 and 1. Numbers
           #   closer to 1 will attempt to return only the most relevant results, but may
           #   return fewer results.
           #
           #   @return [Float, nil]
           optional :score_threshold, Float
-
-          # @!parse
-          #   # @return [Float]
-          #   attr_writer :score_threshold
 
           # @!method initialize(ranker: nil, score_threshold: nil)
           #   Ranking options for search.

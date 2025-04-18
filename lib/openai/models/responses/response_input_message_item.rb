@@ -24,26 +24,18 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role]
         required :role, enum: -> { OpenAI::Models::Responses::ResponseInputMessageItem::Role }
 
-        # @!attribute [r] status
+        # @!attribute status
         #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseInputMessageItem::Status }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status]
-        #   attr_writer :status
-
-        # @!attribute [r] type
+        # @!attribute type
         #   The type of the message input. Always set to `message`.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type, nil]
         optional :type, enum: -> { OpenAI::Models::Responses::ResponseInputMessageItem::Type }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type]
-        #   attr_writer :type
 
         # @!method initialize(id:, content:, role:, status: nil, type: nil)
         #   @param id [String]

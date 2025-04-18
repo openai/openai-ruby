@@ -52,41 +52,25 @@ module OpenAI
 
       # @see OpenAI::Models::CompletionChoice#logprobs
       class Logprobs < OpenAI::Internal::Type::BaseModel
-        # @!attribute [r] text_offset
+        # @!attribute text_offset
         #
         #   @return [Array<Integer>, nil]
         optional :text_offset, OpenAI::Internal::Type::ArrayOf[Integer]
 
-        # @!parse
-        #   # @return [Array<Integer>]
-        #   attr_writer :text_offset
-
-        # @!attribute [r] token_logprobs
+        # @!attribute token_logprobs
         #
         #   @return [Array<Float>, nil]
         optional :token_logprobs, OpenAI::Internal::Type::ArrayOf[Float]
 
-        # @!parse
-        #   # @return [Array<Float>]
-        #   attr_writer :token_logprobs
-
-        # @!attribute [r] tokens
+        # @!attribute tokens
         #
         #   @return [Array<String>, nil]
         optional :tokens, OpenAI::Internal::Type::ArrayOf[String]
 
-        # @!parse
-        #   # @return [Array<String>]
-        #   attr_writer :tokens
-
-        # @!attribute [r] top_logprobs
+        # @!attribute top_logprobs
         #
         #   @return [Array<Hash{Symbol=>Float}>, nil]
         optional :top_logprobs, OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[Float]]
-
-        # @!parse
-        #   # @return [Array<Hash{Symbol=>Float}>]
-        #   attr_writer :top_logprobs
 
         # @!method initialize(text_offset: nil, token_logprobs: nil, tokens: nil, top_logprobs: nil)
         #   @param text_offset [Array<Integer>]

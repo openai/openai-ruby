@@ -5,29 +5,20 @@ module OpenAI
     module Chat
       # @see OpenAI::Resources::Chat::Completions#list
       class CompletionListParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        # @!attribute [r] after
+        # @!attribute after
         #   Identifier for the last chat completion from the previous pagination request.
         #
         #   @return [String, nil]
         optional :after, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :after
-
-        # @!attribute [r] limit
+        # @!attribute limit
         #   Number of Chat Completions to retrieve.
         #
         #   @return [Integer, nil]
         optional :limit, Integer
-
-        # @!parse
-        #   # @return [Integer]
-        #   attr_writer :limit
 
         # @!attribute metadata
         #   A list of metadata keys to filter the Chat Completions by. Example:
@@ -37,26 +28,18 @@ module OpenAI
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-        # @!attribute [r] model
+        # @!attribute model
         #   The model used to generate the Chat Completions.
         #
         #   @return [String, nil]
         optional :model, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :model
-
-        # @!attribute [r] order
+        # @!attribute order
         #   Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         #   `desc` for descending order. Defaults to `asc`.
         #
         #   @return [Symbol, OpenAI::Models::Chat::CompletionListParams::Order, nil]
         optional :order, enum: -> { OpenAI::Models::Chat::CompletionListParams::Order }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Chat::CompletionListParams::Order]
-        #   attr_writer :order
 
         # @!method initialize(after: nil, limit: nil, metadata: nil, model: nil, order: nil, request_options: {})
         #   @param after [String]

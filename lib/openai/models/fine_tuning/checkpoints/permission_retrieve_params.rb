@@ -6,49 +6,32 @@ module OpenAI
       module Checkpoints
         # @see OpenAI::Resources::FineTuning::Checkpoints::Permissions#retrieve
         class PermissionRetrieveParams < OpenAI::Internal::Type::BaseModel
-          # @!parse
-          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          # @!attribute [r] after
+          # @!attribute after
           #   Identifier for the last permission ID from the previous pagination request.
           #
           #   @return [String, nil]
           optional :after, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :after
-
-          # @!attribute [r] limit
+          # @!attribute limit
           #   Number of permissions to retrieve.
           #
           #   @return [Integer, nil]
           optional :limit, Integer
 
-          # @!parse
-          #   # @return [Integer]
-          #   attr_writer :limit
-
-          # @!attribute [r] order
+          # @!attribute order
           #   The order in which to retrieve permissions.
           #
           #   @return [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order, nil]
           optional :order, enum: -> { OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order }
 
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order]
-          #   attr_writer :order
-
-          # @!attribute [r] project_id
+          # @!attribute project_id
           #   The ID of the project to get permissions for.
           #
           #   @return [String, nil]
           optional :project_id, String
-
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :project_id
 
           # @!method initialize(after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
           #   @param after [String]

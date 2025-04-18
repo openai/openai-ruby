@@ -5,8 +5,7 @@ module OpenAI
     module VectorStores
       # @see OpenAI::Resources::VectorStores::FileBatches#create
       class FileBatchCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute file_ids
@@ -29,16 +28,12 @@ module OpenAI
                  -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::FileBatchCreateParams::Attribute] },
                  nil?: true
 
-        # @!attribute [r] chunking_strategy
+        # @!attribute chunking_strategy
         #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         #   strategy. Only applicable if `file_ids` is non-empty.
         #
         #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
         optional :chunking_strategy, union: -> { OpenAI::Models::FileChunkingStrategyParam }
-
-        # @!parse
-        #   # @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
-        #   attr_writer :chunking_strategy
 
         # @!method initialize(file_ids:, attributes: nil, chunking_strategy: nil, request_options: {})
         #   @param file_ids [Array<String>]

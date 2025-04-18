@@ -17,14 +17,10 @@ module OpenAI
           #   @return [Symbol, :refusal]
           required :type, const: :refusal
 
-          # @!attribute [r] refusal
+          # @!attribute refusal
           #
           #   @return [String, nil]
           optional :refusal, String
-
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :refusal
 
           # @!method initialize(index:, refusal: nil, type: :refusal)
           #   The refusal content that is part of a message.

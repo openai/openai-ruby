@@ -18,15 +18,11 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::EasyInputMessage::Role]
         required :role, enum: -> { OpenAI::Models::Responses::EasyInputMessage::Role }
 
-        # @!attribute [r] type
+        # @!attribute type
         #   The type of the message input. Always `message`.
         #
         #   @return [Symbol, OpenAI::Models::Responses::EasyInputMessage::Type, nil]
         optional :type, enum: -> { OpenAI::Models::Responses::EasyInputMessage::Type }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::EasyInputMessage::Type]
-        #   attr_writer :type
 
         # @!method initialize(content:, role:, type: nil)
         #   A message input to the model with a role indicating instruction following

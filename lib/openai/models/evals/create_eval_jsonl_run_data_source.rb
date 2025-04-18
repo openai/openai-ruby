@@ -56,14 +56,10 @@ module OpenAI
               #   @return [Hash{Symbol=>Object}]
               required :item, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
-              # @!attribute [r] sample
+              # @!attribute sample
               #
               #   @return [Hash{Symbol=>Object}, nil]
               optional :sample, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
-              # @!parse
-              #   # @return [Hash{Symbol=>Object}]
-              #   attr_writer :sample
 
               # @!method initialize(item:, sample: nil)
               #   @param item [Hash{Symbol=>Object}]

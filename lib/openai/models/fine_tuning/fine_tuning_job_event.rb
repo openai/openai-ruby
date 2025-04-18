@@ -35,25 +35,17 @@ module OpenAI
         #   @return [Symbol, :"fine_tuning.job.event"]
         required :object, const: :"fine_tuning.job.event"
 
-        # @!attribute [r] data
+        # @!attribute data
         #   The data associated with the event.
         #
         #   @return [Object, nil]
         optional :data, OpenAI::Internal::Type::Unknown
 
-        # @!parse
-        #   # @return [Object]
-        #   attr_writer :data
-
-        # @!attribute [r] type
+        # @!attribute type
         #   The type of event.
         #
         #   @return [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type, nil]
         optional :type, enum: -> { OpenAI::Models::FineTuning::FineTuningJobEvent::Type }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type]
-        #   attr_writer :type
 
         # @!method initialize(id:, created_at:, level:, message:, data: nil, type: nil, object: :"fine_tuning.job.event")
         #   Fine-tuning job event object

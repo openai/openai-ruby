@@ -72,26 +72,18 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Role]
           required :role, enum: -> { OpenAI::Models::Responses::ResponseInputItem::Message::Role }
 
-          # @!attribute [r] status
+          # @!attribute status
           #   The status of item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status, nil]
           optional :status, enum: -> { OpenAI::Models::Responses::ResponseInputItem::Message::Status }
 
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status]
-          #   attr_writer :status
-
-          # @!attribute [r] type
+          # @!attribute type
           #   The type of the message input. Always set to `message`.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type, nil]
           optional :type, enum: -> { OpenAI::Models::Responses::ResponseInputItem::Message::Type }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type]
-          #   attr_writer :type
 
           # @!method initialize(content:, role:, status: nil, type: nil)
           #   A message input to the model with a role indicating instruction following
@@ -164,17 +156,13 @@ module OpenAI
           #   @return [Symbol, :computer_call_output]
           required :type, const: :computer_call_output
 
-          # @!attribute [r] id
+          # @!attribute id
           #   The ID of the computer tool call output.
           #
           #   @return [String, nil]
           optional :id, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :id
-
-          # @!attribute [r] acknowledged_safety_checks
+          # @!attribute acknowledged_safety_checks
           #   The safety checks reported by the API that have been acknowledged by the
           #   developer.
           #
@@ -182,20 +170,12 @@ module OpenAI
           optional :acknowledged_safety_checks,
                    -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck] }
 
-          # @!parse
-          #   # @return [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>]
-          #   attr_writer :acknowledged_safety_checks
-
-          # @!attribute [r] status
+          # @!attribute status
           #   The status of the message input. One of `in_progress`, `completed`, or
           #   `incomplete`. Populated when input items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status, nil]
           optional :status, enum: -> { OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status]
-          #   attr_writer :status
 
           # @!method initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
           #   The output of a computer tool call.
@@ -269,27 +249,19 @@ module OpenAI
           #   @return [Symbol, :function_call_output]
           required :type, const: :function_call_output
 
-          # @!attribute [r] id
+          # @!attribute id
           #   The unique ID of the function tool call output. Populated when this item is
           #   returned via API.
           #
           #   @return [String, nil]
           optional :id, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :id
-
-          # @!attribute [r] status
+          # @!attribute status
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil]
           optional :status, enum: -> { OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status]
-          #   attr_writer :status
 
           # @!method initialize(call_id:, output:, id: nil, status: nil, type: :function_call_output)
           #   The output of a function tool call.

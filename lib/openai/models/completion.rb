@@ -36,7 +36,7 @@ module OpenAI
       #   @return [Symbol, :text_completion]
       required :object, const: :text_completion
 
-      # @!attribute [r] system_fingerprint
+      # @!attribute system_fingerprint
       #   This fingerprint represents the backend configuration that the model runs with.
       #
       #   Can be used in conjunction with the `seed` request parameter to understand when
@@ -45,19 +45,11 @@ module OpenAI
       #   @return [String, nil]
       optional :system_fingerprint, String
 
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :system_fingerprint
-
-      # @!attribute [r] usage
+      # @!attribute usage
       #   Usage statistics for the completion request.
       #
       #   @return [OpenAI::Models::CompletionUsage, nil]
       optional :usage, -> { OpenAI::Models::CompletionUsage }
-
-      # @!parse
-      #   # @return [OpenAI::Models::CompletionUsage]
-      #   attr_writer :usage
 
       # @!method initialize(id:, choices:, created:, model:, system_fingerprint: nil, usage: nil, object: :text_completion)
       #   Represents a completion response from the API. Note: both the streamed and

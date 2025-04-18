@@ -45,104 +45,64 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::Batch::Status]
       required :status, enum: -> { OpenAI::Models::Batch::Status }
 
-      # @!attribute [r] cancelled_at
+      # @!attribute cancelled_at
       #   The Unix timestamp (in seconds) for when the batch was cancelled.
       #
       #   @return [Integer, nil]
       optional :cancelled_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :cancelled_at
-
-      # @!attribute [r] cancelling_at
+      # @!attribute cancelling_at
       #   The Unix timestamp (in seconds) for when the batch started cancelling.
       #
       #   @return [Integer, nil]
       optional :cancelling_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :cancelling_at
-
-      # @!attribute [r] completed_at
+      # @!attribute completed_at
       #   The Unix timestamp (in seconds) for when the batch was completed.
       #
       #   @return [Integer, nil]
       optional :completed_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :completed_at
-
-      # @!attribute [r] error_file_id
+      # @!attribute error_file_id
       #   The ID of the file containing the outputs of requests with errors.
       #
       #   @return [String, nil]
       optional :error_file_id, String
 
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :error_file_id
-
-      # @!attribute [r] errors
+      # @!attribute errors
       #
       #   @return [OpenAI::Models::Batch::Errors, nil]
       optional :errors, -> { OpenAI::Models::Batch::Errors }
 
-      # @!parse
-      #   # @return [OpenAI::Models::Batch::Errors]
-      #   attr_writer :errors
-
-      # @!attribute [r] expired_at
+      # @!attribute expired_at
       #   The Unix timestamp (in seconds) for when the batch expired.
       #
       #   @return [Integer, nil]
       optional :expired_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :expired_at
-
-      # @!attribute [r] expires_at
+      # @!attribute expires_at
       #   The Unix timestamp (in seconds) for when the batch will expire.
       #
       #   @return [Integer, nil]
       optional :expires_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :expires_at
-
-      # @!attribute [r] failed_at
+      # @!attribute failed_at
       #   The Unix timestamp (in seconds) for when the batch failed.
       #
       #   @return [Integer, nil]
       optional :failed_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :failed_at
-
-      # @!attribute [r] finalizing_at
+      # @!attribute finalizing_at
       #   The Unix timestamp (in seconds) for when the batch started finalizing.
       #
       #   @return [Integer, nil]
       optional :finalizing_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :finalizing_at
-
-      # @!attribute [r] in_progress_at
+      # @!attribute in_progress_at
       #   The Unix timestamp (in seconds) for when the batch started processing.
       #
       #   @return [Integer, nil]
       optional :in_progress_at, Integer
-
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :in_progress_at
 
       # @!attribute metadata
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -155,25 +115,17 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-      # @!attribute [r] output_file_id
+      # @!attribute output_file_id
       #   The ID of the file containing the outputs of successfully executed requests.
       #
       #   @return [String, nil]
       optional :output_file_id, String
 
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :output_file_id
-
-      # @!attribute [r] request_counts
+      # @!attribute request_counts
       #   The request counts for different statuses within the batch.
       #
       #   @return [OpenAI::Models::BatchRequestCounts, nil]
       optional :request_counts, -> { OpenAI::Models::BatchRequestCounts }
-
-      # @!parse
-      #   # @return [OpenAI::Models::BatchRequestCounts]
-      #   attr_writer :request_counts
 
       # @!method initialize(id:, completion_window:, created_at:, endpoint:, input_file_id:, status:, cancelled_at: nil, cancelling_at: nil, completed_at: nil, error_file_id: nil, errors: nil, expired_at: nil, expires_at: nil, failed_at: nil, finalizing_at: nil, in_progress_at: nil, metadata: nil, output_file_id: nil, request_counts: nil, object: :batch)
       #   @param id [String]
@@ -218,24 +170,16 @@ module OpenAI
 
       # @see OpenAI::Models::Batch#errors
       class Errors < OpenAI::Internal::Type::BaseModel
-        # @!attribute [r] data
+        # @!attribute data
         #
         #   @return [Array<OpenAI::Models::BatchError>, nil]
         optional :data, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::BatchError] }
 
-        # @!parse
-        #   # @return [Array<OpenAI::Models::BatchError>]
-        #   attr_writer :data
-
-        # @!attribute [r] object
+        # @!attribute object
         #   The object type, which is always `list`.
         #
         #   @return [String, nil]
         optional :object, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :object
 
         # @!method initialize(data: nil, object: nil)
         #   @param data [Array<OpenAI::Models::BatchError>]

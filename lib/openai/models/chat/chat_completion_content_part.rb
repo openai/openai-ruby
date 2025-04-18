@@ -43,36 +43,24 @@ module OpenAI
 
           # @see OpenAI::Models::Chat::ChatCompletionContentPart::File#file
           class File < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] file_data
+            # @!attribute file_data
             #   The base64 encoded file data, used when passing the file to the model as a
             #   string.
             #
             #   @return [String, nil]
             optional :file_data, String
 
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_data
-
-            # @!attribute [r] file_id
+            # @!attribute file_id
             #   The ID of an uploaded file to use as input.
             #
             #   @return [String, nil]
             optional :file_id, String
 
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_id
-
-            # @!attribute [r] filename
+            # @!attribute filename
             #   The name of the file, used when passing the file to the model as a string.
             #
             #   @return [String, nil]
             optional :filename, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :filename
 
             # @!method initialize(file_data: nil, file_id: nil, filename: nil)
             #   @param file_data [String]

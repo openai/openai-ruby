@@ -7,8 +7,7 @@ module OpenAI
       #
       # @see OpenAI::Resources::Responses#stream_raw
       class ResponseCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute input
@@ -142,7 +141,7 @@ module OpenAI
         #   @return [Float, nil]
         optional :temperature, Float, nil?: true
 
-        # @!attribute [r] text
+        # @!attribute text
         #   Configuration options for a text response from the model. Can be plain text or
         #   structured JSON data. Learn more:
         #
@@ -152,11 +151,7 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
         optional :text, -> { OpenAI::Models::Responses::ResponseTextConfig }
 
-        # @!parse
-        #   # @return [OpenAI::Models::Responses::ResponseTextConfig]
-        #   attr_writer :text
-
-        # @!attribute [r] tool_choice
+        # @!attribute tool_choice
         #   How the model should select which tool (or tools) to use when generating a
         #   response. See the `tools` parameter to see how to specify which tools the model
         #   can call.
@@ -164,11 +159,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction, nil]
         optional :tool_choice, union: -> { OpenAI::Models::Responses::ResponseCreateParams::ToolChoice }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
-        #   attr_writer :tool_choice
-
-        # @!attribute [r] tools
+        # @!attribute tools
         #   An array of tools the model may call while generating a response. You can
         #   specify which tool to use by setting the `tool_choice` parameter.
         #
@@ -186,10 +177,6 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::Tool] }
-
-        # @!parse
-        #   # @return [Array<OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool>]
-        #   attr_writer :tools
 
         # @!attribute top_p
         #   An alternative to sampling with temperature, called nucleus sampling, where the
@@ -213,17 +200,13 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation, nil]
         optional :truncation, enum: -> { OpenAI::Models::Responses::ResponseCreateParams::Truncation }, nil?: true
 
-        # @!attribute [r] user
+        # @!attribute user
         #   A unique identifier representing your end-user, which can help OpenAI to monitor
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         #
         #   @return [String, nil]
         optional :user, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :user
 
         # @!method initialize(input:, model:, include: nil, instructions: nil, max_output_tokens: nil, metadata: nil, parallel_tool_calls: nil, previous_response_id: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference>]

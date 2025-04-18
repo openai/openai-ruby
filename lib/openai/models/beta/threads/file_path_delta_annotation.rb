@@ -17,42 +17,26 @@ module OpenAI
           #   @return [Symbol, :file_path]
           required :type, const: :file_path
 
-          # @!attribute [r] end_index
+          # @!attribute end_index
           #
           #   @return [Integer, nil]
           optional :end_index, Integer
 
-          # @!parse
-          #   # @return [Integer]
-          #   attr_writer :end_index
-
-          # @!attribute [r] file_path
+          # @!attribute file_path
           #
           #   @return [OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, nil]
           optional :file_path, -> { OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath }
 
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath]
-          #   attr_writer :file_path
-
-          # @!attribute [r] start_index
+          # @!attribute start_index
           #
           #   @return [Integer, nil]
           optional :start_index, Integer
 
-          # @!parse
-          #   # @return [Integer]
-          #   attr_writer :start_index
-
-          # @!attribute [r] text
+          # @!attribute text
           #   The text in the message content that needs to be replaced.
           #
           #   @return [String, nil]
           optional :text, String
-
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :text
 
           # @!method initialize(index:, end_index: nil, file_path: nil, start_index: nil, text: nil, type: :file_path)
           #   A URL for the file that's generated when the assistant used the
@@ -67,15 +51,11 @@ module OpenAI
 
           # @see OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation#file_path
           class FilePath < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] file_id
+            # @!attribute file_id
             #   The ID of the file that was generated.
             #
             #   @return [String, nil]
             optional :file_id, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_id
 
             # @!method initialize(file_id: nil)
             #   @param file_id [String]

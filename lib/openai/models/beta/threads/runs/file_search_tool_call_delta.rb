@@ -25,15 +25,11 @@ module OpenAI
             #   @return [Symbol, :file_search]
             required :type, const: :file_search
 
-            # @!attribute [r] id
+            # @!attribute id
             #   The ID of the tool call object.
             #
             #   @return [String, nil]
             optional :id, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :id
 
             # @!method initialize(file_search:, index:, id: nil, type: :file_search)
             #   @param file_search [Object]

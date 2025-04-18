@@ -34,15 +34,11 @@ module OpenAI
       #   @return [Symbol, :text_similarity]
       required :type, const: :text_similarity
 
-      # @!attribute [r] name
+      # @!attribute name
       #   The name of the grader.
       #
       #   @return [String, nil]
       optional :name, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :name
 
       # @!method initialize(evaluation_metric:, input:, pass_threshold:, reference:, name: nil, type: :text_similarity)
       #   A TextSimilarityGrader object which grades text based on similarity metrics.

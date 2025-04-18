@@ -181,18 +181,14 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::Response::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Models::Responses::Response::ServiceTier }, nil?: true
 
-        # @!attribute [r] status
+        # @!attribute status
         #   The status of the response generation. One of `completed`, `failed`,
         #   `in_progress`, or `incomplete`.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseStatus, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseStatus }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ResponseStatus]
-        #   attr_writer :status
-
-        # @!attribute [r] text
+        # @!attribute text
         #   Configuration options for a text response from the model. Can be plain text or
         #   structured JSON data. Learn more:
         #
@@ -201,10 +197,6 @@ module OpenAI
         #
         #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
         optional :text, -> { OpenAI::Models::Responses::ResponseTextConfig }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Responses::ResponseTextConfig]
-        #   attr_writer :text
 
         # @!attribute truncation
         #   The truncation strategy to use for the model response.
@@ -218,28 +210,20 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::Response::Truncation, nil]
         optional :truncation, enum: -> { OpenAI::Models::Responses::Response::Truncation }, nil?: true
 
-        # @!attribute [r] usage
+        # @!attribute usage
         #   Represents token usage details including input tokens, output tokens, a
         #   breakdown of output tokens, and the total tokens used.
         #
         #   @return [OpenAI::Models::Responses::ResponseUsage, nil]
         optional :usage, -> { OpenAI::Models::Responses::ResponseUsage }
 
-        # @!parse
-        #   # @return [OpenAI::Models::Responses::ResponseUsage]
-        #   attr_writer :usage
-
-        # @!attribute [r] user
+        # @!attribute user
         #   A unique identifier representing your end-user, which can help OpenAI to monitor
         #   and detect abuse.
         #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         #
         #   @return [String, nil]
         optional :user, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :user
 
         # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, max_output_tokens: nil, previous_response_id: nil, reasoning: nil, service_tier: nil, status: nil, text: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   @param id [String]
@@ -268,15 +252,11 @@ module OpenAI
 
         # @see OpenAI::Models::Responses::Response#incomplete_details
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] reason
+          # @!attribute reason
           #   The reason why the response is incomplete.
           #
           #   @return [Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason, nil]
           optional :reason, enum: -> { OpenAI::Models::Responses::Response::IncompleteDetails::Reason }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason]
-          #   attr_writer :reason
 
           # @!method initialize(reason: nil)
           #   Details about why the response is incomplete.

@@ -6,15 +6,11 @@ module OpenAI
       module Threads
         module Runs
           class RunStepDelta < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] step_details
+            # @!attribute step_details
             #   The details of the run step.
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject, nil]
             optional :step_details, union: -> { OpenAI::Models::Beta::Threads::Runs::RunStepDelta::StepDetails }
-
-            # @!parse
-            #   # @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
-            #   attr_writer :step_details
 
             # @!method initialize(step_details: nil)
             #   The delta containing the fields that have changed on the run step.
