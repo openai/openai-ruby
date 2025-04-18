@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::VectorStores#search
     class VectorStoreSearchParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute query
@@ -14,46 +13,30 @@ module OpenAI
       #   @return [String, Array<String>]
       required :query, union: -> { OpenAI::Models::VectorStoreSearchParams::Query }
 
-      # @!attribute [r] filters
+      # @!attribute filters
       #   A filter to apply based on file attributes.
       #
       #   @return [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter, nil]
       optional :filters, union: -> { OpenAI::Models::VectorStoreSearchParams::Filters }
 
-      # @!parse
-      #   # @return [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-      #   attr_writer :filters
-
-      # @!attribute [r] max_num_results
+      # @!attribute max_num_results
       #   The maximum number of results to return. This number should be between 1 and 50
       #   inclusive.
       #
       #   @return [Integer, nil]
       optional :max_num_results, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :max_num_results
-
-      # @!attribute [r] ranking_options
+      # @!attribute ranking_options
       #   Ranking options for search.
       #
       #   @return [OpenAI::Models::VectorStoreSearchParams::RankingOptions, nil]
       optional :ranking_options, -> { OpenAI::Models::VectorStoreSearchParams::RankingOptions }
 
-      # @!parse
-      #   # @return [OpenAI::Models::VectorStoreSearchParams::RankingOptions]
-      #   attr_writer :ranking_options
-
-      # @!attribute [r] rewrite_query
+      # @!attribute rewrite_query
       #   Whether to rewrite the natural language query for vector search.
       #
       #   @return [Boolean, nil]
       optional :rewrite_query, OpenAI::Internal::Type::Boolean
-
-      # @!parse
-      #   # @return [Boolean]
-      #   attr_writer :rewrite_query
 
       # @!method initialize(query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
       #   @param query [String, Array<String>]
@@ -92,23 +75,15 @@ module OpenAI
       end
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
-        # @!attribute [r] ranker
+        # @!attribute ranker
         #
         #   @return [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker, nil]
         optional :ranker, enum: -> { OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker]
-        #   attr_writer :ranker
-
-        # @!attribute [r] score_threshold
+        # @!attribute score_threshold
         #
         #   @return [Float, nil]
         optional :score_threshold, Float
-
-        # @!parse
-        #   # @return [Float]
-        #   attr_writer :score_threshold
 
         # @!method initialize(ranker: nil, score_threshold: nil)
         #   Ranking options for search.

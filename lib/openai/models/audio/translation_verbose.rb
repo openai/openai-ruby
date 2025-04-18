@@ -22,15 +22,11 @@ module OpenAI
         #   @return [String]
         required :text, String
 
-        # @!attribute [r] segments
+        # @!attribute segments
         #   Segments of the translated text and their corresponding details.
         #
         #   @return [Array<OpenAI::Models::Audio::TranscriptionSegment>, nil]
         optional :segments, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionSegment] }
-
-        # @!parse
-        #   # @return [Array<OpenAI::Models::Audio::TranscriptionSegment>]
-        #   attr_writer :segments
 
         # @!method initialize(duration:, language:, text:, segments: nil)
         #   @param duration [Float]

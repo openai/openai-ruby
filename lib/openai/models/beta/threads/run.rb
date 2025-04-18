@@ -253,16 +253,12 @@ module OpenAI
 
           # @see OpenAI::Models::Beta::Threads::Run#incomplete_details
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] reason
+            # @!attribute reason
             #   The reason why the run is incomplete. This will point to which specific token
             #   limit was reached over the course of the run.
             #
             #   @return [Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason, nil]
             optional :reason, enum: -> { OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason }
-
-            # @!parse
-            #   # @return [Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason]
-            #   attr_writer :reason
 
             # @!method initialize(reason: nil)
             #   Details on why the run is incomplete. Will be `null` if the run is not

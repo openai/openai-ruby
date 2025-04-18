@@ -19,25 +19,17 @@ module OpenAI
             #   @return [Symbol, :function]
             required :type, const: :function
 
-            # @!attribute [r] id
+            # @!attribute id
             #   The ID of the tool call object.
             #
             #   @return [String, nil]
             optional :id, String
 
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :id
-
-            # @!attribute [r] function
+            # @!attribute function
             #   The definition of the function that was called.
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function, nil]
             optional :function, -> { OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function }
-
-            # @!parse
-            #   # @return [OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function]
-            #   attr_writer :function
 
             # @!method initialize(index:, id: nil, function: nil, type: :function)
             #   @param index [Integer]
@@ -47,25 +39,17 @@ module OpenAI
 
             # @see OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta#function
             class Function < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] arguments
+              # @!attribute arguments
               #   The arguments passed to the function.
               #
               #   @return [String, nil]
               optional :arguments, String
 
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :arguments
-
-              # @!attribute [r] name
+              # @!attribute name
               #   The name of the function.
               #
               #   @return [String, nil]
               optional :name, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :name
 
               # @!attribute output
               #   The output of the function. This will be `null` if the outputs have not been

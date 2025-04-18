@@ -6,40 +6,27 @@ module OpenAI
       module Completions
         # @see OpenAI::Resources::Chat::Completions::Messages#list
         class MessageListParams < OpenAI::Internal::Type::BaseModel
-          # @!parse
-          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          # @!attribute [r] after
+          # @!attribute after
           #   Identifier for the last message from the previous pagination request.
           #
           #   @return [String, nil]
           optional :after, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :after
-
-          # @!attribute [r] limit
+          # @!attribute limit
           #   Number of messages to retrieve.
           #
           #   @return [Integer, nil]
           optional :limit, Integer
 
-          # @!parse
-          #   # @return [Integer]
-          #   attr_writer :limit
-
-          # @!attribute [r] order
+          # @!attribute order
           #   Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
           #   for descending order. Defaults to `asc`.
           #
           #   @return [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Models::Chat::Completions::MessageListParams::Order }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order]
-          #   attr_writer :order
 
           # @!method initialize(after: nil, limit: nil, order: nil, request_options: {})
           #   @param after [String]

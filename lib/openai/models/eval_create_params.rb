@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Evals#create
     class EvalCreateParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute data_source_config
@@ -32,25 +31,17 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-      # @!attribute [r] name
+      # @!attribute name
       #   The name of the evaluation.
       #
       #   @return [String, nil]
       optional :name, String
 
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :name
-
-      # @!attribute [r] share_with_openai
+      # @!attribute share_with_openai
       #   Indicates whether the evaluation is shared with OpenAI.
       #
       #   @return [Boolean, nil]
       optional :share_with_openai, OpenAI::Internal::Type::Boolean
-
-      # @!parse
-      #   # @return [Boolean]
-      #   attr_writer :share_with_openai
 
       # @!method initialize(data_source_config:, testing_criteria:, metadata: nil, name: nil, share_with_openai: nil, request_options: {})
       #   @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
@@ -89,15 +80,11 @@ module OpenAI
           #   @return [Symbol, :custom]
           required :type, const: :custom
 
-          # @!attribute [r] include_sample_schema
+          # @!attribute include_sample_schema
           #   Whether to include the sample schema in the data source.
           #
           #   @return [Boolean, nil]
           optional :include_sample_schema, OpenAI::Internal::Type::Boolean
-
-          # @!parse
-          #   # @return [Boolean]
-          #   attr_writer :include_sample_schema
 
           # @!method initialize(item_schema:, include_sample_schema: nil, type: :custom)
           #   A CustomDataSourceConfig object that defines the schema for the data source used

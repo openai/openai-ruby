@@ -10,18 +10,14 @@ module OpenAI
       #   @return [String]
       required :name, String
 
-      # @!attribute [r] description
+      # @!attribute description
       #   A description of what the function does, used by the model to choose when and
       #   how to call the function.
       #
       #   @return [String, nil]
       optional :description, String
 
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :description
-
-      # @!attribute [r] parameters
+      # @!attribute parameters
       #   The parameters the functions accepts, described as a JSON Schema object. See the
       #   [guide](https://platform.openai.com/docs/guides/function-calling) for examples,
       #   and the
@@ -32,10 +28,6 @@ module OpenAI
       #
       #   @return [Hash{Symbol=>Object}, nil]
       optional :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
-
-      # @!parse
-      #   # @return [Hash{Symbol=>Object}]
-      #   attr_writer :parameters
 
       # @!attribute strict
       #   Whether to enable strict schema adherence when generating the function call. If

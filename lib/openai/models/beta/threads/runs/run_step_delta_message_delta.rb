@@ -12,15 +12,11 @@ module OpenAI
             #   @return [Symbol, :message_creation]
             required :type, const: :message_creation
 
-            # @!attribute [r] message_creation
+            # @!attribute message_creation
             #
             #   @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation, nil]
             optional :message_creation,
                      -> { OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation }
-
-            # @!parse
-            #   # @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation]
-            #   attr_writer :message_creation
 
             # @!method initialize(message_creation: nil, type: :message_creation)
             #   Details of the message creation by the run step.
@@ -30,15 +26,11 @@ module OpenAI
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta#message_creation
             class MessageCreation < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] message_id
+              # @!attribute message_id
               #   The ID of the message that was created by this run step.
               #
               #   @return [String, nil]
               optional :message_id, String
-
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :message_id
 
               # @!method initialize(message_id: nil)
               #   @param message_id [String]

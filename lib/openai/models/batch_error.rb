@@ -3,15 +3,11 @@
 module OpenAI
   module Models
     class BatchError < OpenAI::Internal::Type::BaseModel
-      # @!attribute [r] code
+      # @!attribute code
       #   An error code identifying the error type.
       #
       #   @return [String, nil]
       optional :code, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :code
 
       # @!attribute line
       #   The line number of the input file where the error occurred, if applicable.
@@ -19,15 +15,11 @@ module OpenAI
       #   @return [Integer, nil]
       optional :line, Integer, nil?: true
 
-      # @!attribute [r] message
+      # @!attribute message
       #   A human-readable message providing more details about the error.
       #
       #   @return [String, nil]
       optional :message, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :message
 
       # @!attribute param
       #   The name of the parameter that caused the error, if applicable.

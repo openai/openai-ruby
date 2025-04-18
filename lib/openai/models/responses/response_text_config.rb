@@ -4,7 +4,7 @@ module OpenAI
   module Models
     module Responses
       class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
-        # @!attribute [r] format_
+        # @!attribute format_
         #   An object specifying the format that the model must output.
         #
         #   Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
@@ -21,10 +21,6 @@ module OpenAI
         #
         #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject, nil]
         optional :format_, union: -> { OpenAI::Models::Responses::ResponseFormatTextConfig }, api_name: :format
-
-        # @!parse
-        #   # @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
-        #   attr_writer :format_
 
         # @!method initialize(format_: nil)
         #   Configuration options for a text response from the model. Can be plain text or

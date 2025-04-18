@@ -7,8 +7,7 @@ module OpenAI
       #
       # @see OpenAI::Resources::Beta::Threads#stream_raw
       class ThreadCreateAndRunParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute assistant_id
@@ -66,17 +65,13 @@ module OpenAI
         #   @return [String, Symbol, OpenAI::Models::ChatModel, nil]
         optional :model, union: -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::Model }, nil?: true
 
-        # @!attribute [r] parallel_tool_calls
+        # @!attribute parallel_tool_calls
         #   Whether to enable
         #   [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
         #   during tool use.
         #
         #   @return [Boolean, nil]
         optional :parallel_tool_calls, OpenAI::Internal::Type::Boolean
-
-        # @!parse
-        #   # @return [Boolean]
-        #   attr_writer :parallel_tool_calls
 
         # @!attribute response_format
         #   Specifies the format that the model must output. Compatible with
@@ -111,16 +106,12 @@ module OpenAI
         #   @return [Float, nil]
         optional :temperature, Float, nil?: true
 
-        # @!attribute [r] thread
+        # @!attribute thread
         #   Options to create a new thread. If no thread is provided when running a request,
         #   an empty thread will be created.
         #
         #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread, nil]
         optional :thread, -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread }
-
-        # @!parse
-        #   # @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread]
-        #   attr_writer :thread
 
         # @!attribute tool_choice
         #   Controls which (if any) tool is called by the model. `none` means the model will
@@ -206,17 +197,13 @@ module OpenAI
         end
 
         class Thread < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] messages
+          # @!attribute messages
           #   A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
           #   start the thread with.
           #
           #   @return [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message>, nil]
           optional :messages,
                    -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message] }
-
-          # @!parse
-          #   # @return [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message>]
-          #   attr_writer :messages
 
           # @!attribute metadata
           #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -329,26 +316,18 @@ module OpenAI
             end
 
             class Attachment < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] file_id
+              # @!attribute file_id
               #   The ID of the file to attach to the message.
               #
               #   @return [String, nil]
               optional :file_id, String
 
-              # @!parse
-              #   # @return [String]
-              #   attr_writer :file_id
-
-              # @!attribute [r] tools
+              # @!attribute tools
               #   The tools to add this file to.
               #
               #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch>, nil]
               optional :tools,
                        -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool] }
-
-              # @!parse
-              #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch>]
-              #   attr_writer :tools
 
               # @!method initialize(file_id: nil, tools: nil)
               #   @param file_id [String]
@@ -383,25 +362,17 @@ module OpenAI
 
           # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread#tool_resources
           class ToolResources < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] code_interpreter
+            # @!attribute code_interpreter
             #
             #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter, nil]
             optional :code_interpreter,
                      -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter }
 
-            # @!parse
-            #   # @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter]
-            #   attr_writer :code_interpreter
-
-            # @!attribute [r] file_search
+            # @!attribute file_search
             #
             #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch, nil]
             optional :file_search,
                      -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch }
-
-            # @!parse
-            #   # @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch]
-            #   attr_writer :file_search
 
             # @!method initialize(code_interpreter: nil, file_search: nil)
             #   A set of resources that are made available to the assistant's tools in this
@@ -414,7 +385,7 @@ module OpenAI
 
             # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources#code_interpreter
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] file_ids
+              # @!attribute file_ids
               #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
               #   available to the `code_interpreter` tool. There can be a maximum of 20 files
               #   associated with the tool.
@@ -422,17 +393,13 @@ module OpenAI
               #   @return [Array<String>, nil]
               optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-              # @!parse
-              #   # @return [Array<String>]
-              #   attr_writer :file_ids
-
               # @!method initialize(file_ids: nil)
               #   @param file_ids [Array<String>]
             end
 
             # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources#file_search
             class FileSearch < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] vector_store_ids
+              # @!attribute vector_store_ids
               #   The
               #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
               #   attached to this thread. There can be a maximum of 1 vector store attached to
@@ -441,11 +408,7 @@ module OpenAI
               #   @return [Array<String>, nil]
               optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-              # @!parse
-              #   # @return [Array<String>]
-              #   attr_writer :vector_store_ids
-
-              # @!attribute [r] vector_stores
+              # @!attribute vector_stores
               #   A helper to create a
               #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
               #   with file_ids and attach it to this thread. There can be a maximum of 1 vector
@@ -455,16 +418,12 @@ module OpenAI
               optional :vector_stores,
                        -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore] }
 
-              # @!parse
-              #   # @return [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore>]
-              #   attr_writer :vector_stores
-
               # @!method initialize(vector_store_ids: nil, vector_stores: nil)
               #   @param vector_store_ids [Array<String>]
               #   @param vector_stores [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore>]
 
               class VectorStore < OpenAI::Internal::Type::BaseModel
-                # @!attribute [r] chunking_strategy
+                # @!attribute chunking_strategy
                 #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
                 #   strategy.
                 #
@@ -472,21 +431,13 @@ module OpenAI
                 optional :chunking_strategy,
                          union: -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy }
 
-                # @!parse
-                #   # @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-                #   attr_writer :chunking_strategy
-
-                # @!attribute [r] file_ids
+                # @!attribute file_ids
                 #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to
                 #   add to the vector store. There can be a maximum of 10000 files in a vector
                 #   store.
                 #
                 #   @return [Array<String>, nil]
                 optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
-
-                # @!parse
-                #   # @return [Array<String>]
-                #   attr_writer :file_ids
 
                 # @!attribute metadata
                 #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -583,24 +534,16 @@ module OpenAI
         end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] code_interpreter
+          # @!attribute code_interpreter
           #
           #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter, nil]
           optional :code_interpreter,
                    -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter }
 
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter]
-          #   attr_writer :code_interpreter
-
-          # @!attribute [r] file_search
+          # @!attribute file_search
           #
           #   @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch, nil]
           optional :file_search, -> { OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch }
-
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch]
-          #   attr_writer :file_search
 
           # @!method initialize(code_interpreter: nil, file_search: nil)
           #   A set of resources that are used by the assistant's tools. The resources are
@@ -613,7 +556,7 @@ module OpenAI
 
           # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] file_ids
+            # @!attribute file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #   available to the `code_interpreter` tool. There can be a maximum of 20 files
             #   associated with the tool.
@@ -621,17 +564,13 @@ module OpenAI
             #   @return [Array<String>, nil]
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-            # @!parse
-            #   # @return [Array<String>]
-            #   attr_writer :file_ids
-
             # @!method initialize(file_ids: nil)
             #   @param file_ids [Array<String>]
           end
 
           # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources#file_search
           class FileSearch < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] vector_store_ids
+            # @!attribute vector_store_ids
             #   The ID of the
             #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             #   attached to this assistant. There can be a maximum of 1 vector store attached to
@@ -639,10 +578,6 @@ module OpenAI
             #
             #   @return [Array<String>, nil]
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
-
-            # @!parse
-            #   # @return [Array<String>]
-            #   attr_writer :vector_store_ids
 
             # @!method initialize(vector_store_ids: nil)
             #   @param vector_store_ids [Array<String>]

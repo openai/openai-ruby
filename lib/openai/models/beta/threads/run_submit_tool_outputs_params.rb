@@ -8,8 +8,7 @@ module OpenAI
         #
         # @see OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_stream_raw
         class RunSubmitToolOutputsParams < OpenAI::Internal::Type::BaseModel
-          # @!parse
-          #   extend OpenAI::Internal::Type::RequestParameters::Converter
+          extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
           # @!attribute thread_id
@@ -30,26 +29,18 @@ module OpenAI
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           class ToolOutput < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] output
+            # @!attribute output
             #   The output of the tool call to be submitted to continue the run.
             #
             #   @return [String, nil]
             optional :output, String
 
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :output
-
-            # @!attribute [r] tool_call_id
+            # @!attribute tool_call_id
             #   The ID of the tool call in the `required_action` object within the run object
             #   the output is being submitted for.
             #
             #   @return [String, nil]
             optional :tool_call_id, String
-
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :tool_call_id
 
             # @!method initialize(output: nil, tool_call_id: nil)
             #   @param output [String]

@@ -5,29 +5,20 @@ module OpenAI
     module FineTuning
       # @see OpenAI::Resources::FineTuning::Jobs#list
       class JobListParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        # @!attribute [r] after
+        # @!attribute after
         #   Identifier for the last job from the previous pagination request.
         #
         #   @return [String, nil]
         optional :after, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :after
-
-        # @!attribute [r] limit
+        # @!attribute limit
         #   Number of fine-tuning jobs to retrieve.
         #
         #   @return [Integer, nil]
         optional :limit, Integer
-
-        # @!parse
-        #   # @return [Integer]
-        #   attr_writer :limit
 
         # @!attribute metadata
         #   Optional metadata filter. To filter, use the syntax `metadata[k]=v`.

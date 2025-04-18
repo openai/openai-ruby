@@ -16,16 +16,12 @@ module OpenAI
         #   @return [Symbol, :developer]
         required :role, const: :developer
 
-        # @!attribute [r] name
+        # @!attribute name
         #   An optional name for the participant. Provides the model information to
         #   differentiate between participants of the same role.
         #
         #   @return [String, nil]
         optional :name, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :name
 
         # @!method initialize(content:, name: nil, role: :developer)
         #   Developer-provided instructions that the model should follow, regardless of

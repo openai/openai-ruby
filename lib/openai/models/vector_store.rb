@@ -64,15 +64,11 @@ module OpenAI
       #   @return [Integer]
       required :usage_bytes, Integer
 
-      # @!attribute [r] expires_after
+      # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
       #   @return [OpenAI::Models::VectorStore::ExpiresAfter, nil]
       optional :expires_after, -> { OpenAI::Models::VectorStore::ExpiresAfter }
-
-      # @!parse
-      #   # @return [OpenAI::Models::VectorStore::ExpiresAfter]
-      #   attr_writer :expires_after
 
       # @!attribute expires_at
       #   The Unix timestamp (in seconds) for when the vector store will expire.

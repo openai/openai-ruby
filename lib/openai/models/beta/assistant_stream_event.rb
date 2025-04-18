@@ -122,15 +122,11 @@ module OpenAI
           #   @return [Symbol, :"thread.created"]
           required :event, const: :"thread.created"
 
-          # @!attribute [r] enabled
+          # @!attribute enabled
           #   Whether to enable input audio transcription.
           #
           #   @return [Boolean, nil]
           optional :enabled, OpenAI::Internal::Type::Boolean
-
-          # @!parse
-          #   # @return [Boolean]
-          #   attr_writer :enabled
 
           # @!method initialize(data:, enabled: nil, event: :"thread.created")
           #   Occurs when a new

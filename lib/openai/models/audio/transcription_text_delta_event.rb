@@ -16,7 +16,7 @@ module OpenAI
         #   @return [Symbol, :"transcript.text.delta"]
         required :type, const: :"transcript.text.delta"
 
-        # @!attribute [r] logprobs
+        # @!attribute logprobs
         #   The log probabilities of the delta. Only included if you
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `include[]` parameter set to `logprobs`.
@@ -24,10 +24,6 @@ module OpenAI
         #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>, nil]
         optional :logprobs,
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob] }
-
-        # @!parse
-        #   # @return [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>]
-        #   attr_writer :logprobs
 
         # @!method initialize(delta:, logprobs: nil, type: :"transcript.text.delta")
         #   Emitted when there is an additional text delta. This is also the first event
@@ -40,35 +36,23 @@ module OpenAI
         #   @param type [Symbol, :"transcript.text.delta"]
 
         class Logprob < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] token
+          # @!attribute token
           #   The token that was used to generate the log probability.
           #
           #   @return [String, nil]
           optional :token, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :token
-
-          # @!attribute [r] bytes
+          # @!attribute bytes
           #   The bytes that were used to generate the log probability.
           #
           #   @return [Array<Object>, nil]
           optional :bytes, OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]
 
-          # @!parse
-          #   # @return [Array<Object>]
-          #   attr_writer :bytes
-
-          # @!attribute [r] logprob
+          # @!attribute logprob
           #   The log probability of the token.
           #
           #   @return [Float, nil]
           optional :logprob, Float
-
-          # @!parse
-          #   # @return [Float]
-          #   attr_writer :logprob
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
           #   @param token [String]

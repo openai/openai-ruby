@@ -17,14 +17,10 @@ module OpenAI
           #   @return [Symbol, :image_url]
           required :type, const: :image_url
 
-          # @!attribute [r] image_url
+          # @!attribute image_url
           #
           #   @return [OpenAI::Models::Beta::Threads::ImageURLDelta, nil]
           optional :image_url, -> { OpenAI::Models::Beta::Threads::ImageURLDelta }
-
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::Threads::ImageURLDelta]
-          #   attr_writer :image_url
 
           # @!method initialize(index:, image_url: nil, type: :image_url)
           #   References an image URL in the content of a message.

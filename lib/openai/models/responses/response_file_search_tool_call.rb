@@ -78,45 +78,29 @@ module OpenAI
                    -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::Attribute] },
                    nil?: true
 
-          # @!attribute [r] file_id
+          # @!attribute file_id
           #   The unique ID of the file.
           #
           #   @return [String, nil]
           optional :file_id, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :file_id
-
-          # @!attribute [r] filename
+          # @!attribute filename
           #   The name of the file.
           #
           #   @return [String, nil]
           optional :filename, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :filename
-
-          # @!attribute [r] score
+          # @!attribute score
           #   The relevance score of the file - a value between 0 and 1.
           #
           #   @return [Float, nil]
           optional :score, Float
 
-          # @!parse
-          #   # @return [Float]
-          #   attr_writer :score
-
-          # @!attribute [r] text
+          # @!attribute text
           #   The text that was retrieved from the file.
           #
           #   @return [String, nil]
           optional :text, String
-
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :text
 
           # @!method initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil)
           #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]

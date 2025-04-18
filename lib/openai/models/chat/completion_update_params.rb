@@ -5,8 +5,7 @@ module OpenAI
     module Chat
       # @see OpenAI::Resources::Chat::Completions#update
       class CompletionUpdateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute metadata

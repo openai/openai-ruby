@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Images#edit
     class ImageEditParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute image
@@ -22,17 +21,13 @@ module OpenAI
       #   @return [String]
       required :prompt, String
 
-      # @!attribute [r] mask
+      # @!attribute mask
       #   An additional image whose fully transparent areas (e.g. where alpha is zero)
       #   indicate where `image` should be edited. Must be a valid PNG file, less than
       #   4MB, and have the same dimensions as `image`.
       #
       #   @return [Pathname, StringIO, nil]
       optional :mask, OpenAI::Internal::Type::IOLike
-
-      # @!parse
-      #   # @return [Pathname, StringIO]
-      #   attr_writer :mask
 
       # @!attribute model
       #   The model to use for image generation. Only `dall-e-2` is supported at this
@@ -62,17 +57,13 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       optional :size, enum: -> { OpenAI::Models::ImageEditParams::Size }, nil?: true
 
-      # @!attribute [r] user
+      # @!attribute user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
       #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :user
 
       # @!method initialize(image:, prompt:, mask: nil, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #   @param image [Pathname, StringIO]

@@ -124,26 +124,18 @@ module OpenAI
           #   @param object [Symbol, :"thread.message"]
 
           class Attachment < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] file_id
+            # @!attribute file_id
             #   The ID of the file to attach to the message.
             #
             #   @return [String, nil]
             optional :file_id, String
 
-            # @!parse
-            #   # @return [String]
-            #   attr_writer :file_id
-
-            # @!attribute [r] tools
+            # @!attribute tools
             #   The tools to add this file to.
             #
             #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>, nil]
             optional :tools,
                      -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::Message::Attachment::Tool] }
-
-            # @!parse
-            #   # @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly>]
-            #   attr_writer :tools
 
             # @!method initialize(file_id: nil, tools: nil)
             #   @param file_id [String]

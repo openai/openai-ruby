@@ -13,16 +13,12 @@ module OpenAI
           #   @return [String]
           required :file_id, String
 
-          # @!attribute [r] detail
+          # @!attribute detail
           #   Specifies the detail level of the image if specified by the user. `low` uses
           #   fewer tokens, you can opt in to high resolution using `high`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail, nil]
           optional :detail, enum: -> { OpenAI::Models::Beta::Threads::ImageFile::Detail }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail]
-          #   attr_writer :detail
 
           # @!method initialize(file_id:, detail: nil)
           #   @param file_id [String]

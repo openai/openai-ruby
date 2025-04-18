@@ -132,15 +132,11 @@ module OpenAI
         #   @return [Hash{Symbol=>String}, nil]
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-        # @!attribute [r] method_
+        # @!attribute method_
         #   The method used for fine-tuning.
         #
         #   @return [OpenAI::Models::FineTuning::FineTuningJob::Method, nil]
         optional :method_, -> { OpenAI::Models::FineTuning::FineTuningJob::Method }, api_name: :method
-
-        # @!parse
-        #   # @return [OpenAI::Models::FineTuning::FineTuningJob::Method]
-        #   attr_writer :method_
 
         # @!method initialize(id:, created_at:, error:, fine_tuned_model:, finished_at:, hyperparameters:, model:, organization_id:, result_files:, seed:, status:, trained_tokens:, training_file:, validation_file:, estimated_finish: nil, integrations: nil, metadata: nil, method_: nil, object: :"fine_tuning.job")
         #   The `fine_tuning.job` object represents a fine-tuning job that has been created
@@ -198,18 +194,14 @@ module OpenAI
 
         # @see OpenAI::Models::FineTuning::FineTuningJob#hyperparameters
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] batch_size
+          # @!attribute batch_size
           #   Number of examples in each batch. A larger batch size means that model
           #   parameters are updated less frequently, but with lower variance.
           #
           #   @return [Symbol, :auto, Integer, nil]
           optional :batch_size, union: -> { OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::BatchSize }
 
-          # @!parse
-          #   # @return [Symbol, :auto, Integer]
-          #   attr_writer :batch_size
-
-          # @!attribute [r] learning_rate_multiplier
+          # @!attribute learning_rate_multiplier
           #   Scaling factor for the learning rate. A smaller learning rate may be useful to
           #   avoid overfitting.
           #
@@ -217,20 +209,12 @@ module OpenAI
           optional :learning_rate_multiplier,
                    union: -> { OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier }
 
-          # @!parse
-          #   # @return [Symbol, :auto, Float]
-          #   attr_writer :learning_rate_multiplier
-
-          # @!attribute [r] n_epochs
+          # @!attribute n_epochs
           #   The number of epochs to train the model for. An epoch refers to one full cycle
           #   through the training dataset.
           #
           #   @return [Symbol, :auto, Integer, nil]
           optional :n_epochs, union: -> { OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters::NEpochs }
-
-          # @!parse
-          #   # @return [Symbol, :auto, Integer]
-          #   attr_writer :n_epochs
 
           # @!method initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
           #   The hyperparameters used for the fine-tuning job. This value will only be
@@ -306,35 +290,23 @@ module OpenAI
 
         # @see OpenAI::Models::FineTuning::FineTuningJob#method_
         class Method < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] dpo
+          # @!attribute dpo
           #   Configuration for the DPO fine-tuning method.
           #
           #   @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo, nil]
           optional :dpo, -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo }
 
-          # @!parse
-          #   # @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo]
-          #   attr_writer :dpo
-
-          # @!attribute [r] supervised
+          # @!attribute supervised
           #   Configuration for the supervised fine-tuning method.
           #
           #   @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised, nil]
           optional :supervised, -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised }
 
-          # @!parse
-          #   # @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised]
-          #   attr_writer :supervised
-
-          # @!attribute [r] type
+          # @!attribute type
           #   The type of method. Is either `supervised` or `dpo`.
           #
           #   @return [Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type, nil]
           optional :type, enum: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Type }
-
-          # @!parse
-          #   # @return [Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type]
-          #   attr_writer :type
 
           # @!method initialize(dpo: nil, supervised: nil, type: nil)
           #   The method used for fine-tuning.
@@ -345,15 +317,11 @@ module OpenAI
 
           # @see OpenAI::Models::FineTuning::FineTuningJob::Method#dpo
           class Dpo < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] hyperparameters
+            # @!attribute hyperparameters
             #   The hyperparameters used for the fine-tuning job.
             #
             #   @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters, nil]
             optional :hyperparameters, -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters }
-
-            # @!parse
-            #   # @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters]
-            #   attr_writer :hyperparameters
 
             # @!method initialize(hyperparameters: nil)
             #   Configuration for the DPO fine-tuning method.
@@ -362,7 +330,7 @@ module OpenAI
 
             # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo#hyperparameters
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] batch_size
+              # @!attribute batch_size
               #   Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
               #
@@ -370,11 +338,7 @@ module OpenAI
               optional :batch_size,
                        union: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::BatchSize }
 
-              # @!parse
-              #   # @return [Symbol, :auto, Integer]
-              #   attr_writer :batch_size
-
-              # @!attribute [r] beta
+              # @!attribute beta
               #   The beta value for the DPO method. A higher beta value will increase the weight
               #   of the penalty between the policy and reference model.
               #
@@ -382,11 +346,7 @@ module OpenAI
               optional :beta,
                        union: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::Beta }
 
-              # @!parse
-              #   # @return [Symbol, :auto, Float]
-              #   attr_writer :beta
-
-              # @!attribute [r] learning_rate_multiplier
+              # @!attribute learning_rate_multiplier
               #   Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
               #
@@ -394,21 +354,13 @@ module OpenAI
               optional :learning_rate_multiplier,
                        union: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::LearningRateMultiplier }
 
-              # @!parse
-              #   # @return [Symbol, :auto, Float]
-              #   attr_writer :learning_rate_multiplier
-
-              # @!attribute [r] n_epochs
+              # @!attribute n_epochs
               #   The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
               #
               #   @return [Symbol, :auto, Integer, nil]
               optional :n_epochs,
                        union: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::NEpochs }
-
-              # @!parse
-              #   # @return [Symbol, :auto, Integer]
-              #   attr_writer :n_epochs
 
               # @!method initialize(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil)
               #   The hyperparameters used for the fine-tuning job.
@@ -482,16 +434,12 @@ module OpenAI
 
           # @see OpenAI::Models::FineTuning::FineTuningJob::Method#supervised
           class Supervised < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] hyperparameters
+            # @!attribute hyperparameters
             #   The hyperparameters used for the fine-tuning job.
             #
             #   @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters, nil]
             optional :hyperparameters,
                      -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters }
-
-            # @!parse
-            #   # @return [OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters]
-            #   attr_writer :hyperparameters
 
             # @!method initialize(hyperparameters: nil)
             #   Configuration for the supervised fine-tuning method.
@@ -500,7 +448,7 @@ module OpenAI
 
             # @see OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised#hyperparameters
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] batch_size
+              # @!attribute batch_size
               #   Number of examples in each batch. A larger batch size means that model
               #   parameters are updated less frequently, but with lower variance.
               #
@@ -508,11 +456,7 @@ module OpenAI
               optional :batch_size,
                        union: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::BatchSize }
 
-              # @!parse
-              #   # @return [Symbol, :auto, Integer]
-              #   attr_writer :batch_size
-
-              # @!attribute [r] learning_rate_multiplier
+              # @!attribute learning_rate_multiplier
               #   Scaling factor for the learning rate. A smaller learning rate may be useful to
               #   avoid overfitting.
               #
@@ -520,21 +464,13 @@ module OpenAI
               optional :learning_rate_multiplier,
                        union: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::LearningRateMultiplier }
 
-              # @!parse
-              #   # @return [Symbol, :auto, Float]
-              #   attr_writer :learning_rate_multiplier
-
-              # @!attribute [r] n_epochs
+              # @!attribute n_epochs
               #   The number of epochs to train the model for. An epoch refers to one full cycle
               #   through the training dataset.
               #
               #   @return [Symbol, :auto, Integer, nil]
               optional :n_epochs,
                        union: -> { OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::NEpochs }
-
-              # @!parse
-              #   # @return [Symbol, :auto, Integer]
-              #   attr_writer :n_epochs
 
               # @!method initialize(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil)
               #   The hyperparameters used for the fine-tuning job.

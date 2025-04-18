@@ -13,16 +13,12 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
         required :type, enum: -> { OpenAI::Models::Responses::WebSearchTool::Type }
 
-        # @!attribute [r] search_context_size
+        # @!attribute search_context_size
         #   High level guidance for the amount of context window space to use for the
         #   search. One of `low`, `medium`, or `high`. `medium` is the default.
         #
         #   @return [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize, nil]
         optional :search_context_size, enum: -> { OpenAI::Models::Responses::WebSearchTool::SearchContextSize }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize]
-        #   attr_writer :search_context_size
 
         # @!attribute user_location
         #
@@ -77,47 +73,31 @@ module OpenAI
           #   @return [Symbol, :approximate]
           required :type, const: :approximate
 
-          # @!attribute [r] city
+          # @!attribute city
           #   Free text input for the city of the user, e.g. `San Francisco`.
           #
           #   @return [String, nil]
           optional :city, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :city
-
-          # @!attribute [r] country
+          # @!attribute country
           #   The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
           #   the user, e.g. `US`.
           #
           #   @return [String, nil]
           optional :country, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :country
-
-          # @!attribute [r] region
+          # @!attribute region
           #   Free text input for the region of the user, e.g. `California`.
           #
           #   @return [String, nil]
           optional :region, String
 
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :region
-
-          # @!attribute [r] timezone
+          # @!attribute timezone
           #   The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
           #   user, e.g. `America/Los_Angeles`.
           #
           #   @return [String, nil]
           optional :timezone, String
-
-          # @!parse
-          #   # @return [String]
-          #   attr_writer :timezone
 
           # @!method initialize(city: nil, country: nil, region: nil, timezone: nil, type: :approximate)
           #   @param city [String]

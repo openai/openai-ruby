@@ -142,23 +142,15 @@ module OpenAI
 
         # @see OpenAI::Models::Beta::Assistant#tool_resources
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          # @!attribute [r] code_interpreter
+          # @!attribute code_interpreter
           #
           #   @return [OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, nil]
           optional :code_interpreter, -> { OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter }
 
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter]
-          #   attr_writer :code_interpreter
-
-          # @!attribute [r] file_search
+          # @!attribute file_search
           #
           #   @return [OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, nil]
           optional :file_search, -> { OpenAI::Models::Beta::Assistant::ToolResources::FileSearch }
-
-          # @!parse
-          #   # @return [OpenAI::Models::Beta::Assistant::ToolResources::FileSearch]
-          #   attr_writer :file_search
 
           # @!method initialize(code_interpreter: nil, file_search: nil)
           #   A set of resources that are used by the assistant's tools. The resources are
@@ -171,7 +163,7 @@ module OpenAI
 
           # @see OpenAI::Models::Beta::Assistant::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] file_ids
+            # @!attribute file_ids
             #   A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             #   available to the `code_interpreter`` tool. There can be a maximum of 20 files
             #   associated with the tool.
@@ -179,17 +171,13 @@ module OpenAI
             #   @return [Array<String>, nil]
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-            # @!parse
-            #   # @return [Array<String>]
-            #   attr_writer :file_ids
-
             # @!method initialize(file_ids: nil)
             #   @param file_ids [Array<String>]
           end
 
           # @see OpenAI::Models::Beta::Assistant::ToolResources#file_search
           class FileSearch < OpenAI::Internal::Type::BaseModel
-            # @!attribute [r] vector_store_ids
+            # @!attribute vector_store_ids
             #   The ID of the
             #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             #   attached to this assistant. There can be a maximum of 1 vector store attached to
@@ -197,10 +185,6 @@ module OpenAI
             #
             #   @return [Array<String>, nil]
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
-
-            # @!parse
-            #   # @return [Array<String>]
-            #   attr_writer :vector_store_ids
 
             # @!method initialize(vector_store_ids: nil)
             #   @param vector_store_ids [Array<String>]

@@ -49,26 +49,18 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::FileObject::Status]
       required :status, enum: -> { OpenAI::Models::FileObject::Status }
 
-      # @!attribute [r] expires_at
+      # @!attribute expires_at
       #   The Unix timestamp (in seconds) for when the file will expire.
       #
       #   @return [Integer, nil]
       optional :expires_at, Integer
 
-      # @!parse
-      #   # @return [Integer]
-      #   attr_writer :expires_at
-
-      # @!attribute [r] status_details
+      # @!attribute status_details
       #   Deprecated. For details on why a fine-tuning training file failed validation,
       #   see the `error` field on `fine_tuning.job`.
       #
       #   @return [String, nil]
       optional :status_details, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :status_details
 
       # @!method initialize(id:, bytes:, created_at:, filename:, purpose:, status:, expires_at: nil, status_details: nil, object: :file)
       #   The `File` object represents a document that has been uploaded to OpenAI.

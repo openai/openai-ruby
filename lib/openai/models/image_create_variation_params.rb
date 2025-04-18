@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Images#create_variation
     class ImageCreateVariationParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute image
@@ -46,17 +45,13 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageCreateVariationParams::Size, nil]
       optional :size, enum: -> { OpenAI::Models::ImageCreateVariationParams::Size }, nil?: true
 
-      # @!attribute [r] user
+      # @!attribute user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
       #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :user
 
       # @!method initialize(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #   @param image [Pathname, StringIO]

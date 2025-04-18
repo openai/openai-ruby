@@ -4,8 +4,7 @@ module OpenAI
   module Models
     # @see OpenAI::Resources::Images#generate
     class ImageGenerateParams < OpenAI::Internal::Type::BaseModel
-      # @!parse
-      #   extend OpenAI::Internal::Type::RequestParameters::Converter
+      extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute prompt
@@ -28,17 +27,13 @@ module OpenAI
       #   @return [Integer, nil]
       optional :n, Integer, nil?: true
 
-      # @!attribute [r] quality
+      # @!attribute quality
       #   The quality of the image that will be generated. `hd` creates images with finer
       #   details and greater consistency across the image. This param is only supported
       #   for `dall-e-3`.
       #
       #   @return [Symbol, OpenAI::Models::ImageGenerateParams::Quality, nil]
       optional :quality, enum: -> { OpenAI::Models::ImageGenerateParams::Quality }
-
-      # @!parse
-      #   # @return [Symbol, OpenAI::Models::ImageGenerateParams::Quality]
-      #   attr_writer :quality
 
       # @!attribute response_format
       #   The format in which the generated images are returned. Must be one of `url` or
@@ -65,17 +60,13 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil]
       optional :style, enum: -> { OpenAI::Models::ImageGenerateParams::Style }, nil?: true
 
-      # @!attribute [r] user
+      # @!attribute user
       #   A unique identifier representing your end-user, which can help OpenAI to monitor
       #   and detect abuse.
       #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
       #
       #   @return [String, nil]
       optional :user, String
-
-      # @!parse
-      #   # @return [String]
-      #   attr_writer :user
 
       # @!method initialize(prompt:, model: nil, n: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
       #   @param prompt [String]

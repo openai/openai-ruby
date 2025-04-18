@@ -16,16 +16,12 @@ module OpenAI
         #   @return [Symbol, :user]
         required :role, const: :user
 
-        # @!attribute [r] name
+        # @!attribute name
         #   An optional name for the participant. Provides the model information to
         #   differentiate between participants of the same role.
         #
         #   @return [String, nil]
         optional :name, String
-
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :name
 
         # @!method initialize(content:, name: nil, role: :user)
         #   Messages sent by an end user, containing prompts or additional context

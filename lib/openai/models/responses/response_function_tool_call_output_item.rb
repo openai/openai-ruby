@@ -28,16 +28,12 @@ module OpenAI
         #   @return [Symbol, :function_call_output]
         required :type, const: :function_call_output
 
-        # @!attribute [r] status
+        # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
         #
         #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status }
-
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem::Status]
-        #   attr_writer :status
 
         # @!method initialize(id:, call_id:, output:, status: nil, type: :function_call_output)
         #   @param id [String]

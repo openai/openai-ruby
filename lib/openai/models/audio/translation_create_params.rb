@@ -5,8 +5,7 @@ module OpenAI
     module Audio
       # @see OpenAI::Resources::Audio::Translations#create
       class TranslationCreateParams < OpenAI::Internal::Type::BaseModel
-        # @!parse
-        #   extend OpenAI::Internal::Type::RequestParameters::Converter
+        extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
         # @!attribute file
@@ -23,7 +22,7 @@ module OpenAI
         #   @return [String, Symbol, OpenAI::Models::AudioModel]
         required :model, union: -> { OpenAI::Models::Audio::TranslationCreateParams::Model }
 
-        # @!attribute [r] prompt
+        # @!attribute prompt
         #   An optional text to guide the model's style or continue a previous audio
         #   segment. The
         #   [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
@@ -32,22 +31,14 @@ module OpenAI
         #   @return [String, nil]
         optional :prompt, String
 
-        # @!parse
-        #   # @return [String]
-        #   attr_writer :prompt
-
-        # @!attribute [r] response_format
+        # @!attribute response_format
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
         #
         #   @return [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat, nil]
         optional :response_format, enum: -> { OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat }
 
-        # @!parse
-        #   # @return [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat]
-        #   attr_writer :response_format
-
-        # @!attribute [r] temperature
+        # @!attribute temperature
         #   The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
         #   output more random, while lower values like 0.2 will make it more focused and
         #   deterministic. If set to 0, the model will use
@@ -56,10 +47,6 @@ module OpenAI
         #
         #   @return [Float, nil]
         optional :temperature, Float
-
-        # @!parse
-        #   # @return [Float]
-        #   attr_writer :temperature
 
         # @!method initialize(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {})
         #   @param file [Pathname, StringIO]

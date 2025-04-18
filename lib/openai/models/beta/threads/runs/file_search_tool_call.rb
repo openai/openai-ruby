@@ -32,27 +32,19 @@ module OpenAI
 
             # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall#file_search
             class FileSearch < OpenAI::Internal::Type::BaseModel
-              # @!attribute [r] ranking_options
+              # @!attribute ranking_options
               #   The ranking options for the file search.
               #
               #   @return [OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions, nil]
               optional :ranking_options,
                        -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions }
 
-              # @!parse
-              #   # @return [OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions]
-              #   attr_writer :ranking_options
-
-              # @!attribute [r] results
+              # @!attribute results
               #   The results of the file search.
               #
               #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>, nil]
               optional :results,
                        -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result] }
-
-              # @!parse
-              #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>]
-              #   attr_writer :results
 
               # @!method initialize(ranking_options: nil, results: nil)
               #   For now, this is always going to be an empty object.
@@ -118,17 +110,13 @@ module OpenAI
                 #   @return [Float]
                 required :score, Float
 
-                # @!attribute [r] content
+                # @!attribute content
                 #   The content of the result that was found. The content is only included if
                 #   requested via the include query parameter.
                 #
                 #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>, nil]
                 optional :content,
                          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content] }
-
-                # @!parse
-                #   # @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>]
-                #   attr_writer :content
 
                 # @!method initialize(file_id:, file_name:, score:, content: nil)
                 #   A result instance of the file search.
@@ -139,26 +127,18 @@ module OpenAI
                 #   @param content [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>]
 
                 class Content < OpenAI::Internal::Type::BaseModel
-                  # @!attribute [r] text
+                  # @!attribute text
                   #   The text content of the file.
                   #
                   #   @return [String, nil]
                   optional :text, String
 
-                  # @!parse
-                  #   # @return [String]
-                  #   attr_writer :text
-
-                  # @!attribute [r] type
+                  # @!attribute type
                   #   The type of the content.
                   #
                   #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type, nil]
                   optional :type,
                            enum: -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type }
-
-                  # @!parse
-                  #   # @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type]
-                  #   attr_writer :type
 
                   # @!method initialize(text: nil, type: nil)
                   #   @param text [String]
