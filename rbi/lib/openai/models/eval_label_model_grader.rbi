@@ -154,14 +154,7 @@ module OpenAI
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::Type) }
-              OrSymbol =
-                T.type_alias do
-                  T.any(
-                    Symbol,
-                    String,
-                    OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::Type::TaggedSymbol
-                  )
-                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               INPUT_TEXT =
                 T.let(:input_text, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Content::Type::TaggedSymbol)
@@ -180,8 +173,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Role) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Role::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             USER = T.let(:user, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Role::TaggedSymbol)
             SYSTEM = T.let(:system, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Role::TaggedSymbol)
@@ -198,8 +190,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Type) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Type::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             MESSAGE = T.let(:message, OpenAI::Models::EvalLabelModelGrader::Input::InputMessage::Type::TaggedSymbol)
 
@@ -282,8 +273,7 @@ module OpenAI
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::Type) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::Type::TaggedSymbol) }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               OUTPUT_TEXT =
                 T.let(:output_text, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Content::Type::TaggedSymbol)
@@ -302,8 +292,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Type) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Type::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             MESSAGE = T.let(:message, OpenAI::Models::EvalLabelModelGrader::Input::Assistant::Type::TaggedSymbol)
 

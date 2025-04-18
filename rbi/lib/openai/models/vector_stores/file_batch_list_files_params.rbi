@@ -98,8 +98,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS =
             T.let(:in_progress, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::TaggedSymbol)
@@ -120,8 +119,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           ASC = T.let(:asc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol)
           DESC = T.let(:desc, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::TaggedSymbol)

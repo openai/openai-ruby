@@ -243,12 +243,11 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol]) }
+        sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol]) }
         def self.variants; end
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionCreateParams::Model) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         GPT_3_5_TURBO_INSTRUCT =
           T.let(:"gpt-3.5-turbo-instruct", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)

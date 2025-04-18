@@ -171,8 +171,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             STOP = T.let(:stop, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
             LENGTH = T.let(:length, OpenAI::Models::Chat::ChatCompletion::Choice::FinishReason::TaggedSymbol)
@@ -239,8 +238,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletion::ServiceTier) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::ChatCompletion::ServiceTier::TaggedSymbol)

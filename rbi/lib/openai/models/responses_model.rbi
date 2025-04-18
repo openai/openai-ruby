@@ -9,8 +9,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ResponsesModel::ResponsesOnlyModel) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::ResponsesModel::ResponsesOnlyModel::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         O1_PRO = T.let(:"o1-pro", OpenAI::Models::ResponsesModel::ResponsesOnlyModel::TaggedSymbol)
         O1_PRO_2025_03_19 =
@@ -30,7 +29,7 @@ module OpenAI
       sig do
         override
           .returns(
-            [String, OpenAI::Models::ChatModel::OrSymbol, OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol]
+            [String, OpenAI::Models::ChatModel::TaggedSymbol, OpenAI::Models::ResponsesModel::ResponsesOnlyModel::TaggedSymbol]
           )
       end
       def self.variants; end

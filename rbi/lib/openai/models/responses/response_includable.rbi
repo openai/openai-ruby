@@ -15,8 +15,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseIncludable) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         FILE_SEARCH_CALL_RESULTS =
           T.let(:"file_search_call.results", OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol)

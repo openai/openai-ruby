@@ -80,7 +80,7 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::AudioModel::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::AudioModel::TaggedSymbol]) }
           def self.variants; end
         end
 
@@ -91,8 +91,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           JSON = T.let(:json, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)
           TEXT = T.let(:text, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::TaggedSymbol)

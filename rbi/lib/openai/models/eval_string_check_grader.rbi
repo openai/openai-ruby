@@ -56,8 +56,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EvalStringCheckGrader::Operation) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalStringCheckGrader::Operation::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         EQ = T.let(:eq, OpenAI::Models::EvalStringCheckGrader::Operation::TaggedSymbol)
         NE = T.let(:ne, OpenAI::Models::EvalStringCheckGrader::Operation::TaggedSymbol)

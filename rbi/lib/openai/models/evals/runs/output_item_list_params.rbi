@@ -75,8 +75,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Evals::Runs::OutputItemListParams::Order::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             ASC = T.let(:asc, OpenAI::Models::Evals::Runs::OutputItemListParams::Order::TaggedSymbol)
             DESC = T.let(:desc, OpenAI::Models::Evals::Runs::OutputItemListParams::Order::TaggedSymbol)
@@ -91,8 +90,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Evals::Runs::OutputItemListParams::Status::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             FAIL = T.let(:fail, OpenAI::Models::Evals::Runs::OutputItemListParams::Status::TaggedSymbol)
             PASS = T.let(:pass, OpenAI::Models::Evals::Runs::OutputItemListParams::Status::TaggedSymbol)

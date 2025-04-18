@@ -95,7 +95,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Upload::Status) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Upload::Status::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         PENDING = T.let(:pending, OpenAI::Models::Upload::Status::TaggedSymbol)
         COMPLETED = T.let(:completed, OpenAI::Models::Upload::Status::TaggedSymbol)

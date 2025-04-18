@@ -85,7 +85,7 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
+        sig { override.returns([String, OpenAI::Models::ImageModel::TaggedSymbol]) }
         def self.variants; end
       end
 
@@ -96,8 +96,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         URL = T.let(:url, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol)
         B64_JSON = T.let(:b64_json, OpenAI::Models::ImageCreateVariationParams::ResponseFormat::TaggedSymbol)
@@ -112,8 +111,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageCreateVariationParams::Size) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         SIZE_256X256 = T.let(:"256x256", OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol)
         SIZE_512X512 = T.let(:"512x512", OpenAI::Models::ImageCreateVariationParams::Size::TaggedSymbol)

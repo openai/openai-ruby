@@ -43,8 +43,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           WAV = T.let(:wav, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
           AAC = T.let(:aac, OpenAI::Models::Chat::ChatCompletionAudioParam::Format::TaggedSymbol)
@@ -62,12 +61,11 @@ module OpenAI
         module Voice
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol]) }
           def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           ALLOY = T.let(:alloy, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)
           ASH = T.let(:ash, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol)

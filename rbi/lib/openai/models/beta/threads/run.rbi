@@ -392,8 +392,7 @@ module OpenAI
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol) }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               MAX_COMPLETION_TOKENS =
                 T.let(:max_completion_tokens, OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol)
@@ -432,8 +431,7 @@ module OpenAI
               extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Run::LastError::Code) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol) }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               SERVER_ERROR = T.let(:server_error, OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol)
               RATE_LIMIT_EXCEEDED =
@@ -545,8 +543,7 @@ module OpenAI
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type) }
-              OrSymbol =
-                T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol) }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               AUTO = T.let(:auto, OpenAI::Models::Beta::Threads::Run::TruncationStrategy::Type::TaggedSymbol)
               LAST_MESSAGES =

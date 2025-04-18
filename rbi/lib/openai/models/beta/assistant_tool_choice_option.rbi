@@ -21,8 +21,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           NONE = T.let(:none, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
           AUTO = T.let(:auto, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
@@ -35,7 +34,7 @@ module OpenAI
         sig do
           override
             .returns(
-              [OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Beta::AssistantToolChoice]
+              [OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol, OpenAI::Models::Beta::AssistantToolChoice]
             )
         end
         def self.variants; end

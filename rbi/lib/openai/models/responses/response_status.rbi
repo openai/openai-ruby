@@ -9,8 +9,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseStatus) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
         FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)

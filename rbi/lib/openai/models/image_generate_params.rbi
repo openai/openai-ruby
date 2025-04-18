@@ -104,7 +104,7 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, OpenAI::Models::ImageModel::OrSymbol]) }
+        sig { override.returns([String, OpenAI::Models::ImageModel::TaggedSymbol]) }
         def self.variants; end
       end
 
@@ -115,8 +115,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Quality) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         STANDARD = T.let(:standard, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol)
         HD = T.let(:hd, OpenAI::Models::ImageGenerateParams::Quality::TaggedSymbol)
@@ -132,8 +131,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::ResponseFormat) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         URL = T.let(:url, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol)
         B64_JSON = T.let(:b64_json, OpenAI::Models::ImageGenerateParams::ResponseFormat::TaggedSymbol)
@@ -149,8 +147,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Size) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         SIZE_256X256 = T.let(:"256x256", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
         SIZE_512X512 = T.let(:"512x512", OpenAI::Models::ImageGenerateParams::Size::TaggedSymbol)
@@ -170,8 +167,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageGenerateParams::Style) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         VIVID = T.let(:vivid, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol)
         NATURAL = T.let(:natural, OpenAI::Models::ImageGenerateParams::Style::TaggedSymbol)
