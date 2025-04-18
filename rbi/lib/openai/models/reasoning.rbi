@@ -61,8 +61,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Reasoning::GenerateSummary) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         AUTO = T.let(:auto, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol)
         CONCISE = T.let(:concise, OpenAI::Models::Reasoning::GenerateSummary::TaggedSymbol)
@@ -79,7 +78,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Reasoning::Summary) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Reasoning::Summary::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         AUTO = T.let(:auto, OpenAI::Models::Reasoning::Summary::TaggedSymbol)
         CONCISE = T.let(:concise, OpenAI::Models::Reasoning::Summary::TaggedSymbol)

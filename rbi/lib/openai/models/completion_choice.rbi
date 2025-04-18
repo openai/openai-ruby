@@ -57,8 +57,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionChoice::FinishReason) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         STOP = T.let(:stop, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
         LENGTH = T.let(:length, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)

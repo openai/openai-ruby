@@ -68,7 +68,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EvalListParams::Order) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalListParams::Order::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         ASC = T.let(:asc, OpenAI::Models::EvalListParams::Order::TaggedSymbol)
         DESC = T.let(:desc, OpenAI::Models::EvalListParams::Order::TaggedSymbol)
@@ -83,7 +83,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EvalListParams::OrderBy) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalListParams::OrderBy::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         CREATED_AT = T.let(:created_at, OpenAI::Models::EvalListParams::OrderBy::TaggedSymbol)
         UPDATED_AT = T.let(:updated_at, OpenAI::Models::EvalListParams::OrderBy::TaggedSymbol)

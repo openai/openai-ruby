@@ -86,8 +86,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           USER = T.let(:user, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
           SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
@@ -104,8 +103,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS =
             T.let(:in_progress, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
@@ -122,8 +120,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
 

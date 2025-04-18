@@ -83,8 +83,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Filter) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
           COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
@@ -101,8 +100,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Order) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           ASC = T.let(:asc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
           DESC = T.let(:desc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)

@@ -539,7 +539,7 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::ChatModel::TaggedSymbol]) }
           def self.variants; end
         end
 
@@ -568,14 +568,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode) }
-            OrSymbol =
-              T.type_alias do
-                T.any(
-                  Symbol,
-                  String,
-                  OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol
-                )
-              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             NONE =
               T.let(:none, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol)
@@ -594,7 +587,7 @@ module OpenAI
           sig do
             override
               .returns(
-                [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
+                [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
               )
           end
           def self.variants; end
@@ -643,8 +636,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
           AUDIO = T.let(:audio, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
@@ -696,8 +688,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           AUTO = T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
           DEFAULT = T.let(:default, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
@@ -790,14 +781,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize) }
-            OrSymbol =
-              T.type_alias do
-                T.any(
-                  Symbol,
-                  String,
-                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
-                )
-              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             LOW =
               T.let(

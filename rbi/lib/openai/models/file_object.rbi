@@ -100,7 +100,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Purpose) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::FileObject::Purpose::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         ASSISTANTS = T.let(:assistants, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
         ASSISTANTS_OUTPUT = T.let(:assistants_output, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
@@ -120,7 +120,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Status) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::FileObject::Status::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         UPLOADED = T.let(:uploaded, OpenAI::Models::FileObject::Status::TaggedSymbol)
         PROCESSED = T.let(:processed, OpenAI::Models::FileObject::Status::TaggedSymbol)

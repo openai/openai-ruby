@@ -76,8 +76,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionListParams::Order) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           ASC = T.let(:asc, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol)
           DESC = T.let(:desc, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol)

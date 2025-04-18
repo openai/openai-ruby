@@ -150,14 +150,7 @@ module OpenAI
 
                   TaggedSymbol =
                     T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker) }
-                  OrSymbol =
-                    T.type_alias do
-                      T.any(
-                        Symbol,
-                        String,
-                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
-                      )
-                    end
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   AUTO =
                     T.let(
@@ -298,14 +291,7 @@ module OpenAI
 
                     TaggedSymbol =
                       T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type) }
-                    OrSymbol =
-                      T.type_alias do
-                        T.any(
-                          Symbol,
-                          String,
-                          OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
-                        )
-                      end
+                    OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                     TEXT =
                       T.let(

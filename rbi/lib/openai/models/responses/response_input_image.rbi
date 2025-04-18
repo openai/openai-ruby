@@ -54,8 +54,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           HIGH = T.let(:high, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
           LOW = T.let(:low, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)

@@ -92,8 +92,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Role) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             USER = T.let(:user, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
             SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
@@ -110,8 +109,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Status) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             IN_PROGRESS =
               T.let(:in_progress, OpenAI::Models::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
@@ -130,8 +128,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputItem::Message::Type) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputItem::Message::Type::TaggedSymbol)
 
@@ -270,14 +267,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status) }
-            OrSymbol =
-              T.type_alias do
-                T.any(
-                  Symbol,
-                  String,
-                  OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
-                )
-              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             IN_PROGRESS =
               T.let(
@@ -360,14 +350,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status) }
-            OrSymbol =
-              T.type_alias do
-                T.any(
-                  Symbol,
-                  String,
-                  OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
-                )
-              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             IN_PROGRESS =
               T.let(

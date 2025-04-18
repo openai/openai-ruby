@@ -74,8 +74,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStoreListParams::Order) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         ASC = T.let(:asc, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol)
         DESC = T.let(:desc, OpenAI::Models::VectorStoreListParams::Order::TaggedSymbol)

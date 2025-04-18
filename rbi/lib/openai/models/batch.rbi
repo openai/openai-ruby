@@ -203,7 +203,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Batch::Status) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Batch::Status::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         VALIDATING = T.let(:validating, OpenAI::Models::Batch::Status::TaggedSymbol)
         FAILED = T.let(:failed, OpenAI::Models::Batch::Status::TaggedSymbol)

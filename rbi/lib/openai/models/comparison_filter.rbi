@@ -55,7 +55,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ComparisonFilter::Type) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         EQ = T.let(:eq, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)
         NE = T.let(:ne, OpenAI::Models::ComparisonFilter::Type::TaggedSymbol)

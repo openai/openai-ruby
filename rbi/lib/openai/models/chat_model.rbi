@@ -6,7 +6,7 @@ module OpenAI
       extend OpenAI::Internal::Type::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ChatModel) }
-      OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::ChatModel::TaggedSymbol) }
+      OrSymbol = T.type_alias { T.any(Symbol, String) }
 
       GPT_4_1 = T.let(:"gpt-4.1", OpenAI::Models::ChatModel::TaggedSymbol)
       GPT_4_1_MINI = T.let(:"gpt-4.1-mini", OpenAI::Models::ChatModel::TaggedSymbol)

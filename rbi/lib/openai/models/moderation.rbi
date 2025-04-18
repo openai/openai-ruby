@@ -306,8 +306,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Harassment::TaggedSymbol)
 
@@ -322,14 +321,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening) }
-          OrSymbol =
-            T.type_alias do
-              T.any(
-                Symbol,
-                String,
-                OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol
-              )
-            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT =
             T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HarassmentThreatening::TaggedSymbol)
@@ -348,8 +340,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Hate::TaggedSymbol)
 
@@ -362,14 +353,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening) }
-          OrSymbol =
-            T.type_alias do
-              T.any(
-                Symbol,
-                String,
-                OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol
-              )
-            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::HateThreatening::TaggedSymbol)
 
@@ -385,8 +369,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Illicit::TaggedSymbol)
 
@@ -399,8 +382,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::IllicitViolent::TaggedSymbol)
 
@@ -416,8 +398,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarm::TaggedSymbol)
@@ -431,14 +412,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction) }
-          OrSymbol =
-            T.type_alias do
-              T.any(
-                Symbol,
-                String,
-                OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol
-              )
-            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT =
             T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmInstruction::TaggedSymbol)
@@ -459,8 +433,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SelfHarmIntent::TaggedSymbol)
           IMAGE =
@@ -478,8 +451,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Sexual::TaggedSymbol)
@@ -493,8 +465,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::SexualMinor::TaggedSymbol)
 
@@ -510,8 +481,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
           IMAGE = T.let(:image, OpenAI::Models::Moderation::CategoryAppliedInputTypes::Violence::TaggedSymbol)
@@ -525,14 +495,7 @@ module OpenAI
 
           TaggedSymbol =
             T.type_alias { T.all(Symbol, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic) }
-          OrSymbol =
-            T.type_alias do
-              T.any(
-                Symbol,
-                String,
-                OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol
-              )
-            end
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           TEXT = T.let(:text, OpenAI::Models::Moderation::CategoryAppliedInputTypes::ViolenceGraphic::TaggedSymbol)
           IMAGE =

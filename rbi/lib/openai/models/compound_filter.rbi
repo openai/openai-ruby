@@ -47,7 +47,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompoundFilter::Type) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::CompoundFilter::Type::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         AND = T.let(:and, OpenAI::Models::CompoundFilter::Type::TaggedSymbol)
         OR = T.let(:or, OpenAI::Models::CompoundFilter::Type::TaggedSymbol)

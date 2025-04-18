@@ -68,14 +68,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order) }
-            OrSymbol =
-              T.type_alias do
-                T.any(
-                  Symbol,
-                  String,
-                  OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol
-                )
-              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             ASCENDING =
               T.let(:ascending, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol)

@@ -442,14 +442,7 @@ module OpenAI
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role) }
-              OrSymbol =
-                T.type_alias do
-                  T.any(
-                    Symbol,
-                    String,
-                    OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol
-                  )
-                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               USER =
                 T.let(:user, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Role::TaggedSymbol)
@@ -564,7 +557,7 @@ module OpenAI
           module Model
             extend OpenAI::Internal::Type::Union
 
-            sig { override.returns([String, OpenAI::Models::ChatModel::OrSymbol]) }
+            sig { override.returns([String, OpenAI::Models::ChatModel::TaggedSymbol]) }
             def self.variants; end
           end
 
@@ -612,14 +605,7 @@ module OpenAI
 
               TaggedSymbol =
                 T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type) }
-              OrSymbol =
-                T.type_alias do
-                  T.any(
-                    Symbol,
-                    String,
-                    OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol
-                  )
-                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               AUTO =
                 T.let(:auto, OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::Type::TaggedSymbol)

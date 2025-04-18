@@ -22,8 +22,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           NONE = T.let(:none, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
           AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
@@ -36,7 +35,7 @@ module OpenAI
         sig do
           override
             .returns(
-              [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
+              [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
             )
         end
         def self.variants; end

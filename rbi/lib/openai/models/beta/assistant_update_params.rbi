@@ -233,12 +233,11 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol]) }
+          sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol]) }
           def self.variants; end
 
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model) }
-          OrSymbol =
-            T.type_alias { T.any(Symbol, String, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           GPT_4_1 = T.let(:"gpt-4.1", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
           GPT_4_1_MINI = T.let(:"gpt-4.1-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)

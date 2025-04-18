@@ -74,8 +74,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         FUZZY_MATCH =
           T.let(:fuzzy_match, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::TaggedSymbol)

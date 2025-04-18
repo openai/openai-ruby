@@ -111,7 +111,7 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, OpenAI::Models::EmbeddingModel::OrSymbol]) }
+        sig { override.returns([String, OpenAI::Models::EmbeddingModel::TaggedSymbol]) }
         def self.variants; end
       end
 
@@ -121,8 +121,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EmbeddingCreateParams::EncodingFormat) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         FLOAT = T.let(:float, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)
         BASE64 = T.let(:base64, OpenAI::Models::EmbeddingCreateParams::EncodingFormat::TaggedSymbol)

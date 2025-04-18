@@ -129,8 +129,7 @@ module OpenAI
 
             TaggedSymbol =
               T.type_alias { T.all(Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker) }
-            OrSymbol =
-              T.type_alias { T.any(Symbol, String, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             AUTO = T.let(:auto, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol)
             DEFAULT_2024_11_15 =

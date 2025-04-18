@@ -7,8 +7,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranscriptionInclude) }
-        OrSymbol =
-          T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::TranscriptionInclude::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         LOGPROBS = T.let(:logprobs, OpenAI::Models::Audio::TranscriptionInclude::TaggedSymbol)
 

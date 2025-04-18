@@ -10,7 +10,7 @@ module OpenAI
       extend OpenAI::Internal::Type::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FilePurpose) }
-      OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::FilePurpose::TaggedSymbol) }
+      OrSymbol = T.type_alias { T.any(Symbol, String) }
 
       ASSISTANTS = T.let(:assistants, OpenAI::Models::FilePurpose::TaggedSymbol)
       BATCH = T.let(:batch, OpenAI::Models::FilePurpose::TaggedSymbol)

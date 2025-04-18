@@ -9,7 +9,7 @@ module OpenAI
       extend OpenAI::Internal::Type::Enum
 
       TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::AudioResponseFormat) }
-      OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::AudioResponseFormat::TaggedSymbol) }
+      OrSymbol = T.type_alias { T.any(Symbol, String) }
 
       JSON = T.let(:json, OpenAI::Models::AudioResponseFormat::TaggedSymbol)
       TEXT = T.let(:text, OpenAI::Models::AudioResponseFormat::TaggedSymbol)

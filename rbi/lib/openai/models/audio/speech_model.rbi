@@ -7,7 +7,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Audio::SpeechModel) }
-        OrSymbol = T.type_alias { T.any(Symbol, String, OpenAI::Models::Audio::SpeechModel::TaggedSymbol) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         TTS_1 = T.let(:"tts-1", OpenAI::Models::Audio::SpeechModel::TaggedSymbol)
         TTS_1_HD = T.let(:"tts-1-hd", OpenAI::Models::Audio::SpeechModel::TaggedSymbol)
