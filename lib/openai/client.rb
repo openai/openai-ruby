@@ -101,10 +101,10 @@ module OpenAI
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
       base_url: ENV["OPENAI_BASE_URL"],
-      max_retries: DEFAULT_MAX_RETRIES,
-      timeout: DEFAULT_TIMEOUT_IN_SECONDS,
-      initial_retry_delay: DEFAULT_INITIAL_RETRY_DELAY,
-      max_retry_delay: DEFAULT_MAX_RETRY_DELAY
+      max_retries: OpenAI::Client::DEFAULT_MAX_RETRIES,
+      timeout: OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS,
+      initial_retry_delay: OpenAI::Client::DEFAULT_INITIAL_RETRY_DELAY,
+      max_retry_delay: OpenAI::Client::DEFAULT_MAX_RETRY_DELAY
     )
       base_url ||= "https://api.openai.com/v1"
 

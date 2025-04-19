@@ -3,6 +3,8 @@
 module OpenAI
   module Internal
     module Type
+      # @api private
+      #
       # This module provides a base implementation for paginated responses in the SDK.
       module BasePage
         Elem = type_member(:out)

@@ -3,19 +3,27 @@
 module OpenAI
   module Internal
     module Type
+      # @api private
+      #
       # @generic Elem
       #
       # This module provides a base implementation for paginated responses in the SDK.
       module BasePage
         # rubocop:disable Lint/UnusedMethodArgument
 
+        # @api public
+        #
         # @return [Boolean]
         def next_page? = (raise NotImplementedError)
 
+        # @api public
+        #
         # @raise [OpenAI::Errors::APIError]
         # @return [OpenAI::Internal::Type::BasePage]
         def next_page = (raise NotImplementedError)
 
+        # @api public
+        #
         # @param blk [Proc]
         #
         # @yieldparam [generic<Elem>]
