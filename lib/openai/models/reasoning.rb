@@ -15,6 +15,8 @@ module OpenAI
       optional :effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
 
       # @!attribute generate_summary
+      #   @deprecated
+      #
       #   **Deprecated:** use `summary` instead.
       #
       #   A summary of the reasoning performed by the model. This can be useful for

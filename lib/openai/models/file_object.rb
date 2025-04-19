@@ -43,6 +43,8 @@ module OpenAI
       required :purpose, enum: -> { OpenAI::Models::FileObject::Purpose }
 
       # @!attribute status
+      #   @deprecated
+      #
       #   Deprecated. The current status of the file, which can be either `uploaded`,
       #   `processed`, or `error`.
       #
@@ -56,6 +58,8 @@ module OpenAI
       optional :expires_at, Integer
 
       # @!attribute status_details
+      #   @deprecated
+      #
       #   Deprecated. For details on why a fine-tuning training file failed validation,
       #   see the `error` field on `fine_tuning.job`.
       #

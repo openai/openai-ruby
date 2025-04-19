@@ -49,6 +49,8 @@ module OpenAI
         optional :frequency_penalty, Float, nil?: true
 
         # @!attribute function_call
+        #   @deprecated
+        #
         #   Deprecated in favor of `tool_choice`.
         #
         #   Controls which (if any) function is called by the model.
@@ -68,6 +70,8 @@ module OpenAI
         optional :function_call, union: -> { OpenAI::Models::Chat::CompletionCreateParams::FunctionCall }
 
         # @!attribute functions
+        #   @deprecated
+        #
         #   Deprecated in favor of `tools`.
         #
         #   A list of functions the model may generate JSON inputs for.
@@ -106,6 +110,8 @@ module OpenAI
         optional :max_completion_tokens, Integer, nil?: true
 
         # @!attribute max_tokens
+        #   @deprecated
+        #
         #   The maximum number of [tokens](/tokenizer) that can be generated in the chat
         #   completion. This value can be used to control
         #   [costs](https://openai.com/api/pricing/) for text generated via API.

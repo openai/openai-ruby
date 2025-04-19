@@ -13,6 +13,8 @@ module OpenAI
 
         private_class_method :new
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
@@ -25,6 +27,8 @@ module OpenAI
           end
         end
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
