@@ -30,7 +30,7 @@ jobs:
         with:
           bundler-cache: false
           ruby-version: '3.1'
-      	run: |-
+      	run: |
           bundle install
 
       - name: Publish to RubyGems.org
