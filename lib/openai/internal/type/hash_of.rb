@@ -28,6 +28,8 @@ module OpenAI
         #   @option spec [Proc] :union
         #
         #   @option spec [Boolean] :"nil?"
+        #
+        # @return [OpenAI::Internal::Type::HashOf]
         def self.[](...) = new(...)
 
         # @api public

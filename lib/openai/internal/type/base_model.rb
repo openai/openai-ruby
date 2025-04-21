@@ -389,7 +389,7 @@ module OpenAI
 
         # Create a new instance of a model.
         #
-        # @param data [Hash{Symbol=>Object}, OpenAI::Internal::Type::BaseModel]
+        # @param data [Hash{Symbol=>Object}, self]
         def initialize(data = {})
           case OpenAI::Internal::Util.coerce_hash(data)
           in Hash => coerced
