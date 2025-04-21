@@ -19,7 +19,7 @@ module OpenAI
         # @api public
         #
         # @raise [OpenAI::Errors::APIError]
-        # @return [OpenAI::Internal::Type::BasePage]
+        # @return [self]
         def next_page = (raise NotImplementedError)
 
         # @api public

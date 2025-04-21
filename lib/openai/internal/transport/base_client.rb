@@ -216,9 +216,9 @@ module OpenAI
         #
         #   @option req [Symbol, nil] :unwrap
         #
-        #   @option req [Class, nil] :page
+        #   @option req [Class<OpenAI::Internal::Type::BasePage>, nil] :page
         #
-        #   @option req [Class, nil] :stream
+        #   @option req [Class<OpenAI::Internal::Type::BaseStream>, nil] :stream
         #
         #   @option req [OpenAI::Internal::Type::Converter, Class, nil] :model
         #
@@ -417,9 +417,9 @@ module OpenAI
         #
         # @param unwrap [Symbol, nil]
         #
-        # @param page [Class, nil]
+        # @param page [Class<OpenAI::Internal::Type::BasePage>, nil]
         #
-        # @param stream [Class, nil]
+        # @param stream [Class<OpenAI::Internal::Type::BaseStream>, nil]
         #
         # @param model [OpenAI::Internal::Type::Converter, Class, nil]
         #
