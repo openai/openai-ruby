@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     class EvalTextSimilarityGrader < OpenAI::Internal::Type::BaseModel
-      # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
-      # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+      # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
+      # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
       sig { returns(OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::OrSymbol) }
       attr_accessor :evaluation_metric
 
@@ -68,8 +68,8 @@ module OpenAI
       end
       def to_hash; end
 
-      # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
-      # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
+      # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
+      # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
       module EvaluationMetric
         extend OpenAI::Internal::Type::Enum
 
@@ -87,7 +87,6 @@ module OpenAI
         ROUGE_4 = T.let(:rouge_4, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::TaggedSymbol)
         ROUGE_5 = T.let(:rouge_5, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::TaggedSymbol)
         ROUGE_L = T.let(:rouge_l, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::TaggedSymbol)
-        COSINE = T.let(:cosine, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric::TaggedSymbol]) }
         def self.values; end

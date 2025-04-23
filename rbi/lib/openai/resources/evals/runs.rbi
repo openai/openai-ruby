@@ -14,7 +14,8 @@ module OpenAI
             data_source: T.any(
               OpenAI::Models::Evals::CreateEvalJSONLRunDataSource,
               OpenAI::Internal::AnyHash,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource
+              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource,
+              OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource
             ),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,
@@ -76,8 +77,8 @@ module OpenAI
           # Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
           # descending order. Defaults to `asc`.
           order: nil,
-          # Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
-          # "canceled".
+          # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+          # | `canceled`.
           status: nil,
           request_options: {}
         ); end

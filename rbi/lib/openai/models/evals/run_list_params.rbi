@@ -29,8 +29,8 @@ module OpenAI
         sig { params(order: OpenAI::Models::Evals::RunListParams::Order::OrSymbol).void }
         attr_writer :order
 
-        # Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
-        # "canceled".
+        # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # | `canceled`.
         sig { returns(T.nilable(OpenAI::Models::Evals::RunListParams::Status::OrSymbol)) }
         attr_reader :status
 
@@ -78,8 +78,8 @@ module OpenAI
           def self.values; end
         end
 
-        # Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
-        # "canceled".
+        # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # | `canceled`.
         module Status
           extend OpenAI::Internal::Type::Enum
 

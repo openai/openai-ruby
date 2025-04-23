@@ -12,7 +12,7 @@ module OpenAI
         # @overload create(eval_id, data_source:, metadata: nil, name: nil, request_options: {})
         #
         # @param eval_id [String]
-        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
+        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource]
         # @param metadata [Hash{Symbol=>String}, nil]
         # @param name [String]
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]

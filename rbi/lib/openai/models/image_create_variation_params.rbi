@@ -16,8 +16,7 @@ module OpenAI
       sig { returns(T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol))) }
       attr_accessor :model
 
-      # The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
-      # `n=1` is supported.
+      # The number of images to generate. Must be between 1 and 10.
       sig { returns(T.nilable(Integer)) }
       attr_accessor :n
 

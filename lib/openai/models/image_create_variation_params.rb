@@ -22,8 +22,7 @@ module OpenAI
       optional :model, union: -> { OpenAI::Models::ImageCreateVariationParams::Model }, nil?: true
 
       # @!attribute n
-      #   The number of images to generate. Must be between 1 and 10. For `dall-e-3`, only
-      #   `n=1` is supported.
+      #   The number of images to generate. Must be between 1 and 10.
       #
       #   @return [Integer, nil]
       optional :n, Integer, nil?: true

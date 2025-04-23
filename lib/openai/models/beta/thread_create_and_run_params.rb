@@ -140,7 +140,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
         optional :tools,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::ThreadCreateAndRunParams::Tool] },
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] },
                  nil?: true
 
         # @!attribute top_p
@@ -582,19 +582,6 @@ module OpenAI
             # @!method initialize(vector_store_ids: nil)
             #   @param vector_store_ids [Array<String>]
           end
-        end
-
-        module Tool
-          extend OpenAI::Internal::Type::Union
-
-          variant -> { OpenAI::Models::Beta::CodeInterpreterTool }
-
-          variant -> { OpenAI::Models::Beta::FileSearchTool }
-
-          variant -> { OpenAI::Models::Beta::FunctionTool }
-
-          # @!method self.variants
-          #   @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool)]
         end
 
         class TruncationStrategy < OpenAI::Internal::Type::BaseModel

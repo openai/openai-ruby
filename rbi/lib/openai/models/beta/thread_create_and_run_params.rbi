@@ -1018,18 +1018,6 @@ module OpenAI
           end
         end
 
-        module Tool
-          extend OpenAI::Internal::Type::Union
-
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
-              )
-          end
-          def self.variants; end
-        end
-
         class TruncationStrategy < OpenAI::Internal::Type::BaseModel
           # The truncation strategy to use for the thread. The default is `auto`. If set to
           # `last_messages`, the thread will be truncated to the n most recent messages in
