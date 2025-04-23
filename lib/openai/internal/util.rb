@@ -471,6 +471,11 @@ module OpenAI
         end
       end
 
+      # @type [Regexp]
+      JSON_CONTENT = %r{^application/(?:vnd(?:\.[^.]+)*\+)?json(?!l)}
+      # @type [Regexp]
+      JSONL_CONTENT = %r{^application/(?:x-)?jsonl}
+
       class << self
         # @api private
         #
@@ -563,9 +568,9 @@ module OpenAI
           body = body.inner if body.is_a?(OpenAI::Internal::Util::SerializationAdapter)
 
           case [content_type, body]
-          in [%r{^application/(?:vnd\.api\+)?json}, Hash | Array | -> { primitive?(_1) }]
+          in [OpenAI::Internal::Util::JSON_CONTENT, Hash | Array | -> { primitive?(_1) }]
             [headers, JSON.fast_generate(body)]
-          in [%r{^application/(?:x-)?jsonl}, Enumerable] unless body.is_a?(StringIO) || body.is_a?(IO)
+          in [OpenAI::Internal::Util::JSONL_CONTENT, Enumerable] unless body.is_a?(StringIO) || body.is_a?(IO)
             [headers, body.lazy.map { JSON.fast_generate(_1) }]
           in [%r{^multipart/form-data}, Hash | Pathname | StringIO | IO]
             boundary, strio = encode_multipart_streaming(body)
@@ -611,7 +616,7 @@ module OpenAI
         # @return [Object]
         def decode_content(headers, stream:, suppress_error: false)
           case (content_type = headers["content-type"])
-          in %r{^application/(?:vnd\.api\+)?json}
+          in OpenAI::Internal::Util::JSON_CONTENT
             json = stream.to_a.join
             begin
               JSON.parse(json, symbolize_names: true)
@@ -619,7 +624,7 @@ module OpenAI
               raise e unless suppress_error
               json
             end
-          in %r{^application/(?:x-)?jsonl}
+          in OpenAI::Internal::Util::JSONL_CONTENT
             lines = decode_lines(stream)
             chain_fused(lines) do |y|
               lines.each { y << JSON.parse(_1, symbolize_names: true) }

@@ -192,6 +192,9 @@ module OpenAI
         def writable_enum(&blk); end
       end
 
+      JSON_CONTENT = T.let(%r{^application/(?:vnd(?:\.[^.]+)*\+)?json(?!l)}, Regexp)
+      JSONL_CONTENT = T.let(%r{^application/(?:x-)?jsonl}, Regexp)
+
       class << self
         # @api private
         sig do

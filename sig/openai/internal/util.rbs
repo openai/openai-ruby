@@ -103,6 +103,9 @@ module OpenAI
         (Enumerator::Yielder y) -> void
       } -> Enumerable[String]
 
+      JSON_CONTENT: Regexp
+      JSONL_CONTENT: Regexp
+
       def self?.write_multipart_chunk: (
         Enumerator::Yielder y,
         boundary: String,
