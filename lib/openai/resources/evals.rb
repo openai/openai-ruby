@@ -12,13 +12,12 @@ module OpenAI
       # We support several types of graders and datasources. For more information, see
       # the [Evals guide](https://platform.openai.com/docs/guides/evals).
       #
-      # @overload create(data_source_config:, testing_criteria:, metadata: nil, name: nil, share_with_openai: nil, request_options: {})
+      # @overload create(data_source_config:, testing_criteria:, metadata: nil, name: nil, request_options: {})
       #
-      # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
-      # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
+      # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs]
+      # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader, OpenAI::Models::EvalCreateParams::TestingCriterion::Python, OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel>]
       # @param metadata [Hash{Symbol=>String}, nil]
       # @param name [String]
-      # @param share_with_openai [Boolean]
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::EvalCreateResponse]

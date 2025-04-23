@@ -3,13 +3,19 @@ module OpenAI
     module FineTuning
       module Checkpoints
         type permission_delete_params =
-          {  } & OpenAI::Internal::Type::request_parameters
+          { fine_tuned_model_checkpoint: String }
+          & OpenAI::Internal::Type::request_parameters
 
         class PermissionDeleteParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          def initialize: (?request_options: OpenAI::request_opts) -> void
+          attr_accessor fine_tuned_model_checkpoint: String
+
+          def initialize: (
+            fine_tuned_model_checkpoint: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
 
           def to_hash: -> OpenAI::Models::FineTuning::Checkpoints::permission_delete_params
         end

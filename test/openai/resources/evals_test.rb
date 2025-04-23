@@ -31,7 +31,6 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        share_with_openai: OpenAI::Internal::Type::Boolean,
         testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalCreateResponse::TestingCriterion])
       }
     end
@@ -52,7 +51,6 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        share_with_openai: OpenAI::Internal::Type::Boolean,
         testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalRetrieveResponse::TestingCriterion])
       }
     end
@@ -73,7 +71,6 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        share_with_openai: OpenAI::Internal::Type::Boolean,
         testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalUpdateResponse::TestingCriterion])
       }
     end
@@ -101,7 +98,6 @@ class OpenAI::Test::Resources::EvalsTest < OpenAI::Test::ResourceTest
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        share_with_openai: OpenAI::Internal::Type::Boolean,
         testing_criteria: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalListResponse::TestingCriterion])
       }
     end

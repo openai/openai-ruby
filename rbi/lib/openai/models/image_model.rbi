@@ -10,6 +10,7 @@ module OpenAI
 
       DALL_E_2 = T.let(:"dall-e-2", OpenAI::Models::ImageModel::TaggedSymbol)
       DALL_E_3 = T.let(:"dall-e-3", OpenAI::Models::ImageModel::TaggedSymbol)
+      GPT_IMAGE_1 = T.let(:"gpt-image-1", OpenAI::Models::ImageModel::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::Models::ImageModel::TaggedSymbol]) }
       def self.values; end

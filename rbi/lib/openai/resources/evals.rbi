@@ -16,19 +16,20 @@ module OpenAI
           data_source_config: T.any(
             OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom,
             OpenAI::Internal::AnyHash,
-            OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions
+            OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs
           ),
           testing_criteria: T::Array[
             T.any(
               OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel,
               OpenAI::Internal::AnyHash,
               OpenAI::Models::EvalStringCheckGrader,
-              OpenAI::Models::EvalTextSimilarityGrader
+              OpenAI::Models::EvalTextSimilarityGrader,
+              OpenAI::Models::EvalCreateParams::TestingCriterion::Python,
+              OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel
             )
           ],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          share_with_openai: T::Boolean,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )
           .returns(OpenAI::Models::EvalCreateResponse)
@@ -47,8 +48,6 @@ module OpenAI
         metadata: nil,
         # The name of the evaluation.
         name: nil,
-        # Indicates whether the evaluation is shared with OpenAI.
-        share_with_openai: nil,
         request_options: {}
       ); end
       # Get an evaluation by ID.

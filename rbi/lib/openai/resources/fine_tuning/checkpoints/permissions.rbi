@@ -58,14 +58,17 @@ module OpenAI
           # fine-tuned model checkpoint.
           sig do
             params(
+              permission_id: String,
               fine_tuned_model_checkpoint: String,
               request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
             )
               .returns(OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse)
           end
           def delete(
+            # The ID of the fine-tuned model checkpoint permission to delete.
+            permission_id,
             # The ID of the fine-tuned model checkpoint to delete a permission for.
-            fine_tuned_model_checkpoint,
+            fine_tuned_model_checkpoint:,
             request_options: {}
           ); end
           # @api private

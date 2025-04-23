@@ -28,8 +28,8 @@ module OpenAI
         optional :order, enum: -> { OpenAI::Models::Evals::RunListParams::Order }
 
         # @!attribute status
-        #   Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
-        #   "canceled".
+        #   Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        #   | `canceled`.
         #
         #   @return [Symbol, OpenAI::Models::Evals::RunListParams::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Evals::RunListParams::Status }
@@ -53,8 +53,8 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
-        # "canceled".
+        # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # | `canceled`.
         module Status
           extend OpenAI::Internal::Type::Enum
 

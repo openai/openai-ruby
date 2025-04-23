@@ -36,10 +36,6 @@ module OpenAI
       sig { returns(Symbol) }
       attr_accessor :object
 
-      # Indicates whether the evaluation is shared with OpenAI.
-      sig { returns(T::Boolean) }
-      attr_accessor :share_with_openai
-
       # A list of testing criteria.
       sig do
         returns(
@@ -47,7 +43,9 @@ module OpenAI
             T.any(
               OpenAI::Models::EvalLabelModelGrader,
               OpenAI::Models::EvalStringCheckGrader,
-              OpenAI::Models::EvalTextSimilarityGrader
+              OpenAI::Models::EvalTextSimilarityGrader,
+              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Python,
+              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel
             )
           ]
         )
@@ -71,29 +69,23 @@ module OpenAI
           ),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          share_with_openai: T::Boolean,
           testing_criteria: T::Array[
             T.any(
               OpenAI::Models::EvalLabelModelGrader,
               OpenAI::Internal::AnyHash,
               OpenAI::Models::EvalStringCheckGrader,
-              OpenAI::Models::EvalTextSimilarityGrader
+              OpenAI::Models::EvalTextSimilarityGrader,
+              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Python,
+              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel
             )
           ],
           object: Symbol
         )
           .returns(T.attached_class)
       end
-      def self.new(
-        id:,
-        created_at:,
-        data_source_config:,
-        metadata:,
-        name:,
-        share_with_openai:,
-        testing_criteria:,
-        object: :eval
-      ); end
+      def self.new(id:, created_at:, data_source_config:, metadata:, name:, testing_criteria:, object: :eval)
+      end
+
       sig do
         override
           .returns(
@@ -104,12 +96,13 @@ module OpenAI
               metadata: T.nilable(T::Hash[Symbol, String]),
               name: String,
               object: Symbol,
-              share_with_openai: T::Boolean,
               testing_criteria: T::Array[
                 T.any(
                   OpenAI::Models::EvalLabelModelGrader,
                   OpenAI::Models::EvalStringCheckGrader,
-                  OpenAI::Models::EvalTextSimilarityGrader
+                  OpenAI::Models::EvalTextSimilarityGrader,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Python,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel
                 )
               ]
             }
@@ -135,10 +128,303 @@ module OpenAI
       module TestingCriterion
         extend OpenAI::Internal::Type::Union
 
+        class Python < OpenAI::Internal::Type::BaseModel
+          # The name of the grader.
+          sig { returns(String) }
+          attr_accessor :name
+
+          # The source code of the python script.
+          sig { returns(String) }
+          attr_accessor :source
+
+          # The object type, which is always `python`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The image tag to use for the python script.
+          sig { returns(T.nilable(String)) }
+          attr_reader :image_tag
+
+          sig { params(image_tag: String).void }
+          attr_writer :image_tag
+
+          # The threshold for the score.
+          sig { returns(T.nilable(Float)) }
+          attr_reader :pass_threshold
+
+          sig { params(pass_threshold: Float).void }
+          attr_writer :pass_threshold
+
+          # A PythonGrader object that runs a python script on the input.
+          sig do
+            params(name: String, source: String, image_tag: String, pass_threshold: Float, type: Symbol)
+              .returns(T.attached_class)
+          end
+          def self.new(name:, source:, image_tag: nil, pass_threshold: nil, type: :python); end
+
+          sig do
+            override.returns(
+              {
+                name: String,
+                source: String,
+                type: Symbol,
+                image_tag: String,
+                pass_threshold: Float
+              }
+            )
+          end
+          def to_hash; end
+        end
+
+        class ScoreModel < OpenAI::Internal::Type::BaseModel
+          # The input text. This may include template strings.
+          sig { returns(T::Array[OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input]) }
+          attr_accessor :input
+
+          # The model to use for the evaluation.
+          sig { returns(String) }
+          attr_accessor :model
+
+          # The name of the grader.
+          sig { returns(String) }
+          attr_accessor :name
+
+          # The object type, which is always `score_model`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The threshold for the score.
+          sig { returns(T.nilable(Float)) }
+          attr_reader :pass_threshold
+
+          sig { params(pass_threshold: Float).void }
+          attr_writer :pass_threshold
+
+          # The range of the score. Defaults to `[0, 1]`.
+          sig { returns(T.nilable(T::Array[Float])) }
+          attr_reader :range
+
+          sig { params(range: T::Array[Float]).void }
+          attr_writer :range
+
+          # The sampling parameters for the model.
+          sig { returns(T.nilable(T.anything)) }
+          attr_reader :sampling_params
+
+          sig { params(sampling_params: T.anything).void }
+          attr_writer :sampling_params
+
+          # A ScoreModelGrader object that uses a model to assign a score to the input.
+          sig do
+            params(
+              input: T::Array[
+                T.any(
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input,
+                  OpenAI::Internal::AnyHash
+                )
+              ],
+              model: String,
+              name: String,
+              pass_threshold: Float,
+              range: T::Array[Float],
+              sampling_params: T.anything,
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+            input:,
+            model:,
+            name:,
+            pass_threshold: nil,
+            range: nil,
+            sampling_params: nil,
+            type: :score_model
+          )
+          end
+
+          sig do
+            override
+              .returns(
+                {
+                  input: T::Array[OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input],
+                  model: String,
+                  name: String,
+                  type: Symbol,
+                  pass_threshold: Float,
+                  range: T::Array[Float],
+                  sampling_params: T.anything
+                }
+              )
+          end
+          def to_hash; end
+
+          class Input < OpenAI::Internal::Type::BaseModel
+            # Text inputs to the model - can contain template strings.
+            sig do
+              returns(
+                T.any(
+                  String,
+                  OpenAI::Models::Responses::ResponseInputText,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Content::OutputText
+                )
+              )
+            end
+            attr_accessor :content
+
+            # The role of the message input. One of `user`, `assistant`, `system`, or
+            # `developer`.
+            sig { returns(OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::TaggedSymbol) }
+            attr_accessor :role
+
+            # The type of the message input. Always `message`.
+            sig do
+              returns(
+                T.nilable(OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Type::TaggedSymbol)
+              )
+            end
+            attr_reader :type
+
+            sig do
+              params(type: OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Type::OrSymbol)
+                .void
+            end
+            attr_writer :type
+
+            # A message input to the model with a role indicating instruction following
+            # hierarchy. Instructions given with the `developer` or `system` role take
+            # precedence over instructions given with the `user` role. Messages with the
+            # `assistant` role are presumed to have been generated by the model in previous
+            # interactions.
+            sig do
+              params(
+                content: T.any(
+                  String,
+                  OpenAI::Models::Responses::ResponseInputText,
+                  OpenAI::Internal::AnyHash,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Content::OutputText
+                ),
+                role: OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::OrSymbol,
+                type: OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Type::OrSymbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(content:, role:, type: nil); end
+
+            sig do
+              override
+                .returns(
+                  {
+                    content: T.any(
+                      String,
+                      OpenAI::Models::Responses::ResponseInputText,
+                      OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Content::OutputText
+                    ),
+                    role: OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::TaggedSymbol,
+                    type: OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Type::TaggedSymbol
+                  }
+                )
+            end
+            def to_hash; end
+
+            # Text inputs to the model - can contain template strings.
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              class OutputText < OpenAI::Internal::Type::BaseModel
+                # The text output from the model.
+                sig { returns(String) }
+                attr_accessor :text
+
+                # The type of the output text. Always `output_text`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # A text output from the model.
+                sig { params(text: String, type: Symbol).returns(T.attached_class) }
+                def self.new(text:, type: :output_text); end
+
+                sig { override.returns({text: String, type: Symbol}) }
+                def to_hash; end
+              end
+
+              sig do
+                override
+                  .returns(
+                    [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Content::OutputText]
+                  )
+              end
+              def self.variants; end
+            end
+
+            # The role of the message input. One of `user`, `assistant`, `system`, or
+            # `developer`.
+            module Role
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias { T.all(Symbol, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role) }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              USER =
+                T.let(
+                  :user,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::TaggedSymbol
+                )
+              ASSISTANT =
+                T.let(
+                  :assistant,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::TaggedSymbol
+                )
+              SYSTEM =
+                T.let(
+                  :system,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::TaggedSymbol
+                )
+              DEVELOPER =
+                T.let(
+                  :developer,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::TaggedSymbol
+                )
+
+              sig do
+                override
+                  .returns(
+                    T::Array[OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Role::TaggedSymbol]
+                  )
+              end
+              def self.values; end
+            end
+
+            # The type of the message input. Always `message`.
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias { T.all(Symbol, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Type) }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              MESSAGE =
+                T.let(
+                  :message,
+                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Type::TaggedSymbol
+                )
+
+              sig do
+                override
+                  .returns(
+                    T::Array[OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Type::TaggedSymbol]
+                  )
+              end
+              def self.values; end
+            end
+          end
+        end
+
         sig do
           override
             .returns(
-              [OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader]
+              [OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Python, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel]
             )
         end
         def self.variants; end

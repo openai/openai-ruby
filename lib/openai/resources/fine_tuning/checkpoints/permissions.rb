@@ -64,20 +64,30 @@ module OpenAI
           # Organization owners can use this endpoint to delete a permission for a
           # fine-tuned model checkpoint.
           #
-          # @overload delete(fine_tuned_model_checkpoint, request_options: {})
+          # @overload delete(permission_id, fine_tuned_model_checkpoint:, request_options: {})
           #
+          # @param permission_id [String]
           # @param fine_tuned_model_checkpoint [String]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse]
           #
           # @see OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteParams
-          def delete(fine_tuned_model_checkpoint, params = {})
+          def delete(permission_id, params)
+            parsed, options = OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteParams.dump_request(params)
+            fine_tuned_model_checkpoint =
+              parsed.delete(:fine_tuned_model_checkpoint) do
+                raise ArgumentError.new("missing required path argument #{_1}")
+              end
             @client.request(
               method: :delete,
-              path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
+              path: [
+                "fine_tuning/checkpoints/%1$s/permissions/%2$s",
+                fine_tuned_model_checkpoint,
+                permission_id
+              ],
               model: OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse,
-              options: params[:request_options]
+              options: options
             )
           end
 
