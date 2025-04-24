@@ -8,12 +8,12 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         # The chunk of bytes for this Part.
-        sig { returns(T.any(Pathname, StringIO)) }
+        sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }
         attr_accessor :data
 
         sig do
           params(
-            data: T.any(Pathname, StringIO),
+            data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
             request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
           )
             .returns(T.attached_class)
@@ -23,7 +23,13 @@ module OpenAI
           data:,
           request_options: {}
         ); end
-        sig { override.returns({data: T.any(Pathname, StringIO), request_options: OpenAI::RequestOptions}) }
+        sig do
+          override
+            .returns({
+                       data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+                       request_options: OpenAI::RequestOptions
+                     })
+        end
         def to_hash; end
       end
     end

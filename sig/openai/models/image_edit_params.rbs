@@ -4,7 +4,7 @@ module OpenAI
       {
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        mask: (Pathname | StringIO),
+        mask: (Pathname | StringIO | IO | OpenAI::FilePart),
         model: OpenAI::Models::ImageEditParams::model?,
         n: Integer?,
         quality: OpenAI::Models::ImageEditParams::quality?,
@@ -22,9 +22,11 @@ module OpenAI
 
       attr_accessor prompt: String
 
-      attr_reader mask: (Pathname | StringIO)?
+      attr_reader mask: (Pathname | StringIO | IO | OpenAI::FilePart)?
 
-      def mask=: (Pathname | StringIO) -> (Pathname | StringIO)
+      def mask=: (
+        Pathname | StringIO | IO | OpenAI::FilePart
+      ) -> (Pathname | StringIO | IO | OpenAI::FilePart)
 
       attr_accessor model: OpenAI::Models::ImageEditParams::model?
 
@@ -43,7 +45,7 @@ module OpenAI
       def initialize: (
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
-        ?mask: Pathname | StringIO,
+        ?mask: Pathname | StringIO | IO | OpenAI::FilePart,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
         ?quality: OpenAI::Models::ImageEditParams::quality?,
@@ -55,14 +57,19 @@ module OpenAI
 
       def to_hash: -> OpenAI::Models::image_edit_params
 
-      type image = Pathname | StringIO | ::Array[Pathname | StringIO]
+      type image =
+        Pathname
+        | StringIO
+        | IO
+        | OpenAI::FilePart
+        | ::Array[Pathname | StringIO | IO | OpenAI::FilePart]
 
       module Image
         extend OpenAI::Internal::Type::Union
 
         def self?.variants: -> [StringIO, ::Array[StringIO]]
 
-        type string_array = ::Array[Pathname | StringIO]
+        type string_array = ::Array[Pathname | StringIO | IO | OpenAI::FilePart]
 
         StringArray: string_array
       end

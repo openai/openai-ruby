@@ -200,8 +200,12 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     file = Pathname(__FILE__)
     headers = {"content-type" => "multipart/form-data"}
     cases = {
+      "abc" => "abc",
       StringIO.new("abc") => "abc",
-      file => /^class OpenAI/
+      OpenAI::FilePart.new("abc") => "abc",
+      OpenAI::FilePart.new(StringIO.new("abc")) => "abc",
+      file => /^class OpenAI/,
+      OpenAI::FilePart.new(file) => /^class OpenAI/
     }
     cases.each do |body, val|
       encoded = OpenAI::Internal::Util.encode_content(headers, body)
@@ -219,7 +223,13 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       {a: 2, b: nil} => {"a" => "2", "b" => "null"},
       {a: 2, b: [1, 2, 3]} => {"a" => "2", "b" => "1"},
       {strio: StringIO.new("a")} => {"strio" => "a"},
-      {pathname: Pathname(__FILE__)} => {"pathname" => -> { _1.read in /^class OpenAI/ }}
+      {strio: OpenAI::FilePart.new("a")} => {"strio" => "a"},
+      {pathname: Pathname(__FILE__)} => {"pathname" => -> { _1.read in /^class OpenAI/ }},
+      {pathname: OpenAI::FilePart.new(Pathname(__FILE__))} => {
+        "pathname" => -> {
+          _1.read in /^class OpenAI/
+        }
+      }
     }
     cases.each do |body, testcase|
       encoded = OpenAI::Internal::Util.encode_content(headers, body)

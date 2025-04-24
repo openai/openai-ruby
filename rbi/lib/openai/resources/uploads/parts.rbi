@@ -18,7 +18,7 @@ module OpenAI
         sig do
           params(
             upload_id: String,
-            data: T.any(Pathname, StringIO),
+            data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
             request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
           )
             .returns(OpenAI::Models::Uploads::UploadPart)

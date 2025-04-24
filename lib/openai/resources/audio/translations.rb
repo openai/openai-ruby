@@ -11,7 +11,7 @@ module OpenAI
         #
         # @overload create(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {})
         #
-        # @param file [Pathname, StringIO] The audio file object (not file name) translate, in one of these formats: flac,
+        # @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) translate, in one of these formats: flac,
         # ...
         #
         # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. Only `whisper-1` (which is powered by our open source Wh

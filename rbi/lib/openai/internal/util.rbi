@@ -141,22 +141,6 @@ module OpenAI
       end
 
       # @api private
-      class SerializationAdapter
-        sig { returns(T.any(Pathname, IO)) }
-        attr_reader :inner
-
-        sig { params(a: T.anything).returns(String) }
-        def to_json(*a); end
-
-        sig { params(a: T.anything).returns(String) }
-        def to_yaml(*a); end
-
-        # @api private
-        sig { params(inner: T.any(Pathname, IO)).returns(T.attached_class) }
-        def self.new(inner); end
-      end
-
-      # @api private
       #
       # An adapter that satisfies the IO interface required by `::IO.copy_stream`
       class ReadIOAdapter
@@ -196,6 +180,18 @@ module OpenAI
       JSONL_CONTENT = T.let(%r{^application/(?:x-)?jsonl}, Regexp)
 
       class << self
+        # @api private
+        sig do
+          params(
+            y: Enumerator::Yielder,
+            val: T.anything,
+            closing: T::Array[T.proc.void],
+            content_type: T.nilable(String)
+          )
+            .void
+        end
+        private def write_multipart_content(y, val:, closing:, content_type: nil); end
+
         # @api private
         sig do
           params(

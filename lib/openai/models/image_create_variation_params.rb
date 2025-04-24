@@ -11,8 +11,8 @@ module OpenAI
       #   The image to use as the basis for the variation(s). Must be a valid PNG file,
       #   less than 4MB, and square.
       #
-      #   @return [Pathname, StringIO]
-      required :image, OpenAI::Internal::Type::IOLike
+      #   @return [Pathname, StringIO, IO, OpenAI::FilePart]
+      required :image, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
       #   The model to use for image generation. Only `dall-e-2` is supported at this
@@ -56,7 +56,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::ImageCreateVariationParams} for more details.
       #
-      #   @param image [Pathname, StringIO] The image to use as the basis for the variation(s). Must be a valid PNG file, le
+      #   @param image [Pathname, StringIO, IO, OpenAI::FilePart] The image to use as the basis for the variation(s). Must be a valid PNG file, le
       #   ...
       #
       #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` is supported at this time

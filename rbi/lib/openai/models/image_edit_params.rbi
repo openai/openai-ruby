@@ -10,7 +10,17 @@ module OpenAI
       # `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
       # 25MB. For `dall-e-2`, you can only provide one image, and it should be a square
       # `png` file less than 4MB.
-      sig { returns(T.any(Pathname, StringIO, T::Array[T.any(Pathname, StringIO)])) }
+      sig do
+        returns(
+          T.any(
+            Pathname,
+            StringIO,
+            IO,
+            OpenAI::FilePart,
+            T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
+          )
+        )
+      end
       attr_accessor :image
 
       # A text description of the desired image(s). The maximum length is 1000
@@ -22,10 +32,10 @@ module OpenAI
       # indicate where `image` should be edited. If there are multiple images provided,
       # the mask will be applied on the first image. Must be a valid PNG file, less than
       # 4MB, and have the same dimensions as `image`.
-      sig { returns(T.nilable(T.any(Pathname, StringIO))) }
+      sig { returns(T.nilable(T.any(Pathname, StringIO, IO, OpenAI::FilePart))) }
       attr_reader :mask
 
-      sig { params(mask: T.any(Pathname, StringIO)).void }
+      sig { params(mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart)).void }
       attr_writer :mask
 
       # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
@@ -68,9 +78,15 @@ module OpenAI
 
       sig do
         params(
-          image: T.any(Pathname, StringIO, T::Array[T.any(Pathname, StringIO)]),
+          image: T.any(
+            Pathname,
+            StringIO,
+            IO,
+            OpenAI::FilePart,
+            T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
+          ),
           prompt: String,
-          mask: T.any(Pathname, StringIO),
+          mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
           model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           quality: T.nilable(OpenAI::Models::ImageEditParams::Quality::OrSymbol),
@@ -124,9 +140,15 @@ module OpenAI
         override
           .returns(
             {
-              image: T.any(Pathname, StringIO, T::Array[T.any(Pathname, StringIO)]),
+              image: T.any(
+                Pathname,
+                StringIO,
+                IO,
+                OpenAI::FilePart,
+                T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
+              ),
               prompt: String,
-              mask: T.any(Pathname, StringIO),
+              mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
               model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
               n: T.nilable(Integer),
               quality: T.nilable(OpenAI::Models::ImageEditParams::Quality::OrSymbol),
@@ -151,7 +173,7 @@ module OpenAI
 
         StringArray =
           T.let(
-            OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::IOLike],
+            OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::FileInput],
             OpenAI::Internal::Type::Converter
           )
       end

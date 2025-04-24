@@ -7,7 +7,7 @@ module OpenAI
         # Translates audio into English.
         sig do
           params(
-            file: T.any(Pathname, StringIO),
+            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
             model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
             prompt: String,
             response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
