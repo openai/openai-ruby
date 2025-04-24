@@ -349,27 +349,6 @@ module OpenAI
       end
 
       # @api private
-      class SerializationAdapter
-        # @return [Pathname, IO]
-        attr_reader :inner
-
-        # @param a [Object]
-        #
-        # @return [String]
-        def to_json(*a) = (inner.is_a?(IO) ? inner.read : inner.read(binmode: true)).to_json(*a)
-
-        # @param a [Object]
-        #
-        # @return [String]
-        def to_yaml(*a) = (inner.is_a?(IO) ? inner.read : inner.read(binmode: true)).to_yaml(*a)
-
-        # @api private
-        #
-        # @param inner [Pathname, IO]
-        def initialize(inner) = @inner = inner
-      end
-
-      # @api private
       #
       # An adapter that satisfies the IO interface required by `::IO.copy_stream`
       class ReadIOAdapter
@@ -480,42 +459,35 @@ module OpenAI
         # @api private
         #
         # @param y [Enumerator::Yielder]
-        # @param boundary [String]
-        # @param key [Symbol, String]
         # @param val [Object]
         # @param closing [Array<Proc>]
-        private def write_multipart_chunk(y, boundary:, key:, val:, closing:)
-          val = val.inner if val.is_a?(OpenAI::Internal::Util::SerializationAdapter)
+        # @param content_type [String, nil]
+        private def write_multipart_content(y, val:, closing:, content_type: nil)
+          content_type ||= "application/octet-stream"
 
-          y << "--#{boundary}\r\n"
-          y << "Content-Disposition: form-data"
-          unless key.nil?
-            name = ERB::Util.url_encode(key.to_s)
-            y << "; name=\"#{name}\""
-          end
           case val
-          in Pathname | IO
-            filename = ERB::Util.url_encode(File.basename(val.to_path))
-            y << "; filename=\"#{filename}\""
-          else
-          end
-          y << "\r\n"
-          case val
+          in OpenAI::FilePart
+            return write_multipart_content(
+              y,
+              val: val.content,
+              closing: closing,
+              content_type: val.content_type
+            )
           in Pathname
-            y << "Content-Type: application/octet-stream\r\n\r\n"
+            y << "Content-Type: #{content_type}\r\n\r\n"
             io = val.open(binmode: true)
             closing << io.method(:close)
             IO.copy_stream(io, y)
           in IO
-            y << "Content-Type: application/octet-stream\r\n\r\n"
+            y << "Content-Type: #{content_type}\r\n\r\n"
             IO.copy_stream(val, y)
           in StringIO
-            y << "Content-Type: application/octet-stream\r\n\r\n"
+            y << "Content-Type: #{content_type}\r\n\r\n"
             y << val.string
           in String
-            y << "Content-Type: application/octet-stream\r\n\r\n"
+            y << "Content-Type: #{content_type}\r\n\r\n"
             y << val.to_s
-          in _ if primitive?(val)
+          in -> { primitive?(_1) }
             y << "Content-Type: text/plain\r\n\r\n"
             y << val.to_s
           else
@@ -523,6 +495,36 @@ module OpenAI
             y << JSON.fast_generate(val)
           end
           y << "\r\n"
+        end
+
+        # @api private
+        #
+        # @param y [Enumerator::Yielder]
+        # @param boundary [String]
+        # @param key [Symbol, String]
+        # @param val [Object]
+        # @param closing [Array<Proc>]
+        private def write_multipart_chunk(y, boundary:, key:, val:, closing:)
+          y << "--#{boundary}\r\n"
+          y << "Content-Disposition: form-data"
+
+          unless key.nil?
+            name = ERB::Util.url_encode(key.to_s)
+            y << "; name=\"#{name}\""
+          end
+
+          case val
+          in OpenAI::FilePart unless val.filename.nil?
+            filename = ERB::Util.url_encode(val.filename)
+            y << "; filename=\"#{filename}\""
+          in Pathname | IO
+            filename = ERB::Util.url_encode(File.basename(val.to_path))
+            y << "; filename=\"#{filename}\""
+          else
+          end
+          y << "\r\n"
+
+          write_multipart_content(y, val: val, closing: closing)
         end
 
         # @api private
@@ -565,14 +567,12 @@ module OpenAI
         # @return [Object]
         def encode_content(headers, body)
           content_type = headers["content-type"]
-          body = body.inner if body.is_a?(OpenAI::Internal::Util::SerializationAdapter)
-
           case [content_type, body]
           in [OpenAI::Internal::Util::JSON_CONTENT, Hash | Array | -> { primitive?(_1) }]
             [headers, JSON.fast_generate(body)]
-          in [OpenAI::Internal::Util::JSONL_CONTENT, Enumerable] unless body.is_a?(StringIO) || body.is_a?(IO)
+          in [OpenAI::Internal::Util::JSONL_CONTENT, Enumerable] unless body.is_a?(OpenAI::Internal::Type::FileInput)
             [headers, body.lazy.map { JSON.fast_generate(_1) }]
-          in [%r{^multipart/form-data}, Hash | Pathname | StringIO | IO]
+          in [%r{^multipart/form-data}, Hash | OpenAI::Internal::Type::FileInput]
             boundary, strio = encode_multipart_streaming(body)
             headers = {**headers, "content-type" => "#{content_type}; boundary=#{boundary}"}
             [headers, strio]
@@ -580,6 +580,8 @@ module OpenAI
             [headers, body.to_s]
           in [_, StringIO]
             [headers, body.string]
+          in [_, OpenAI::FilePart]
+            [headers, body.content]
           else
             [headers, body]
           end

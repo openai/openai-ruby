@@ -73,16 +73,6 @@ module OpenAI
         | ::Array[(String | Integer)?])?] headers
       ) -> ::Hash[String, String]
 
-      class SerializationAdapter
-        attr_reader inner: Pathname | IO
-
-        def to_json: (*top a) -> String
-
-        def to_yaml: (*top a) -> String
-
-        def initialize: (Pathname | IO inner) -> void
-      end
-
       class ReadIOAdapter
         def close?: -> bool?
 
@@ -105,6 +95,13 @@ module OpenAI
 
       JSON_CONTENT: Regexp
       JSONL_CONTENT: Regexp
+
+      def self?.write_multipart_content: (
+        Enumerator::Yielder y,
+        val: top,
+        closing: ::Array[^-> void],
+        ?content_type: String?
+      ) -> void
 
       def self?.write_multipart_chunk: (
         Enumerator::Yielder y,

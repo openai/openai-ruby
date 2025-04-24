@@ -13,7 +13,7 @@ module OpenAI
       #   25MB. For `dall-e-2`, you can only provide one image, and it should be a square
       #   `png` file less than 4MB.
       #
-      #   @return [Pathname, StringIO, Array<Pathname, StringIO>]
+      #   @return [Pathname, StringIO, IO, OpenAI::FilePart, Array<Pathname, StringIO, IO, OpenAI::FilePart>]
       required :image, union: -> { OpenAI::Models::ImageEditParams::Image }
 
       # @!attribute prompt
@@ -29,8 +29,8 @@ module OpenAI
       #   the mask will be applied on the first image. Must be a valid PNG file, less than
       #   4MB, and have the same dimensions as `image`.
       #
-      #   @return [Pathname, StringIO, nil]
-      optional :mask, OpenAI::Internal::Type::IOLike
+      #   @return [Pathname, StringIO, IO, OpenAI::FilePart, nil]
+      optional :mask, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
       #   The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
@@ -83,13 +83,13 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::ImageEditParams} for more details.
       #
-      #   @param image [Pathname, StringIO, Array<Pathname, StringIO>] The image(s) to edit. Must be a supported image file or an array of images. For
+      #   @param image [Pathname, StringIO, IO, OpenAI::FilePart, Array<Pathname, StringIO, IO, OpenAI::FilePart>] The image(s) to edit. Must be a supported image file or an array of images. For
       #   ...
       #
       #   @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       #   ...
       #
-      #   @param mask [Pathname, StringIO] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
+      #   @param mask [Pathname, StringIO, IO, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #   ...
       #
       #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
@@ -118,14 +118,14 @@ module OpenAI
       module Image
         extend OpenAI::Internal::Type::Union
 
-        variant OpenAI::Internal::Type::IOLike
+        variant OpenAI::Internal::Type::FileInput
 
         variant -> { OpenAI::Models::ImageEditParams::Image::StringArray }
 
         # @!method self.variants
         #   @return [Array(StringIO, Array<StringIO>)]
 
-        StringArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::IOLike]
+        StringArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::FileInput]
       end
 
       # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are

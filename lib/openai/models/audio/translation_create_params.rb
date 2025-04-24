@@ -12,8 +12,8 @@ module OpenAI
         #   The audio file object (not file name) translate, in one of these formats: flac,
         #   mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         #
-        #   @return [Pathname, StringIO]
-        required :file, OpenAI::Internal::Type::IOLike
+        #   @return [Pathname, StringIO, IO, OpenAI::FilePart]
+        required :file, OpenAI::Internal::Type::FileInput
 
         # @!attribute model
         #   ID of the model to use. Only `whisper-1` (which is powered by our open source
@@ -52,7 +52,7 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::TranslationCreateParams} for more details.
         #
-        #   @param file [Pathname, StringIO] The audio file object (not file name) translate, in one of these formats: flac,
+        #   @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) translate, in one of these formats: flac,
         #   ...
         #
         #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. Only `whisper-1` (which is powered by our open source Wh

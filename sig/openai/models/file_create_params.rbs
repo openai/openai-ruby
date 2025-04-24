@@ -1,19 +1,22 @@
 module OpenAI
   module Models
     type file_create_params =
-      { file: (Pathname | StringIO), purpose: OpenAI::Models::file_purpose }
+      {
+        file: (Pathname | StringIO | IO | OpenAI::FilePart),
+        purpose: OpenAI::Models::file_purpose
+      }
       & OpenAI::Internal::Type::request_parameters
 
     class FileCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      attr_accessor file: Pathname | StringIO
+      attr_accessor file: Pathname | StringIO | IO | OpenAI::FilePart
 
       attr_accessor purpose: OpenAI::Models::file_purpose
 
       def initialize: (
-        file: Pathname | StringIO,
+        file: Pathname | StringIO | IO | OpenAI::FilePart,
         purpose: OpenAI::Models::file_purpose,
         ?request_options: OpenAI::request_opts
       ) -> void

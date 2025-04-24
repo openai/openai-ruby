@@ -14,7 +14,7 @@ module OpenAI
         #
         # @overload create(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
-        # @param file [Pathname, StringIO] The audio file object (not file name) to transcribe, in one of these formats: fl
+        # @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         # ...
         #
         # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
@@ -68,7 +68,7 @@ module OpenAI
         #
         # @overload create_streaming(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #
-        # @param file [Pathname, StringIO] The audio file object (not file name) to transcribe, in one of these formats: fl
+        # @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         # ...
         #
         # @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc

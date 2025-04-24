@@ -1,7 +1,7 @@
 module OpenAI
   module Internal
     module Type
-      class IOLike
+      class FileInput
         extend OpenAI::Internal::Type::Converter
 
         def self.===: (top other) -> bool

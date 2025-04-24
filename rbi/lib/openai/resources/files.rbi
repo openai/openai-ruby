@@ -26,7 +26,7 @@ module OpenAI
       # storage limits.
       sig do
         params(
-          file: T.any(Pathname, StringIO),
+          file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
           request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
         )

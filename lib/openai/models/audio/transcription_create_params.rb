@@ -14,8 +14,8 @@ module OpenAI
         #   The audio file object (not file name) to transcribe, in one of these formats:
         #   flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         #
-        #   @return [Pathname, StringIO]
-        required :file, OpenAI::Internal::Type::IOLike
+        #   @return [Pathname, StringIO, IO, OpenAI::FilePart]
+        required :file, OpenAI::Internal::Type::FileInput
 
         # @!attribute model
         #   ID of the model to use. The options are `gpt-4o-transcribe`,
@@ -86,7 +86,7 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::TranscriptionCreateParams} for more details.
         #
-        #   @param file [Pathname, StringIO] The audio file object (not file name) to transcribe, in one of these formats: fl
+        #   @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
         #   ...
         #
         #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc

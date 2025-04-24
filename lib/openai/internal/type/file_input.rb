@@ -7,8 +7,12 @@ module OpenAI
       #
       # @abstract
       #
-      # Either `Pathname` or `StringIO`.
-      class IOLike
+      # Either `Pathname` or `StringIO`, or `IO`, or
+      # `OpenAI::Internal::Type::FileInput`.
+      #
+      # Note: when `IO` is used, all retries are disabled, since many IO` streams are
+      # not rewindable.
+      class FileInput
         extend OpenAI::Internal::Type::Converter
 
         private_class_method :new
@@ -20,7 +24,7 @@ module OpenAI
         # @return [Boolean]
         def self.===(other)
           case other
-          in StringIO | Pathname | IO
+          in Pathname | StringIO | IO | String | OpenAI::FilePart
             true
           else
             false
@@ -32,7 +36,7 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::IOLike
+        def self.==(other) = other.is_a?(Class) && other <= OpenAI::Internal::Type::FileInput
 
         class << self
           # @api private
