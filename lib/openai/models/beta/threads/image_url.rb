@@ -20,8 +20,14 @@ module OpenAI
           optional :detail, enum: -> { OpenAI::Models::Beta::Threads::ImageURL::Detail }
 
           # @!method initialize(url:, detail: nil)
-          #   @param url [String]
-          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::Threads::ImageURL} for more details.
+          #
+          #   @param url [String] The external URL of the image, must be a supported image types: jpeg, jpg, png,
+          #   ...
+          #
+          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageURL::Detail] Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+          #   ...
 
           # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
           # to high resolution using `high`. Default value is `auto`

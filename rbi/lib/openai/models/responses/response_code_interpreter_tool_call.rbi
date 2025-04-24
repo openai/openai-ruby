@@ -50,8 +50,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, code:, results:, status:, type: :code_interpreter_call); end
-
+        def self.new(
+          # The unique ID of the code interpreter tool call.
+          id:,
+          # The code to run.
+          code:,
+          # The results of the code interpreter tool call.
+          results:,
+          # The status of the code interpreter tool call.
+          status:,
+          # The type of the code interpreter tool call. Always `code_interpreter_call`.
+          type: :code_interpreter_call
+        ); end
         sig do
           override
             .returns(
@@ -86,8 +96,12 @@ module OpenAI
 
             # The output of a code interpreter tool call that is text.
             sig { params(logs: String, type: Symbol).returns(T.attached_class) }
-            def self.new(logs:, type: :logs); end
-
+            def self.new(
+              # The logs of the code interpreter tool call.
+              logs:,
+              # The type of the code interpreter text output. Always `logs`.
+              type: :logs
+            ); end
             sig { override.returns({logs: String, type: Symbol}) }
             def to_hash; end
           end
@@ -113,8 +127,11 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(files:, type: :files); end
-
+            def self.new(
+              files:,
+              # The type of the code interpreter file output. Always `files`.
+              type: :files
+            ); end
             sig do
               override
                 .returns(
@@ -136,8 +153,12 @@ module OpenAI
               attr_accessor :mime_type
 
               sig { params(file_id: String, mime_type: String).returns(T.attached_class) }
-              def self.new(file_id:, mime_type:); end
-
+              def self.new(
+                # The ID of the file.
+                file_id:,
+                # The MIME type of the file.
+                mime_type:
+              ); end
               sig { override.returns({file_id: String, mime_type: String}) }
               def to_hash; end
             end

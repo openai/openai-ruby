@@ -23,8 +23,14 @@ module OpenAI
       required :purpose, enum: -> { OpenAI::Models::FilePurpose }
 
       # @!method initialize(file:, purpose:, request_options: {})
-      #   @param file [Pathname, StringIO]
-      #   @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::FileCreateParams} for more details.
+      #
+      #   @param file [Pathname, StringIO] The File object (not file name) to be uploaded. ...
+      #
+      #   @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
+      #   ...
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end

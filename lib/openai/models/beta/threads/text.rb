@@ -19,7 +19,8 @@ module OpenAI
 
           # @!method initialize(annotations:, value:)
           #   @param annotations [Array<OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation>]
-          #   @param value [String]
+          #
+          #   @param value [String] The data that makes up the text.
         end
       end
     end

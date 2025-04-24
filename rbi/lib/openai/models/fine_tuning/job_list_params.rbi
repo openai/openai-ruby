@@ -35,8 +35,16 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(after: nil, limit: nil, metadata: nil, request_options: {}); end
-
+        def self.new(
+          # Identifier for the last job from the previous pagination request.
+          after: nil,
+          # Number of fine-tuning jobs to retrieve.
+          limit: nil,
+          # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
+          # Alternatively, set `metadata=null` to indicate no metadata.
+          metadata: nil,
+          request_options: {}
+        ); end
         sig do
           override
             .returns(

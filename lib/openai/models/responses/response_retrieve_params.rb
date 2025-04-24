@@ -17,7 +17,11 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
 
         # @!method initialize(include: nil, request_options: {})
-        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseRetrieveParams} for more details.
+        #
+        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include` ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

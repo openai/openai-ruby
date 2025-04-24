@@ -17,8 +17,12 @@ module OpenAI
           params(code: OpenAI::Models::Responses::ResponseError::Code::OrSymbol, message: String)
             .returns(T.attached_class)
         end
-        def self.new(code:, message:); end
-
+        def self.new(
+          # The error code for the response.
+          code:,
+          # A human-readable description of the error.
+          message:
+        ); end
         sig { override.returns({code: OpenAI::Models::Responses::ResponseError::Code::TaggedSymbol, message: String}) }
         def to_hash; end
 

@@ -35,14 +35,19 @@ module OpenAI
       optional :summary, enum: -> { OpenAI::Models::Reasoning::Summary }, nil?: true
 
       # @!method initialize(effort: nil, generate_summary: nil, summary: nil)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::Reasoning} for more details.
+      #
       #   **o-series models only**
       #
       #   Configuration options for
       #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
       #
-      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
-      #   @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil]
-      #   @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil]
+      #   @param effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only** ...
+      #
+      #   @param generate_summary [Symbol, OpenAI::Models::Reasoning::GenerateSummary, nil] **Deprecated:** use `summary` instead. ...
+      #
+      #   @param summary [Symbol, OpenAI::Models::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be ...
 
       # @deprecated
       #

@@ -35,8 +35,18 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(input:, name:, operation:, reference:, type: :string_check); end
-
+      def self.new(
+        # The input text. This may include template strings.
+        input:,
+        # The name of the grader.
+        name:,
+        # The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
+        operation:,
+        # The reference text. This may include template strings.
+        reference:,
+        # The object type, which is always `string_check`.
+        type: :string_check
+      ); end
       sig do
         override
           .returns(

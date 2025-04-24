@@ -23,8 +23,12 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(thread_id:, tool_outputs:, request_options: {}); end
-
+          def self.new(
+            thread_id:,
+            # A list of tools for which the outputs are being submitted.
+            tool_outputs:,
+            request_options: {}
+          ); end
           sig do
             override
               .returns(
@@ -54,8 +58,13 @@ module OpenAI
             attr_writer :tool_call_id
 
             sig { params(output: String, tool_call_id: String).returns(T.attached_class) }
-            def self.new(output: nil, tool_call_id: nil); end
-
+            def self.new(
+              # The output of the tool call to be submitted to continue the run.
+              output: nil,
+              # The ID of the tool call in the `required_action` object within the run object
+              # the output is being submitted for.
+              tool_call_id: nil
+            ); end
             sig { override.returns({output: String, tool_call_id: String}) }
             def to_hash; end
           end

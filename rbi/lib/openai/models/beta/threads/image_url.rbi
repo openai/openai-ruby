@@ -22,8 +22,14 @@ module OpenAI
             params(url: String, detail: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol)
               .returns(T.attached_class)
           end
-          def self.new(url:, detail: nil); end
-
+          def self.new(
+            # The external URL of the image, must be a supported image types: jpeg, jpg, png,
+            # gif, webp.
+            url:,
+            # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+            # to high resolution using `high`. Default value is `auto`
+            detail: nil
+          ); end
           sig { override.returns({url: String, detail: OpenAI::Models::Beta::Threads::ImageURL::Detail::OrSymbol}) }
           def to_hash; end
 

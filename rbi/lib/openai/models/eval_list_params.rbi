@@ -46,8 +46,19 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(after: nil, limit: nil, order: nil, order_by: nil, request_options: {}); end
-
+      def self.new(
+        # Identifier for the last eval from the previous pagination request.
+        after: nil,
+        # Number of evals to retrieve.
+        limit: nil,
+        # Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for
+        # descending order.
+        order: nil,
+        # Evals can be ordered by creation time or last updated time. Use `created_at` for
+        # creation time or `updated_at` for last updated time.
+        order_by: nil,
+        request_options: {}
+      ); end
       sig do
         override
           .returns(

@@ -29,9 +29,18 @@ module OpenAI
           params(content_index: Integer, delta: String, item_id: String, output_index: Integer, type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(content_index:, delta:, item_id:, output_index:, type: :"response.output_text.delta")
-        end
-
+        def self.new(
+          # The index of the content part that the text delta was added to.
+          content_index:,
+          # The text delta that was added.
+          delta:,
+          # The ID of the output item that the text delta was added to.
+          item_id:,
+          # The index of the output item that the text delta was added to.
+          output_index:,
+          # The type of the event. Always `response.output_text.delta`.
+          type: :"response.output_text.delta"
+        ); end
         sig do
           override
             .returns({

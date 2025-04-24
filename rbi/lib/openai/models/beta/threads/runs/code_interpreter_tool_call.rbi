@@ -42,8 +42,15 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(id:, code_interpreter:, type: :code_interpreter); end
-
+            def self.new(
+              # The ID of the tool call.
+              id:,
+              # The Code Interpreter tool call definition.
+              code_interpreter:,
+              # The type of tool call. This is always going to be `code_interpreter` for this
+              # type of tool call.
+              type: :code_interpreter
+            ); end
             sig do
               override
                 .returns(
@@ -90,8 +97,14 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(input:, outputs:); end
-
+              def self.new(
+                # The input to the Code Interpreter tool call.
+                input:,
+                # The outputs from the Code Interpreter tool call. Code Interpreter can output one
+                # or more items, including text (`logs`) or images (`image`). Each of these are
+                # represented by a different object type.
+                outputs:
+              ); end
               sig do
                 override
                   .returns(
@@ -123,8 +136,12 @@ module OpenAI
 
                   # Text output from the Code Interpreter tool call as part of a run step.
                   sig { params(logs: String, type: Symbol).returns(T.attached_class) }
-                  def self.new(logs:, type: :logs); end
-
+                  def self.new(
+                    # The text output from the Code Interpreter tool call.
+                    logs:,
+                    # Always `logs`.
+                    type: :logs
+                  ); end
                   sig { override.returns({logs: String, type: Symbol}) }
                   def to_hash; end
                 end
@@ -162,8 +179,11 @@ module OpenAI
                     )
                       .returns(T.attached_class)
                   end
-                  def self.new(image:, type: :image); end
-
+                  def self.new(
+                    image:,
+                    # Always `image`.
+                    type: :image
+                  ); end
                   sig do
                     override
                       .returns(
@@ -182,8 +202,11 @@ module OpenAI
                     attr_accessor :file_id
 
                     sig { params(file_id: String).returns(T.attached_class) }
-                    def self.new(file_id:); end
-
+                    def self.new(
+                      # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
+                      # image.
+                      file_id:
+                    ); end
                     sig { override.returns({file_id: String}) }
                     def to_hash; end
                   end

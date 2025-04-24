@@ -22,8 +22,12 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(include: nil, request_options: {}); end
-
+        def self.new(
+          # Additional fields to include in the response. See the `include` parameter for
+          # Response creation above for more information.
+          include: nil,
+          request_options: {}
+        ); end
         sig do
           override
             .returns(

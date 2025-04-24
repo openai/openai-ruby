@@ -15,7 +15,7 @@ module OpenAI
             # @!method initialize(step_details: nil)
             #   The delta containing the fields that have changed on the run step.
             #
-            #   @param step_details [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
+            #   @param step_details [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject] The details of the run step.
 
             # The details of the run step.
             #

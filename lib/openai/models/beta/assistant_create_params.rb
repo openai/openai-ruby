@@ -120,17 +120,38 @@ module OpenAI
         optional :top_p, Float, nil?: true
 
         # @!method initialize(model:, description: nil, instructions: nil, metadata: nil, name: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_resources: nil, tools: nil, top_p: nil, request_options: {})
-        #   @param model [String, Symbol, OpenAI::Models::ChatModel]
-        #   @param description [String, nil]
-        #   @param instructions [String, nil]
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param name [String, nil]
-        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
-        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
-        #   @param temperature [Float, nil]
-        #   @param tool_resources [OpenAI::Models::Beta::AssistantCreateParams::ToolResources, nil]
-        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
-        #   @param top_p [Float, nil]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::AssistantCreateParams} for more details.
+        #
+        #   @param model [String, Symbol, OpenAI::Models::ChatModel] ID of the model to use. You can use the [List models](https://platform.openai.co
+        #   ...
+        #
+        #   @param description [String, nil] The description of the assistant. The maximum length is 512 characters. ...
+        #
+        #   @param instructions [String, nil] The system instructions that the assistant uses. The maximum length is 256,000 c
+        #   ...
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
+        #   @param name [String, nil] The name of the assistant. The maximum length is 256 characters. ...
+        #
+        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only** ...
+        #
+        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
+        #   ...
+        #
+        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+        #   ...
+        #
+        #   @param tool_resources [OpenAI::Models::Beta::AssistantCreateParams::ToolResources, nil] A set of resources that are used by the assistant's tools. The resources are spe
+        #   ...
+        #
+        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>] A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        #   ...
+        #
+        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. You can use the
@@ -182,7 +203,12 @@ module OpenAI
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   @param file_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter}
+            #   for more details.
+            #
+            #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #   ...
           end
 
           # @see OpenAI::Models::Beta::AssistantCreateParams::ToolResources#file_search
@@ -207,8 +233,15 @@ module OpenAI
                      -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore] }
 
             # @!method initialize(vector_store_ids: nil, vector_stores: nil)
-            #   @param vector_store_ids [Array<String>]
-            #   @param vector_stores [Array<OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch} for
+            #   more details.
+            #
+            #   @param vector_store_ids [Array<String>] The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/
+            #   ...
+            #
+            #   @param vector_stores [Array<OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore>] A helper to create a [vector store](https://platform.openai.com/docs/api-referen
+            #   ...
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
               # @!attribute chunking_strategy
@@ -239,9 +272,17 @@ module OpenAI
               optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
               # @!method initialize(chunking_strategy: nil, file_ids: nil, metadata: nil)
-              #   @param chunking_strategy [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-              #   @param file_ids [Array<String>]
-              #   @param metadata [Hash{Symbol=>String}, nil]
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore}
+              #   for more details.
+              #
+              #   @param chunking_strategy [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              #   ...
+              #
+              #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to ad
+              #   ...
+              #
+              #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               # strategy.
@@ -270,7 +311,7 @@ module OpenAI
                   #   The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
                   #   `800` and `chunk_overlap_tokens` of `400`.
                   #
-                  #   @param type [Symbol, :auto]
+                  #   @param type [Symbol, :auto] Always `auto`.
                 end
 
                 class Static < OpenAI::Internal::Type::BaseModel
@@ -288,7 +329,8 @@ module OpenAI
 
                   # @!method initialize(static:, type: :static)
                   #   @param static [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
-                  #   @param type [Symbol, :static]
+                  #
+                  #   @param type [Symbol, :static] Always `static`.
 
                   # @see OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static#static
                   class Static < OpenAI::Internal::Type::BaseModel
@@ -308,8 +350,15 @@ module OpenAI
                     required :max_chunk_size_tokens, Integer
 
                     # @!method initialize(chunk_overlap_tokens:, max_chunk_size_tokens:)
-                    #   @param chunk_overlap_tokens [Integer]
-                    #   @param max_chunk_size_tokens [Integer]
+                    #   Some parameter documentations has been truncated, see
+                    #   {OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static}
+                    #   for more details.
+                    #
+                    #   @param chunk_overlap_tokens [Integer] The number of tokens that overlap between chunks. The default value is `400`.
+                    #   ...
+                    #
+                    #   @param max_chunk_size_tokens [Integer] The maximum number of tokens in each chunk. The default value is `800`. The mini
+                    #   ...
                   end
                 end
 

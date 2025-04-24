@@ -29,8 +29,13 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(index:, image_file: nil, type: :image_file); end
-
+          def self.new(
+            # The index of the content part in the message.
+            index:,
+            image_file: nil,
+            # Always `image_file`.
+            type: :image_file
+          ); end
           sig do
             override.returns({index: Integer, type: Symbol, image_file: OpenAI::Models::Beta::Threads::ImageFileDelta})
           end

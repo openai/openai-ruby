@@ -33,8 +33,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(detail:, file_id: nil, image_url: nil, type: :input_image); end
-
+        def self.new(
+          # The detail level of the image to be sent to the model. One of `high`, `low`, or
+          # `auto`. Defaults to `auto`.
+          detail:,
+          # The ID of the file to be sent to the model.
+          file_id: nil,
+          # The URL of the image to be sent to the model. A fully qualified URL or base64
+          # encoded image in a data URL.
+          image_url: nil,
+          # The type of the input item. Always `input_image`.
+          type: :input_image
+        ); end
         sig do
           override
             .returns(

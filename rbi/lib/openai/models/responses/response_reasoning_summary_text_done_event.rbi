@@ -30,14 +30,17 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The ID of the item this summary text is associated with.
           item_id:,
+          # The index of the output item this summary text is associated with.
           output_index:,
+          # The index of the summary part within the reasoning summary.
           summary_index:,
+          # The full text of the completed reasoning summary.
           text:,
+          # The type of the event. Always `response.reasoning_summary_text.done`.
           type: :"response.reasoning_summary_text.done"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns({

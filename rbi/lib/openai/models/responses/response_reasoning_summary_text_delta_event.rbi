@@ -30,14 +30,17 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The text delta that was added to the summary.
           delta:,
+          # The ID of the item this summary text delta is associated with.
           item_id:,
+          # The index of the output item this summary text delta is associated with.
           output_index:,
+          # The index of the summary part within the reasoning summary.
           summary_index:,
+          # The type of the event. Always `response.reasoning_summary_text.delta`.
           type: :"response.reasoning_summary_text.delta"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns({

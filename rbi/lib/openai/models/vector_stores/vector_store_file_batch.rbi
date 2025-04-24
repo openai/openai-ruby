@@ -53,15 +53,23 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The identifier, which can be referenced in API endpoints.
           id:,
+          # The Unix timestamp (in seconds) for when the vector store files batch was
+          # created.
           created_at:,
           file_counts:,
+          # The status of the vector store files batch, which can be either `in_progress`,
+          # `completed`, `cancelled` or `failed`.
           status:,
+          # The ID of the
+          # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+          # that the [File](https://platform.openai.com/docs/api-reference/files) is
+          # attached to.
           vector_store_id:,
+          # The object type, which is always `vector_store.file_batch`.
           object: :"vector_store.files_batch"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -108,8 +116,18 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(cancelled:, completed:, failed:, in_progress:, total:); end
-
+          def self.new(
+            # The number of files that where cancelled.
+            cancelled:,
+            # The number of files that have been processed.
+            completed:,
+            # The number of files that have failed to process.
+            failed:,
+            # The number of files that are currently being processed.
+            in_progress:,
+            # The total number of files.
+            total:
+          ); end
           sig do
             override
               .returns({

@@ -18,8 +18,14 @@ module OpenAI
 
         # Emitted when a partial code snippet is added by the code interpreter.
         sig { params(delta: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
-        def self.new(delta:, output_index:, type: :"response.code_interpreter_call.code.delta"); end
-
+        def self.new(
+          # The partial code snippet added by the code interpreter.
+          delta:,
+          # The index of the output item that the code interpreter call is in progress.
+          output_index:,
+          # The type of the event. Always `response.code_interpreter_call.code.delta`.
+          type: :"response.code_interpreter_call.code.delta"
+        ); end
         sig { override.returns({delta: String, output_index: Integer, type: Symbol}) }
         def to_hash; end
       end

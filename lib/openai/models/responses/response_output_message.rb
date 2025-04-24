@@ -37,13 +37,20 @@ module OpenAI
         required :type, const: :message
 
         # @!method initialize(id:, content:, status:, role: :assistant, type: :message)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseOutputMessage} for more details.
+        #
         #   An output message from the model.
         #
-        #   @param id [String]
-        #   @param content [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status]
-        #   @param role [Symbol, :assistant]
-        #   @param type [Symbol, :message]
+        #   @param id [String] The unique ID of the output message. ...
+        #
+        #   @param content [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>] The content of the output message. ...
+        #
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status] The status of the message input. One of `in_progress`, `completed`, or ...
+        #
+        #   @param role [Symbol, :assistant] The role of the output message. Always `assistant`. ...
+        #
+        #   @param type [Symbol, :message] The type of the output message. Always `message`. ...
 
         # A text output from the model.
         module Content

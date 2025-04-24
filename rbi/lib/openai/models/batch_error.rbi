@@ -29,8 +29,16 @@ module OpenAI
         params(code: String, line: T.nilable(Integer), message: String, param: T.nilable(String))
           .returns(T.attached_class)
       end
-      def self.new(code: nil, line: nil, message: nil, param: nil); end
-
+      def self.new(
+        # An error code identifying the error type.
+        code: nil,
+        # The line number of the input file where the error occurred, if applicable.
+        line: nil,
+        # A human-readable message providing more details about the error.
+        message: nil,
+        # The name of the parameter that caused the error, if applicable.
+        param: nil
+      ); end
       sig do
         override.returns({code: String, line: T.nilable(Integer), message: String, param: T.nilable(String)})
       end

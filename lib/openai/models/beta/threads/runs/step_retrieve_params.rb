@@ -34,9 +34,16 @@ module OpenAI
                      -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Beta::Threads::Runs::RunStepInclude] }
 
             # @!method initialize(thread_id:, run_id:, include: nil, request_options: {})
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams} for more details.
+            #
             #   @param thread_id [String]
+            #
             #   @param run_id [String]
-            #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>]
+            #
+            #   @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] A list of additional fields to include in the response. Currently the only suppo
+            #   ...
+            #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end
         end

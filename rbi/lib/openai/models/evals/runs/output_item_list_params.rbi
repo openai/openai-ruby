@@ -52,8 +52,20 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {}); end
-
+          def self.new(
+            eval_id:,
+            # Identifier for the last output item from the previous pagination request.
+            after: nil,
+            # Number of output items to retrieve.
+            limit: nil,
+            # Sort order for output items by timestamp. Use `asc` for ascending order or
+            # `desc` for descending order. Defaults to `asc`.
+            order: nil,
+            # Filter output items by status. Use `failed` to filter by failed output items or
+            # `pass` to filter by passed output items.
+            status: nil,
+            request_options: {}
+          ); end
           sig do
             override
               .returns(

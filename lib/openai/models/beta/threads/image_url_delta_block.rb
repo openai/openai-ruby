@@ -25,9 +25,11 @@ module OpenAI
           # @!method initialize(index:, image_url: nil, type: :image_url)
           #   References an image URL in the content of a message.
           #
-          #   @param index [Integer]
+          #   @param index [Integer] The index of the content part in the message.
+          #
           #   @param image_url [OpenAI::Models::Beta::Threads::ImageURLDelta]
-          #   @param type [Symbol, :image_url]
+          #
+          #   @param type [Symbol, :image_url] Always `image_url`.
         end
       end
     end

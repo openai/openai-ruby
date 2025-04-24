@@ -57,8 +57,16 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, role:, type: nil); end
-
+        def self.new(
+          # Text, image, or audio input to the model, used to generate a response. Can also
+          # contain previous assistant responses.
+          content:,
+          # The role of the message input. One of `user`, `assistant`, `system`, or
+          # `developer`.
+          role:,
+          # The type of the message input. Always `message`.
+          type: nil
+        ); end
         sig do
           override
             .returns(

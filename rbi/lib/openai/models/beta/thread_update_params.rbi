@@ -39,8 +39,21 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(metadata: nil, tool_resources: nil, request_options: {}); end
-
+        def self.new(
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
+          metadata: nil,
+          # A set of resources that are made available to the assistant's tools in this
+          # thread. The resources are specific to the type of tool. For example, the
+          # `code_interpreter` tool requires a list of file IDs, while the `file_search`
+          # tool requires a list of vector store IDs.
+          tool_resources: nil,
+          request_options: {}
+        ); end
         sig do
           override
             .returns(
@@ -111,8 +124,12 @@ module OpenAI
             attr_writer :file_ids
 
             sig { params(file_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(file_ids: nil); end
-
+            def self.new(
+              # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+              # available to the `code_interpreter` tool. There can be a maximum of 20 files
+              # associated with the tool.
+              file_ids: nil
+            ); end
             sig { override.returns({file_ids: T::Array[String]}) }
             def to_hash; end
           end
@@ -129,8 +146,13 @@ module OpenAI
             attr_writer :vector_store_ids
 
             sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
-            def self.new(vector_store_ids: nil); end
-
+            def self.new(
+              # The
+              # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+              # attached to this thread. There can be a maximum of 1 vector store attached to
+              # the thread.
+              vector_store_ids: nil
+            ); end
             sig { override.returns({vector_store_ids: T::Array[String]}) }
             def to_hash; end
           end

@@ -29,8 +29,12 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(json_schema:, type: :json_schema); end
-
+      def self.new(
+        # Structured Outputs configuration options, including a JSON Schema.
+        json_schema:,
+        # The type of response format being defined. Always `json_schema`.
+        type: :json_schema
+      ); end
       sig { override.returns({json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, type: Symbol}) }
       def to_hash; end
 
@@ -74,8 +78,23 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(name:, description: nil, schema: nil, strict: nil); end
-
+        def self.new(
+          # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
+          # and dashes, with a maximum length of 64.
+          name:,
+          # A description of what the response format is for, used by the model to determine
+          # how to respond in the format.
+          description: nil,
+          # The schema for the response format, described as a JSON Schema object. Learn how
+          # to build JSON schemas [here](https://json-schema.org/).
+          schema: nil,
+          # Whether to enable strict schema adherence when generating the output. If set to
+          # true, the model will always follow the exact schema defined in the `schema`
+          # field. Only a subset of JSON Schema is supported when `strict` is `true`. To
+          # learn more, read the
+          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          strict: nil
+        ); end
         sig do
           override
             .returns(

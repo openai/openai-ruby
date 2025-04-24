@@ -38,11 +38,18 @@ module OpenAI
         optional :type, enum: -> { OpenAI::Models::Responses::ResponseInputMessageItem::Type }
 
         # @!method initialize(id:, content:, role:, status: nil, type: nil)
-        #   @param id [String]
-        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>]
-        #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role]
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status]
-        #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseInputMessageItem} for more details.
+        #
+        #   @param id [String] The unique ID of the message input. ...
+        #
+        #   @param content [Array<OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile>] A list of one or many input items to the model, containing different content ...
+        #
+        #   @param role [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role] The role of the message input. One of `user`, `system`, or `developer`. ...
+        #
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status] The status of item. One of `in_progress`, `completed`, or ...
+        #
+        #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type] The type of the message input. Always set to `message`. ...
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         #

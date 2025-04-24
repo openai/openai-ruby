@@ -28,8 +28,12 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.created"); end
-
+          def self.new(
+            # Represents a message within a
+            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            data:,
+            event: :"thread.message.created"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
           def to_hash; end
         end
@@ -53,8 +57,12 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.in_progress"); end
-
+          def self.new(
+            # Represents a message within a
+            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            data:,
+            event: :"thread.message.in_progress"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
           def to_hash; end
         end
@@ -81,8 +89,12 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.delta"); end
-
+          def self.new(
+            # Represents a message delta i.e. any changed fields on a message during
+            # streaming.
+            data:,
+            event: :"thread.message.delta"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::MessageDeltaEvent, event: Symbol}) }
           def to_hash; end
         end
@@ -106,8 +118,12 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.completed"); end
-
+          def self.new(
+            # Represents a message within a
+            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            data:,
+            event: :"thread.message.completed"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
           def to_hash; end
         end
@@ -131,8 +147,12 @@ module OpenAI
             params(data: T.any(OpenAI::Models::Beta::Threads::Message, OpenAI::Internal::AnyHash), event: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.message.incomplete"); end
-
+          def self.new(
+            # Represents a message within a
+            # [thread](https://platform.openai.com/docs/api-reference/threads).
+            data:,
+            event: :"thread.message.incomplete"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Message, event: Symbol}) }
           def to_hash; end
         end

@@ -70,15 +70,25 @@ module OpenAI
               .returns(T.attached_class)
           end
           def self.new(
+            # Unique identifier for the evaluation run output item.
             id:,
+            # Unix timestamp (in seconds) when the evaluation run was created.
             created_at:,
+            # Details of the input data source item.
             datasource_item:,
+            # The identifier for the data source item.
             datasource_item_id:,
+            # The identifier of the evaluation group.
             eval_id:,
+            # A list of results from the evaluation run.
             results:,
+            # The identifier of the evaluation run associated with this output item.
             run_id:,
+            # A sample containing the input and output of the evaluation run.
             sample:,
+            # The status of the evaluation run.
             status:,
+            # The type of the object. Always "eval.run.output_item".
             object: :"eval.run.output_item"
           ); end
           sig do
@@ -169,15 +179,25 @@ module OpenAI
                 .returns(T.attached_class)
             end
             def self.new(
+              # An object representing an error response from the Eval API.
               error:,
+              # The reason why the sample generation was finished.
               finish_reason:,
+              # An array of input messages.
               input:,
+              # The maximum number of tokens allowed for completion.
               max_completion_tokens:,
+              # The model used for generating the sample.
               model:,
+              # An array of output messages.
               output:,
+              # The seed used for generating the sample.
               seed:,
+              # The sampling temperature used.
               temperature:,
+              # The top_p value used for sampling.
               top_p:,
+              # Token usage details for the sample.
               usage:
             ); end
             sig do
@@ -210,8 +230,12 @@ module OpenAI
 
               # An input message.
               sig { params(content: String, role: String).returns(T.attached_class) }
-              def self.new(content:, role:); end
-
+              def self.new(
+                # The content of the message.
+                content:,
+                # The role of the message sender (e.g., system, user, developer).
+                role:
+              ); end
               sig { override.returns({content: String, role: String}) }
               def to_hash; end
             end
@@ -232,8 +256,12 @@ module OpenAI
               attr_writer :role
 
               sig { params(content: String, role: String).returns(T.attached_class) }
-              def self.new(content: nil, role: nil); end
-
+              def self.new(
+                # The content of the message.
+                content: nil,
+                # The role of the message (e.g. "system", "assistant", "user").
+                role: nil
+              ); end
               sig { override.returns({content: String, role: String}) }
               def to_hash; end
             end
@@ -265,8 +293,16 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(cached_tokens:, completion_tokens:, prompt_tokens:, total_tokens:); end
-
+              def self.new(
+                # The number of tokens retrieved from cache.
+                cached_tokens:,
+                # The number of completion tokens generated.
+                completion_tokens:,
+                # The number of prompt tokens used.
+                prompt_tokens:,
+                # The total number of tokens used.
+                total_tokens:
+              ); end
               sig do
                 override
                   .returns(

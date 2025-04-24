@@ -39,8 +39,19 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(input:, labels:, model:, name:, passing_labels:, type: :label_model); end
-
+      def self.new(
+        input:,
+        # The labels to assign to each item in the evaluation.
+        labels:,
+        # The model to use for the evaluation. Must support structured outputs.
+        model:,
+        # The name of the grader.
+        name:,
+        # The labels that indicate a passing result. Must be a subset of labels.
+        passing_labels:,
+        # The object type, which is always `label_model`.
+        type: :label_model
+      ); end
       sig do
         override
           .returns(
@@ -99,8 +110,15 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, role:, type: nil); end
-
+        def self.new(
+          # Text inputs to the model - can contain template strings.
+          content:,
+          # The role of the message input. One of `user`, `assistant`, `system`, or
+          # `developer`.
+          role:,
+          # The type of the message input. Always `message`.
+          type: nil
+        ); end
         sig do
           override
             .returns(
@@ -132,8 +150,12 @@ module OpenAI
 
             # A text output from the model.
             sig { params(text: String, type: Symbol).returns(T.attached_class) }
-            def self.new(text:, type: :output_text); end
-
+            def self.new(
+              # The text output from the model.
+              text:,
+              # The type of the output text. Always `output_text`.
+              type: :output_text
+            ); end
             sig { override.returns({text: String, type: Symbol}) }
             def to_hash; end
           end

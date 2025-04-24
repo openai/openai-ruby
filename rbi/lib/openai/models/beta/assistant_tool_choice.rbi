@@ -23,8 +23,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(type:, function: nil); end
-
+        def self.new(
+          # The type of the tool. If type is `function`, the function name must be set
+          type:,
+          function: nil
+        ); end
         sig do
           override
             .returns(

@@ -62,8 +62,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data:, first_id:, has_more:, last_id:, object: :list); end
-
+        def self.new(
+          # A list of items used to generate this response.
+          data:,
+          # The ID of the first item in the list.
+          first_id:,
+          # Whether there are more items available.
+          has_more:,
+          # The ID of the last item in the list.
+          last_id:,
+          # The type of object returned, must be `list`.
+          object: :list
+        ); end
         sig do
           override
             .returns(

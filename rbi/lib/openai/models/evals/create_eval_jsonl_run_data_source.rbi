@@ -31,8 +31,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(source:, type: :jsonl); end
-
+        def self.new(
+          source:,
+          # The type of data source. Always `jsonl`.
+          type: :jsonl
+        ); end
         sig do
           override
             .returns(
@@ -71,8 +74,12 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(content:, type: :file_content); end
-
+            def self.new(
+              # The content of the jsonl file.
+              content:,
+              # The type of jsonl source. Always `file_content`.
+              type: :file_content
+            ); end
             sig do
               override
                 .returns(
@@ -119,8 +126,12 @@ module OpenAI
             attr_accessor :type
 
             sig { params(id: String, type: Symbol).returns(T.attached_class) }
-            def self.new(id:, type: :file_id); end
-
+            def self.new(
+              # The identifier of the file.
+              id:,
+              # The type of jsonl source. Always `file_id`.
+              type: :file_id
+            ); end
             sig { override.returns({id: String, type: Symbol}) }
             def to_hash; end
           end

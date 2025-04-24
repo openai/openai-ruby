@@ -43,8 +43,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done"); end
-
+        def self.new(
+          # The index of the content part that is done.
+          content_index:,
+          # The ID of the output item that the content part was added to.
+          item_id:,
+          # The index of the output item that the content part was added to.
+          output_index:,
+          # The content part that is done.
+          part:,
+          # The type of the event. Always `response.content_part.done`.
+          type: :"response.content_part.done"
+        ); end
         sig do
           override
             .returns(

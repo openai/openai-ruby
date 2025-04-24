@@ -28,8 +28,13 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(index:, text: nil, type: :text); end
-
+          def self.new(
+            # The index of the content part in the message.
+            index:,
+            text: nil,
+            # Always `text`.
+            type: :text
+          ); end
           sig { override.returns({index: Integer, type: Symbol, text: OpenAI::Models::Beta::Threads::TextDelta}) }
           def to_hash; end
         end

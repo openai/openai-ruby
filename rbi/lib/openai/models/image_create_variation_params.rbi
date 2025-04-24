@@ -53,16 +53,27 @@ module OpenAI
           .returns(T.attached_class)
       end
       def self.new(
+        # The image to use as the basis for the variation(s). Must be a valid PNG file,
+        # less than 4MB, and square.
         image:,
+        # The model to use for image generation. Only `dall-e-2` is supported at this
+        # time.
         model: nil,
+        # The number of images to generate. Must be between 1 and 10.
         n: nil,
+        # The format in which the generated images are returned. Must be one of `url` or
+        # `b64_json`. URLs are only valid for 60 minutes after the image has been
+        # generated.
         response_format: nil,
+        # The size of the generated images. Must be one of `256x256`, `512x512`, or
+        # `1024x1024`.
         size: nil,
+        # A unique identifier representing your end-user, which can help OpenAI to monitor
+        # and detect abuse.
+        # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(

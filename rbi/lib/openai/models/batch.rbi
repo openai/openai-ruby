@@ -149,24 +149,47 @@ module OpenAI
       end
       def self.new(
         id:,
+        # The time frame within which the batch should be processed.
         completion_window:,
+        # The Unix timestamp (in seconds) for when the batch was created.
         created_at:,
+        # The OpenAI API endpoint used by the batch.
         endpoint:,
+        # The ID of the input file for the batch.
         input_file_id:,
+        # The current status of the batch.
         status:,
+        # The Unix timestamp (in seconds) for when the batch was cancelled.
         cancelled_at: nil,
+        # The Unix timestamp (in seconds) for when the batch started cancelling.
         cancelling_at: nil,
+        # The Unix timestamp (in seconds) for when the batch was completed.
         completed_at: nil,
+        # The ID of the file containing the outputs of requests with errors.
         error_file_id: nil,
         errors: nil,
+        # The Unix timestamp (in seconds) for when the batch expired.
         expired_at: nil,
+        # The Unix timestamp (in seconds) for when the batch will expire.
         expires_at: nil,
+        # The Unix timestamp (in seconds) for when the batch failed.
         failed_at: nil,
+        # The Unix timestamp (in seconds) for when the batch started finalizing.
         finalizing_at: nil,
+        # The Unix timestamp (in seconds) for when the batch started processing.
         in_progress_at: nil,
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         metadata: nil,
+        # The ID of the file containing the outputs of successfully executed requests.
         output_file_id: nil,
+        # The request counts for different statuses within the batch.
         request_counts: nil,
+        # The object type, which is always `batch`.
         object: :batch
       ); end
       sig do
@@ -236,8 +259,11 @@ module OpenAI
           params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Internal::AnyHash)], object: String)
             .returns(T.attached_class)
         end
-        def self.new(data: nil, object: nil); end
-
+        def self.new(
+          data: nil,
+          # The object type, which is always `list`.
+          object: nil
+        ); end
         sig { override.returns({data: T::Array[OpenAI::Models::BatchError], object: String}) }
         def to_hash; end
       end

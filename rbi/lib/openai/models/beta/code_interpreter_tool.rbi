@@ -9,8 +9,10 @@ module OpenAI
         attr_accessor :type
 
         sig { params(type: Symbol).returns(T.attached_class) }
-        def self.new(type: :code_interpreter); end
-
+        def self.new(
+          # The type of tool being defined: `code_interpreter`
+          type: :code_interpreter
+        ); end
         sig { override.returns({type: Symbol}) }
         def to_hash; end
       end

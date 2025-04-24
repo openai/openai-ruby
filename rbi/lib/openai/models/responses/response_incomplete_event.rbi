@@ -20,8 +20,12 @@ module OpenAI
           params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::AnyHash), type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(response:, type: :"response.incomplete"); end
-
+        def self.new(
+          # The response that was incomplete.
+          response:,
+          # The type of the event. Always `response.incomplete`.
+          type: :"response.incomplete"
+        ); end
         sig { override.returns({response: OpenAI::Models::Responses::Response, type: Symbol}) }
         def to_hash; end
       end

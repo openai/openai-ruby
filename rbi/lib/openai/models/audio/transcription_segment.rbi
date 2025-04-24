@@ -63,19 +63,30 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # Unique identifier of the segment.
           id:,
+          # Average logprob of the segment. If the value is lower than -1, consider the
+          # logprobs failed.
           avg_logprob:,
+          # Compression ratio of the segment. If the value is greater than 2.4, consider the
+          # compression failed.
           compression_ratio:,
+          # End time of the segment in seconds.
           end_:,
+          # Probability of no speech in the segment. If the value is higher than 1.0 and the
+          # `avg_logprob` is below -1, consider this segment silent.
           no_speech_prob:,
+          # Seek offset of the segment.
           seek:,
+          # Start time of the segment in seconds.
           start:,
+          # Temperature parameter used for generating the segment.
           temperature:,
+          # Text content of the segment.
           text:,
+          # Array of token IDs for the text content.
           tokens:
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(

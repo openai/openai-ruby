@@ -35,13 +35,21 @@ module OpenAI
         required :type, const: :"response.reasoning_summary_text.delta"
 
         # @!method initialize(delta:, item_id:, output_index:, summary_index:, type: :"response.reasoning_summary_text.delta")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent} for more
+        #   details.
+        #
         #   Emitted when a delta is added to a reasoning summary text.
         #
-        #   @param delta [String]
-        #   @param item_id [String]
-        #   @param output_index [Integer]
-        #   @param summary_index [Integer]
-        #   @param type [Symbol, :"response.reasoning_summary_text.delta"]
+        #   @param delta [String] The text delta that was added to the summary. ...
+        #
+        #   @param item_id [String] The ID of the item this summary text delta is associated with. ...
+        #
+        #   @param output_index [Integer] The index of the output item this summary text delta is associated with. ...
+        #
+        #   @param summary_index [Integer] The index of the summary part within the reasoning summary. ...
+        #
+        #   @param type [Symbol, :"response.reasoning_summary_text.delta"] The type of the event. Always `response.reasoning_summary_text.delta`. ...
       end
     end
   end

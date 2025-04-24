@@ -23,11 +23,16 @@ module OpenAI
         required :type, const: :input_audio
 
         # @!method initialize(data:, format_:, type: :input_audio)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseInputAudio} for more details.
+        #
         #   An audio input to the model.
         #
-        #   @param data [String]
-        #   @param format_ [Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format]
-        #   @param type [Symbol, :input_audio]
+        #   @param data [String] Base64-encoded audio data. ...
+        #
+        #   @param format_ [Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format] The format of the audio data. Currently supported formats are `mp3` and ...
+        #
+        #   @param type [Symbol, :input_audio] The type of the input item. Always `input_audio`. ...
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         #

@@ -34,12 +34,13 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # A tool call to run code.
           code_interpreter_call:,
+          # The index of the output item that the code interpreter call is in progress.
           output_index:,
+          # The type of the event. Always `response.code_interpreter_call.completed`.
           type: :"response.code_interpreter_call.completed"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(

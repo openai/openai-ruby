@@ -9,8 +9,10 @@ module OpenAI
         attr_accessor :name
 
         sig { params(name: String).returns(T.attached_class) }
-        def self.new(name:); end
-
+        def self.new(
+          # The name of the function to call.
+          name:
+        ); end
         sig { override.returns({name: String}) }
         def to_hash; end
       end

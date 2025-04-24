@@ -25,9 +25,11 @@ module OpenAI
           # @!method initialize(index:, text: nil, type: :text)
           #   The text content that is part of a message.
           #
-          #   @param index [Integer]
+          #   @param index [Integer] The index of the content part in the message.
+          #
           #   @param text [OpenAI::Models::Beta::Threads::TextDelta]
-          #   @param type [Symbol, :text]
+          #
+          #   @param type [Symbol, :text] Always `text`.
         end
       end
     end

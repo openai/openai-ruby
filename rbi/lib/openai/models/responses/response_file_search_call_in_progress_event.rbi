@@ -18,8 +18,14 @@ module OpenAI
 
         # Emitted when a file search call is initiated.
         sig { params(item_id: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
-        def self.new(item_id:, output_index:, type: :"response.file_search_call.in_progress"); end
-
+        def self.new(
+          # The ID of the output item that the file search call is initiated.
+          item_id:,
+          # The index of the output item that the file search call is initiated.
+          output_index:,
+          # The type of the event. Always `response.file_search_call.in_progress`.
+          type: :"response.file_search_call.in_progress"
+        ); end
         sig { override.returns({item_id: String, output_index: Integer, type: Symbol}) }
         def to_hash; end
       end

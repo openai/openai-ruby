@@ -78,16 +78,33 @@ module OpenAI
           .returns(T.attached_class)
       end
       def self.new(
+        # The identifier, which can be referenced in API endpoints.
         id:,
+        # The Unix timestamp (in seconds) for when the vector store was created.
         created_at:,
         file_counts:,
+        # The Unix timestamp (in seconds) for when the vector store was last active.
         last_active_at:,
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         metadata:,
+        # The name of the vector store.
         name:,
+        # The status of the vector store, which can be either `expired`, `in_progress`, or
+        # `completed`. A status of `completed` indicates that the vector store is ready
+        # for use.
         status:,
+        # The total number of bytes used by the files in the vector store.
         usage_bytes:,
+        # The expiration policy for a vector store.
         expires_after: nil,
+        # The Unix timestamp (in seconds) for when the vector store will expire.
         expires_at: nil,
+        # The object type, which is always `vector_store`.
         object: :vector_store
       ); end
       sig do
@@ -141,8 +158,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(cancelled:, completed:, failed:, in_progress:, total:); end
-
+        def self.new(
+          # The number of files that were cancelled.
+          cancelled:,
+          # The number of files that have been successfully processed.
+          completed:,
+          # The number of files that have failed to process.
+          failed:,
+          # The number of files that are currently being processed.
+          in_progress:,
+          # The total number of files.
+          total:
+        ); end
         sig do
           override
             .returns({
@@ -185,8 +212,13 @@ module OpenAI
 
         # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
-        def self.new(days:, anchor: :last_active_at); end
-
+        def self.new(
+          # The number of days after the anchor time that the vector store will expire.
+          days:,
+          # Anchor timestamp after which the expiration policy applies. Supported anchors:
+          # `last_active_at`.
+          anchor: :last_active_at
+        ); end
         sig { override.returns({anchor: Symbol, days: Integer}) }
         def to_hash; end
       end

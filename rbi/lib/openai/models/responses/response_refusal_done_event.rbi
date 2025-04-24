@@ -35,8 +35,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content_index:, item_id:, output_index:, refusal:, type: :"response.refusal.done"); end
-
+        def self.new(
+          # The index of the content part that the refusal text is finalized.
+          content_index:,
+          # The ID of the output item that the refusal text is finalized.
+          item_id:,
+          # The index of the output item that the refusal text is finalized.
+          output_index:,
+          # The refusal text that is finalized.
+          refusal:,
+          # The type of the event. Always `response.refusal.done`.
+          type: :"response.refusal.done"
+        ); end
         sig do
           override
             .returns({

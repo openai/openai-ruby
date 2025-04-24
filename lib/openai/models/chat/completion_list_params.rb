@@ -42,11 +42,20 @@ module OpenAI
         optional :order, enum: -> { OpenAI::Models::Chat::CompletionListParams::Order }
 
         # @!method initialize(after: nil, limit: nil, metadata: nil, model: nil, order: nil, request_options: {})
-        #   @param after [String]
-        #   @param limit [Integer]
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param model [String]
-        #   @param order [Symbol, OpenAI::Models::Chat::CompletionListParams::Order]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::CompletionListParams} for more details.
+        #
+        #   @param after [String] Identifier for the last chat completion from the previous pagination request.
+        #
+        #   @param limit [Integer] Number of Chat Completions to retrieve.
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] A list of metadata keys to filter the Chat Completions by. Example: ...
+        #
+        #   @param model [String] The model used to generate the Chat Completions.
+        #
+        #   @param order [Symbol, OpenAI::Models::Chat::CompletionListParams::Order] Sort order for Chat Completions by timestamp. Use `asc` for ascending order or `
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or

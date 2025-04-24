@@ -43,8 +43,15 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(end_index:, file_citation:, start_index:, text:, type: :file_citation); end
-
+          def self.new(
+            end_index:,
+            file_citation:,
+            start_index:,
+            # The text in the message content that needs to be replaced.
+            text:,
+            # Always `file_citation`.
+            type: :file_citation
+          ); end
           sig do
             override
               .returns(
@@ -65,8 +72,10 @@ module OpenAI
             attr_accessor :file_id
 
             sig { params(file_id: String).returns(T.attached_class) }
-            def self.new(file_id:); end
-
+            def self.new(
+              # The ID of the specific File the citation is from.
+              file_id:
+            ); end
             sig { override.returns({file_id: String}) }
             def to_hash; end
           end

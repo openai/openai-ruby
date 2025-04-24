@@ -31,8 +31,14 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(id:, delta:, object: :"thread.run.step.delta"); end
-
+            def self.new(
+              # The identifier of the run step, which can be referenced in API endpoints.
+              id:,
+              # The delta containing the fields that have changed on the run step.
+              delta:,
+              # The object type, which is always `thread.run.step.delta`.
+              object: :"thread.run.step.delta"
+            ); end
             sig { override.returns({id: String, delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta, object: Symbol}) }
             def to_hash; end
           end

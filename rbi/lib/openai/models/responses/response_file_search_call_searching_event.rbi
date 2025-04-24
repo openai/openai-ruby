@@ -18,8 +18,14 @@ module OpenAI
 
         # Emitted when a file search is currently searching.
         sig { params(item_id: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
-        def self.new(item_id:, output_index:, type: :"response.file_search_call.searching"); end
-
+        def self.new(
+          # The ID of the output item that the file search call is initiated.
+          item_id:,
+          # The index of the output item that the file search call is searching.
+          output_index:,
+          # The type of the event. Always `response.file_search_call.searching`.
+          type: :"response.file_search_call.searching"
+        ); end
         sig { override.returns({item_id: String, output_index: Integer, type: Symbol}) }
         def to_hash; end
       end

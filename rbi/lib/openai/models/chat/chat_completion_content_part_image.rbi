@@ -27,8 +27,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(image_url:, type: :image_url); end
-
+        def self.new(
+          image_url:,
+          # The type of the content part.
+          type: :image_url
+        ); end
         sig do
           override.returns({image_url: OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL, type: Symbol})
         end
@@ -54,8 +57,13 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(url:, detail: nil); end
-
+          def self.new(
+            # Either a URL of the image or the base64 encoded image data.
+            url:,
+            # Specifies the detail level of the image. Learn more in the
+            # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).
+            detail: nil
+          ); end
           sig do
             override
               .returns(

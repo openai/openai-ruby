@@ -133,21 +133,50 @@ module OpenAI
                 .returns(T.attached_class)
             end
             def self.new(
+              # The identifier of the run step, which can be referenced in API endpoints.
               id:,
+              # The ID of the
+              # [assistant](https://platform.openai.com/docs/api-reference/assistants)
+              # associated with the run step.
               assistant_id:,
+              # The Unix timestamp (in seconds) for when the run step was cancelled.
               cancelled_at:,
+              # The Unix timestamp (in seconds) for when the run step completed.
               completed_at:,
+              # The Unix timestamp (in seconds) for when the run step was created.
               created_at:,
+              # The Unix timestamp (in seconds) for when the run step expired. A step is
+              # considered expired if the parent run is expired.
               expired_at:,
+              # The Unix timestamp (in seconds) for when the run step failed.
               failed_at:,
+              # The last error associated with this run step. Will be `null` if there are no
+              # errors.
               last_error:,
+              # Set of 16 key-value pairs that can be attached to an object. This can be useful
+              # for storing additional information about the object in a structured format, and
+              # querying for objects via API or the dashboard.
+              #
+              # Keys are strings with a maximum length of 64 characters. Values are strings with
+              # a maximum length of 512 characters.
               metadata:,
+              # The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
+              # this run step is a part of.
               run_id:,
+              # The status of the run step, which can be either `in_progress`, `cancelled`,
+              # `failed`, `completed`, or `expired`.
               status:,
+              # The details of the run step.
               step_details:,
+              # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
+              # that was run.
               thread_id:,
+              # The type of run step, which can be either `message_creation` or `tool_calls`.
               type:,
+              # Usage statistics related to the run step. This value will be `null` while the
+              # run step's status is `in_progress`.
               usage:,
+              # The object type, which is always `thread.run.step`.
               object: :"thread.run.step"
             ); end
             sig do
@@ -193,8 +222,12 @@ module OpenAI
                 params(code: OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code::OrSymbol, message: String)
                   .returns(T.attached_class)
               end
-              def self.new(code:, message:); end
-
+              def self.new(
+                # One of `server_error` or `rate_limit_exceeded`.
+                code:,
+                # A human-readable description of the error.
+                message:
+              ); end
               sig do
                 override
                   .returns(
@@ -289,8 +322,14 @@ module OpenAI
                   total_tokens: Integer
                 ).returns(T.attached_class)
               end
-              def self.new(completion_tokens:, prompt_tokens:, total_tokens:); end
-
+              def self.new(
+                # Number of completion tokens used over the course of the run step.
+                completion_tokens:,
+                # Number of prompt tokens used over the course of the run step.
+                prompt_tokens:,
+                # Total number of tokens used (prompt + completion).
+                total_tokens:
+              ); end
               sig do
                 override.returns({completion_tokens: Integer, prompt_tokens: Integer, total_tokens: Integer})
               end

@@ -24,8 +24,12 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(image_url:, type: :image_url); end
-
+      def self.new(
+        # Contains either an image URL or a data URL for a base64 encoded image.
+        image_url:,
+        # Always `image_url`.
+        type: :image_url
+      ); end
       sig { override.returns({image_url: OpenAI::Models::ModerationImageURLInput::ImageURL, type: Symbol}) }
       def to_hash; end
 
@@ -36,8 +40,10 @@ module OpenAI
 
         # Contains either an image URL or a data URL for a base64 encoded image.
         sig { params(url: String).returns(T.attached_class) }
-        def self.new(url:); end
-
+        def self.new(
+          # Either a URL of the image or the base64 encoded image data.
+          url:
+        ); end
         sig { override.returns({url: String}) }
         def to_hash; end
       end

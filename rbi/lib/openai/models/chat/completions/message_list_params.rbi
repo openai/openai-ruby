@@ -39,8 +39,16 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(after: nil, limit: nil, order: nil, request_options: {}); end
-
+          def self.new(
+            # Identifier for the last message from the previous pagination request.
+            after: nil,
+            # Number of messages to retrieve.
+            limit: nil,
+            # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`
+            # for descending order. Defaults to `asc`.
+            order: nil,
+            request_options: {}
+          ); end
           sig do
             override
               .returns(

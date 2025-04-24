@@ -17,8 +17,14 @@ module OpenAI
         attr_accessor :role
 
         sig { params(content: T.nilable(String), name: String, role: Symbol).returns(T.attached_class) }
-        def self.new(content:, name:, role: :function); end
-
+        def self.new(
+          # The contents of the function message.
+          content:,
+          # The name of the function to call.
+          name:,
+          # The role of the messages author, in this case `function`.
+          role: :function
+        ); end
         sig { override.returns({content: T.nilable(String), name: String, role: Symbol}) }
         def to_hash; end
       end

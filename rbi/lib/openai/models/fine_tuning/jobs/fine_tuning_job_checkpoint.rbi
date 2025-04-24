@@ -56,12 +56,19 @@ module OpenAI
               .returns(T.attached_class)
           end
           def self.new(
+            # The checkpoint identifier, which can be referenced in the API endpoints.
             id:,
+            # The Unix timestamp (in seconds) for when the checkpoint was created.
             created_at:,
+            # The name of the fine-tuned checkpoint model that is created.
             fine_tuned_model_checkpoint:,
+            # The name of the fine-tuning job that this checkpoint was created from.
             fine_tuning_job_id:,
+            # Metrics at the step number during the fine-tuning job.
             metrics:,
+            # The step number that the checkpoint was created at.
             step_number:,
+            # The object type, which is always "fine_tuning.job.checkpoint".
             object: :"fine_tuning.job.checkpoint"
           ); end
           sig do

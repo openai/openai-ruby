@@ -41,14 +41,23 @@ module OpenAI
       optional :name, String
 
       # @!method initialize(evaluation_metric:, input:, pass_threshold:, reference:, name: nil, type: :text_similarity)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::EvalTextSimilarityGrader} for more details.
+      #
       #   A TextSimilarityGrader object which grades text based on similarity metrics.
       #
-      #   @param evaluation_metric [Symbol, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric]
-      #   @param input [String]
-      #   @param pass_threshold [Float]
-      #   @param reference [String]
-      #   @param name [String]
-      #   @param type [Symbol, :text_similarity]
+      #   @param evaluation_metric [Symbol, OpenAI::Models::EvalTextSimilarityGrader::EvaluationMetric] The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`, `r
+      #   ...
+      #
+      #   @param input [String] The text being graded.
+      #
+      #   @param pass_threshold [Float] A float score where a value greater than or equal indicates a passing grade.
+      #
+      #   @param reference [String] The text being graded against.
+      #
+      #   @param name [String] The name of the grader.
+      #
+      #   @param type [Symbol, :text_similarity] The type of grader.
 
       # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
       # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.

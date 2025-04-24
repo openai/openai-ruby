@@ -128,26 +128,48 @@ module OpenAI
       optional :request_counts, -> { OpenAI::Models::BatchRequestCounts }
 
       # @!method initialize(id:, completion_window:, created_at:, endpoint:, input_file_id:, status:, cancelled_at: nil, cancelling_at: nil, completed_at: nil, error_file_id: nil, errors: nil, expired_at: nil, expires_at: nil, failed_at: nil, finalizing_at: nil, in_progress_at: nil, metadata: nil, output_file_id: nil, request_counts: nil, object: :batch)
+      #   Some parameter documentations has been truncated, see {OpenAI::Models::Batch}
+      #   for more details.
+      #
       #   @param id [String]
-      #   @param completion_window [String]
-      #   @param created_at [Integer]
-      #   @param endpoint [String]
-      #   @param input_file_id [String]
-      #   @param status [Symbol, OpenAI::Models::Batch::Status]
-      #   @param cancelled_at [Integer]
-      #   @param cancelling_at [Integer]
-      #   @param completed_at [Integer]
-      #   @param error_file_id [String]
+      #
+      #   @param completion_window [String] The time frame within which the batch should be processed.
+      #
+      #   @param created_at [Integer] The Unix timestamp (in seconds) for when the batch was created.
+      #
+      #   @param endpoint [String] The OpenAI API endpoint used by the batch.
+      #
+      #   @param input_file_id [String] The ID of the input file for the batch.
+      #
+      #   @param status [Symbol, OpenAI::Models::Batch::Status] The current status of the batch.
+      #
+      #   @param cancelled_at [Integer] The Unix timestamp (in seconds) for when the batch was cancelled.
+      #
+      #   @param cancelling_at [Integer] The Unix timestamp (in seconds) for when the batch started cancelling.
+      #
+      #   @param completed_at [Integer] The Unix timestamp (in seconds) for when the batch was completed.
+      #
+      #   @param error_file_id [String] The ID of the file containing the outputs of requests with errors.
+      #
       #   @param errors [OpenAI::Models::Batch::Errors]
-      #   @param expired_at [Integer]
-      #   @param expires_at [Integer]
-      #   @param failed_at [Integer]
-      #   @param finalizing_at [Integer]
-      #   @param in_progress_at [Integer]
-      #   @param metadata [Hash{Symbol=>String}, nil]
-      #   @param output_file_id [String]
-      #   @param request_counts [OpenAI::Models::BatchRequestCounts]
-      #   @param object [Symbol, :batch]
+      #
+      #   @param expired_at [Integer] The Unix timestamp (in seconds) for when the batch expired.
+      #
+      #   @param expires_at [Integer] The Unix timestamp (in seconds) for when the batch will expire.
+      #
+      #   @param failed_at [Integer] The Unix timestamp (in seconds) for when the batch failed.
+      #
+      #   @param finalizing_at [Integer] The Unix timestamp (in seconds) for when the batch started finalizing.
+      #
+      #   @param in_progress_at [Integer] The Unix timestamp (in seconds) for when the batch started processing.
+      #
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #
+      #   @param output_file_id [String] The ID of the file containing the outputs of successfully executed requests.
+      #
+      #   @param request_counts [OpenAI::Models::BatchRequestCounts] The request counts for different statuses within the batch.
+      #
+      #   @param object [Symbol, :batch] The object type, which is always `batch`.
 
       # The current status of the batch.
       #
@@ -183,7 +205,8 @@ module OpenAI
 
         # @!method initialize(data: nil, object: nil)
         #   @param data [Array<OpenAI::Models::BatchError>]
-        #   @param object [String]
+        #
+        #   @param object [String] The object type, which is always `list`.
       end
     end
   end

@@ -24,12 +24,18 @@ module OpenAI
         optional :name, String
 
         # @!method initialize(content:, name: nil, role: :user)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::ChatCompletionUserMessageParam} for more details.
+        #
         #   Messages sent by an end user, containing prompts or additional context
         #   information.
         #
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>]
-        #   @param name [String]
-        #   @param role [Symbol, :user]
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>] The contents of the user message. ...
+        #
+        #   @param name [String] An optional name for the participant. Provides the model information to differen
+        #   ...
+        #
+        #   @param role [Symbol, :user] The role of the messages author, in this case `user`.
 
         # The contents of the user message.
         #

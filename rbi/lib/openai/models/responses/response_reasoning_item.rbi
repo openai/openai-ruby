@@ -35,8 +35,17 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, summary:, status: nil, type: :reasoning); end
-
+        def self.new(
+          # The unique identifier of the reasoning content.
+          id:,
+          # Reasoning text contents.
+          summary:,
+          # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+          # Populated when items are returned via API.
+          status: nil,
+          # The type of the object. Always `reasoning`.
+          type: :reasoning
+        ); end
         sig do
           override
             .returns(
@@ -60,8 +69,12 @@ module OpenAI
           attr_accessor :type
 
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
-          def self.new(text:, type: :summary_text); end
-
+          def self.new(
+            # A short summary of the reasoning used by the model when generating the response.
+            text:,
+            # The type of the object. Always `summary_text`.
+            type: :summary_text
+          ); end
           sig { override.returns({text: String, type: Symbol}) }
           def to_hash; end
         end

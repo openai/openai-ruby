@@ -23,8 +23,15 @@ module OpenAI
             params(file_id: String, detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol)
               .returns(T.attached_class)
           end
-          def self.new(file_id:, detail: nil); end
-
+          def self.new(
+            # The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
+            # in the message content. Set `purpose="vision"` when uploading the File if you
+            # need to later display the file content.
+            file_id:,
+            # Specifies the detail level of the image if specified by the user. `low` uses
+            # fewer tokens, you can opt in to high resolution using `high`.
+            detail: nil
+          ); end
           sig { override.returns({file_id: String, detail: OpenAI::Models::Beta::Threads::ImageFile::Detail::OrSymbol}) }
           def to_hash; end
 

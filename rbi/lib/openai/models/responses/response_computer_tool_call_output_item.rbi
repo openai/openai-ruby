@@ -77,15 +77,21 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The unique ID of the computer call tool output.
           id:,
+          # The ID of the computer tool call that produced the output.
           call_id:,
+          # A computer screenshot image used with the computer use tool.
           output:,
+          # The safety checks reported by the API that have been acknowledged by the
+          # developer.
           acknowledged_safety_checks: nil,
+          # The status of the message input. One of `in_progress`, `completed`, or
+          # `incomplete`. Populated when input items are returned via API.
           status: nil,
+          # The type of the computer tool call output. Always `computer_call_output`.
           type: :computer_call_output
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -116,8 +122,14 @@ module OpenAI
 
           # A pending safety check for the computer call.
           sig { params(id: String, code: String, message: String).returns(T.attached_class) }
-          def self.new(id:, code:, message:); end
-
+          def self.new(
+            # The ID of the pending safety check.
+            id:,
+            # The type of the pending safety check.
+            code:,
+            # Details about the pending safety check.
+            message:
+          ); end
           sig { override.returns({id: String, code: String, message: String}) }
           def to_hash; end
         end

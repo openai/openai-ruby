@@ -19,7 +19,8 @@ module OpenAI
         #   Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
         #
         #   @param input_audio [OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio]
-        #   @param type [Symbol, :input_audio]
+        #
+        #   @param type [Symbol, :input_audio] The type of the content part. Always `input_audio`.
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartInputAudio#input_audio
         class InputAudio < OpenAI::Internal::Type::BaseModel
@@ -38,8 +39,13 @@ module OpenAI
                    api_name: :format
 
           # @!method initialize(data:, format_:)
-          #   @param data [String]
-          #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio} for more
+          #   details.
+          #
+          #   @param data [String] Base64 encoded audio data.
+          #
+          #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio::InputAudio::Format] The format of the encoded audio data. Currently supports "wav" and "mp3". ...
 
           # The format of the encoded audio data. Currently supports "wav" and "mp3".
           #

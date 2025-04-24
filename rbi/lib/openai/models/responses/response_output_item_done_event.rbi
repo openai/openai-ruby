@@ -44,8 +44,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(item:, output_index:, type: :"response.output_item.done"); end
-
+        def self.new(
+          # The output item that was marked done.
+          item:,
+          # The index of the output item that was marked done.
+          output_index:,
+          # The type of the event. Always `response.output_item.done`.
+          type: :"response.output_item.done"
+        ); end
         sig do
           override
             .returns(

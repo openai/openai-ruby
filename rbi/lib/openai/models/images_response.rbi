@@ -30,8 +30,14 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(created:, data: nil, usage: nil); end
-
+      def self.new(
+        # The Unix timestamp (in seconds) of when the image was created.
+        created:,
+        # The list of generated images.
+        data: nil,
+        # For `gpt-image-1` only, the token usage information for the image generation.
+        usage: nil
+      ); end
       sig do
         override
           .returns(
@@ -75,8 +81,16 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:); end
-
+        def self.new(
+          # The number of tokens (images and text) in the input prompt.
+          input_tokens:,
+          # The input tokens detailed information for the image generation.
+          input_tokens_details:,
+          # The number of image tokens in the output image.
+          output_tokens:,
+          # The total number of tokens (images and text) used for the image generation.
+          total_tokens:
+        ); end
         sig do
           override
             .returns(
@@ -101,8 +115,12 @@ module OpenAI
 
           # The input tokens detailed information for the image generation.
           sig { params(image_tokens: Integer, text_tokens: Integer).returns(T.attached_class) }
-          def self.new(image_tokens:, text_tokens:); end
-
+          def self.new(
+            # The number of image tokens in the input prompt.
+            image_tokens:,
+            # The number of text tokens in the input prompt.
+            text_tokens:
+          ); end
           sig { override.returns({image_tokens: Integer, text_tokens: Integer}) }
           def to_hash; end
         end

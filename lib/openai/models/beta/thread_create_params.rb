@@ -37,9 +37,17 @@ module OpenAI
         optional :tool_resources, -> { OpenAI::Models::Beta::ThreadCreateParams::ToolResources }, nil?: true
 
         # @!method initialize(messages: nil, metadata: nil, tool_resources: nil, request_options: {})
-        #   @param messages [Array<OpenAI::Models::Beta::ThreadCreateParams::Message>]
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param tool_resources [OpenAI::Models::Beta::ThreadCreateParams::ToolResources, nil]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::ThreadCreateParams} for more details.
+        #
+        #   @param messages [Array<OpenAI::Models::Beta::ThreadCreateParams::Message>] A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
+        #   ...
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
+        #   @param tool_resources [OpenAI::Models::Beta::ThreadCreateParams::ToolResources, nil] A set of resources that are made available to the assistant's tools in this thre
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         class Message < OpenAI::Internal::Type::BaseModel
@@ -80,10 +88,16 @@ module OpenAI
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!method initialize(content:, role:, attachments: nil, metadata: nil)
-          #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
-          #   @param role [Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role]
-          #   @param attachments [Array<OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment>, nil]
-          #   @param metadata [Hash{Symbol=>String}, nil]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::ThreadCreateParams::Message} for more details.
+          #
+          #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>] The text contents of the message.
+          #
+          #   @param role [Symbol, OpenAI::Models::Beta::ThreadCreateParams::Message::Role] The role of the entity that is creating the message. Allowed values include: ...
+          #
+          #   @param attachments [Array<OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment>, nil] A list of files attached to the message, and the tools they should be added to.
+          #
+          #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
 
           # The text contents of the message.
           #
@@ -137,8 +151,9 @@ module OpenAI
                      -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool] }
 
             # @!method initialize(file_id: nil, tools: nil)
-            #   @param file_id [String]
-            #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch>]
+            #   @param file_id [String] The ID of the file to attach to the message.
+            #
+            #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch>] The tools to add this file to.
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -158,7 +173,7 @@ module OpenAI
                 required :type, const: :file_search
 
                 # @!method initialize(type: :file_search)
-                #   @param type [Symbol, :file_search]
+                #   @param type [Symbol, :file_search] The type of tool being defined: `file_search`
               end
 
               # @!method self.variants
@@ -199,7 +214,12 @@ module OpenAI
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   @param file_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter} for
+            #   more details.
+            #
+            #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #   ...
           end
 
           # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources#file_search
@@ -224,8 +244,15 @@ module OpenAI
                      -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore] }
 
             # @!method initialize(vector_store_ids: nil, vector_stores: nil)
-            #   @param vector_store_ids [Array<String>]
-            #   @param vector_stores [Array<OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch} for more
+            #   details.
+            #
+            #   @param vector_store_ids [Array<String>] The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/
+            #   ...
+            #
+            #   @param vector_stores [Array<OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore>] A helper to create a [vector store](https://platform.openai.com/docs/api-referen
+            #   ...
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
               # @!attribute chunking_strategy
@@ -256,9 +283,17 @@ module OpenAI
               optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
               # @!method initialize(chunking_strategy: nil, file_ids: nil, metadata: nil)
-              #   @param chunking_strategy [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-              #   @param file_ids [Array<String>]
-              #   @param metadata [Hash{Symbol=>String}, nil]
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore}
+              #   for more details.
+              #
+              #   @param chunking_strategy [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+              #   ...
+              #
+              #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to ad
+              #   ...
+              #
+              #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               # strategy.
@@ -287,7 +322,7 @@ module OpenAI
                   #   The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
                   #   `800` and `chunk_overlap_tokens` of `400`.
                   #
-                  #   @param type [Symbol, :auto]
+                  #   @param type [Symbol, :auto] Always `auto`.
                 end
 
                 class Static < OpenAI::Internal::Type::BaseModel
@@ -305,7 +340,8 @@ module OpenAI
 
                   # @!method initialize(static:, type: :static)
                   #   @param static [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
-                  #   @param type [Symbol, :static]
+                  #
+                  #   @param type [Symbol, :static] Always `static`.
 
                   # @see OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static#static
                   class Static < OpenAI::Internal::Type::BaseModel
@@ -325,8 +361,15 @@ module OpenAI
                     required :max_chunk_size_tokens, Integer
 
                     # @!method initialize(chunk_overlap_tokens:, max_chunk_size_tokens:)
-                    #   @param chunk_overlap_tokens [Integer]
-                    #   @param max_chunk_size_tokens [Integer]
+                    #   Some parameter documentations has been truncated, see
+                    #   {OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static}
+                    #   for more details.
+                    #
+                    #   @param chunk_overlap_tokens [Integer] The number of tokens that overlap between chunks. The default value is `400`.
+                    #   ...
+                    #
+                    #   @param max_chunk_size_tokens [Integer] The maximum number of tokens in each chunk. The default value is `800`. The mini
+                    #   ...
                   end
                 end
 

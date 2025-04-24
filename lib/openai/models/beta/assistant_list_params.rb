@@ -41,10 +41,21 @@ module OpenAI
         optional :order, enum: -> { OpenAI::Models::Beta::AssistantListParams::Order }
 
         # @!method initialize(after: nil, before: nil, limit: nil, order: nil, request_options: {})
-        #   @param after [String]
-        #   @param before [String]
-        #   @param limit [Integer]
-        #   @param order [Symbol, OpenAI::Models::Beta::AssistantListParams::Order]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::AssistantListParams} for more details.
+        #
+        #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+        #   ...
+        #
+        #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+        #   ...
+        #
+        #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+        #   ...
+        #
+        #   @param order [Symbol, OpenAI::Models::Beta::AssistantListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending

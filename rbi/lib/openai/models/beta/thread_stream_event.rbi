@@ -33,8 +33,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data:, enabled: nil, event: :"thread.created"); end
-
+        def self.new(
+          # Represents a thread that contains
+          # [messages](https://platform.openai.com/docs/api-reference/messages).
+          data:,
+          # Whether to enable input audio transcription.
+          enabled: nil,
+          event: :"thread.created"
+        ); end
         sig { override.returns({data: OpenAI::Models::Beta::Thread, event: Symbol, enabled: T::Boolean}) }
         def to_hash; end
       end

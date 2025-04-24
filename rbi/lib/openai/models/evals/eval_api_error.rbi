@@ -14,8 +14,12 @@ module OpenAI
 
         # An object representing an error response from the Eval API.
         sig { params(code: String, message: String).returns(T.attached_class) }
-        def self.new(code:, message:); end
-
+        def self.new(
+          # The error code.
+          code:,
+          # The error message.
+          message:
+        ); end
         sig { override.returns({code: String, message: String}) }
         def to_hash; end
       end

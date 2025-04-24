@@ -16,7 +16,8 @@ module OpenAI
 
       # @!method initialize(static:, type: :static)
       #   @param static [OpenAI::Models::StaticFileChunkingStrategy]
-      #   @param type [Symbol, :static]
+      #
+      #   @param type [Symbol, :static] Always `static`.
     end
   end
 end

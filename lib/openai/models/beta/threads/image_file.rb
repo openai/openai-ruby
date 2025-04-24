@@ -21,8 +21,14 @@ module OpenAI
           optional :detail, enum: -> { OpenAI::Models::Beta::Threads::ImageFile::Detail }
 
           # @!method initialize(file_id:, detail: nil)
-          #   @param file_id [String]
-          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::Threads::ImageFile} for more details.
+          #
+          #   @param file_id [String] The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
+          #   ...
+          #
+          #   @param detail [Symbol, OpenAI::Models::Beta::Threads::ImageFile::Detail] Specifies the detail level of the image if specified by the user. `low` uses few
+          #   ...
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           # fewer tokens, you can opt in to high resolution using `high`.

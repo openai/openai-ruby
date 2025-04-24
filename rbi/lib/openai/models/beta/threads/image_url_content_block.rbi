@@ -20,8 +20,11 @@ module OpenAI
             params(image_url: T.any(OpenAI::Models::Beta::Threads::ImageURL, OpenAI::Internal::AnyHash), type: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(image_url:, type: :image_url); end
-
+          def self.new(
+            image_url:,
+            # The type of the content part.
+            type: :image_url
+          ); end
           sig { override.returns({image_url: OpenAI::Models::Beta::Threads::ImageURL, type: Symbol}) }
           def to_hash; end
         end

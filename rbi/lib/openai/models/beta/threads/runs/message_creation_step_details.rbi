@@ -35,8 +35,11 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(message_creation:, type: :message_creation); end
-
+            def self.new(
+              message_creation:,
+              # Always `message_creation`.
+              type: :message_creation
+            ); end
             sig do
               override
                 .returns(
@@ -54,8 +57,10 @@ module OpenAI
               attr_accessor :message_id
 
               sig { params(message_id: String).returns(T.attached_class) }
-              def self.new(message_id:); end
-
+              def self.new(
+                # The ID of the message that was created by this run step.
+                message_id:
+              ); end
               sig { override.returns({message_id: String}) }
               def to_hash; end
             end

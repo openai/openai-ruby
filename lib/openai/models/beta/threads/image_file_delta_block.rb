@@ -26,9 +26,11 @@ module OpenAI
           #   References an image [File](https://platform.openai.com/docs/api-reference/files)
           #   in the content of a message.
           #
-          #   @param index [Integer]
+          #   @param index [Integer] The index of the content part in the message.
+          #
           #   @param image_file [OpenAI::Models::Beta::Threads::ImageFileDelta]
-          #   @param type [Symbol, :image_file]
+          #
+          #   @param type [Symbol, :image_file] Always `image_file`.
         end
       end
     end

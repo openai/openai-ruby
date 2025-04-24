@@ -44,8 +44,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(item:, output_index:, type: :"response.output_item.added"); end
-
+        def self.new(
+          # The output item that was added.
+          item:,
+          # The index of the output item that was added.
+          output_index:,
+          # The type of the event. Always `response.output_item.added`.
+          type: :"response.output_item.added"
+        ); end
         sig do
           override
             .returns(

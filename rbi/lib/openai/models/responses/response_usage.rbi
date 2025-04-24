@@ -53,14 +53,17 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The number of input tokens.
           input_tokens:,
+          # A detailed breakdown of the input tokens.
           input_tokens_details:,
+          # The number of output tokens.
           output_tokens:,
+          # A detailed breakdown of the output tokens.
           output_tokens_details:,
+          # The total number of tokens used.
           total_tokens:
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -83,8 +86,11 @@ module OpenAI
 
           # A detailed breakdown of the input tokens.
           sig { params(cached_tokens: Integer).returns(T.attached_class) }
-          def self.new(cached_tokens:); end
-
+          def self.new(
+            # The number of tokens that were retrieved from the cache.
+            # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
+            cached_tokens:
+          ); end
           sig { override.returns({cached_tokens: Integer}) }
           def to_hash; end
         end
@@ -96,8 +102,10 @@ module OpenAI
 
           # A detailed breakdown of the output tokens.
           sig { params(reasoning_tokens: Integer).returns(T.attached_class) }
-          def self.new(reasoning_tokens:); end
-
+          def self.new(
+            # The number of reasoning tokens.
+            reasoning_tokens:
+          ); end
           sig { override.returns({reasoning_tokens: Integer}) }
           def to_hash; end
         end

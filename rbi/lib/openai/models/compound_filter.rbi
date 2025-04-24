@@ -20,8 +20,13 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(filters:, type:); end
-
+      def self.new(
+        # Array of filters to combine. Items can be `ComparisonFilter` or
+        # `CompoundFilter`.
+        filters:,
+        # Type of operation: `and` or `or`.
+        type:
+      ); end
       sig do
         override
           .returns(

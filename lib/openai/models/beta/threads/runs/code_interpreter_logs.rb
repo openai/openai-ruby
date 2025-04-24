@@ -27,9 +27,11 @@ module OpenAI
             # @!method initialize(index:, logs: nil, type: :logs)
             #   Text output from the Code Interpreter tool call as part of a run step.
             #
-            #   @param index [Integer]
-            #   @param logs [String]
-            #   @param type [Symbol, :logs]
+            #   @param index [Integer] The index of the output in the outputs array.
+            #
+            #   @param logs [String] The text output from the Code Interpreter tool call.
+            #
+            #   @param type [Symbol, :logs] Always `logs`.
           end
         end
       end

@@ -27,8 +27,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(input_audio:, type: :input_audio); end
-
+        def self.new(
+          input_audio:,
+          # The type of the content part. Always `input_audio`.
+          type: :input_audio
+        ); end
         sig do
           override
             .returns(
@@ -53,8 +56,12 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, format_:); end
-
+          def self.new(
+            # Base64 encoded audio data.
+            data:,
+            # The format of the encoded audio data. Currently supports "wav" and "mp3".
+            format_:
+          ); end
           sig do
             override
               .returns(

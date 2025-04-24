@@ -38,8 +38,19 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(name:, parameters:, strict:, description: nil, type: :function); end
-
+        def self.new(
+          # The name of the function to call.
+          name:,
+          # A JSON schema object describing the parameters of the function.
+          parameters:,
+          # Whether to enforce strict parameter validation. Default `true`.
+          strict:,
+          # A description of the function. Used by the model to determine whether or not to
+          # call the function.
+          description: nil,
+          # The type of the function tool. Always `function`.
+          type: :function
+        ); end
         sig do
           override
             .returns(

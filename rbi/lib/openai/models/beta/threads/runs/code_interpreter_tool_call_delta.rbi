@@ -50,8 +50,17 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(index:, id: nil, code_interpreter: nil, type: :code_interpreter); end
-
+            def self.new(
+              # The index of the tool call in the tool calls array.
+              index:,
+              # The ID of the tool call.
+              id: nil,
+              # The Code Interpreter tool call definition.
+              code_interpreter: nil,
+              # The type of tool call. This is always going to be `code_interpreter` for this
+              # type of tool call.
+              type: :code_interpreter
+            ); end
             sig do
               override
                 .returns(
@@ -118,8 +127,14 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(input: nil, outputs: nil); end
-
+              def self.new(
+                # The input to the Code Interpreter tool call.
+                input: nil,
+                # The outputs from the Code Interpreter tool call. Code Interpreter can output one
+                # or more items, including text (`logs`) or images (`image`). Each of these are
+                # represented by a different object type.
+                outputs: nil
+              ); end
               sig do
                 override
                   .returns(

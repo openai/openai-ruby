@@ -83,9 +83,27 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(id:, created_at:, data_source_config:, metadata:, name:, testing_criteria:, object: :eval)
-      end
-
+      def self.new(
+        # Unique identifier for the evaluation.
+        id:,
+        # The Unix timestamp (in seconds) for when the eval was created.
+        created_at:,
+        # Configuration of data sources used in runs of the evaluation.
+        data_source_config:,
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
+        metadata:,
+        # The name of the evaluation.
+        name:,
+        # A list of testing criteria.
+        testing_criteria:,
+        # The object type.
+        object: :eval
+      ); end
       sig do
         override
           .returns(
@@ -160,8 +178,18 @@ module OpenAI
             params(name: String, source: String, image_tag: String, pass_threshold: Float, type: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(name:, source:, image_tag: nil, pass_threshold: nil, type: :python); end
-
+          def self.new(
+            # The name of the grader.
+            name:,
+            # The source code of the python script.
+            source:,
+            # The image tag to use for the python script.
+            image_tag: nil,
+            # The threshold for the score.
+            pass_threshold: nil,
+            # The object type, which is always `python`.
+            type: :python
+          ); end
           sig do
             override.returns(
               {
@@ -233,16 +261,21 @@ module OpenAI
               .returns(T.attached_class)
           end
           def self.new(
+            # The input text. This may include template strings.
             input:,
+            # The model to use for the evaluation.
             model:,
+            # The name of the grader.
             name:,
+            # The threshold for the score.
             pass_threshold: nil,
+            # The range of the score. Defaults to `[0, 1]`.
             range: nil,
+            # The sampling parameters for the model.
             sampling_params: nil,
+            # The object type, which is always `score_model`.
             type: :score_model
-          )
-          end
-
+          ); end
           sig do
             override
               .returns(
@@ -309,8 +342,15 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(content:, role:, type: nil); end
-
+            def self.new(
+              # Text inputs to the model - can contain template strings.
+              content:,
+              # The role of the message input. One of `user`, `assistant`, `system`, or
+              # `developer`.
+              role:,
+              # The type of the message input. Always `message`.
+              type: nil
+            ); end
             sig do
               override
                 .returns(
@@ -342,8 +382,12 @@ module OpenAI
 
                 # A text output from the model.
                 sig { params(text: String, type: Symbol).returns(T.attached_class) }
-                def self.new(text:, type: :output_text); end
-
+                def self.new(
+                  # The text output from the model.
+                  text:,
+                  # The type of the output text. Always `output_text`.
+                  type: :output_text
+                ); end
                 sig { override.returns({text: String, type: Symbol}) }
                 def to_hash; end
               end

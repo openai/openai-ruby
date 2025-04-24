@@ -20,8 +20,12 @@ module OpenAI
           params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::AnyHash), type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(response:, type: :"response.failed"); end
-
+        def self.new(
+          # The response that failed.
+          response:,
+          # The type of the event. Always `response.failed`.
+          type: :"response.failed"
+        ); end
         sig { override.returns({response: OpenAI::Models::Responses::Response, type: Symbol}) }
         def to_hash; end
       end

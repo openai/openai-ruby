@@ -17,10 +17,14 @@ module OpenAI
         required :type, const: :"response.completed"
 
         # @!method initialize(response:, type: :"response.completed")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseCompletedEvent} for more details.
+        #
         #   Emitted when the model response is complete.
         #
-        #   @param response [OpenAI::Models::Responses::Response]
-        #   @param type [Symbol, :"response.completed"]
+        #   @param response [OpenAI::Models::Responses::Response] Properties of the completed response. ...
+        #
+        #   @param type [Symbol, :"response.completed"] The type of the event. Always `response.completed`. ...
       end
     end
   end

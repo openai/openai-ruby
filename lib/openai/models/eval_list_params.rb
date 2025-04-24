@@ -34,10 +34,18 @@ module OpenAI
       optional :order_by, enum: -> { OpenAI::Models::EvalListParams::OrderBy }
 
       # @!method initialize(after: nil, limit: nil, order: nil, order_by: nil, request_options: {})
-      #   @param after [String]
-      #   @param limit [Integer]
-      #   @param order [Symbol, OpenAI::Models::EvalListParams::Order]
-      #   @param order_by [Symbol, OpenAI::Models::EvalListParams::OrderBy]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::EvalListParams} for more details.
+      #
+      #   @param after [String] Identifier for the last eval from the previous pagination request.
+      #
+      #   @param limit [Integer] Number of evals to retrieve.
+      #
+      #   @param order [Symbol, OpenAI::Models::EvalListParams::Order] Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for d
+      #   ...
+      #
+      #   @param order_by [Symbol, OpenAI::Models::EvalListParams::OrderBy] Evals can be ordered by creation time or last updated time. Use ...
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for

@@ -17,8 +17,14 @@ module OpenAI
 
       # The request counts for different statuses within the batch.
       sig { params(completed: Integer, failed: Integer, total: Integer).returns(T.attached_class) }
-      def self.new(completed:, failed:, total:); end
-
+      def self.new(
+        # Number of requests that have been completed successfully.
+        completed:,
+        # Number of requests that have failed.
+        failed:,
+        # Total number of requests in the batch.
+        total:
+      ); end
       sig { override.returns({completed: Integer, failed: Integer, total: Integer}) }
       def to_hash; end
     end

@@ -40,8 +40,19 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, queries:, status:, results: nil, type: :file_search_call); end
-
+        def self.new(
+          # The unique ID of the file search tool call.
+          id:,
+          # The queries used to search for files.
+          queries:,
+          # The status of the file search tool call. One of `in_progress`, `searching`,
+          # `incomplete` or `failed`,
+          status:,
+          # The results of the file search tool call.
+          results: nil,
+          # The type of the file search tool call. Always `file_search_call`.
+          type: :file_search_call
+        ); end
         sig do
           override
             .returns(
@@ -126,8 +137,22 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil); end
-
+          def self.new(
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard. Keys are strings with a maximum
+            # length of 64 characters. Values are strings with a maximum length of 512
+            # characters, booleans, or numbers.
+            attributes: nil,
+            # The unique ID of the file.
+            file_id: nil,
+            # The name of the file.
+            filename: nil,
+            # The relevance score of the file - a value between 0 and 1.
+            score: nil,
+            # The text that was retrieved from the file.
+            text: nil
+          ); end
           sig do
             override
               .returns(

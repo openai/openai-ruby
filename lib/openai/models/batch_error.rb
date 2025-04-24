@@ -28,10 +28,13 @@ module OpenAI
       optional :param, String, nil?: true
 
       # @!method initialize(code: nil, line: nil, message: nil, param: nil)
-      #   @param code [String]
-      #   @param line [Integer, nil]
-      #   @param message [String]
-      #   @param param [String, nil]
+      #   @param code [String] An error code identifying the error type.
+      #
+      #   @param line [Integer, nil] The line number of the input file where the error occurred, if applicable.
+      #
+      #   @param message [String] A human-readable message providing more details about the error.
+      #
+      #   @param param [String, nil] The name of the parameter that caused the error, if applicable.
     end
   end
 end

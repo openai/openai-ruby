@@ -36,15 +36,22 @@ module OpenAI
         optional :description, String, nil?: true
 
         # @!method initialize(name:, parameters:, strict:, description: nil, type: :function)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::FunctionTool} for more details.
+        #
         #   Defines a function in your own code the model can choose to call. Learn more
         #   about
         #   [function calling](https://platform.openai.com/docs/guides/function-calling).
         #
-        #   @param name [String]
-        #   @param parameters [Hash{Symbol=>Object}]
-        #   @param strict [Boolean]
-        #   @param description [String, nil]
-        #   @param type [Symbol, :function]
+        #   @param name [String] The name of the function to call. ...
+        #
+        #   @param parameters [Hash{Symbol=>Object}] A JSON schema object describing the parameters of the function. ...
+        #
+        #   @param strict [Boolean] Whether to enforce strict parameter validation. Default `true`. ...
+        #
+        #   @param description [String, nil] A description of the function. Used by the model to determine whether ...
+        #
+        #   @param type [Symbol, :function] The type of the function tool. Always `function`. ...
       end
     end
   end

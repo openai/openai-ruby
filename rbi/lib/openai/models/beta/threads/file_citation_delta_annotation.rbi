@@ -58,15 +58,16 @@ module OpenAI
               .returns(T.attached_class)
           end
           def self.new(
+            # The index of the annotation in the text content part.
             index:,
             end_index: nil,
             file_citation: nil,
             start_index: nil,
+            # The text in the message content that needs to be replaced.
             text: nil,
+            # Always `file_citation`.
             type: :file_citation
-          )
-          end
-
+          ); end
           sig do
             override
               .returns(
@@ -98,8 +99,12 @@ module OpenAI
             attr_writer :quote
 
             sig { params(file_id: String, quote: String).returns(T.attached_class) }
-            def self.new(file_id: nil, quote: nil); end
-
+            def self.new(
+              # The ID of the specific File the citation is from.
+              file_id: nil,
+              # The specific quote in the file.
+              quote: nil
+            ); end
             sig { override.returns({file_id: String, quote: String}) }
             def to_hash; end
           end

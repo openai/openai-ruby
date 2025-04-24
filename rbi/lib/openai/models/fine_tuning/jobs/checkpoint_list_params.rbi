@@ -30,8 +30,13 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(after: nil, limit: nil, request_options: {}); end
-
+          def self.new(
+            # Identifier for the last checkpoint ID from the previous pagination request.
+            after: nil,
+            # Number of checkpoints to retrieve.
+            limit: nil,
+            request_options: {}
+          ); end
           sig { override.returns({after: String, limit: Integer, request_options: OpenAI::RequestOptions}) }
           def to_hash; end
         end
