@@ -53,7 +53,7 @@ module OpenAI
         ) -> void
 
         # @api private
-        attr_accessor requester: OpenAI::Internal::Transport::PooledNetRequester
+        attr_reader requester: OpenAI::Internal::Transport::PooledNetRequester
 
         def initialize: (
           base_url: String,

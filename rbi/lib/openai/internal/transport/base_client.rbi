@@ -93,7 +93,7 @@ module OpenAI
 
         # @api private
         sig { returns(OpenAI::Internal::Transport::PooledNetRequester) }
-        attr_accessor :requester
+        attr_reader :requester
 
         # @api private
         sig do

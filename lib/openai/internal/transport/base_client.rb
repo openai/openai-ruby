@@ -153,7 +153,7 @@ module OpenAI
 
         # @api private
         # @return [OpenAI::Internal::Transport::PooledNetRequester]
-        attr_accessor :requester
+        attr_reader :requester
 
         # @api private
         #
