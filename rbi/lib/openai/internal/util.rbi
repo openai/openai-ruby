@@ -68,13 +68,19 @@ module OpenAI
         sig do
           params(
             data: T.any(OpenAI::Internal::AnyHash, T::Array[T.anything], T.anything),
-            pick: T.nilable(T.any(Symbol, Integer, T::Array[T.any(Symbol, Integer)])),
-            sentinel: T.nilable(T.anything),
+            pick: T.nilable(
+              T.any(
+                Symbol,
+                Integer,
+                T::Array[T.any(Symbol, Integer)],
+                T.proc.params(arg0: T.anything).returns(T.anything)
+              )
+            ),
             blk: T.nilable(T.proc.returns(T.anything))
           )
             .returns(T.nilable(T.anything))
         end
-        def dig(data, pick, sentinel = nil, &blk); end
+        def dig(data, pick, &blk); end
       end
 
       class << self

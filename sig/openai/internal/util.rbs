@@ -29,8 +29,10 @@ module OpenAI
 
       def self?.dig: (
         ::Hash[Symbol, top] | ::Array[top] | top data,
-        (Symbol | Integer | ::Array[(Symbol | Integer)])? pick,
-        ?top? sentinel
+        (Symbol
+        | Integer
+        | ::Array[(Symbol | Integer)]
+        | (^(top arg0) -> top))? pick
       ) {
         -> top?
       } -> top?
