@@ -33,7 +33,7 @@ openai = OpenAI::Client.new(
 )
 
 chat_completion = openai.chat.completions.create(
-  messages: [{role: :user, content: "Say this is a test"}],
+  messages: [{role: "user", content: "Say this is a test"}],
   model: :"gpt-4.1"
 )
 
@@ -48,7 +48,7 @@ When using sorbet, it is recommended to use model classes as below. This provide
 
 ```ruby
 openai.chat.completions.create(
-  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: :user, content: "Say this is a test")],
+  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 ```
@@ -80,7 +80,7 @@ We provide support for streaming responses using Server-Sent Events (SSE).
 
 ```ruby
 stream = openai.chat.completions.stream_raw(
-  messages: [{role: :user, content: "Say this is a test"}],
+  messages: [{role: "user", content: "Say this is a test"}],
   model: :"gpt-4.1"
 )
 
@@ -97,11 +97,11 @@ Request parameters that correspond to file uploads can be passed as `StringIO`, 
 require "pathname"
 
 # using `Pathname`, the file will be lazily read, without reading everything in to memory
-file_object = openai.files.create(file: Pathname("input.jsonl"), purpose: :"fine-tune")
+file_object = openai.files.create(file: Pathname("input.jsonl"), purpose: "fine-tune")
 
 file = File.read("input.jsonl")
 # using `StringIO`, useful if you already have the data in memory
-file_object = openai.files.create(file: StringIO.new(file), purpose: :"fine-tune")
+file_object = openai.files.create(file: StringIO.new(file), purpose: "fine-tune")
 
 puts(file_object.id)
 ```
@@ -150,7 +150,7 @@ openai = OpenAI::Client.new(
 
 # Or, configure per-request:
 openai.chat.completions.create(
-  messages: [{role: :user, content: "How can I get the name of the current day in JavaScript?"}],
+  messages: [{role: "user", content: "How can I get the name of the current day in JavaScript?"}],
   model: :"gpt-4.1",
   request_options: {max_retries: 5}
 )
@@ -172,7 +172,7 @@ openai = OpenAI::Client.new(
 
 # Or, configure per-request:
 openai.chat.completions.create(
-  messages: [{role: :user, content: "How can I list all files in a directory using Python?"}],
+  messages: [{role: "user", content: "How can I list all files in a directory using Python?"}],
   model: :"gpt-4.1",
   request_options: {timeout: 5}
 )
@@ -189,13 +189,13 @@ In all places where a `BaseModel` type is specified, vanilla Ruby `Hash` can als
 ```ruby
 # This has tooling readability, for auto-completion, static analysis, and goto definition with supported language services
 params = OpenAI::Models::Chat::CompletionCreateParams.new(
-  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: :user, content: "Say this is a test")],
+  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 
 # This also works
 params = {
-  messages: [{role: :user, content: "Say this is a test"}],
+  messages: [{role: "user", content: "Say this is a test"}],
   model: :"gpt-4.1"
 }
 ```
@@ -257,7 +257,7 @@ It is possible to pass a compatible model / parameter class to a method that exp
 
 ```ruby
 params = OpenAI::Models::Chat::CompletionCreateParams.new(
-  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: :user, content: "Say this is a test")],
+  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 openai.chat.completions.create(**params)
