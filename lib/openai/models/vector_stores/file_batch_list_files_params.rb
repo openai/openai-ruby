@@ -52,12 +52,26 @@ module OpenAI
         optional :order, enum: -> { OpenAI::Models::VectorStores::FileBatchListFilesParams::Order }
 
         # @!method initialize(vector_store_id:, after: nil, before: nil, filter: nil, limit: nil, order: nil, request_options: {})
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::VectorStores::FileBatchListFilesParams} for more details.
+        #
         #   @param vector_store_id [String]
-        #   @param after [String]
-        #   @param before [String]
-        #   @param filter [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter]
-        #   @param limit [Integer]
-        #   @param order [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order]
+        #
+        #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+        #   ...
+        #
+        #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
+        #   ...
+        #
+        #   @param filter [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter] Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
+        #   ...
+        #
+        #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+        #   ...
+        #
+        #   @param order [Symbol, OpenAI::Models::VectorStores::FileBatchListFilesParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.

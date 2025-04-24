@@ -56,9 +56,17 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(index:, end_index: nil, file_path: nil, start_index: nil, text: nil, type: :file_path)
-          end
-
+          def self.new(
+            # The index of the annotation in the text content part.
+            index:,
+            end_index: nil,
+            file_path: nil,
+            start_index: nil,
+            # The text in the message content that needs to be replaced.
+            text: nil,
+            # Always `file_path`.
+            type: :file_path
+          ); end
           sig do
             override
               .returns(
@@ -83,8 +91,10 @@ module OpenAI
             attr_writer :file_id
 
             sig { params(file_id: String).returns(T.attached_class) }
-            def self.new(file_id: nil); end
-
+            def self.new(
+              # The ID of the file that was generated.
+              file_id: nil
+            ); end
             sig { override.returns({file_id: String}) }
             def to_hash; end
           end

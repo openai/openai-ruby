@@ -27,8 +27,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, tool_call_id:, role: :tool); end
-
+        def self.new(
+          # The contents of the tool message.
+          content:,
+          # Tool call that this message is responding to.
+          tool_call_id:,
+          # The role of the messages author, in this case `tool`.
+          role: :tool
+        ); end
         sig do
           override
             .returns(

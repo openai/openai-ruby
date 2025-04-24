@@ -41,8 +41,17 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(type:, search_context_size: nil, user_location: nil); end
-
+        def self.new(
+          # The type of the web search tool. One of:
+          #
+          # - `web_search_preview`
+          # - `web_search_preview_2025_03_11`
+          type:,
+          # High level guidance for the amount of context window space to use for the
+          # search. One of `low`, `medium`, or `high`. `medium` is the default.
+          search_context_size: nil,
+          user_location: nil
+        ); end
         sig do
           override
             .returns(
@@ -130,8 +139,20 @@ module OpenAI
             params(city: String, country: String, region: String, timezone: String, type: Symbol)
               .returns(T.attached_class)
           end
-          def self.new(city: nil, country: nil, region: nil, timezone: nil, type: :approximate); end
-
+          def self.new(
+            # Free text input for the city of the user, e.g. `San Francisco`.
+            city: nil,
+            # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+            # the user, e.g. `US`.
+            country: nil,
+            # Free text input for the region of the user, e.g. `California`.
+            region: nil,
+            # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+            # user, e.g. `America/Los_Angeles`.
+            timezone: nil,
+            # The type of location approximation. Always `approximate`.
+            type: :approximate
+          ); end
           sig do
             override.returns({type: Symbol, city: String, country: String, region: String, timezone: String})
           end

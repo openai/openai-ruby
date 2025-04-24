@@ -145,24 +145,60 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The object identifier, which can be referenced in the API endpoints.
           id:,
+          # The Unix timestamp (in seconds) for when the fine-tuning job was created.
           created_at:,
+          # For fine-tuning jobs that have `failed`, this will contain more information on
+          # the cause of the failure.
           error:,
+          # The name of the fine-tuned model that is being created. The value will be null
+          # if the fine-tuning job is still running.
           fine_tuned_model:,
+          # The Unix timestamp (in seconds) for when the fine-tuning job was finished. The
+          # value will be null if the fine-tuning job is still running.
           finished_at:,
+          # The hyperparameters used for the fine-tuning job. This value will only be
+          # returned when running `supervised` jobs.
           hyperparameters:,
+          # The base model that is being fine-tuned.
           model:,
+          # The organization that owns the fine-tuning job.
           organization_id:,
+          # The compiled results file ID(s) for the fine-tuning job. You can retrieve the
+          # results with the
+          # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
           result_files:,
+          # The seed used for the fine-tuning job.
           seed:,
+          # The current status of the fine-tuning job, which can be either
+          # `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
           status:,
+          # The total number of billable tokens processed by this fine-tuning job. The value
+          # will be null if the fine-tuning job is still running.
           trained_tokens:,
+          # The file ID used for training. You can retrieve the training data with the
+          # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
           training_file:,
+          # The file ID used for validation. You can retrieve the validation results with
+          # the
+          # [Files API](https://platform.openai.com/docs/api-reference/files/retrieve-contents).
           validation_file:,
+          # The Unix timestamp (in seconds) for when the fine-tuning job is estimated to
+          # finish. The value will be null if the fine-tuning job is not running.
           estimated_finish: nil,
+          # A list of integrations to enable for this fine-tuning job.
           integrations: nil,
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
           metadata: nil,
+          # The method used for fine-tuning.
           method_: nil,
+          # The object type, which is always "fine_tuning.job".
           object: :"fine_tuning.job"
         ); end
         sig do
@@ -210,8 +246,15 @@ module OpenAI
           # For fine-tuning jobs that have `failed`, this will contain more information on
           # the cause of the failure.
           sig { params(code: String, message: String, param: T.nilable(String)).returns(T.attached_class) }
-          def self.new(code:, message:, param:); end
-
+          def self.new(
+            # A machine-readable error code.
+            code:,
+            # A human-readable error message.
+            message:,
+            # The parameter that was invalid, usually `training_file` or `validation_file`.
+            # This field will be null if the failure was not parameter-specific.
+            param:
+          ); end
           sig { override.returns({code: String, message: String, param: T.nilable(String)}) }
           def to_hash; end
         end
@@ -251,8 +294,17 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil); end
-
+          def self.new(
+            # Number of examples in each batch. A larger batch size means that model
+            # parameters are updated less frequently, but with lower variance.
+            batch_size: nil,
+            # Scaling factor for the learning rate. A smaller learning rate may be useful to
+            # avoid overfitting.
+            learning_rate_multiplier: nil,
+            # The number of epochs to train the model for. An epoch refers to one full cycle
+            # through the training dataset.
+            n_epochs: nil
+          ); end
           sig do
             override
               .returns(
@@ -349,8 +401,14 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(dpo: nil, supervised: nil, type: nil); end
-
+          def self.new(
+            # Configuration for the DPO fine-tuning method.
+            dpo: nil,
+            # Configuration for the supervised fine-tuning method.
+            supervised: nil,
+            # The type of method. Is either `supervised` or `dpo`.
+            type: nil
+          ); end
           sig do
             override
               .returns(
@@ -383,8 +441,10 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(hyperparameters: nil); end
-
+            def self.new(
+              # The hyperparameters used for the fine-tuning job.
+              hyperparameters: nil
+            ); end
             sig do
               override
                 .returns({hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters})
@@ -434,8 +494,20 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(batch_size: nil, beta: nil, learning_rate_multiplier: nil, n_epochs: nil); end
-
+              def self.new(
+                # Number of examples in each batch. A larger batch size means that model
+                # parameters are updated less frequently, but with lower variance.
+                batch_size: nil,
+                # The beta value for the DPO method. A higher beta value will increase the weight
+                # of the penalty between the policy and reference model.
+                beta: nil,
+                # Scaling factor for the learning rate. A smaller learning rate may be useful to
+                # avoid overfitting.
+                learning_rate_multiplier: nil,
+                # The number of epochs to train the model for. An epoch refers to one full cycle
+                # through the training dataset.
+                n_epochs: nil
+              ); end
               sig do
                 override
                   .returns(
@@ -513,8 +585,10 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(hyperparameters: nil); end
-
+            def self.new(
+              # The hyperparameters used for the fine-tuning job.
+              hyperparameters: nil
+            ); end
             sig do
               override
                 .returns({hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters})
@@ -555,8 +629,17 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(batch_size: nil, learning_rate_multiplier: nil, n_epochs: nil); end
-
+              def self.new(
+                # Number of examples in each batch. A larger batch size means that model
+                # parameters are updated less frequently, but with lower variance.
+                batch_size: nil,
+                # Scaling factor for the learning rate. A smaller learning rate may be useful to
+                # avoid overfitting.
+                learning_rate_multiplier: nil,
+                # The number of epochs to train the model for. An epoch refers to one full cycle
+                # through the training dataset.
+                n_epochs: nil
+              ); end
               sig do
                 override
                   .returns(

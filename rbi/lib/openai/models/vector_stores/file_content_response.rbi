@@ -19,8 +19,12 @@ module OpenAI
         attr_writer :type
 
         sig { params(text: String, type: String).returns(T.attached_class) }
-        def self.new(text: nil, type: nil); end
-
+        def self.new(
+          # The text content
+          text: nil,
+          # The content type (currently only `"text"`)
+          type: nil
+        ); end
         sig { override.returns({text: String, type: String}) }
         def to_hash; end
       end

@@ -54,11 +54,17 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # A citation to a file.
           annotation:,
+          # The index of the annotation that was added.
           annotation_index:,
+          # The index of the content part that the text annotation was added to.
           content_index:,
+          # The ID of the output item that the text annotation was added to.
           item_id:,
+          # The index of the output item that the text annotation was added to.
           output_index:,
+          # The type of the event. Always `response.output_text.annotation.added`.
           type: :"response.output_text.annotation.added"
         ); end
         sig do
@@ -99,8 +105,14 @@ module OpenAI
 
             # A citation to a file.
             sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
-            def self.new(file_id:, index:, type: :file_citation); end
-
+            def self.new(
+              # The ID of the file.
+              file_id:,
+              # The index of the file in the list of files.
+              index:,
+              # The type of the file citation. Always `file_citation`.
+              type: :file_citation
+            ); end
             sig { override.returns({file_id: String, index: Integer, type: Symbol}) }
             def to_hash; end
           end
@@ -131,8 +143,18 @@ module OpenAI
               params(end_index: Integer, start_index: Integer, title: String, url: String, type: Symbol)
                 .returns(T.attached_class)
             end
-            def self.new(end_index:, start_index:, title:, url:, type: :url_citation); end
-
+            def self.new(
+              # The index of the last character of the URL citation in the message.
+              end_index:,
+              # The index of the first character of the URL citation in the message.
+              start_index:,
+              # The title of the web resource.
+              title:,
+              # The URL of the web resource.
+              url:,
+              # The type of the URL citation. Always `url_citation`.
+              type: :url_citation
+            ); end
             sig do
               override.returns(
                 {
@@ -162,8 +184,14 @@ module OpenAI
 
             # A path to a file.
             sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
-            def self.new(file_id:, index:, type: :file_path); end
-
+            def self.new(
+              # The ID of the file.
+              file_id:,
+              # The index of the file in the list of files.
+              index:,
+              # The type of the file path. Always `file_path`.
+              type: :file_path
+            ); end
             sig { override.returns({file_id: String, index: Integer, type: Symbol}) }
             def to_hash; end
           end

@@ -13,8 +13,12 @@ module OpenAI
 
       # An object describing text to classify.
       sig { params(text: String, type: Symbol).returns(T.attached_class) }
-      def self.new(text:, type: :text); end
-
+      def self.new(
+        # A string of text to classify.
+        text:,
+        # Always `text`.
+        type: :text
+      ); end
       sig { override.returns({text: String, type: Symbol}) }
       def to_hash; end
     end

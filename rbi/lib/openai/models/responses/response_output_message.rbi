@@ -46,8 +46,19 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, content:, status:, role: :assistant, type: :message); end
-
+        def self.new(
+          # The unique ID of the output message.
+          id:,
+          # The content of the output message.
+          content:,
+          # The status of the message input. One of `in_progress`, `completed`, or
+          # `incomplete`. Populated when input items are returned via API.
+          status:,
+          # The role of the output message. Always `assistant`.
+          role: :assistant,
+          # The type of the output message. Always `message`.
+          type: :message
+        ); end
         sig do
           override
             .returns(

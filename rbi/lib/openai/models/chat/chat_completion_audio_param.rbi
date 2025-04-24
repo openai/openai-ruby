@@ -24,8 +24,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(format_:, voice:); end
-
+        def self.new(
+          # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
+          # or `pcm16`.
+          format_:,
+          # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
+          # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
+          voice:
+        ); end
         sig do
           override
             .returns(

@@ -53,8 +53,11 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(annotations: nil, value: nil); end
-
+          def self.new(
+            annotations: nil,
+            # The data that makes up the text.
+            value: nil
+          ); end
           sig do
             override
               .returns(

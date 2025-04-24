@@ -18,8 +18,17 @@ module OpenAI
         # Indicates that the model should use a built-in tool to generate a response.
         # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
         sig { params(type: OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol).returns(T.attached_class) }
-        def self.new(type:); end
-
+        def self.new(
+          # The type of hosted tool the model should to use. Learn more about
+          # [built-in tools](https://platform.openai.com/docs/guides/tools).
+          #
+          # Allowed values are:
+          #
+          # - `file_search`
+          # - `web_search_preview`
+          # - `computer_use_preview`
+          type:
+        ); end
         sig { override.returns({type: OpenAI::Models::Responses::ToolChoiceTypes::Type::OrSymbol}) }
         def to_hash; end
 

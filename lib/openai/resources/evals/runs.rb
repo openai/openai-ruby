@@ -7,14 +7,21 @@ module OpenAI
         # @return [OpenAI::Resources::Evals::Runs::OutputItems]
         attr_reader :output_items
 
+        # Some parameter documentations has been truncated, see
+        # {OpenAI::Models::Evals::RunCreateParams} for more details.
+        #
         # Create a new evaluation run. This is the endpoint that will kick off grading.
         #
         # @overload create(eval_id, data_source:, metadata: nil, name: nil, request_options: {})
         #
-        # @param eval_id [String]
-        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource]
-        # @param metadata [Hash{Symbol=>String}, nil]
-        # @param name [String]
+        # @param eval_id [String] The ID of the evaluation to create a run for.
+        #
+        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
+        #
+        # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
+        # @param name [String] The name of the run.
+        #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::Evals::RunCreateResponse]
@@ -35,8 +42,10 @@ module OpenAI
         #
         # @overload retrieve(run_id, eval_id:, request_options: {})
         #
-        # @param run_id [String]
-        # @param eval_id [String]
+        # @param run_id [String] The ID of the run to retrieve.
+        #
+        # @param eval_id [String] The ID of the evaluation to retrieve runs for.
+        #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::Evals::RunRetrieveResponse]
@@ -56,15 +65,25 @@ module OpenAI
           )
         end
 
+        # Some parameter documentations has been truncated, see
+        # {OpenAI::Models::Evals::RunListParams} for more details.
+        #
         # Get a list of runs for an evaluation.
         #
         # @overload list(eval_id, after: nil, limit: nil, order: nil, status: nil, request_options: {})
         #
-        # @param eval_id [String]
-        # @param after [String]
-        # @param limit [Integer]
-        # @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order]
-        # @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status]
+        # @param eval_id [String] The ID of the evaluation to retrieve runs for.
+        #
+        # @param after [String] Identifier for the last run from the previous pagination request.
+        #
+        # @param limit [Integer] Number of runs to retrieve.
+        #
+        # @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
+        # ...
+        #
+        # @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # ...
+        #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Evals::RunListResponse>]
@@ -86,8 +105,10 @@ module OpenAI
         #
         # @overload delete(run_id, eval_id:, request_options: {})
         #
-        # @param run_id [String]
-        # @param eval_id [String]
+        # @param run_id [String] The ID of the run to delete.
+        #
+        # @param eval_id [String] The ID of the evaluation to delete the run from.
+        #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::Evals::RunDeleteResponse]
@@ -111,8 +132,10 @@ module OpenAI
         #
         # @overload cancel(run_id, eval_id:, request_options: {})
         #
-        # @param run_id [String]
-        # @param eval_id [String]
+        # @param run_id [String] The ID of the run to cancel.
+        #
+        # @param eval_id [String] The ID of the evaluation whose run you want to cancel.
+        #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
         # @return [OpenAI::Models::Evals::RunCancelResponse]

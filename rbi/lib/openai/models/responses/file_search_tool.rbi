@@ -58,14 +58,18 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The IDs of the vector stores to search.
           vector_store_ids:,
+          # A filter to apply based on file attributes.
           filters: nil,
+          # The maximum number of results to return. This number should be between 1 and 50
+          # inclusive.
           max_num_results: nil,
+          # Ranking options for search.
           ranking_options: nil,
+          # The type of the file search tool. Always `file_search`.
           type: :file_search
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -113,8 +117,14 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(ranker: nil, score_threshold: nil); end
-
+          def self.new(
+            # The ranker to use for the file search.
+            ranker: nil,
+            # The score threshold for the file search, a number between 0 and 1. Numbers
+            # closer to 1 will attempt to return only the most relevant results, but may
+            # return fewer results.
+            score_threshold: nil
+          ); end
           sig do
             override
               .returns(

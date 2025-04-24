@@ -52,16 +52,21 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The object identifier.
           id:,
+          # The Unix timestamp (in seconds) for when the fine-tuning job was created.
           created_at:,
+          # The log level of the event.
           level:,
+          # The message of the event.
           message:,
+          # The data associated with the event.
           data: nil,
+          # The type of event.
           type: nil,
+          # The object type, which is always "fine_tuning.job.event".
           object: :"fine_tuning.job.event"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(

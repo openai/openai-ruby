@@ -53,8 +53,22 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(after: nil, limit: nil, metadata: nil, model: nil, order: nil, request_options: {}); end
-
+        def self.new(
+          # Identifier for the last chat completion from the previous pagination request.
+          after: nil,
+          # Number of Chat Completions to retrieve.
+          limit: nil,
+          # A list of metadata keys to filter the Chat Completions by. Example:
+          #
+          # `metadata[key1]=value1&metadata[key2]=value2`
+          metadata: nil,
+          # The model used to generate the Chat Completions.
+          model: nil,
+          # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
+          # `desc` for descending order. Defaults to `asc`.
+          order: nil,
+          request_options: {}
+        ); end
         sig do
           override
             .returns(

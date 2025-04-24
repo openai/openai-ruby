@@ -30,8 +30,11 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.created"); end
-
+          def self.new(
+            # Represents a step in execution of a run.
+            data:,
+            event: :"thread.run.step.created"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
           def to_hash; end
         end
@@ -57,8 +60,11 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.in_progress"); end
-
+          def self.new(
+            # Represents a step in execution of a run.
+            data:,
+            event: :"thread.run.step.in_progress"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
           def to_hash; end
         end
@@ -87,8 +93,12 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.delta"); end
-
+          def self.new(
+            # Represents a run step delta i.e. any changed fields on a run step during
+            # streaming.
+            data:,
+            event: :"thread.run.step.delta"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, event: Symbol}) }
           def to_hash; end
         end
@@ -114,8 +124,11 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.completed"); end
-
+          def self.new(
+            # Represents a step in execution of a run.
+            data:,
+            event: :"thread.run.step.completed"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
           def to_hash; end
         end
@@ -141,8 +154,11 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.failed"); end
-
+          def self.new(
+            # Represents a step in execution of a run.
+            data:,
+            event: :"thread.run.step.failed"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
           def to_hash; end
         end
@@ -168,8 +184,11 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.cancelled"); end
-
+          def self.new(
+            # Represents a step in execution of a run.
+            data:,
+            event: :"thread.run.step.cancelled"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
           def to_hash; end
         end
@@ -195,8 +214,11 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(data:, event: :"thread.run.step.expired"); end
-
+          def self.new(
+            # Represents a step in execution of a run.
+            data:,
+            event: :"thread.run.step.expired"
+          ); end
           sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
           def to_hash; end
         end

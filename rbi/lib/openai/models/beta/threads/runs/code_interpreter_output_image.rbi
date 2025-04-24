@@ -33,8 +33,13 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(index:, image: nil, type: :image); end
-
+            def self.new(
+              # The index of the output in the outputs array.
+              index:,
+              image: nil,
+              # Always `image`.
+              type: :image
+            ); end
             sig do
               override
                 .returns(
@@ -53,8 +58,11 @@ module OpenAI
               attr_writer :file_id
 
               sig { params(file_id: String).returns(T.attached_class) }
-              def self.new(file_id: nil); end
-
+              def self.new(
+                # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
+                # image.
+                file_id: nil
+              ); end
               sig { override.returns({file_id: String}) }
               def to_hash; end
             end

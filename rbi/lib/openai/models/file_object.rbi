@@ -65,14 +65,27 @@ module OpenAI
           .returns(T.attached_class)
       end
       def self.new(
+        # The file identifier, which can be referenced in the API endpoints.
         id:,
+        # The size of the file, in bytes.
         bytes:,
+        # The Unix timestamp (in seconds) for when the file was created.
         created_at:,
+        # The name of the file.
         filename:,
+        # The intended purpose of the file. Supported values are `assistants`,
+        # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
+        # and `vision`.
         purpose:,
+        # Deprecated. The current status of the file, which can be either `uploaded`,
+        # `processed`, or `error`.
         status:,
+        # The Unix timestamp (in seconds) for when the file will expire.
         expires_at: nil,
+        # Deprecated. For details on why a fine-tuning training file failed validation,
+        # see the `error` field on `fine_tuning.job`.
         status_details: nil,
+        # The object type, which is always `file`.
         object: :file
       ); end
       sig do

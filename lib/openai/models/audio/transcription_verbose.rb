@@ -38,11 +38,15 @@ module OpenAI
         #   Represents a verbose json transcription response returned by model, based on the
         #   provided input.
         #
-        #   @param duration [Float]
-        #   @param language [String]
-        #   @param text [String]
-        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>]
-        #   @param words [Array<OpenAI::Models::Audio::TranscriptionWord>]
+        #   @param duration [Float] The duration of the input audio.
+        #
+        #   @param language [String] The language of the input audio.
+        #
+        #   @param text [String] The transcribed text.
+        #
+        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>] Segments of the transcribed text and their corresponding details.
+        #
+        #   @param words [Array<OpenAI::Models::Audio::TranscriptionWord>] Extracted words and their corresponding timestamps.
       end
     end
   end

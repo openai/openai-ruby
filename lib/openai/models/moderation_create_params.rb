@@ -24,8 +24,14 @@ module OpenAI
       optional :model, union: -> { OpenAI::Models::ModerationCreateParams::Model }
 
       # @!method initialize(input:, model: nil, request_options: {})
-      #   @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>]
-      #   @param model [String, Symbol, OpenAI::Models::ModerationModel]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::ModerationCreateParams} for more details.
+      #
+      #   @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>] Input (or inputs) to classify. Can be a single string, an array of strings, or
+      #   ...
+      #
+      #   @param model [String, Symbol, OpenAI::Models::ModerationModel] The content moderation model you would like to use. Learn more in ...
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or

@@ -16,7 +16,8 @@ module OpenAI
           required :project_ids, OpenAI::Internal::Type::ArrayOf[String]
 
           # @!method initialize(project_ids:, request_options: {})
-          #   @param project_ids [Array<String>]
+          #   @param project_ids [Array<String>] The project identifiers to grant access to.
+          #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end

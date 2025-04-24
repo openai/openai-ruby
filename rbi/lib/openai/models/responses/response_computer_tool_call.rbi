@@ -68,8 +68,21 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, action:, call_id:, pending_safety_checks:, status:, type:); end
-
+        def self.new(
+          # The unique ID of the computer call.
+          id:,
+          # A click action.
+          action:,
+          # An identifier used when responding to the tool call with output.
+          call_id:,
+          # The pending safety checks for the computer call.
+          pending_safety_checks:,
+          # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+          # Populated when items are returned via API.
+          status:,
+          # The type of the computer call. Always `computer_call`.
+          type:
+        ); end
         sig do
           override
             .returns(
@@ -128,8 +141,18 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(button:, x:, y_:, type: :click); end
-
+            def self.new(
+              # Indicates which mouse button was pressed during the click. One of `left`,
+              # `right`, `wheel`, `back`, or `forward`.
+              button:,
+              # The x-coordinate where the click occurred.
+              x:,
+              # The y-coordinate where the click occurred.
+              y_:,
+              # Specifies the event type. For a click action, this property is always set to
+              # `click`.
+              type: :click
+            ); end
             sig do
               override
                 .returns(
@@ -189,8 +212,15 @@ module OpenAI
 
             # A double click action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
-            def self.new(x:, y_:, type: :double_click); end
-
+            def self.new(
+              # The x-coordinate where the double click occurred.
+              x:,
+              # The y-coordinate where the double click occurred.
+              y_:,
+              # Specifies the event type. For a double click action, this property is always set
+              # to `double_click`.
+              type: :double_click
+            ); end
             sig { override.returns({type: Symbol, x: Integer, y_: Integer}) }
             def to_hash; end
           end
@@ -221,8 +251,21 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(path:, type: :drag); end
-
+            def self.new(
+              # An array of coordinates representing the path of the drag action. Coordinates
+              # will appear as an array of objects, eg
+              #
+              # ```
+              # [
+              #   { x: 100, y: 200 },
+              #   { x: 200, y: 300 }
+              # ]
+              # ```
+              path:,
+              # Specifies the event type. For a drag action, this property is always set to
+              # `drag`.
+              type: :drag
+            ); end
             sig do
               override
                 .returns(
@@ -242,8 +285,12 @@ module OpenAI
 
               # A series of x/y coordinate pairs in the drag path.
               sig { params(x: Integer, y_: Integer).returns(T.attached_class) }
-              def self.new(x:, y_:); end
-
+              def self.new(
+                # The x-coordinate.
+                x:,
+                # The y-coordinate.
+                y_:
+              ); end
               sig { override.returns({x: Integer, y_: Integer}) }
               def to_hash; end
             end
@@ -262,8 +309,14 @@ module OpenAI
 
             # A collection of keypresses the model would like to perform.
             sig { params(keys: T::Array[String], type: Symbol).returns(T.attached_class) }
-            def self.new(keys:, type: :keypress); end
-
+            def self.new(
+              # The combination of keys the model is requesting to be pressed. This is an array
+              # of strings, each representing a key.
+              keys:,
+              # Specifies the event type. For a keypress action, this property is always set to
+              # `keypress`.
+              type: :keypress
+            ); end
             sig { override.returns({keys: T::Array[String], type: Symbol}) }
             def to_hash; end
           end
@@ -284,8 +337,15 @@ module OpenAI
 
             # A mouse move action.
             sig { params(x: Integer, y_: Integer, type: Symbol).returns(T.attached_class) }
-            def self.new(x:, y_:, type: :move); end
-
+            def self.new(
+              # The x-coordinate to move to.
+              x:,
+              # The y-coordinate to move to.
+              y_:,
+              # Specifies the event type. For a move action, this property is always set to
+              # `move`.
+              type: :move
+            ); end
             sig { override.returns({type: Symbol, x: Integer, y_: Integer}) }
             def to_hash; end
           end
@@ -298,8 +358,11 @@ module OpenAI
 
             # A screenshot action.
             sig { params(type: Symbol).returns(T.attached_class) }
-            def self.new(type: :screenshot); end
-
+            def self.new(
+              # Specifies the event type. For a screenshot action, this property is always set
+              # to `screenshot`.
+              type: :screenshot
+            ); end
             sig { override.returns({type: Symbol}) }
             def to_hash; end
           end
@@ -331,8 +394,19 @@ module OpenAI
               params(scroll_x: Integer, scroll_y: Integer, x: Integer, y_: Integer, type: Symbol)
                 .returns(T.attached_class)
             end
-            def self.new(scroll_x:, scroll_y:, x:, y_:, type: :scroll); end
-
+            def self.new(
+              # The horizontal scroll distance.
+              scroll_x:,
+              # The vertical scroll distance.
+              scroll_y:,
+              # The x-coordinate where the scroll occurred.
+              x:,
+              # The y-coordinate where the scroll occurred.
+              y_:,
+              # Specifies the event type. For a scroll action, this property is always set to
+              # `scroll`.
+              type: :scroll
+            ); end
             sig do
               override.returns({scroll_x: Integer, scroll_y: Integer, type: Symbol, x: Integer, y_: Integer})
             end
@@ -351,8 +425,13 @@ module OpenAI
 
             # An action to type in text.
             sig { params(text: String, type: Symbol).returns(T.attached_class) }
-            def self.new(text:, type: :type); end
-
+            def self.new(
+              # The text to type.
+              text:,
+              # Specifies the event type. For a type action, this property is always set to
+              # `type`.
+              type: :type
+            ); end
             sig { override.returns({text: String, type: Symbol}) }
             def to_hash; end
           end
@@ -365,8 +444,11 @@ module OpenAI
 
             # A wait action.
             sig { params(type: Symbol).returns(T.attached_class) }
-            def self.new(type: :wait); end
-
+            def self.new(
+              # Specifies the event type. For a wait action, this property is always set to
+              # `wait`.
+              type: :wait
+            ); end
             sig { override.returns({type: Symbol}) }
             def to_hash; end
           end
@@ -395,8 +477,14 @@ module OpenAI
 
           # A pending safety check for the computer call.
           sig { params(id: String, code: String, message: String).returns(T.attached_class) }
-          def self.new(id:, code:, message:); end
-
+          def self.new(
+            # The ID of the pending safety check.
+            id:,
+            # The type of the pending safety check.
+            code:,
+            # Details about the pending safety check.
+            message:
+          ); end
           sig { override.returns({id: String, code: String, message: String}) }
           def to_hash; end
         end

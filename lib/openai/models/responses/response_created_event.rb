@@ -17,10 +17,14 @@ module OpenAI
         required :type, const: :"response.created"
 
         # @!method initialize(response:, type: :"response.created")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseCreatedEvent} for more details.
+        #
         #   An event that is emitted when a response is created.
         #
-        #   @param response [OpenAI::Models::Responses::Response]
-        #   @param type [Symbol, :"response.created"]
+        #   @param response [OpenAI::Models::Responses::Response] The response that was created. ...
+        #
+        #   @param type [Symbol, :"response.created"] The type of the event. Always `response.created`. ...
       end
     end
   end

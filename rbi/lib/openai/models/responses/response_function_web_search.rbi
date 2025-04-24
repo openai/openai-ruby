@@ -27,8 +27,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, status:, type: :web_search_call); end
-
+        def self.new(
+          # The unique ID of the web search tool call.
+          id:,
+          # The status of the web search tool call.
+          status:,
+          # The type of the web search tool call. Always `web_search_call`.
+          type: :web_search_call
+        ); end
         sig do
           override
             .returns(

@@ -26,8 +26,14 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(part_ids:, md5: nil, request_options: {}); end
-
+      def self.new(
+        # The ordered list of Part IDs.
+        part_ids:,
+        # The optional md5 checksum for the file contents to verify if the bytes uploaded
+        # matches what you expect.
+        md5: nil,
+        request_options: {}
+      ); end
       sig do
         override.returns({part_ids: T::Array[String], md5: String, request_options: OpenAI::RequestOptions})
       end

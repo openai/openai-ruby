@@ -25,8 +25,14 @@ module OpenAI
             params(detail: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::OrSymbol, url: String)
               .returns(T.attached_class)
           end
-          def self.new(detail: nil, url: nil); end
-
+          def self.new(
+            # Specifies the detail level of the image. `low` uses fewer tokens, you can opt in
+            # to high resolution using `high`.
+            detail: nil,
+            # The URL of the image, must be a supported image types: jpeg, jpg, png, gif,
+            # webp.
+            url: nil
+          ); end
           sig do
             override.returns({detail: OpenAI::Models::Beta::Threads::ImageURLDelta::Detail::TaggedSymbol, url: String})
           end

@@ -18,8 +18,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data:, request_options: {}); end
-
+        def self.new(
+          # The chunk of bytes for this Part.
+          data:,
+          request_options: {}
+        ); end
         sig { override.returns({data: T.any(Pathname, StringIO), request_options: OpenAI::RequestOptions}) }
         def to_hash; end
       end

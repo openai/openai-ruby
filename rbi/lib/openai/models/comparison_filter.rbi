@@ -33,8 +33,22 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(key:, type:, value:); end
-
+      def self.new(
+        # The key to compare against the value.
+        key:,
+        # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+        #
+        # - `eq`: equals
+        # - `ne`: not equal
+        # - `gt`: greater than
+        # - `gte`: greater than or equal
+        # - `lt`: less than
+        # - `lte`: less than or equal
+        type:,
+        # The value to compare against the attribute key; supports string, number, or
+        # boolean types.
+        value:
+      ); end
       sig do
         override
           .returns(

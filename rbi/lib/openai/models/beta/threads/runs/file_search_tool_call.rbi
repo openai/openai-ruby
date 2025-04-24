@@ -35,8 +35,15 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(id:, file_search:, type: :file_search); end
-
+            def self.new(
+              # The ID of the tool call object.
+              id:,
+              # For now, this is always going to be an empty object.
+              file_search:,
+              # The type of tool call. This is always going to be `file_search` for this type of
+              # tool call.
+              type: :file_search
+            ); end
             sig do
               override
                 .returns(
@@ -94,8 +101,12 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(ranking_options: nil, results: nil); end
-
+              def self.new(
+                # The ranking options for the file search.
+                ranking_options: nil,
+                # The results of the file search.
+                results: nil
+              ); end
               sig do
                 override
                   .returns(
@@ -130,8 +141,14 @@ module OpenAI
                   )
                     .returns(T.attached_class)
                 end
-                def self.new(ranker:, score_threshold:); end
-
+                def self.new(
+                  # The ranker to use for the file search. If not specified will use the `auto`
+                  # ranker.
+                  ranker:,
+                  # The score threshold for the file search. All values must be a floating point
+                  # number between 0 and 1.
+                  score_threshold:
+                ); end
                 sig do
                   override
                     .returns(
@@ -224,8 +241,18 @@ module OpenAI
                   )
                     .returns(T.attached_class)
                 end
-                def self.new(file_id:, file_name:, score:, content: nil); end
-
+                def self.new(
+                  # The ID of the file that result was found in.
+                  file_id:,
+                  # The name of the file that result was found in.
+                  file_name:,
+                  # The score of the result. All values must be a floating point number between 0
+                  # and 1.
+                  score:,
+                  # The content of the result that was found. The content is only included if
+                  # requested via the include query parameter.
+                  content: nil
+                ); end
                 sig do
                   override
                     .returns(
@@ -272,8 +299,12 @@ module OpenAI
                     )
                       .returns(T.attached_class)
                   end
-                  def self.new(text: nil, type: nil); end
-
+                  def self.new(
+                    # The text content of the file.
+                    text: nil,
+                    # The type of the content.
+                    type: nil
+                  ); end
                   sig do
                     override
                       .returns(

@@ -28,8 +28,11 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(function:, type: :function); end
-
+        def self.new(
+          function:,
+          # The type of the tool. Currently, only `function` is supported.
+          type: :function
+        ); end
         sig { override.returns({function: OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, type: Symbol}) }
         def to_hash; end
 
@@ -39,8 +42,10 @@ module OpenAI
           attr_accessor :name
 
           sig { params(name: String).returns(T.attached_class) }
-          def self.new(name:); end
-
+          def self.new(
+            # The name of the function to call.
+            name:
+          ); end
           sig { override.returns({name: String}) }
           def to_hash; end
         end

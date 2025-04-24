@@ -9,9 +9,12 @@ module OpenAI
           #
           # @overload retrieve(output_item_id, eval_id:, run_id:, request_options: {})
           #
-          # @param output_item_id [String]
-          # @param eval_id [String]
-          # @param run_id [String]
+          # @param output_item_id [String] The ID of the output item to retrieve.
+          #
+          # @param eval_id [String] The ID of the evaluation to retrieve runs for.
+          #
+          # @param run_id [String] The ID of the run to retrieve.
+          #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse]
@@ -35,16 +38,28 @@ module OpenAI
             )
           end
 
+          # Some parameter documentations has been truncated, see
+          # {OpenAI::Models::Evals::Runs::OutputItemListParams} for more details.
+          #
           # Get a list of output items for an evaluation run.
           #
           # @overload list(run_id, eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
           #
-          # @param run_id [String]
-          # @param eval_id [String]
-          # @param after [String]
-          # @param limit [Integer]
-          # @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order]
-          # @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status]
+          # @param run_id [String] Path param: The ID of the run to retrieve output items for.
+          #
+          # @param eval_id [String] Path param: The ID of the evaluation to retrieve runs for.
+          #
+          # @param after [String] Query param: Identifier for the last output item from the previous pagination re
+          # ...
+          #
+          # @param limit [Integer] Query param: Number of output items to retrieve.
+          #
+          # @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order] Query param: Sort order for output items by timestamp. Use `asc` for ascending o
+          # ...
+          #
+          # @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status] Query param: Filter output items by status. Use `failed` to filter by failed out
+          # ...
+          #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Evals::Runs::OutputItemListResponse>]

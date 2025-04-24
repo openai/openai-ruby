@@ -14,8 +14,12 @@ module OpenAI
 
         # Use this option to force the model to call a specific function.
         sig { params(name: String, type: Symbol).returns(T.attached_class) }
-        def self.new(name:, type: :function); end
-
+        def self.new(
+          # The name of the function to call.
+          name:,
+          # For function calling, the type is always `function`.
+          type: :function
+        ); end
         sig { override.returns({name: String, type: Symbol}) }
         def to_hash; end
       end

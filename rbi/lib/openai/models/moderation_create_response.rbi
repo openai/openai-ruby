@@ -24,8 +24,14 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(id:, model:, results:); end
-
+      def self.new(
+        # The unique identifier for the moderation request.
+        id:,
+        # The model used to generate the moderation results.
+        model:,
+        # A list of moderation objects.
+        results:
+      ); end
       sig { override.returns({id: String, model: String, results: T::Array[OpenAI::Models::Moderation]}) }
       def to_hash; end
     end

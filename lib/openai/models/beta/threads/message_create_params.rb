@@ -46,10 +46,17 @@ module OpenAI
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!method initialize(content:, role:, attachments: nil, metadata: nil, request_options: {})
-          #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
-          #   @param role [Symbol, OpenAI::Models::Beta::Threads::MessageCreateParams::Role]
-          #   @param attachments [Array<OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment>, nil]
-          #   @param metadata [Hash{Symbol=>String}, nil]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::Threads::MessageCreateParams} for more details.
+          #
+          #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>] The text contents of the message.
+          #
+          #   @param role [Symbol, OpenAI::Models::Beta::Threads::MessageCreateParams::Role] The role of the entity that is creating the message. Allowed values include: ...
+          #
+          #   @param attachments [Array<OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment>, nil] A list of files attached to the message, and the tools they should be added to.
+          #
+          #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+          #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           # The text contents of the message.
@@ -100,8 +107,9 @@ module OpenAI
                      -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool] }
 
             # @!method initialize(file_id: nil, tools: nil)
-            #   @param file_id [String]
-            #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>]
+            #   @param file_id [String] The ID of the file to attach to the message.
+            #
+            #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch>] The tools to add this file to.
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -121,7 +129,7 @@ module OpenAI
                 required :type, const: :file_search
 
                 # @!method initialize(type: :file_search)
-                #   @param type [Symbol, :file_search]
+                #   @param type [Symbol, :file_search] The type of tool being defined: `file_search`
               end
 
               # @!method self.variants

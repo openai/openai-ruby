@@ -29,8 +29,18 @@ module OpenAI
           params(content_index: Integer, item_id: String, output_index: Integer, text: String, type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(content_index:, item_id:, output_index:, text:, type: :"response.output_text.done"); end
-
+        def self.new(
+          # The index of the content part that the text content is finalized.
+          content_index:,
+          # The ID of the output item that the text content is finalized.
+          item_id:,
+          # The index of the output item that the text content is finalized.
+          output_index:,
+          # The text content that is finalized.
+          text:,
+          # The type of the event. Always `response.output_text.done`.
+          type: :"response.output_text.done"
+        ); end
         sig do
           override
             .returns({

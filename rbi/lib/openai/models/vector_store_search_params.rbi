@@ -61,15 +61,19 @@ module OpenAI
           .returns(T.attached_class)
       end
       def self.new(
+        # A query string for a search
         query:,
+        # A filter to apply based on file attributes.
         filters: nil,
+        # The maximum number of results to return. This number should be between 1 and 50
+        # inclusive.
         max_num_results: nil,
+        # Ranking options for search.
         ranking_options: nil,
+        # Whether to rewrite the natural language query for vector search.
         rewrite_query: nil,
         request_options: {}
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(

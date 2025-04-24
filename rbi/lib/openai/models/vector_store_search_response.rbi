@@ -37,8 +37,22 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(attributes:, content:, file_id:, filename:, score:); end
-
+      def self.new(
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard. Keys are strings with a maximum
+        # length of 64 characters. Values are strings with a maximum length of 512
+        # characters, booleans, or numbers.
+        attributes:,
+        # Content chunks from the file.
+        content:,
+        # The ID of the vector store file.
+        file_id:,
+        # The name of the vector store file.
+        filename:,
+        # The similarity score for the result.
+        score:
+      ); end
       sig do
         override
           .returns(
@@ -73,8 +87,12 @@ module OpenAI
           params(text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::OrSymbol)
             .returns(T.attached_class)
         end
-        def self.new(text:, type:); end
-
+        def self.new(
+          # The text content returned from search.
+          text:,
+          # The type of content.
+          type:
+        ); end
         sig do
           override
             .returns({text: String, type: OpenAI::Models::VectorStoreSearchResponse::Content::Type::TaggedSymbol})

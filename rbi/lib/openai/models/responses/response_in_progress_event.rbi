@@ -20,8 +20,12 @@ module OpenAI
           params(response: T.any(OpenAI::Models::Responses::Response, OpenAI::Internal::AnyHash), type: Symbol)
             .returns(T.attached_class)
         end
-        def self.new(response:, type: :"response.in_progress"); end
-
+        def self.new(
+          # The response that is in progress.
+          response:,
+          # The type of the event. Always `response.in_progress`.
+          type: :"response.in_progress"
+        ); end
         sig { override.returns({response: OpenAI::Models::Responses::Response, type: Symbol}) }
         def to_hash; end
       end

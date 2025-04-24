@@ -23,11 +23,17 @@ module OpenAI
       optional :usage, -> { OpenAI::Models::ImagesResponse::Usage }
 
       # @!method initialize(created:, data: nil, usage: nil)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::ImagesResponse} for more details.
+      #
       #   The response from the image generation endpoint.
       #
-      #   @param created [Integer]
-      #   @param data [Array<OpenAI::Models::Image>]
-      #   @param usage [OpenAI::Models::ImagesResponse::Usage]
+      #   @param created [Integer] The Unix timestamp (in seconds) of when the image was created.
+      #
+      #   @param data [Array<OpenAI::Models::Image>] The list of generated images.
+      #
+      #   @param usage [OpenAI::Models::ImagesResponse::Usage] For `gpt-image-1` only, the token usage information for the image generation.
+      #   ...
 
       # @see OpenAI::Models::ImagesResponse#usage
       class Usage < OpenAI::Internal::Type::BaseModel
@@ -58,10 +64,13 @@ module OpenAI
         # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:)
         #   For `gpt-image-1` only, the token usage information for the image generation.
         #
-        #   @param input_tokens [Integer]
-        #   @param input_tokens_details [OpenAI::Models::ImagesResponse::Usage::InputTokensDetails]
-        #   @param output_tokens [Integer]
-        #   @param total_tokens [Integer]
+        #   @param input_tokens [Integer] The number of tokens (images and text) in the input prompt.
+        #
+        #   @param input_tokens_details [OpenAI::Models::ImagesResponse::Usage::InputTokensDetails] The input tokens detailed information for the image generation.
+        #
+        #   @param output_tokens [Integer] The number of image tokens in the output image.
+        #
+        #   @param total_tokens [Integer] The total number of tokens (images and text) used for the image generation.
 
         # @see OpenAI::Models::ImagesResponse::Usage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -80,8 +89,9 @@ module OpenAI
           # @!method initialize(image_tokens:, text_tokens:)
           #   The input tokens detailed information for the image generation.
           #
-          #   @param image_tokens [Integer]
-          #   @param text_tokens [Integer]
+          #   @param image_tokens [Integer] The number of image tokens in the input prompt.
+          #
+          #   @param text_tokens [Integer] The number of text tokens in the input prompt.
         end
       end
     end

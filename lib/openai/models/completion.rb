@@ -52,16 +52,26 @@ module OpenAI
       optional :usage, -> { OpenAI::Models::CompletionUsage }
 
       # @!method initialize(id:, choices:, created:, model:, system_fingerprint: nil, usage: nil, object: :text_completion)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::Completion} for more details.
+      #
       #   Represents a completion response from the API. Note: both the streamed and
       #   non-streamed response objects share the same shape (unlike the chat endpoint).
       #
-      #   @param id [String]
-      #   @param choices [Array<OpenAI::Models::CompletionChoice>]
-      #   @param created [Integer]
-      #   @param model [String]
-      #   @param system_fingerprint [String]
-      #   @param usage [OpenAI::Models::CompletionUsage]
-      #   @param object [Symbol, :text_completion]
+      #   @param id [String] A unique identifier for the completion.
+      #
+      #   @param choices [Array<OpenAI::Models::CompletionChoice>] The list of completion choices the model generated for the input prompt.
+      #
+      #   @param created [Integer] The Unix timestamp (in seconds) of when the completion was created.
+      #
+      #   @param model [String] The model used for completion.
+      #
+      #   @param system_fingerprint [String] This fingerprint represents the backend configuration that the model runs with.
+      #   ...
+      #
+      #   @param usage [OpenAI::Models::CompletionUsage] Usage statistics for the completion request.
+      #
+      #   @param object [Symbol, :text_completion] The object type, which is always "text_completion"
     end
   end
 end

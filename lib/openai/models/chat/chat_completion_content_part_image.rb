@@ -19,7 +19,8 @@ module OpenAI
         #   Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
         #
         #   @param image_url [OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL]
-        #   @param type [Symbol, :image_url]
+        #
+        #   @param type [Symbol, :image_url] The type of the content part.
 
         # @see OpenAI::Models::Chat::ChatCompletionContentPartImage#image_url
         class ImageURL < OpenAI::Internal::Type::BaseModel
@@ -37,8 +38,14 @@ module OpenAI
           optional :detail, enum: -> { OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail }
 
           # @!method initialize(url:, detail: nil)
-          #   @param url [String]
-          #   @param detail [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL} for more
+          #   details.
+          #
+          #   @param url [String] Either a URL of the image or the base64 encoded image data.
+          #
+          #   @param detail [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL::Detail] Specifies the detail level of the image. Learn more in the [Vision guide](https:
+          #   ...
 
           # Specifies the detail level of the image. Learn more in the
           # [Vision guide](https://platform.openai.com/docs/guides/vision#low-or-high-fidelity-image-understanding).

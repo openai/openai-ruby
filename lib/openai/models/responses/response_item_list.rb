@@ -37,11 +37,15 @@ module OpenAI
         # @!method initialize(data:, first_id:, has_more:, last_id:, object: :list)
         #   A list of Response items.
         #
-        #   @param data [Array<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
-        #   @param first_id [String]
-        #   @param has_more [Boolean]
-        #   @param last_id [String]
-        #   @param object [Symbol, :list]
+        #   @param data [Array<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>] A list of items used to generate this response.
+        #
+        #   @param first_id [String] The ID of the first item in the list.
+        #
+        #   @param has_more [Boolean] Whether there are more items available.
+        #
+        #   @param last_id [String] The ID of the last item in the list.
+        #
+        #   @param object [Symbol, :list] The type of object returned, must be `list`.
       end
     end
 

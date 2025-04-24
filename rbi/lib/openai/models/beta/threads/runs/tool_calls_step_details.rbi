@@ -41,8 +41,14 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(tool_calls:, type: :tool_calls); end
-
+            def self.new(
+              # An array of tool calls the run step was involved in. These can be associated
+              # with one of three types of tools: `code_interpreter`, `file_search`, or
+              # `function`.
+              tool_calls:,
+              # Always `tool_calls`.
+              type: :tool_calls
+            ); end
             sig do
               override
                 .returns(

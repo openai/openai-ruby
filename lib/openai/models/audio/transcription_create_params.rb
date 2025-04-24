@@ -83,14 +83,32 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity] }
 
         # @!method initialize(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
-        #   @param file [Pathname, StringIO]
-        #   @param model [String, Symbol, OpenAI::Models::AudioModel]
-        #   @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>]
-        #   @param language [String]
-        #   @param prompt [String]
-        #   @param response_format [Symbol, OpenAI::Models::AudioResponseFormat]
-        #   @param temperature [Float]
-        #   @param timestamp_granularities [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Audio::TranscriptionCreateParams} for more details.
+        #
+        #   @param file [Pathname, StringIO] The audio file object (not file name) to transcribe, in one of these formats: fl
+        #   ...
+        #
+        #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
+        #   ...
+        #
+        #   @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response. ...
+        #
+        #   @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
+        #   ...
+        #
+        #   @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
+        #   ...
+        #
+        #   @param response_format [Symbol, OpenAI::Models::AudioResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
+        #   ...
+        #
+        #   @param temperature [Float] The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
+        #   ...
+        #
+        #   @param timestamp_granularities [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>] The timestamp granularities to populate for this transcription. `response_format
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,

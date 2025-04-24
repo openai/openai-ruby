@@ -40,8 +40,20 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(expires_after: nil, metadata: nil, name: nil, request_options: {}); end
-
+      def self.new(
+        # The expiration policy for a vector store.
+        expires_after: nil,
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
+        metadata: nil,
+        # The name of the vector store.
+        name: nil,
+        request_options: {}
+      ); end
       sig do
         override
           .returns(
@@ -67,8 +79,13 @@ module OpenAI
 
         # The expiration policy for a vector store.
         sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
-        def self.new(days:, anchor: :last_active_at); end
-
+        def self.new(
+          # The number of days after the anchor time that the vector store will expire.
+          days:,
+          # Anchor timestamp after which the expiration policy applies. Supported anchors:
+          # `last_active_at`.
+          anchor: :last_active_at
+        ); end
         sig { override.returns({anchor: Symbol, days: Integer}) }
         def to_hash; end
       end

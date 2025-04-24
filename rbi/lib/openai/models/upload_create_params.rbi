@@ -38,8 +38,23 @@ module OpenAI
         )
           .returns(T.attached_class)
       end
-      def self.new(bytes:, filename:, mime_type:, purpose:, request_options: {}); end
-
+      def self.new(
+        # The number of bytes in the file you are uploading.
+        bytes:,
+        # The name of the file to upload.
+        filename:,
+        # The MIME type of the file.
+        #
+        # This must fall within the supported MIME types for your file purpose. See the
+        # supported MIME types for assistants and vision.
+        mime_type:,
+        # The intended purpose of the uploaded file.
+        #
+        # See the
+        # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
+        purpose:,
+        request_options: {}
+      ); end
       sig do
         override
           .returns(

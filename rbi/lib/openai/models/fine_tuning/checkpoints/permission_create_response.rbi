@@ -31,8 +31,16 @@ module OpenAI
               object: Symbol
             ).returns(T.attached_class)
           end
-          def self.new(id:, created_at:, project_id:, object: :"checkpoint.permission"); end
-
+          def self.new(
+            # The permission identifier, which can be referenced in the API endpoints.
+            id:,
+            # The Unix timestamp (in seconds) for when the permission was created.
+            created_at:,
+            # The project identifier that the permission is for.
+            project_id:,
+            # The object type, which is always "checkpoint.permission".
+            object: :"checkpoint.permission"
+          ); end
           sig { override.returns({id: String, created_at: Integer, object: Symbol, project_id: String}) }
           def to_hash; end
         end

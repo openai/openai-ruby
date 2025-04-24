@@ -23,9 +23,11 @@ module OpenAI
         required :tool_call_id, String
 
         # @!method initialize(content:, tool_call_id:, role: :tool)
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        #   @param tool_call_id [String]
-        #   @param role [Symbol, :tool]
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>] The contents of the tool message.
+        #
+        #   @param tool_call_id [String] Tool call that this message is responding to.
+        #
+        #   @param role [Symbol, :tool] The role of the messages author, in this case `tool`.
 
         # The contents of the tool message.
         #

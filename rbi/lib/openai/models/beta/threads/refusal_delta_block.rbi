@@ -21,8 +21,13 @@ module OpenAI
 
           # The refusal content that is part of a message.
           sig { params(index: Integer, refusal: String, type: Symbol).returns(T.attached_class) }
-          def self.new(index:, refusal: nil, type: :refusal); end
-
+          def self.new(
+            # The index of the refusal part in the message.
+            index:,
+            refusal: nil,
+            # Always `refusal`.
+            type: :refusal
+          ); end
           sig { override.returns({index: Integer, type: Symbol, refusal: String}) }
           def to_hash; end
         end

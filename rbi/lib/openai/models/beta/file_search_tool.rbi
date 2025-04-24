@@ -25,8 +25,12 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(file_search: nil, type: :file_search); end
-
+        def self.new(
+          # Overrides for the file search tool.
+          file_search: nil,
+          # The type of tool being defined: `file_search`
+          type: :file_search
+        ); end
         sig { override.returns({type: Symbol, file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch}) }
         def to_hash; end
 
@@ -70,8 +74,24 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(max_num_results: nil, ranking_options: nil); end
-
+          def self.new(
+            # The maximum number of results the file search tool should output. The default is
+            # 20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
+            # 1 and 50 inclusive.
+            #
+            # Note that the file search tool may output fewer than `max_num_results` results.
+            # See the
+            # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            # for more information.
+            max_num_results: nil,
+            # The ranking options for the file search. If not specified, the file search tool
+            # will use the `auto` ranker and a score_threshold of 0.
+            #
+            # See the
+            # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            # for more information.
+            ranking_options: nil
+          ); end
           sig do
             override
               .returns(
@@ -107,8 +127,14 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(score_threshold:, ranker: nil); end
-
+            def self.new(
+              # The score threshold for the file search. All values must be a floating point
+              # number between 0 and 1.
+              score_threshold:,
+              # The ranker to use for the file search. If not specified will use the `auto`
+              # ranker.
+              ranker: nil
+            ); end
             sig do
               override
                 .returns(

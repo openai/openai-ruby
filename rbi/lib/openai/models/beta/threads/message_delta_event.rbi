@@ -30,8 +30,14 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(id:, delta:, object: :"thread.message.delta"); end
-
+          def self.new(
+            # The identifier of the message, which can be referenced in API endpoints.
+            id:,
+            # The delta containing the fields that have changed on the Message.
+            delta:,
+            # The object type, which is always `thread.message.delta`.
+            object: :"thread.message.delta"
+          ); end
           sig { override.returns({id: String, delta: OpenAI::Models::Beta::Threads::MessageDelta, object: Symbol}) }
           def to_hash; end
         end

@@ -24,13 +24,19 @@ module OpenAI
         optional :name, String
 
         # @!method initialize(content:, name: nil, role: :developer)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam} for more details.
+        #
         #   Developer-provided instructions that the model should follow, regardless of
         #   messages sent by the user. With o1 models and newer, `developer` messages
         #   replace the previous `system` messages.
         #
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        #   @param name [String]
-        #   @param role [Symbol, :developer]
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>] The contents of the developer message.
+        #
+        #   @param name [String] An optional name for the participant. Provides the model information to differen
+        #   ...
+        #
+        #   @param role [Symbol, :developer] The role of the messages author, in this case `developer`.
 
         # The contents of the developer message.
         #

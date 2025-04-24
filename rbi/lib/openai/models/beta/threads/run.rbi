@@ -283,32 +283,108 @@ module OpenAI
               .returns(T.attached_class)
           end
           def self.new(
+            # The identifier, which can be referenced in API endpoints.
             id:,
+            # The ID of the
+            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+            # execution of this run.
             assistant_id:,
+            # The Unix timestamp (in seconds) for when the run was cancelled.
             cancelled_at:,
+            # The Unix timestamp (in seconds) for when the run was completed.
             completed_at:,
+            # The Unix timestamp (in seconds) for when the run was created.
             created_at:,
+            # The Unix timestamp (in seconds) for when the run will expire.
             expires_at:,
+            # The Unix timestamp (in seconds) for when the run failed.
             failed_at:,
+            # Details on why the run is incomplete. Will be `null` if the run is not
+            # incomplete.
             incomplete_details:,
+            # The instructions that the
+            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+            # this run.
             instructions:,
+            # The last error associated with this run. Will be `null` if there are no errors.
             last_error:,
+            # The maximum number of completion tokens specified to have been used over the
+            # course of the run.
             max_completion_tokens:,
+            # The maximum number of prompt tokens specified to have been used over the course
+            # of the run.
             max_prompt_tokens:,
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard.
+            #
+            # Keys are strings with a maximum length of 64 characters. Values are strings with
+            # a maximum length of 512 characters.
             metadata:,
+            # The model that the
+            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+            # this run.
             model:,
+            # Whether to enable
+            # [parallel function calling](https://platform.openai.com/docs/guides/function-calling#configuring-parallel-function-calling)
+            # during tool use.
             parallel_tool_calls:,
+            # Details on the action required to continue the run. Will be `null` if no action
+            # is required.
             required_action:,
+            # Specifies the format that the model must output. Compatible with
+            # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
+            # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
+            # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+            #
+            # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+            # Outputs which ensures the model will match your supplied JSON schema. Learn more
+            # in the
+            # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+            #
+            # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+            # message the model generates is valid JSON.
+            #
+            # **Important:** when using JSON mode, you **must** also instruct the model to
+            # produce JSON yourself via a system or user message. Without this, the model may
+            # generate an unending stream of whitespace until the generation reaches the token
+            # limit, resulting in a long-running and seemingly "stuck" request. Also note that
+            # the message content may be partially cut off if `finish_reason="length"`, which
+            # indicates the generation exceeded `max_tokens` or the conversation exceeded the
+            # max context length.
             response_format:,
+            # The Unix timestamp (in seconds) for when the run was started.
             started_at:,
+            # The status of the run, which can be either `queued`, `in_progress`,
+            # `requires_action`, `cancelling`, `cancelled`, `failed`, `completed`,
+            # `incomplete`, or `expired`.
             status:,
+            # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
+            # that was executed on as a part of this run.
             thread_id:,
+            # Controls which (if any) tool is called by the model. `none` means the model will
+            # not call any tools and instead generates a message. `auto` is the default value
+            # and means the model can pick between generating a message or calling one or more
+            # tools. `required` means the model must call one or more tools before responding
+            # to the user. Specifying a particular tool like `{"type": "file_search"}` or
+            # `{"type": "function", "function": {"name": "my_function"}}` forces the model to
+            # call that tool.
             tool_choice:,
+            # The list of tools that the
+            # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
+            # this run.
             tools:,
+            # Controls for how a thread will be truncated prior to the run. Use this to
+            # control the intial context window of the run.
             truncation_strategy:,
+            # Usage statistics related to the run. This value will be `null` if the run is not
+            # in a terminal state (i.e. `in_progress`, `queued`, etc.).
             usage:,
+            # The sampling temperature used for this run. If not set, defaults to 1.
             temperature: nil,
+            # The nucleus sampling value used for this run. If not set, defaults to 1.
             top_p: nil,
+            # The object type, which is always `thread.run`.
             object: :"thread.run"
           ); end
           sig do
@@ -380,8 +456,11 @@ module OpenAI
               params(reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::OrSymbol)
                 .returns(T.attached_class)
             end
-            def self.new(reason: nil); end
-
+            def self.new(
+              # The reason why the run is incomplete. This will point to which specific token
+              # limit was reached over the course of the run.
+              reason: nil
+            ); end
             sig { override.returns({reason: OpenAI::Models::Beta::Threads::Run::IncompleteDetails::Reason::TaggedSymbol}) }
             def to_hash; end
 
@@ -418,8 +497,12 @@ module OpenAI
               params(code: OpenAI::Models::Beta::Threads::Run::LastError::Code::OrSymbol, message: String)
                 .returns(T.attached_class)
             end
-            def self.new(code:, message:); end
-
+            def self.new(
+              # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
+              code:,
+              # A human-readable description of the error.
+              message:
+            ); end
             sig do
               override
                 .returns({code: OpenAI::Models::Beta::Threads::Run::LastError::Code::TaggedSymbol, message: String})
@@ -470,8 +553,12 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(submit_tool_outputs:, type: :submit_tool_outputs); end
-
+            def self.new(
+              # Details on the tool outputs needed for this run to continue.
+              submit_tool_outputs:,
+              # For now, this is always `submit_tool_outputs`.
+              type: :submit_tool_outputs
+            ); end
             sig do
               override
                 .returns(
@@ -492,8 +579,10 @@ module OpenAI
                 )
                   .returns(T.attached_class)
               end
-              def self.new(tool_calls:); end
-
+              def self.new(
+                # A list of the relevant tool calls.
+                tool_calls:
+              ); end
               sig { override.returns({tool_calls: T::Array[OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall]}) }
               def to_hash; end
             end
@@ -521,8 +610,16 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(type:, last_messages: nil); end
-
+            def self.new(
+              # The truncation strategy to use for the thread. The default is `auto`. If set to
+              # `last_messages`, the thread will be truncated to the n most recent messages in
+              # the thread. When set to `auto`, messages in the middle of the thread will be
+              # dropped to fit the context length of the model, `max_prompt_tokens`.
+              type:,
+              # The number of most recent messages from the thread when constructing the context
+              # for the run.
+              last_messages: nil
+            ); end
             sig do
               override
                 .returns(
@@ -576,8 +673,14 @@ module OpenAI
                 total_tokens: Integer
               ).returns(T.attached_class)
             end
-            def self.new(completion_tokens:, prompt_tokens:, total_tokens:); end
-
+            def self.new(
+              # Number of completion tokens used over the course of the run.
+              completion_tokens:,
+              # Number of prompt tokens used over the course of the run.
+              prompt_tokens:,
+              # Total number of tokens used (prompt + completion).
+              total_tokens:
+            ); end
             sig do
               override.returns({completion_tokens: Integer, prompt_tokens: Integer, total_tokens: Integer})
             end

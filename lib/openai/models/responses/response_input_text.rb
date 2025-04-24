@@ -17,10 +17,14 @@ module OpenAI
         required :type, const: :input_text
 
         # @!method initialize(text:, type: :input_text)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseInputText} for more details.
+        #
         #   A text input to the model.
         #
-        #   @param text [String]
-        #   @param type [Symbol, :input_text]
+        #   @param text [String] The text input to the model. ...
+        #
+        #   @param type [Symbol, :input_text] The type of the input item. Always `input_text`. ...
       end
     end
   end

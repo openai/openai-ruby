@@ -15,7 +15,11 @@ module OpenAI
         required :data, OpenAI::Internal::Type::IOLike
 
         # @!method initialize(data:, request_options: {})
-        #   @param data [Pathname, StringIO]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Uploads::PartCreateParams} for more details.
+        #
+        #   @param data [Pathname, StringIO] The chunk of bytes for this Part. ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

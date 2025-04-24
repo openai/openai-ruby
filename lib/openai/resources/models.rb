@@ -8,7 +8,8 @@ module OpenAI
       #
       # @overload retrieve(model, request_options: {})
       #
-      # @param model [String]
+      # @param model [String] The ID of the model to use for this request
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Model]
@@ -48,7 +49,8 @@ module OpenAI
       #
       # @overload delete(model, request_options: {})
       #
-      # @param model [String]
+      # @param model [String] The model to delete
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::ModelDeleted]

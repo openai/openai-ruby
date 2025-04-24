@@ -38,8 +38,16 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(delta:, logprobs: nil, type: :"transcript.text.delta"); end
-
+        def self.new(
+          # The text delta that was additionally transcribed.
+          delta:,
+          # The log probabilities of the delta. Only included if you
+          # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+          # with the `include[]` parameter set to `logprobs`.
+          logprobs: nil,
+          # The type of the event. Always `transcript.text.delta`.
+          type: :"transcript.text.delta"
+        ); end
         sig do
           override
             .returns(
@@ -71,8 +79,14 @@ module OpenAI
           attr_writer :logprob
 
           sig { params(token: String, bytes: T::Array[T.anything], logprob: Float).returns(T.attached_class) }
-          def self.new(token: nil, bytes: nil, logprob: nil); end
-
+          def self.new(
+            # The token that was used to generate the log probability.
+            token: nil,
+            # The bytes that were used to generate the log probability.
+            bytes: nil,
+            # The log probability of the token.
+            logprob: nil
+          ); end
           sig { override.returns({token: String, bytes: T::Array[T.anything], logprob: Float}) }
           def to_hash; end
         end

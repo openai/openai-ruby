@@ -31,8 +31,16 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(display_height:, display_width:, environment:, type: :computer_use_preview); end
-
+        def self.new(
+          # The height of the computer display.
+          display_height:,
+          # The width of the computer display.
+          display_width:,
+          # The type of computer environment to control.
+          environment:,
+          # The type of the computer use tool. Always `computer_use_preview`.
+          type: :computer_use_preview
+        ); end
         sig do
           override
             .returns(

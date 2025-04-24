@@ -27,8 +27,15 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, type: :content); end
-
+        def self.new(
+          # The content that should be matched when generating a model response. If
+          # generated tokens would match this content, the entire model response can be
+          # returned much more quickly.
+          content:,
+          # The type of the predicted content you want to provide. This type is currently
+          # always `content`.
+          type: :content
+        ); end
         sig do
           override
             .returns(

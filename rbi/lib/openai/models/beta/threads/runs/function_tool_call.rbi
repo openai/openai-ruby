@@ -35,8 +35,15 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(id:, function:, type: :function); end
-
+            def self.new(
+              # The ID of the tool call object.
+              id:,
+              # The definition of the function that was called.
+              function:,
+              # The type of tool call. This is always going to be `function` for this type of
+              # tool call.
+              type: :function
+            ); end
             sig do
               override
                 .returns(
@@ -64,8 +71,16 @@ module OpenAI
               sig do
                 params(arguments: String, name: String, output: T.nilable(String)).returns(T.attached_class)
               end
-              def self.new(arguments:, name:, output:); end
-
+              def self.new(
+                # The arguments passed to the function.
+                arguments:,
+                # The name of the function.
+                name:,
+                # The output of the function. This will be `null` if the outputs have not been
+                # [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
+                # yet.
+                output:
+              ); end
               sig { override.returns({arguments: String, name: String, output: T.nilable(String)}) }
               def to_hash; end
             end

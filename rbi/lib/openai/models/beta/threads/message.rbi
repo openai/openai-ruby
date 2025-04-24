@@ -121,19 +121,44 @@ module OpenAI
               .returns(T.attached_class)
           end
           def self.new(
+            # The identifier, which can be referenced in API endpoints.
             id:,
+            # If applicable, the ID of the
+            # [assistant](https://platform.openai.com/docs/api-reference/assistants) that
+            # authored this message.
             assistant_id:,
+            # A list of files attached to the message, and the tools they were added to.
             attachments:,
+            # The Unix timestamp (in seconds) for when the message was completed.
             completed_at:,
+            # The content of the message in array of text and/or images.
             content:,
+            # The Unix timestamp (in seconds) for when the message was created.
             created_at:,
+            # The Unix timestamp (in seconds) for when the message was marked as incomplete.
             incomplete_at:,
+            # On an incomplete message, details about why the message is incomplete.
             incomplete_details:,
+            # Set of 16 key-value pairs that can be attached to an object. This can be useful
+            # for storing additional information about the object in a structured format, and
+            # querying for objects via API or the dashboard.
+            #
+            # Keys are strings with a maximum length of 64 characters. Values are strings with
+            # a maximum length of 512 characters.
             metadata:,
+            # The entity that produced the message. One of `user` or `assistant`.
             role:,
+            # The ID of the [run](https://platform.openai.com/docs/api-reference/runs)
+            # associated with the creation of this message. Value is `null` when messages are
+            # created manually using the create message or create thread endpoints.
             run_id:,
+            # The status of the message, which can be either `in_progress`, `incomplete`, or
+            # `completed`.
             status:,
+            # The [thread](https://platform.openai.com/docs/api-reference/threads) ID that
+            # this message belongs to.
             thread_id:,
+            # The object type, which is always `thread.message`.
             object: :"thread.message"
           ); end
           sig do
@@ -216,8 +241,12 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(file_id: nil, tools: nil); end
-
+            def self.new(
+              # The ID of the file to attach to the message.
+              file_id: nil,
+              # The tools to add this file to.
+              tools: nil
+            ); end
             sig do
               override
                 .returns(
@@ -243,8 +272,10 @@ module OpenAI
                 attr_accessor :type
 
                 sig { params(type: Symbol).returns(T.attached_class) }
-                def self.new(type: :file_search); end
-
+                def self.new(
+                  # The type of tool being defined: `file_search`
+                  type: :file_search
+                ); end
                 sig { override.returns({type: Symbol}) }
                 def to_hash; end
               end
@@ -269,8 +300,10 @@ module OpenAI
               params(reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::OrSymbol)
                 .returns(T.attached_class)
             end
-            def self.new(reason:); end
-
+            def self.new(
+              # The reason the message is incomplete.
+              reason:
+            ); end
             sig do
               override.returns({reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::Reason::TaggedSymbol})
             end

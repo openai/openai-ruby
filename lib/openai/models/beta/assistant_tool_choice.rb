@@ -19,7 +19,8 @@ module OpenAI
         #   Specifies a tool the model should use. Use to force the model to call a specific
         #   tool.
         #
-        #   @param type [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type]
+        #   @param type [Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type] The type of the tool. If type is `function`, the function name must be set
+        #
         #   @param function [OpenAI::Models::Beta::AssistantToolChoiceFunction]
 
         # The type of the tool. If type is `function`, the function name must be set

@@ -42,14 +42,22 @@ module OpenAI
         required :type, const: :"response.output_text.annotation.added"
 
         # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, type: :"response.output_text.annotation.added")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent} for more details.
+        #
         #   Emitted when a text annotation is added.
         #
-        #   @param annotation [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
-        #   @param annotation_index [Integer]
-        #   @param content_index [Integer]
-        #   @param item_id [String]
-        #   @param output_index [Integer]
-        #   @param type [Symbol, :"response.output_text.annotation.added"]
+        #   @param annotation [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath] A citation to a file. ...
+        #
+        #   @param annotation_index [Integer] The index of the annotation that was added. ...
+        #
+        #   @param content_index [Integer] The index of the content part that the text annotation was added to. ...
+        #
+        #   @param item_id [String] The ID of the output item that the text annotation was added to. ...
+        #
+        #   @param output_index [Integer] The index of the output item that the text annotation was added to. ...
+        #
+        #   @param type [Symbol, :"response.output_text.annotation.added"] The type of the event. Always `response.output_text.annotation.added`. ...
 
         # A citation to a file.
         #
@@ -91,11 +99,17 @@ module OpenAI
             required :type, const: :file_citation
 
             # @!method initialize(file_id:, index:, type: :file_citation)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation}
+            #   for more details.
+            #
             #   A citation to a file.
             #
-            #   @param file_id [String]
-            #   @param index [Integer]
-            #   @param type [Symbol, :file_citation]
+            #   @param file_id [String] The ID of the file. ...
+            #
+            #   @param index [Integer] The index of the file in the list of files. ...
+            #
+            #   @param type [Symbol, :file_citation] The type of the file citation. Always `file_citation`. ...
           end
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
@@ -130,13 +144,21 @@ module OpenAI
             required :url, String
 
             # @!method initialize(end_index:, start_index:, title:, url:, type: :url_citation)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation}
+            #   for more details.
+            #
             #   A citation for a web resource used to generate a model response.
             #
-            #   @param end_index [Integer]
-            #   @param start_index [Integer]
-            #   @param title [String]
-            #   @param url [String]
-            #   @param type [Symbol, :url_citation]
+            #   @param end_index [Integer] The index of the last character of the URL citation in the message. ...
+            #
+            #   @param start_index [Integer] The index of the first character of the URL citation in the message. ...
+            #
+            #   @param title [String] The title of the web resource. ...
+            #
+            #   @param url [String] The URL of the web resource. ...
+            #
+            #   @param type [Symbol, :url_citation] The type of the URL citation. Always `url_citation`. ...
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
@@ -159,11 +181,17 @@ module OpenAI
             required :type, const: :file_path
 
             # @!method initialize(file_id:, index:, type: :file_path)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath}
+            #   for more details.
+            #
             #   A path to a file.
             #
-            #   @param file_id [String]
-            #   @param index [Integer]
-            #   @param type [Symbol, :file_path]
+            #   @param file_id [String] The ID of the file. ...
+            #
+            #   @param index [Integer] The index of the file in the list of files. ...
+            #
+            #   @param type [Symbol, :file_path] The type of the file path. Always `file_path`. ...
           end
 
           # @!method self.variants

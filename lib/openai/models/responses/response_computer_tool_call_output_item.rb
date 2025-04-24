@@ -44,12 +44,21 @@ module OpenAI
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status }
 
         # @!method initialize(id:, call_id:, output:, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
-        #   @param id [String]
-        #   @param call_id [String]
-        #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot]
-        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>]
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status]
-        #   @param type [Symbol, :computer_call_output]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseComputerToolCallOutputItem} for more
+        #   details.
+        #
+        #   @param id [String] The unique ID of the computer call tool output. ...
+        #
+        #   @param call_id [String] The ID of the computer tool call that produced the output. ...
+        #
+        #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool. ...
+        #
+        #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck>] The safety checks reported by the API that have been acknowledged by the ...
+        #
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::Status] The status of the message input. One of `in_progress`, `completed`, or ...
+        #
+        #   @param type [Symbol, :computer_call_output] The type of the computer tool call output. Always `computer_call_output`. ...
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           # @!attribute id
@@ -73,9 +82,11 @@ module OpenAI
           # @!method initialize(id:, code:, message:)
           #   A pending safety check for the computer call.
           #
-          #   @param id [String]
-          #   @param code [String]
-          #   @param message [String]
+          #   @param id [String] The ID of the pending safety check.
+          #
+          #   @param code [String] The type of the pending safety check.
+          #
+          #   @param message [String] Details about the pending safety check.
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or

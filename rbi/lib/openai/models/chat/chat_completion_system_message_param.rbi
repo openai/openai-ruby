@@ -34,8 +34,15 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(content:, name: nil, role: :system); end
-
+        def self.new(
+          # The contents of the system message.
+          content:,
+          # An optional name for the participant. Provides the model information to
+          # differentiate between participants of the same role.
+          name: nil,
+          # The role of the messages author, in this case `system`.
+          role: :system
+        ); end
         sig do
           override
             .returns(

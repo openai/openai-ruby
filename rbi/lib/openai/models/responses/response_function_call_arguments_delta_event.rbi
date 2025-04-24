@@ -29,8 +29,16 @@ module OpenAI
             type: Symbol
           ).returns(T.attached_class)
         end
-        def self.new(delta:, item_id:, output_index:, type: :"response.function_call_arguments.delta"); end
-
+        def self.new(
+          # The function-call arguments delta that is added.
+          delta:,
+          # The ID of the output item that the function-call arguments delta is added to.
+          item_id:,
+          # The index of the output item that the function-call arguments delta is added to.
+          output_index:,
+          # The type of the event. Always `response.function_call_arguments.delta`.
+          type: :"response.function_call_arguments.delta"
+        ); end
         sig { override.returns({delta: String, item_id: String, output_index: Integer, type: Symbol}) }
         def to_hash; end
       end

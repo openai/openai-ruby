@@ -18,10 +18,13 @@ module OpenAI
         required :type, enum: -> { OpenAI::Models::Responses::ToolChoiceTypes::Type }
 
         # @!method initialize(type:)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ToolChoiceTypes} for more details.
+        #
         #   Indicates that the model should use a built-in tool to generate a response.
         #   [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
         #
-        #   @param type [Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type]
+        #   @param type [Symbol, OpenAI::Models::Responses::ToolChoiceTypes::Type] The type of hosted tool the model should to use. Learn more about ...
 
         # The type of hosted tool the model should to use. Learn more about
         # [built-in tools](https://platform.openai.com/docs/guides/tools).

@@ -37,8 +37,19 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(thread_id:, run_id:, include: nil, request_options: {}); end
-
+            def self.new(
+              thread_id:,
+              run_id:,
+              # A list of additional fields to include in the response. Currently the only
+              # supported value is `step_details.tool_calls[*].file_search.results[*].content`
+              # to fetch the file search result content.
+              #
+              # See the
+              # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+              # for more information.
+              include: nil,
+              request_options: {}
+            ); end
             sig do
               override
                 .returns(

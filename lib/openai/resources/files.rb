@@ -3,6 +3,9 @@
 module OpenAI
   module Resources
     class Files
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::FileCreateParams} for more details.
+      #
       # Upload a file that can be used across various endpoints. Individual files can be
       # up to 512 MB, and the size of all files uploaded by one organization can be up
       # to 100 GB.
@@ -27,8 +30,11 @@ module OpenAI
       #
       # @overload create(file:, purpose:, request_options: {})
       #
-      # @param file [Pathname, StringIO]
-      # @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      # @param file [Pathname, StringIO] The File object (not file name) to be uploaded. ...
+      #
+      # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
+      # ...
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::FileObject]
@@ -50,7 +56,8 @@ module OpenAI
       #
       # @overload retrieve(file_id, request_options: {})
       #
-      # @param file_id [String]
+      # @param file_id [String] The ID of the file to use for this request.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::FileObject]
@@ -65,14 +72,24 @@ module OpenAI
         )
       end
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::FileListParams} for more details.
+      #
       # Returns a list of files.
       #
       # @overload list(after: nil, limit: nil, order: nil, purpose: nil, request_options: {})
       #
-      # @param after [String]
-      # @param limit [Integer]
-      # @param order [Symbol, OpenAI::Models::FileListParams::Order]
-      # @param purpose [String]
+      # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+      # ...
+      #
+      # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+      # ...
+      #
+      # @param order [Symbol, OpenAI::Models::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+      # ...
+      #
+      # @param purpose [String] Only return files with the given purpose.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FileObject>]
@@ -94,7 +111,8 @@ module OpenAI
       #
       # @overload delete(file_id, request_options: {})
       #
-      # @param file_id [String]
+      # @param file_id [String] The ID of the file to use for this request.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::FileDeleted]
@@ -113,7 +131,8 @@ module OpenAI
       #
       # @overload content(file_id, request_options: {})
       #
-      # @param file_id [String]
+      # @param file_id [String] The ID of the file to use for this request.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [StringIO]

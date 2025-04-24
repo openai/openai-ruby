@@ -33,8 +33,16 @@ module OpenAI
         sig do
           params(file_data: String, file_id: String, filename: String, type: Symbol).returns(T.attached_class)
         end
-        def self.new(file_data: nil, file_id: nil, filename: nil, type: :input_file); end
-
+        def self.new(
+          # The content of the file to be sent to the model.
+          file_data: nil,
+          # The ID of the file to be sent to the model.
+          file_id: nil,
+          # The name of the file to be sent to the model.
+          filename: nil,
+          # The type of the input item. Always `input_file`.
+          type: :input_file
+        ); end
         sig { override.returns({type: Symbol, file_data: String, file_id: String, filename: String}) }
         def to_hash; end
       end

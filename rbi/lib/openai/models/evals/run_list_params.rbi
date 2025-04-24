@@ -47,8 +47,19 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(after: nil, limit: nil, order: nil, status: nil, request_options: {}); end
-
+        def self.new(
+          # Identifier for the last run from the previous pagination request.
+          after: nil,
+          # Number of runs to retrieve.
+          limit: nil,
+          # Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
+          # descending order. Defaults to `asc`.
+          order: nil,
+          # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+          # | `canceled`.
+          status: nil,
+          request_options: {}
+        ); end
         sig do
           override
             .returns(

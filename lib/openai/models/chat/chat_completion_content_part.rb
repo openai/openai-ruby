@@ -39,7 +39,8 @@ module OpenAI
           #   generation.
           #
           #   @param file [OpenAI::Models::Chat::ChatCompletionContentPart::File::File]
-          #   @param type [Symbol, :file]
+          #
+          #   @param type [Symbol, :file] The type of the content part. Always `file`.
 
           # @see OpenAI::Models::Chat::ChatCompletionContentPart::File#file
           class File < OpenAI::Internal::Type::BaseModel
@@ -63,9 +64,14 @@ module OpenAI
             optional :filename, String
 
             # @!method initialize(file_data: nil, file_id: nil, filename: nil)
-            #   @param file_data [String]
-            #   @param file_id [String]
-            #   @param filename [String]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Chat::ChatCompletionContentPart::File::File} for more details.
+            #
+            #   @param file_data [String] The base64 encoded file data, used when passing the file to the model ...
+            #
+            #   @param file_id [String] The ID of an uploaded file to use as input. ...
+            #
+            #   @param filename [String] The name of the file, used when passing the file to the model as a ...
           end
         end
 

@@ -31,8 +31,14 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(text:, logprobs: nil); end
-
+        def self.new(
+          # The transcribed text.
+          text:,
+          # The log probabilities of the tokens in the transcription. Only returned with the
+          # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
+          # to the `include` array.
+          logprobs: nil
+        ); end
         sig { override.returns({text: String, logprobs: T::Array[OpenAI::Models::Audio::Transcription::Logprob]}) }
         def to_hash; end
 
@@ -59,8 +65,14 @@ module OpenAI
           attr_writer :logprob
 
           sig { params(token: String, bytes: T::Array[Float], logprob: Float).returns(T.attached_class) }
-          def self.new(token: nil, bytes: nil, logprob: nil); end
-
+          def self.new(
+            # The token in the transcription.
+            token: nil,
+            # The bytes of the token.
+            bytes: nil,
+            # The log probability of the token.
+            logprob: nil
+          ); end
           sig { override.returns({token: String, bytes: T::Array[Float], logprob: Float}) }
           def to_hash; end
         end

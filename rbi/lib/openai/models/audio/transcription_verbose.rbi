@@ -45,8 +45,18 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(duration:, language:, text:, segments: nil, words: nil); end
-
+        def self.new(
+          # The duration of the input audio.
+          duration:,
+          # The language of the input audio.
+          language:,
+          # The transcribed text.
+          text:,
+          # Segments of the transcribed text and their corresponding details.
+          segments: nil,
+          # Extracted words and their corresponding timestamps.
+          words: nil
+        ); end
         sig do
           override
             .returns(

@@ -44,14 +44,17 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
+          # The ID of the item this summary part is associated with.
           item_id:,
+          # The index of the output item this summary part is associated with.
           output_index:,
+          # The summary part that was added.
           part:,
+          # The index of the summary part within the reasoning summary.
           summary_index:,
+          # The type of the event. Always `response.reasoning_summary_part.added`.
           type: :"response.reasoning_summary_part.added"
-        )
-        end
-
+        ); end
         sig do
           override
             .returns(
@@ -77,8 +80,12 @@ module OpenAI
 
           # The summary part that was added.
           sig { params(text: String, type: Symbol).returns(T.attached_class) }
-          def self.new(text:, type: :summary_text); end
-
+          def self.new(
+            # The text of the summary part.
+            text:,
+            # The type of the summary part. Always `summary_text`.
+            type: :summary_text
+          ); end
           sig { override.returns({text: String, type: Symbol}) }
           def to_hash; end
         end

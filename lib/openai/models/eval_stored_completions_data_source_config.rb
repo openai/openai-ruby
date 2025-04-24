@@ -28,15 +28,20 @@ module OpenAI
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
       # @!method initialize(schema:, metadata: nil, type: :stored_completions)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::EvalStoredCompletionsDataSourceConfig} for more details.
+      #
       #   A StoredCompletionsDataSourceConfig which specifies the metadata property of
       #   your stored completions query. This is usually metadata like `usecase=chatbot`
       #   or `prompt-version=v2`, etc. The schema returned by this data source config is
       #   used to defined what variables are available in your evals. `item` and `sample`
       #   are both defined when using this data source config.
       #
-      #   @param schema [Hash{Symbol=>Object}]
-      #   @param metadata [Hash{Symbol=>String}, nil]
-      #   @param type [Symbol, :stored_completions]
+      #   @param schema [Hash{Symbol=>Object}] The json schema for the run data source items. ...
+      #
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #
+      #   @param type [Symbol, :stored_completions] The type of data source. Always `stored_completions`.
     end
   end
 end

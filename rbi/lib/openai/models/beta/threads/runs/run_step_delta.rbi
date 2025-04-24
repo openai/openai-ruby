@@ -42,8 +42,10 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(step_details: nil); end
-
+            def self.new(
+              # The details of the run step.
+              step_details: nil
+            ); end
             sig do
               override
                 .returns(

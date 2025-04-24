@@ -44,15 +44,20 @@ module OpenAI
           .returns(T.attached_class)
       end
       def self.new(
+        # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
+        # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         evaluation_metric:,
+        # The text being graded.
         input:,
+        # A float score where a value greater than or equal indicates a passing grade.
         pass_threshold:,
+        # The text being graded against.
         reference:,
+        # The name of the grader.
         name: nil,
+        # The type of grader.
         type: :text_similarity
-      )
-      end
-
+      ); end
       sig do
         override
           .returns(

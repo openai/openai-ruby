@@ -61,8 +61,12 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(content: nil, role: nil); end
-
+          def self.new(
+            # The content of the message in array of text and/or images.
+            content: nil,
+            # The entity that produced the message. One of `user` or `assistant`.
+            role: nil
+          ); end
           sig do
             override
               .returns(

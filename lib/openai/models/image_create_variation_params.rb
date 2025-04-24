@@ -53,12 +53,26 @@ module OpenAI
       optional :user, String
 
       # @!method initialize(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
-      #   @param image [Pathname, StringIO]
-      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
-      #   @param n [Integer, nil]
-      #   @param response_format [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil]
-      #   @param size [Symbol, OpenAI::Models::ImageCreateVariationParams::Size, nil]
-      #   @param user [String]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::ImageCreateVariationParams} for more details.
+      #
+      #   @param image [Pathname, StringIO] The image to use as the basis for the variation(s). Must be a valid PNG file, le
+      #   ...
+      #
+      #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil] The model to use for image generation. Only `dall-e-2` is supported at this time
+      #   ...
+      #
+      #   @param n [Integer, nil] The number of images to generate. Must be between 1 and 10.
+      #
+      #   @param response_format [Symbol, OpenAI::Models::ImageCreateVariationParams::ResponseFormat, nil] The format in which the generated images are returned. Must be one of `url` or `
+      #   ...
+      #
+      #   @param size [Symbol, OpenAI::Models::ImageCreateVariationParams::Size, nil] The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x
+      #   ...
+      #
+      #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
+      #   ...
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # The model to use for image generation. Only `dall-e-2` is supported at this

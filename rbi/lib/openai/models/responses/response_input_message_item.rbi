@@ -59,8 +59,20 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(id:, content:, role:, status: nil, type: nil); end
-
+        def self.new(
+          # The unique ID of the message input.
+          id:,
+          # A list of one or many input items to the model, containing different content
+          # types.
+          content:,
+          # The role of the message input. One of `user`, `system`, or `developer`.
+          role:,
+          # The status of item. One of `in_progress`, `completed`, or `incomplete`.
+          # Populated when items are returned via API.
+          status: nil,
+          # The type of the message input. Always set to `message`.
+          type: nil
+        ); end
         sig do
           override
             .returns(

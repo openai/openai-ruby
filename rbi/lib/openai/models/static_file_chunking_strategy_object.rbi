@@ -17,8 +17,11 @@ module OpenAI
         params(static: T.any(OpenAI::Models::StaticFileChunkingStrategy, OpenAI::Internal::AnyHash), type: Symbol)
           .returns(T.attached_class)
       end
-      def self.new(static:, type: :static); end
-
+      def self.new(
+        static:,
+        # Always `static`.
+        type: :static
+      ); end
       sig { override.returns({static: OpenAI::Models::StaticFileChunkingStrategy, type: Symbol}) }
       def to_hash; end
     end

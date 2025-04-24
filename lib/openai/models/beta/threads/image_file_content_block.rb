@@ -21,7 +21,8 @@ module OpenAI
           #   in the content of a message.
           #
           #   @param image_file [OpenAI::Models::Beta::Threads::ImageFile]
-          #   @param type [Symbol, :image_file]
+          #
+          #   @param type [Symbol, :image_file] Always `image_file`.
         end
       end
     end

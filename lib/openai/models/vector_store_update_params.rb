@@ -31,9 +31,15 @@ module OpenAI
       optional :name, String, nil?: true
 
       # @!method initialize(expires_after: nil, metadata: nil, name: nil, request_options: {})
-      #   @param expires_after [OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, nil]
-      #   @param metadata [Hash{Symbol=>String}, nil]
-      #   @param name [String, nil]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::VectorStoreUpdateParams} for more details.
+      #
+      #   @param expires_after [OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, nil] The expiration policy for a vector store.
+      #
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #
+      #   @param name [String, nil] The name of the vector store.
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
@@ -51,10 +57,15 @@ module OpenAI
         required :days, Integer
 
         # @!method initialize(days:, anchor: :last_active_at)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter} for more details.
+        #
         #   The expiration policy for a vector store.
         #
-        #   @param days [Integer]
-        #   @param anchor [Symbol, :last_active_at]
+        #   @param days [Integer] The number of days after the anchor time that the vector store will expire.
+        #
+        #   @param anchor [Symbol, :last_active_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
+        #   ...
       end
     end
   end

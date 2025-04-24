@@ -29,10 +29,13 @@ module OpenAI
         optional :segments, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionSegment] }
 
         # @!method initialize(duration:, language:, text:, segments: nil)
-        #   @param duration [Float]
-        #   @param language [String]
-        #   @param text [String]
-        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>]
+        #   @param duration [Float] The duration of the input audio.
+        #
+        #   @param language [String] The language of the output translation (always `english`).
+        #
+        #   @param text [String] The translated text.
+        #
+        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>] Segments of the translated text and their corresponding details.
       end
     end
   end

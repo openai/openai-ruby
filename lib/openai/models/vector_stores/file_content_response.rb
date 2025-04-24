@@ -18,8 +18,9 @@ module OpenAI
         optional :type, String
 
         # @!method initialize(text: nil, type: nil)
-        #   @param text [String]
-        #   @param type [String]
+        #   @param text [String] The text content
+        #
+        #   @param type [String] The content type (currently only `"text"`)
       end
     end
   end

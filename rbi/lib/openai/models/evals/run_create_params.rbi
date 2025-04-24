@@ -49,8 +49,20 @@ module OpenAI
           )
             .returns(T.attached_class)
         end
-        def self.new(data_source:, metadata: nil, name: nil, request_options: {}); end
-
+        def self.new(
+          # Details about the run's data source.
+          data_source:,
+          # Set of 16 key-value pairs that can be attached to an object. This can be useful
+          # for storing additional information about the object in a structured format, and
+          # querying for objects via API or the dashboard.
+          #
+          # Keys are strings with a maximum length of 64 characters. Values are strings with
+          # a maximum length of 512 characters.
+          metadata: nil,
+          # The name of the run.
+          name: nil,
+          request_options: {}
+        ); end
         sig do
           override
             .returns(
@@ -167,8 +179,16 @@ module OpenAI
               )
                 .returns(T.attached_class)
             end
-            def self.new(source:, type:, input_messages: nil, model: nil, sampling_params: nil); end
-
+            def self.new(
+              # A EvalResponsesSource object describing a run data source configuration.
+              source:,
+              # The type of run data source. Always `completions`.
+              type:,
+              input_messages: nil,
+              # The name of the model to use for generating completions (e.g. "o3-mini").
+              model: nil,
+              sampling_params: nil
+            ); end
             sig do
               override
                 .returns(
@@ -221,8 +241,12 @@ module OpenAI
                   )
                     .returns(T.attached_class)
                 end
-                def self.new(content:, type: :file_content); end
-
+                def self.new(
+                  # The content of the jsonl file.
+                  content:,
+                  # The type of jsonl source. Always `file_content`.
+                  type: :file_content
+                ); end
                 sig do
                   override
                     .returns(
@@ -272,8 +296,12 @@ module OpenAI
                 attr_accessor :type
 
                 sig { params(id: String, type: Symbol).returns(T.attached_class) }
-                def self.new(id:, type: :file_id); end
-
+                def self.new(
+                  # The identifier of the file.
+                  id:,
+                  # The type of jsonl source. Always `file_id`.
+                  type: :file_id
+                ); end
                 sig { override.returns({id: String, type: Symbol}) }
                 def to_hash; end
               end
@@ -354,17 +382,37 @@ module OpenAI
                     .returns(T.attached_class)
                 end
                 def self.new(
+                  # Whether to allow parallel tool calls. This is a query parameter used to select
+                  # responses.
                   allow_parallel_tool_calls: nil,
+                  # Only include items created after this timestamp (inclusive). This is a query
+                  # parameter used to select responses.
                   created_after: nil,
+                  # Only include items created before this timestamp (inclusive). This is a query
+                  # parameter used to select responses.
                   created_before: nil,
+                  # Whether the response has tool calls. This is a query parameter used to select
+                  # responses.
                   has_tool_calls: nil,
+                  # Optional search string for instructions. This is a query parameter used to
+                  # select responses.
                   instructions_search: nil,
+                  # Metadata filter for the responses. This is a query parameter used to select
+                  # responses.
                   metadata: nil,
+                  # The name of the model to find responses for. This is a query parameter used to
+                  # select responses.
                   model: nil,
+                  # Optional reasoning effort parameter. This is a query parameter used to select
+                  # responses.
                   reasoning_effort: nil,
+                  # Sampling temperature. This is a query parameter used to select responses.
                   temperature: nil,
+                  # Nucleus sampling parameter. This is a query parameter used to select responses.
                   top_p: nil,
+                  # List of user identifiers. This is a query parameter used to select responses.
                   users: nil,
+                  # The type of run data source. Always `responses`.
                   type: :responses
                 ); end
                 sig do
@@ -456,8 +504,13 @@ module OpenAI
                   )
                     .returns(T.attached_class)
                 end
-                def self.new(template:, type: :template); end
-
+                def self.new(
+                  # A list of chat messages forming the prompt or context. May include variable
+                  # references to the "item" namespace, ie {{item.name}}.
+                  template:,
+                  # The type of input messages. Always `template`.
+                  type: :template
+                ); end
                 sig do
                   override
                     .returns(
@@ -492,8 +545,12 @@ module OpenAI
                     attr_accessor :role
 
                     sig { params(content: String, role: String).returns(T.attached_class) }
-                    def self.new(content:, role:); end
-
+                    def self.new(
+                      # The content of the message.
+                      content:,
+                      # The role of the message (e.g. "system", "assistant", "user").
+                      role:
+                    ); end
                     sig { override.returns({content: String, role: String}) }
                     def to_hash; end
                   end
@@ -556,8 +613,15 @@ module OpenAI
                       )
                         .returns(T.attached_class)
                     end
-                    def self.new(content:, role:, type: nil); end
-
+                    def self.new(
+                      # Text inputs to the model - can contain template strings.
+                      content:,
+                      # The role of the message input. One of `user`, `assistant`, `system`, or
+                      # `developer`.
+                      role:,
+                      # The type of the message input. Always `message`.
+                      type: nil
+                    ); end
                     sig do
                       override
                         .returns(
@@ -589,8 +653,12 @@ module OpenAI
 
                         # A text output from the model.
                         sig { params(text: String, type: Symbol).returns(T.attached_class) }
-                        def self.new(text:, type: :output_text); end
-
+                        def self.new(
+                          # The text output from the model.
+                          text:,
+                          # The type of the output text. Always `output_text`.
+                          type: :output_text
+                        ); end
                         sig { override.returns({text: String, type: Symbol}) }
                         def to_hash; end
                       end
@@ -695,8 +763,12 @@ module OpenAI
                 attr_accessor :type
 
                 sig { params(item_reference: String, type: Symbol).returns(T.attached_class) }
-                def self.new(item_reference:, type: :item_reference); end
-
+                def self.new(
+                  # A reference to a variable in the "item" namespace. Ie, "item.name"
+                  item_reference:,
+                  # The type of input messages. Always `item_reference`.
+                  type: :item_reference
+                ); end
                 sig { override.returns({item_reference: String, type: Symbol}) }
                 def to_hash; end
               end
@@ -743,8 +815,16 @@ module OpenAI
                 params(max_completion_tokens: Integer, seed: Integer, temperature: Float, top_p: Float)
                   .returns(T.attached_class)
               end
-              def self.new(max_completion_tokens: nil, seed: nil, temperature: nil, top_p: nil); end
-
+              def self.new(
+                # The maximum number of tokens in the generated output.
+                max_completion_tokens: nil,
+                # A seed value to initialize the randomness, during sampling.
+                seed: nil,
+                # A higher temperature increases randomness in the outputs.
+                temperature: nil,
+                # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
+                top_p: nil
+              ); end
               sig do
                 override.returns(
                   {

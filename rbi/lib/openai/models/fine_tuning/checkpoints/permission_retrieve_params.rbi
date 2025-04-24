@@ -46,8 +46,17 @@ module OpenAI
             )
               .returns(T.attached_class)
           end
-          def self.new(after: nil, limit: nil, order: nil, project_id: nil, request_options: {}); end
-
+          def self.new(
+            # Identifier for the last permission ID from the previous pagination request.
+            after: nil,
+            # Number of permissions to retrieve.
+            limit: nil,
+            # The order in which to retrieve permissions.
+            order: nil,
+            # The ID of the project to get permissions for.
+            project_id: nil,
+            request_options: {}
+          ); end
           sig do
             override
               .returns(
