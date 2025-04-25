@@ -67,17 +67,28 @@ module OpenAI
             end
           end
 
-          # @!parse
-          #   # @api private
-          #   #
-          #   # @param value [Pathname, StringIO, IO, String, Object]
-          #   #
-          #   # @param state [Hash{Symbol=>Object}] .
-          #   #
-          #   #   @option state [Boolean] :can_retry
-          #   #
-          #   # @return [Pathname, StringIO, IO, String, Object]
-          #   def dump(value, state:) = super
+          # @api private
+          #
+          # @param value [Pathname, StringIO, IO, String, Object]
+          #
+          # @param state [Hash{Symbol=>Object}] .
+          #
+          #   @option state [Boolean] :can_retry
+          #
+          # @return [Pathname, StringIO, IO, String, Object]
+          def dump(value, state:)
+            # rubocop:disable Lint/DuplicateBranch
+            case value
+            in IO
+              state[:can_retry] = false
+            in OpenAI::FilePart if value.content.is_a?(IO)
+              state[:can_retry] = false
+            else
+            end
+            # rubocop:enable Lint/DuplicateBranch
+
+            value
+          end
         end
       end
     end
