@@ -281,10 +281,13 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
 
+        # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
+        # @type [OpenAI::Internal::Type::Converter]
         IntegerArray = OpenAI::Internal::Type::ArrayOf[Integer]
 
+        # @type [OpenAI::Internal::Type::Converter]
         ArrayOfToken2DArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]]
       end
 
@@ -302,6 +305,7 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>)]
 
+        # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end
     end

@@ -587,6 +587,7 @@ module OpenAI
           # @!method self.variants
           #   @return [Array(String, Array<String>)]
 
+          # @type [OpenAI::Internal::Type::Converter]
           StringArray = OpenAI::Internal::Type::ArrayOf[String]
         end
 

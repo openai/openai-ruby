@@ -125,6 +125,7 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(StringIO, Array<StringIO>)]
 
+        # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::FileInput]
       end
 

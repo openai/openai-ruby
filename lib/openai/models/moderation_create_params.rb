@@ -51,8 +51,10 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>)]
 
+        # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
+        # @type [OpenAI::Internal::Type::Converter]
         ModerationMultiModalInputArray =
           OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::ModerationMultiModalInput }]
       end

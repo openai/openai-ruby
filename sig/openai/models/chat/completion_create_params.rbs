@@ -263,9 +263,7 @@ module OpenAI
 
           def self?.variants: -> [String, ::Array[String]]
 
-          type string_array = ::Array[String]
-
-          StringArray: string_array
+          StringArray: OpenAI::Internal::Type::Converter
         end
 
         type web_search_options =
