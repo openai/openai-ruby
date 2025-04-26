@@ -151,10 +151,7 @@ module OpenAI
 
               def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
 
-              type message_content_part_param_array =
-                ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
-
-              MessageContentPartParamArray: message_content_part_param_array
+              MessageContentPartParamArray: OpenAI::Internal::Type::Converter
             end
 
             type role = :user | :assistant

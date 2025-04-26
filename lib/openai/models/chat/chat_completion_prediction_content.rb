@@ -48,6 +48,7 @@ module OpenAI
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
+          # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartTextArray =
             OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
         end

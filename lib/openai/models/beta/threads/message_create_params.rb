@@ -72,6 +72,7 @@ module OpenAI
             # @!method self.variants
             #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
+            # @type [OpenAI::Internal::Type::Converter]
             MessageContentPartParamArray =
               OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
           end

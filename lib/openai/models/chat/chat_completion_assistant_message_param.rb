@@ -131,6 +131,7 @@ module OpenAI
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal>)]
 
+          # @type [OpenAI::Internal::Type::Converter]
           ArrayOfContentPartArray =
             OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart }]
         end
