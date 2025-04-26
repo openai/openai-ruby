@@ -82,7 +82,7 @@ module OpenAI
             user: String,
             web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Internal::AnyHash),
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Chat::ChatCompletion)
         end
@@ -355,7 +355,7 @@ module OpenAI
             user: String,
             web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Internal::AnyHash),
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Internal::Stream[OpenAI::Models::Chat::ChatCompletionChunk])
         end
@@ -556,10 +556,7 @@ module OpenAI
         # Get a stored chat completion. Only Chat Completions that have been created with
         # the `store` parameter set to `true` will be returned.
         sig do
-          params(
-            completion_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(completion_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::Chat::ChatCompletion)
         end
         def retrieve(
@@ -574,7 +571,7 @@ module OpenAI
           params(
             completion_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Chat::ChatCompletion)
         end
@@ -599,7 +596,7 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Chat::ChatCompletion])
         end
@@ -622,10 +619,7 @@ module OpenAI
         # Delete a stored chat completion. Only Chat Completions that have been created
         # with the `store` parameter set to `true` can be deleted.
         sig do
-          params(
-            completion_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(completion_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::Chat::ChatCompletionDeleted)
         end
         def delete(

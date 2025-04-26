@@ -17,7 +17,7 @@ module OpenAI
               OpenAI::Internal::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFile)
         end
@@ -41,11 +41,7 @@ module OpenAI
         ); end
         # Retrieves a vector store file.
         sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::VectorStores::VectorStoreFile)
         end
         def retrieve(
@@ -61,7 +57,7 @@ module OpenAI
             file_id: String,
             vector_store_id: String,
             attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFile)
         end
@@ -87,7 +83,7 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
         end
@@ -119,11 +115,7 @@ module OpenAI
         # [delete file](https://platform.openai.com/docs/api-reference/files/delete)
         # endpoint.
         sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::VectorStores::VectorStoreFileDeleted)
         end
         def delete(
@@ -135,11 +127,7 @@ module OpenAI
         ); end
         # Retrieve the parsed contents of a vector store file.
         sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Internal::Page[OpenAI::Models::VectorStores::FileContentResponse])
         end
         def content(

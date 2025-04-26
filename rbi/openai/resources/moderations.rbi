@@ -19,7 +19,7 @@ module OpenAI
             ]
           ),
           model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::ModerationCreateResponse)
       end

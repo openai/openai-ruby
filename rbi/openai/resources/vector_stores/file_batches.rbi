@@ -15,7 +15,7 @@ module OpenAI
               OpenAI::Internal::AnyHash,
               OpenAI::Models::StaticFileChunkingStrategyObjectParam
             ),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
@@ -39,11 +39,7 @@ module OpenAI
         ); end
         # Retrieves a vector store file batch.
         sig do
-          params(
-            batch_id: String,
-            vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
         def retrieve(
@@ -56,11 +52,7 @@ module OpenAI
         # Cancel a vector store file batch. This attempts to cancel the processing of
         # files in this batch as soon as possible.
         sig do
-          params(
-            batch_id: String,
-            vector_store_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
         end
         def cancel(
@@ -80,7 +72,7 @@ module OpenAI
             filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
             order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
         end

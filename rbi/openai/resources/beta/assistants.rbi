@@ -33,7 +33,7 @@ module OpenAI
               )
             ],
             top_p: T.nilable(Float),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -109,11 +109,7 @@ module OpenAI
         ); end
         # Retrieves an assistant.
         sig do
-          params(
-            assistant_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
-            .returns(OpenAI::Models::Beta::Assistant)
+          params(assistant_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Beta::Assistant)
         end
         def retrieve(
           # The ID of the assistant to retrieve.
@@ -150,7 +146,7 @@ module OpenAI
               )
             ],
             top_p: T.nilable(Float),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Beta::Assistant)
         end
@@ -233,7 +229,7 @@ module OpenAI
             before: String,
             limit: Integer,
             order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Assistant])
         end
@@ -258,10 +254,7 @@ module OpenAI
         ); end
         # Delete an assistant.
         sig do
-          params(
-            assistant_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(assistant_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::Beta::AssistantDeleted)
         end
         def delete(

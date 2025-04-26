@@ -75,7 +75,7 @@ module OpenAI
           truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::Responses::Response)
       end
@@ -276,7 +276,7 @@ module OpenAI
           truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(
             OpenAI::Internal::Stream[
@@ -454,7 +454,7 @@ module OpenAI
         params(
           response_id: String,
           include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::Responses::Response)
       end
@@ -467,13 +467,7 @@ module OpenAI
         request_options: {}
       ); end
       # Deletes a model response with the given ID.
-      sig do
-        params(
-          response_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .void
-      end
+      sig { params(response_id: String, request_options: OpenAI::RequestOpts).void }
       def delete(
         # The ID of the response to delete.
         response_id,

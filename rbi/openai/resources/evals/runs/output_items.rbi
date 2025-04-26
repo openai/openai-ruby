@@ -11,7 +11,7 @@ module OpenAI
               output_item_id: String,
               eval_id: String,
               run_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse)
           end
@@ -33,7 +33,7 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Models::Evals::Runs::OutputItemListParams::Order::OrSymbol,
               status: OpenAI::Models::Evals::Runs::OutputItemListParams::Status::OrSymbol,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Evals::Runs::OutputItemListResponse])
           end

@@ -26,7 +26,7 @@ module OpenAI
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::Completion)
       end
@@ -164,7 +164,7 @@ module OpenAI
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Internal::Stream[OpenAI::Models::Completion])
       end

@@ -13,7 +13,7 @@ module OpenAI
             params(
               fine_tuned_model_checkpoint: String,
               project_ids: T::Array[String],
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Internal::Page[OpenAI::Models::FineTuning::Checkpoints::PermissionCreateResponse])
           end
@@ -35,7 +35,7 @@ module OpenAI
               limit: Integer,
               order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol,
               project_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse)
           end
@@ -60,7 +60,7 @@ module OpenAI
             params(
               permission_id: String,
               fine_tuned_model_checkpoint: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse)
           end

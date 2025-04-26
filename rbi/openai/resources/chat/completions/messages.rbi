@@ -13,7 +13,7 @@ module OpenAI
               after: String,
               limit: Integer,
               order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage])
           end

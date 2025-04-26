@@ -31,7 +31,7 @@ module OpenAI
           filename: String,
           mime_type: String,
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::Upload)
       end
@@ -53,13 +53,7 @@ module OpenAI
         request_options: {}
       ); end
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
-      sig do
-        params(
-          upload_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::Upload)
-      end
+      sig { params(upload_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Upload) }
       def cancel(
         # The ID of the Upload.
         upload_id,
@@ -83,7 +77,7 @@ module OpenAI
           upload_id: String,
           part_ids: T::Array[String],
           md5: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::Upload)
       end

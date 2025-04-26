@@ -30,7 +30,7 @@ module OpenAI
           ],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::EvalCreateResponse)
       end
@@ -52,11 +52,7 @@ module OpenAI
       ); end
       # Get an evaluation by ID.
       sig do
-        params(
-          eval_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::EvalRetrieveResponse)
+        params(eval_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::EvalRetrieveResponse)
       end
       def retrieve(
         # The ID of the evaluation to retrieve.
@@ -69,7 +65,7 @@ module OpenAI
           eval_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::EvalUpdateResponse)
       end
@@ -94,7 +90,7 @@ module OpenAI
           limit: Integer,
           order: OpenAI::Models::EvalListParams::Order::OrSymbol,
           order_by: OpenAI::Models::EvalListParams::OrderBy::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Internal::CursorPage[OpenAI::Models::EvalListResponse])
       end
@@ -112,13 +108,7 @@ module OpenAI
         request_options: {}
       ); end
       # Delete an evaluation.
-      sig do
-        params(
-          eval_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::EvalDeleteResponse)
-      end
+      sig { params(eval_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::EvalDeleteResponse) }
       def delete(
         # The ID of the evaluation to delete.
         eval_id,

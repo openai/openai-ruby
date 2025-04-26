@@ -28,7 +28,7 @@ module OpenAI
         params(
           file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
           purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::FileObject)
       end
@@ -43,13 +43,7 @@ module OpenAI
         request_options: {}
       ); end
       # Returns information about a specific file.
-      sig do
-        params(
-          file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::FileObject)
-      end
+      sig { params(file_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::FileObject) }
       def retrieve(
         # The ID of the file to use for this request.
         file_id,
@@ -62,7 +56,7 @@ module OpenAI
           limit: Integer,
           order: OpenAI::Models::FileListParams::Order::OrSymbol,
           purpose: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FileObject])
       end
@@ -83,26 +77,14 @@ module OpenAI
         request_options: {}
       ); end
       # Delete a file.
-      sig do
-        params(
-          file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::FileDeleted)
-      end
+      sig { params(file_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::FileDeleted) }
       def delete(
         # The ID of the file to use for this request.
         file_id,
         request_options: {}
       ); end
       # Returns the contents of the specified file.
-      sig do
-        params(
-          file_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(StringIO)
-      end
+      sig { params(file_id: String, request_options: OpenAI::RequestOpts).returns(StringIO) }
       def content(
         # The ID of the file to use for this request.
         file_id,

@@ -19,7 +19,7 @@ module OpenAI
           params(
             upload_id: String,
             data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Uploads::UploadPart)
         end

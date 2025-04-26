@@ -60,7 +60,7 @@ module OpenAI
                 T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::AnyHash)
               ),
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -230,7 +230,7 @@ module OpenAI
                 T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::AnyHash)
               ),
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(
                 OpenAI::Internal::Stream[
@@ -379,11 +379,7 @@ module OpenAI
           ); end
           # Retrieves a run.
           sig do
-            params(
-              run_id: String,
-              thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-            )
+            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOpts)
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
           def retrieve(
@@ -400,7 +396,7 @@ module OpenAI
               run_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -427,7 +423,7 @@ module OpenAI
               before: String,
               limit: Integer,
               order: OpenAI::Models::Beta::Threads::RunListParams::Order::OrSymbol,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Run])
           end
@@ -454,11 +450,7 @@ module OpenAI
           ); end
           # Cancels a run that is `in_progress`.
           sig do
-            params(
-              run_id: String,
-              thread_id: String,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-            )
+            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOpts)
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
           def cancel(
@@ -481,7 +473,7 @@ module OpenAI
               thread_id: String,
               tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Internal::AnyHash)],
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(OpenAI::Models::Beta::Threads::Run)
           end
@@ -513,7 +505,7 @@ module OpenAI
               thread_id: String,
               tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Internal::AnyHash)],
               stream: T.noreturn,
-              request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              request_options: OpenAI::RequestOpts
             )
               .returns(
                 OpenAI::Internal::Stream[
