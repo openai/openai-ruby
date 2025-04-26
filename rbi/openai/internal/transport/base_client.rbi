@@ -38,7 +38,7 @@ module OpenAI
                                                             OpenAI::Internal::Type::BaseModel]]
               ),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-              options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+              options: T.nilable(OpenAI::RequestOpts)
             }
           end
 
@@ -194,7 +194,7 @@ module OpenAI
                                                           OpenAI::Internal::Type::BaseModel]]
             ),
             model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-            options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            options: T.nilable(OpenAI::RequestOpts)
           )
             .returns(T.anything)
         end

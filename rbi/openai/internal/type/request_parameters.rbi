@@ -6,7 +6,7 @@ module OpenAI
       # @api private
       module RequestParameters
         # Options to specify HTTP behaviour for this request.
-        sig { returns(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)) }
+        sig { returns(OpenAI::RequestOpts) }
         attr_accessor :request_options
 
         # @api private

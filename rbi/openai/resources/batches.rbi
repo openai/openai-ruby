@@ -10,7 +10,7 @@ module OpenAI
           endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::Batch)
       end
@@ -43,13 +43,7 @@ module OpenAI
         request_options: {}
       ); end
       # Retrieves a batch.
-      sig do
-        params(
-          batch_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::Batch)
-      end
+      sig { params(batch_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Batch) }
       def retrieve(
         # The ID of the batch to retrieve.
         batch_id,
@@ -57,11 +51,7 @@ module OpenAI
       ); end
       # List your organization's batches.
       sig do
-        params(
-          after: String,
-          limit: Integer,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
+        params(after: String, limit: Integer, request_options: OpenAI::RequestOpts)
           .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Batch])
       end
       def list(
@@ -78,13 +68,7 @@ module OpenAI
       # Cancels an in-progress batch. The batch will be in status `cancelling` for up to
       # 10 minutes, before changing to `cancelled`, where it will have partial results
       # (if any) available in the output file.
-      sig do
-        params(
-          batch_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::Batch)
-      end
+      sig { params(batch_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Batch) }
       def cancel(
         # The ID of the batch to cancel.
         batch_id,

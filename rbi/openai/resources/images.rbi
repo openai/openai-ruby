@@ -12,7 +12,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
           size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
           user: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::ImagesResponse)
       end
@@ -57,7 +57,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol),
           size: T.nilable(OpenAI::Models::ImageEditParams::Size::OrSymbol),
           user: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::ImagesResponse)
       end
@@ -116,7 +116,7 @@ module OpenAI
           size: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol),
           style: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol),
           user: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::ImagesResponse)
       end

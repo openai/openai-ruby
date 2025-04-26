@@ -21,7 +21,7 @@ module OpenAI
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -47,13 +47,7 @@ module OpenAI
         request_options: {}
       ); end
       # Retrieves a vector store.
-      sig do
-        params(
-          vector_store_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
-          .returns(OpenAI::Models::VectorStore)
-      end
+      sig { params(vector_store_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::VectorStore) }
       def retrieve(
         # The ID of the vector store to retrieve.
         vector_store_id,
@@ -66,7 +60,7 @@ module OpenAI
           expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::AnyHash)),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Models::VectorStore)
       end
@@ -93,7 +87,7 @@ module OpenAI
           before: String,
           limit: Integer,
           order: OpenAI::Models::VectorStoreListParams::Order::OrSymbol,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStore])
       end
@@ -118,10 +112,7 @@ module OpenAI
       ); end
       # Delete a vector store.
       sig do
-        params(
-          vector_store_id: String,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-        )
+        params(vector_store_id: String, request_options: OpenAI::RequestOpts)
           .returns(OpenAI::Models::VectorStoreDeleted)
       end
       def delete(
@@ -139,7 +130,7 @@ module OpenAI
           max_num_results: Integer,
           ranking_options: T.any(OpenAI::Models::VectorStoreSearchParams::RankingOptions, OpenAI::Internal::AnyHash),
           rewrite_query: T::Boolean,
-          request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+          request_options: OpenAI::RequestOpts
         )
           .returns(OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse])
       end

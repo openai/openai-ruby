@@ -19,7 +19,7 @@ module OpenAI
             ),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Evals::RunCreateResponse)
         end
@@ -41,11 +41,7 @@ module OpenAI
         ); end
         # Get an evaluation run by ID.
         sig do
-          params(
-            run_id: String,
-            eval_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(run_id: String, eval_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::Evals::RunRetrieveResponse)
         end
         def retrieve(
@@ -63,7 +59,7 @@ module OpenAI
             limit: Integer,
             order: OpenAI::Models::Evals::RunListParams::Order::OrSymbol,
             status: OpenAI::Models::Evals::RunListParams::Status::OrSymbol,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Evals::RunListResponse])
         end
@@ -84,11 +80,7 @@ module OpenAI
         ); end
         # Delete an eval run.
         sig do
-          params(
-            run_id: String,
-            eval_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(run_id: String, eval_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::Evals::RunDeleteResponse)
         end
         def delete(
@@ -100,11 +92,7 @@ module OpenAI
         ); end
         # Cancel an ongoing evaluation run.
         sig do
-          params(
-            run_id: String,
-            eval_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(run_id: String, eval_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::Evals::RunCancelResponse)
         end
         def cancel(

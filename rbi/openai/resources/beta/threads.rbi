@@ -16,7 +16,7 @@ module OpenAI
             messages: T::Array[T.any(OpenAI::Models::Beta::ThreadCreateParams::Message, OpenAI::Internal::AnyHash)],
             metadata: T.nilable(T::Hash[Symbol, String]),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadCreateParams::ToolResources, OpenAI::Internal::AnyHash)),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Beta::Thread)
         end
@@ -39,13 +39,7 @@ module OpenAI
           request_options: {}
         ); end
         # Retrieves a thread.
-        sig do
-          params(
-            thread_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
-            .returns(OpenAI::Models::Beta::Thread)
-        end
+        sig { params(thread_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Beta::Thread) }
         def retrieve(
           # The ID of the thread to retrieve.
           thread_id,
@@ -57,7 +51,7 @@ module OpenAI
             thread_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
             tool_resources: T.nilable(T.any(OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Beta::Thread)
         end
@@ -80,10 +74,7 @@ module OpenAI
         ); end
         # Delete a thread.
         sig do
-          params(
-            thread_id: String,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
-          )
+          params(thread_id: String, request_options: OpenAI::RequestOpts)
             .returns(OpenAI::Models::Beta::ThreadDeleted)
         end
         def delete(
@@ -137,7 +128,7 @@ module OpenAI
               T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Internal::AnyHash)
             ),
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(OpenAI::Models::Beta::Threads::Run)
         end
@@ -282,7 +273,7 @@ module OpenAI
               T.any(OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, OpenAI::Internal::AnyHash)
             ),
             stream: T.noreturn,
-            request_options: T.nilable(T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash))
+            request_options: OpenAI::RequestOpts
           )
             .returns(
               OpenAI::Internal::Stream[
