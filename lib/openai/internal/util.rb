@@ -515,7 +515,7 @@ module OpenAI
             y << val.to_s
           else
             y << "Content-Type: application/json\r\n\r\n"
-            y << JSON.fast_generate(val)
+            y << JSON.generate(val)
           end
           y << "\r\n"
         end
@@ -564,9 +564,9 @@ module OpenAI
 
           case [content_type, body]
           in [%r{^application/(?:vnd\.api\+)?json}, Hash | Array | -> { primitive?(_1) }]
-            [headers, JSON.fast_generate(body)]
+            [headers, JSON.generate(body)]
           in [%r{^application/(?:x-)?jsonl}, Enumerable] unless body.is_a?(StringIO) || body.is_a?(IO)
-            [headers, body.lazy.map { JSON.fast_generate(_1) }]
+            [headers, body.lazy.map { JSON.generate(_1) }]
           in [%r{^multipart/form-data}, Hash | Pathname | StringIO | IO]
             boundary, strio = encode_multipart_streaming(body)
             headers = {**headers, "content-type" => "#{content_type}; boundary=#{boundary}"}

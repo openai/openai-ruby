@@ -37,7 +37,7 @@ class OpenAITest < Minitest::Test
     def initialize(response_code, response_headers, response_data)
       @response_code = response_code
       @response_headers = response_headers
-      @response_data = JSON.fast_generate(response_data)
+      @response_data = JSON.generate(response_data)
       @attempts = []
     end
 
