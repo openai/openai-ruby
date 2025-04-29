@@ -64,10 +64,18 @@ Layout/MultilineMethodParameterLineBreaks:
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
+Lint/BooleanSymbol:
+  Enabled: false
+
 # This option occasionally mangles identifier names
 Lint/DeprecatedConstants:
   Exclude:
     - "**/*.rbi"
+
+# We use pattern assertion in tests to ensure correctness.
+Lint/DuplicateMatchPattern:
+  Exclude:
+    - "test/**/*"
 
 # Fairly useful in tests for pattern assertions.
 Lint/EmptyInPattern:
@@ -117,6 +125,9 @@ Metrics/ParameterLists:
   Enabled: false
 
 Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/AccessorMethodName:
   Enabled: false
 
 # Need to preserve block identifier for documentation.
