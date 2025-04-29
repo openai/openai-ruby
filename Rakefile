@@ -39,7 +39,13 @@ xargs = %w[xargs --no-run-if-empty --null --max-procs=0 --max-args=300 --]
 
 desc("Lint `*.rb(i)`")
 multitask(:"lint:rubocop") do
-  lint = xargs + %w[rubocop --fail-level E] + (ENV.key?("CI") ? %w[--format github] : [])
+  rubocop = %w[rubocop --fail-level E]
+  rubocop += %w[--format github] if ENV.key?("CI")
+
+  # some lines cannot be shortened
+  rubocop += %w[--except Lint/RedundantCopDisableDirective,Layout/LineLength]
+
+  lint = xargs + rubocop
   sh("#{rubo_find.shelljoin} | #{lint.shelljoin}")
 end
 
