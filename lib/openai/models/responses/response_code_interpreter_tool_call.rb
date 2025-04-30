@@ -36,13 +36,20 @@ module OpenAI
         required :type, const: :code_interpreter_call
 
         # @!method initialize(id:, code:, results:, status:, type: :code_interpreter_call)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall} for more details.
+        #
         #   A tool call to run code.
         #
-        #   @param id [String]
-        #   @param code [String]
-        #   @param results [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files>]
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status]
-        #   @param type [Symbol, :code_interpreter_call]
+        #   @param id [String] The unique ID of the code interpreter tool call. ...
+        #
+        #   @param code [String] The code to run. ...
+        #
+        #   @param results [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files>] The results of the code interpreter tool call. ...
+        #
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Status] The status of the code interpreter tool call. ...
+        #
+        #   @param type [Symbol, :code_interpreter_call] The type of the code interpreter tool call. Always `code_interpreter_call`. ...
 
         # The output of a code interpreter tool call that is text.
         module Result
@@ -70,10 +77,15 @@ module OpenAI
             required :type, const: :logs
 
             # @!method initialize(logs:, type: :logs)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs} for
+            #   more details.
+            #
             #   The output of a code interpreter tool call that is text.
             #
-            #   @param logs [String]
-            #   @param type [Symbol, :logs]
+            #   @param logs [String] The logs of the code interpreter tool call. ...
+            #
+            #   @param type [Symbol, :logs] The type of the code interpreter text output. Always `logs`. ...
           end
 
           class Files < OpenAI::Internal::Type::BaseModel
@@ -90,10 +102,15 @@ module OpenAI
             required :type, const: :files
 
             # @!method initialize(files:, type: :files)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files} for
+            #   more details.
+            #
             #   The output of a code interpreter tool call that is a file.
             #
             #   @param files [Array<OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File>]
-            #   @param type [Symbol, :files]
+            #
+            #   @param type [Symbol, :files] The type of the code interpreter file output. Always `files`. ...
 
             class File < OpenAI::Internal::Type::BaseModel
               # @!attribute file_id
@@ -109,8 +126,13 @@ module OpenAI
               required :mime_type, String
 
               # @!method initialize(file_id:, mime_type:)
-              #   @param file_id [String]
-              #   @param mime_type [String]
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File}
+              #   for more details.
+              #
+              #   @param file_id [String] The ID of the file. ...
+              #
+              #   @param mime_type [String] The MIME type of the file. ...
             end
           end
 

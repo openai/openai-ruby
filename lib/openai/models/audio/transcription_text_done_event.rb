@@ -27,14 +27,20 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob] }
 
         # @!method initialize(text:, logprobs: nil, type: :"transcript.text.done")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent} for more details.
+        #
         #   Emitted when the transcription is complete. Contains the complete transcription
         #   text. Only emitted when you
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `Stream` parameter set to `true`.
         #
-        #   @param text [String]
-        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>]
-        #   @param type [Symbol, :"transcript.text.done"]
+        #   @param text [String] The text that was transcribed. ...
+        #
+        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>] The log probabilities of the individual tokens in the transcription. Only includ
+        #   ...
+        #
+        #   @param type [Symbol, :"transcript.text.done"] The type of the event. Always `transcript.text.done`. ...
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
@@ -56,9 +62,14 @@ module OpenAI
           optional :logprob, Float
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
-          #   @param token [String]
-          #   @param bytes [Array<Object>]
-          #   @param logprob [Float]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob} for more details.
+          #
+          #   @param token [String] The token that was used to generate the log probability. ...
+          #
+          #   @param bytes [Array<Object>] The bytes that were used to generate the log probability. ...
+          #
+          #   @param logprob [Float] The log probability of the token. ...
         end
       end
     end

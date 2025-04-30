@@ -38,10 +38,14 @@ module OpenAI
           #   uses the "file_search" tool to search files.
           #
           #   @param end_index [Integer]
+          #
           #   @param file_citation [OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation]
+          #
           #   @param start_index [Integer]
-          #   @param text [String]
-          #   @param type [Symbol, :file_citation]
+          #
+          #   @param text [String] The text in the message content that needs to be replaced.
+          #
+          #   @param type [Symbol, :file_citation] Always `file_citation`.
 
           # @see OpenAI::Models::Beta::Threads::FileCitationAnnotation#file_citation
           class FileCitation < OpenAI::Internal::Type::BaseModel
@@ -52,7 +56,7 @@ module OpenAI
             required :file_id, String
 
             # @!method initialize(file_id:)
-            #   @param file_id [String]
+            #   @param file_id [String] The ID of the specific File the citation is from.
           end
         end
       end

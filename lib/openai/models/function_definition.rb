@@ -40,10 +40,20 @@ module OpenAI
       optional :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
       # @!method initialize(name:, description: nil, parameters: nil, strict: nil)
-      #   @param name [String]
-      #   @param description [String]
-      #   @param parameters [Hash{Symbol=>Object}]
-      #   @param strict [Boolean, nil]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::FunctionDefinition} for more details.
+      #
+      #   @param name [String] The name of the function to be called. Must be a-z, A-Z, 0-9, or contain undersc
+      #   ...
+      #
+      #   @param description [String] A description of what the function does, used by the model to choose when and ho
+      #   ...
+      #
+      #   @param parameters [Hash{Symbol=>Object}] The parameters the functions accepts, described as a JSON Schema object. See the
+      #   ...
+      #
+      #   @param strict [Boolean, nil] Whether to enable strict schema adherence when generating the function call. If
+      #   ...
     end
   end
 end

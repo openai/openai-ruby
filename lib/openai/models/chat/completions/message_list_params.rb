@@ -29,9 +29,16 @@ module OpenAI
           optional :order, enum: -> { OpenAI::Models::Chat::Completions::MessageListParams::Order }
 
           # @!method initialize(after: nil, limit: nil, order: nil, request_options: {})
-          #   @param after [String]
-          #   @param limit [Integer]
-          #   @param order [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Chat::Completions::MessageListParams} for more details.
+          #
+          #   @param after [String] Identifier for the last message from the previous pagination request.
+          #
+          #   @param limit [Integer] Number of messages to retrieve.
+          #
+          #   @param order [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order] Sort order for messages by timestamp. Use `asc` for ascending order or `desc` fo
+          #   ...
+          #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           # Sort order for messages by timestamp. Use `asc` for ascending order or `desc`

@@ -120,17 +120,38 @@ module OpenAI
         optional :top_p, Float, nil?: true
 
         # @!method initialize(description: nil, instructions: nil, metadata: nil, model: nil, name: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_resources: nil, tools: nil, top_p: nil, request_options: {})
-        #   @param description [String, nil]
-        #   @param instructions [String, nil]
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model]
-        #   @param name [String, nil]
-        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
-        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
-        #   @param temperature [Float, nil]
-        #   @param tool_resources [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, nil]
-        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
-        #   @param top_p [Float, nil]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::AssistantUpdateParams} for more details.
+        #
+        #   @param description [String, nil] The description of the assistant. The maximum length is 512 characters. ...
+        #
+        #   @param instructions [String, nil] The system instructions that the assistant uses. The maximum length is 256,000 c
+        #   ...
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
+        #   @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
+        #   ...
+        #
+        #   @param name [String, nil] The name of the assistant. The maximum length is 256 characters. ...
+        #
+        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only** ...
+        #
+        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
+        #   ...
+        #
+        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+        #   ...
+        #
+        #   @param tool_resources [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, nil] A set of resources that are used by the assistant's tools. The resources are spe
+        #   ...
+        #
+        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>] A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        #   ...
+        #
+        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. You can use the
@@ -293,7 +314,12 @@ module OpenAI
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   @param file_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter}
+            #   for more details.
+            #
+            #   @param file_ids [Array<String>] Overrides the list of [file](https://platform.openai.com/docs/api-reference/file
+            #   ...
           end
 
           # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#file_search
@@ -308,7 +334,12 @@ module OpenAI
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(vector_store_ids: nil)
-            #   @param vector_store_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch} for
+            #   more details.
+            #
+            #   @param vector_store_ids [Array<String>] Overrides the [vector store](https://platform.openai.com/docs/api-reference/vect
+            #   ...
           end
         end
       end

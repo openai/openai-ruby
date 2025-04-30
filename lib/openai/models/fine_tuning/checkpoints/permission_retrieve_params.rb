@@ -34,10 +34,14 @@ module OpenAI
           optional :project_id, String
 
           # @!method initialize(after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
-          #   @param after [String]
-          #   @param limit [Integer]
-          #   @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order]
-          #   @param project_id [String]
+          #   @param after [String] Identifier for the last permission ID from the previous pagination request.
+          #
+          #   @param limit [Integer] Number of permissions to retrieve.
+          #
+          #   @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order] The order in which to retrieve permissions.
+          #
+          #   @param project_id [String] The ID of the project to get permissions for.
+          #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           # The order in which to retrieve permissions.

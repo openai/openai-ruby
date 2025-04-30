@@ -20,7 +20,8 @@ module OpenAI
         #   eval
         #
         #   @param source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
-        #   @param type [Symbol, :jsonl]
+        #
+        #   @param type [Symbol, :jsonl] The type of data source. Always `jsonl`.
 
         # @see OpenAI::Models::Evals::CreateEvalJSONLRunDataSource#source
         module Source
@@ -47,8 +48,9 @@ module OpenAI
             required :type, const: :file_content
 
             # @!method initialize(content:, type: :file_content)
-            #   @param content [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>]
-            #   @param type [Symbol, :file_content]
+            #   @param content [Array<OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content>] The content of the jsonl file.
+            #
+            #   @param type [Symbol, :file_content] The type of jsonl source. Always `file_content`.
 
             class Content < OpenAI::Internal::Type::BaseModel
               # @!attribute item
@@ -81,8 +83,9 @@ module OpenAI
             required :type, const: :file_id
 
             # @!method initialize(id:, type: :file_id)
-            #   @param id [String]
-            #   @param type [Symbol, :file_id]
+            #   @param id [String] The identifier of the file.
+            #
+            #   @param type [Symbol, :file_id] The type of jsonl source. Always `file_id`.
           end
 
           # @!method self.variants

@@ -19,12 +19,16 @@ module OpenAI
         required :voice, union: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
 
         # @!method initialize(format_:, voice:)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::ChatCompletionAudioParam} for more details.
+        #
         #   Parameters for audio output. Required when audio output is requested with
         #   `modalities: ["audio"]`.
         #   [Learn more](https://platform.openai.com/docs/guides/audio).
         #
-        #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
-        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
+        #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format] Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, ...
+        #
+        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice] The voice the model uses to respond. Supported voices are ...
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.

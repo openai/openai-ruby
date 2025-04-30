@@ -18,7 +18,8 @@ module OpenAI
       #   Customize your own chunking strategy by setting chunk size and chunk overlap.
       #
       #   @param static [OpenAI::Models::StaticFileChunkingStrategy]
-      #   @param type [Symbol, :static]
+      #
+      #   @param type [Symbol, :static] Always `static`.
     end
   end
 end

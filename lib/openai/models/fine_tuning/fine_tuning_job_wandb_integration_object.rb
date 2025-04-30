@@ -20,8 +20,14 @@ module OpenAI
         required :wandb, -> { OpenAI::Models::FineTuning::FineTuningJobWandbIntegration }
 
         # @!method initialize(wandb:, type: :wandb)
-        #   @param wandb [OpenAI::Models::FineTuning::FineTuningJobWandbIntegration]
-        #   @param type [Symbol, :wandb]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject} for more
+        #   details.
+        #
+        #   @param wandb [OpenAI::Models::FineTuning::FineTuningJobWandbIntegration] The settings for your integration with Weights and Biases. This payload specifie
+        #   ...
+        #
+        #   @param type [Symbol, :wandb] The type of the integration being enabled for the fine-tuning job
       end
     end
 

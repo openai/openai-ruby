@@ -51,17 +51,11 @@ module OpenAI
 
         def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
 
-        type string_array = ::Array[String]
+        StringArray: OpenAI::Internal::Type::Converter
 
-        StringArray: string_array
+        IntegerArray: OpenAI::Internal::Type::Converter
 
-        type integer_array = ::Array[Integer]
-
-        IntegerArray: integer_array
-
-        type array_of_token2_d_array = ::Array[::Array[Integer]]
-
-        ArrayOfToken2DArray: array_of_token2_d_array
+        ArrayOfToken2DArray: OpenAI::Internal::Type::Converter
       end
 
       type model = String | OpenAI::Models::embedding_model

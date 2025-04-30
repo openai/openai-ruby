@@ -39,11 +39,20 @@ module OpenAI
       optional :rewrite_query, OpenAI::Internal::Type::Boolean
 
       # @!method initialize(query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
-      #   @param query [String, Array<String>]
-      #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-      #   @param max_num_results [Integer]
-      #   @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions]
-      #   @param rewrite_query [Boolean]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::VectorStoreSearchParams} for more details.
+      #
+      #   @param query [String, Array<String>] A query string for a search
+      #
+      #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter] A filter to apply based on file attributes.
+      #
+      #   @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 and 50
+      #   ...
+      #
+      #   @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions] Ranking options for search.
+      #
+      #   @param rewrite_query [Boolean] Whether to rewrite the natural language query for vector search.
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # A query string for a search
@@ -57,6 +66,7 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>)]
 
+        # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end
 

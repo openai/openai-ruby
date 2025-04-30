@@ -17,7 +17,8 @@ module OpenAI
 
         # @!method initialize(function:, type: :function)
         #   @param function [OpenAI::Models::FunctionDefinition]
-        #   @param type [Symbol, :function]
+        #
+        #   @param type [Symbol, :function] The type of the tool. Currently, only `function` is supported.
       end
     end
 

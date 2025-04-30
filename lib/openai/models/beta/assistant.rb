@@ -124,21 +124,43 @@ module OpenAI
         optional :top_p, Float, nil?: true
 
         # @!method initialize(id:, created_at:, description:, instructions:, metadata:, model:, name:, tools:, response_format: nil, temperature: nil, tool_resources: nil, top_p: nil, object: :assistant)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::Assistant} for more details.
+        #
         #   Represents an `assistant` that can call the model and use tools.
         #
-        #   @param id [String]
-        #   @param created_at [Integer]
-        #   @param description [String, nil]
-        #   @param instructions [String, nil]
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param model [String]
-        #   @param name [String, nil]
-        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
-        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
-        #   @param temperature [Float, nil]
-        #   @param tool_resources [OpenAI::Models::Beta::Assistant::ToolResources, nil]
-        #   @param top_p [Float, nil]
-        #   @param object [Symbol, :assistant]
+        #   @param id [String] The identifier, which can be referenced in API endpoints.
+        #
+        #   @param created_at [Integer] The Unix timestamp (in seconds) for when the assistant was created.
+        #
+        #   @param description [String, nil] The description of the assistant. The maximum length is 512 characters. ...
+        #
+        #   @param instructions [String, nil] The system instructions that the assistant uses. The maximum length is 256,000 c
+        #   ...
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
+        #   @param model [String] ID of the model to use. You can use the [List models](https://platform.openai.co
+        #   ...
+        #
+        #   @param name [String, nil] The name of the assistant. The maximum length is 256 characters. ...
+        #
+        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>] A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        #   ...
+        #
+        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
+        #   ...
+        #
+        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+        #   ...
+        #
+        #   @param tool_resources [OpenAI::Models::Beta::Assistant::ToolResources, nil] A set of resources that are used by the assistant's tools. The resources are spe
+        #   ...
+        #
+        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
+        #   ...
+        #
+        #   @param object [Symbol, :assistant] The object type, which is always `assistant`.
 
         # @see OpenAI::Models::Beta::Assistant#tool_resources
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -172,7 +194,12 @@ module OpenAI
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   @param file_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter} for more
+            #   details.
+            #
+            #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #   ...
           end
 
           # @see OpenAI::Models::Beta::Assistant::ToolResources#file_search
@@ -187,7 +214,11 @@ module OpenAI
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(vector_store_ids: nil)
-            #   @param vector_store_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::Assistant::ToolResources::FileSearch} for more details.
+            #
+            #   @param vector_store_ids [Array<String>] The ID of the [vector store](https://platform.openai.com/docs/api-reference/vect
+            #   ...
           end
         end
       end

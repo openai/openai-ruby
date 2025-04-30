@@ -20,11 +20,15 @@ module OpenAI
         required :type, const: :content
 
         # @!method initialize(content:, type: :content)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::ChatCompletionPredictionContent} for more details.
+        #
         #   Static predicted output content, such as the content of a text file that is
         #   being regenerated.
         #
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        #   @param type [Symbol, :content]
+        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>] The content that should be matched when generating a model response. ...
+        #
+        #   @param type [Symbol, :content] The type of the predicted content you want to provide. This type is ...
 
         # The content that should be matched when generating a model response. If
         # generated tokens would match this content, the entire model response can be
@@ -44,6 +48,7 @@ module OpenAI
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
 
+          # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartTextArray =
             OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
         end

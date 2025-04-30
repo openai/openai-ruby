@@ -42,11 +42,18 @@ module OpenAI
       required :score, Float
 
       # @!method initialize(attributes:, content:, file_id:, filename:, score:)
-      #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
-      #   @param content [Array<OpenAI::Models::VectorStoreSearchResponse::Content>]
-      #   @param file_id [String]
-      #   @param filename [String]
-      #   @param score [Float]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::VectorStoreSearchResponse} for more details.
+      #
+      #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #
+      #   @param content [Array<OpenAI::Models::VectorStoreSearchResponse::Content>] Content chunks from the file.
+      #
+      #   @param file_id [String] The ID of the vector store file.
+      #
+      #   @param filename [String] The name of the vector store file.
+      #
+      #   @param score [Float] The similarity score for the result.
 
       module Attribute
         extend OpenAI::Internal::Type::Union
@@ -75,8 +82,9 @@ module OpenAI
         required :type, enum: -> { OpenAI::Models::VectorStoreSearchResponse::Content::Type }
 
         # @!method initialize(text:, type:)
-        #   @param text [String]
-        #   @param type [Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type]
+        #   @param text [String] The text content returned from search.
+        #
+        #   @param type [Symbol, OpenAI::Models::VectorStoreSearchResponse::Content::Type] The type of content.
 
         # The type of content.
         #

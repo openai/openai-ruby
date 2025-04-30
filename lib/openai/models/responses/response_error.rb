@@ -17,10 +17,14 @@ module OpenAI
         required :message, String
 
         # @!method initialize(code:, message:)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseError} for more details.
+        #
         #   An error object returned when the model fails to generate a Response.
         #
-        #   @param code [Symbol, OpenAI::Models::Responses::ResponseError::Code]
-        #   @param message [String]
+        #   @param code [Symbol, OpenAI::Models::Responses::ResponseError::Code] The error code for the response. ...
+        #
+        #   @param message [String] A human-readable description of the error. ...
 
         # The error code for the response.
         #

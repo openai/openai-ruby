@@ -9,7 +9,13 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          # @!method initialize(request_options: {})
+          # @!attribute fine_tuned_model_checkpoint
+          #
+          #   @return [String]
+          required :fine_tuned_model_checkpoint, String
+
+          # @!method initialize(fine_tuned_model_checkpoint:, request_options: {})
+          #   @param fine_tuned_model_checkpoint [String]
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end

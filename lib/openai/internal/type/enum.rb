@@ -48,11 +48,15 @@ module OpenAI
         # @return [Array<NilClass, Boolean, Integer, Float, Symbol>]
         def values = constants.map { const_get(_1) }
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
         def ===(other) = values.include?(other)
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
@@ -62,6 +66,8 @@ module OpenAI
           # rubocop:enable Style/CaseEquality
         end
 
+        # @api public
+        #
         # @return [Integer]
         def hash = values.to_set.hash
 
@@ -94,17 +100,16 @@ module OpenAI
           end
         end
 
-        # @!parse
-        #   # @api private
-        #   #
-        #   # @param value [Symbol, Object]
-        #   #
-        #   # @param state [Hash{Symbol=>Object}] .
-        #   #
-        #   #   @option state [Boolean] :can_retry
-        #   #
-        #   # @return [Symbol, Object]
-        #   def dump(value, state:) = super
+        # @!method dump(value, state:)
+        #   @api private
+        #
+        #   @param value [Symbol, Object]
+        #
+        #   @param state [Hash{Symbol=>Object}] .
+        #
+        #     @option state [Boolean] :can_retry
+        #
+        #   @return [Symbol, Object]
 
         # @api private
         #

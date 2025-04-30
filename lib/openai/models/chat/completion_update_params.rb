@@ -20,7 +20,11 @@ module OpenAI
         required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!method initialize(metadata:, request_options: {})
-        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::CompletionUpdateParams} for more details.
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

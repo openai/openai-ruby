@@ -25,9 +25,11 @@ module OpenAI
           # @!method initialize(index:, refusal: nil, type: :refusal)
           #   The refusal content that is part of a message.
           #
-          #   @param index [Integer]
+          #   @param index [Integer] The index of the refusal part in the message.
+          #
           #   @param refusal [String]
-          #   @param type [Symbol, :refusal]
+          #
+          #   @param type [Symbol, :refusal] Always `refusal`.
         end
       end
     end

@@ -11,11 +11,15 @@ module OpenAI
         # @!attribute data
         #   The chunk of bytes for this Part.
         #
-        #   @return [Pathname, StringIO]
-        required :data, OpenAI::Internal::Type::IOLike
+        #   @return [Pathname, StringIO, IO, OpenAI::FilePart]
+        required :data, OpenAI::Internal::Type::FileInput
 
         # @!method initialize(data:, request_options: {})
-        #   @param data [Pathname, StringIO]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Uploads::PartCreateParams} for more details.
+        #
+        #   @param data [Pathname, StringIO, IO, OpenAI::FilePart] The chunk of bytes for this Part. ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

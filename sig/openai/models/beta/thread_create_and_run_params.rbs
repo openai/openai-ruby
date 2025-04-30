@@ -15,7 +15,7 @@ module OpenAI
           thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
           tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
           tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
-          tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
+          tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
           top_p: Float?,
           truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?
         }
@@ -55,7 +55,7 @@ module OpenAI
 
         attr_accessor tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?
 
-        attr_accessor tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?
+        attr_accessor tools: ::Array[OpenAI::Models::Beta::assistant_tool]?
 
         attr_accessor top_p: Float?
 
@@ -74,7 +74,7 @@ module OpenAI
           ?thread: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread,
           ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
           ?tool_resources: OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources?,
-          ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::tool]?,
+          ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
           ?top_p: Float?,
           ?truncation_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
           ?request_options: OpenAI::request_opts
@@ -151,10 +151,7 @@ module OpenAI
 
               def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
 
-              type message_content_part_param_array =
-                ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
-
-              MessageContentPartParamArray: message_content_part_param_array
+              MessageContentPartParamArray: OpenAI::Internal::Type::Converter
             end
 
             type role = :user | :assistant
@@ -415,17 +412,6 @@ module OpenAI
 
             def to_hash: -> OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::file_search
           end
-        end
-
-        type tool =
-          OpenAI::Models::Beta::CodeInterpreterTool
-          | OpenAI::Models::Beta::FileSearchTool
-          | OpenAI::Models::Beta::FunctionTool
-
-        module Tool
-          extend OpenAI::Internal::Type::Union
-
-          def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
         end
 
         type truncation_strategy =

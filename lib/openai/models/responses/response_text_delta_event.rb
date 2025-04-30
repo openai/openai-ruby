@@ -35,13 +35,20 @@ module OpenAI
         required :type, const: :"response.output_text.delta"
 
         # @!method initialize(content_index:, delta:, item_id:, output_index:, type: :"response.output_text.delta")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseTextDeltaEvent} for more details.
+        #
         #   Emitted when there is an additional text delta.
         #
-        #   @param content_index [Integer]
-        #   @param delta [String]
-        #   @param item_id [String]
-        #   @param output_index [Integer]
-        #   @param type [Symbol, :"response.output_text.delta"]
+        #   @param content_index [Integer] The index of the content part that the text delta was added to. ...
+        #
+        #   @param delta [String] The text delta that was added. ...
+        #
+        #   @param item_id [String] The ID of the output item that the text delta was added to. ...
+        #
+        #   @param output_index [Integer] The index of the output item that the text delta was added to. ...
+        #
+        #   @param type [Symbol, :"response.output_text.delta"] The type of the event. Always `response.output_text.delta`. ...
       end
     end
   end

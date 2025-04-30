@@ -48,11 +48,16 @@ module OpenAI
           required :event, const: :"thread.run.step.created"
 
           # @!method initialize(data:, event: :"thread.run.step.created")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated} for more
+          #   details.
+          #
           #   Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is created.
           #
-          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep] Represents a step in execution of a run. ...
+          #
           #   @param event [Symbol, :"thread.run.step.created"]
         end
 
@@ -69,11 +74,16 @@ module OpenAI
           required :event, const: :"thread.run.step.in_progress"
 
           # @!method initialize(data:, event: :"thread.run.step.in_progress")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress} for more
+          #   details.
+          #
           #   Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   moves to an `in_progress` state.
           #
-          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep] Represents a step in execution of a run. ...
+          #
           #   @param event [Symbol, :"thread.run.step.in_progress"]
         end
 
@@ -91,11 +101,16 @@ module OpenAI
           required :event, const: :"thread.run.step.delta"
 
           # @!method initialize(data:, event: :"thread.run.step.delta")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta} for more details.
+          #
           #   Occurs when parts of a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   are being streamed.
           #
-          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent]
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent] Represents a run step delta i.e. any changed fields on a run step during streami
+          #   ...
+          #
           #   @param event [Symbol, :"thread.run.step.delta"]
         end
 
@@ -112,11 +127,16 @@ module OpenAI
           required :event, const: :"thread.run.step.completed"
 
           # @!method initialize(data:, event: :"thread.run.step.completed")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted} for more
+          #   details.
+          #
           #   Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is completed.
           #
-          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep] Represents a step in execution of a run. ...
+          #
           #   @param event [Symbol, :"thread.run.step.completed"]
         end
 
@@ -133,11 +153,16 @@ module OpenAI
           required :event, const: :"thread.run.step.failed"
 
           # @!method initialize(data:, event: :"thread.run.step.failed")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed} for more
+          #   details.
+          #
           #   Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   fails.
           #
-          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep] Represents a step in execution of a run. ...
+          #
           #   @param event [Symbol, :"thread.run.step.failed"]
         end
 
@@ -154,11 +179,16 @@ module OpenAI
           required :event, const: :"thread.run.step.cancelled"
 
           # @!method initialize(data:, event: :"thread.run.step.cancelled")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled} for more
+          #   details.
+          #
           #   Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   is cancelled.
           #
-          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep] Represents a step in execution of a run. ...
+          #
           #   @param event [Symbol, :"thread.run.step.cancelled"]
         end
 
@@ -175,11 +205,16 @@ module OpenAI
           required :event, const: :"thread.run.step.expired"
 
           # @!method initialize(data:, event: :"thread.run.step.expired")
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired} for more
+          #   details.
+          #
           #   Occurs when a
           #   [run step](https://platform.openai.com/docs/api-reference/run-steps/step-object)
           #   expires.
           #
-          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep]
+          #   @param data [OpenAI::Models::Beta::Threads::Runs::RunStep] Represents a step in execution of a run. ...
+          #
           #   @param event [Symbol, :"thread.run.step.expired"]
         end
 

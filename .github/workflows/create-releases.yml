@@ -25,16 +25,17 @@ jobs:
           stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
 
       - name: Set up Ruby
-	if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created }}
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: false
           ruby-version: '3.2'
-      - run: |-
+
+      - run: |
           bundle install
 
       - name: Publish to RubyGems.org
-	if: ${{ steps.release.outputs.releases_created }}
+        if: ${{ steps.release.outputs.releases_created }}
         run: |
           bash ./bin/publish-gem
         env:

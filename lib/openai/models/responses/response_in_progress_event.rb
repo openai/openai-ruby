@@ -17,10 +17,14 @@ module OpenAI
         required :type, const: :"response.in_progress"
 
         # @!method initialize(response:, type: :"response.in_progress")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseInProgressEvent} for more details.
+        #
         #   Emitted when the response is in progress.
         #
-        #   @param response [OpenAI::Models::Responses::Response]
-        #   @param type [Symbol, :"response.in_progress"]
+        #   @param response [OpenAI::Models::Responses::Response] The response that is in progress. ...
+        #
+        #   @param type [Symbol, :"response.in_progress"] The type of the event. Always `response.in_progress`. ...
       end
     end
   end
