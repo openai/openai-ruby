@@ -87,7 +87,7 @@ end
 
 ### File uploads
 
-Request parameters that correspond to file uploads can be passed as `StringIO`, or a [`Pathname`](https://rubyapi.org/3.1/o/pathname) instance.
+Request parameters that correspond to file uploads can be passed as `StringIO`, or a [`Pathname`](https://rubyapi.org/3.2/o/pathname) instance.
 
 ```ruby
 require "pathname"
