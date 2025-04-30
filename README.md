@@ -1,6 +1,6 @@
 # OpenAI Ruby API library
 
-The OpenAI Ruby library provides convenient access to the OpenAI REST API from any Ruby 3.1.0+ application.
+The OpenAI Ruby library provides convenient access to the OpenAI REST API from any Ruby 3.2+ application.
 
 ## Documentation
 
@@ -91,7 +91,7 @@ end
 
 ### File uploads
 
-Request parameters that correspond to file uploads can be passed as `StringIO`, or a [`Pathname`](https://rubyapi.org/3.1/o/pathname) instance.
+Request parameters that correspond to file uploads can be passed as `StringIO`, or a [`Pathname`](https://rubyapi.org/3.2/o/pathname) instance.
 
 ```ruby
 require "pathname"
@@ -271,7 +271,7 @@ This package considers improvements to the (non-runtime) `*.rbi` and `*.rbs` typ
 
 ## Requirements
 
-Ruby 3.1.0 or higher.
+Ruby 3.2 or higher.
 
 ## Contributing
 
