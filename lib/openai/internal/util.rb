@@ -493,7 +493,7 @@ module OpenAI
             y << val.to_s
           else
             y << "Content-Type: application/json\r\n\r\n"
-            y << JSON.fast_generate(val)
+            y << JSON.generate(val)
           end
           y << "\r\n"
         end

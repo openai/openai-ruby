@@ -31,7 +31,7 @@ multitask(:test) do
     .map { "require_relative(#{_1.dump});" }
     .join
 
-  ruby(*%w[-e], rb, verbose: false) { fail unless _1 }
+  ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
 end
 
 rubo_find = %w[find ./lib ./test ./rbi -type f -and ( -name *.rb -or -name *.rbi ) -print0]
