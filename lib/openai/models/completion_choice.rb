@@ -28,9 +28,16 @@ module OpenAI
       required :text, String
 
       # @!method initialize(finish_reason:, index:, logprobs:, text:)
-      #   @param finish_reason [Symbol, OpenAI::Models::CompletionChoice::FinishReason]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::CompletionChoice} for more details.
+      #
+      #   @param finish_reason [Symbol, OpenAI::Models::CompletionChoice::FinishReason] The reason the model stopped generating tokens. This will be `stop` if the model
+      #   ...
+      #
       #   @param index [Integer]
+      #
       #   @param logprobs [OpenAI::Models::CompletionChoice::Logprobs, nil]
+      #
       #   @param text [String]
 
       # The reason the model stopped generating tokens. This will be `stop` if the model

@@ -24,11 +24,17 @@ module OpenAI
       required :object, const: :embedding
 
       # @!method initialize(embedding:, index:, object: :embedding)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::Embedding} for more details.
+      #
       #   Represents an embedding vector returned by embedding endpoint.
       #
-      #   @param embedding [Array<Float>]
-      #   @param index [Integer]
-      #   @param object [Symbol, :embedding]
+      #   @param embedding [Array<Float>] The embedding vector, which is a list of floats. The length of vector depends on
+      #   ...
+      #
+      #   @param index [Integer] The index of the embedding in the list of embeddings.
+      #
+      #   @param object [Symbol, :embedding] The object type, which is always "embedding".
     end
   end
 end

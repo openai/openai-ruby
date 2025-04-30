@@ -3,7 +3,7 @@ module OpenAI
     module Audio
       type translation_create_params =
         {
-          file: (Pathname | StringIO),
+          file: (Pathname | StringIO | IO | OpenAI::FilePart),
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
           prompt: String,
           response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,
@@ -15,7 +15,7 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        attr_accessor file: Pathname | StringIO
+        attr_accessor file: Pathname | StringIO | IO | OpenAI::FilePart
 
         attr_accessor model: OpenAI::Models::Audio::TranslationCreateParams::model
 
@@ -34,7 +34,7 @@ module OpenAI
         def temperature=: (Float) -> Float
 
         def initialize: (
-          file: Pathname | StringIO,
+          file: Pathname | StringIO | IO | OpenAI::FilePart,
           model: OpenAI::Models::Audio::TranslationCreateParams::model,
           ?prompt: String,
           ?response_format: OpenAI::Models::Audio::TranslationCreateParams::response_format,

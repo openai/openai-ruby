@@ -41,11 +41,20 @@ module OpenAI
           optional :status, enum: -> { OpenAI::Models::Evals::Runs::OutputItemListParams::Status }
 
           # @!method initialize(eval_id:, after: nil, limit: nil, order: nil, status: nil, request_options: {})
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Evals::Runs::OutputItemListParams} for more details.
+          #
           #   @param eval_id [String]
-          #   @param after [String]
-          #   @param limit [Integer]
-          #   @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order]
-          #   @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status]
+          #
+          #   @param after [String] Identifier for the last output item from the previous pagination request.
+          #
+          #   @param limit [Integer] Number of output items to retrieve.
+          #
+          #   @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order] Sort order for output items by timestamp. Use `asc` for ascending order or `desc
+          #   ...
+          #
+          #   @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status] Filter output items by status. Use `failed` to filter by failed output ...
+          #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           # Sort order for output items by timestamp. Use `asc` for ascending order or

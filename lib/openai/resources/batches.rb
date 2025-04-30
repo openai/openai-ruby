@@ -3,14 +3,23 @@
 module OpenAI
   module Resources
     class Batches
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::BatchCreateParams} for more details.
+      #
       # Creates and executes a batch from an uploaded file of requests
       #
       # @overload create(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
       #
-      # @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow]
-      # @param endpoint [Symbol, OpenAI::Models::BatchCreateParams::Endpoint]
-      # @param input_file_id [String]
-      # @param metadata [Hash{Symbol=>String}, nil]
+      # @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
+      # ...
+      #
+      # @param endpoint [Symbol, OpenAI::Models::BatchCreateParams::Endpoint] The endpoint to be used for all requests in the batch. Currently `/v1/responses`
+      # ...
+      #
+      # @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch. ...
+      #
+      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Batch]
@@ -31,7 +40,8 @@ module OpenAI
       #
       # @overload retrieve(batch_id, request_options: {})
       #
-      # @param batch_id [String]
+      # @param batch_id [String] The ID of the batch to retrieve.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Batch]
@@ -46,12 +56,19 @@ module OpenAI
         )
       end
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::BatchListParams} for more details.
+      #
       # List your organization's batches.
       #
       # @overload list(after: nil, limit: nil, request_options: {})
       #
-      # @param after [String]
-      # @param limit [Integer]
+      # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+      # ...
+      #
+      # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+      # ...
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Batch>]
@@ -75,7 +92,8 @@ module OpenAI
       #
       # @overload cancel(batch_id, request_options: {})
       #
-      # @param batch_id [String]
+      # @param batch_id [String] The ID of the batch to cancel.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Batch]

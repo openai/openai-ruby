@@ -31,10 +31,13 @@ module OpenAI
       # @!method initialize(id:, created:, owned_by:, object: :model)
       #   Describes an OpenAI model offering that can be used with the API.
       #
-      #   @param id [String]
-      #   @param created [Integer]
-      #   @param owned_by [String]
-      #   @param object [Symbol, :model]
+      #   @param id [String] The model identifier, which can be referenced in the API endpoints.
+      #
+      #   @param created [Integer] The Unix timestamp (in seconds) when the model was created.
+      #
+      #   @param owned_by [String] The organization that owns the model.
+      #
+      #   @param object [Symbol, :model] The object type, which is always "model".
     end
   end
 end

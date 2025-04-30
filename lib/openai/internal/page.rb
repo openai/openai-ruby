@@ -28,7 +28,7 @@ module OpenAI
       end
 
       # @raise [OpenAI::HTTP::Error]
-      # @return [OpenAI::Internal::Page]
+      # @return [self]
       def next_page
         RuntimeError.new("No more pages available.")
       end

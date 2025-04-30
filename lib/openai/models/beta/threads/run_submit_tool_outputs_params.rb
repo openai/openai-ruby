@@ -25,7 +25,9 @@ module OpenAI
 
           # @!method initialize(thread_id:, tool_outputs:, request_options: {})
           #   @param thread_id [String]
-          #   @param tool_outputs [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>]
+          #
+          #   @param tool_outputs [Array<OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput>] A list of tools for which the outputs are being submitted.
+          #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           class ToolOutput < OpenAI::Internal::Type::BaseModel
@@ -43,8 +45,14 @@ module OpenAI
             optional :tool_call_id, String
 
             # @!method initialize(output: nil, tool_call_id: nil)
-            #   @param output [String]
-            #   @param tool_call_id [String]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput} for more
+            #   details.
+            #
+            #   @param output [String] The output of the tool call to be submitted to continue the run.
+            #
+            #   @param tool_call_id [String] The ID of the tool call in the `required_action` object within the run object th
+            #   ...
           end
         end
       end

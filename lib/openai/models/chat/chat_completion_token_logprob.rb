@@ -37,10 +37,19 @@ module OpenAI
                  -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob] }
 
         # @!method initialize(token:, bytes:, logprob:, top_logprobs:)
-        #   @param token [String]
-        #   @param bytes [Array<Integer>, nil]
-        #   @param logprob [Float]
-        #   @param top_logprobs [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Chat::ChatCompletionTokenLogprob} for more details.
+        #
+        #   @param token [String] The token.
+        #
+        #   @param bytes [Array<Integer>, nil] A list of integers representing the UTF-8 bytes representation of the token. Use
+        #   ...
+        #
+        #   @param logprob [Float] The log probability of this token, if it is within the top 20 most likely tokens
+        #   ...
+        #
+        #   @param top_logprobs [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob>] List of the most likely tokens and their log probability, at this token position
+        #   ...
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
@@ -67,9 +76,16 @@ module OpenAI
           required :logprob, Float
 
           # @!method initialize(token:, bytes:, logprob:)
-          #   @param token [String]
-          #   @param bytes [Array<Integer>, nil]
-          #   @param logprob [Float]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob} for more details.
+          #
+          #   @param token [String] The token.
+          #
+          #   @param bytes [Array<Integer>, nil] A list of integers representing the UTF-8 bytes representation of the token. Use
+          #   ...
+          #
+          #   @param logprob [Float] The log probability of this token, if it is within the top 20 most likely tokens
+          #   ...
         end
       end
     end

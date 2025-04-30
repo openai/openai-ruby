@@ -29,8 +29,14 @@ module OpenAI
         optional :tool_resources, -> { OpenAI::Models::Beta::ThreadUpdateParams::ToolResources }, nil?: true
 
         # @!method initialize(metadata: nil, tool_resources: nil, request_options: {})
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param tool_resources [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, nil]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::ThreadUpdateParams} for more details.
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
+        #   @param tool_resources [OpenAI::Models::Beta::ThreadUpdateParams::ToolResources, nil] A set of resources that are made available to the assistant's tools in this thre
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -65,7 +71,12 @@ module OpenAI
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   @param file_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::CodeInterpreter} for
+            #   more details.
+            #
+            #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #   ...
           end
 
           # @see OpenAI::Models::Beta::ThreadUpdateParams::ToolResources#file_search
@@ -80,7 +91,12 @@ module OpenAI
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(vector_store_ids: nil)
-            #   @param vector_store_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::ThreadUpdateParams::ToolResources::FileSearch} for more
+            #   details.
+            #
+            #   @param vector_store_ids [Array<String>] The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/
+            #   ...
           end
         end
       end

@@ -29,10 +29,7 @@ module OpenAI
 
           def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
 
-          type chat_completion_content_part_text_array =
-            ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
-
-          ChatCompletionContentPartTextArray: chat_completion_content_part_text_array
+          ChatCompletionContentPartTextArray: OpenAI::Internal::Type::Converter
         end
       end
     end

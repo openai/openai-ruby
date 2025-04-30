@@ -76,10 +76,7 @@ module OpenAI
 
           def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]]
 
-          type array_of_content_part_array =
-            ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
-
-          ArrayOfContentPartArray: array_of_content_part_array
+          ArrayOfContentPartArray: OpenAI::Internal::Type::Converter
         end
 
         type function_call = { arguments: String, name: String }

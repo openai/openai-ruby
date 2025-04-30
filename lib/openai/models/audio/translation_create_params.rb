@@ -12,8 +12,8 @@ module OpenAI
         #   The audio file object (not file name) translate, in one of these formats: flac,
         #   mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         #
-        #   @return [Pathname, StringIO]
-        required :file, OpenAI::Internal::Type::IOLike
+        #   @return [Pathname, StringIO, IO, OpenAI::FilePart]
+        required :file, OpenAI::Internal::Type::FileInput
 
         # @!attribute model
         #   ID of the model to use. Only `whisper-1` (which is powered by our open source
@@ -49,11 +49,24 @@ module OpenAI
         optional :temperature, Float
 
         # @!method initialize(file:, model:, prompt: nil, response_format: nil, temperature: nil, request_options: {})
-        #   @param file [Pathname, StringIO]
-        #   @param model [String, Symbol, OpenAI::Models::AudioModel]
-        #   @param prompt [String]
-        #   @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat]
-        #   @param temperature [Float]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Audio::TranslationCreateParams} for more details.
+        #
+        #   @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) translate, in one of these formats: flac,
+        #   ...
+        #
+        #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. Only `whisper-1` (which is powered by our open source Wh
+        #   ...
+        #
+        #   @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
+        #   ...
+        #
+        #   @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
+        #   ...
+        #
+        #   @param temperature [Float] The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. Only `whisper-1` (which is powered by our open source

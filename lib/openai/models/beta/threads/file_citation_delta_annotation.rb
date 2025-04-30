@@ -43,12 +43,17 @@ module OpenAI
           #   File associated with the assistant or the message. Generated when the assistant
           #   uses the "file_search" tool to search files.
           #
-          #   @param index [Integer]
+          #   @param index [Integer] The index of the annotation in the text content part.
+          #
           #   @param end_index [Integer]
+          #
           #   @param file_citation [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation]
+          #
           #   @param start_index [Integer]
-          #   @param text [String]
-          #   @param type [Symbol, :file_citation]
+          #
+          #   @param text [String] The text in the message content that needs to be replaced.
+          #
+          #   @param type [Symbol, :file_citation] Always `file_citation`.
 
           # @see OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation#file_citation
           class FileCitation < OpenAI::Internal::Type::BaseModel
@@ -65,8 +70,9 @@ module OpenAI
             optional :quote, String
 
             # @!method initialize(file_id: nil, quote: nil)
-            #   @param file_id [String]
-            #   @param quote [String]
+            #   @param file_id [String] The ID of the specific File the citation is from.
+            #
+            #   @param quote [String] The specific quote in the file.
           end
         end
       end

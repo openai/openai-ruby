@@ -46,14 +46,25 @@ module OpenAI
         required :vector_store_id, String
 
         # @!method initialize(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::VectorStores::VectorStoreFileBatch} for more details.
+        #
         #   A batch of files attached to a vector store.
         #
-        #   @param id [String]
-        #   @param created_at [Integer]
+        #   @param id [String] The identifier, which can be referenced in API endpoints.
+        #
+        #   @param created_at [Integer] The Unix timestamp (in seconds) for when the vector store files batch was create
+        #   ...
+        #
         #   @param file_counts [OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts]
-        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status]
-        #   @param vector_store_id [String]
-        #   @param object [Symbol, :"vector_store.files_batch"]
+        #
+        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status] The status of the vector store files batch, which can be either `in_progress`, `
+        #   ...
+        #
+        #   @param vector_store_id [String] The ID of the [vector store](https://platform.openai.com/docs/api-reference/vect
+        #   ...
+        #
+        #   @param object [Symbol, :"vector_store.files_batch"] The object type, which is always `vector_store.file_batch`.
 
         # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#file_counts
         class FileCounts < OpenAI::Internal::Type::BaseModel
@@ -88,11 +99,15 @@ module OpenAI
           required :total, Integer
 
           # @!method initialize(cancelled:, completed:, failed:, in_progress:, total:)
-          #   @param cancelled [Integer]
-          #   @param completed [Integer]
-          #   @param failed [Integer]
-          #   @param in_progress [Integer]
-          #   @param total [Integer]
+          #   @param cancelled [Integer] The number of files that where cancelled.
+          #
+          #   @param completed [Integer] The number of files that have been processed.
+          #
+          #   @param failed [Integer] The number of files that have failed to process.
+          #
+          #   @param in_progress [Integer] The number of files that are currently being processed.
+          #
+          #   @param total [Integer] The total number of files.
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,

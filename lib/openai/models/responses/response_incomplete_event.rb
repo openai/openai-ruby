@@ -17,10 +17,14 @@ module OpenAI
         required :type, const: :"response.incomplete"
 
         # @!method initialize(response:, type: :"response.incomplete")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseIncompleteEvent} for more details.
+        #
         #   An event that is emitted when a response finishes as incomplete.
         #
-        #   @param response [OpenAI::Models::Responses::Response]
-        #   @param type [Symbol, :"response.incomplete"]
+        #   @param response [OpenAI::Models::Responses::Response] The response that was incomplete. ...
+        #
+        #   @param type [Symbol, :"response.incomplete"] The type of the event. Always `response.incomplete`. ...
       end
     end
   end

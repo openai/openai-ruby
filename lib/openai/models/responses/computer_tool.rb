@@ -29,13 +29,19 @@ module OpenAI
         required :type, const: :computer_use_preview
 
         # @!method initialize(display_height:, display_width:, environment:, type: :computer_use_preview)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ComputerTool} for more details.
+        #
         #   A tool that controls a virtual computer. Learn more about the
         #   [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
         #
-        #   @param display_height [Float]
-        #   @param display_width [Float]
-        #   @param environment [Symbol, OpenAI::Models::Responses::ComputerTool::Environment]
-        #   @param type [Symbol, :computer_use_preview]
+        #   @param display_height [Float] The height of the computer display. ...
+        #
+        #   @param display_width [Float] The width of the computer display. ...
+        #
+        #   @param environment [Symbol, OpenAI::Models::Responses::ComputerTool::Environment] The type of computer environment to control. ...
+        #
+        #   @param type [Symbol, :computer_use_preview] The type of the computer use tool. Always `computer_use_preview`. ...
 
         # The type of computer environment to control.
         #

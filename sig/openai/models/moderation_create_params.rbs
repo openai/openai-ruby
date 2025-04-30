@@ -37,14 +37,9 @@ module OpenAI
 
         def self?.variants: -> [String, ::Array[String], ::Array[OpenAI::Models::moderation_multi_modal_input]]
 
-        type string_array = ::Array[String]
+        StringArray: OpenAI::Internal::Type::Converter
 
-        StringArray: string_array
-
-        type moderation_multi_modal_input_array =
-          ::Array[OpenAI::Models::moderation_multi_modal_input]
-
-        ModerationMultiModalInputArray: moderation_multi_modal_input_array
+        ModerationMultiModalInputArray: OpenAI::Internal::Type::Converter
       end
 
       type model = String | OpenAI::Models::moderation_model

@@ -25,9 +25,11 @@ module OpenAI
           required :object, const: :"checkpoint.permission"
 
           # @!method initialize(id:, deleted:, object: :"checkpoint.permission")
-          #   @param id [String]
-          #   @param deleted [Boolean]
-          #   @param object [Symbol, :"checkpoint.permission"]
+          #   @param id [String] The ID of the fine-tuned model checkpoint permission that was deleted.
+          #
+          #   @param deleted [Boolean] Whether the fine-tuned model checkpoint permission was successfully deleted.
+          #
+          #   @param object [Symbol, :"checkpoint.permission"] The object type, which is always "checkpoint.permission".
         end
       end
     end

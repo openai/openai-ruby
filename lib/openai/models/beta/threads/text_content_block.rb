@@ -20,7 +20,8 @@ module OpenAI
           #   The text content that is part of a message.
           #
           #   @param text [OpenAI::Models::Beta::Threads::Text]
-          #   @param type [Symbol, :text]
+          #
+          #   @param type [Symbol, :text] Always `text`.
         end
       end
     end

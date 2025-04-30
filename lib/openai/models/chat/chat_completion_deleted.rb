@@ -24,9 +24,11 @@ module OpenAI
         required :object, const: :"chat.completion.deleted"
 
         # @!method initialize(id:, deleted:, object: :"chat.completion.deleted")
-        #   @param id [String]
-        #   @param deleted [Boolean]
-        #   @param object [Symbol, :"chat.completion.deleted"]
+        #   @param id [String] The ID of the chat completion that was deleted.
+        #
+        #   @param deleted [Boolean] Whether the chat completion was deleted.
+        #
+        #   @param object [Symbol, :"chat.completion.deleted"] The type of object being deleted.
       end
     end
 

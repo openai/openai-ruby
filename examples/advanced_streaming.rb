@@ -17,7 +17,7 @@ begin
     temperature: 0.0
   )
 
-  # the `stream` itself is an `https://rubyapi.org/3.1/o/enumerable`
+  # the `stream` itself is an `https://rubyapi.org/3.2/o/enumerable`
   #   which means that you can work with the stream almost as if it is an array
   all_choices =
     stream
@@ -49,7 +49,7 @@ begin
 
   stream_of_choices =
     stream
-    # calling `#lazy` will return a deferred `https://rubyapi.org/3.1/o/enumerator/lazy`
+    # calling `#lazy` will return a deferred `https://rubyapi.org/3.2/o/enumerator/lazy`
     .lazy
     # each successive calls to methods that return another `enumerable` will not consume the stream
     #   but rather, return a transformed stream. (see link above)

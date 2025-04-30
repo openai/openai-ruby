@@ -36,15 +36,22 @@ module OpenAI
         optional :ranking_options, -> { OpenAI::Models::Responses::FileSearchTool::RankingOptions }
 
         # @!method initialize(vector_store_ids:, filters: nil, max_num_results: nil, ranking_options: nil, type: :file_search)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::FileSearchTool} for more details.
+        #
         #   A tool that searches for relevant content from uploaded files. Learn more about
         #   the
         #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         #
-        #   @param vector_store_ids [Array<String>]
-        #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-        #   @param max_num_results [Integer]
-        #   @param ranking_options [OpenAI::Models::Responses::FileSearchTool::RankingOptions]
-        #   @param type [Symbol, :file_search]
+        #   @param vector_store_ids [Array<String>] The IDs of the vector stores to search. ...
+        #
+        #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter] A filter to apply based on file attributes.
+        #
+        #   @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 ...
+        #
+        #   @param ranking_options [OpenAI::Models::Responses::FileSearchTool::RankingOptions] Ranking options for search.
+        #
+        #   @param type [Symbol, :file_search] The type of the file search tool. Always `file_search`. ...
 
         # A filter to apply based on file attributes.
         #
@@ -79,10 +86,14 @@ module OpenAI
           optional :score_threshold, Float
 
           # @!method initialize(ranker: nil, score_threshold: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::FileSearchTool::RankingOptions} for more details.
+          #
           #   Ranking options for search.
           #
-          #   @param ranker [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker]
-          #   @param score_threshold [Float]
+          #   @param ranker [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker] The ranker to use for the file search.
+          #
+          #   @param score_threshold [Float] The score threshold for the file search, a number between 0 and 1. ...
 
           # The ranker to use for the file search.
           #

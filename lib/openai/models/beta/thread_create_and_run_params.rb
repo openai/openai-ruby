@@ -140,7 +140,7 @@ module OpenAI
         #
         #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
         optional :tools,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::ThreadCreateAndRunParams::Tool] },
+                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] },
                  nil?: true
 
         # @!attribute top_p
@@ -163,21 +163,51 @@ module OpenAI
                  nil?: true
 
         # @!method initialize(assistant_id:, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, response_format: nil, temperature: nil, thread: nil, tool_choice: nil, tool_resources: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
-        #   @param assistant_id [String]
-        #   @param instructions [String, nil]
-        #   @param max_completion_tokens [Integer, nil]
-        #   @param max_prompt_tokens [Integer, nil]
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param model [String, Symbol, OpenAI::Models::ChatModel, nil]
-        #   @param parallel_tool_calls [Boolean]
-        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
-        #   @param temperature [Float, nil]
-        #   @param thread [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread]
-        #   @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil]
-        #   @param tool_resources [OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, nil]
-        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
-        #   @param top_p [Float, nil]
-        #   @param truncation_strategy [OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, nil]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Beta::ThreadCreateAndRunParams} for more details.
+        #
+        #   @param assistant_id [String] The ID of the [assistant](https://platform.openai.com/docs/api-reference/assista
+        #   ...
+        #
+        #   @param instructions [String, nil] Override the default system message of the assistant. This is useful for modifyi
+        #   ...
+        #
+        #   @param max_completion_tokens [Integer, nil] The maximum number of completion tokens that may be used over the course of the
+        #   ...
+        #
+        #   @param max_prompt_tokens [Integer, nil] The maximum number of prompt tokens that may be used over the course of the run.
+        #   ...
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #
+        #   @param model [String, Symbol, OpenAI::Models::ChatModel, nil] The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
+        #   ...
+        #
+        #   @param parallel_tool_calls [Boolean] Whether to enable [parallel function calling](https://platform.openai.com/docs/g
+        #   ...
+        #
+        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
+        #   ...
+        #
+        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+        #   ...
+        #
+        #   @param thread [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread] Options to create a new thread. If no thread is provided when running a ...
+        #
+        #   @param tool_choice [Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice, nil] Controls which (if any) tool is called by the model. ...
+        #
+        #   @param tool_resources [OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources, nil] A set of resources that are used by the assistant's tools. The resources are spe
+        #   ...
+        #
+        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil] Override the tools the assistant can use for this run. This is useful for modify
+        #   ...
+        #
+        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
+        #   ...
+        #
+        #   @param truncation_strategy [OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # The ID of the [Model](https://platform.openai.com/docs/api-reference/models) to
@@ -228,12 +258,19 @@ module OpenAI
                    nil?: true
 
           # @!method initialize(messages: nil, metadata: nil, tool_resources: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread} for more details.
+          #
           #   Options to create a new thread. If no thread is provided when running a request,
           #   an empty thread will be created.
           #
-          #   @param messages [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message>]
-          #   @param metadata [Hash{Symbol=>String}, nil]
-          #   @param tool_resources [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, nil]
+          #   @param messages [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message>] A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
+          #   ...
+          #
+          #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+          #
+          #   @param tool_resources [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources, nil] A set of resources that are made available to the assistant's tools in this thre
+          #   ...
 
           class Message < OpenAI::Internal::Type::BaseModel
             # @!attribute content
@@ -273,10 +310,17 @@ module OpenAI
             optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
             # @!method initialize(content:, role:, attachments: nil, metadata: nil)
-            #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>]
-            #   @param role [Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role]
-            #   @param attachments [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment>, nil]
-            #   @param metadata [Hash{Symbol=>String}, nil]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message} for more
+            #   details.
+            #
+            #   @param content [String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>] The text contents of the message.
+            #
+            #   @param role [Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Role] The role of the entity that is creating the message. Allowed values include: ...
+            #
+            #   @param attachments [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment>, nil] A list of files attached to the message, and the tools they should be added to.
+            #
+            #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
 
             # The text contents of the message.
             #
@@ -293,6 +337,7 @@ module OpenAI
               # @!method self.variants
               #   @return [Array(String, Array<OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam>)]
 
+              # @type [OpenAI::Internal::Type::Converter]
               MessageContentPartParamArray =
                 OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Beta::Threads::MessageContentPartParam }]
             end
@@ -330,8 +375,9 @@ module OpenAI
                        -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool] }
 
               # @!method initialize(file_id: nil, tools: nil)
-              #   @param file_id [String]
-              #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch>]
+              #   @param file_id [String] The ID of the file to attach to the message.
+              #
+              #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::Tool::FileSearch>] The tools to add this file to.
 
               module Tool
                 extend OpenAI::Internal::Type::Union
@@ -351,7 +397,7 @@ module OpenAI
                   required :type, const: :file_search
 
                   # @!method initialize(type: :file_search)
-                  #   @param type [Symbol, :file_search]
+                  #   @param type [Symbol, :file_search] The type of tool being defined: `file_search`
                 end
 
                 # @!method self.variants
@@ -394,7 +440,12 @@ module OpenAI
               optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!method initialize(file_ids: nil)
-              #   @param file_ids [Array<String>]
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::CodeInterpreter}
+              #   for more details.
+              #
+              #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+              #   ...
             end
 
             # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources#file_search
@@ -419,8 +470,15 @@ module OpenAI
                        -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore] }
 
               # @!method initialize(vector_store_ids: nil, vector_stores: nil)
-              #   @param vector_store_ids [Array<String>]
-              #   @param vector_stores [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore>]
+              #   Some parameter documentations has been truncated, see
+              #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch}
+              #   for more details.
+              #
+              #   @param vector_store_ids [Array<String>] The [vector store](https://platform.openai.com/docs/api-reference/vector-stores/
+              #   ...
+              #
+              #   @param vector_stores [Array<OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore>] A helper to create a [vector store](https://platform.openai.com/docs/api-referen
+              #   ...
 
               class VectorStore < OpenAI::Internal::Type::BaseModel
                 # @!attribute chunking_strategy
@@ -451,9 +509,17 @@ module OpenAI
                 optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
                 # @!method initialize(chunking_strategy: nil, file_ids: nil, metadata: nil)
-                #   @param chunking_strategy [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-                #   @param file_ids [Array<String>]
-                #   @param metadata [Hash{Symbol=>String}, nil]
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore}
+                #   for more details.
+                #
+                #   @param chunking_strategy [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+                #   ...
+                #
+                #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs to ad
+                #   ...
+                #
+                #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
 
                 # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
                 # strategy.
@@ -482,7 +548,7 @@ module OpenAI
                     #   The default strategy. This strategy currently uses a `max_chunk_size_tokens` of
                     #   `800` and `chunk_overlap_tokens` of `400`.
                     #
-                    #   @param type [Symbol, :auto]
+                    #   @param type [Symbol, :auto] Always `auto`.
                   end
 
                   class Static < OpenAI::Internal::Type::BaseModel
@@ -500,7 +566,8 @@ module OpenAI
 
                     # @!method initialize(static:, type: :static)
                     #   @param static [OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static]
-                    #   @param type [Symbol, :static]
+                    #
+                    #   @param type [Symbol, :static] Always `static`.
 
                     # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static#static
                     class Static < OpenAI::Internal::Type::BaseModel
@@ -520,8 +587,15 @@ module OpenAI
                       required :max_chunk_size_tokens, Integer
 
                       # @!method initialize(chunk_overlap_tokens:, max_chunk_size_tokens:)
-                      #   @param chunk_overlap_tokens [Integer]
-                      #   @param max_chunk_size_tokens [Integer]
+                      #   Some parameter documentations has been truncated, see
+                      #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static}
+                      #   for more details.
+                      #
+                      #   @param chunk_overlap_tokens [Integer] The number of tokens that overlap between chunks. The default value is `400`.
+                      #   ...
+                      #
+                      #   @param max_chunk_size_tokens [Integer] The maximum number of tokens in each chunk. The default value is `800`. The mini
+                      #   ...
                     end
                   end
 
@@ -565,7 +639,12 @@ module OpenAI
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   @param file_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::CodeInterpreter}
+            #   for more details.
+            #
+            #   @param file_ids [Array<String>] A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
+            #   ...
           end
 
           # @see OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources#file_search
@@ -580,21 +659,13 @@ module OpenAI
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(vector_store_ids: nil)
-            #   @param vector_store_ids [Array<String>]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::ToolResources::FileSearch} for
+            #   more details.
+            #
+            #   @param vector_store_ids [Array<String>] The ID of the [vector store](https://platform.openai.com/docs/api-reference/vect
+            #   ...
           end
-        end
-
-        module Tool
-          extend OpenAI::Internal::Type::Union
-
-          variant -> { OpenAI::Models::Beta::CodeInterpreterTool }
-
-          variant -> { OpenAI::Models::Beta::FileSearchTool }
-
-          variant -> { OpenAI::Models::Beta::FunctionTool }
-
-          # @!method self.variants
-          #   @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool)]
         end
 
         class TruncationStrategy < OpenAI::Internal::Type::BaseModel
@@ -615,11 +686,18 @@ module OpenAI
           optional :last_messages, Integer, nil?: true
 
           # @!method initialize(type:, last_messages: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy} for more
+          #   details.
+          #
           #   Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           #
-          #   @param type [Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type]
-          #   @param last_messages [Integer, nil]
+          #   @param type [Symbol, OpenAI::Models::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type] The truncation strategy to use for the thread. The default is `auto`. If set to
+          #   ...
+          #
+          #   @param last_messages [Integer, nil] The number of most recent messages from the thread when constructing the context
+          #   ...
 
           # The truncation strategy to use for the thread. The default is `auto`. If set to
           # `last_messages`, the thread will be truncated to the n most recent messages in

@@ -28,9 +28,16 @@ module OpenAI
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!method initialize(after: nil, limit: nil, metadata: nil, request_options: {})
-        #   @param after [String]
-        #   @param limit [Integer]
-        #   @param metadata [Hash{Symbol=>String}, nil]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::FineTuning::JobListParams} for more details.
+        #
+        #   @param after [String] Identifier for the last job from the previous pagination request.
+        #
+        #   @param limit [Integer] Number of fine-tuning jobs to retrieve.
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Optional metadata filter. To filter, use the syntax `metadata[k]=v`. Alternative
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

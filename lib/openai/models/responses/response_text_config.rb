@@ -23,13 +23,16 @@ module OpenAI
         optional :format_, union: -> { OpenAI::Models::Responses::ResponseFormatTextConfig }, api_name: :format
 
         # @!method initialize(format_: nil)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseTextConfig} for more details.
+        #
         #   Configuration options for a text response from the model. Can be plain text or
         #   structured JSON data. Learn more:
         #
         #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
         #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         #
-        #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject]
+        #   @param format_ [OpenAI::Models::ResponseFormatText, OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig, OpenAI::Models::ResponseFormatJSONObject] An object specifying the format that the model must output. ...
       end
     end
   end

@@ -26,12 +26,17 @@ module OpenAI
         optional :user_location, -> { OpenAI::Models::Responses::WebSearchTool::UserLocation }, nil?: true
 
         # @!method initialize(type:, search_context_size: nil, user_location: nil)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::WebSearchTool} for more details.
+        #
         #   This tool searches the web for relevant results to use in a response. Learn more
         #   about the
         #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
         #
-        #   @param type [Symbol, OpenAI::Models::Responses::WebSearchTool::Type]
-        #   @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize]
+        #   @param type [Symbol, OpenAI::Models::Responses::WebSearchTool::Type] The type of the web search tool. One of: ...
+        #
+        #   @param search_context_size [Symbol, OpenAI::Models::Responses::WebSearchTool::SearchContextSize] High level guidance for the amount of context window space to use for the ...
+        #
         #   @param user_location [OpenAI::Models::Responses::WebSearchTool::UserLocation, nil]
 
         # The type of the web search tool. One of:
@@ -100,11 +105,18 @@ module OpenAI
           optional :timezone, String
 
           # @!method initialize(city: nil, country: nil, region: nil, timezone: nil, type: :approximate)
-          #   @param city [String]
-          #   @param country [String]
-          #   @param region [String]
-          #   @param timezone [String]
-          #   @param type [Symbol, :approximate]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::WebSearchTool::UserLocation} for more details.
+          #
+          #   @param city [String] Free text input for the city of the user, e.g. `San Francisco`. ...
+          #
+          #   @param country [String] The two-letter ...
+          #
+          #   @param region [String] Free text input for the region of the user, e.g. `California`. ...
+          #
+          #   @param timezone [String] The [IANA timezone](https://timeapi.io/documentation/iana-timezones) ...
+          #
+          #   @param type [Symbol, :approximate] The type of location approximation. Always `approximate`. ...
         end
       end
     end

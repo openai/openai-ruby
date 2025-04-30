@@ -8,7 +8,6 @@ module OpenAI
         testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
         ?metadata: OpenAI::Models::metadata?,
         ?name: String,
-        ?share_with_openai: bool,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Models::EvalCreateResponse
 

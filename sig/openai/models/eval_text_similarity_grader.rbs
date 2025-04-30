@@ -47,7 +47,6 @@ module OpenAI
         | :rouge_4
         | :rouge_5
         | :rouge_l
-        | :cosine
 
       module EvaluationMetric
         extend OpenAI::Internal::Type::Enum
@@ -62,7 +61,6 @@ module OpenAI
         ROUGE_4: :rouge_4
         ROUGE_5: :rouge_5
         ROUGE_L: :rouge_l
-        COSINE: :cosine
 
         def self?.values: -> ::Array[OpenAI::Models::EvalTextSimilarityGrader::evaluation_metric]
       end

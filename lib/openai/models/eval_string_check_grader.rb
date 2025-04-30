@@ -37,11 +37,15 @@ module OpenAI
       #   A StringCheckGrader object that performs a string comparison between input and
       #   reference using a specified operation.
       #
-      #   @param input [String]
-      #   @param name [String]
-      #   @param operation [Symbol, OpenAI::Models::EvalStringCheckGrader::Operation]
-      #   @param reference [String]
-      #   @param type [Symbol, :string_check]
+      #   @param input [String] The input text. This may include template strings.
+      #
+      #   @param name [String] The name of the grader.
+      #
+      #   @param operation [Symbol, OpenAI::Models::EvalStringCheckGrader::Operation] The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
+      #
+      #   @param reference [String] The reference text. This may include template strings.
+      #
+      #   @param type [Symbol, :string_check] The object type, which is always `string_check`.
 
       # The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
       #

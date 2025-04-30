@@ -28,17 +28,26 @@ module OpenAI
         optional :order, enum: -> { OpenAI::Models::Evals::RunListParams::Order }
 
         # @!attribute status
-        #   Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
-        #   "canceled".
+        #   Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        #   | `canceled`.
         #
         #   @return [Symbol, OpenAI::Models::Evals::RunListParams::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Evals::RunListParams::Status }
 
         # @!method initialize(after: nil, limit: nil, order: nil, status: nil, request_options: {})
-        #   @param after [String]
-        #   @param limit [Integer]
-        #   @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order]
-        #   @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Evals::RunListParams} for more details.
+        #
+        #   @param after [String] Identifier for the last run from the previous pagination request.
+        #
+        #   @param limit [Integer] Number of runs to retrieve.
+        #
+        #   @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
+        #   ...
+        #
+        #   @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        #   ...
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
@@ -53,8 +62,8 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
-        # Filter runs by status. Use "queued" | "in_progress" | "failed" | "completed" |
-        # "canceled".
+        # Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
+        # | `canceled`.
         module Status
           extend OpenAI::Internal::Type::Enum
 

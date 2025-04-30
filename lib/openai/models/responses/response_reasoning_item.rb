@@ -31,13 +31,19 @@ module OpenAI
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseReasoningItem::Status }
 
         # @!method initialize(id:, summary:, status: nil, type: :reasoning)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Responses::ResponseReasoningItem} for more details.
+        #
         #   A description of the chain of thought used by a reasoning model while generating
         #   a response.
         #
-        #   @param id [String]
-        #   @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>]
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status]
-        #   @param type [Symbol, :reasoning]
+        #   @param id [String] The unique identifier of the reasoning content. ...
+        #
+        #   @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>] Reasoning text contents. ...
+        #
+        #   @param status [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status] The status of the item. One of `in_progress`, `completed`, or ...
+        #
+        #   @param type [Symbol, :reasoning] The type of the object. Always `reasoning`. ...
 
         class Summary < OpenAI::Internal::Type::BaseModel
           # @!attribute text
@@ -53,8 +59,12 @@ module OpenAI
           required :type, const: :summary_text
 
           # @!method initialize(text:, type: :summary_text)
-          #   @param text [String]
-          #   @param type [Symbol, :summary_text]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Responses::ResponseReasoningItem::Summary} for more details.
+          #
+          #   @param text [String] A short summary of the reasoning used by the model when generating ...
+          #
+          #   @param type [Symbol, :summary_text] The type of the object. Always `summary_text`. ...
         end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
