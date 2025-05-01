@@ -1,4 +1,4 @@
-#!/usr/bin/env -S -- ruby
+#!/usr/bin/env ruby
 # frozen_string_literal: true
 # typed: strong
 
