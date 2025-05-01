@@ -13,4 +13,5 @@ fi
 
 echo "==> Installing Ruby dependencies…"
 
+rm -fr -v -- Gemfile.lock
 exec -- bundle install "$@"

@@ -20,7 +20,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: false
-          ruby-version: '3.1'
       - run: |-
           bundle install
 
@@ -36,7 +35,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: false
-          ruby-version: '3.1'
       - run: |-
           bundle install
 

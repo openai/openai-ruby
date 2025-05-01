@@ -164,7 +164,7 @@ module OpenAI
     end
 
     class InternalServerError < OpenAI::Errors::APIStatusError
-      HTTP_STATUS = T.let((500..), T::Range[Integer])
+      HTTP_STATUS = T.let(500.., T::Range[Integer])
     end
   end
 end
