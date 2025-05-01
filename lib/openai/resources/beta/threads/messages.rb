@@ -35,7 +35,7 @@ module OpenAI
               path: ["threads/%1$s/messages", thread_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Message,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -66,7 +66,7 @@ module OpenAI
               method: :get,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               model: OpenAI::Models::Beta::Threads::Message,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -100,7 +100,7 @@ module OpenAI
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Message,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -141,7 +141,7 @@ module OpenAI
               query: parsed,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::Beta::Threads::Message,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -168,7 +168,7 @@ module OpenAI
               method: :delete,
               path: ["threads/%1$s/messages/%2$s", thread_id, message_id],
               model: OpenAI::Models::Beta::Threads::MessageDeleted,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 

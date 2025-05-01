@@ -390,15 +390,7 @@ module OpenAI
         # Create a new instance of a model.
         #
         # @param data [Hash{Symbol=>Object}, self]
-        def initialize(data = {})
-          case OpenAI::Internal::Util.coerce_hash(data)
-          in Hash => coerced
-            @data = coerced
-          else
-            message = "Expected a #{Hash} or #{OpenAI::Internal::Type::BaseModel}, got #{data.inspect}"
-            raise ArgumentError.new(message)
-          end
-        end
+        def initialize(data = {}) = (@data = OpenAI::Internal::Util.coerce_hash!(data).to_h)
 
         class << self
           # @api private
