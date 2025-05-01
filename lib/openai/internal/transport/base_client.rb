@@ -261,7 +261,7 @@ module OpenAI
             headers["x-stainless-retry-count"] = "0"
           end
 
-          timeout = opts.fetch(:timeout, @timeout).to_f.clamp((0..))
+          timeout = opts.fetch(:timeout, @timeout).to_f.clamp(0..)
           unless headers.key?("x-stainless-timeout") || timeout.zero?
             headers["x-stainless-timeout"] = timeout.to_s
           end
