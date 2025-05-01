@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionContentPartText = Chat::ChatCompletionContentPartText
+
     module Chat
       class ChatCompletionContentPartText < OpenAI::Internal::Type::BaseModel
         # The text content.
@@ -25,7 +27,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionContentPartText = Chat::ChatCompletionContentPartText
   end
 end

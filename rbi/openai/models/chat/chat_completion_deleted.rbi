@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionDeleted = Chat::ChatCompletionDeleted
+
     module Chat
       class ChatCompletionDeleted < OpenAI::Internal::Type::BaseModel
         # The ID of the chat completion that was deleted.
@@ -29,7 +31,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionDeleted = Chat::ChatCompletionDeleted
   end
 end

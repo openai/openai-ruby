@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionMessage = Chat::ChatCompletionMessage
+
     module Chat
       class ChatCompletionMessage < OpenAI::Internal::Type::BaseModel
         # The contents of the message.
@@ -221,7 +223,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionMessage = Chat::ChatCompletionMessage
   end
 end

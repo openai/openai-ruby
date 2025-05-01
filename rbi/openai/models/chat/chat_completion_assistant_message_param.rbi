@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionAssistantMessageParam = Chat::ChatCompletionAssistantMessageParam
+
     module Chat
       class ChatCompletionAssistantMessageParam < OpenAI::Internal::Type::BaseModel
         # The role of the messages author, in this case `assistant`.
@@ -242,7 +244,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionAssistantMessageParam = Chat::ChatCompletionAssistantMessageParam
   end
 end

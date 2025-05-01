@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionStreamOptions = Chat::ChatCompletionStreamOptions
+
     module Chat
       class ChatCompletionStreamOptions < OpenAI::Internal::Type::BaseModel
         # If set, an additional chunk will be streamed before the `data: [DONE]` message.
@@ -33,7 +35,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionStreamOptions = Chat::ChatCompletionStreamOptions
   end
 end

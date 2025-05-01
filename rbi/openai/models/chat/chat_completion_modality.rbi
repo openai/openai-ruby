@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionModality = Chat::ChatCompletionModality
+
     module Chat
       module ChatCompletionModality
         extend OpenAI::Internal::Type::Enum
@@ -16,7 +18,5 @@ module OpenAI
         def self.values; end
       end
     end
-
-    ChatCompletionModality = Chat::ChatCompletionModality
   end
 end

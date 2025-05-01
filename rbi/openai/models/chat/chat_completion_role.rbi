@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionRole = Chat::ChatCompletionRole
+
     module Chat
       # The role of the author of a message
       module ChatCompletionRole
@@ -21,7 +23,5 @@ module OpenAI
         def self.values; end
       end
     end
-
-    ChatCompletionRole = Chat::ChatCompletionRole
   end
 end

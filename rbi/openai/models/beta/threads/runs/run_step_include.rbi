@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        RunStepInclude = Runs::RunStepInclude
+
         module Runs
           module RunStepInclude
             extend OpenAI::Internal::Type::Enum
@@ -21,8 +23,6 @@ module OpenAI
             def self.values; end
           end
         end
-
-        RunStepInclude = Runs::RunStepInclude
       end
     end
   end

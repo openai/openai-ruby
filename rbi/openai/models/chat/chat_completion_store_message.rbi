@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionStoreMessage = Chat::ChatCompletionStoreMessage
+
     module Chat
       class ChatCompletionStoreMessage < OpenAI::Models::Chat::ChatCompletionMessage
         # The identifier of the chat message.
@@ -18,7 +20,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionStoreMessage = Chat::ChatCompletionStoreMessage
   end
 end

@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    VectorStoreFileDeleted = VectorStores::VectorStoreFileDeleted
+
     module VectorStores
       class VectorStoreFileDeleted < OpenAI::Internal::Type::BaseModel
         sig { returns(String) }
@@ -20,7 +22,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    VectorStoreFileDeleted = VectorStores::VectorStoreFileDeleted
   end
 end

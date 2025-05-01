@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionSystemMessageParam = Chat::ChatCompletionSystemMessageParam
+
     module Chat
       class ChatCompletionSystemMessageParam < OpenAI::Internal::Type::BaseModel
         # The contents of the system message.
@@ -70,7 +72,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionSystemMessageParam = Chat::ChatCompletionSystemMessageParam
   end
 end

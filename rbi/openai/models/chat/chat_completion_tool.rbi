@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionTool = Chat::ChatCompletionTool
+
     module Chat
       class ChatCompletionTool < OpenAI::Internal::Type::BaseModel
         sig { returns(OpenAI::Models::FunctionDefinition) }
@@ -27,7 +29,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionTool = Chat::ChatCompletionTool
   end
 end

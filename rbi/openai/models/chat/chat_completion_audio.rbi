@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionAudio = Chat::ChatCompletionAudio
+
     module Chat
       class ChatCompletionAudio < OpenAI::Internal::Type::BaseModel
         # Unique identifier for this audio response.
@@ -44,7 +46,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionAudio = Chat::ChatCompletionAudio
   end
 end

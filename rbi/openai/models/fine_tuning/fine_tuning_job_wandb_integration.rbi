@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    FineTuningJobWandbIntegration = FineTuning::FineTuningJobWandbIntegration
+
     module FineTuning
       class FineTuningJobWandbIntegration < OpenAI::Internal::Type::BaseModel
         # The name of the project that the new run will be created under.
@@ -63,7 +65,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    FineTuningJobWandbIntegration = FineTuning::FineTuningJobWandbIntegration
   end
 end

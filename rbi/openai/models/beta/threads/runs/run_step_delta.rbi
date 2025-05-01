@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        RunStepDelta = Runs::RunStepDelta
+
         module Runs
           class RunStepDelta < OpenAI::Internal::Type::BaseModel
             # The details of the run step.
@@ -73,8 +75,6 @@ module OpenAI
             end
           end
         end
-
-        RunStepDelta = Runs::RunStepDelta
       end
     end
   end

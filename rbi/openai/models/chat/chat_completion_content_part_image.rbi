@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionContentPartImage = Chat::ChatCompletionContentPartImage
+
     module Chat
       class ChatCompletionContentPartImage < OpenAI::Internal::Type::BaseModel
         sig { returns(OpenAI::Models::Chat::ChatCompletionContentPartImage::ImageURL) }
@@ -94,7 +96,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionContentPartImage = Chat::ChatCompletionContentPartImage
   end
 end

@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        RunStepDeltaEvent = Runs::RunStepDeltaEvent
+
         module Runs
           class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
             # The identifier of the run step, which can be referenced in API endpoints.
@@ -43,8 +45,6 @@ module OpenAI
             def to_hash; end
           end
         end
-
-        RunStepDeltaEvent = Runs::RunStepDeltaEvent
       end
     end
   end

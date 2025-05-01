@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionChunk = Chat::ChatCompletionChunk
+
     module Chat
       class ChatCompletionChunk < OpenAI::Internal::Type::BaseModel
         # A unique identifier for the chat completion. Each chunk has the same ID.
@@ -562,7 +564,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionChunk = Chat::ChatCompletionChunk
   end
 end

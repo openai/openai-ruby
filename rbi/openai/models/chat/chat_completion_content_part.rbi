@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionContentPart = Chat::ChatCompletionContentPart
+
     module Chat
       # Learn about
       # [text inputs](https://platform.openai.com/docs/guides/text-generation).
@@ -88,7 +90,5 @@ module OpenAI
         def self.variants; end
       end
     end
-
-    ChatCompletionContentPart = Chat::ChatCompletionContentPart
   end
 end
