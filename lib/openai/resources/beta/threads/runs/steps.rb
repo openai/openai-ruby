@@ -42,7 +42,7 @@ module OpenAI
                 path: ["threads/%1$s/runs/%2$s/steps/%3$s", thread_id, run_id, step_id],
                 query: parsed,
                 model: OpenAI::Models::Beta::Threads::Runs::RunStep,
-                options: options
+                options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
               )
             end
 
@@ -89,7 +89,7 @@ module OpenAI
                 query: parsed,
                 page: OpenAI::Internal::CursorPage,
                 model: OpenAI::Models::Beta::Threads::Runs::RunStep,
-                options: options
+                options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
               )
             end
 

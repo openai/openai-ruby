@@ -37,7 +37,7 @@ module OpenAI
             path: "threads",
             body: parsed,
             model: OpenAI::Models::Beta::Thread,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -57,7 +57,7 @@ module OpenAI
             method: :get,
             path: ["threads/%1$s", thread_id],
             model: OpenAI::Models::Beta::Thread,
-            options: params[:request_options]
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
           )
         end
 
@@ -87,7 +87,7 @@ module OpenAI
             path: ["threads/%1$s", thread_id],
             body: parsed,
             model: OpenAI::Models::Beta::Thread,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -107,7 +107,7 @@ module OpenAI
             method: :delete,
             path: ["threads/%1$s", thread_id],
             model: OpenAI::Models::Beta::ThreadDeleted,
-            options: params[:request_options]
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
           )
         end
 
@@ -178,7 +178,7 @@ module OpenAI
             path: "threads/runs",
             body: parsed,
             model: OpenAI::Models::Beta::Threads::Run,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -253,7 +253,7 @@ module OpenAI
             body: parsed,
             stream: OpenAI::Internal::Stream,
             model: OpenAI::Models::Beta::AssistantStreamEvent,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 

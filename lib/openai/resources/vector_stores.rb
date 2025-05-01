@@ -40,7 +40,7 @@ module OpenAI
           path: "vector_stores",
           body: parsed,
           model: OpenAI::Models::VectorStore,
-          options: options
+          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end
 
@@ -60,7 +60,7 @@ module OpenAI
           method: :get,
           path: ["vector_stores/%1$s", vector_store_id],
           model: OpenAI::Models::VectorStore,
-          options: params[:request_options]
+          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
         )
       end
 
@@ -91,7 +91,7 @@ module OpenAI
           path: ["vector_stores/%1$s", vector_store_id],
           body: parsed,
           model: OpenAI::Models::VectorStore,
-          options: options
+          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end
 
@@ -127,7 +127,7 @@ module OpenAI
           query: parsed,
           page: OpenAI::Internal::CursorPage,
           model: OpenAI::Models::VectorStore,
-          options: options
+          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end
 
@@ -147,7 +147,7 @@ module OpenAI
           method: :delete,
           path: ["vector_stores/%1$s", vector_store_id],
           model: OpenAI::Models::VectorStoreDeleted,
-          options: params[:request_options]
+          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **params[:request_options].to_h}
         )
       end
 
@@ -185,7 +185,7 @@ module OpenAI
           body: parsed,
           page: OpenAI::Internal::Page,
           model: OpenAI::Models::VectorStoreSearchResponse,
-          options: options
+          options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
         )
       end
 

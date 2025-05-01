@@ -33,7 +33,7 @@ module OpenAI
             path: ["vector_stores/%1$s/file_batches", vector_store_id],
             body: parsed,
             model: OpenAI::Models::VectorStores::VectorStoreFileBatch,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -60,7 +60,7 @@ module OpenAI
             method: :get,
             path: ["vector_stores/%1$s/file_batches/%2$s", vector_store_id, batch_id],
             model: OpenAI::Models::VectorStores::VectorStoreFileBatch,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -88,7 +88,7 @@ module OpenAI
             method: :post,
             path: ["vector_stores/%1$s/file_batches/%2$s/cancel", vector_store_id, batch_id],
             model: OpenAI::Models::VectorStores::VectorStoreFileBatch,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -135,7 +135,7 @@ module OpenAI
             query: parsed,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 

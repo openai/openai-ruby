@@ -35,7 +35,7 @@ module OpenAI
             path: ["vector_stores/%1$s/files", vector_store_id],
             body: parsed,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -62,7 +62,7 @@ module OpenAI
             method: :get,
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             model: OpenAI::Models::VectorStores::VectorStoreFile,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -96,7 +96,7 @@ module OpenAI
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             body: parsed,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -137,7 +137,7 @@ module OpenAI
             query: parsed,
             page: OpenAI::Internal::CursorPage,
             model: OpenAI::Models::VectorStores::VectorStoreFile,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -167,7 +167,7 @@ module OpenAI
             method: :delete,
             path: ["vector_stores/%1$s/files/%2$s", vector_store_id, file_id],
             model: OpenAI::Models::VectorStores::VectorStoreFileDeleted,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 
@@ -195,7 +195,7 @@ module OpenAI
             path: ["vector_stores/%1$s/files/%2$s/content", vector_store_id, file_id],
             page: OpenAI::Internal::Page,
             model: OpenAI::Models::VectorStores::FileContentResponse,
-            options: options
+            options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
           )
         end
 

@@ -86,7 +86,7 @@ module OpenAI
               query: parsed.slice(*query_params),
               body: parsed.except(*query_params),
               model: OpenAI::Models::Beta::Threads::Run,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -171,7 +171,7 @@ module OpenAI
               body: parsed.except(*query_params),
               stream: OpenAI::Internal::Stream,
               model: OpenAI::Models::Beta::AssistantStreamEvent,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -202,7 +202,7 @@ module OpenAI
               method: :get,
               path: ["threads/%1$s/runs/%2$s", thread_id, run_id],
               model: OpenAI::Models::Beta::Threads::Run,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -237,7 +237,7 @@ module OpenAI
               path: ["threads/%1$s/runs/%2$s", thread_id, run_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Run,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -275,7 +275,7 @@ module OpenAI
               query: parsed,
               page: OpenAI::Internal::CursorPage,
               model: OpenAI::Models::Beta::Threads::Run,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -302,7 +302,7 @@ module OpenAI
               method: :post,
               path: ["threads/%1$s/runs/%2$s/cancel", thread_id, run_id],
               model: OpenAI::Models::Beta::Threads::Run,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -346,7 +346,7 @@ module OpenAI
               path: ["threads/%1$s/runs/%2$s/submit_tool_outputs", thread_id, run_id],
               body: parsed,
               model: OpenAI::Models::Beta::Threads::Run,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
@@ -393,7 +393,7 @@ module OpenAI
               body: parsed,
               stream: OpenAI::Internal::Stream,
               model: OpenAI::Models::Beta::AssistantStreamEvent,
-              options: options
+              options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
             )
           end
 
