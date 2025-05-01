@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionDeveloperMessageParam = Chat::ChatCompletionDeveloperMessageParam
+
     module Chat
       class ChatCompletionDeveloperMessageParam < OpenAI::Internal::Type::BaseModel
         # The contents of the developer message.
@@ -70,7 +72,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionDeveloperMessageParam = Chat::ChatCompletionDeveloperMessageParam
   end
 end

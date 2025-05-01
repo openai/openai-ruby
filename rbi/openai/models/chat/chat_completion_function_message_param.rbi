@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionFunctionMessageParam = Chat::ChatCompletionFunctionMessageParam
+
     module Chat
       class ChatCompletionFunctionMessageParam < OpenAI::Internal::Type::BaseModel
         # The contents of the function message.
@@ -29,7 +31,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionFunctionMessageParam = Chat::ChatCompletionFunctionMessageParam
   end
 end

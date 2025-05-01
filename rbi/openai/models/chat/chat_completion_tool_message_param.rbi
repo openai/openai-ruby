@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionToolMessageParam = Chat::ChatCompletionToolMessageParam
+
     module Chat
       class ChatCompletionToolMessageParam < OpenAI::Internal::Type::BaseModel
         # The contents of the tool message.
@@ -62,7 +64,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionToolMessageParam = Chat::ChatCompletionToolMessageParam
   end
 end

@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionMessageParam = Chat::ChatCompletionMessageParam
+
     module Chat
       # Developer-provided instructions that the model should follow, regardless of
       # messages sent by the user. With o1 models and newer, `developer` messages
@@ -18,7 +20,5 @@ module OpenAI
         def self.variants; end
       end
     end
-
-    ChatCompletionMessageParam = Chat::ChatCompletionMessageParam
   end
 end

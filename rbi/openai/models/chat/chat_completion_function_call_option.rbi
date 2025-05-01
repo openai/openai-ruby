@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionFunctionCallOption = Chat::ChatCompletionFunctionCallOption
+
     module Chat
       class ChatCompletionFunctionCallOption < OpenAI::Internal::Type::BaseModel
         # The name of the function to call.
@@ -19,7 +21,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ChatCompletionFunctionCallOption = Chat::ChatCompletionFunctionCallOption
   end
 end

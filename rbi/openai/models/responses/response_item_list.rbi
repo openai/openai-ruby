@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ResponseItemList = Responses::ResponseItemList
+
     module Responses
       class ResponseItemList < OpenAI::Internal::Type::BaseModel
         # A list of items used to generate this response.
@@ -100,7 +102,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    ResponseItemList = Responses::ResponseItemList
   end
 end

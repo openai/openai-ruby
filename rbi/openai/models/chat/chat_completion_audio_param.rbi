@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionAudioParam = Chat::ChatCompletionAudioParam
+
     module Chat
       class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
@@ -87,7 +89,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionAudioParam = Chat::ChatCompletionAudioParam
   end
 end

@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    FineTuningJob = FineTuning::FineTuningJob
+
     module FineTuning
       class FineTuningJob < OpenAI::Internal::Type::BaseModel
         # The object identifier, which can be referenced in the API endpoints.
@@ -697,7 +699,5 @@ module OpenAI
         end
       end
     end
-
-    FineTuningJob = FineTuning::FineTuningJob
   end
 end

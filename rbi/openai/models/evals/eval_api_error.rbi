@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    EvalAPIError = Evals::EvalAPIError
+
     module Evals
       class EvalAPIError < OpenAI::Internal::Type::BaseModel
         # The error code.
@@ -24,7 +26,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    EvalAPIError = Evals::EvalAPIError
   end
 end

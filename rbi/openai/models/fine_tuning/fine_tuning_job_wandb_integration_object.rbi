@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    FineTuningJobWandbIntegrationObject = FineTuning::FineTuningJobWandbIntegrationObject
+
     module FineTuning
       class FineTuningJobWandbIntegrationObject < OpenAI::Internal::Type::BaseModel
         # The type of the integration being enabled for the fine-tuning job
@@ -41,7 +43,5 @@ module OpenAI
         def to_hash; end
       end
     end
-
-    FineTuningJobWandbIntegrationObject = FineTuning::FineTuningJobWandbIntegrationObject
   end
 end

@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    VectorStoreFileBatch = VectorStores::VectorStoreFileBatch
+
     module VectorStores
       class VectorStoreFileBatch < OpenAI::Internal::Type::BaseModel
         # The identifier, which can be referenced in API endpoints.
@@ -160,7 +162,5 @@ module OpenAI
         end
       end
     end
-
-    VectorStoreFileBatch = VectorStores::VectorStoreFileBatch
   end
 end

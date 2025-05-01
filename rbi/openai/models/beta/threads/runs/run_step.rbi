@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Beta
       module Threads
+        RunStep = Runs::RunStep
+
         module Runs
           class RunStep < OpenAI::Internal::Type::BaseModel
             # The identifier of the run step, which can be referenced in API endpoints.
@@ -337,8 +339,6 @@ module OpenAI
             end
           end
         end
-
-        RunStep = Runs::RunStep
       end
     end
   end

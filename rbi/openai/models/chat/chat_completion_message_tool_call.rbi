@@ -2,6 +2,8 @@
 
 module OpenAI
   module Models
+    ChatCompletionMessageToolCall = Chat::ChatCompletionMessageToolCall
+
     module Chat
       class ChatCompletionMessageToolCall < OpenAI::Internal::Type::BaseModel
         # The ID of the tool call.
@@ -76,7 +78,5 @@ module OpenAI
         end
       end
     end
-
-    ChatCompletionMessageToolCall = Chat::ChatCompletionMessageToolCall
   end
 end
