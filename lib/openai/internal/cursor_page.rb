@@ -66,8 +66,8 @@ module OpenAI
         super
 
         case page_data
-        in {data: Array | nil => data}
-          @data = data&.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
+        in {data: Array => data}
+          @data = data.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
         else
         end
         @has_more = page_data[:has_more]
