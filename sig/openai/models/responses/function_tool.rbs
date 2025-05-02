@@ -4,8 +4,8 @@ module OpenAI
       type function_tool =
         {
           name: String,
-          parameters: ::Hash[Symbol, top],
-          strict: bool,
+          parameters: ::Hash[Symbol, top]?,
+          strict: bool?,
           type: :function,
           description: String?
         }
@@ -13,9 +13,9 @@ module OpenAI
       class FunctionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor name: String
 
-        attr_accessor parameters: ::Hash[Symbol, top]
+        attr_accessor parameters: ::Hash[Symbol, top]?
 
-        attr_accessor strict: bool
+        attr_accessor strict: bool?
 
         attr_accessor type: :function
 
@@ -23,8 +23,8 @@ module OpenAI
 
         def initialize: (
           name: String,
-          parameters: ::Hash[Symbol, top],
-          strict: bool,
+          parameters: ::Hash[Symbol, top]?,
+          strict: bool?,
           ?description: String?,
           ?type: :function
         ) -> void

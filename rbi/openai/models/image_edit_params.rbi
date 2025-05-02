@@ -6,10 +6,13 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # The image(s) to edit. Must be a supported image file or an array of images. For
-      # `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
-      # 25MB. For `dall-e-2`, you can only provide one image, and it should be a square
-      # `png` file less than 4MB.
+      # The image(s) to edit. Must be a supported image file or an array of images.
+      #
+      # For `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
+      # 25MB. You can provide up to 16 images.
+      #
+      # For `dall-e-2`, you can only provide one image, and it should be a square `png`
+      # file less than 4MB.
       sig do
         returns(
           T.any(
@@ -27,6 +30,16 @@ module OpenAI
       # characters for `dall-e-2`, and 32000 characters for `gpt-image-1`.
       sig { returns(String) }
       attr_accessor :prompt
+
+      # Allows to set transparency for the background of the generated image(s). This
+      # parameter is only supported for `gpt-image-1`. Must be one of `transparent`,
+      # `opaque` or `auto` (default value). When `auto` is used, the model will
+      # automatically determine the best background for the image.
+      #
+      # If `transparent`, the output format needs to support transparency, so it should
+      # be set to either `png` (default value) or `webp`.
+      sig { returns(T.nilable(OpenAI::Models::ImageEditParams::Background::OrSymbol)) }
+      attr_accessor :background
 
       # An additional image whose fully transparent areas (e.g. where alpha is zero)
       # indicate where `image` should be edited. If there are multiple images provided,
@@ -86,6 +99,7 @@ module OpenAI
             T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
           ),
           prompt: String,
+          background: T.nilable(OpenAI::Models::ImageEditParams::Background::OrSymbol),
           mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
           model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
@@ -98,14 +112,25 @@ module OpenAI
           .returns(T.attached_class)
       end
       def self.new(
-        # The image(s) to edit. Must be a supported image file or an array of images. For
-        # `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
-        # 25MB. For `dall-e-2`, you can only provide one image, and it should be a square
-        # `png` file less than 4MB.
+        # The image(s) to edit. Must be a supported image file or an array of images.
+        #
+        # For `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
+        # 25MB. You can provide up to 16 images.
+        #
+        # For `dall-e-2`, you can only provide one image, and it should be a square `png`
+        # file less than 4MB.
         image:,
         # A text description of the desired image(s). The maximum length is 1000
         # characters for `dall-e-2`, and 32000 characters for `gpt-image-1`.
         prompt:,
+        # Allows to set transparency for the background of the generated image(s). This
+        # parameter is only supported for `gpt-image-1`. Must be one of `transparent`,
+        # `opaque` or `auto` (default value). When `auto` is used, the model will
+        # automatically determine the best background for the image.
+        #
+        # If `transparent`, the output format needs to support transparency, so it should
+        # be set to either `png` (default value) or `webp`.
+        background: nil,
         # An additional image whose fully transparent areas (e.g. where alpha is zero)
         # indicate where `image` should be edited. If there are multiple images provided,
         # the mask will be applied on the first image. Must be a valid PNG file, less than
@@ -148,6 +173,7 @@ module OpenAI
                 T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
               ),
               prompt: String,
+              background: T.nilable(OpenAI::Models::ImageEditParams::Background::OrSymbol),
               mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
               model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
               n: T.nilable(Integer),
@@ -161,10 +187,13 @@ module OpenAI
       end
       def to_hash; end
 
-      # The image(s) to edit. Must be a supported image file or an array of images. For
-      # `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
-      # 25MB. For `dall-e-2`, you can only provide one image, and it should be a square
-      # `png` file less than 4MB.
+      # The image(s) to edit. Must be a supported image file or an array of images.
+      #
+      # For `gpt-image-1`, each image should be a `png`, `webp`, or `jpg` file less than
+      # 25MB. You can provide up to 16 images.
+      #
+      # For `dall-e-2`, you can only provide one image, and it should be a square `png`
+      # file less than 4MB.
       module Image
         extend OpenAI::Internal::Type::Union
 
@@ -176,6 +205,27 @@ module OpenAI
             OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::FileInput],
             OpenAI::Internal::Type::Converter
           )
+      end
+
+      # Allows to set transparency for the background of the generated image(s). This
+      # parameter is only supported for `gpt-image-1`. Must be one of `transparent`,
+      # `opaque` or `auto` (default value). When `auto` is used, the model will
+      # automatically determine the best background for the image.
+      #
+      # If `transparent`, the output format needs to support transparency, so it should
+      # be set to either `png` (default value) or `webp`.
+      module Background
+        extend OpenAI::Internal::Type::Enum
+
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ImageEditParams::Background) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        TRANSPARENT = T.let(:transparent, OpenAI::Models::ImageEditParams::Background::TaggedSymbol)
+        OPAQUE = T.let(:opaque, OpenAI::Models::ImageEditParams::Background::TaggedSymbol)
+        AUTO = T.let(:auto, OpenAI::Models::ImageEditParams::Background::TaggedSymbol)
+
+        sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::Background::TaggedSymbol]) }
+        def self.values; end
       end
 
       # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
@@ -236,6 +286,9 @@ module OpenAI
         SIZE_256X256 = T.let(:"256x256", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
         SIZE_512X512 = T.let(:"512x512", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
         SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
+        AUTO = T.let(:auto, OpenAI::Models::ImageEditParams::Size::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::Models::ImageEditParams::Size::TaggedSymbol]) }
         def self.values; end

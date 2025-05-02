@@ -13,14 +13,14 @@ module OpenAI
         # @!attribute parameters
         #   A JSON schema object describing the parameters of the function.
         #
-        #   @return [Hash{Symbol=>Object}]
-        required :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+        #   @return [Hash{Symbol=>Object}, nil]
+        required :parameters, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown], nil?: true
 
         # @!attribute strict
         #   Whether to enforce strict parameter validation. Default `true`.
         #
-        #   @return [Boolean]
-        required :strict, OpenAI::Internal::Type::Boolean
+        #   @return [Boolean, nil]
+        required :strict, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!attribute type
         #   The type of the function tool. Always `function`.
@@ -43,15 +43,16 @@ module OpenAI
         #   about
         #   [function calling](https://platform.openai.com/docs/guides/function-calling).
         #
-        #   @param name [String] The name of the function to call. ...
+        #   @param name [String] The name of the function to call.
         #
-        #   @param parameters [Hash{Symbol=>Object}] A JSON schema object describing the parameters of the function. ...
+        #   @param parameters [Hash{Symbol=>Object}, nil] A JSON schema object describing the parameters of the function.
         #
-        #   @param strict [Boolean] Whether to enforce strict parameter validation. Default `true`. ...
+        #   @param strict [Boolean, nil] Whether to enforce strict parameter validation. Default `true`.
         #
-        #   @param description [String, nil] A description of the function. Used by the model to determine whether ...
+        #   @param description [String, nil] A description of the function. Used by the model to determine whether or not to
+        #   ...
         #
-        #   @param type [Symbol, :function] The type of the function tool. Always `function`. ...
+        #   @param type [Symbol, :function] The type of the function tool. Always `function`.
       end
     end
   end

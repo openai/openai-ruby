@@ -53,36 +53,28 @@ module OpenAI
         type user_location =
           {
             type: :approximate,
-            city: String,
-            country: String,
-            region: String,
-            timezone: String
+            city: String?,
+            country: String?,
+            region: String?,
+            timezone: String?
           }
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :approximate
 
-          attr_reader city: String?
+          attr_accessor city: String?
 
-          def city=: (String) -> String
+          attr_accessor country: String?
 
-          attr_reader country: String?
+          attr_accessor region: String?
 
-          def country=: (String) -> String
-
-          attr_reader region: String?
-
-          def region=: (String) -> String
-
-          attr_reader timezone: String?
-
-          def timezone=: (String) -> String
+          attr_accessor timezone: String?
 
           def initialize: (
-            ?city: String,
-            ?country: String,
-            ?region: String,
-            ?timezone: String,
+            ?city: String?,
+            ?country: String?,
+            ?region: String?,
+            ?timezone: String?,
             ?type: :approximate
           ) -> void
 

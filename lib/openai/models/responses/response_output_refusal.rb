@@ -17,14 +17,11 @@ module OpenAI
         required :type, const: :refusal
 
         # @!method initialize(refusal:, type: :refusal)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseOutputRefusal} for more details.
-        #
         #   A refusal from the model.
         #
-        #   @param refusal [String] The refusal explanationfrom the model. ...
+        #   @param refusal [String] The refusal explanationfrom the model.
         #
-        #   @param type [Symbol, :refusal] The type of the refusal. Always `refusal`. ...
+        #   @param type [Symbol, :refusal] The type of the refusal. Always `refusal`.
       end
     end
   end

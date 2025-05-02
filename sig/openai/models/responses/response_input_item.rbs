@@ -91,9 +91,9 @@ module OpenAI
             call_id: String,
             output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
             type: :computer_call_output,
-            id: String,
-            acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
-            status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status
+            id: String?,
+            acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
           }
 
         class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
@@ -103,44 +103,38 @@ module OpenAI
 
           attr_accessor type: :computer_call_output
 
-          attr_reader id: String?
+          attr_accessor id: String?
 
-          def id=: (String) -> String
+          attr_accessor acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?
 
-          attr_reader acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?
-
-          def acknowledged_safety_checks=: (
-            ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]
-          ) -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]
-
-          attr_reader status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
-
-          def status=: (
-            OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status
-          ) -> OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status
+          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
 
           def initialize: (
             call_id: String,
             output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
-            ?id: String,
-            ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck],
-            ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status,
+            ?id: String?,
+            ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?,
             ?type: :computer_call_output
           ) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::computer_call_output
 
           type acknowledged_safety_check =
-            { id: String, code: String, message: String }
+            { id: String, code: String?, message: String? }
 
           class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
 
-            attr_accessor code: String
+            attr_accessor code: String?
 
-            attr_accessor message: String
+            attr_accessor message: String?
 
-            def initialize: (id: String, code: String, message: String) -> void
+            def initialize: (
+              id: String,
+              ?code: String?,
+              ?message: String?
+            ) -> void
 
             def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::acknowledged_safety_check
           end
@@ -163,8 +157,8 @@ module OpenAI
             call_id: String,
             output: String,
             type: :function_call_output,
-            id: String,
-            status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status
+            id: String?,
+            status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
           }
 
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
@@ -174,21 +168,15 @@ module OpenAI
 
           attr_accessor type: :function_call_output
 
-          attr_reader id: String?
+          attr_accessor id: String?
 
-          def id=: (String) -> String
-
-          attr_reader status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
-
-          def status=: (
-            OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status
-          ) -> OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status
+          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
 
           def initialize: (
             call_id: String,
             output: String,
-            ?id: String,
-            ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status,
+            ?id: String?,
+            ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?,
             ?type: :function_call_output
           ) -> void
 
@@ -207,16 +195,33 @@ module OpenAI
           end
         end
 
-        type item_reference = { id: String, type: :item_reference }
+        type item_reference =
+          {
+            id: String,
+            type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
+          }
 
         class ItemReference < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
-          attr_accessor type: :item_reference
+          attr_accessor type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
 
-          def initialize: (id: String, ?type: :item_reference) -> void
+          def initialize: (
+            id: String,
+            ?type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
+          ) -> void
 
           def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::item_reference
+
+          type type_ = :item_reference
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            ITEM_REFERENCE: :item_reference
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_]
+          end
         end
 
         def self?.variants: -> [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]

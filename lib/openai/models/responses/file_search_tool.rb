@@ -17,10 +17,10 @@ module OpenAI
         required :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!attribute filters
-        #   A filter to apply based on file attributes.
+        #   A filter to apply.
         #
         #   @return [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter, nil]
-        optional :filters, union: -> { OpenAI::Models::Responses::FileSearchTool::Filters }
+        optional :filters, union: -> { OpenAI::Models::Responses::FileSearchTool::Filters }, nil?: true
 
         # @!attribute max_num_results
         #   The maximum number of results to return. This number should be between 1 and 50
@@ -43,17 +43,18 @@ module OpenAI
         #   the
         #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         #
-        #   @param vector_store_ids [Array<String>] The IDs of the vector stores to search. ...
+        #   @param vector_store_ids [Array<String>] The IDs of the vector stores to search.
         #
-        #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter] A filter to apply based on file attributes.
+        #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter, nil] A filter to apply.
         #
-        #   @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 ...
+        #   @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 and 50
+        #   ...
         #
         #   @param ranking_options [OpenAI::Models::Responses::FileSearchTool::RankingOptions] Ranking options for search.
         #
-        #   @param type [Symbol, :file_search] The type of the file search tool. Always `file_search`. ...
+        #   @param type [Symbol, :file_search] The type of the file search tool. Always `file_search`.
 
-        # A filter to apply based on file attributes.
+        # A filter to apply.
         #
         # @see OpenAI::Models::Responses::FileSearchTool#filters
         module Filters
@@ -93,7 +94,8 @@ module OpenAI
           #
           #   @param ranker [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker] The ranker to use for the file search.
           #
-          #   @param score_threshold [Float] The score threshold for the file search, a number between 0 and 1. ...
+          #   @param score_threshold [Float] The score threshold for the file search, a number between 0 and 1. Numbers close
+          #   ...
 
           # The ranker to use for the file search.
           #

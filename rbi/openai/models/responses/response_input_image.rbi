@@ -66,8 +66,8 @@ module OpenAI
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          HIGH = T.let(:high, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
           LOW = T.let(:low, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
+          HIGH = T.let(:high, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
           AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputImage::Detail::TaggedSymbol]) }

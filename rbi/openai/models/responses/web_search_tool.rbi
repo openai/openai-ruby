@@ -4,10 +4,8 @@ module OpenAI
   module Models
     module Responses
       class WebSearchTool < OpenAI::Internal::Type::BaseModel
-        # The type of the web search tool. One of:
-        #
-        # - `web_search_preview`
-        # - `web_search_preview_2025_03_11`
+        # The type of the web search tool. One of `web_search_preview` or
+        # `web_search_preview_2025_03_11`.
         sig { returns(OpenAI::Models::Responses::WebSearchTool::Type::OrSymbol) }
         attr_accessor :type
 
@@ -19,6 +17,7 @@ module OpenAI
         sig { params(search_context_size: OpenAI::Models::Responses::WebSearchTool::SearchContextSize::OrSymbol).void }
         attr_writer :search_context_size
 
+        # The user's location.
         sig { returns(T.nilable(OpenAI::Models::Responses::WebSearchTool::UserLocation)) }
         attr_reader :user_location
 
@@ -42,14 +41,13 @@ module OpenAI
             .returns(T.attached_class)
         end
         def self.new(
-          # The type of the web search tool. One of:
-          #
-          # - `web_search_preview`
-          # - `web_search_preview_2025_03_11`
+          # The type of the web search tool. One of `web_search_preview` or
+          # `web_search_preview_2025_03_11`.
           type:,
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
           search_context_size: nil,
+          # The user's location.
           user_location: nil
         ); end
         sig do
@@ -64,10 +62,8 @@ module OpenAI
         end
         def to_hash; end
 
-        # The type of the web search tool. One of:
-        #
-        # - `web_search_preview`
-        # - `web_search_preview_2025_03_11`
+        # The type of the web search tool. One of `web_search_preview` or
+        # `web_search_preview_2025_03_11`.
         module Type
           extend OpenAI::Internal::Type::Enum
 
@@ -107,36 +103,31 @@ module OpenAI
 
           # Free text input for the city of the user, e.g. `San Francisco`.
           sig { returns(T.nilable(String)) }
-          attr_reader :city
-
-          sig { params(city: String).void }
-          attr_writer :city
+          attr_accessor :city
 
           # The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
           # the user, e.g. `US`.
           sig { returns(T.nilable(String)) }
-          attr_reader :country
-
-          sig { params(country: String).void }
-          attr_writer :country
+          attr_accessor :country
 
           # Free text input for the region of the user, e.g. `California`.
           sig { returns(T.nilable(String)) }
-          attr_reader :region
-
-          sig { params(region: String).void }
-          attr_writer :region
+          attr_accessor :region
 
           # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
           # user, e.g. `America/Los_Angeles`.
           sig { returns(T.nilable(String)) }
-          attr_reader :timezone
+          attr_accessor :timezone
 
-          sig { params(timezone: String).void }
-          attr_writer :timezone
-
+          # The user's location.
           sig do
-            params(city: String, country: String, region: String, timezone: String, type: Symbol)
+            params(
+              city: T.nilable(String),
+              country: T.nilable(String),
+              region: T.nilable(String),
+              timezone: T.nilable(String),
+              type: Symbol
+            )
               .returns(T.attached_class)
           end
           def self.new(
@@ -154,7 +145,16 @@ module OpenAI
             type: :approximate
           ); end
           sig do
-            override.returns({type: Symbol, city: String, country: String, region: String, timezone: String})
+            override
+              .returns(
+                {
+                  type: Symbol,
+                  city: T.nilable(String),
+                  country: T.nilable(String),
+                  region: T.nilable(String),
+                  timezone: T.nilable(String)
+                }
+              )
           end
           def to_hash; end
         end

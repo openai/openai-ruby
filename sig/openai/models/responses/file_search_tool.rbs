@@ -5,7 +5,7 @@ module OpenAI
         {
           type: :file_search,
           vector_store_ids: ::Array[String],
-          filters: OpenAI::Models::Responses::FileSearchTool::filters,
+          filters: OpenAI::Models::Responses::FileSearchTool::filters?,
           max_num_results: Integer,
           ranking_options: OpenAI::Models::Responses::FileSearchTool::RankingOptions
         }
@@ -15,11 +15,7 @@ module OpenAI
 
         attr_accessor vector_store_ids: ::Array[String]
 
-        attr_reader filters: OpenAI::Models::Responses::FileSearchTool::filters?
-
-        def filters=: (
-          OpenAI::Models::Responses::FileSearchTool::filters
-        ) -> OpenAI::Models::Responses::FileSearchTool::filters
+        attr_accessor filters: OpenAI::Models::Responses::FileSearchTool::filters?
 
         attr_reader max_num_results: Integer?
 
@@ -33,7 +29,7 @@ module OpenAI
 
         def initialize: (
           vector_store_ids: ::Array[String],
-          ?filters: OpenAI::Models::Responses::FileSearchTool::filters,
+          ?filters: OpenAI::Models::Responses::FileSearchTool::filters?,
           ?max_num_results: Integer,
           ?ranking_options: OpenAI::Models::Responses::FileSearchTool::RankingOptions,
           ?type: :file_search

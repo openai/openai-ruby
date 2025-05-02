@@ -12,17 +12,9 @@ module OpenAI
         sig { returns(T::Array[String]) }
         attr_accessor :vector_store_ids
 
-        # A filter to apply based on file attributes.
+        # A filter to apply.
         sig { returns(T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))) }
-        attr_reader :filters
-
-        sig do
-          params(
-            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter)
-          )
-            .void
-        end
-        attr_writer :filters
+        attr_accessor :filters
 
         # The maximum number of results to return. This number should be between 1 and 50
         # inclusive.
@@ -50,7 +42,9 @@ module OpenAI
         sig do
           params(
             vector_store_ids: T::Array[String],
-            filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter),
+            filters: T.nilable(
+              T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter)
+            ),
             max_num_results: Integer,
             ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::AnyHash),
             type: Symbol
@@ -60,7 +54,7 @@ module OpenAI
         def self.new(
           # The IDs of the vector stores to search.
           vector_store_ids:,
-          # A filter to apply based on file attributes.
+          # A filter to apply.
           filters: nil,
           # The maximum number of results to return. This number should be between 1 and 50
           # inclusive.
@@ -76,7 +70,7 @@ module OpenAI
               {
                 type: Symbol,
                 vector_store_ids: T::Array[String],
-                filters: T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter),
+                filters: T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)),
                 max_num_results: Integer,
                 ranking_options: OpenAI::Models::Responses::FileSearchTool::RankingOptions
               }
@@ -84,7 +78,7 @@ module OpenAI
         end
         def to_hash; end
 
-        # A filter to apply based on file attributes.
+        # A filter to apply.
         module Filters
           extend OpenAI::Internal::Type::Union
 

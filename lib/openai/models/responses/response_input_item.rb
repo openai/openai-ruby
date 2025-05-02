@@ -51,7 +51,9 @@ module OpenAI
         variant :function_call_output, -> { OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput }
 
         # A description of the chain of thought used by a reasoning model while generating
-        # a response.
+        # a response. Be sure to include these items in your `input` to the Responses API
+        # for subsequent turns of a conversation if you are manually
+        # [managing context](https://platform.openai.com/docs/guides/conversation-state).
         variant :reasoning, -> { OpenAI::Models::Responses::ResponseReasoningItem }
 
         # An internal identifier for an item to reference.
@@ -166,7 +168,7 @@ module OpenAI
           #   The ID of the computer tool call output.
           #
           #   @return [String, nil]
-          optional :id, String
+          optional :id, String, nil?: true
 
           # @!attribute acknowledged_safety_checks
           #   The safety checks reported by the API that have been acknowledged by the
@@ -174,14 +176,17 @@ module OpenAI
           #
           #   @return [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil]
           optional :acknowledged_safety_checks,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck] }
+                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck] },
+                   nil?: true
 
           # @!attribute status
           #   The status of the message input. One of `in_progress`, `completed`, or
           #   `incomplete`. Populated when input items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status, nil]
-          optional :status, enum: -> { OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status }
+          optional :status,
+                   enum: -> { OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status },
+                   nil?: true
 
           # @!method initialize(call_id:, output:, id: nil, acknowledged_safety_checks: nil, status: nil, type: :computer_call_output)
           #   Some parameter documentations has been truncated, see
@@ -190,17 +195,19 @@ module OpenAI
           #
           #   The output of a computer tool call.
           #
-          #   @param call_id [String] The ID of the computer tool call that produced the output. ...
+          #   @param call_id [String] The ID of the computer tool call that produced the output.
           #
           #   @param output [OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot] A computer screenshot image used with the computer use tool. ...
           #
-          #   @param id [String] The ID of the computer tool call output. ...
+          #   @param id [String, nil] The ID of the computer tool call output.
           #
-          #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>] The safety checks reported by the API that have been acknowledged by the ...
+          #   @param acknowledged_safety_checks [Array<OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck>, nil] The safety checks reported by the API that have been acknowledged by the develop
+          #   ...
           #
-          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status] The status of the message input. One of `in_progress`, `completed`, or ...
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::Status, nil] The status of the message input. One of `in_progress`, `completed`, or `incomple
+          #   ...
           #
-          #   @param type [Symbol, :computer_call_output] The type of the computer tool call output. Always `computer_call_output`. ...
+          #   @param type [Symbol, :computer_call_output] The type of the computer tool call output. Always `computer_call_output`.
 
           class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
             # @!attribute id
@@ -212,23 +219,23 @@ module OpenAI
             # @!attribute code
             #   The type of the pending safety check.
             #
-            #   @return [String]
-            required :code, String
+            #   @return [String, nil]
+            optional :code, String, nil?: true
 
             # @!attribute message
             #   Details about the pending safety check.
             #
-            #   @return [String]
-            required :message, String
+            #   @return [String, nil]
+            optional :message, String, nil?: true
 
-            # @!method initialize(id:, code:, message:)
+            # @!method initialize(id:, code: nil, message: nil)
             #   A pending safety check for the computer call.
             #
             #   @param id [String] The ID of the pending safety check.
             #
-            #   @param code [String] The type of the pending safety check.
+            #   @param code [String, nil] The type of the pending safety check.
             #
-            #   @param message [String] Details about the pending safety check.
+            #   @param message [String, nil] Details about the pending safety check.
           end
 
           # The status of the message input. One of `in_progress`, `completed`, or
@@ -271,14 +278,16 @@ module OpenAI
           #   returned via API.
           #
           #   @return [String, nil]
-          optional :id, String
+          optional :id, String, nil?: true
 
           # @!attribute status
           #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           #   Populated when items are returned via API.
           #
           #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil]
-          optional :status, enum: -> { OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status }
+          optional :status,
+                   enum: -> { OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status },
+                   nil?: true
 
           # @!method initialize(call_id:, output:, id: nil, status: nil, type: :function_call_output)
           #   Some parameter documentations has been truncated, see
@@ -287,15 +296,17 @@ module OpenAI
           #
           #   The output of a function tool call.
           #
-          #   @param call_id [String] The unique ID of the function tool call generated by the model. ...
+          #   @param call_id [String] The unique ID of the function tool call generated by the model.
           #
-          #   @param output [String] A JSON string of the output of the function tool call. ...
+          #   @param output [String] A JSON string of the output of the function tool call.
           #
-          #   @param id [String] The unique ID of the function tool call output. Populated when this item ...
+          #   @param id [String, nil] The unique ID of the function tool call output. Populated when this item is retu
+          #   ...
           #
-          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status] The status of the item. One of `in_progress`, `completed`, or ...
+          #   @param status [Symbol, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::Status, nil] The status of the item. One of `in_progress`, `completed`, or `incomplete`. Popu
+          #   ...
           #
-          #   @param type [Symbol, :function_call_output] The type of the function tool call output. Always `function_call_output`. ...
+          #   @param type [Symbol, :function_call_output] The type of the function tool call output. Always `function_call_output`.
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
@@ -323,18 +334,27 @@ module OpenAI
           # @!attribute type
           #   The type of item to reference. Always `item_reference`.
           #
-          #   @return [Symbol, :item_reference]
-          required :type, const: :item_reference
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseInputItem::ItemReference::Type, nil]
+          optional :type, enum: -> { OpenAI::Models::Responses::ResponseInputItem::ItemReference::Type }, nil?: true
 
-          # @!method initialize(id:, type: :item_reference)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Responses::ResponseInputItem::ItemReference} for more details.
-          #
+          # @!method initialize(id:, type: nil)
           #   An internal identifier for an item to reference.
           #
-          #   @param id [String] The ID of the item to reference. ...
+          #   @param id [String] The ID of the item to reference.
           #
-          #   @param type [Symbol, :item_reference] The type of item to reference. Always `item_reference`. ...
+          #   @param type [Symbol, OpenAI::Models::Responses::ResponseInputItem::ItemReference::Type, nil] The type of item to reference. Always `item_reference`.
+
+          # The type of item to reference. Always `item_reference`.
+          #
+          # @see OpenAI::Models::Responses::ResponseInputItem::ItemReference#type
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            ITEM_REFERENCE = :item_reference
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # @!method self.variants

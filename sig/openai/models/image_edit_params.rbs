@@ -4,6 +4,7 @@ module OpenAI
       {
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
+        background: OpenAI::Models::ImageEditParams::background?,
         mask: (Pathname | StringIO | IO | OpenAI::FilePart),
         model: OpenAI::Models::ImageEditParams::model?,
         n: Integer?,
@@ -21,6 +22,8 @@ module OpenAI
       attr_accessor image: OpenAI::Models::ImageEditParams::image
 
       attr_accessor prompt: String
+
+      attr_accessor background: OpenAI::Models::ImageEditParams::background?
 
       attr_reader mask: (Pathname | StringIO | IO | OpenAI::FilePart)?
 
@@ -45,6 +48,7 @@ module OpenAI
       def initialize: (
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
+        ?background: OpenAI::Models::ImageEditParams::background?,
         ?mask: Pathname | StringIO | IO | OpenAI::FilePart,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
@@ -70,6 +74,18 @@ module OpenAI
         def self?.variants: -> [StringIO, ::Array[StringIO]]
 
         StringArray: OpenAI::Internal::Type::Converter
+      end
+
+      type background = :transparent | :opaque | :auto
+
+      module Background
+        extend OpenAI::Internal::Type::Enum
+
+        TRANSPARENT: :transparent
+        OPAQUE: :opaque
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::background]
       end
 
       type model = String | OpenAI::Models::image_model
@@ -105,7 +121,13 @@ module OpenAI
         def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::response_format]
       end
 
-      type size = :"256x256" | :"512x512" | :"1024x1024"
+      type size =
+        :"256x256"
+        | :"512x512"
+        | :"1024x1024"
+        | :"1536x1024"
+        | :"1024x1536"
+        | :auto
 
       module Size
         extend OpenAI::Internal::Type::Enum
@@ -113,6 +135,9 @@ module OpenAI
         SIZE_256X256: :"256x256"
         SIZE_512X512: :"512x512"
         SIZE_1024X1024: :"1024x1024"
+        SIZE_1536X1024: :"1536x1024"
+        SIZE_1024X1536: :"1024x1536"
+        AUTO: :auto
 
         def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::size]
       end

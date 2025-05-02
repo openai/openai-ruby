@@ -23,6 +23,13 @@ module OpenAI
         #   @return [Symbol, :reasoning]
         required :type, const: :reasoning
 
+        # @!attribute encrypted_content
+        #   The encrypted content of the reasoning item - populated when a response is
+        #   generated with `reasoning.encrypted_content` in the `include` parameter.
+        #
+        #   @return [String, nil]
+        optional :encrypted_content, String, nil?: true
+
         # @!attribute status
         #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         #   Populated when items are returned via API.
@@ -30,16 +37,20 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status, nil]
         optional :status, enum: -> { OpenAI::Models::Responses::ResponseReasoningItem::Status }
 
-        # @!method initialize(id:, summary:, status: nil, type: :reasoning)
+        # @!method initialize(id:, summary:, encrypted_content: nil, status: nil, type: :reasoning)
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseReasoningItem} for more details.
         #
         #   A description of the chain of thought used by a reasoning model while generating
-        #   a response.
+        #   a response. Be sure to include these items in your `input` to the Responses API
+        #   for subsequent turns of a conversation if you are manually
+        #   [managing context](https://platform.openai.com/docs/guides/conversation-state).
         #
         #   @param id [String] The unique identifier of the reasoning content. ...
         #
         #   @param summary [Array<OpenAI::Models::Responses::ResponseReasoningItem::Summary>] Reasoning text contents. ...
+        #
+        #   @param encrypted_content [String, nil] The encrypted content of the reasoning item - populated when a response is ...
         #
         #   @param status [Symbol, OpenAI::Models::Responses::ResponseReasoningItem::Status] The status of the item. One of `in_progress`, `completed`, or ...
         #

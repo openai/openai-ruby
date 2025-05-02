@@ -40,7 +40,7 @@ module OpenAI
         attr_writer :response_format
 
         # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
-        # the default.
+        # the default. Does not work with `gpt-4o-mini-tts`.
         sig { returns(T.nilable(Float)) }
         attr_reader :speed
 
@@ -77,7 +77,7 @@ module OpenAI
           # `wav`, and `pcm`.
           response_format: nil,
           # The speed of the generated audio. Select a value from `0.25` to `4.0`. `1.0` is
-          # the default.
+          # the default. Does not work with `gpt-4o-mini-tts`.
           speed: nil,
           request_options: {}
         ); end

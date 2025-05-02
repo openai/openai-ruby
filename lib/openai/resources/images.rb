@@ -50,13 +50,14 @@ module OpenAI
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
       #
-      # @overload edit(image:, prompt:, mask: nil, model: nil, n: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @overload edit(image:, prompt:, background: nil, mask: nil, model: nil, n: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
-      # @param image [Pathname, StringIO, IO, OpenAI::FilePart, Array<Pathname, StringIO, IO, OpenAI::FilePart>] The image(s) to edit. Must be a supported image file or an array of images. For
-      # ...
+      # @param image [Pathname, StringIO, IO, OpenAI::FilePart, Array<Pathname, StringIO, IO, OpenAI::FilePart>] The image(s) to edit. Must be a supported image file or an array of images. ...
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       # ...
+      #
+      # @param background [Symbol, OpenAI::Models::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s). ...
       #
       # @param mask [Pathname, StringIO, IO, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       # ...

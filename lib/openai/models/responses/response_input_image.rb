@@ -37,13 +37,15 @@ module OpenAI
         #   An image input to the model. Learn about
         #   [image inputs](https://platform.openai.com/docs/guides/vision).
         #
-        #   @param detail [Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail] The detail level of the image to be sent to the model. One of `high`, ...
+        #   @param detail [Symbol, OpenAI::Models::Responses::ResponseInputImage::Detail] The detail level of the image to be sent to the model. One of `high`, `low`, or
+        #   ...
         #
-        #   @param file_id [String, nil] The ID of the file to be sent to the model. ...
+        #   @param file_id [String, nil] The ID of the file to be sent to the model.
         #
-        #   @param image_url [String, nil] The URL of the image to be sent to the model. A fully qualified URL or ...
+        #   @param image_url [String, nil] The URL of the image to be sent to the model. A fully qualified URL or base64 en
+        #   ...
         #
-        #   @param type [Symbol, :input_image] The type of the input item. Always `input_image`. ...
+        #   @param type [Symbol, :input_image] The type of the input item. Always `input_image`.
 
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         # `auto`. Defaults to `auto`.
@@ -52,8 +54,8 @@ module OpenAI
         module Detail
           extend OpenAI::Internal::Type::Enum
 
-          HIGH = :high
           LOW = :low
+          HIGH = :high
           AUTO = :auto
 
           # @!method self.values

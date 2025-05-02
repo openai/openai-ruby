@@ -16,6 +16,11 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The encrypted content of the reasoning item - populated when a response is
+        # generated with `reasoning.encrypted_content` in the `include` parameter.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :encrypted_content
+
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
         sig { returns(T.nilable(OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol)) }
@@ -25,11 +30,14 @@ module OpenAI
         attr_writer :status
 
         # A description of the chain of thought used by a reasoning model while generating
-        # a response.
+        # a response. Be sure to include these items in your `input` to the Responses API
+        # for subsequent turns of a conversation if you are manually
+        # [managing context](https://platform.openai.com/docs/guides/conversation-state).
         sig do
           params(
             id: String,
             summary: T::Array[T.any(OpenAI::Models::Responses::ResponseReasoningItem::Summary, OpenAI::Internal::AnyHash)],
+            encrypted_content: T.nilable(String),
             status: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol,
             type: Symbol
           )
@@ -40,6 +48,9 @@ module OpenAI
           id:,
           # Reasoning text contents.
           summary:,
+          # The encrypted content of the reasoning item - populated when a response is
+          # generated with `reasoning.encrypted_content` in the `include` parameter.
+          encrypted_content: nil,
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
           status: nil,
@@ -53,6 +64,7 @@ module OpenAI
                 id: String,
                 summary: T::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
                 type: Symbol,
+                encrypted_content: T.nilable(String),
                 status: OpenAI::Models::Responses::ResponseReasoningItem::Status::OrSymbol
               }
             )

@@ -5,11 +5,11 @@ module OpenAI
     module Responses
       class ComputerTool < OpenAI::Internal::Type::BaseModel
         # The height of the computer display.
-        sig { returns(Float) }
+        sig { returns(Integer) }
         attr_accessor :display_height
 
         # The width of the computer display.
-        sig { returns(Float) }
+        sig { returns(Integer) }
         attr_accessor :display_width
 
         # The type of computer environment to control.
@@ -24,8 +24,8 @@ module OpenAI
         # [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
         sig do
           params(
-            display_height: Float,
-            display_width: Float,
+            display_height: Integer,
+            display_width: Integer,
             environment: OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol,
             type: Symbol
           )
@@ -45,8 +45,8 @@ module OpenAI
           override
             .returns(
               {
-                display_height: Float,
-                display_width: Float,
+                display_height: Integer,
+                display_width: Integer,
                 environment: OpenAI::Models::Responses::ComputerTool::Environment::OrSymbol,
                 type: Symbol
               }
@@ -61,8 +61,9 @@ module OpenAI
           TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ComputerTool::Environment) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          MAC = T.let(:mac, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
           WINDOWS = T.let(:windows, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
+          MAC = T.let(:mac, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
+          LINUX = T.let(:linux, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
           UBUNTU = T.let(:ubuntu, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
           BROWSER = T.let(:browser, OpenAI::Models::Responses::ComputerTool::Environment::TaggedSymbol)
 

@@ -29,7 +29,9 @@ module OpenAI
         variant :computer_call, -> { OpenAI::Models::Responses::ResponseComputerToolCall }
 
         # A description of the chain of thought used by a reasoning model while generating
-        # a response.
+        # a response. Be sure to include these items in your `input` to the Responses API
+        # for subsequent turns of a conversation if you are manually
+        # [managing context](https://platform.openai.com/docs/guides/conversation-state).
         variant :reasoning, -> { OpenAI::Models::Responses::ResponseReasoningItem }
 
         # @!method self.variants

@@ -9,11 +9,11 @@ module OpenAI
         attr_accessor :name
 
         # A JSON schema object describing the parameters of the function.
-        sig { returns(T::Hash[Symbol, T.anything]) }
+        sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
         attr_accessor :parameters
 
         # Whether to enforce strict parameter validation. Default `true`.
-        sig { returns(T::Boolean) }
+        sig { returns(T.nilable(T::Boolean)) }
         attr_accessor :strict
 
         # The type of the function tool. Always `function`.
@@ -31,8 +31,8 @@ module OpenAI
         sig do
           params(
             name: String,
-            parameters: T::Hash[Symbol, T.anything],
-            strict: T::Boolean,
+            parameters: T.nilable(T::Hash[Symbol, T.anything]),
+            strict: T.nilable(T::Boolean),
             description: T.nilable(String),
             type: Symbol
           )
@@ -56,8 +56,8 @@ module OpenAI
             .returns(
               {
                 name: String,
-                parameters: T::Hash[Symbol, T.anything],
-                strict: T::Boolean,
+                parameters: T.nilable(T::Hash[Symbol, T.anything]),
+                strict: T.nilable(T::Boolean),
                 type: Symbol,
                 description: T.nilable(String)
               }
