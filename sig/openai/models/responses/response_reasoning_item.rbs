@@ -6,6 +6,7 @@ module OpenAI
           id: String,
           summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
           type: :reasoning,
+          encrypted_content: String?,
           status: OpenAI::Models::Responses::ResponseReasoningItem::status
         }
 
@@ -16,6 +17,8 @@ module OpenAI
 
         attr_accessor type: :reasoning
 
+        attr_accessor encrypted_content: String?
+
         attr_reader status: OpenAI::Models::Responses::ResponseReasoningItem::status?
 
         def status=: (
@@ -25,6 +28,7 @@ module OpenAI
         def initialize: (
           id: String,
           summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
+          ?encrypted_content: String?,
           ?status: OpenAI::Models::Responses::ResponseReasoningItem::status,
           ?type: :reasoning
         ) -> void

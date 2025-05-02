@@ -3,9 +3,7 @@
 module OpenAI
   module Models
     module Responses
-      # A tool that searches for relevant content from uploaded files. Learn more about
-      # the
-      # [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
+      # A tool that can be used to generate a response.
       module Tool
         extend OpenAI::Internal::Type::Union
 

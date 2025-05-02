@@ -20,7 +20,7 @@ module OpenAI
         #   The ID of the file to be sent to the model.
         #
         #   @return [String, nil]
-        optional :file_id, String
+        optional :file_id, String, nil?: true
 
         # @!attribute filename
         #   The name of the file to be sent to the model.
@@ -36,11 +36,11 @@ module OpenAI
         #
         #   @param file_data [String] The content of the file to be sent to the model. ...
         #
-        #   @param file_id [String] The ID of the file to be sent to the model. ...
+        #   @param file_id [String, nil] The ID of the file to be sent to the model.
         #
-        #   @param filename [String] The name of the file to be sent to the model. ...
+        #   @param filename [String] The name of the file to be sent to the model.
         #
-        #   @param type [Symbol, :input_file] The type of the input item. Always `input_file`. ...
+        #   @param type [Symbol, :input_file] The type of the input item. Always `input_file`.
       end
     end
   end

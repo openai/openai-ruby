@@ -27,13 +27,13 @@ module OpenAI
 
         def to_hash: -> OpenAI::Models::Responses::response_input_image
 
-        type detail = :high | :low | :auto
+        type detail = :low | :high | :auto
 
         module Detail
           extend OpenAI::Internal::Type::Enum
 
-          HIGH: :high
           LOW: :low
+          HIGH: :high
           AUTO: :auto
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputImage::detail]
