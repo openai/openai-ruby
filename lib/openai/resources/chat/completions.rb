@@ -110,10 +110,79 @@ module OpenAI
             message = "Please use `#stream_raw` for the streaming use case."
             raise ArgumentError.new(message)
           end
+
+          # rubocop:disable Layout/LineLength
+          model = nil
+          tool_models = {}
+          case parsed
+          in {response_format: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter => model}
+            parsed.update(
+              response_format: {
+                type: :json_schema,
+                json_schema: {
+                  strict: true,
+                  name: model.name.split("::").last,
+                  schema: model.to_json_schema
+                }
+              }
+            )
+          in {response_format: {type: :json_schema, json_schema: {schema: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter => model}}}
+            parsed.dig(:response_format, :json_schema).store(:schema, model.to_json_schema)
+          in {tools: Array => tools}
+            mapped = tools.map do |tool|
+              case tool
+              in OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
+                name = tool.name.split("::").last
+                tool_models.store(name, tool)
+                {
+                  type: :function,
+                  function: {
+                    strict: true,
+                    name: name,
+                    parameters: tool.to_json_schema
+                  }
+                }
+              in {function: {parameters: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter => params}}
+                func = tool.fetch(:function)
+                name = func[:name] ||= params.name.split("::").last
+                tool_models.store(name, params)
+                func.update(parameters: params.to_json_schema)
+              else
+              end
+            end
+            tools.replace(mapped)
+          else
+          end
+
+          unwrap = ->(raw) do
+            if model.is_a?(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter)
+              raw[:choices]&.each do |choice|
+                message = choice.fetch(:message)
+                parsed = JSON.parse(message.fetch(:content), symbolize_names: true)
+                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+                message.store(:parsed, coerced)
+              end
+            end
+            raw[:choices]&.each do |choice|
+              choice.dig(:message, :tool_calls)&.each do |tool_call|
+                func = tool_call.fetch(:function)
+                next if (model = tool_models[func.fetch(:name)]).nil?
+
+                parsed = JSON.parse(func.fetch(:arguments), symbolize_names: true)
+                coerced = OpenAI::Internal::Type::Converter.coerce(model, parsed)
+                func.store(:parsed, coerced)
+              end
+            end
+
+            raw
+          end
+          # rubocop:enable Layout/LineLength
+
           @client.request(
             method: :post,
             path: "chat/completions",
             body: parsed,
+            unwrap: unwrap,
             model: OpenAI::Models::Chat::ChatCompletion,
             options: options
           )

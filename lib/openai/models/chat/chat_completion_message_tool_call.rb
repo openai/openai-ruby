@@ -40,6 +40,12 @@ module OpenAI
           #   @return [String]
           required :arguments, String
 
+          # @!attribute parsed
+          #   The parsed contents of the arguments.
+          #
+          #   @return [Object, nil]
+          required :parsed, OpenAI::Internal::Type::Unknown
+
           # @!attribute name
           #   The name of the function to call.
           #

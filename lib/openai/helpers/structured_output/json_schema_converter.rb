@@ -1,0 +1,163 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Helpers
+    module StructuredOutput
+      # To customize the JSON schema conversion for a type, implement the `JsonSchemaConverter` interface.
+      module JsonSchemaConverter
+        POINTER = Object.new.freeze
+        COUNTER = Object.new.freeze
+
+        # rubocop:disable Lint/UnusedMethodArgument
+
+        # The exact JSON schema produced is subject to improvement between minor release versions.
+        #
+        # @param state [Hash{Symbol=>Object}]
+        #
+        #   @option state [Hash{Object=>String}] :defs
+        #
+        #   @option state [Array<String>] :path
+        #
+        # @return [Hash{Symbol=>Object}]
+        def to_json_schema_inner(state:) = (raise NotImplementedError)
+
+        # rubocop:enable Lint/UnusedMethodArgument
+
+        # Internal helpers methods.
+        class << self
+          # @api private
+          #
+          # @param schema [Hash{Symbol=>Object}]
+          #
+          # @return [Hash{Symbol=>Object}]
+          def to_nilable(schema)
+            null = "null"
+            case schema
+            in {"$ref": String}
+              {anyOf: [schema, {type: null}]}
+            in {anyOf: schemas}
+              null = {type: null}
+              schemas.any? { _1 == null || _1 == {type: ["null"]} } ? schema : {anyOf: [*schemas, null]}
+            in {type: String => type}
+              type == null ? schema : schema.update(type: [type, null])
+            in {type: Array => types}
+              types.include?(null) ? schema : schema.update(type: [*types, null])
+            end
+          end
+
+          # @api private
+          #
+          # @param state [Hash{Symbol=>Object}]
+          #
+          #   @option state [Hash{Object=>String}] :defs
+          #
+          #   @option state [Array<String>] :path
+          #
+          # @param type [Object]
+          #
+          # @param blk [Proc]
+          #
+          def cache_def!(state, type:, &blk)
+            defs, path = state.fetch_values(:defs, :path)
+            if (stored = defs[type])
+              stored[OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER] += 1
+              stored.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER)
+            else
+              ref_path = String.new
+              ref = {"$ref": ref_path}
+              stored = {
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER => ref,
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER => 1
+              }
+              defs.store(type, stored)
+              schema = blk.call
+              ref_path.replace("#/definitions/#{path.join('/')}")
+              stored.update(schema)
+              ref
+            end
+          end
+
+          # @api private
+          #
+          # @param type [OpenAI::Helpers::StructuredOutput::JsonSchemaConverter, Class]
+          #
+          # @return [Hash{Symbol=>Object}]
+          def to_json_schema(type)
+            defs = {}
+            state = {defs: defs, path: []}
+            schema = OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
+              type,
+              state: state
+            )
+            reused_defs = {}
+            defs.each_value do |acc|
+              ref = acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER)
+              sch = acc.except(
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTER,
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER
+              )
+              if acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::COUNTER) > 1
+                reused_defs.store(ref.fetch(:$ref), sch)
+              else
+                ref.replace(sch)
+              end
+            end
+            reused_defs.empty? ? schema : {"$defs": reused_defs}.update(schema)
+          end
+
+          # @api private
+          #
+          # @param type [OpenAI::Helpers::StructuredOutput::JsonSchemaConverter, Class]
+          #
+          # @param state [Hash{Symbol=>Object}]
+          #
+          #   @option state [Hash{Object=>String}] :defs
+          #
+          #   @option state [Array<String>] :path
+          #
+          # @return [Hash{Symbol=>Object}]
+          def to_json_schema_inner(type, state:)
+            case type
+            in {"$ref": String}
+              return type
+            in OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
+              return type.to_json_schema_inner(state: state)
+            in Class
+              case type
+              in -> { _1 <= NilClass }
+                return {type: "null"}
+              in -> { _1 <= Integer }
+                return {type: "integer"}
+              in -> { _1 <= Float }
+                return {type: "number"}
+              in -> { _1 <= Symbol || _1 <= String }
+                return {type: "string"}
+              else
+              end
+            in _ if OpenAI::Internal::Util.primitive?(type)
+              return {const: type.is_a?(Symbol) ? type.to_s : type}
+            else
+            end
+
+            models = %w[
+              NilClass
+              String
+              Symbol
+              Integer
+              Float
+              OpenAI::Boolean
+              OpenAI::ArrayOf
+              OpenAI::EnumOf
+              OpenAI::UnionOf
+              OpenAI::BaseModel
+            ]
+            # rubocop:disable Layout/LineLength
+            message = "#{type} does not implement the #{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter} interface. Please use one of the supported types: #{models}"
+            # rubocop:enable Layout/LineLength
+            raise ArgumentError.new(message)
+          end
+        end
+      end
+    end
+  end
+end
