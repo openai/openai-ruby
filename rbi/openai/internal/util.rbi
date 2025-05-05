@@ -187,7 +187,7 @@ module OpenAI
       end
 
       JSON_CONTENT = T.let(%r{^application/(?:vnd(?:\.[^.]+)*\+)?json(?!l)}, Regexp)
-      JSONL_CONTENT = T.let(%r{^application/(?:x-)?jsonl}, Regexp)
+      JSONL_CONTENT = T.let(%r{^application/(:?x-(?:n|l)djson)|(:?(?:x-)?jsonl)}, Regexp)
 
       class << self
         # @api private
