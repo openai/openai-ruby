@@ -29,7 +29,7 @@ require "bundler/setup"
 require "openai"
 
 openai = OpenAI::Client.new(
-  api_key: "My API Key" # defaults to ENV["OPENAI_API_KEY"]
+  api_key: ENV["OPENAI_API_KEY"] # This is the default and can be omitted
 )
 
 chat_completion = openai.chat.completions.create(
