@@ -7,5 +7,4 @@
 bin/tapioca
 Brewfile.lock.json
 doc/
-Gemfile.lock
 sorbet/tapioca/*
