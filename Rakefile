@@ -11,7 +11,7 @@ require "rubocop/rake_task"
 tapioca = "sorbet/tapioca"
 ignore_file = ".ignore"
 
-CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/ Gemfile.lock], *FileList["*.gem"], ignore_file)
+CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/], *FileList["*.gem"], ignore_file)
 
 CLOBBER.push(*%w[sorbet/rbi/annotations/ sorbet/rbi/gems/], tapioca)
 
