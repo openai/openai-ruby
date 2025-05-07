@@ -5,15 +5,19 @@ module OpenAI
     module EmbeddingModel
       extend OpenAI::Internal::Type::Enum
 
-      TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EmbeddingModel) }
+      TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::EmbeddingModel) }
       OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-      TEXT_EMBEDDING_ADA_002 = T.let(:"text-embedding-ada-002", OpenAI::Models::EmbeddingModel::TaggedSymbol)
-      TEXT_EMBEDDING_3_SMALL = T.let(:"text-embedding-3-small", OpenAI::Models::EmbeddingModel::TaggedSymbol)
-      TEXT_EMBEDDING_3_LARGE = T.let(:"text-embedding-3-large", OpenAI::Models::EmbeddingModel::TaggedSymbol)
+      TEXT_EMBEDDING_ADA_002 =
+        T.let(:"text-embedding-ada-002", OpenAI::EmbeddingModel::TaggedSymbol)
+      TEXT_EMBEDDING_3_SMALL =
+        T.let(:"text-embedding-3-small", OpenAI::EmbeddingModel::TaggedSymbol)
+      TEXT_EMBEDDING_3_LARGE =
+        T.let(:"text-embedding-3-large", OpenAI::EmbeddingModel::TaggedSymbol)
 
-      sig { override.returns(T::Array[OpenAI::Models::EmbeddingModel::TaggedSymbol]) }
-      def self.values; end
+      sig { override.returns(T::Array[OpenAI::EmbeddingModel::TaggedSymbol]) }
+      def self.values
+      end
     end
   end
 end

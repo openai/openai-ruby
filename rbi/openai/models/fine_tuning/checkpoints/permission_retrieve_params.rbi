@@ -8,6 +8,9 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Identifier for the last permission ID from the previous pagination request.
           sig { returns(T.nilable(String)) }
           attr_reader :after
@@ -23,10 +26,21 @@ module OpenAI
           attr_writer :limit
 
           # The order in which to retrieve permissions.
-          sig { returns(T.nilable(OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol
+              )
+            )
+          end
           attr_reader :order
 
-          sig { params(order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol).void }
+          sig do
+            params(
+              order:
+                OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol
+            ).void
+          end
           attr_writer :order
 
           # The ID of the project to get permissions for.
@@ -40,11 +54,11 @@ module OpenAI
             params(
               after: String,
               limit: Integer,
-              order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol,
+              order:
+                OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol,
               project_id: String,
-              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-            )
-              .returns(T.attached_class)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(T.attached_class)
           end
           def self.new(
             # Identifier for the last permission ID from the previous pagination request.
@@ -56,39 +70,57 @@ module OpenAI
             # The ID of the project to get permissions for.
             project_id: nil,
             request_options: {}
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  after: String,
-                  limit: Integer,
-                  order: OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol,
-                  project_id: String,
-                  request_options: OpenAI::RequestOptions
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                after: String,
+                limit: Integer,
+                order:
+                  OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::OrSymbol,
+                project_id: String,
+                request_options: OpenAI::RequestOptions
+              }
+            )
+          end
+          def to_hash
+          end
 
           # The order in which to retrieve permissions.
           module Order
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order) }
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order
+                )
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             ASCENDING =
-              T.let(:ascending, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol)
+              T.let(
+                :ascending,
+                OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol
+              )
             DESCENDING =
-              T.let(:descending, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol)
+              T.let(
+                :descending,
+                OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol
+              )
 
             sig do
-              override
-                .returns(T::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol])
+              override.returns(
+                T::Array[
+                  OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order::TaggedSymbol
+                ]
+              )
             end
-            def self.values; end
+            def self.values
+            end
           end
         end
       end

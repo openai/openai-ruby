@@ -23,8 +23,6 @@ module OpenAI
             ?limit: Integer,
             ?request_options: OpenAI::request_opts
           ) -> void
-
-          def to_hash: -> OpenAI::Models::FineTuning::Jobs::checkpoint_list_params
         end
       end
     end

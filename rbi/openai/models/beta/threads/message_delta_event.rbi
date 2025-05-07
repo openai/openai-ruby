@@ -5,15 +5,20 @@ module OpenAI
     module Beta
       module Threads
         class MessageDeltaEvent < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The identifier of the message, which can be referenced in API endpoints.
           sig { returns(String) }
           attr_accessor :id
 
           # The delta containing the fields that have changed on the Message.
-          sig { returns(OpenAI::Models::Beta::Threads::MessageDelta) }
+          sig { returns(OpenAI::Beta::Threads::MessageDelta) }
           attr_reader :delta
 
-          sig { params(delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(delta: OpenAI::Beta::Threads::MessageDelta::OrHash).void
+          end
           attr_writer :delta
 
           # The object type, which is always `thread.message.delta`.
@@ -25,10 +30,9 @@ module OpenAI
           sig do
             params(
               id: String,
-              delta: T.any(OpenAI::Models::Beta::Threads::MessageDelta, OpenAI::Internal::AnyHash),
+              delta: OpenAI::Beta::Threads::MessageDelta::OrHash,
               object: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The identifier of the message, which can be referenced in API endpoints.
@@ -37,9 +41,20 @@ module OpenAI
             delta:,
             # The object type, which is always `thread.message.delta`.
             object: :"thread.message.delta"
-          ); end
-          sig { override.returns({id: String, delta: OpenAI::Models::Beta::Threads::MessageDelta, object: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                id: String,
+                delta: OpenAI::Beta::Threads::MessageDelta,
+                object: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
         end
       end
     end

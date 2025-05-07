@@ -63,8 +63,6 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::image_generate_params
-
       type background = :transparent | :opaque | :auto
 
       module Background
@@ -82,7 +80,7 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, OpenAI::Models::image_model]
+        def self?.variants: -> ::Array[OpenAI::Models::ImageGenerateParams::model]
       end
 
       type moderation = :low | :auto

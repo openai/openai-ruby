@@ -6,6 +6,8 @@ module OpenAI
 
     module Evals
       class EvalAPIError < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The error code.
         sig { returns(String) }
         attr_accessor :code
@@ -21,9 +23,12 @@ module OpenAI
           code:,
           # The error message.
           message:
-        ); end
-        sig { override.returns({code: String, message: String}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ code: String, message: String }) }
+        def to_hash
+        end
       end
     end
   end

@@ -12,10 +12,14 @@ module OpenAI
               completion_id: String,
               after: String,
               limit: Integer,
-              order: OpenAI::Models::Chat::Completions::MessageListParams::Order::OrSymbol,
-              request_options: OpenAI::RequestOpts
+              order:
+                OpenAI::Chat::Completions::MessageListParams::Order::OrSymbol,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Internal::CursorPage[
+                OpenAI::Chat::ChatCompletionStoreMessage
+              ]
             )
-              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Chat::ChatCompletionStoreMessage])
           end
           def list(
             # The ID of the chat completion to retrieve messages from.
@@ -28,10 +32,13 @@ module OpenAI
             # for descending order. Defaults to `asc`.
             order: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # @api private
           sig { params(client: OpenAI::Client).returns(T.attached_class) }
-          def self.new(client:); end
+          def self.new(client:)
+          end
         end
       end
     end

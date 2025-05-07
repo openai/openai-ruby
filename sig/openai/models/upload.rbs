@@ -9,8 +9,8 @@ module OpenAI
         filename: String,
         object: :upload,
         purpose: String,
-        status: OpenAI::Models::Upload::status,
-        file: OpenAI::Models::FileObject?
+        status: OpenAI::Upload::status,
+        file: OpenAI::FileObject?
       }
 
     class Upload < OpenAI::Internal::Type::BaseModel
@@ -28,9 +28,9 @@ module OpenAI
 
       attr_accessor purpose: String
 
-      attr_accessor status: OpenAI::Models::Upload::status
+      attr_accessor status: OpenAI::Upload::status
 
-      attr_accessor file: OpenAI::Models::FileObject?
+      attr_accessor file: OpenAI::FileObject?
 
       def initialize: (
         id: String,
@@ -39,12 +39,10 @@ module OpenAI
         expires_at: Integer,
         filename: String,
         purpose: String,
-        status: OpenAI::Models::Upload::status,
-        ?file: OpenAI::Models::FileObject?,
+        status: OpenAI::Upload::status,
+        ?file: OpenAI::FileObject?,
         ?object: :upload
       ) -> void
-
-      def to_hash: -> OpenAI::Models::upload
 
       type status = :pending | :completed | :cancelled | :expired
 
@@ -56,7 +54,7 @@ module OpenAI
         CANCELLED: :cancelled
         EXPIRED: :expired
 
-        def self?.values: -> ::Array[OpenAI::Models::Upload::status]
+        def self?.values: -> ::Array[OpenAI::Upload::status]
       end
     end
   end

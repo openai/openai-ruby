@@ -7,14 +7,14 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     response = @openai.images.create_variation(image: Pathname(__FILE__))
 
     assert_pattern do
-      response => OpenAI::Models::ImagesResponse
+      response => OpenAI::ImagesResponse
     end
 
     assert_pattern do
       response => {
         created: Integer,
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image]) | nil,
-        usage: OpenAI::Models::ImagesResponse::Usage | nil
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Image]) | nil,
+        usage: OpenAI::ImagesResponse::Usage | nil
       }
     end
   end
@@ -24,14 +24,14 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
       @openai.images.edit(image: Pathname(__FILE__), prompt: "A cute baby sea otter wearing a beret")
 
     assert_pattern do
-      response => OpenAI::Models::ImagesResponse
+      response => OpenAI::ImagesResponse
     end
 
     assert_pattern do
       response => {
         created: Integer,
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image]) | nil,
-        usage: OpenAI::Models::ImagesResponse::Usage | nil
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Image]) | nil,
+        usage: OpenAI::ImagesResponse::Usage | nil
       }
     end
   end
@@ -40,14 +40,14 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
     response = @openai.images.generate(prompt: "A cute baby sea otter")
 
     assert_pattern do
-      response => OpenAI::Models::ImagesResponse
+      response => OpenAI::ImagesResponse
     end
 
     assert_pattern do
       response => {
         created: Integer,
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Image]) | nil,
-        usage: OpenAI::Models::ImagesResponse::Usage | nil
+        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Image]) | nil,
+        usage: OpenAI::ImagesResponse::Usage | nil
       }
     end
   end

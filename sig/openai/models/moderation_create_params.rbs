@@ -25,8 +25,6 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::moderation_create_params
-
       type input =
         String
         | ::Array[String]
@@ -35,7 +33,7 @@ module OpenAI
       module Input
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, ::Array[String], ::Array[OpenAI::Models::moderation_multi_modal_input]]
+        def self?.variants: -> ::Array[OpenAI::Models::ModerationCreateParams::input]
 
         StringArray: OpenAI::Internal::Type::Converter
 
@@ -47,7 +45,7 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, OpenAI::Models::moderation_model]
+        def self?.variants: -> ::Array[OpenAI::Models::ModerationCreateParams::model]
       end
     end
   end

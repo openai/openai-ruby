@@ -10,30 +10,22 @@ module OpenAI
       #
       # @overload create(completion_window:, endpoint:, input_file_id:, metadata: nil, request_options: {})
       #
-      # @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
-      # ...
+      # @param completion_window [Symbol, OpenAI::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
       #
-      # @param endpoint [Symbol, OpenAI::Models::BatchCreateParams::Endpoint] The endpoint to be used for all requests in the batch. Currently `/v1/responses`
-      # ...
+      # @param endpoint [Symbol, OpenAI::BatchCreateParams::Endpoint] The endpoint to be used for all requests in the batch. Currently `/v1/responses`
       #
-      # @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch. ...
+      # @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch.
       #
-      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::Batch]
+      # @return [OpenAI::Batch]
       #
       # @see OpenAI::Models::BatchCreateParams
       def create(params)
-        parsed, options = OpenAI::Models::BatchCreateParams.dump_request(params)
-        @client.request(
-          method: :post,
-          path: "batches",
-          body: parsed,
-          model: OpenAI::Models::Batch,
-          options: options
-        )
+        parsed, options = OpenAI::BatchCreateParams.dump_request(params)
+        @client.request(method: :post, path: "batches", body: parsed, model: OpenAI::Batch, options: options)
       end
 
       # Retrieves a batch.
@@ -44,14 +36,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::Batch]
+      # @return [OpenAI::Batch]
       #
       # @see OpenAI::Models::BatchRetrieveParams
       def retrieve(batch_id, params = {})
         @client.request(
           method: :get,
           path: ["batches/%1$s", batch_id],
-          model: OpenAI::Models::Batch,
+          model: OpenAI::Batch,
           options: params[:request_options]
         )
       end
@@ -64,24 +56,22 @@ module OpenAI
       # @overload list(after: nil, limit: nil, request_options: {})
       #
       # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
-      # ...
       #
       # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
-      # ...
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Batch>]
+      # @return [OpenAI::Internal::CursorPage<OpenAI::Batch>]
       #
       # @see OpenAI::Models::BatchListParams
       def list(params = {})
-        parsed, options = OpenAI::Models::BatchListParams.dump_request(params)
+        parsed, options = OpenAI::BatchListParams.dump_request(params)
         @client.request(
           method: :get,
           path: "batches",
           query: parsed,
           page: OpenAI::Internal::CursorPage,
-          model: OpenAI::Models::Batch,
+          model: OpenAI::Batch,
           options: options
         )
       end
@@ -96,14 +86,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::Batch]
+      # @return [OpenAI::Batch]
       #
       # @see OpenAI::Models::BatchCancelParams
       def cancel(batch_id, params = {})
         @client.request(
           method: :post,
           path: ["batches/%1$s/cancel", batch_id],
-          model: OpenAI::Models::Batch,
+          model: OpenAI::Batch,
           options: params[:request_options]
         )
       end

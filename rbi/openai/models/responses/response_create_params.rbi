@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Text, image, or file inputs to the model, used to generate a response.
         #
         # Learn more:
@@ -22,17 +24,17 @@ module OpenAI
               String,
               T::Array[
                 T.any(
-                  OpenAI::Models::Responses::EasyInputMessage,
-                  OpenAI::Models::Responses::ResponseInputItem::Message,
-                  OpenAI::Models::Responses::ResponseOutputMessage,
-                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Models::Responses::ResponseComputerToolCall,
-                  OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Models::Responses::ResponseFunctionToolCall,
-                  OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                  OpenAI::Models::Responses::ResponseReasoningItem,
-                  OpenAI::Models::Responses::ResponseInputItem::ItemReference
+                  OpenAI::Responses::EasyInputMessage,
+                  OpenAI::Responses::ResponseInputItem::Message,
+                  OpenAI::Responses::ResponseOutputMessage,
+                  OpenAI::Responses::ResponseFileSearchToolCall,
+                  OpenAI::Responses::ResponseComputerToolCall,
+                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
+                  OpenAI::Responses::ResponseFunctionWebSearch,
+                  OpenAI::Responses::ResponseFunctionToolCall,
+                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
+                  OpenAI::Responses::ResponseReasoningItem,
+                  OpenAI::Responses::ResponseInputItem::ItemReference
                 )
               ]
             )
@@ -49,8 +51,8 @@ module OpenAI
           returns(
             T.any(
               String,
-              OpenAI::Models::ChatModel::OrSymbol,
-              OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol
+              OpenAI::ChatModel::OrSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
             )
           )
         end
@@ -69,7 +71,11 @@ module OpenAI
         #   multi-turn conversations when using the Responses API statelessly (like when
         #   the `store` parameter is set to `false`, or when an organization is enrolled
         #   in the zero data retention program).
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol])) }
+        sig do
+          returns(
+            T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
+          )
+        end
         attr_accessor :include
 
         # Inserts a system (or developer) message as the first item in the model's
@@ -110,10 +116,10 @@ module OpenAI
         #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-        sig { returns(T.nilable(OpenAI::Models::Reasoning)) }
+        sig { returns(T.nilable(OpenAI::Reasoning)) }
         attr_reader :reasoning
 
-        sig { params(reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash))).void }
+        sig { params(reasoning: T.nilable(OpenAI::Reasoning::OrHash)).void }
         attr_writer :reasoning
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -133,7 +139,13 @@ module OpenAI
         #
         # When this parameter is set, the response body will include the `service_tier`
         # utilized.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
+            )
+          )
+        end
         attr_accessor :service_tier
 
         # Whether to store the generated model response for later retrieval via API.
@@ -152,10 +164,10 @@ module OpenAI
         #
         # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
         # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseTextConfig)) }
+        sig { returns(T.nilable(OpenAI::Responses::ResponseTextConfig)) }
         attr_reader :text
 
-        sig { params(text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash)).void }
+        sig { params(text: OpenAI::Responses::ResponseTextConfig::OrHash).void }
         attr_writer :text
 
         # How the model should select which tool (or tools) to use when generating a
@@ -165,9 +177,9 @@ module OpenAI
           returns(
             T.nilable(
               T.any(
-                OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-                OpenAI::Models::Responses::ToolChoiceTypes,
-                OpenAI::Models::Responses::ToolChoiceFunction
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceTypes,
+                OpenAI::Responses::ToolChoiceFunction
               )
             )
           )
@@ -176,14 +188,13 @@ module OpenAI
 
         sig do
           params(
-            tool_choice: T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-              OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ToolChoiceFunction
-            )
-          )
-            .void
+            tool_choice:
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceTypes::OrHash,
+                OpenAI::Responses::ToolChoiceFunction::OrHash
+              )
+          ).void
         end
         attr_writer :tool_choice
 
@@ -206,10 +217,10 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Models::Responses::FileSearchTool,
-                  OpenAI::Models::Responses::FunctionTool,
-                  OpenAI::Models::Responses::ComputerTool,
-                  OpenAI::Models::Responses::WebSearchTool
+                  OpenAI::Responses::FileSearchTool,
+                  OpenAI::Responses::FunctionTool,
+                  OpenAI::Responses::ComputerTool,
+                  OpenAI::Responses::WebSearchTool
                 )
               ]
             )
@@ -219,17 +230,16 @@ module OpenAI
 
         sig do
           params(
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Responses::FileSearchTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::FunctionTool,
-                OpenAI::Models::Responses::ComputerTool,
-                OpenAI::Models::Responses::WebSearchTool
-              )
-            ]
-          )
-            .void
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash
+                )
+              ]
+          ).void
         end
         attr_writer :tools
 
@@ -248,7 +258,13 @@ module OpenAI
         #   window by dropping input items in the middle of the conversation.
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
+            )
+          )
+        end
         attr_accessor :truncation
 
         # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -262,62 +278,71 @@ module OpenAI
 
         sig do
           params(
-            input: T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Models::Responses::EasyInputMessage,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Responses::ResponseInputItem::Message,
-                  OpenAI::Models::Responses::ResponseOutputMessage,
-                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Models::Responses::ResponseComputerToolCall,
-                  OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Models::Responses::ResponseFunctionToolCall,
-                  OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                  OpenAI::Models::Responses::ResponseReasoningItem,
-                  OpenAI::Models::Responses::ResponseInputItem::ItemReference
-                )
-              ]
-            ),
-            model: T.any(
-              String,
-              OpenAI::Models::ChatModel::OrSymbol,
-              OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol
-            ),
-            include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
+            input:
+              T.any(
+                String,
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::EasyInputMessage::OrHash,
+                    OpenAI::Responses::ResponseInputItem::Message::OrHash,
+                    OpenAI::Responses::ResponseOutputMessage::OrHash,
+                    OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                    OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
+                    OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                    OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
+                    OpenAI::Responses::ResponseReasoningItem::OrHash,
+                    OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
+                  )
+                ]
+              ),
+            model:
+              T.any(
+                String,
+                OpenAI::ChatModel::OrSymbol,
+                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+              ),
+            include:
+              T.nilable(
+                T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
+              ),
             instructions: T.nilable(String),
             max_output_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
             parallel_tool_calls: T.nilable(T::Boolean),
             previous_response_id: T.nilable(String),
-            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
-            service_tier: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
+            reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+            service_tier:
+              T.nilable(
+                OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
+              ),
             store: T.nilable(T::Boolean),
             temperature: T.nilable(Float),
-            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
-            tool_choice: T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-              OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ToolChoiceFunction
-            ),
-            tools: T::Array[
+            text: OpenAI::Responses::ResponseTextConfig::OrHash,
+            tool_choice:
               T.any(
-                OpenAI::Models::Responses::FileSearchTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::FunctionTool,
-                OpenAI::Models::Responses::ComputerTool,
-                OpenAI::Models::Responses::WebSearchTool
-              )
-            ],
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceTypes::OrHash,
+                OpenAI::Responses::ToolChoiceFunction::OrHash
+              ),
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash
+                )
+              ],
             top_p: T.nilable(Float),
-            truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
+            truncation:
+              T.nilable(
+                OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
+              ),
             user: String,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # Text, image, or file inputs to the model, used to generate a response.
@@ -448,66 +473,81 @@ module OpenAI
           # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
           user: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                input: T.any(
+          override.returns(
+            {
+              input:
+                T.any(
                   String,
                   T::Array[
                     T.any(
-                      OpenAI::Models::Responses::EasyInputMessage,
-                      OpenAI::Models::Responses::ResponseInputItem::Message,
-                      OpenAI::Models::Responses::ResponseOutputMessage,
-                      OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                      OpenAI::Models::Responses::ResponseComputerToolCall,
-                      OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                      OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                      OpenAI::Models::Responses::ResponseFunctionToolCall,
-                      OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                      OpenAI::Models::Responses::ResponseReasoningItem,
-                      OpenAI::Models::Responses::ResponseInputItem::ItemReference
+                      OpenAI::Responses::EasyInputMessage,
+                      OpenAI::Responses::ResponseInputItem::Message,
+                      OpenAI::Responses::ResponseOutputMessage,
+                      OpenAI::Responses::ResponseFileSearchToolCall,
+                      OpenAI::Responses::ResponseComputerToolCall,
+                      OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
+                      OpenAI::Responses::ResponseFunctionWebSearch,
+                      OpenAI::Responses::ResponseFunctionToolCall,
+                      OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
+                      OpenAI::Responses::ResponseReasoningItem,
+                      OpenAI::Responses::ResponseInputItem::ItemReference
                     )
                   ]
                 ),
-                model: T.any(
+              model:
+                T.any(
                   String,
-                  OpenAI::Models::ChatModel::OrSymbol,
-                  OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol
+                  OpenAI::ChatModel::OrSymbol,
+                  OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
                 ),
-                include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
-                instructions: T.nilable(String),
-                max_output_tokens: T.nilable(Integer),
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                parallel_tool_calls: T.nilable(T::Boolean),
-                previous_response_id: T.nilable(String),
-                reasoning: T.nilable(OpenAI::Models::Reasoning),
-                service_tier: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
-                store: T.nilable(T::Boolean),
-                temperature: T.nilable(Float),
-                text: OpenAI::Models::Responses::ResponseTextConfig,
-                tool_choice: T.any(
-                  OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-                  OpenAI::Models::Responses::ToolChoiceTypes,
-                  OpenAI::Models::Responses::ToolChoiceFunction
+              include:
+                T.nilable(
+                  T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
                 ),
-                tools: T::Array[
+              instructions: T.nilable(String),
+              max_output_tokens: T.nilable(Integer),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              parallel_tool_calls: T.nilable(T::Boolean),
+              previous_response_id: T.nilable(String),
+              reasoning: T.nilable(OpenAI::Reasoning),
+              service_tier:
+                T.nilable(
+                  OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
+                ),
+              store: T.nilable(T::Boolean),
+              temperature: T.nilable(Float),
+              text: OpenAI::Responses::ResponseTextConfig,
+              tool_choice:
+                T.any(
+                  OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                  OpenAI::Responses::ToolChoiceTypes,
+                  OpenAI::Responses::ToolChoiceFunction
+                ),
+              tools:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Responses::FileSearchTool,
-                    OpenAI::Models::Responses::FunctionTool,
-                    OpenAI::Models::Responses::ComputerTool,
-                    OpenAI::Models::Responses::WebSearchTool
+                    OpenAI::Responses::FileSearchTool,
+                    OpenAI::Responses::FunctionTool,
+                    OpenAI::Responses::ComputerTool,
+                    OpenAI::Responses::WebSearchTool
                   )
                 ],
-                top_p: T.nilable(Float),
-                truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
-                user: String,
-                request_options: OpenAI::RequestOptions
-              }
-            )
+              top_p: T.nilable(Float),
+              truncation:
+                T.nilable(
+                  OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
+                ),
+              user: String,
+              request_options: OpenAI::RequestOptions
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
 
         # Text, image, or file inputs to the model, used to generate a response.
         #
@@ -521,30 +561,35 @@ module OpenAI
         module Input
           extend OpenAI::Internal::Type::Union
 
-          sig do
-            override
-              .returns(
-                [
-                  String,
-                  T::Array[
-                                    T.any(
-                                      OpenAI::Models::Responses::EasyInputMessage,
-                                      OpenAI::Models::Responses::ResponseInputItem::Message,
-                                      OpenAI::Models::Responses::ResponseOutputMessage,
-                                      OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                                      OpenAI::Models::Responses::ResponseComputerToolCall,
-                                      OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                                      OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                                      OpenAI::Models::Responses::ResponseFunctionToolCall,
-                                      OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                                      OpenAI::Models::Responses::ResponseReasoningItem,
-                                      OpenAI::Models::Responses::ResponseInputItem::ItemReference
-                                    )
-                                  ]
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::EasyInputMessage,
+                    OpenAI::Responses::ResponseInputItem::Message,
+                    OpenAI::Responses::ResponseOutputMessage,
+                    OpenAI::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Responses::ResponseComputerToolCall,
+                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
+                    OpenAI::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Responses::ResponseFunctionToolCall,
+                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
+                    OpenAI::Responses::ResponseReasoningItem,
+                    OpenAI::Responses::ResponseInputItem::ItemReference
+                  )
                 ]
               )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Responses::ResponseCreateParams::Input::Variants]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -568,15 +613,39 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier) }
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseCreateParams::ServiceTier
+              )
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol)
-          DEFAULT = T.let(:default, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol)
-          FLEX = T.let(:flex, OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol)
+          AUTO =
+            T.let(
+              :auto,
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
+            )
+          DEFAULT =
+            T.let(
+              :default,
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
+            )
+          FLEX =
+            T.let(
+              :flex,
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::ServiceTier::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         # How the model should select which tool (or tools) to use when generating a
@@ -585,13 +654,24 @@ module OpenAI
         module ToolChoice
           extend OpenAI::Internal::Type::Union
 
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
+                OpenAI::Responses::ToolChoiceTypes,
+                OpenAI::Responses::ToolChoiceFunction
               )
+            end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::ToolChoice::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         # The truncation strategy to use for the model response.
@@ -605,14 +685,31 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseCreateParams::Truncation) }
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseCreateParams::Truncation)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          AUTO = T.let(:auto, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)
-          DISABLED = T.let(:disabled, OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol)
+          AUTO =
+            T.let(
+              :auto,
+              OpenAI::Responses::ResponseCreateParams::Truncation::TaggedSymbol
+            )
+          DISABLED =
+            T.let(
+              :disabled,
+              OpenAI::Responses::ResponseCreateParams::Truncation::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseCreateParams::Truncation::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseCreateParams::Truncation::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

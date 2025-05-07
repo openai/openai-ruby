@@ -4,14 +4,14 @@ module OpenAI
       {
         id: String,
         created_at: Integer,
-        file_counts: OpenAI::Models::VectorStore::FileCounts,
+        file_counts: OpenAI::VectorStore::FileCounts,
         last_active_at: Integer?,
         metadata: OpenAI::Models::metadata?,
         name: String,
         object: :vector_store,
-        status: OpenAI::Models::VectorStore::status,
+        status: OpenAI::VectorStore::status,
         usage_bytes: Integer,
-        expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
+        expires_after: OpenAI::VectorStore::ExpiresAfter,
         expires_at: Integer?
       }
 
@@ -20,7 +20,7 @@ module OpenAI
 
       attr_accessor created_at: Integer
 
-      attr_accessor file_counts: OpenAI::Models::VectorStore::FileCounts
+      attr_accessor file_counts: OpenAI::VectorStore::FileCounts
 
       attr_accessor last_active_at: Integer?
 
@@ -30,33 +30,31 @@ module OpenAI
 
       attr_accessor object: :vector_store
 
-      attr_accessor status: OpenAI::Models::VectorStore::status
+      attr_accessor status: OpenAI::VectorStore::status
 
       attr_accessor usage_bytes: Integer
 
-      attr_reader expires_after: OpenAI::Models::VectorStore::ExpiresAfter?
+      attr_reader expires_after: OpenAI::VectorStore::ExpiresAfter?
 
       def expires_after=: (
-        OpenAI::Models::VectorStore::ExpiresAfter
-      ) -> OpenAI::Models::VectorStore::ExpiresAfter
+        OpenAI::VectorStore::ExpiresAfter
+      ) -> OpenAI::VectorStore::ExpiresAfter
 
       attr_accessor expires_at: Integer?
 
       def initialize: (
         id: String,
         created_at: Integer,
-        file_counts: OpenAI::Models::VectorStore::FileCounts,
+        file_counts: OpenAI::VectorStore::FileCounts,
         last_active_at: Integer?,
         metadata: OpenAI::Models::metadata?,
         name: String,
-        status: OpenAI::Models::VectorStore::status,
+        status: OpenAI::VectorStore::status,
         usage_bytes: Integer,
-        ?expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
+        ?expires_after: OpenAI::VectorStore::ExpiresAfter,
         ?expires_at: Integer?,
         ?object: :vector_store
       ) -> void
-
-      def to_hash: -> OpenAI::Models::vector_store
 
       type file_counts =
         {
@@ -85,8 +83,6 @@ module OpenAI
           in_progress: Integer,
           total: Integer
         ) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStore::file_counts
       end
 
       type status = :expired | :in_progress | :completed
@@ -98,7 +94,7 @@ module OpenAI
         IN_PROGRESS: :in_progress
         COMPLETED: :completed
 
-        def self?.values: -> ::Array[OpenAI::Models::VectorStore::status]
+        def self?.values: -> ::Array[OpenAI::VectorStore::status]
       end
 
       type expires_after = { anchor: :last_active_at, days: Integer }
@@ -109,8 +105,6 @@ module OpenAI
         attr_accessor days: Integer
 
         def initialize: (days: Integer, ?anchor: :last_active_at) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStore::expires_after
       end
     end
   end

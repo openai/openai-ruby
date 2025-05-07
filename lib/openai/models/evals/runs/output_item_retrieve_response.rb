@@ -95,8 +95,8 @@ module OpenAI
             # @!attribute error
             #   An object representing an error response from the Eval API.
             #
-            #   @return [OpenAI::Models::Evals::EvalAPIError]
-            required :error, -> { OpenAI::Models::Evals::EvalAPIError }
+            #   @return [OpenAI::Evals::EvalAPIError]
+            required :error, -> { OpenAI::Evals::EvalAPIError }
 
             # @!attribute finish_reason
             #   The reason why the sample generation was finished.
@@ -161,7 +161,7 @@ module OpenAI
             #
             #   A sample containing the input and output of the evaluation run.
             #
-            #   @param error [OpenAI::Models::Evals::EvalAPIError] An object representing an error response from the Eval API. ...
+            #   @param error [OpenAI::Evals::EvalAPIError] An object representing an error response from the Eval API.
             #
             #   @param finish_reason [String] The reason why the sample generation was finished.
             #

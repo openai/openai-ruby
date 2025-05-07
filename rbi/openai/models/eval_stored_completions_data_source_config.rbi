@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class EvalStoredCompletionsDataSourceConfig < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The json schema for the run data source items. Learn how to build JSON schemas
       # [here](https://json-schema.org/).
       sig { returns(T::Hash[Symbol, T.anything]) }
@@ -31,8 +33,7 @@ module OpenAI
           schema: T::Hash[Symbol, T.anything],
           metadata: T.nilable(T::Hash[Symbol, String]),
           type: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # The json schema for the run data source items. Learn how to build JSON schemas
@@ -47,16 +48,20 @@ module OpenAI
         metadata: nil,
         # The type of data source. Always `stored_completions`.
         type: :stored_completions
-      ); end
-      sig do
-        override
-          .returns({
-                     schema: T::Hash[Symbol, T.anything],
-                     type: Symbol,
-                     metadata: T.nilable(T::Hash[Symbol, String])
-                   })
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            schema: T::Hash[Symbol, T.anything],
+            type: Symbol,
+            metadata: T.nilable(T::Hash[Symbol, String])
+          }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

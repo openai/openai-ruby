@@ -19,8 +19,6 @@ module OpenAI
             ?refusal: String,
             ?type: :refusal
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::refusal_delta_block
         end
       end
     end

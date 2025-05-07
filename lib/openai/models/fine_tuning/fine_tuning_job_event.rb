@@ -20,8 +20,8 @@ module OpenAI
         # @!attribute level
         #   The log level of the event.
         #
-        #   @return [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level]
-        required :level, enum: -> { OpenAI::Models::FineTuning::FineTuningJobEvent::Level }
+        #   @return [Symbol, OpenAI::FineTuning::FineTuningJobEvent::Level]
+        required :level, enum: -> { OpenAI::FineTuning::FineTuningJobEvent::Level }
 
         # @!attribute message
         #   The message of the event.
@@ -44,8 +44,8 @@ module OpenAI
         # @!attribute type
         #   The type of event.
         #
-        #   @return [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type, nil]
-        optional :type, enum: -> { OpenAI::Models::FineTuning::FineTuningJobEvent::Type }
+        #   @return [Symbol, OpenAI::FineTuning::FineTuningJobEvent::Type, nil]
+        optional :type, enum: -> { OpenAI::FineTuning::FineTuningJobEvent::Type }
 
         # @!method initialize(id:, created_at:, level:, message:, data: nil, type: nil, object: :"fine_tuning.job.event")
         #   Fine-tuning job event object
@@ -54,19 +54,19 @@ module OpenAI
         #
         #   @param created_at [Integer] The Unix timestamp (in seconds) for when the fine-tuning job was created.
         #
-        #   @param level [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level] The log level of the event.
+        #   @param level [Symbol, OpenAI::FineTuning::FineTuningJobEvent::Level] The log level of the event.
         #
         #   @param message [String] The message of the event.
         #
         #   @param data [Object] The data associated with the event.
         #
-        #   @param type [Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type] The type of event.
+        #   @param type [Symbol, OpenAI::FineTuning::FineTuningJobEvent::Type] The type of event.
         #
         #   @param object [Symbol, :"fine_tuning.job.event"] The object type, which is always "fine_tuning.job.event".
 
         # The log level of the event.
         #
-        # @see OpenAI::Models::FineTuning::FineTuningJobEvent#level
+        # @see OpenAI::FineTuning::FineTuningJobEvent#level
         module Level
           extend OpenAI::Internal::Type::Enum
 
@@ -80,7 +80,7 @@ module OpenAI
 
         # The type of event.
         #
-        # @see OpenAI::Models::FineTuning::FineTuningJobEvent#type
+        # @see OpenAI::FineTuning::FineTuningJobEvent#type
         module Type
           extend OpenAI::Internal::Type::Enum
 

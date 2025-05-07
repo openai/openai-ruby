@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class Response < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Unique identifier for this Response.
         sig { returns(String) }
         attr_accessor :id
@@ -13,21 +15,27 @@ module OpenAI
         attr_accessor :created_at
 
         # An error object returned when the model fails to generate a Response.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseError)) }
+        sig { returns(T.nilable(OpenAI::Responses::ResponseError)) }
         attr_reader :error
 
-        sig { params(error: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Internal::AnyHash))).void }
+        sig do
+          params(
+            error: T.nilable(OpenAI::Responses::ResponseError::OrHash)
+          ).void
+        end
         attr_writer :error
 
         # Details about why the response is incomplete.
-        sig { returns(T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails)) }
+        sig do
+          returns(T.nilable(OpenAI::Responses::Response::IncompleteDetails))
+        end
         attr_reader :incomplete_details
 
         sig do
           params(
-            incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Internal::AnyHash))
-          )
-            .void
+            incomplete_details:
+              T.nilable(OpenAI::Responses::Response::IncompleteDetails::OrHash)
+          ).void
         end
         attr_writer :incomplete_details
 
@@ -58,8 +66,8 @@ module OpenAI
           returns(
             T.any(
               String,
-              OpenAI::Models::ChatModel::TaggedSymbol,
-              OpenAI::Models::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+              OpenAI::ChatModel::TaggedSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
             )
           )
         end
@@ -80,12 +88,12 @@ module OpenAI
           returns(
             T::Array[
               T.any(
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseFunctionToolCall,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseReasoningItem
+                OpenAI::Responses::ResponseOutputMessage,
+                OpenAI::Responses::ResponseFileSearchToolCall,
+                OpenAI::Responses::ResponseFunctionToolCall,
+                OpenAI::Responses::ResponseFunctionWebSearch,
+                OpenAI::Responses::ResponseComputerToolCall,
+                OpenAI::Responses::ResponseReasoningItem
               )
             ]
           )
@@ -109,9 +117,9 @@ module OpenAI
         sig do
           returns(
             T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-              OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Models::Responses::ToolChoiceFunction
+              OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
+              OpenAI::Responses::ToolChoiceTypes,
+              OpenAI::Responses::ToolChoiceFunction
             )
           )
         end
@@ -135,10 +143,10 @@ module OpenAI
           returns(
             T::Array[
               T.any(
-                OpenAI::Models::Responses::FileSearchTool,
-                OpenAI::Models::Responses::FunctionTool,
-                OpenAI::Models::Responses::ComputerTool,
-                OpenAI::Models::Responses::WebSearchTool
+                OpenAI::Responses::FileSearchTool,
+                OpenAI::Responses::FunctionTool,
+                OpenAI::Responses::ComputerTool,
+                OpenAI::Responses::WebSearchTool
               )
             ]
           )
@@ -169,10 +177,10 @@ module OpenAI
         #
         # Configuration options for
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
-        sig { returns(T.nilable(OpenAI::Models::Reasoning)) }
+        sig { returns(T.nilable(OpenAI::Reasoning)) }
         attr_reader :reasoning
 
-        sig { params(reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash))).void }
+        sig { params(reasoning: T.nilable(OpenAI::Reasoning::OrHash)).void }
         attr_writer :reasoning
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -192,15 +200,21 @@ module OpenAI
         #
         # When this parameter is set, the response body will include the `service_tier`
         # utilized.
-        sig { returns(T.nilable(OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Responses::Response::ServiceTier::TaggedSymbol)
+          )
+        end
         attr_accessor :service_tier
 
         # The status of the response generation. One of `completed`, `failed`,
         # `in_progress`, or `incomplete`.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)) }
+        sig do
+          returns(T.nilable(OpenAI::Responses::ResponseStatus::TaggedSymbol))
+        end
         attr_reader :status
 
-        sig { params(status: OpenAI::Models::Responses::ResponseStatus::OrSymbol).void }
+        sig { params(status: OpenAI::Responses::ResponseStatus::OrSymbol).void }
         attr_writer :status
 
         # Configuration options for a text response from the model. Can be plain text or
@@ -208,10 +222,10 @@ module OpenAI
         #
         # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
         # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseTextConfig)) }
+        sig { returns(T.nilable(OpenAI::Responses::ResponseTextConfig)) }
         attr_reader :text
 
-        sig { params(text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash)).void }
+        sig { params(text: OpenAI::Responses::ResponseTextConfig::OrHash).void }
         attr_writer :text
 
         # The truncation strategy to use for the model response.
@@ -221,15 +235,19 @@ module OpenAI
         #   window by dropping input items in the middle of the conversation.
         # - `disabled` (default): If a model response will exceed the context window size
         #   for a model, the request will fail with a 400 error.
-        sig { returns(T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Responses::Response::Truncation::TaggedSymbol)
+          )
+        end
         attr_accessor :truncation
 
         # Represents token usage details including input tokens, output tokens, a
         # breakdown of output tokens, and the total tokens used.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseUsage)) }
+        sig { returns(T.nilable(OpenAI::Responses::ResponseUsage)) }
         attr_reader :usage
 
-        sig { params(usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Internal::AnyHash)).void }
+        sig { params(usage: OpenAI::Responses::ResponseUsage::OrHash).void }
         attr_writer :usage
 
         # A unique identifier representing your end-user, which can help OpenAI to monitor
@@ -245,56 +263,59 @@ module OpenAI
           params(
             id: String,
             created_at: Float,
-            error: T.nilable(T.any(OpenAI::Models::Responses::ResponseError, OpenAI::Internal::AnyHash)),
-            incomplete_details: T.nilable(T.any(OpenAI::Models::Responses::Response::IncompleteDetails, OpenAI::Internal::AnyHash)),
+            error: T.nilable(OpenAI::Responses::ResponseError::OrHash),
+            incomplete_details:
+              T.nilable(OpenAI::Responses::Response::IncompleteDetails::OrHash),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(
-              String,
-              OpenAI::Models::ChatModel::OrSymbol,
-              OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol
-            ),
-            output: T::Array[
+            model:
               T.any(
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseFunctionToolCall,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseReasoningItem
-              )
-            ],
+                String,
+                OpenAI::ChatModel::OrSymbol,
+                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+              ),
+            output:
+              T::Array[
+                T.any(
+                  OpenAI::Responses::ResponseOutputMessage::OrHash,
+                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                  OpenAI::Responses::ResponseReasoningItem::OrHash
+                )
+              ],
             parallel_tool_calls: T::Boolean,
             temperature: T.nilable(Float),
-            tool_choice: T.any(
-              OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-              OpenAI::Models::Responses::ToolChoiceTypes,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ToolChoiceFunction
-            ),
-            tools: T::Array[
+            tool_choice:
               T.any(
-                OpenAI::Models::Responses::FileSearchTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::FunctionTool,
-                OpenAI::Models::Responses::ComputerTool,
-                OpenAI::Models::Responses::WebSearchTool
-              )
-            ],
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceTypes::OrHash,
+                OpenAI::Responses::ToolChoiceFunction::OrHash
+              ),
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash
+                )
+              ],
             top_p: T.nilable(Float),
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
-            reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
-            service_tier: T.nilable(OpenAI::Models::Responses::Response::ServiceTier::OrSymbol),
-            status: OpenAI::Models::Responses::ResponseStatus::OrSymbol,
-            text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
-            truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::OrSymbol),
-            usage: T.any(OpenAI::Models::Responses::ResponseUsage, OpenAI::Internal::AnyHash),
+            reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+            service_tier:
+              T.nilable(OpenAI::Responses::Response::ServiceTier::OrSymbol),
+            status: OpenAI::Responses::ResponseStatus::OrSymbol,
+            text: OpenAI::Responses::ResponseTextConfig::OrHash,
+            truncation:
+              T.nilable(OpenAI::Responses::Response::Truncation::OrSymbol),
+            usage: OpenAI::Responses::ResponseUsage::OrHash,
             user: String,
             object: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # Unique identifier for this Response.
@@ -422,98 +443,155 @@ module OpenAI
           user: nil,
           # The object type of this resource - always set to `response`.
           object: :response
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                id: String,
-                created_at: Float,
-                error: T.nilable(OpenAI::Models::Responses::ResponseError),
-                incomplete_details: T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails),
-                instructions: T.nilable(String),
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.any(
-                  String,
-                  OpenAI::Models::ChatModel::TaggedSymbol,
-                  OpenAI::Models::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
-                ),
-                object: Symbol,
-                output: T::Array[
-                  T.any(
-                    OpenAI::Models::Responses::ResponseOutputMessage,
-                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                    OpenAI::Models::Responses::ResponseFunctionToolCall,
-                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                    OpenAI::Models::Responses::ResponseComputerToolCall,
-                    OpenAI::Models::Responses::ResponseReasoningItem
-                  )
-                ],
-                parallel_tool_calls: T::Boolean,
-                temperature: T.nilable(Float),
-                tool_choice: T.any(
-                  OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol,
-                  OpenAI::Models::Responses::ToolChoiceTypes,
-                  OpenAI::Models::Responses::ToolChoiceFunction
-                ),
-                tools: T::Array[
-                  T.any(
-                    OpenAI::Models::Responses::FileSearchTool,
-                    OpenAI::Models::Responses::FunctionTool,
-                    OpenAI::Models::Responses::ComputerTool,
-                    OpenAI::Models::Responses::WebSearchTool
-                  )
-                ],
-                top_p: T.nilable(Float),
-                max_output_tokens: T.nilable(Integer),
-                previous_response_id: T.nilable(String),
-                reasoning: T.nilable(OpenAI::Models::Reasoning),
-                service_tier: T.nilable(OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol),
-                status: OpenAI::Models::Responses::ResponseStatus::TaggedSymbol,
-                text: OpenAI::Models::Responses::ResponseTextConfig,
-                truncation: T.nilable(OpenAI::Models::Responses::Response::Truncation::TaggedSymbol),
-                usage: OpenAI::Models::Responses::ResponseUsage,
-                user: String
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              id: String,
+              created_at: Float,
+              error: T.nilable(OpenAI::Responses::ResponseError),
+              incomplete_details:
+                T.nilable(OpenAI::Responses::Response::IncompleteDetails),
+              instructions: T.nilable(String),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              model:
+                T.any(
+                  String,
+                  OpenAI::ChatModel::TaggedSymbol,
+                  OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+                ),
+              object: Symbol,
+              output:
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::ResponseOutputMessage,
+                    OpenAI::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Responses::ResponseFunctionToolCall,
+                    OpenAI::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Responses::ResponseComputerToolCall,
+                    OpenAI::Responses::ResponseReasoningItem
+                  )
+                ],
+              parallel_tool_calls: T::Boolean,
+              temperature: T.nilable(Float),
+              tool_choice:
+                T.any(
+                  OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
+                  OpenAI::Responses::ToolChoiceTypes,
+                  OpenAI::Responses::ToolChoiceFunction
+                ),
+              tools:
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::FileSearchTool,
+                    OpenAI::Responses::FunctionTool,
+                    OpenAI::Responses::ComputerTool,
+                    OpenAI::Responses::WebSearchTool
+                  )
+                ],
+              top_p: T.nilable(Float),
+              max_output_tokens: T.nilable(Integer),
+              previous_response_id: T.nilable(String),
+              reasoning: T.nilable(OpenAI::Reasoning),
+              service_tier:
+                T.nilable(
+                  OpenAI::Responses::Response::ServiceTier::TaggedSymbol
+                ),
+              status: OpenAI::Responses::ResponseStatus::TaggedSymbol,
+              text: OpenAI::Responses::ResponseTextConfig,
+              truncation:
+                T.nilable(
+                  OpenAI::Responses::Response::Truncation::TaggedSymbol
+                ),
+              usage: OpenAI::Responses::ResponseUsage,
+              user: String
+            }
+          )
+        end
+        def to_hash
+        end
 
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The reason why the response is incomplete.
-          sig { returns(T.nilable(OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::Response::IncompleteDetails::Reason::TaggedSymbol
+              )
+            )
+          end
           attr_reader :reason
 
-          sig { params(reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::OrSymbol).void }
+          sig do
+            params(
+              reason:
+                OpenAI::Responses::Response::IncompleteDetails::Reason::OrSymbol
+            ).void
+          end
           attr_writer :reason
 
           # Details about why the response is incomplete.
           sig do
-            params(reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::OrSymbol)
-              .returns(T.attached_class)
+            params(
+              reason:
+                OpenAI::Responses::Response::IncompleteDetails::Reason::OrSymbol
+            ).returns(T.attached_class)
           end
           def self.new(
             # The reason why the response is incomplete.
             reason: nil
-          ); end
-          sig { override.returns({reason: OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                reason:
+                  OpenAI::Responses::Response::IncompleteDetails::Reason::TaggedSymbol
+              }
+            )
+          end
+          def to_hash
+          end
 
           # The reason why the response is incomplete.
           module Reason
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::IncompleteDetails::Reason) }
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::Response::IncompleteDetails::Reason
+                )
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             MAX_OUTPUT_TOKENS =
-              T.let(:max_output_tokens, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
+              T.let(
+                :max_output_tokens,
+                OpenAI::Responses::Response::IncompleteDetails::Reason::TaggedSymbol
+              )
             CONTENT_FILTER =
-              T.let(:content_filter, OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol)
+              T.let(
+                :content_filter,
+                OpenAI::Responses::Response::IncompleteDetails::Reason::TaggedSymbol
+              )
 
-            sig { override.returns(T::Array[OpenAI::Models::Responses::Response::IncompleteDetails::Reason::TaggedSymbol]) }
-            def self.values; end
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::Response::IncompleteDetails::Reason::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
 
@@ -523,13 +601,22 @@ module OpenAI
         module ToolChoice
           extend OpenAI::Internal::Type::Union
 
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Responses::ToolChoiceOptions::TaggedSymbol, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
+                OpenAI::Responses::ToolChoiceTypes,
+                OpenAI::Responses::ToolChoiceFunction
               )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Responses::Response::ToolChoice::Variants]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -552,15 +639,29 @@ module OpenAI
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::ServiceTier) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::Response::ServiceTier)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          AUTO = T.let(:auto, OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)
-          DEFAULT = T.let(:default, OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)
-          FLEX = T.let(:flex, OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol)
+          AUTO =
+            T.let(:auto, OpenAI::Responses::Response::ServiceTier::TaggedSymbol)
+          DEFAULT =
+            T.let(
+              :default,
+              OpenAI::Responses::Response::ServiceTier::TaggedSymbol
+            )
+          FLEX =
+            T.let(:flex, OpenAI::Responses::Response::ServiceTier::TaggedSymbol)
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::Response::ServiceTier::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[OpenAI::Responses::Response::ServiceTier::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
         end
 
         # The truncation strategy to use for the model response.
@@ -573,14 +674,27 @@ module OpenAI
         module Truncation
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::Response::Truncation) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::Response::Truncation)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          AUTO = T.let(:auto, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
-          DISABLED = T.let(:disabled, OpenAI::Models::Responses::Response::Truncation::TaggedSymbol)
+          AUTO =
+            T.let(:auto, OpenAI::Responses::Response::Truncation::TaggedSymbol)
+          DISABLED =
+            T.let(
+              :disabled,
+              OpenAI::Responses::Response::Truncation::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::Response::Truncation::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[OpenAI::Responses::Response::Truncation::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

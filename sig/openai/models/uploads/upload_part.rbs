@@ -26,8 +26,6 @@ module OpenAI
           upload_id: String,
           ?object: :"upload.part"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Uploads::upload_part
       end
     end
   end

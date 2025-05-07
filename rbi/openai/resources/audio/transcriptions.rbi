@@ -11,17 +11,24 @@ module OpenAI
         sig do
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
-            include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
+            model: T.any(String, OpenAI::AudioModel::OrSymbol),
+            include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
-            response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
+            response_format: OpenAI::AudioResponseFormat::OrSymbol,
             temperature: Float,
-            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
+            timestamp_granularities:
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
+              ],
             stream: T.noreturn,
-            request_options: OpenAI::RequestOpts
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            T.any(
+              OpenAI::Audio::Transcription,
+              OpenAI::Audio::TranscriptionVerbose
+            )
           )
-            .returns(T.any(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose))
         end
         def create(
           # The audio file object (not file name) to transcribe, in one of these formats:
@@ -66,7 +73,9 @@ module OpenAI
           # `#create` for streaming and non-streaming use cases, respectively.
           stream: false,
           request_options: {}
-        ); end
+        )
+        end
+
         # See {OpenAI::Resources::Audio::Transcriptions#create} for non-streaming
         # counterpart.
         #
@@ -74,24 +83,26 @@ module OpenAI
         sig do
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
-            include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
+            model: T.any(String, OpenAI::AudioModel::OrSymbol),
+            include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
-            response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
+            response_format: OpenAI::AudioResponseFormat::OrSymbol,
             temperature: Float,
-            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
+            timestamp_granularities:
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
+              ],
             stream: T.noreturn,
-            request_options: OpenAI::RequestOpts
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            OpenAI::Internal::Stream[
+              T.any(
+                OpenAI::Audio::TranscriptionTextDeltaEvent,
+                OpenAI::Audio::TranscriptionTextDoneEvent
+              )
+            ]
           )
-            .returns(
-              OpenAI::Internal::Stream[
-                T.any(
-                  OpenAI::Models::Audio::TranscriptionTextDeltaEvent,
-                  OpenAI::Models::Audio::TranscriptionTextDoneEvent
-                )
-              ]
-            )
         end
         def create_streaming(
           # The audio file object (not file name) to transcribe, in one of these formats:
@@ -136,10 +147,13 @@ module OpenAI
           # `#create` for streaming and non-streaming use cases, respectively.
           stream: true,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

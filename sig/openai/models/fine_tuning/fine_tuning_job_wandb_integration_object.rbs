@@ -6,20 +6,18 @@ module OpenAI
       type fine_tuning_job_wandb_integration_object =
         {
           type: :wandb,
-          wandb: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration
+          wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration
         }
 
       class FineTuningJobWandbIntegrationObject < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :wandb
 
-        attr_accessor wandb: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration
+        attr_accessor wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration
 
         def initialize: (
-          wandb: OpenAI::Models::FineTuning::FineTuningJobWandbIntegration,
+          wandb: OpenAI::FineTuning::FineTuningJobWandbIntegration,
           ?type: :wandb
         ) -> void
-
-        def to_hash: -> OpenAI::Models::FineTuning::fine_tuning_job_wandb_integration_object
       end
     end
   end

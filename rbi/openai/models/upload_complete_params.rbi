@@ -6,6 +6,8 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The ordered list of Part IDs.
       sig { returns(T::Array[String]) }
       attr_accessor :part_ids
@@ -22,9 +24,8 @@ module OpenAI
         params(
           part_ids: T::Array[String],
           md5: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # The ordered list of Part IDs.
@@ -33,11 +34,20 @@ module OpenAI
         # matches what you expect.
         md5: nil,
         request_options: {}
-      ); end
-      sig do
-        override.returns({part_ids: T::Array[String], md5: String, request_options: OpenAI::RequestOptions})
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            part_ids: T::Array[String],
+            md5: String,
+            request_options: OpenAI::RequestOptions
+          }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

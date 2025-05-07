@@ -36,20 +36,19 @@ module OpenAI
 
         # @!method initialize(item_id:, output_index:, summary_index:, text:, type: :"response.reasoning_summary_text.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent} for more
-        #   details.
+        #   {OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent} for more details.
         #
         #   Emitted when a reasoning summary text is completed.
         #
-        #   @param item_id [String] The ID of the item this summary text is associated with. ...
+        #   @param item_id [String] The ID of the item this summary text is associated with.
         #
-        #   @param output_index [Integer] The index of the output item this summary text is associated with. ...
+        #   @param output_index [Integer] The index of the output item this summary text is associated with.
         #
-        #   @param summary_index [Integer] The index of the summary part within the reasoning summary. ...
+        #   @param summary_index [Integer] The index of the summary part within the reasoning summary.
         #
-        #   @param text [String] The full text of the completed reasoning summary. ...
+        #   @param text [String] The full text of the completed reasoning summary.
         #
-        #   @param type [Symbol, :"response.reasoning_summary_text.done"] The type of the event. Always `response.reasoning_summary_text.done`. ...
+        #   @param type [Symbol, :"response.reasoning_summary_text.done"] The type of the event. Always `response.reasoning_summary_text.done`.
       end
     end
   end

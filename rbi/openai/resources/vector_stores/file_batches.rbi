@@ -9,15 +9,15 @@ module OpenAI
           params(
             vector_store_id: String,
             file_ids: T::Array[String],
-            attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            chunking_strategy: T.any(
-              OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::StaticFileChunkingStrategyObjectParam
-            ),
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
+            attributes:
+              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+            chunking_strategy:
+              T.any(
+                OpenAI::AutoFileChunkingStrategyParam::OrHash,
+                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+              ),
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
         end
         def create(
           # The ID of the vector store for which to create a File Batch.
@@ -36,11 +36,16 @@ module OpenAI
           # strategy. Only applicable if `file_ids` is non-empty.
           chunking_strategy: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Retrieves a vector store file batch.
         sig do
-          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
+          params(
+            batch_id: String,
+            vector_store_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
         end
         def retrieve(
           # The ID of the file batch being retrieved.
@@ -48,12 +53,17 @@ module OpenAI
           # The ID of the vector store that the file batch belongs to.
           vector_store_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # Cancel a vector store file batch. This attempts to cancel the processing of
         # files in this batch as soon as possible.
         sig do
-          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFileBatch)
+          params(
+            batch_id: String,
+            vector_store_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
         end
         def cancel(
           # The ID of the file batch to cancel.
@@ -61,7 +71,9 @@ module OpenAI
           # The ID of the vector store that the file batch belongs to.
           vector_store_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # Returns a list of vector store files in a batch.
         sig do
           params(
@@ -69,12 +81,15 @@ module OpenAI
             vector_store_id: String,
             after: String,
             before: String,
-            filter: OpenAI::Models::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
+            filter:
+              OpenAI::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
-            order: OpenAI::Models::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
-            request_options: OpenAI::RequestOpts
+            order:
+              OpenAI::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
           )
-            .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
         end
         def list_files(
           # Path param: The ID of the file batch that the files belong to.
@@ -101,10 +116,13 @@ module OpenAI
           # ascending order and `desc` for descending order.
           order: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

@@ -5,6 +5,9 @@ module OpenAI
     module FineTuning
       module Checkpoints
         class PermissionCreateResponse < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The permission identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
           attr_accessor :id
@@ -40,9 +43,21 @@ module OpenAI
             project_id:,
             # The object type, which is always "checkpoint.permission".
             object: :"checkpoint.permission"
-          ); end
-          sig { override.returns({id: String, created_at: Integer, object: Symbol, project_id: String}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                id: String,
+                created_at: Integer,
+                object: Symbol,
+                project_id: String
+              }
+            )
+          end
+          def to_hash
+          end
         end
       end
     end

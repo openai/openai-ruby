@@ -48,8 +48,6 @@ module OpenAI
           text: String,
           tokens: ::Array[Integer]
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Audio::transcription_segment
       end
     end
   end

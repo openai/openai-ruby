@@ -18,7 +18,7 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Uploads::PartCreateParams} for more details.
         #
-        #   @param data [Pathname, StringIO, IO, OpenAI::FilePart] The chunk of bytes for this Part. ...
+        #   @param data [Pathname, StringIO, IO, OpenAI::FilePart] The chunk of bytes for this Part.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

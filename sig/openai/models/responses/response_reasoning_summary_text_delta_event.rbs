@@ -28,8 +28,6 @@ module OpenAI
           summary_index: Integer,
           ?type: :"response.reasoning_summary_text.delta"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_reasoning_summary_text_delta_event
       end
     end
   end

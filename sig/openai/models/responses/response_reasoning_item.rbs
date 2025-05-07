@@ -4,36 +4,34 @@ module OpenAI
       type response_reasoning_item =
         {
           id: String,
-          summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
+          summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
           type: :reasoning,
           encrypted_content: String?,
-          status: OpenAI::Models::Responses::ResponseReasoningItem::status
+          status: OpenAI::Responses::ResponseReasoningItem::status
         }
 
       class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary]
+        attr_accessor summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary]
 
         attr_accessor type: :reasoning
 
         attr_accessor encrypted_content: String?
 
-        attr_reader status: OpenAI::Models::Responses::ResponseReasoningItem::status?
+        attr_reader status: OpenAI::Responses::ResponseReasoningItem::status?
 
         def status=: (
-          OpenAI::Models::Responses::ResponseReasoningItem::status
-        ) -> OpenAI::Models::Responses::ResponseReasoningItem::status
+          OpenAI::Responses::ResponseReasoningItem::status
+        ) -> OpenAI::Responses::ResponseReasoningItem::status
 
         def initialize: (
           id: String,
-          summary: ::Array[OpenAI::Models::Responses::ResponseReasoningItem::Summary],
+          summary: ::Array[OpenAI::Responses::ResponseReasoningItem::Summary],
           ?encrypted_content: String?,
-          ?status: OpenAI::Models::Responses::ResponseReasoningItem::status,
+          ?status: OpenAI::Responses::ResponseReasoningItem::status,
           ?type: :reasoning
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_reasoning_item
 
         type summary = { text: String, type: :summary_text }
 
@@ -43,8 +41,6 @@ module OpenAI
           attr_accessor type: :summary_text
 
           def initialize: (text: String, ?type: :summary_text) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseReasoningItem::summary
         end
 
         type status = :in_progress | :completed | :incomplete
@@ -56,7 +52,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseReasoningItem::status]
+          def self?.values: -> ::Array[OpenAI::Responses::ResponseReasoningItem::status]
         end
       end
     end

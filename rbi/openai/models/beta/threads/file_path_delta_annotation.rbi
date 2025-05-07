@@ -5,6 +5,9 @@ module OpenAI
     module Beta
       module Threads
         class FilePathDeltaAnnotation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
           attr_accessor :index
@@ -19,14 +22,20 @@ module OpenAI
           sig { params(end_index: Integer).void }
           attr_writer :end_index
 
-          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath
+              )
+            )
+          end
           attr_reader :file_path
 
           sig do
             params(
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file_path:
+                OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath::OrHash
+            ).void
           end
           attr_writer :file_path
 
@@ -49,12 +58,12 @@ module OpenAI
             params(
               index: Integer,
               end_index: Integer,
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, OpenAI::Internal::AnyHash),
+              file_path:
+                OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath::OrHash,
               start_index: Integer,
               text: String,
               type: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The index of the annotation in the text content part.
@@ -66,23 +75,29 @@ module OpenAI
             text: nil,
             # Always `file_path`.
             type: :file_path
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  index: Integer,
-                  type: Symbol,
-                  end_index: Integer,
-                  file_path: OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath,
-                  start_index: Integer,
-                  text: String
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                index: Integer,
+                type: Symbol,
+                end_index: Integer,
+                file_path:
+                  OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath,
+                start_index: Integer,
+                text: String
+              }
+            )
+          end
+          def to_hash
+          end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the file that was generated.
             sig { returns(T.nilable(String)) }
             attr_reader :file_id
@@ -94,9 +109,12 @@ module OpenAI
             def self.new(
               # The ID of the file that was generated.
               file_id: nil
-            ); end
-            sig { override.returns({file_id: String}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ file_id: String }) }
+            def to_hash
+            end
           end
         end
       end

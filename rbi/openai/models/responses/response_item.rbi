@@ -7,13 +7,25 @@ module OpenAI
       module ResponseItem
         extend OpenAI::Internal::Type::Union
 
-        sig do
-          override
-            .returns(
-              [OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem]
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputMessageItem,
+              OpenAI::Responses::ResponseOutputMessage,
+              OpenAI::Responses::ResponseFileSearchToolCall,
+              OpenAI::Responses::ResponseComputerToolCall,
+              OpenAI::Responses::ResponseComputerToolCallOutputItem,
+              OpenAI::Responses::ResponseFunctionWebSearch,
+              OpenAI::Responses::ResponseFunctionToolCallItem,
+              OpenAI::Responses::ResponseFunctionToolCallOutputItem
             )
+          end
+
+        sig do
+          override.returns(T::Array[OpenAI::Responses::ResponseItem::Variants])
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

@@ -22,7 +22,9 @@ module OpenAI
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         required :attributes,
-                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::FileUpdateParams::Attribute] },
+                 -> {
+                   OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileUpdateParams::Attribute]
+                 },
                  nil?: true
 
         # @!method initialize(vector_store_id:, attributes:, request_options: {})
@@ -31,7 +33,7 @@ module OpenAI
         #
         #   @param vector_store_id [String]
         #
-        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

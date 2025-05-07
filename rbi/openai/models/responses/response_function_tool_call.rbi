@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionToolCall < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # A JSON string of the arguments to pass to the function.
         sig { returns(String) }
         attr_accessor :arguments
@@ -29,10 +31,21 @@ module OpenAI
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol
+            )
+          )
+        end
         attr_reader :status
 
-        sig { params(status: OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol).void }
+        sig do
+          params(
+            status:
+              OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol
+          ).void
+        end
         attr_writer :status
 
         # A tool call to run a function. See the
@@ -44,10 +57,10 @@ module OpenAI
             call_id: String,
             name: String,
             id: String,
-            status: OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol,
+            status:
+              OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # A JSON string of the arguments to pass to the function.
@@ -63,21 +76,24 @@ module OpenAI
           status: nil,
           # The type of the function tool call. Always `function_call`.
           type: :function_call
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                arguments: String,
-                call_id: String,
-                name: String,
-                type: Symbol,
-                id: String,
-                status: OpenAI::Models::Responses::ResponseFunctionToolCall::Status::OrSymbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              arguments: String,
+              call_id: String,
+              name: String,
+              type: Symbol,
+              id: String,
+              status:
+                OpenAI::Responses::ResponseFunctionToolCall::Status::OrSymbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
@@ -85,17 +101,36 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFunctionToolCall::Status) }
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseFunctionToolCall::Status)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol)
+            T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseFunctionToolCall::Status::TaggedSymbol
+            )
+          COMPLETED =
+            T.let(
+              :completed,
+              OpenAI::Responses::ResponseFunctionToolCall::Status::TaggedSymbol
+            )
           INCOMPLETE =
-            T.let(:incomplete, OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol)
+            T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseFunctionToolCall::Status::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFunctionToolCall::Status::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseFunctionToolCall::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

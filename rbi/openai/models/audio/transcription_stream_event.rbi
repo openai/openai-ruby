@@ -10,13 +10,21 @@ module OpenAI
       module TranscriptionStreamEvent
         extend OpenAI::Internal::Type::Union
 
-        sig do
-          override
-            .returns(
-              [OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent]
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Audio::TranscriptionTextDeltaEvent,
+              OpenAI::Audio::TranscriptionTextDoneEvent
             )
+          end
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::Audio::TranscriptionStreamEvent::Variants]
+          )
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

@@ -24,16 +24,15 @@ module OpenAI
 
         # @!method initialize(item_id:, output_index:, type: :"response.file_search_call.searching")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent} for more
-        #   details.
+        #   {OpenAI::Responses::ResponseFileSearchCallSearchingEvent} for more details.
         #
         #   Emitted when a file search is currently searching.
         #
-        #   @param item_id [String] The ID of the output item that the file search call is initiated. ...
+        #   @param item_id [String] The ID of the output item that the file search call is initiated.
         #
-        #   @param output_index [Integer] The index of the output item that the file search call is searching. ...
+        #   @param output_index [Integer] The index of the output item that the file search call is searching.
         #
-        #   @param type [Symbol, :"response.file_search_call.searching"] The type of the event. Always `response.file_search_call.searching`. ...
+        #   @param type [Symbol, :"response.file_search_call.searching"] The type of the event. Always `response.file_search_call.searching`.
       end
     end
   end

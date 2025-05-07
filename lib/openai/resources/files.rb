@@ -30,24 +30,23 @@ module OpenAI
       #
       # @overload create(file:, purpose:, request_options: {})
       #
-      # @param file [Pathname, StringIO, IO, OpenAI::FilePart] The File object (not file name) to be uploaded. ...
+      # @param file [Pathname, StringIO, IO, OpenAI::FilePart] The File object (not file name) to be uploaded.
       #
-      # @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
-      # ...
+      # @param purpose [Symbol, OpenAI::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::FileObject]
+      # @return [OpenAI::FileObject]
       #
       # @see OpenAI::Models::FileCreateParams
       def create(params)
-        parsed, options = OpenAI::Models::FileCreateParams.dump_request(params)
+        parsed, options = OpenAI::FileCreateParams.dump_request(params)
         @client.request(
           method: :post,
           path: "files",
           headers: {"content-type" => "multipart/form-data"},
           body: parsed,
-          model: OpenAI::Models::FileObject,
+          model: OpenAI::FileObject,
           options: options
         )
       end
@@ -60,14 +59,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::FileObject]
+      # @return [OpenAI::FileObject]
       #
       # @see OpenAI::Models::FileRetrieveParams
       def retrieve(file_id, params = {})
         @client.request(
           method: :get,
           path: ["files/%1$s", file_id],
-          model: OpenAI::Models::FileObject,
+          model: OpenAI::FileObject,
           options: params[:request_options]
         )
       end
@@ -80,29 +79,26 @@ module OpenAI
       # @overload list(after: nil, limit: nil, order: nil, purpose: nil, request_options: {})
       #
       # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
-      # ...
       #
       # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
-      # ...
       #
-      # @param order [Symbol, OpenAI::Models::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
-      # ...
+      # @param order [Symbol, OpenAI::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
       #
       # @param purpose [String] Only return files with the given purpose.
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Internal::CursorPage<OpenAI::Models::FileObject>]
+      # @return [OpenAI::Internal::CursorPage<OpenAI::FileObject>]
       #
       # @see OpenAI::Models::FileListParams
       def list(params = {})
-        parsed, options = OpenAI::Models::FileListParams.dump_request(params)
+        parsed, options = OpenAI::FileListParams.dump_request(params)
         @client.request(
           method: :get,
           path: "files",
           query: parsed,
           page: OpenAI::Internal::CursorPage,
-          model: OpenAI::Models::FileObject,
+          model: OpenAI::FileObject,
           options: options
         )
       end
@@ -115,14 +111,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::FileDeleted]
+      # @return [OpenAI::FileDeleted]
       #
       # @see OpenAI::Models::FileDeleteParams
       def delete(file_id, params = {})
         @client.request(
           method: :delete,
           path: ["files/%1$s", file_id],
-          model: OpenAI::Models::FileDeleted,
+          model: OpenAI::FileDeleted,
           options: params[:request_options]
         )
       end

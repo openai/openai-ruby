@@ -9,13 +9,22 @@ module OpenAI
           module ToolCall
             extend OpenAI::Internal::Type::Union
 
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall]
+            Variants =
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall,
+                  OpenAI::Beta::Threads::Runs::FileSearchToolCall,
+                  OpenAI::Beta::Threads::Runs::FunctionToolCall
                 )
+              end
+
+            sig do
+              override.returns(
+                T::Array[OpenAI::Beta::Threads::Runs::ToolCall::Variants]
+              )
             end
-            def self.variants; end
+            def self.variants
+            end
           end
         end
       end

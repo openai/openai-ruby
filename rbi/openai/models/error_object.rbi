@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class ErrorObject < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       sig { returns(T.nilable(String)) }
       attr_accessor :code
 
@@ -16,15 +18,28 @@ module OpenAI
       attr_accessor :type
 
       sig do
-        params(code: T.nilable(String), message: String, param: T.nilable(String), type: String)
-          .returns(T.attached_class)
+        params(
+          code: T.nilable(String),
+          message: String,
+          param: T.nilable(String),
+          type: String
+        ).returns(T.attached_class)
       end
-      def self.new(code:, message:, param:, type:); end
+      def self.new(code:, message:, param:, type:)
+      end
 
       sig do
-        override.returns({code: T.nilable(String), message: String, param: T.nilable(String), type: String})
+        override.returns(
+          {
+            code: T.nilable(String),
+            message: String,
+            param: T.nilable(String),
+            type: String
+          }
+        )
       end
-      def to_hash; end
+      def to_hash
+      end
     end
   end
 end

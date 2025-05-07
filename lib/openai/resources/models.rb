@@ -12,14 +12,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::Model]
+      # @return [OpenAI::Model]
       #
       # @see OpenAI::Models::ModelRetrieveParams
       def retrieve(model, params = {})
         @client.request(
           method: :get,
           path: ["models/%1$s", model],
-          model: OpenAI::Models::Model,
+          model: OpenAI::Model,
           options: params[:request_options]
         )
       end
@@ -31,7 +31,7 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Internal::Page<OpenAI::Models::Model>]
+      # @return [OpenAI::Internal::Page<OpenAI::Model>]
       #
       # @see OpenAI::Models::ModelListParams
       def list(params = {})
@@ -39,7 +39,7 @@ module OpenAI
           method: :get,
           path: "models",
           page: OpenAI::Internal::Page,
-          model: OpenAI::Models::Model,
+          model: OpenAI::Model,
           options: params[:request_options]
         )
       end
@@ -53,14 +53,14 @@ module OpenAI
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::ModelDeleted]
+      # @return [OpenAI::ModelDeleted]
       #
       # @see OpenAI::Models::ModelDeleteParams
       def delete(model, params = {})
         @client.request(
           method: :delete,
           path: ["models/%1$s", model],
-          model: OpenAI::Models::ModelDeleted,
+          model: OpenAI::ModelDeleted,
           options: params[:request_options]
         )
       end

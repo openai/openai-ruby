@@ -7,12 +7,12 @@ module OpenAI
         {
           id: String,
           created_at: Integer,
-          last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?,
+          last_error: OpenAI::VectorStores::VectorStoreFile::LastError?,
           object: :"vector_store.file",
-          status: OpenAI::Models::VectorStores::VectorStoreFile::status,
+          status: OpenAI::VectorStores::VectorStoreFile::status,
           usage_bytes: Integer,
           vector_store_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+          attributes: ::Hash[Symbol, OpenAI::VectorStores::VectorStoreFile::attribute]?,
           chunking_strategy: OpenAI::Models::file_chunking_strategy
         }
 
@@ -21,17 +21,17 @@ module OpenAI
 
         attr_accessor created_at: Integer
 
-        attr_accessor last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?
+        attr_accessor last_error: OpenAI::VectorStores::VectorStoreFile::LastError?
 
         attr_accessor object: :"vector_store.file"
 
-        attr_accessor status: OpenAI::Models::VectorStores::VectorStoreFile::status
+        attr_accessor status: OpenAI::VectorStores::VectorStoreFile::status
 
         attr_accessor usage_bytes: Integer
 
         attr_accessor vector_store_id: String
 
-        attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?
+        attr_accessor attributes: ::Hash[Symbol, OpenAI::VectorStores::VectorStoreFile::attribute]?
 
         attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy?
 
@@ -42,34 +42,30 @@ module OpenAI
         def initialize: (
           id: String,
           created_at: Integer,
-          last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError?,
-          status: OpenAI::Models::VectorStores::VectorStoreFile::status,
+          last_error: OpenAI::VectorStores::VectorStoreFile::LastError?,
+          status: OpenAI::VectorStores::VectorStoreFile::status,
           usage_bytes: Integer,
           vector_store_id: String,
-          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::VectorStoreFile::attribute]?,
+          ?attributes: ::Hash[Symbol, OpenAI::VectorStores::VectorStoreFile::attribute]?,
           ?chunking_strategy: OpenAI::Models::file_chunking_strategy,
           ?object: :"vector_store.file"
         ) -> void
 
-        def to_hash: -> OpenAI::Models::VectorStores::vector_store_file
-
         type last_error =
           {
-            code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code,
+            code: OpenAI::VectorStores::VectorStoreFile::LastError::code,
             message: String
           }
 
         class LastError < OpenAI::Internal::Type::BaseModel
-          attr_accessor code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code
+          attr_accessor code: OpenAI::VectorStores::VectorStoreFile::LastError::code
 
           attr_accessor message: String
 
           def initialize: (
-            code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::code,
+            code: OpenAI::VectorStores::VectorStoreFile::LastError::code,
             message: String
           ) -> void
-
-          def to_hash: -> OpenAI::Models::VectorStores::VectorStoreFile::last_error
 
           type code = :server_error | :unsupported_file | :invalid_file
 
@@ -80,7 +76,7 @@ module OpenAI
             UNSUPPORTED_FILE: :unsupported_file
             INVALID_FILE: :invalid_file
 
-            def self?.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::code]
+            def self?.values: -> ::Array[OpenAI::VectorStores::VectorStoreFile::LastError::code]
           end
         end
 
@@ -94,7 +90,7 @@ module OpenAI
           CANCELLED: :cancelled
           FAILED: :failed
 
-          def self?.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFile::status]
+          def self?.values: -> ::Array[OpenAI::VectorStores::VectorStoreFile::status]
         end
 
         type attribute = String | Float | bool
@@ -102,7 +98,7 @@ module OpenAI
         module Attribute
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, Float, bool]
+          def self?.variants: -> ::Array[OpenAI::VectorStores::VectorStoreFile::attribute]
         end
       end
     end

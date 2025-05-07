@@ -24,15 +24,15 @@ module OpenAI
         #   Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for
         #   descending order. Defaults to `asc`.
         #
-        #   @return [Symbol, OpenAI::Models::Evals::RunListParams::Order, nil]
-        optional :order, enum: -> { OpenAI::Models::Evals::RunListParams::Order }
+        #   @return [Symbol, OpenAI::Evals::RunListParams::Order, nil]
+        optional :order, enum: -> { OpenAI::Evals::RunListParams::Order }
 
         # @!attribute status
         #   Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
         #   | `canceled`.
         #
-        #   @return [Symbol, OpenAI::Models::Evals::RunListParams::Status, nil]
-        optional :status, enum: -> { OpenAI::Models::Evals::RunListParams::Status }
+        #   @return [Symbol, OpenAI::Evals::RunListParams::Status, nil]
+        optional :status, enum: -> { OpenAI::Evals::RunListParams::Status }
 
         # @!method initialize(after: nil, limit: nil, order: nil, status: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
@@ -42,11 +42,9 @@ module OpenAI
         #
         #   @param limit [Integer] Number of runs to retrieve.
         #
-        #   @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
-        #   ...
+        #   @param order [Symbol, OpenAI::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
         #
-        #   @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
-        #   ...
+        #   @param status [Symbol, OpenAI::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

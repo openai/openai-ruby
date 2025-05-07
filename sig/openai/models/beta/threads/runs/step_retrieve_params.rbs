@@ -31,8 +31,6 @@ module OpenAI
               ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
               ?request_options: OpenAI::request_opts
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::step_retrieve_params
           end
         end
       end

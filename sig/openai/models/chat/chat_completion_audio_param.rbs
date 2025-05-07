@@ -5,21 +5,19 @@ module OpenAI
     module Chat
       type chat_completion_audio_param =
         {
-          format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
-          voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+          format_: OpenAI::Chat::ChatCompletionAudioParam::format_,
+          voice: OpenAI::Chat::ChatCompletionAudioParam::voice
         }
 
       class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
-        attr_accessor format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_
+        attr_accessor format_: OpenAI::Chat::ChatCompletionAudioParam::format_
 
-        attr_accessor voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+        attr_accessor voice: OpenAI::Chat::ChatCompletionAudioParam::voice
 
         def initialize: (
-          format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
-          voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+          format_: OpenAI::Chat::ChatCompletionAudioParam::format_,
+          voice: OpenAI::Chat::ChatCompletionAudioParam::voice
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_audio_param
 
         type format_ = :wav | :aac | :mp3 | :flac | :opus | :pcm16
 
@@ -33,7 +31,7 @@ module OpenAI
           OPUS: :opus
           PCM16: :pcm16
 
-          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::format_]
+          def self?.values: -> ::Array[OpenAI::Chat::ChatCompletionAudioParam::format_]
         end
 
         type voice =
@@ -53,17 +51,7 @@ module OpenAI
         module Voice
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, (:alloy
-          | :ash
-          | :ballad
-          | :coral
-          | :echo
-          | :fable
-          | :onyx
-          | :nova
-          | :sage
-          | :shimmer
-          | :verse)]
+          def self?.variants: -> ::Array[OpenAI::Chat::ChatCompletionAudioParam::voice]
 
           ALLOY: :alloy
           ASH: :ash

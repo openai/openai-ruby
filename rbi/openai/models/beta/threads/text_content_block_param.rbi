@@ -5,6 +5,9 @@ module OpenAI
     module Beta
       module Threads
         class TextContentBlockParam < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Text content to be sent to the model
           sig { returns(String) }
           attr_accessor :text
@@ -20,9 +23,12 @@ module OpenAI
             text:,
             # Always `text`.
             type: :text
-          ); end
-          sig { override.returns({text: String, type: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig { override.returns({ text: String, type: Symbol }) }
+          def to_hash
+          end
         end
       end
     end

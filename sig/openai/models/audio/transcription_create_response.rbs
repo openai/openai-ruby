@@ -2,13 +2,12 @@ module OpenAI
   module Models
     module Audio
       type transcription_create_response =
-        OpenAI::Models::Audio::Transcription
-        | OpenAI::Models::Audio::TranscriptionVerbose
+        OpenAI::Audio::Transcription | OpenAI::Audio::TranscriptionVerbose
 
       module TranscriptionCreateResponse
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]
+        def self?.variants: -> ::Array[OpenAI::Models::Audio::transcription_create_response]
       end
     end
   end

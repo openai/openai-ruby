@@ -7,8 +7,8 @@ module OpenAI
         # @!attribute content
         #   The contents of the user message.
         #
-        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>]
-        required :content, union: -> { OpenAI::Models::Chat::ChatCompletionUserMessageParam::Content }
+        #   @return [String, Array<OpenAI::Chat::ChatCompletionContentPartText, OpenAI::Chat::ChatCompletionContentPartImage, OpenAI::Chat::ChatCompletionContentPartInputAudio, OpenAI::Chat::ChatCompletionContentPart::File>]
+        required :content, union: -> { OpenAI::Chat::ChatCompletionUserMessageParam::Content }
 
         # @!attribute role
         #   The role of the messages author, in this case `user`.
@@ -25,21 +25,20 @@ module OpenAI
 
         # @!method initialize(content:, name: nil, role: :user)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionUserMessageParam} for more details.
+        #   {OpenAI::Chat::ChatCompletionUserMessageParam} for more details.
         #
         #   Messages sent by an end user, containing prompts or additional context
         #   information.
         #
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>] The contents of the user message. ...
+        #   @param content [String, Array<OpenAI::Chat::ChatCompletionContentPartText, OpenAI::Chat::ChatCompletionContentPartImage, OpenAI::Chat::ChatCompletionContentPartInputAudio, OpenAI::Chat::ChatCompletionContentPart::File>] The contents of the user message.
         #
         #   @param name [String] An optional name for the participant. Provides the model information to differen
-        #   ...
         #
         #   @param role [Symbol, :user] The role of the messages author, in this case `user`.
 
         # The contents of the user message.
         #
-        # @see OpenAI::Models::Chat::ChatCompletionUserMessageParam#content
+        # @see OpenAI::Chat::ChatCompletionUserMessageParam#content
         module Content
           extend OpenAI::Internal::Type::Union
 
@@ -47,14 +46,14 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. Supported options differ based on the [model](https://platform.openai.com/docs/models) being used to generate the response. Can contain text, image, or audio inputs.
-          variant -> { OpenAI::Models::Chat::ChatCompletionUserMessageParam::Content::ChatCompletionContentPartArray }
+          variant -> { OpenAI::Chat::ChatCompletionUserMessageParam::Content::ChatCompletionContentPartArray }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File>)]
+          #   @return [Array(String, Array<OpenAI::Chat::ChatCompletionContentPartText, OpenAI::Chat::ChatCompletionContentPartImage, OpenAI::Chat::ChatCompletionContentPartInputAudio, OpenAI::Chat::ChatCompletionContentPart::File>)]
 
           # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Chat::ChatCompletionContentPart }]
+            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Chat::ChatCompletionContentPart }]
         end
       end
     end

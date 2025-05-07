@@ -6,6 +6,8 @@ module OpenAI
 
     module Chat
       class ChatCompletionDeleted < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The ID of the chat completion that was deleted.
         sig { returns(String) }
         attr_accessor :id
@@ -18,7 +20,11 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :object
 
-        sig { params(id: String, deleted: T::Boolean, object: Symbol).returns(T.attached_class) }
+        sig do
+          params(id: String, deleted: T::Boolean, object: Symbol).returns(
+            T.attached_class
+          )
+        end
         def self.new(
           # The ID of the chat completion that was deleted.
           id:,
@@ -26,9 +32,14 @@ module OpenAI
           deleted:,
           # The type of object being deleted.
           object: :"chat.completion.deleted"
-        ); end
-        sig { override.returns({id: String, deleted: T::Boolean, object: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns({ id: String, deleted: T::Boolean, object: Symbol })
+        end
+        def to_hash
+        end
       end
     end
   end

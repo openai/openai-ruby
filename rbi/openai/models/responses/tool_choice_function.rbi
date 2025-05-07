@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ToolChoiceFunction < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The name of the function to call.
         sig { returns(String) }
         attr_accessor :name
@@ -19,9 +21,12 @@ module OpenAI
           name:,
           # For function calling, the type is always `function`.
           type: :function
-        ); end
-        sig { override.returns({name: String, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ name: String, type: Symbol }) }
+        def to_hash
+        end
       end
     end
   end

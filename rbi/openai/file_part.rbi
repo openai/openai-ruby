@@ -13,22 +13,25 @@ module OpenAI
 
     # @api private
     sig { returns(String) }
-    private def read; end
+    private def read
+    end
 
     sig { params(a: T.anything).returns(String) }
-    def to_json(*a); end
+    def to_json(*a)
+    end
 
     sig { params(a: T.anything).returns(String) }
-    def to_yaml(*a); end
+    def to_yaml(*a)
+    end
 
     sig do
       params(
         content: T.any(Pathname, StringIO, IO, String),
         filename: T.nilable(String),
         content_type: T.nilable(String)
-      )
-        .returns(T.attached_class)
+      ).returns(T.attached_class)
     end
-    def self.new(content, filename: nil, content_type: nil); end
+    def self.new(content, filename: nil, content_type: nil)
+    end
   end
 end

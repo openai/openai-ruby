@@ -3,15 +3,16 @@
 module OpenAI
   module Models
     class ResponseFormatJSONSchema < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # Structured Outputs configuration options, including a JSON Schema.
-      sig { returns(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema) }
+      sig { returns(OpenAI::ResponseFormatJSONSchema::JSONSchema) }
       attr_reader :json_schema
 
       sig do
         params(
-          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::AnyHash)
-        )
-          .void
+          json_schema: OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash
+        ).void
       end
       attr_writer :json_schema
 
@@ -24,21 +25,32 @@ module OpenAI
       # [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
       sig do
         params(
-          json_schema: T.any(OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, OpenAI::Internal::AnyHash),
+          json_schema: OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
           type: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # Structured Outputs configuration options, including a JSON Schema.
         json_schema:,
         # The type of response format being defined. Always `json_schema`.
         type: :json_schema
-      ); end
-      sig { override.returns({json_schema: OpenAI::Models::ResponseFormatJSONSchema::JSONSchema, type: Symbol}) }
-      def to_hash; end
+      )
+      end
+
+      sig do
+        override.returns(
+          {
+            json_schema: OpenAI::ResponseFormatJSONSchema::JSONSchema,
+            type: Symbol
+          }
+        )
+      end
+      def to_hash
+      end
 
       class JSONSchema < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         # and dashes, with a maximum length of 64.
         sig { returns(String) }
@@ -75,8 +87,7 @@ module OpenAI
             description: String,
             schema: T::Hash[Symbol, T.anything],
             strict: T.nilable(T::Boolean)
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
@@ -94,19 +105,21 @@ module OpenAI
           # learn more, read the
           # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
           strict: nil
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                name: String,
-                description: String,
-                schema: T::Hash[Symbol, T.anything],
-                strict: T.nilable(T::Boolean)
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              name: String,
+              description: String,
+              schema: T::Hash[Symbol, T.anything],
+              strict: T.nilable(T::Boolean)
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

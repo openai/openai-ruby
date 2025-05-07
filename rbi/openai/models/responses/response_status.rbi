@@ -8,16 +8,25 @@ module OpenAI
       module ResponseStatus
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseStatus) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseStatus) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
-        FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
-        IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
-        INCOMPLETE = T.let(:incomplete, OpenAI::Models::Responses::ResponseStatus::TaggedSymbol)
+        COMPLETED =
+          T.let(:completed, OpenAI::Responses::ResponseStatus::TaggedSymbol)
+        FAILED = T.let(:failed, OpenAI::Responses::ResponseStatus::TaggedSymbol)
+        IN_PROGRESS =
+          T.let(:in_progress, OpenAI::Responses::ResponseStatus::TaggedSymbol)
+        INCOMPLETE =
+          T.let(:incomplete, OpenAI::Responses::ResponseStatus::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseStatus::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(
+            T::Array[OpenAI::Responses::ResponseStatus::TaggedSymbol]
+          )
+        end
+        def self.values
+        end
       end
     end
   end

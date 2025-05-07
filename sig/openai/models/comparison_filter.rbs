@@ -3,24 +3,22 @@ module OpenAI
     type comparison_filter =
       {
         key: String,
-        type: OpenAI::Models::ComparisonFilter::type_,
-        value: OpenAI::Models::ComparisonFilter::value
+        type: OpenAI::ComparisonFilter::type_,
+        value: OpenAI::ComparisonFilter::value
       }
 
     class ComparisonFilter < OpenAI::Internal::Type::BaseModel
       attr_accessor key: String
 
-      attr_accessor type: OpenAI::Models::ComparisonFilter::type_
+      attr_accessor type: OpenAI::ComparisonFilter::type_
 
-      attr_accessor value: OpenAI::Models::ComparisonFilter::value
+      attr_accessor value: OpenAI::ComparisonFilter::value
 
       def initialize: (
         key: String,
-        type: OpenAI::Models::ComparisonFilter::type_,
-        value: OpenAI::Models::ComparisonFilter::value
+        type: OpenAI::ComparisonFilter::type_,
+        value: OpenAI::ComparisonFilter::value
       ) -> void
-
-      def to_hash: -> OpenAI::Models::comparison_filter
 
       type type_ = :eq | :ne | :gt | :gte | :lt | :lte
 
@@ -34,7 +32,7 @@ module OpenAI
         LT: :lt
         LTE: :lte
 
-        def self?.values: -> ::Array[OpenAI::Models::ComparisonFilter::type_]
+        def self?.values: -> ::Array[OpenAI::ComparisonFilter::type_]
       end
 
       type value = String | Float | bool
@@ -42,7 +40,7 @@ module OpenAI
       module Value
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, Float, bool]
+        def self?.variants: -> ::Array[OpenAI::ComparisonFilter::value]
       end
     end
   end

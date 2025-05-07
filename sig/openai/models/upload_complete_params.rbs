@@ -19,8 +19,6 @@ module OpenAI
         ?md5: String,
         ?request_options: OpenAI::request_opts
       ) -> void
-
-      def to_hash: -> OpenAI::Models::upload_complete_params
     end
   end
 end

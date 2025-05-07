@@ -28,8 +28,6 @@ module OpenAI
           ?description: String?,
           ?type: :function
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::function_tool
       end
     end
   end

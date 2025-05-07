@@ -4,15 +4,17 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallCompletedEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # A tool call to run code.
-        sig { returns(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall) }
+        sig { returns(OpenAI::Responses::ResponseCodeInterpreterToolCall) }
         attr_reader :code_interpreter_call
 
         sig do
           params(
-            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::AnyHash)
-          )
-            .void
+            code_interpreter_call:
+              OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash
+          ).void
         end
         attr_writer :code_interpreter_call
 
@@ -27,11 +29,11 @@ module OpenAI
         # Emitted when the code interpreter call is completed.
         sig do
           params(
-            code_interpreter_call: T.any(OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Internal::AnyHash),
+            code_interpreter_call:
+              OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
             output_index: Integer,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # A tool call to run code.
@@ -40,18 +42,21 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.code_interpreter_call.completed`.
           type: :"response.code_interpreter_call.completed"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                code_interpreter_call: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall,
-                output_index: Integer,
-                type: Symbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              code_interpreter_call:
+                OpenAI::Responses::ResponseCodeInterpreterToolCall,
+              output_index: Integer,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

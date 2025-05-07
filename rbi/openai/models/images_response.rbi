@@ -3,32 +3,33 @@
 module OpenAI
   module Models
     class ImagesResponse < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The Unix timestamp (in seconds) of when the image was created.
       sig { returns(Integer) }
       attr_accessor :created
 
       # The list of generated images.
-      sig { returns(T.nilable(T::Array[OpenAI::Models::Image])) }
+      sig { returns(T.nilable(T::Array[OpenAI::Image])) }
       attr_reader :data
 
-      sig { params(data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Internal::AnyHash)]).void }
+      sig { params(data: T::Array[OpenAI::Image::OrHash]).void }
       attr_writer :data
 
       # For `gpt-image-1` only, the token usage information for the image generation.
-      sig { returns(T.nilable(OpenAI::Models::ImagesResponse::Usage)) }
+      sig { returns(T.nilable(OpenAI::ImagesResponse::Usage)) }
       attr_reader :usage
 
-      sig { params(usage: T.any(OpenAI::Models::ImagesResponse::Usage, OpenAI::Internal::AnyHash)).void }
+      sig { params(usage: OpenAI::ImagesResponse::Usage::OrHash).void }
       attr_writer :usage
 
       # The response from the image generation endpoint.
       sig do
         params(
           created: Integer,
-          data: T::Array[T.any(OpenAI::Models::Image, OpenAI::Internal::AnyHash)],
-          usage: T.any(OpenAI::Models::ImagesResponse::Usage, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          data: T::Array[OpenAI::Image::OrHash],
+          usage: OpenAI::ImagesResponse::Usage::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # The Unix timestamp (in seconds) of when the image was created.
@@ -37,29 +38,37 @@ module OpenAI
         data: nil,
         # For `gpt-image-1` only, the token usage information for the image generation.
         usage: nil
-      ); end
-      sig do
-        override
-          .returns(
-            {created: Integer, data: T::Array[OpenAI::Models::Image], usage: OpenAI::Models::ImagesResponse::Usage}
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            created: Integer,
+            data: T::Array[OpenAI::Image],
+            usage: OpenAI::ImagesResponse::Usage
+          }
+        )
+      end
+      def to_hash
+      end
 
       class Usage < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The number of tokens (images and text) in the input prompt.
         sig { returns(Integer) }
         attr_accessor :input_tokens
 
         # The input tokens detailed information for the image generation.
-        sig { returns(OpenAI::Models::ImagesResponse::Usage::InputTokensDetails) }
+        sig { returns(OpenAI::ImagesResponse::Usage::InputTokensDetails) }
         attr_reader :input_tokens_details
 
         sig do
           params(
-            input_tokens_details: T.any(OpenAI::Models::ImagesResponse::Usage::InputTokensDetails, OpenAI::Internal::AnyHash)
-          )
-            .void
+            input_tokens_details:
+              OpenAI::ImagesResponse::Usage::InputTokensDetails::OrHash
+          ).void
         end
         attr_writer :input_tokens_details
 
@@ -75,11 +84,11 @@ module OpenAI
         sig do
           params(
             input_tokens: Integer,
-            input_tokens_details: T.any(OpenAI::Models::ImagesResponse::Usage::InputTokensDetails, OpenAI::Internal::AnyHash),
+            input_tokens_details:
+              OpenAI::ImagesResponse::Usage::InputTokensDetails::OrHash,
             output_tokens: Integer,
             total_tokens: Integer
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The number of tokens (images and text) in the input prompt.
@@ -90,21 +99,27 @@ module OpenAI
           output_tokens:,
           # The total number of tokens (images and text) used for the image generation.
           total_tokens:
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                input_tokens: Integer,
-                input_tokens_details: OpenAI::Models::ImagesResponse::Usage::InputTokensDetails,
-                output_tokens: Integer,
-                total_tokens: Integer
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              input_tokens: Integer,
+              input_tokens_details:
+                OpenAI::ImagesResponse::Usage::InputTokensDetails,
+              output_tokens: Integer,
+              total_tokens: Integer
+            }
+          )
+        end
+        def to_hash
+        end
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The number of image tokens in the input prompt.
           sig { returns(Integer) }
           attr_accessor :image_tokens
@@ -114,15 +129,24 @@ module OpenAI
           attr_accessor :text_tokens
 
           # The input tokens detailed information for the image generation.
-          sig { params(image_tokens: Integer, text_tokens: Integer).returns(T.attached_class) }
+          sig do
+            params(image_tokens: Integer, text_tokens: Integer).returns(
+              T.attached_class
+            )
+          end
           def self.new(
             # The number of image tokens in the input prompt.
             image_tokens:,
             # The number of text tokens in the input prompt.
             text_tokens:
-          ); end
-          sig { override.returns({image_tokens: Integer, text_tokens: Integer}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns({ image_tokens: Integer, text_tokens: Integer })
+          end
+          def to_hash
+          end
         end
       end
     end

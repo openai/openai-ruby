@@ -6,6 +6,8 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # Set of 16 key-value pairs that can be attached to an object. This can be useful
       # for storing additional information about the object in a structured format, and
       # querying for objects via API or the dashboard.
@@ -26,9 +28,8 @@ module OpenAI
         params(
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -41,18 +42,20 @@ module OpenAI
         # Rename the evaluation.
         name: nil,
         request_options: {}
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              metadata: T.nilable(T::Hash[Symbol, String]),
-              name: String,
-              request_options: OpenAI::RequestOptions
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            metadata: T.nilable(T::Hash[Symbol, String]),
+            name: String,
+            request_options: OpenAI::RequestOptions
+          }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

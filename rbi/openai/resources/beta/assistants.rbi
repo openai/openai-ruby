@@ -7,35 +7,37 @@ module OpenAI
         # Create an assistant with a model and instructions.
         sig do
           params(
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
+            model: T.any(String, OpenAI::ChatModel::OrSymbol),
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-            response_format: T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
-              )
-            ),
+            reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+            response_format:
+              T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Internal::AnyHash)),
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-            ],
+            tool_resources:
+              T.nilable(
+                OpenAI::Beta::AssistantCreateParams::ToolResources::OrHash
+              ),
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ],
             top_p: T.nilable(Float),
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Models::Beta::Assistant)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Beta::Assistant)
         end
         def create(
           # ID of the model to use. You can use the
@@ -106,16 +108,23 @@ module OpenAI
           # We generally recommend altering this or temperature but not both.
           top_p: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Retrieves an assistant.
         sig do
-          params(assistant_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Beta::Assistant)
+          params(
+            assistant_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Beta::Assistant)
         end
         def retrieve(
           # The ID of the assistant to retrieve.
           assistant_id,
           request_options: {}
-        ); end
+        )
+        end
+
         # Modifies an assistant.
         sig do
           params(
@@ -123,32 +132,38 @@ module OpenAI
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol),
+            model:
+              T.any(
+                String,
+                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
+              ),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-            response_format: T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
-              )
-            ),
+            reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+            response_format:
+              T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-            ],
+            tool_resources:
+              T.nilable(
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::OrHash
+              ),
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ],
             top_p: T.nilable(Float),
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Models::Beta::Assistant)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Beta::Assistant)
         end
         def update(
           # The ID of the assistant to modify.
@@ -221,17 +236,18 @@ module OpenAI
           # We generally recommend altering this or temperature but not both.
           top_p: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Returns a list of assistants.
         sig do
           params(
             after: String,
             before: String,
             limit: Integer,
-            order: OpenAI::Models::Beta::AssistantListParams::Order::OrSymbol,
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Assistant])
+            order: OpenAI::Beta::AssistantListParams::Order::OrSymbol,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Assistant])
         end
         def list(
           # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -251,20 +267,27 @@ module OpenAI
           # order and `desc` for descending order.
           order: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Delete an assistant.
         sig do
-          params(assistant_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::Beta::AssistantDeleted)
+          params(
+            assistant_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Beta::AssistantDeleted)
         end
         def delete(
           # The ID of the assistant to delete.
           assistant_id,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

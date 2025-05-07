@@ -6,6 +6,8 @@ module OpenAI
 
     module VectorStores
       class VectorStoreFileBatch < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         attr_accessor :id
@@ -15,14 +17,14 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :created_at
 
-        sig { returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts) }
+        sig { returns(OpenAI::VectorStores::VectorStoreFileBatch::FileCounts) }
         attr_reader :file_counts
 
         sig do
           params(
-            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::AnyHash)
-          )
-            .void
+            file_counts:
+              OpenAI::VectorStores::VectorStoreFileBatch::FileCounts::OrHash
+          ).void
         end
         attr_writer :file_counts
 
@@ -32,7 +34,11 @@ module OpenAI
 
         # The status of the vector store files batch, which can be either `in_progress`,
         # `completed`, `cancelled` or `failed`.
-        sig { returns(OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol) }
+        sig do
+          returns(
+            OpenAI::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol
+          )
+        end
         attr_accessor :status
 
         # The ID of the
@@ -47,12 +53,13 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            file_counts: T.any(OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts, OpenAI::Internal::AnyHash),
-            status: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::OrSymbol,
+            file_counts:
+              OpenAI::VectorStores::VectorStoreFileBatch::FileCounts::OrHash,
+            status:
+              OpenAI::VectorStores::VectorStoreFileBatch::Status::OrSymbol,
             vector_store_id: String,
             object: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The identifier, which can be referenced in API endpoints.
@@ -71,23 +78,30 @@ module OpenAI
           vector_store_id:,
           # The object type, which is always `vector_store.file_batch`.
           object: :"vector_store.files_batch"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                id: String,
-                created_at: Integer,
-                file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
-                object: Symbol,
-                status: OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol,
-                vector_store_id: String
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              id: String,
+              created_at: Integer,
+              file_counts:
+                OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
+              object: Symbol,
+              status:
+                OpenAI::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol,
+              vector_store_id: String
+            }
+          )
+        end
+        def to_hash
+        end
 
         class FileCounts < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The number of files that where cancelled.
           sig { returns(Integer) }
           attr_accessor :cancelled
@@ -115,8 +129,7 @@ module OpenAI
               failed: Integer,
               in_progress: Integer,
               total: Integer
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The number of files that where cancelled.
@@ -129,18 +142,22 @@ module OpenAI
             in_progress:,
             # The total number of files.
             total:
-          ); end
-          sig do
-            override
-              .returns({
-                         cancelled: Integer,
-                         completed: Integer,
-                         failed: Integer,
-                         in_progress: Integer,
-                         total: Integer
-                       })
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                cancelled: Integer,
+                completed: Integer,
+                failed: Integer,
+                in_progress: Integer,
+                total: Integer
+              }
+            )
+          end
+          def to_hash
+          end
         end
 
         # The status of the vector store files batch, which can be either `in_progress`,
@@ -148,17 +165,42 @@ module OpenAI
         module Status
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::VectorStores::VectorStoreFileBatch::Status)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol)
+            T.let(
+              :in_progress,
+              OpenAI::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol
+            )
+          COMPLETED =
+            T.let(
+              :completed,
+              OpenAI::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol
+            )
+          CANCELLED =
+            T.let(
+              :cancelled,
+              OpenAI::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol
+            )
+          FAILED =
+            T.let(
+              :failed,
+              OpenAI::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::VectorStores::VectorStoreFileBatch::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

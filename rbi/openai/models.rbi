@@ -67,7 +67,8 @@ module OpenAI
 
   Evals = OpenAI::Models::Evals
 
-  EvalStoredCompletionsDataSourceConfig = OpenAI::Models::EvalStoredCompletionsDataSourceConfig
+  EvalStoredCompletionsDataSourceConfig =
+    OpenAI::Models::EvalStoredCompletionsDataSourceConfig
 
   EvalStringCheckGrader = OpenAI::Models::EvalStringCheckGrader
 
@@ -101,7 +102,8 @@ module OpenAI
 
   FunctionDefinition = OpenAI::Models::FunctionDefinition
 
-  FunctionParameters = T.let(OpenAI::Models::FunctionParameters, OpenAI::Internal::Type::Converter)
+  FunctionParameters =
+    T.let(OpenAI::Models::FunctionParameters, OpenAI::Internal::Type::Converter)
 
   Image = OpenAI::Models::Image
 
@@ -139,7 +141,8 @@ module OpenAI
 
   ModerationTextInput = OpenAI::Models::ModerationTextInput
 
-  OtherFileChunkingStrategyObject = OpenAI::Models::OtherFileChunkingStrategyObject
+  OtherFileChunkingStrategyObject =
+    OpenAI::Models::OtherFileChunkingStrategyObject
 
   Reasoning = OpenAI::Models::Reasoning
 
@@ -157,9 +160,11 @@ module OpenAI
 
   StaticFileChunkingStrategy = OpenAI::Models::StaticFileChunkingStrategy
 
-  StaticFileChunkingStrategyObject = OpenAI::Models::StaticFileChunkingStrategyObject
+  StaticFileChunkingStrategyObject =
+    OpenAI::Models::StaticFileChunkingStrategyObject
 
-  StaticFileChunkingStrategyObjectParam = OpenAI::Models::StaticFileChunkingStrategyObjectParam
+  StaticFileChunkingStrategyObjectParam =
+    OpenAI::Models::StaticFileChunkingStrategyObjectParam
 
   Upload = OpenAI::Models::Upload
 

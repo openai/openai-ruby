@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class FunctionTool < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The name of the function to call.
         sig { returns(String) }
         attr_accessor :name
@@ -35,8 +37,7 @@ module OpenAI
             strict: T.nilable(T::Boolean),
             description: T.nilable(String),
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The name of the function to call.
@@ -50,20 +51,22 @@ module OpenAI
           description: nil,
           # The type of the function tool. Always `function`.
           type: :function
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                name: String,
-                parameters: T.nilable(T::Hash[Symbol, T.anything]),
-                strict: T.nilable(T::Boolean),
-                type: Symbol,
-                description: T.nilable(String)
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              name: String,
+              parameters: T.nilable(T::Hash[Symbol, T.anything]),
+              strict: T.nilable(T::Boolean),
+              type: Symbol,
+              description: T.nilable(String)
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

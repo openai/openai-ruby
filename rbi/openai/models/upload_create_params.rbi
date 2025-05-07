@@ -6,6 +6,8 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The number of bytes in the file you are uploading.
       sig { returns(Integer) }
       attr_accessor :bytes
@@ -25,7 +27,7 @@ module OpenAI
       #
       # See the
       # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
-      sig { returns(OpenAI::Models::FilePurpose::OrSymbol) }
+      sig { returns(OpenAI::FilePurpose::OrSymbol) }
       attr_accessor :purpose
 
       sig do
@@ -33,10 +35,9 @@ module OpenAI
           bytes: Integer,
           filename: String,
           mime_type: String,
-          purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          purpose: OpenAI::FilePurpose::OrSymbol,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # The number of bytes in the file you are uploading.
@@ -54,20 +55,22 @@ module OpenAI
         # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
         purpose:,
         request_options: {}
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              bytes: Integer,
-              filename: String,
-              mime_type: String,
-              purpose: OpenAI::Models::FilePurpose::OrSymbol,
-              request_options: OpenAI::RequestOptions
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            bytes: Integer,
+            filename: String,
+            mime_type: String,
+            purpose: OpenAI::FilePurpose::OrSymbol,
+            request_options: OpenAI::RequestOptions
+          }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

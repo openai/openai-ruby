@@ -5,8 +5,8 @@ module OpenAI
         {
           id: String,
           code: String,
-          results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
-          status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
+          results: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::result],
+          status: OpenAI::Responses::ResponseCodeInterpreterToolCall::status,
           type: :code_interpreter_call
         }
 
@@ -15,25 +15,23 @@ module OpenAI
 
         attr_accessor code: String
 
-        attr_accessor results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result]
+        attr_accessor results: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::result]
 
-        attr_accessor status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status
+        attr_accessor status: OpenAI::Responses::ResponseCodeInterpreterToolCall::status
 
         attr_accessor type: :code_interpreter_call
 
         def initialize: (
           id: String,
           code: String,
-          results: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::result],
-          status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
+          results: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::result],
+          status: OpenAI::Responses::ResponseCodeInterpreterToolCall::status,
           ?type: :code_interpreter_call
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Responses::response_code_interpreter_tool_call
-
         type result =
-          OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs
-          | OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files
+          OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs
+          | OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files
 
         module Result
           extend OpenAI::Internal::Type::Union
@@ -46,27 +44,23 @@ module OpenAI
             attr_accessor type: :logs
 
             def initialize: (logs: String, ?type: :logs) -> void
-
-            def to_hash: -> OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::logs
           end
 
           type files =
             {
-              files: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
+              files: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
               type: :files
             }
 
           class Files < OpenAI::Internal::Type::BaseModel
-            attr_accessor files: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File]
+            attr_accessor files: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File]
 
             attr_accessor type: :files
 
             def initialize: (
-              files: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
+              files: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File],
               ?type: :files
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::files
 
             type file = { file_id: String, mime_type: String }
 
@@ -76,12 +70,10 @@ module OpenAI
               attr_accessor mime_type: String
 
               def initialize: (file_id: String, mime_type: String) -> void
-
-              def to_hash: -> OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files::file
             end
           end
 
-          def self?.variants: -> [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::Result::Files]
+          def self?.variants: -> ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::result]
         end
 
         type status = :in_progress | :interpreting | :completed
@@ -93,7 +85,7 @@ module OpenAI
           INTERPRETING: :interpreting
           COMPLETED: :completed
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status]
+          def self?.values: -> ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::status]
         end
       end
     end

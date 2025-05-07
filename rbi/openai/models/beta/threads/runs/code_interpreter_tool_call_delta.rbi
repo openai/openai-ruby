@@ -6,6 +6,9 @@ module OpenAI
       module Threads
         module Runs
           class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
             attr_accessor :index
@@ -23,17 +26,20 @@ module OpenAI
             attr_writer :id
 
             # The Code Interpreter tool call definition.
-            sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter)) }
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+                )
+              )
+            end
             attr_reader :code_interpreter
 
             sig do
               params(
-                code_interpreter: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                  OpenAI::Internal::AnyHash
-                )
-              )
-                .void
+                code_interpreter:
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::OrHash
+              ).void
             end
             attr_writer :code_interpreter
 
@@ -42,13 +48,10 @@ module OpenAI
               params(
                 index: Integer,
                 id: String,
-                code_interpreter: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                  OpenAI::Internal::AnyHash
-                ),
+                code_interpreter:
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::OrHash,
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # The index of the tool call in the tool calls array.
@@ -60,21 +63,27 @@ module OpenAI
               # The type of tool call. This is always going to be `code_interpreter` for this
               # type of tool call.
               type: :code_interpreter
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    index: Integer,
-                    type: Symbol,
-                    id: String,
-                    code_interpreter: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  index: Integer,
+                  type: Symbol,
+                  id: String,
+                  code_interpreter:
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+                }
+              )
+            end
+            def to_hash
+            end
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The input to the Code Interpreter tool call.
               sig { returns(T.nilable(String)) }
               attr_reader :input
@@ -90,8 +99,8 @@ module OpenAI
                   T.nilable(
                     T::Array[
                       T.any(
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
                       )
                     ]
                   )
@@ -101,15 +110,14 @@ module OpenAI
 
               sig do
                 params(
-                  outputs: T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                      OpenAI::Internal::AnyHash,
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
-                    )
-                  ]
-                )
-                  .void
+                  outputs:
+                    T::Array[
+                      T.any(
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterLogs::OrHash,
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::OrHash
+                      )
+                    ]
+                ).void
               end
               attr_writer :outputs
 
@@ -117,15 +125,14 @@ module OpenAI
               sig do
                 params(
                   input: String,
-                  outputs: T::Array[
-                    T.any(
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                      OpenAI::Internal::AnyHash,
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
-                    )
-                  ]
-                )
-                  .returns(T.attached_class)
+                  outputs:
+                    T::Array[
+                      T.any(
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterLogs::OrHash,
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::OrHash
+                      )
+                    ]
+                ).returns(T.attached_class)
               end
               def self.new(
                 # The input to the Code Interpreter tool call.
@@ -134,34 +141,47 @@ module OpenAI
                 # or more items, including text (`logs`) or images (`image`). Each of these are
                 # represented by a different object type.
                 outputs: nil
-              ); end
+              )
+              end
+
               sig do
-                override
-                  .returns(
-                    {
-                      input: String,
-                      outputs: T::Array[
+                override.returns(
+                  {
+                    input: String,
+                    outputs:
+                      T::Array[
                         T.any(
-                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs,
-                          OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage
+                          OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
+                          OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
                         )
                       ]
-                    }
-                  )
+                  }
+                )
               end
-              def to_hash; end
+              def to_hash
+              end
 
               # Text output from the Code Interpreter tool call as part of a run step.
               module Output
                 extend OpenAI::Internal::Type::Union
 
-                sig do
-                  override
-                    .returns(
-                      [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage]
+                Variants =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
                     )
+                  end
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output::Variants
+                    ]
+                  )
                 end
-                def self.variants; end
+                def self.variants
+                end
               end
             end
           end

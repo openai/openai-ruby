@@ -7,9 +7,11 @@ module OpenAI
         # @!attribute annotations
         #   The annotations of the text output.
         #
-        #   @return [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>]
+        #   @return [Array<OpenAI::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Responses::ResponseOutputText::Annotation::FilePath>]
         required :annotations,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputText::Annotation] }
+                 -> {
+                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputText::Annotation]
+                 }
 
         # @!attribute text
         #   The text output from the model.
@@ -26,7 +28,7 @@ module OpenAI
         # @!method initialize(annotations:, text:, type: :output_text)
         #   A text output from the model.
         #
-        #   @param annotations [Array<OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath>] The annotations of the text output.
+        #   @param annotations [Array<OpenAI::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Responses::ResponseOutputText::Annotation::FilePath>] The annotations of the text output.
         #
         #   @param text [String] The text output from the model.
         #
@@ -39,13 +41,13 @@ module OpenAI
           discriminator :type
 
           # A citation to a file.
-          variant :file_citation, -> { OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation }
+          variant :file_citation, -> { OpenAI::Responses::ResponseOutputText::Annotation::FileCitation }
 
           # A citation for a web resource used to generate a model response.
-          variant :url_citation, -> { OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation }
+          variant :url_citation, -> { OpenAI::Responses::ResponseOutputText::Annotation::URLCitation }
 
           # A path to a file.
-          variant :file_path, -> { OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath }
+          variant :file_path, -> { OpenAI::Responses::ResponseOutputText::Annotation::FilePath }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
@@ -142,20 +144,19 @@ module OpenAI
 
             # @!method initialize(file_id:, index:, type: :file_path)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath} for more
-            #   details.
+            #   {OpenAI::Responses::ResponseOutputText::Annotation::FilePath} for more details.
             #
             #   A path to a file.
             #
-            #   @param file_id [String] The ID of the file. ...
+            #   @param file_id [String] The ID of the file.
             #
-            #   @param index [Integer] The index of the file in the list of files. ...
+            #   @param index [Integer] The index of the file in the list of files.
             #
-            #   @param type [Symbol, :file_path] The type of the file path. Always `file_path`. ...
+            #   @param type [Symbol, :file_path] The type of the file path. Always `file_path`.
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath)]
+          #   @return [Array(OpenAI::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Responses::ResponseOutputText::Annotation::FilePath)]
         end
       end
     end

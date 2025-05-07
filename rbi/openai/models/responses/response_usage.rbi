@@ -4,19 +4,21 @@ module OpenAI
   module Models
     module Responses
       class ResponseUsage < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The number of input tokens.
         sig { returns(Integer) }
         attr_accessor :input_tokens
 
         # A detailed breakdown of the input tokens.
-        sig { returns(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails) }
+        sig { returns(OpenAI::Responses::ResponseUsage::InputTokensDetails) }
         attr_reader :input_tokens_details
 
         sig do
           params(
-            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::AnyHash)
-          )
-            .void
+            input_tokens_details:
+              OpenAI::Responses::ResponseUsage::InputTokensDetails::OrHash
+          ).void
         end
         attr_writer :input_tokens_details
 
@@ -25,14 +27,14 @@ module OpenAI
         attr_accessor :output_tokens
 
         # A detailed breakdown of the output tokens.
-        sig { returns(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails) }
+        sig { returns(OpenAI::Responses::ResponseUsage::OutputTokensDetails) }
         attr_reader :output_tokens_details
 
         sig do
           params(
-            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::AnyHash)
-          )
-            .void
+            output_tokens_details:
+              OpenAI::Responses::ResponseUsage::OutputTokensDetails::OrHash
+          ).void
         end
         attr_writer :output_tokens_details
 
@@ -45,12 +47,13 @@ module OpenAI
         sig do
           params(
             input_tokens: Integer,
-            input_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::InputTokensDetails, OpenAI::Internal::AnyHash),
+            input_tokens_details:
+              OpenAI::Responses::ResponseUsage::InputTokensDetails::OrHash,
             output_tokens: Integer,
-            output_tokens_details: T.any(OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails, OpenAI::Internal::AnyHash),
+            output_tokens_details:
+              OpenAI::Responses::ResponseUsage::OutputTokensDetails::OrHash,
             total_tokens: Integer
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The number of input tokens.
@@ -63,22 +66,29 @@ module OpenAI
           output_tokens_details:,
           # The total number of tokens used.
           total_tokens:
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                input_tokens: Integer,
-                input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
-                output_tokens: Integer,
-                output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
-                total_tokens: Integer
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              input_tokens: Integer,
+              input_tokens_details:
+                OpenAI::Responses::ResponseUsage::InputTokensDetails,
+              output_tokens: Integer,
+              output_tokens_details:
+                OpenAI::Responses::ResponseUsage::OutputTokensDetails,
+              total_tokens: Integer
+            }
+          )
+        end
+        def to_hash
+        end
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The number of tokens that were retrieved from the cache.
           # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
           sig { returns(Integer) }
@@ -90,12 +100,18 @@ module OpenAI
             # The number of tokens that were retrieved from the cache.
             # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
             cached_tokens:
-          ); end
-          sig { override.returns({cached_tokens: Integer}) }
-          def to_hash; end
+          )
+          end
+
+          sig { override.returns({ cached_tokens: Integer }) }
+          def to_hash
+          end
         end
 
         class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The number of reasoning tokens.
           sig { returns(Integer) }
           attr_accessor :reasoning_tokens
@@ -105,9 +121,12 @@ module OpenAI
           def self.new(
             # The number of reasoning tokens.
             reasoning_tokens:
-          ); end
-          sig { override.returns({reasoning_tokens: Integer}) }
-          def to_hash; end
+          )
+          end
+
+          sig { override.returns({ reasoning_tokens: Integer }) }
+          def to_hash
+          end
         end
       end
     end

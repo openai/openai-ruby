@@ -18,13 +18,13 @@ module OpenAI
 
         # @!method initialize(delta:, type: :"response.audio.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseAudioDeltaEvent} for more details.
+        #   {OpenAI::Responses::ResponseAudioDeltaEvent} for more details.
         #
         #   Emitted when there is a partial audio response.
         #
-        #   @param delta [String] A chunk of Base64 encoded response audio bytes. ...
+        #   @param delta [String] A chunk of Base64 encoded response audio bytes.
         #
-        #   @param type [Symbol, :"response.audio.delta"] The type of the event. Always `response.audio.delta`. ...
+        #   @param type [Symbol, :"response.audio.delta"] The type of the event. Always `response.audio.delta`.
       end
     end
   end

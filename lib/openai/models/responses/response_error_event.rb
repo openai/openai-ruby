@@ -30,17 +30,17 @@ module OpenAI
 
         # @!method initialize(code:, message:, param:, type: :error)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseErrorEvent} for more details.
+        #   {OpenAI::Responses::ResponseErrorEvent} for more details.
         #
         #   Emitted when an error occurs.
         #
-        #   @param code [String, nil] The error code. ...
+        #   @param code [String, nil] The error code.
         #
-        #   @param message [String] The error message. ...
+        #   @param message [String] The error message.
         #
-        #   @param param [String, nil] The error parameter. ...
+        #   @param param [String, nil] The error parameter.
         #
-        #   @param type [Symbol, :error] The type of the event. Always `error`. ...
+        #   @param type [Symbol, :error] The type of the event. Always `error`.
       end
     end
   end

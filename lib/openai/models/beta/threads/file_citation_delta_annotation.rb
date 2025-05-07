@@ -24,8 +24,8 @@ module OpenAI
 
           # @!attribute file_citation
           #
-          #   @return [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation, nil]
-          optional :file_citation, -> { OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation }
+          #   @return [OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation, nil]
+          optional :file_citation, -> { OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation }
 
           # @!attribute start_index
           #
@@ -47,7 +47,7 @@ module OpenAI
           #
           #   @param end_index [Integer]
           #
-          #   @param file_citation [OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation]
+          #   @param file_citation [OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation]
           #
           #   @param start_index [Integer]
           #
@@ -55,7 +55,7 @@ module OpenAI
           #
           #   @param type [Symbol, :file_citation] Always `file_citation`.
 
-          # @see OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation#file_citation
+          # @see OpenAI::Beta::Threads::FileCitationDeltaAnnotation#file_citation
           class FileCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the specific File the citation is from.

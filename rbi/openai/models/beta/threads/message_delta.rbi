@@ -5,16 +5,19 @@ module OpenAI
     module Beta
       module Threads
         class MessageDelta < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The content of the message in array of text and/or images.
           sig do
             returns(
               T.nilable(
                 T::Array[
                   T.any(
-                    OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                    OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                    OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                    OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+                    OpenAI::Beta::Threads::ImageFileDeltaBlock,
+                    OpenAI::Beta::Threads::TextDeltaBlock,
+                    OpenAI::Beta::Threads::RefusalDeltaBlock,
+                    OpenAI::Beta::Threads::ImageURLDeltaBlock
                   )
                 ]
               )
@@ -24,79 +27,106 @@ module OpenAI
 
           sig do
             params(
-              content: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                  OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
-                )
-              ]
-            )
-              .void
+              content:
+                T::Array[
+                  T.any(
+                    OpenAI::Beta::Threads::ImageFileDeltaBlock::OrHash,
+                    OpenAI::Beta::Threads::TextDeltaBlock::OrHash,
+                    OpenAI::Beta::Threads::RefusalDeltaBlock::OrHash,
+                    OpenAI::Beta::Threads::ImageURLDeltaBlock::OrHash
+                  )
+                ]
+            ).void
           end
           attr_writer :content
 
           # The entity that produced the message. One of `user` or `assistant`.
-          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)) }
+          sig do
+            returns(
+              T.nilable(OpenAI::Beta::Threads::MessageDelta::Role::TaggedSymbol)
+            )
+          end
           attr_reader :role
 
-          sig { params(role: OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol).void }
+          sig do
+            params(
+              role: OpenAI::Beta::Threads::MessageDelta::Role::OrSymbol
+            ).void
+          end
           attr_writer :role
 
           # The delta containing the fields that have changed on the Message.
           sig do
             params(
-              content: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                  OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                  OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
-                )
-              ],
-              role: OpenAI::Models::Beta::Threads::MessageDelta::Role::OrSymbol
-            )
-              .returns(T.attached_class)
+              content:
+                T::Array[
+                  T.any(
+                    OpenAI::Beta::Threads::ImageFileDeltaBlock::OrHash,
+                    OpenAI::Beta::Threads::TextDeltaBlock::OrHash,
+                    OpenAI::Beta::Threads::RefusalDeltaBlock::OrHash,
+                    OpenAI::Beta::Threads::ImageURLDeltaBlock::OrHash
+                  )
+                ],
+              role: OpenAI::Beta::Threads::MessageDelta::Role::OrSymbol
+            ).returns(T.attached_class)
           end
           def self.new(
             # The content of the message in array of text and/or images.
             content: nil,
             # The entity that produced the message. One of `user` or `assistant`.
             role: nil
-          ); end
+          )
+          end
+
           sig do
-            override
-              .returns(
-                {
-                  content: T::Array[
+            override.returns(
+              {
+                content:
+                  T::Array[
                     T.any(
-                      OpenAI::Models::Beta::Threads::ImageFileDeltaBlock,
-                      OpenAI::Models::Beta::Threads::TextDeltaBlock,
-                      OpenAI::Models::Beta::Threads::RefusalDeltaBlock,
-                      OpenAI::Models::Beta::Threads::ImageURLDeltaBlock
+                      OpenAI::Beta::Threads::ImageFileDeltaBlock,
+                      OpenAI::Beta::Threads::TextDeltaBlock,
+                      OpenAI::Beta::Threads::RefusalDeltaBlock,
+                      OpenAI::Beta::Threads::ImageURLDeltaBlock
                     )
                   ],
-                  role: OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol
-                }
-              )
+                role: OpenAI::Beta::Threads::MessageDelta::Role::TaggedSymbol
+              }
+            )
           end
-          def to_hash; end
+          def to_hash
+          end
 
           # The entity that produced the message. One of `user` or `assistant`.
           module Role
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::MessageDelta::Role) }
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::Beta::Threads::MessageDelta::Role)
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            USER = T.let(:user, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
-            ASSISTANT = T.let(:assistant, OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol)
+            USER =
+              T.let(
+                :user,
+                OpenAI::Beta::Threads::MessageDelta::Role::TaggedSymbol
+              )
+            ASSISTANT =
+              T.let(
+                :assistant,
+                OpenAI::Beta::Threads::MessageDelta::Role::TaggedSymbol
+              )
 
-            sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::MessageDelta::Role::TaggedSymbol]) }
-            def self.values; end
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Beta::Threads::MessageDelta::Role::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
       end

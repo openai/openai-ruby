@@ -7,7 +7,7 @@ module OpenAI
           created_at: Integer,
           metadata: OpenAI::Models::metadata?,
           object: :thread,
-          tool_resources: OpenAI::Models::Beta::Thread::ToolResources?
+          tool_resources: OpenAI::Beta::Thread::ToolResources?
         }
 
       class Thread < OpenAI::Internal::Type::BaseModel
@@ -19,43 +19,39 @@ module OpenAI
 
         attr_accessor object: :thread
 
-        attr_accessor tool_resources: OpenAI::Models::Beta::Thread::ToolResources?
+        attr_accessor tool_resources: OpenAI::Beta::Thread::ToolResources?
 
         def initialize: (
           id: String,
           created_at: Integer,
           metadata: OpenAI::Models::metadata?,
-          tool_resources: OpenAI::Models::Beta::Thread::ToolResources?,
+          tool_resources: OpenAI::Beta::Thread::ToolResources?,
           ?object: :thread
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Beta::thread
-
         type tool_resources =
           {
-            code_interpreter: OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter,
-            file_search: OpenAI::Models::Beta::Thread::ToolResources::FileSearch
+            code_interpreter: OpenAI::Beta::Thread::ToolResources::CodeInterpreter,
+            file_search: OpenAI::Beta::Thread::ToolResources::FileSearch
           }
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          attr_reader code_interpreter: OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter?
+          attr_reader code_interpreter: OpenAI::Beta::Thread::ToolResources::CodeInterpreter?
 
           def code_interpreter=: (
-            OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter
-          ) -> OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter
+            OpenAI::Beta::Thread::ToolResources::CodeInterpreter
+          ) -> OpenAI::Beta::Thread::ToolResources::CodeInterpreter
 
-          attr_reader file_search: OpenAI::Models::Beta::Thread::ToolResources::FileSearch?
+          attr_reader file_search: OpenAI::Beta::Thread::ToolResources::FileSearch?
 
           def file_search=: (
-            OpenAI::Models::Beta::Thread::ToolResources::FileSearch
-          ) -> OpenAI::Models::Beta::Thread::ToolResources::FileSearch
+            OpenAI::Beta::Thread::ToolResources::FileSearch
+          ) -> OpenAI::Beta::Thread::ToolResources::FileSearch
 
           def initialize: (
-            ?code_interpreter: OpenAI::Models::Beta::Thread::ToolResources::CodeInterpreter,
-            ?file_search: OpenAI::Models::Beta::Thread::ToolResources::FileSearch
+            ?code_interpreter: OpenAI::Beta::Thread::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Beta::Thread::ToolResources::FileSearch
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Thread::tool_resources
 
           type code_interpreter = { file_ids: ::Array[String] }
 
@@ -65,8 +61,6 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?file_ids: ::Array[String]) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Thread::ToolResources::code_interpreter
           end
 
           type file_search = { vector_store_ids: ::Array[String] }
@@ -77,8 +71,6 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?vector_store_ids: ::Array[String]) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Thread::ToolResources::file_search
           end
         end
       end

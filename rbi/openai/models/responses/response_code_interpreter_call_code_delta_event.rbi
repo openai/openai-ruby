@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The partial code snippet added by the code interpreter.
         sig { returns(String) }
         attr_accessor :delta
@@ -17,7 +19,11 @@ module OpenAI
         attr_accessor :type
 
         # Emitted when a partial code snippet is added by the code interpreter.
-        sig { params(delta: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(delta: String, output_index: Integer, type: Symbol).returns(
+            T.attached_class
+          )
+        end
         def self.new(
           # The partial code snippet added by the code interpreter.
           delta:,
@@ -25,9 +31,16 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.code_interpreter_call.code.delta`.
           type: :"response.code_interpreter_call.code.delta"
-        ); end
-        sig { override.returns({delta: String, output_index: Integer, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            { delta: String, output_index: Integer, type: Symbol }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

@@ -8,22 +8,31 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           sig { returns(String) }
           attr_accessor :fine_tuned_model_checkpoint
 
           sig do
             params(
               fine_tuned_model_checkpoint: String,
-              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-            )
-              .returns(T.attached_class)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(T.attached_class)
           end
-          def self.new(fine_tuned_model_checkpoint:, request_options: {}); end
+          def self.new(fine_tuned_model_checkpoint:, request_options: {})
+          end
 
           sig do
-            override.returns({fine_tuned_model_checkpoint: String, request_options: OpenAI::RequestOptions})
+            override.returns(
+              {
+                fine_tuned_model_checkpoint: String,
+                request_options: OpenAI::RequestOptions
+              }
+            )
           end
-          def to_hash; end
+          def to_hash
+          end
         end
       end
     end

@@ -22,8 +22,6 @@ module OpenAI
         ?message: String,
         ?param: String?
       ) -> void
-
-      def to_hash: -> OpenAI::Models::batch_error
     end
   end
 end

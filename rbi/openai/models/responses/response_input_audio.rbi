@@ -4,12 +4,14 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Base64-encoded audio data.
         sig { returns(String) }
         attr_accessor :data
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
-        sig { returns(OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol) }
+        sig { returns(OpenAI::Responses::ResponseInputAudio::Format::OrSymbol) }
         attr_accessor :format_
 
         # The type of the input item. Always `input_audio`.
@@ -20,10 +22,9 @@ module OpenAI
         sig do
           params(
             data: String,
-            format_: OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol,
+            format_: OpenAI::Responses::ResponseInputAudio::Format::OrSymbol,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # Base64-encoded audio data.
@@ -32,27 +33,51 @@ module OpenAI
           format_:,
           # The type of the input item. Always `input_audio`.
           type: :input_audio
-        ); end
-        sig do
-          override
-            .returns(
-              {data: String, format_: OpenAI::Models::Responses::ResponseInputAudio::Format::OrSymbol, type: Symbol}
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              data: String,
+              format_: OpenAI::Responses::ResponseInputAudio::Format::OrSymbol,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         # The format of the audio data. Currently supported formats are `mp3` and `wav`.
         module Format
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputAudio::Format) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseInputAudio::Format)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          MP3 = T.let(:mp3, OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol)
-          WAV = T.let(:wav, OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol)
+          MP3 =
+            T.let(
+              :mp3,
+              OpenAI::Responses::ResponseInputAudio::Format::TaggedSymbol
+            )
+          WAV =
+            T.let(
+              :wav,
+              OpenAI::Responses::ResponseInputAudio::Format::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputAudio::Format::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseInputAudio::Format::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

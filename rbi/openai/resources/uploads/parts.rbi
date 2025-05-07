@@ -19,9 +19,8 @@ module OpenAI
           params(
             upload_id: String,
             data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Models::Uploads::UploadPart)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Uploads::UploadPart)
         end
         def create(
           # The ID of the Upload.
@@ -29,10 +28,13 @@ module OpenAI
           # The chunk of bytes for this Part.
           data:,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

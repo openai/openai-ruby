@@ -2,22 +2,17 @@ module OpenAI
   module Models
     module Responses
       type response_in_progress_event =
-        {
-          response: OpenAI::Models::Responses::Response,
-          type: :"response.in_progress"
-        }
+        { response: OpenAI::Responses::Response, type: :"response.in_progress" }
 
       class ResponseInProgressEvent < OpenAI::Internal::Type::BaseModel
-        attr_accessor response: OpenAI::Models::Responses::Response
+        attr_accessor response: OpenAI::Responses::Response
 
         attr_accessor type: :"response.in_progress"
 
         def initialize: (
-          response: OpenAI::Models::Responses::Response,
+          response: OpenAI::Responses::Response,
           ?type: :"response.in_progress"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_in_progress_event
       end
     end
   end

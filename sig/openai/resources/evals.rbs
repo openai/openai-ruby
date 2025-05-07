@@ -5,7 +5,7 @@ module OpenAI
 
       def create: (
         data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
-        testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
+        testing_criteria: ::Array[OpenAI::EvalCreateParams::testing_criterion],
         ?metadata: OpenAI::Models::metadata?,
         ?name: String,
         ?request_options: OpenAI::request_opts

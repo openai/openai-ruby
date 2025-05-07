@@ -2,13 +2,13 @@ module OpenAI
   module Models
     module Audio
       type transcription_stream_event =
-        OpenAI::Models::Audio::TranscriptionTextDeltaEvent
-        | OpenAI::Models::Audio::TranscriptionTextDoneEvent
+        OpenAI::Audio::TranscriptionTextDeltaEvent
+        | OpenAI::Audio::TranscriptionTextDoneEvent
 
       module TranscriptionStreamEvent
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Audio::TranscriptionTextDeltaEvent, OpenAI::Models::Audio::TranscriptionTextDoneEvent]
+        def self?.variants: -> ::Array[OpenAI::Models::Audio::transcription_stream_event]
       end
     end
   end

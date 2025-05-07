@@ -6,19 +6,21 @@ module OpenAI
 
     module Responses
       class ResponseItemList < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # A list of items used to generate this response.
         sig do
           returns(
             T::Array[
               T.any(
-                OpenAI::Models::Responses::ResponseInputMessageItem,
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-                OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
+                OpenAI::Responses::ResponseInputMessageItem,
+                OpenAI::Responses::ResponseOutputMessage,
+                OpenAI::Responses::ResponseFileSearchToolCall,
+                OpenAI::Responses::ResponseComputerToolCall,
+                OpenAI::Responses::ResponseComputerToolCallOutputItem,
+                OpenAI::Responses::ResponseFunctionWebSearch,
+                OpenAI::Responses::ResponseFunctionToolCallItem,
+                OpenAI::Responses::ResponseFunctionToolCallOutputItem
               )
             ]
           )
@@ -44,25 +46,24 @@ module OpenAI
         # A list of Response items.
         sig do
           params(
-            data: T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputMessageItem,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-                OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-              )
-            ],
+            data:
+              T::Array[
+                T.any(
+                  OpenAI::Responses::ResponseInputMessageItem::OrHash,
+                  OpenAI::Responses::ResponseOutputMessage::OrHash,
+                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                  OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
+                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                  OpenAI::Responses::ResponseFunctionToolCallItem::OrHash,
+                  OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash
+                )
+              ],
             first_id: String,
             has_more: T::Boolean,
             last_id: String,
             object: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # A list of items used to generate this response.
@@ -75,31 +76,34 @@ module OpenAI
           last_id:,
           # The type of object returned, must be `list`.
           object: :list
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                data: T::Array[
+          override.returns(
+            {
+              data:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Responses::ResponseInputMessageItem,
-                    OpenAI::Models::Responses::ResponseOutputMessage,
-                    OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                    OpenAI::Models::Responses::ResponseComputerToolCall,
-                    OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-                    OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                    OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-                    OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
+                    OpenAI::Responses::ResponseInputMessageItem,
+                    OpenAI::Responses::ResponseOutputMessage,
+                    OpenAI::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Responses::ResponseComputerToolCall,
+                    OpenAI::Responses::ResponseComputerToolCallOutputItem,
+                    OpenAI::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Responses::ResponseFunctionToolCallItem,
+                    OpenAI::Responses::ResponseFunctionToolCallOutputItem
                   )
                 ],
-                first_id: String,
-                has_more: T::Boolean,
-                last_id: String,
-                object: Symbol
-              }
-            )
+              first_id: String,
+              has_more: T::Boolean,
+              last_id: String,
+              object: Symbol
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
       end
     end
   end

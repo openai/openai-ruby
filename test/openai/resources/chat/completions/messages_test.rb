@@ -14,7 +14,7 @@ class OpenAI::Test::Resources::Chat::Completions::MessagesTest < OpenAI::Test::R
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::Chat::ChatCompletionStoreMessage
+      row => OpenAI::Chat::ChatCompletionStoreMessage
     end
   end
 end

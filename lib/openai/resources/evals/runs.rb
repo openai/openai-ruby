@@ -16,9 +16,9 @@ module OpenAI
         #
         # @param eval_id [String] The ID of the evaluation to create a run for.
         #
-        # @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
+        # @param data_source [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
         #
-        # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         # @param name [String] The name of the run.
         #
@@ -28,7 +28,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Evals::RunCreateParams
         def create(eval_id, params)
-          parsed, options = OpenAI::Models::Evals::RunCreateParams.dump_request(params)
+          parsed, options = OpenAI::Evals::RunCreateParams.dump_request(params)
           @client.request(
             method: :post,
             path: ["evals/%1$s/runs", eval_id],
@@ -52,7 +52,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Evals::RunRetrieveParams
         def retrieve(run_id, params)
-          parsed, options = OpenAI::Models::Evals::RunRetrieveParams.dump_request(params)
+          parsed, options = OpenAI::Evals::RunRetrieveParams.dump_request(params)
           eval_id =
             parsed.delete(:eval_id) do
               raise ArgumentError.new("missing required path argument #{_1}")
@@ -78,11 +78,9 @@ module OpenAI
         #
         # @param limit [Integer] Number of runs to retrieve.
         #
-        # @param order [Symbol, OpenAI::Models::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
-        # ...
+        # @param order [Symbol, OpenAI::Evals::RunListParams::Order] Sort order for runs by timestamp. Use `asc` for ascending order or `desc` for de
         #
-        # @param status [Symbol, OpenAI::Models::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
-        # ...
+        # @param status [Symbol, OpenAI::Evals::RunListParams::Status] Filter runs by status. One of `queued` | `in_progress` | `failed` | `completed`
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -90,7 +88,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Evals::RunListParams
         def list(eval_id, params = {})
-          parsed, options = OpenAI::Models::Evals::RunListParams.dump_request(params)
+          parsed, options = OpenAI::Evals::RunListParams.dump_request(params)
           @client.request(
             method: :get,
             path: ["evals/%1$s/runs", eval_id],
@@ -115,7 +113,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Evals::RunDeleteParams
         def delete(run_id, params)
-          parsed, options = OpenAI::Models::Evals::RunDeleteParams.dump_request(params)
+          parsed, options = OpenAI::Evals::RunDeleteParams.dump_request(params)
           eval_id =
             parsed.delete(:eval_id) do
               raise ArgumentError.new("missing required path argument #{_1}")
@@ -142,7 +140,7 @@ module OpenAI
         #
         # @see OpenAI::Models::Evals::RunCancelParams
         def cancel(run_id, params)
-          parsed, options = OpenAI::Models::Evals::RunCancelParams.dump_request(params)
+          parsed, options = OpenAI::Evals::RunCancelParams.dump_request(params)
           eval_id =
             parsed.delete(:eval_id) do
               raise ArgumentError.new("missing required path argument #{_1}")

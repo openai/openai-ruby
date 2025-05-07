@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseTextConfig < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # An object specifying the format that the model must output.
         #
         # Configuring `{ "type": "json_schema" }` enables Structured Outputs, which
@@ -21,9 +23,9 @@ module OpenAI
           returns(
             T.nilable(
               T.any(
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
-                OpenAI::Models::ResponseFormatJSONObject
+                OpenAI::ResponseFormatText,
+                OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
+                OpenAI::ResponseFormatJSONObject
               )
             )
           )
@@ -32,14 +34,13 @@ module OpenAI
 
         sig do
           params(
-            format_: T.any(
-              OpenAI::Models::ResponseFormatText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
-              OpenAI::Models::ResponseFormatJSONObject
-            )
-          )
-            .void
+            format_:
+              T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::Responses::ResponseFormatTextJSONSchemaConfig::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash
+              )
+          ).void
         end
         attr_writer :format_
 
@@ -50,14 +51,13 @@ module OpenAI
         # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
         sig do
           params(
-            format_: T.any(
-              OpenAI::Models::ResponseFormatText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
-              OpenAI::Models::ResponseFormatJSONObject
-            )
-          )
-            .returns(T.attached_class)
+            format_:
+              T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::Responses::ResponseFormatTextJSONSchemaConfig::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash
+              )
+          ).returns(T.attached_class)
         end
         def self.new(
           # An object specifying the format that the model must output.
@@ -74,20 +74,23 @@ module OpenAI
           # ensures the message the model generates is valid JSON. Using `json_schema` is
           # preferred for models that support it.
           format_: nil
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                format_: T.any(
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig,
-                  OpenAI::Models::ResponseFormatJSONObject
-                )
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              format_:
+                T.any(
+                  OpenAI::ResponseFormatText,
+                  OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
+                  OpenAI::ResponseFormatJSONObject
+                )
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

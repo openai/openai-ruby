@@ -51,18 +51,18 @@ module OpenAI
       # @!attribute status
       #   The status of the Upload.
       #
-      #   @return [Symbol, OpenAI::Models::Upload::Status]
-      required :status, enum: -> { OpenAI::Models::Upload::Status }
+      #   @return [Symbol, OpenAI::Upload::Status]
+      required :status, enum: -> { OpenAI::Upload::Status }
 
       # @!attribute file
       #   The `File` object represents a document that has been uploaded to OpenAI.
       #
-      #   @return [OpenAI::Models::FileObject, nil]
-      optional :file, -> { OpenAI::Models::FileObject }, nil?: true
+      #   @return [OpenAI::FileObject, nil]
+      optional :file, -> { OpenAI::FileObject }, nil?: true
 
       # @!method initialize(id:, bytes:, created_at:, expires_at:, filename:, purpose:, status:, file: nil, object: :upload)
-      #   Some parameter documentations has been truncated, see {OpenAI::Models::Upload}
-      #   for more details.
+      #   Some parameter documentations has been truncated, see {OpenAI::Upload} for more
+      #   details.
       #
       #   The Upload object can accept byte chunks in the form of Parts.
       #
@@ -77,17 +77,16 @@ module OpenAI
       #   @param filename [String] The name of the file to be uploaded.
       #
       #   @param purpose [String] The intended purpose of the file. [Please refer here](https://platform.openai.co
-      #   ...
       #
-      #   @param status [Symbol, OpenAI::Models::Upload::Status] The status of the Upload.
+      #   @param status [Symbol, OpenAI::Upload::Status] The status of the Upload.
       #
-      #   @param file [OpenAI::Models::FileObject, nil] The `File` object represents a document that has been uploaded to OpenAI.
+      #   @param file [OpenAI::FileObject, nil] The `File` object represents a document that has been uploaded to OpenAI.
       #
       #   @param object [Symbol, :upload] The object type, which is always "upload".
 
       # The status of the Upload.
       #
-      # @see OpenAI::Models::Upload#status
+      # @see OpenAI::Upload#status
       module Status
         extend OpenAI::Internal::Type::Enum
 

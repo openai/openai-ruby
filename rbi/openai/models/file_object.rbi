@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class FileObject < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The file identifier, which can be referenced in the API endpoints.
       sig { returns(String) }
       attr_accessor :id
@@ -26,12 +28,12 @@ module OpenAI
       # The intended purpose of the file. Supported values are `assistants`,
       # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
       # and `vision`.
-      sig { returns(OpenAI::Models::FileObject::Purpose::TaggedSymbol) }
+      sig { returns(OpenAI::FileObject::Purpose::TaggedSymbol) }
       attr_accessor :purpose
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
       # `processed`, or `error`.
-      sig { returns(OpenAI::Models::FileObject::Status::TaggedSymbol) }
+      sig { returns(OpenAI::FileObject::Status::TaggedSymbol) }
       attr_accessor :status
 
       # The Unix timestamp (in seconds) for when the file will expire.
@@ -56,13 +58,12 @@ module OpenAI
           bytes: Integer,
           created_at: Integer,
           filename: String,
-          purpose: OpenAI::Models::FileObject::Purpose::OrSymbol,
-          status: OpenAI::Models::FileObject::Status::OrSymbol,
+          purpose: OpenAI::FileObject::Purpose::OrSymbol,
+          status: OpenAI::FileObject::Status::OrSymbol,
           expires_at: Integer,
           status_details: String,
           object: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # The file identifier, which can be referenced in the API endpoints.
@@ -87,24 +88,26 @@ module OpenAI
         status_details: nil,
         # The object type, which is always `file`.
         object: :file
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              id: String,
-              bytes: Integer,
-              created_at: Integer,
-              filename: String,
-              object: Symbol,
-              purpose: OpenAI::Models::FileObject::Purpose::TaggedSymbol,
-              status: OpenAI::Models::FileObject::Status::TaggedSymbol,
-              expires_at: Integer,
-              status_details: String
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            id: String,
+            bytes: Integer,
+            created_at: Integer,
+            filename: String,
+            object: Symbol,
+            purpose: OpenAI::FileObject::Purpose::TaggedSymbol,
+            status: OpenAI::FileObject::Status::TaggedSymbol,
+            expires_at: Integer,
+            status_details: String
+          }
+        )
+      end
+      def to_hash
+      end
 
       # The intended purpose of the file. Supported values are `assistants`,
       # `assistants_output`, `batch`, `batch_output`, `fine-tune`, `fine-tune-results`
@@ -112,19 +115,28 @@ module OpenAI
       module Purpose
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Purpose) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::FileObject::Purpose) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        ASSISTANTS = T.let(:assistants, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        ASSISTANTS_OUTPUT = T.let(:assistants_output, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        BATCH = T.let(:batch, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        BATCH_OUTPUT = T.let(:batch_output, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        FINE_TUNE = T.let(:"fine-tune", OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        FINE_TUNE_RESULTS = T.let(:"fine-tune-results", OpenAI::Models::FileObject::Purpose::TaggedSymbol)
-        VISION = T.let(:vision, OpenAI::Models::FileObject::Purpose::TaggedSymbol)
+        ASSISTANTS =
+          T.let(:assistants, OpenAI::FileObject::Purpose::TaggedSymbol)
+        ASSISTANTS_OUTPUT =
+          T.let(:assistants_output, OpenAI::FileObject::Purpose::TaggedSymbol)
+        BATCH = T.let(:batch, OpenAI::FileObject::Purpose::TaggedSymbol)
+        BATCH_OUTPUT =
+          T.let(:batch_output, OpenAI::FileObject::Purpose::TaggedSymbol)
+        FINE_TUNE =
+          T.let(:"fine-tune", OpenAI::FileObject::Purpose::TaggedSymbol)
+        FINE_TUNE_RESULTS =
+          T.let(:"fine-tune-results", OpenAI::FileObject::Purpose::TaggedSymbol)
+        VISION = T.let(:vision, OpenAI::FileObject::Purpose::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::Models::FileObject::Purpose::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(T::Array[OpenAI::FileObject::Purpose::TaggedSymbol])
+        end
+        def self.values
+        end
       end
 
       # Deprecated. The current status of the file, which can be either `uploaded`,
@@ -132,15 +144,19 @@ module OpenAI
       module Status
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FileObject::Status) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::FileObject::Status) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        UPLOADED = T.let(:uploaded, OpenAI::Models::FileObject::Status::TaggedSymbol)
-        PROCESSED = T.let(:processed, OpenAI::Models::FileObject::Status::TaggedSymbol)
-        ERROR = T.let(:error, OpenAI::Models::FileObject::Status::TaggedSymbol)
+        UPLOADED = T.let(:uploaded, OpenAI::FileObject::Status::TaggedSymbol)
+        PROCESSED = T.let(:processed, OpenAI::FileObject::Status::TaggedSymbol)
+        ERROR = T.let(:error, OpenAI::FileObject::Status::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::Models::FileObject::Status::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(T::Array[OpenAI::FileObject::Status::TaggedSymbol])
+        end
+        def self.values
+        end
       end
     end
   end

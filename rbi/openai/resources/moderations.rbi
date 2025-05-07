@@ -7,21 +7,20 @@ module OpenAI
       # the [moderation guide](https://platform.openai.com/docs/guides/moderation).
       sig do
         params(
-          input: T.any(
-            String,
-            T::Array[String],
-            T::Array[
-              T.any(
-                OpenAI::Models::ModerationImageURLInput,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::ModerationTextInput
-              )
-            ]
-          ),
-          model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::ModerationCreateResponse)
+          input:
+            T.any(
+              String,
+              T::Array[String],
+              T::Array[
+                T.any(
+                  OpenAI::ModerationImageURLInput::OrHash,
+                  OpenAI::ModerationTextInput::OrHash
+                )
+              ]
+            ),
+          model: T.any(String, OpenAI::ModerationModel::OrSymbol),
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Models::ModerationCreateResponse)
       end
       def create(
         # Input (or inputs) to classify. Can be a single string, an array of strings, or
@@ -33,10 +32,13 @@ module OpenAI
         # [here](https://platform.openai.com/docs/models#moderation).
         model: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

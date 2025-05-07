@@ -15,8 +15,6 @@ module OpenAI
           data: Pathname | StringIO | IO | OpenAI::FilePart,
           ?request_options: OpenAI::request_opts
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Uploads::part_create_params
       end
     end
   end

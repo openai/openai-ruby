@@ -10,16 +10,16 @@ module OpenAI
         discriminator :type
 
         # A text input to the model.
-        variant :input_text, -> { OpenAI::Models::Responses::ResponseInputText }
+        variant :input_text, -> { OpenAI::Responses::ResponseInputText }
 
         # An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
-        variant :input_image, -> { OpenAI::Models::Responses::ResponseInputImage }
+        variant :input_image, -> { OpenAI::Responses::ResponseInputImage }
 
         # A file input to the model.
-        variant :input_file, -> { OpenAI::Models::Responses::ResponseInputFile }
+        variant :input_file, -> { OpenAI::Responses::ResponseInputFile }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile)]
+        #   @return [Array(OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile)]
       end
     end
   end

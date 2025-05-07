@@ -5,7 +5,7 @@ module OpenAI
         {
           item_id: String,
           output_index: Integer,
-          part: OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+          part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
           summary_index: Integer,
           type: :"response.reasoning_summary_part.added"
         }
@@ -15,7 +15,7 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
-        attr_accessor part: OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent::Part
+        attr_accessor part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part
 
         attr_accessor summary_index: Integer
 
@@ -24,12 +24,10 @@ module OpenAI
         def initialize: (
           item_id: String,
           output_index: Integer,
-          part: OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+          part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
           summary_index: Integer,
           ?type: :"response.reasoning_summary_part.added"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_reasoning_summary_part_added_event
 
         type part = { text: String, type: :summary_text }
 
@@ -39,8 +37,6 @@ module OpenAI
           attr_accessor type: :summary_text
 
           def initialize: (text: String, ?type: :summary_text) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent::part
         end
       end
     end

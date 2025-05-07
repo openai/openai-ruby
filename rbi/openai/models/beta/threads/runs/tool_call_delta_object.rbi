@@ -6,6 +6,9 @@ module OpenAI
       module Threads
         module Runs
           class ToolCallDeltaObject < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # Always `tool_calls`.
             sig { returns(Symbol) }
             attr_accessor :type
@@ -18,9 +21,9 @@ module OpenAI
                 T.nilable(
                   T::Array[
                     T.any(
-                      OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                      OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                      OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
+                      OpenAI::Beta::Threads::Runs::FunctionToolCallDelta
                     )
                   ]
                 )
@@ -30,33 +33,31 @@ module OpenAI
 
             sig do
               params(
-                tool_calls: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
-                  )
-                ]
-              )
-                .void
+                tool_calls:
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::OrHash,
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta::OrHash,
+                      OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::OrHash
+                    )
+                  ]
+              ).void
             end
             attr_writer :tool_calls
 
             # Details of the tool call.
             sig do
               params(
-                tool_calls: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                    OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
-                  )
-                ],
+                tool_calls:
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::OrHash,
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta::OrHash,
+                      OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::OrHash
+                    )
+                  ],
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # An array of tool calls the run step was involved in. These can be associated
@@ -65,23 +66,26 @@ module OpenAI
               tool_calls: nil,
               # Always `tool_calls`.
               type: :tool_calls
-            ); end
+            )
+            end
+
             sig do
-              override
-                .returns(
-                  {
-                    type: Symbol,
-                    tool_calls: T::Array[
+              override.returns(
+                {
+                  type: Symbol,
+                  tool_calls:
+                    T::Array[
                       T.any(
-                        OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                        OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta,
-                        OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                        OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
+                        OpenAI::Beta::Threads::Runs::FunctionToolCallDelta
                       )
                     ]
-                  }
-                )
+                }
+              )
             end
-            def to_hash; end
+            def to_hash
+            end
           end
         end
       end

@@ -8,52 +8,61 @@ module OpenAI
 
         module Runs
           class RunStepDeltaMessageDelta < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # Always `message_creation`.
             sig { returns(Symbol) }
             attr_accessor :type
 
-            sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation)) }
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+                )
+              )
+            end
             attr_reader :message_creation
 
             sig do
               params(
-                message_creation: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                  OpenAI::Internal::AnyHash
-                )
-              )
-                .void
+                message_creation:
+                  OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation::OrHash
+              ).void
             end
             attr_writer :message_creation
 
             # Details of the message creation by the run step.
             sig do
               params(
-                message_creation: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
-                  OpenAI::Internal::AnyHash
-                ),
+                message_creation:
+                  OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation::OrHash,
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               message_creation: nil,
               # Always `message_creation`.
               type: :message_creation
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    type: Symbol,
-                    message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  type: Symbol,
+                  message_creation:
+                    OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+                }
+              )
+            end
+            def to_hash
+            end
 
             class MessageCreation < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The ID of the message that was created by this run step.
               sig { returns(T.nilable(String)) }
               attr_reader :message_id
@@ -65,9 +74,12 @@ module OpenAI
               def self.new(
                 # The ID of the message that was created by this run step.
                 message_id: nil
-              ); end
-              sig { override.returns({message_id: String}) }
-              def to_hash; end
+              )
+              end
+
+              sig { override.returns({ message_id: String }) }
+              def to_hash
+              end
             end
           end
         end

@@ -25,14 +25,14 @@ module OpenAI
         # @!attribute segments
         #   Segments of the transcribed text and their corresponding details.
         #
-        #   @return [Array<OpenAI::Models::Audio::TranscriptionSegment>, nil]
-        optional :segments, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionSegment] }
+        #   @return [Array<OpenAI::Audio::TranscriptionSegment>, nil]
+        optional :segments, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionSegment] }
 
         # @!attribute words
         #   Extracted words and their corresponding timestamps.
         #
-        #   @return [Array<OpenAI::Models::Audio::TranscriptionWord>, nil]
-        optional :words, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionWord] }
+        #   @return [Array<OpenAI::Audio::TranscriptionWord>, nil]
+        optional :words, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionWord] }
 
         # @!method initialize(duration:, language:, text:, segments: nil, words: nil)
         #   Represents a verbose json transcription response returned by model, based on the
@@ -44,9 +44,9 @@ module OpenAI
         #
         #   @param text [String] The transcribed text.
         #
-        #   @param segments [Array<OpenAI::Models::Audio::TranscriptionSegment>] Segments of the transcribed text and their corresponding details.
+        #   @param segments [Array<OpenAI::Audio::TranscriptionSegment>] Segments of the transcribed text and their corresponding details.
         #
-        #   @param words [Array<OpenAI::Models::Audio::TranscriptionWord>] Extracted words and their corresponding timestamps.
+        #   @param words [Array<OpenAI::Audio::TranscriptionWord>] Extracted words and their corresponding timestamps.
       end
     end
   end

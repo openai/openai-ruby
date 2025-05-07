@@ -24,15 +24,15 @@ module OpenAI
 
         # @!method initialize(data:, transcript:, type: :output_audio)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseOutputAudio} for more details.
+        #   {OpenAI::Responses::ResponseOutputAudio} for more details.
         #
         #   An audio output from the model.
         #
-        #   @param data [String] Base64-encoded audio data from the model. ...
+        #   @param data [String] Base64-encoded audio data from the model.
         #
-        #   @param transcript [String] The transcript of the audio data from the model. ...
+        #   @param transcript [String] The transcript of the audio data from the model.
         #
-        #   @param type [Symbol, :output_audio] The type of the output audio. Always `output_audio`. ...
+        #   @param type [Symbol, :output_audio] The type of the output audio. Always `output_audio`.
       end
     end
   end

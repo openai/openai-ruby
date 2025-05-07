@@ -5,6 +5,9 @@ module OpenAI
     module Beta
       module Threads
         class RefusalDeltaBlock < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The index of the refusal part in the message.
           sig { returns(Integer) }
           attr_accessor :index
@@ -20,16 +23,25 @@ module OpenAI
           attr_writer :refusal
 
           # The refusal content that is part of a message.
-          sig { params(index: Integer, refusal: String, type: Symbol).returns(T.attached_class) }
+          sig do
+            params(index: Integer, refusal: String, type: Symbol).returns(
+              T.attached_class
+            )
+          end
           def self.new(
             # The index of the refusal part in the message.
             index:,
             refusal: nil,
             # Always `refusal`.
             type: :refusal
-          ); end
-          sig { override.returns({index: Integer, type: Symbol, refusal: String}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns({ index: Integer, type: Symbol, refusal: String })
+          end
+          def to_hash
+          end
         end
       end
     end

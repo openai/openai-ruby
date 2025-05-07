@@ -5,7 +5,9 @@ module OpenAI
     module Responses
       ResponseInputMessageContentList =
         T.let(
-          OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseInputContent],
+          OpenAI::Internal::Type::ArrayOf[
+            union: OpenAI::Responses::ResponseInputContent
+          ],
           OpenAI::Internal::Type::Converter
         )
     end

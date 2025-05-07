@@ -6,16 +6,18 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The time frame within which the batch should be processed. Currently only `24h`
       # is supported.
-      sig { returns(OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol) }
+      sig { returns(OpenAI::BatchCreateParams::CompletionWindow::OrSymbol) }
       attr_accessor :completion_window
 
       # The endpoint to be used for all requests in the batch. Currently
       # `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, and `/v1/completions`
       # are supported. Note that `/v1/embeddings` batches are also restricted to a
       # maximum of 50,000 embedding inputs across all requests in the batch.
-      sig { returns(OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol) }
+      sig { returns(OpenAI::BatchCreateParams::Endpoint::OrSymbol) }
       attr_accessor :endpoint
 
       # The ID of an uploaded file that contains requests for the new batch.
@@ -41,13 +43,13 @@ module OpenAI
 
       sig do
         params(
-          completion_window: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol,
-          endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
+          completion_window:
+            OpenAI::BatchCreateParams::CompletionWindow::OrSymbol,
+          endpoint: OpenAI::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # The time frame within which the batch should be processed. Currently only `24h`
@@ -76,33 +78,48 @@ module OpenAI
         # a maximum length of 512 characters.
         metadata: nil,
         request_options: {}
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              completion_window: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol,
-              endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
-              input_file_id: String,
-              metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: OpenAI::RequestOptions
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            completion_window:
+              OpenAI::BatchCreateParams::CompletionWindow::OrSymbol,
+            endpoint: OpenAI::BatchCreateParams::Endpoint::OrSymbol,
+            input_file_id: String,
+            metadata: T.nilable(T::Hash[Symbol, String]),
+            request_options: OpenAI::RequestOptions
+          }
+        )
+      end
+      def to_hash
+      end
 
       # The time frame within which the batch should be processed. Currently only `24h`
       # is supported.
       module CompletionWindow
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow) }
+        TaggedSymbol =
+          T.type_alias do
+            T.all(Symbol, OpenAI::BatchCreateParams::CompletionWindow)
+          end
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        COMPLETION_WINDOW_24H = T.let(:"24h", OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol)
+        COMPLETION_WINDOW_24H =
+          T.let(
+            :"24h",
+            OpenAI::BatchCreateParams::CompletionWindow::TaggedSymbol
+          )
 
-        sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::CompletionWindow::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(
+            T::Array[OpenAI::BatchCreateParams::CompletionWindow::TaggedSymbol]
+          )
+        end
+        def self.values
+        end
       end
 
       # The endpoint to be used for all requests in the batch. Currently
@@ -112,17 +129,38 @@ module OpenAI
       module Endpoint
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::BatchCreateParams::Endpoint) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::BatchCreateParams::Endpoint) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        V1_RESPONSES = T.let(:"/v1/responses", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
+        V1_RESPONSES =
+          T.let(
+            :"/v1/responses",
+            OpenAI::BatchCreateParams::Endpoint::TaggedSymbol
+          )
         V1_CHAT_COMPLETIONS =
-          T.let(:"/v1/chat/completions", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
-        V1_EMBEDDINGS = T.let(:"/v1/embeddings", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
-        V1_COMPLETIONS = T.let(:"/v1/completions", OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol)
+          T.let(
+            :"/v1/chat/completions",
+            OpenAI::BatchCreateParams::Endpoint::TaggedSymbol
+          )
+        V1_EMBEDDINGS =
+          T.let(
+            :"/v1/embeddings",
+            OpenAI::BatchCreateParams::Endpoint::TaggedSymbol
+          )
+        V1_COMPLETIONS =
+          T.let(
+            :"/v1/completions",
+            OpenAI::BatchCreateParams::Endpoint::TaggedSymbol
+          )
 
-        sig { override.returns(T::Array[OpenAI::Models::BatchCreateParams::Endpoint::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(
+            T::Array[OpenAI::BatchCreateParams::Endpoint::TaggedSymbol]
+          )
+        end
+        def self.values
+        end
       end
     end
   end

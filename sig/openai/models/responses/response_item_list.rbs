@@ -30,8 +30,6 @@ module OpenAI
           last_id: String,
           ?object: :list
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_item_list
       end
     end
   end

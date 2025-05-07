@@ -11,17 +11,16 @@ module OpenAI
         sig do
           params(
             eval_id: String,
-            data_source: T.any(
-              OpenAI::Models::Evals::CreateEvalJSONLRunDataSource,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource,
-              OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource
-            ),
+            data_source:
+              T.any(
+                OpenAI::Evals::CreateEvalJSONLRunDataSource::OrHash,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::OrHash,
+                OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::OrHash
+              ),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Models::Evals::RunCreateResponse)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Models::Evals::RunCreateResponse)
         end
         def create(
           # The ID of the evaluation to create a run for.
@@ -38,11 +37,16 @@ module OpenAI
           # The name of the run.
           name: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Get an evaluation run by ID.
         sig do
-          params(run_id: String, eval_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::Evals::RunRetrieveResponse)
+          params(
+            run_id: String,
+            eval_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Models::Evals::RunRetrieveResponse)
         end
         def retrieve(
           # The ID of the run to retrieve.
@@ -50,18 +54,21 @@ module OpenAI
           # The ID of the evaluation to retrieve runs for.
           eval_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # Get a list of runs for an evaluation.
         sig do
           params(
             eval_id: String,
             after: String,
             limit: Integer,
-            order: OpenAI::Models::Evals::RunListParams::Order::OrSymbol,
-            status: OpenAI::Models::Evals::RunListParams::Status::OrSymbol,
-            request_options: OpenAI::RequestOpts
+            order: OpenAI::Evals::RunListParams::Order::OrSymbol,
+            status: OpenAI::Evals::RunListParams::Status::OrSymbol,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            OpenAI::Internal::CursorPage[OpenAI::Models::Evals::RunListResponse]
           )
-            .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Evals::RunListResponse])
         end
         def list(
           # The ID of the evaluation to retrieve runs for.
@@ -77,11 +84,16 @@ module OpenAI
           # | `canceled`.
           status: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Delete an eval run.
         sig do
-          params(run_id: String, eval_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::Evals::RunDeleteResponse)
+          params(
+            run_id: String,
+            eval_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Models::Evals::RunDeleteResponse)
         end
         def delete(
           # The ID of the run to delete.
@@ -89,11 +101,16 @@ module OpenAI
           # The ID of the evaluation to delete the run from.
           eval_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # Cancel an ongoing evaluation run.
         sig do
-          params(run_id: String, eval_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::Evals::RunCancelResponse)
+          params(
+            run_id: String,
+            eval_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::Models::Evals::RunCancelResponse)
         end
         def cancel(
           # The ID of the run to cancel.
@@ -101,10 +118,13 @@ module OpenAI
           # The ID of the evaluation whose run you want to cancel.
           eval_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

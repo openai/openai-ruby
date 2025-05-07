@@ -19,22 +19,21 @@ module OpenAI
           #
           # @param limit [Integer] Number of messages to retrieve.
           #
-          # @param order [Symbol, OpenAI::Models::Chat::Completions::MessageListParams::Order] Sort order for messages by timestamp. Use `asc` for ascending order or `desc` fo
-          # ...
+          # @param order [Symbol, OpenAI::Chat::Completions::MessageListParams::Order] Sort order for messages by timestamp. Use `asc` for ascending order or `desc` fo
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
-          # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Chat::ChatCompletionStoreMessage>]
+          # @return [OpenAI::Internal::CursorPage<OpenAI::Chat::ChatCompletionStoreMessage>]
           #
           # @see OpenAI::Models::Chat::Completions::MessageListParams
           def list(completion_id, params = {})
-            parsed, options = OpenAI::Models::Chat::Completions::MessageListParams.dump_request(params)
+            parsed, options = OpenAI::Chat::Completions::MessageListParams.dump_request(params)
             @client.request(
               method: :get,
               path: ["chat/completions/%1$s/messages", completion_id],
               query: parsed,
               page: OpenAI::Internal::CursorPage,
-              model: OpenAI::Models::Chat::ChatCompletionStoreMessage,
+              model: OpenAI::Chat::ChatCompletionStoreMessage,
               options: options
             )
           end

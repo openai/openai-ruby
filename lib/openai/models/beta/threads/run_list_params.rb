@@ -38,24 +38,20 @@ module OpenAI
           #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
           #   order and `desc` for descending order.
           #
-          #   @return [Symbol, OpenAI::Models::Beta::Threads::RunListParams::Order, nil]
-          optional :order, enum: -> { OpenAI::Models::Beta::Threads::RunListParams::Order }
+          #   @return [Symbol, OpenAI::Beta::Threads::RunListParams::Order, nil]
+          optional :order, enum: -> { OpenAI::Beta::Threads::RunListParams::Order }
 
           # @!method initialize(after: nil, before: nil, limit: nil, order: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
           #   {OpenAI::Models::Beta::Threads::RunListParams} for more details.
           #
           #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
-          #   ...
           #
           #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
-          #   ...
           #
           #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
-          #   ...
           #
-          #   @param order [Symbol, OpenAI::Models::Beta::Threads::RunListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
-          #   ...
+          #   @param order [Symbol, OpenAI::Beta::Threads::RunListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

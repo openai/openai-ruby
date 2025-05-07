@@ -10,13 +10,21 @@ module OpenAI
         module Annotation
           extend OpenAI::Internal::Type::Union
 
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation]
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::FileCitationAnnotation,
+                OpenAI::Beta::Threads::FilePathAnnotation
               )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Beta::Threads::Annotation::Variants]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
       end
     end

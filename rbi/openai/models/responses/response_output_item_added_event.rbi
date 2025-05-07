@@ -4,16 +4,18 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputItemAddedEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The output item that was added.
         sig do
           returns(
             T.any(
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseFunctionToolCall,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseReasoningItem
+              OpenAI::Responses::ResponseOutputMessage,
+              OpenAI::Responses::ResponseFileSearchToolCall,
+              OpenAI::Responses::ResponseFunctionToolCall,
+              OpenAI::Responses::ResponseFunctionWebSearch,
+              OpenAI::Responses::ResponseComputerToolCall,
+              OpenAI::Responses::ResponseReasoningItem
             )
           )
         end
@@ -30,19 +32,18 @@ module OpenAI
         # Emitted when a new output item is added.
         sig do
           params(
-            item: T.any(
-              OpenAI::Models::Responses::ResponseOutputMessage,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseFileSearchToolCall,
-              OpenAI::Models::Responses::ResponseFunctionToolCall,
-              OpenAI::Models::Responses::ResponseFunctionWebSearch,
-              OpenAI::Models::Responses::ResponseComputerToolCall,
-              OpenAI::Models::Responses::ResponseReasoningItem
-            ),
+            item:
+              T.any(
+                OpenAI::Responses::ResponseOutputMessage::OrHash,
+                OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                OpenAI::Responses::ResponseReasoningItem::OrHash
+              ),
             output_index: Integer,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The output item that was added.
@@ -51,25 +52,28 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.output_item.added`.
           type: :"response.output_item.added"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                item: T.any(
-                  OpenAI::Models::Responses::ResponseOutputMessage,
-                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Models::Responses::ResponseFunctionToolCall,
-                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Models::Responses::ResponseComputerToolCall,
-                  OpenAI::Models::Responses::ResponseReasoningItem
-                ),
-                output_index: Integer,
-                type: Symbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              item:
+                T.any(
+                  OpenAI::Responses::ResponseOutputMessage,
+                  OpenAI::Responses::ResponseFileSearchToolCall,
+                  OpenAI::Responses::ResponseFunctionToolCall,
+                  OpenAI::Responses::ResponseFunctionWebSearch,
+                  OpenAI::Responses::ResponseComputerToolCall,
+                  OpenAI::Responses::ResponseReasoningItem
+                ),
+              output_index: Integer,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

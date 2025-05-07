@@ -6,19 +6,24 @@ module OpenAI
       module Threads
         module Runs
           class FunctionToolCall < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the tool call object.
             sig { returns(String) }
             attr_accessor :id
 
             # The definition of the function that was called.
-            sig { returns(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function) }
+            sig do
+              returns(OpenAI::Beta::Threads::Runs::FunctionToolCall::Function)
+            end
             attr_reader :function
 
             sig do
               params(
-                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, OpenAI::Internal::AnyHash)
-              )
-                .void
+                function:
+                  OpenAI::Beta::Threads::Runs::FunctionToolCall::Function::OrHash
+              ).void
             end
             attr_writer :function
 
@@ -30,10 +35,10 @@ module OpenAI
             sig do
               params(
                 id: String,
-                function: T.any(OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, OpenAI::Internal::AnyHash),
+                function:
+                  OpenAI::Beta::Threads::Runs::FunctionToolCall::Function::OrHash,
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # The ID of the tool call object.
@@ -43,16 +48,26 @@ module OpenAI
               # The type of tool call. This is always going to be `function` for this type of
               # tool call.
               type: :function
-            ); end
-            sig do
-              override
-                .returns(
-                  {id: String, function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCall::Function, type: Symbol}
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  id: String,
+                  function:
+                    OpenAI::Beta::Threads::Runs::FunctionToolCall::Function,
+                  type: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Function < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The arguments passed to the function.
               sig { returns(String) }
               attr_accessor :arguments
@@ -69,7 +84,11 @@ module OpenAI
 
               # The definition of the function that was called.
               sig do
-                params(arguments: String, name: String, output: T.nilable(String)).returns(T.attached_class)
+                params(
+                  arguments: String,
+                  name: String,
+                  output: T.nilable(String)
+                ).returns(T.attached_class)
               end
               def self.new(
                 # The arguments passed to the function.
@@ -80,9 +99,16 @@ module OpenAI
                 # [submitted](https://platform.openai.com/docs/api-reference/runs/submitToolOutputs)
                 # yet.
                 output:
-              ); end
-              sig { override.returns({arguments: String, name: String, output: T.nilable(String)}) }
-              def to_hash; end
+              )
+              end
+
+              sig do
+                override.returns(
+                  { arguments: String, name: String, output: T.nilable(String) }
+                )
+              end
+              def to_hash
+              end
             end
           end
         end

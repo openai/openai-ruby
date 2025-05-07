@@ -25,8 +25,8 @@ module OpenAI
         # @!attribute part
         #   The content part that was added.
         #
-        #   @return [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
-        required :part, union: -> { OpenAI::Models::Responses::ResponseContentPartAddedEvent::Part }
+        #   @return [OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal]
+        required :part, union: -> { OpenAI::Responses::ResponseContentPartAddedEvent::Part }
 
         # @!attribute type
         #   The type of the event. Always `response.content_part.added`.
@@ -36,36 +36,36 @@ module OpenAI
 
         # @!method initialize(content_index:, item_id:, output_index:, part:, type: :"response.content_part.added")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseContentPartAddedEvent} for more details.
+        #   {OpenAI::Responses::ResponseContentPartAddedEvent} for more details.
         #
         #   Emitted when a new content part is added.
         #
-        #   @param content_index [Integer] The index of the content part that was added. ...
+        #   @param content_index [Integer] The index of the content part that was added.
         #
-        #   @param item_id [String] The ID of the output item that the content part was added to. ...
+        #   @param item_id [String] The ID of the output item that the content part was added to.
         #
-        #   @param output_index [Integer] The index of the output item that the content part was added to. ...
+        #   @param output_index [Integer] The index of the output item that the content part was added to.
         #
-        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal] The content part that was added. ...
+        #   @param part [OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal] The content part that was added.
         #
-        #   @param type [Symbol, :"response.content_part.added"] The type of the event. Always `response.content_part.added`. ...
+        #   @param type [Symbol, :"response.content_part.added"] The type of the event. Always `response.content_part.added`.
 
         # The content part that was added.
         #
-        # @see OpenAI::Models::Responses::ResponseContentPartAddedEvent#part
+        # @see OpenAI::Responses::ResponseContentPartAddedEvent#part
         module Part
           extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
           # A text output from the model.
-          variant :output_text, -> { OpenAI::Models::Responses::ResponseOutputText }
+          variant :output_text, -> { OpenAI::Responses::ResponseOutputText }
 
           # A refusal from the model.
-          variant :refusal, -> { OpenAI::Models::Responses::ResponseOutputRefusal }
+          variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+          #   @return [Array(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
         end
       end
     end

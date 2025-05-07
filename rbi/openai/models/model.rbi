@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class Model < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The model identifier, which can be referenced in the API endpoints.
       sig { returns(String) }
       attr_accessor :id
@@ -20,7 +22,14 @@ module OpenAI
       attr_accessor :owned_by
 
       # Describes an OpenAI model offering that can be used with the API.
-      sig { params(id: String, created: Integer, owned_by: String, object: Symbol).returns(T.attached_class) }
+      sig do
+        params(
+          id: String,
+          created: Integer,
+          owned_by: String,
+          object: Symbol
+        ).returns(T.attached_class)
+      end
       def self.new(
         # The model identifier, which can be referenced in the API endpoints.
         id:,
@@ -30,9 +39,16 @@ module OpenAI
         owned_by:,
         # The object type, which is always "model".
         object: :model
-      ); end
-      sig { override.returns({id: String, created: Integer, object: Symbol, owned_by: String}) }
-      def to_hash; end
+      )
+      end
+
+      sig do
+        override.returns(
+          { id: String, created: Integer, object: Symbol, owned_by: String }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

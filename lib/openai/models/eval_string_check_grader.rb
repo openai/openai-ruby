@@ -18,8 +18,8 @@ module OpenAI
       # @!attribute operation
       #   The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
       #
-      #   @return [Symbol, OpenAI::Models::EvalStringCheckGrader::Operation]
-      required :operation, enum: -> { OpenAI::Models::EvalStringCheckGrader::Operation }
+      #   @return [Symbol, OpenAI::EvalStringCheckGrader::Operation]
+      required :operation, enum: -> { OpenAI::EvalStringCheckGrader::Operation }
 
       # @!attribute reference
       #   The reference text. This may include template strings.
@@ -41,7 +41,7 @@ module OpenAI
       #
       #   @param name [String] The name of the grader.
       #
-      #   @param operation [Symbol, OpenAI::Models::EvalStringCheckGrader::Operation] The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
+      #   @param operation [Symbol, OpenAI::EvalStringCheckGrader::Operation] The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
       #
       #   @param reference [String] The reference text. This may include template strings.
       #
@@ -49,7 +49,7 @@ module OpenAI
 
       # The string check operation to perform. One of `eq`, `ne`, `like`, or `ilike`.
       #
-      # @see OpenAI::Models::EvalStringCheckGrader#operation
+      # @see OpenAI::EvalStringCheckGrader#operation
       module Operation
         extend OpenAI::Internal::Type::Enum
 

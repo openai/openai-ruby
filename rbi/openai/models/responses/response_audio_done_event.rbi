@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseAudioDoneEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The type of the event. Always `response.audio.done`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -13,9 +15,12 @@ module OpenAI
         def self.new(
           # The type of the event. Always `response.audio.done`.
           type: :"response.audio.done"
-        ); end
-        sig { override.returns({type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ type: Symbol }) }
+        def to_hash
+        end
       end
     end
   end

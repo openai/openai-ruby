@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class EvalCustomDataSourceConfig < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The json schema for the run data source items. Learn how to build JSON schemas
       # [here](https://json-schema.org/).
       sig { returns(T::Hash[Symbol, T.anything]) }
@@ -18,16 +20,25 @@ module OpenAI
       #
       # - Used to define your testing criteria and
       # - What data is required when creating a run
-      sig { params(schema: T::Hash[Symbol, T.anything], type: Symbol).returns(T.attached_class) }
+      sig do
+        params(schema: T::Hash[Symbol, T.anything], type: Symbol).returns(
+          T.attached_class
+        )
+      end
       def self.new(
         # The json schema for the run data source items. Learn how to build JSON schemas
         # [here](https://json-schema.org/).
         schema:,
         # The type of data source. Always `custom`.
         type: :custom
-      ); end
-      sig { override.returns({schema: T::Hash[Symbol, T.anything], type: Symbol}) }
-      def to_hash; end
+      )
+      end
+
+      sig do
+        override.returns({ schema: T::Hash[Symbol, T.anything], type: Symbol })
+      end
+      def to_hash
+      end
     end
   end
 end

@@ -8,12 +8,12 @@ module OpenAI
         endpoint: String,
         input_file_id: String,
         object: :batch,
-        status: OpenAI::Models::Batch::status,
+        status: OpenAI::Batch::status,
         cancelled_at: Integer,
         cancelling_at: Integer,
         completed_at: Integer,
         error_file_id: String,
-        errors: OpenAI::Models::Batch::Errors,
+        errors: OpenAI::Batch::Errors,
         expired_at: Integer,
         expires_at: Integer,
         failed_at: Integer,
@@ -21,7 +21,7 @@ module OpenAI
         in_progress_at: Integer,
         metadata: OpenAI::Models::metadata?,
         output_file_id: String,
-        request_counts: OpenAI::Models::BatchRequestCounts
+        request_counts: OpenAI::BatchRequestCounts
       }
 
     class Batch < OpenAI::Internal::Type::BaseModel
@@ -37,7 +37,7 @@ module OpenAI
 
       attr_accessor object: :batch
 
-      attr_accessor status: OpenAI::Models::Batch::status
+      attr_accessor status: OpenAI::Batch::status
 
       attr_reader cancelled_at: Integer?
 
@@ -55,11 +55,9 @@ module OpenAI
 
       def error_file_id=: (String) -> String
 
-      attr_reader errors: OpenAI::Models::Batch::Errors?
+      attr_reader errors: OpenAI::Batch::Errors?
 
-      def errors=: (
-        OpenAI::Models::Batch::Errors
-      ) -> OpenAI::Models::Batch::Errors
+      def errors=: (OpenAI::Batch::Errors) -> OpenAI::Batch::Errors
 
       attr_reader expired_at: Integer?
 
@@ -87,11 +85,11 @@ module OpenAI
 
       def output_file_id=: (String) -> String
 
-      attr_reader request_counts: OpenAI::Models::BatchRequestCounts?
+      attr_reader request_counts: OpenAI::BatchRequestCounts?
 
       def request_counts=: (
-        OpenAI::Models::BatchRequestCounts
-      ) -> OpenAI::Models::BatchRequestCounts
+        OpenAI::BatchRequestCounts
+      ) -> OpenAI::BatchRequestCounts
 
       def initialize: (
         id: String,
@@ -99,12 +97,12 @@ module OpenAI
         created_at: Integer,
         endpoint: String,
         input_file_id: String,
-        status: OpenAI::Models::Batch::status,
+        status: OpenAI::Batch::status,
         ?cancelled_at: Integer,
         ?cancelling_at: Integer,
         ?completed_at: Integer,
         ?error_file_id: String,
-        ?errors: OpenAI::Models::Batch::Errors,
+        ?errors: OpenAI::Batch::Errors,
         ?expired_at: Integer,
         ?expires_at: Integer,
         ?failed_at: Integer,
@@ -112,11 +110,9 @@ module OpenAI
         ?in_progress_at: Integer,
         ?metadata: OpenAI::Models::metadata?,
         ?output_file_id: String,
-        ?request_counts: OpenAI::Models::BatchRequestCounts,
+        ?request_counts: OpenAI::BatchRequestCounts,
         ?object: :batch
       ) -> void
-
-      def to_hash: -> OpenAI::Models::batch
 
       type status =
         :validating
@@ -140,29 +136,24 @@ module OpenAI
         CANCELLING: :cancelling
         CANCELLED: :cancelled
 
-        def self?.values: -> ::Array[OpenAI::Models::Batch::status]
+        def self?.values: -> ::Array[OpenAI::Batch::status]
       end
 
-      type errors =
-        { data: ::Array[OpenAI::Models::BatchError], object: String }
+      type errors = { data: ::Array[OpenAI::BatchError], object: String }
 
       class Errors < OpenAI::Internal::Type::BaseModel
-        attr_reader data: ::Array[OpenAI::Models::BatchError]?
+        attr_reader data: ::Array[OpenAI::BatchError]?
 
-        def data=: (
-          ::Array[OpenAI::Models::BatchError]
-        ) -> ::Array[OpenAI::Models::BatchError]
+        def data=: (::Array[OpenAI::BatchError]) -> ::Array[OpenAI::BatchError]
 
         attr_reader object: String?
 
         def object=: (String) -> String
 
         def initialize: (
-          ?data: ::Array[OpenAI::Models::BatchError],
+          ?data: ::Array[OpenAI::BatchError],
           ?object: String
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Batch::errors
       end
     end
   end

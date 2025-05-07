@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputFile < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The type of the input item. Always `input_file`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -28,8 +30,12 @@ module OpenAI
 
         # A file input to the model.
         sig do
-          params(file_data: String, file_id: T.nilable(String), filename: String, type: Symbol)
-            .returns(T.attached_class)
+          params(
+            file_data: String,
+            file_id: T.nilable(String),
+            filename: String,
+            type: Symbol
+          ).returns(T.attached_class)
         end
         def self.new(
           # The content of the file to be sent to the model.
@@ -40,11 +46,21 @@ module OpenAI
           filename: nil,
           # The type of the input item. Always `input_file`.
           type: :input_file
-        ); end
-        sig do
-          override.returns({type: Symbol, file_data: String, file_id: T.nilable(String), filename: String})
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              type: Symbol,
+              file_data: String,
+              file_id: T.nilable(String),
+              filename: String
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

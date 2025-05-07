@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class Batch < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       sig { returns(String) }
       attr_accessor :id
 
@@ -27,7 +29,7 @@ module OpenAI
       attr_accessor :object
 
       # The current status of the batch.
-      sig { returns(OpenAI::Models::Batch::Status::TaggedSymbol) }
+      sig { returns(OpenAI::Batch::Status::TaggedSymbol) }
       attr_accessor :status
 
       # The Unix timestamp (in seconds) for when the batch was cancelled.
@@ -58,10 +60,10 @@ module OpenAI
       sig { params(error_file_id: String).void }
       attr_writer :error_file_id
 
-      sig { returns(T.nilable(OpenAI::Models::Batch::Errors)) }
+      sig { returns(T.nilable(OpenAI::Batch::Errors)) }
       attr_reader :errors
 
-      sig { params(errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Internal::AnyHash)).void }
+      sig { params(errors: OpenAI::Batch::Errors::OrHash).void }
       attr_writer :errors
 
       # The Unix timestamp (in seconds) for when the batch expired.
@@ -116,10 +118,10 @@ module OpenAI
       attr_writer :output_file_id
 
       # The request counts for different statuses within the batch.
-      sig { returns(T.nilable(OpenAI::Models::BatchRequestCounts)) }
+      sig { returns(T.nilable(OpenAI::BatchRequestCounts)) }
       attr_reader :request_counts
 
-      sig { params(request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Internal::AnyHash)).void }
+      sig { params(request_counts: OpenAI::BatchRequestCounts::OrHash).void }
       attr_writer :request_counts
 
       sig do
@@ -129,12 +131,12 @@ module OpenAI
           created_at: Integer,
           endpoint: String,
           input_file_id: String,
-          status: OpenAI::Models::Batch::Status::OrSymbol,
+          status: OpenAI::Batch::Status::OrSymbol,
           cancelled_at: Integer,
           cancelling_at: Integer,
           completed_at: Integer,
           error_file_id: String,
-          errors: T.any(OpenAI::Models::Batch::Errors, OpenAI::Internal::AnyHash),
+          errors: OpenAI::Batch::Errors::OrHash,
           expired_at: Integer,
           expires_at: Integer,
           failed_at: Integer,
@@ -142,10 +144,9 @@ module OpenAI
           in_progress_at: Integer,
           metadata: T.nilable(T::Hash[Symbol, String]),
           output_file_id: String,
-          request_counts: T.any(OpenAI::Models::BatchRequestCounts, OpenAI::Internal::AnyHash),
+          request_counts: OpenAI::BatchRequestCounts::OrHash,
           object: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         id:,
@@ -191,61 +192,66 @@ module OpenAI
         request_counts: nil,
         # The object type, which is always `batch`.
         object: :batch
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              id: String,
-              completion_window: String,
-              created_at: Integer,
-              endpoint: String,
-              input_file_id: String,
-              object: Symbol,
-              status: OpenAI::Models::Batch::Status::TaggedSymbol,
-              cancelled_at: Integer,
-              cancelling_at: Integer,
-              completed_at: Integer,
-              error_file_id: String,
-              errors: OpenAI::Models::Batch::Errors,
-              expired_at: Integer,
-              expires_at: Integer,
-              failed_at: Integer,
-              finalizing_at: Integer,
-              in_progress_at: Integer,
-              metadata: T.nilable(T::Hash[Symbol, String]),
-              output_file_id: String,
-              request_counts: OpenAI::Models::BatchRequestCounts
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            id: String,
+            completion_window: String,
+            created_at: Integer,
+            endpoint: String,
+            input_file_id: String,
+            object: Symbol,
+            status: OpenAI::Batch::Status::TaggedSymbol,
+            cancelled_at: Integer,
+            cancelling_at: Integer,
+            completed_at: Integer,
+            error_file_id: String,
+            errors: OpenAI::Batch::Errors,
+            expired_at: Integer,
+            expires_at: Integer,
+            failed_at: Integer,
+            finalizing_at: Integer,
+            in_progress_at: Integer,
+            metadata: T.nilable(T::Hash[Symbol, String]),
+            output_file_id: String,
+            request_counts: OpenAI::BatchRequestCounts
+          }
+        )
+      end
+      def to_hash
+      end
 
       # The current status of the batch.
       module Status
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Batch::Status) }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Batch::Status) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        VALIDATING = T.let(:validating, OpenAI::Models::Batch::Status::TaggedSymbol)
-        FAILED = T.let(:failed, OpenAI::Models::Batch::Status::TaggedSymbol)
-        IN_PROGRESS = T.let(:in_progress, OpenAI::Models::Batch::Status::TaggedSymbol)
-        FINALIZING = T.let(:finalizing, OpenAI::Models::Batch::Status::TaggedSymbol)
-        COMPLETED = T.let(:completed, OpenAI::Models::Batch::Status::TaggedSymbol)
-        EXPIRED = T.let(:expired, OpenAI::Models::Batch::Status::TaggedSymbol)
-        CANCELLING = T.let(:cancelling, OpenAI::Models::Batch::Status::TaggedSymbol)
-        CANCELLED = T.let(:cancelled, OpenAI::Models::Batch::Status::TaggedSymbol)
+        VALIDATING = T.let(:validating, OpenAI::Batch::Status::TaggedSymbol)
+        FAILED = T.let(:failed, OpenAI::Batch::Status::TaggedSymbol)
+        IN_PROGRESS = T.let(:in_progress, OpenAI::Batch::Status::TaggedSymbol)
+        FINALIZING = T.let(:finalizing, OpenAI::Batch::Status::TaggedSymbol)
+        COMPLETED = T.let(:completed, OpenAI::Batch::Status::TaggedSymbol)
+        EXPIRED = T.let(:expired, OpenAI::Batch::Status::TaggedSymbol)
+        CANCELLING = T.let(:cancelling, OpenAI::Batch::Status::TaggedSymbol)
+        CANCELLED = T.let(:cancelled, OpenAI::Batch::Status::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::Models::Batch::Status::TaggedSymbol]) }
-        def self.values; end
+        sig { override.returns(T::Array[OpenAI::Batch::Status::TaggedSymbol]) }
+        def self.values
+        end
       end
 
       class Errors < OpenAI::Internal::Type::BaseModel
-        sig { returns(T.nilable(T::Array[OpenAI::Models::BatchError])) }
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+        sig { returns(T.nilable(T::Array[OpenAI::BatchError])) }
         attr_reader :data
 
-        sig { params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Internal::AnyHash)]).void }
+        sig { params(data: T::Array[OpenAI::BatchError::OrHash]).void }
         attr_writer :data
 
         # The object type, which is always `list`.
@@ -256,16 +262,25 @@ module OpenAI
         attr_writer :object
 
         sig do
-          params(data: T::Array[T.any(OpenAI::Models::BatchError, OpenAI::Internal::AnyHash)], object: String)
-            .returns(T.attached_class)
+          params(
+            data: T::Array[OpenAI::BatchError::OrHash],
+            object: String
+          ).returns(T.attached_class)
         end
         def self.new(
           data: nil,
           # The object type, which is always `list`.
           object: nil
-        ); end
-        sig { override.returns({data: T::Array[OpenAI::Models::BatchError], object: String}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            { data: T::Array[OpenAI::BatchError], object: String }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

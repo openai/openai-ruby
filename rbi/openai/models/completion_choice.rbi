@@ -3,22 +3,25 @@
 module OpenAI
   module Models
     class CompletionChoice < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The reason the model stopped generating tokens. This will be `stop` if the model
       # hit a natural stop point or a provided stop sequence, `length` if the maximum
       # number of tokens specified in the request was reached, or `content_filter` if
       # content was omitted due to a flag from our content filters.
-      sig { returns(OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol) }
+      sig { returns(OpenAI::CompletionChoice::FinishReason::TaggedSymbol) }
       attr_accessor :finish_reason
 
       sig { returns(Integer) }
       attr_accessor :index
 
-      sig { returns(T.nilable(OpenAI::Models::CompletionChoice::Logprobs)) }
+      sig { returns(T.nilable(OpenAI::CompletionChoice::Logprobs)) }
       attr_reader :logprobs
 
       sig do
-        params(logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::AnyHash)))
-          .void
+        params(
+          logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs::OrHash)
+        ).void
       end
       attr_writer :logprobs
 
@@ -27,12 +30,11 @@ module OpenAI
 
       sig do
         params(
-          finish_reason: OpenAI::Models::CompletionChoice::FinishReason::OrSymbol,
+          finish_reason: OpenAI::CompletionChoice::FinishReason::OrSymbol,
           index: Integer,
-          logprobs: T.nilable(T.any(OpenAI::Models::CompletionChoice::Logprobs, OpenAI::Internal::AnyHash)),
+          logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs::OrHash),
           text: String
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # The reason the model stopped generating tokens. This will be `stop` if the model
@@ -43,19 +45,21 @@ module OpenAI
         index:,
         logprobs:,
         text:
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              finish_reason: OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol,
-              index: Integer,
-              logprobs: T.nilable(OpenAI::Models::CompletionChoice::Logprobs),
-              text: String
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            finish_reason: OpenAI::CompletionChoice::FinishReason::TaggedSymbol,
+            index: Integer,
+            logprobs: T.nilable(OpenAI::CompletionChoice::Logprobs),
+            text: String
+          }
+        )
+      end
+      def to_hash
+      end
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
       # hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -64,18 +68,32 @@ module OpenAI
       module FinishReason
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionChoice::FinishReason) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::CompletionChoice::FinishReason) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        STOP = T.let(:stop, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
-        LENGTH = T.let(:length, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
-        CONTENT_FILTER = T.let(:content_filter, OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol)
+        STOP =
+          T.let(:stop, OpenAI::CompletionChoice::FinishReason::TaggedSymbol)
+        LENGTH =
+          T.let(:length, OpenAI::CompletionChoice::FinishReason::TaggedSymbol)
+        CONTENT_FILTER =
+          T.let(
+            :content_filter,
+            OpenAI::CompletionChoice::FinishReason::TaggedSymbol
+          )
 
-        sig { override.returns(T::Array[OpenAI::Models::CompletionChoice::FinishReason::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(
+            T::Array[OpenAI::CompletionChoice::FinishReason::TaggedSymbol]
+          )
+        end
+        def self.values
+        end
       end
 
       class Logprobs < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         sig { returns(T.nilable(T::Array[Integer])) }
         attr_reader :text_offset
 
@@ -106,23 +124,28 @@ module OpenAI
             token_logprobs: T::Array[Float],
             tokens: T::Array[String],
             top_logprobs: T::Array[T::Hash[Symbol, Float]]
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
-        def self.new(text_offset: nil, token_logprobs: nil, tokens: nil, top_logprobs: nil); end
+        def self.new(
+          text_offset: nil,
+          token_logprobs: nil,
+          tokens: nil,
+          top_logprobs: nil
+        )
+        end
 
         sig do
-          override
-            .returns(
-              {
-                text_offset: T::Array[Integer],
-                token_logprobs: T::Array[Float],
-                tokens: T::Array[String],
-                top_logprobs: T::Array[T::Hash[Symbol, Float]]
-              }
-            )
+          override.returns(
+            {
+              text_offset: T::Array[Integer],
+              token_logprobs: T::Array[Float],
+              tokens: T::Array[String],
+              top_logprobs: T::Array[T::Hash[Symbol, Float]]
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
       end
     end
   end

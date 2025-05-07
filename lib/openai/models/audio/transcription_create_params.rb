@@ -22,8 +22,8 @@ module OpenAI
         #   `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         #   Whisper V2 model).
         #
-        #   @return [String, Symbol, OpenAI::Models::AudioModel]
-        required :model, union: -> { OpenAI::Models::Audio::TranscriptionCreateParams::Model }
+        #   @return [String, Symbol, OpenAI::AudioModel]
+        required :model, union: -> { OpenAI::Audio::TranscriptionCreateParams::Model }
 
         # @!attribute include
         #   Additional information to include in the transcription response. `logprobs` will
@@ -32,9 +32,8 @@ module OpenAI
         #   response_format set to `json` and only with the models `gpt-4o-transcribe` and
         #   `gpt-4o-mini-transcribe`.
         #
-        #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionInclude] }
+        #   @return [Array<Symbol, OpenAI::Audio::TranscriptionInclude>, nil]
+        optional :include, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionInclude] }
 
         # @!attribute language
         #   The language of the input audio. Supplying the input language in
@@ -58,8 +57,8 @@ module OpenAI
         #   `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
         #   the only supported format is `json`.
         #
-        #   @return [Symbol, OpenAI::Models::AudioResponseFormat, nil]
-        optional :response_format, enum: -> { OpenAI::Models::AudioResponseFormat }
+        #   @return [Symbol, OpenAI::AudioResponseFormat, nil]
+        optional :response_format, enum: -> { OpenAI::AudioResponseFormat }
 
         # @!attribute temperature
         #   The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
@@ -78,36 +77,31 @@ module OpenAI
         #   is no additional latency for segment timestamps, but generating word timestamps
         #   incurs additional latency.
         #
-        #   @return [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
+        #   @return [Array<Symbol, OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity>, nil]
         optional :timestamp_granularities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity] }
+                 -> {
+                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity]
+                 }
 
         # @!method initialize(file:, model:, include: nil, language: nil, prompt: nil, response_format: nil, temperature: nil, timestamp_granularities: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Audio::TranscriptionCreateParams} for more details.
         #
         #   @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) to transcribe, in one of these formats: fl
-        #   ...
         #
-        #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
-        #   ...
+        #   @param model [String, Symbol, OpenAI::AudioModel] ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transc
         #
-        #   @param include [Array<Symbol, OpenAI::Models::Audio::TranscriptionInclude>] Additional information to include in the transcription response. ...
+        #   @param include [Array<Symbol, OpenAI::Audio::TranscriptionInclude>] Additional information to include in the transcription response.
         #
         #   @param language [String] The language of the input audio. Supplying the input language in [ISO-639-1](htt
-        #   ...
         #
         #   @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
-        #   ...
         #
-        #   @param response_format [Symbol, OpenAI::Models::AudioResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
-        #   ...
+        #   @param response_format [Symbol, OpenAI::AudioResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
         #
         #   @param temperature [Float] The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-        #   ...
         #
-        #   @param timestamp_granularities [Array<Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity>] The timestamp granularities to populate for this transcription. `response_format
-        #   ...
+        #   @param timestamp_granularities [Array<Symbol, OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity>] The timestamp granularities to populate for this transcription. `response_format
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -120,10 +114,10 @@ module OpenAI
           variant String
 
           # ID of the model to use. The options are `gpt-4o-transcribe`, `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source Whisper V2 model).
-          variant enum: -> { OpenAI::Models::AudioModel }
+          variant enum: -> { OpenAI::AudioModel }
 
           # @!method self.variants
-          #   @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
+          #   @return [Array(String, Symbol, OpenAI::AudioModel)]
         end
 
         module TimestampGranularity

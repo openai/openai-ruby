@@ -9,6 +9,9 @@ module OpenAI
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             sig { returns(String) }
             attr_accessor :thread_id
 
@@ -39,10 +42,25 @@ module OpenAI
             # See the
             # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             # for more information.
-            sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
+            sig do
+              returns(
+                T.nilable(
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ]
+                )
+              )
+            end
             attr_reader :include
 
-            sig { params(include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol]).void }
+            sig do
+              params(
+                include:
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ]
+              ).void
+            end
             attr_writer :include
 
             # A limit on the number of objects to be returned. Limit can range between 1 and
@@ -55,10 +73,21 @@ module OpenAI
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
             # order and `desc` for descending order.
-            sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol)) }
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Beta::Threads::Runs::StepListParams::Order::OrSymbol
+                )
+              )
+            end
             attr_reader :order
 
-            sig { params(order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol).void }
+            sig do
+              params(
+                order:
+                  OpenAI::Beta::Threads::Runs::StepListParams::Order::OrSymbol
+              ).void
+            end
             attr_writer :order
 
             sig do
@@ -66,12 +95,15 @@ module OpenAI
                 thread_id: String,
                 after: String,
                 before: String,
-                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+                include:
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ],
                 limit: Integer,
-                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
-                request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-              )
-                .returns(T.attached_class)
+                order:
+                  OpenAI::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(T.attached_class)
             end
             def self.new(
               thread_id:,
@@ -100,36 +132,63 @@ module OpenAI
               # order and `desc` for descending order.
               order: nil,
               request_options: {}
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    thread_id: String,
-                    after: String,
-                    before: String,
-                    include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
-                    limit: Integer,
-                    order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
-                    request_options: OpenAI::RequestOptions
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  thread_id: String,
+                  after: String,
+                  before: String,
+                  include:
+                    T::Array[
+                      OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                    ],
+                  limit: Integer,
+                  order:
+                    OpenAI::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
+                  request_options: OpenAI::RequestOptions
+                }
+              )
+            end
+            def to_hash
+            end
 
             # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
             # order and `desc` for descending order.
             module Order
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order) }
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Beta::Threads::Runs::StepListParams::Order
+                  )
+                end
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              ASC = T.let(:asc, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol)
-              DESC = T.let(:desc, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol)
+              ASC =
+                T.let(
+                  :asc,
+                  OpenAI::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol
+                )
+              DESC =
+                T.let(
+                  :desc,
+                  OpenAI::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol
+                )
 
-              sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol]) }
-              def self.values; end
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::StepListParams::Order::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
             end
           end
         end

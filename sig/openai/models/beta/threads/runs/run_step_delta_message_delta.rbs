@@ -8,24 +8,22 @@ module OpenAI
           type run_step_delta_message_delta =
             {
               type: :message_creation,
-              message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+              message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
             }
 
           class RunStepDeltaMessageDelta < OpenAI::Internal::Type::BaseModel
             attr_accessor type: :message_creation
 
-            attr_reader message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation?
+            attr_reader message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation?
 
             def message_creation=: (
-              OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
-            ) -> OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+              OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+            ) -> OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
 
             def initialize: (
-              ?message_creation: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
+              ?message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
               ?type: :message_creation
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::run_step_delta_message_delta
 
             type message_creation = { message_id: String }
 
@@ -35,8 +33,6 @@ module OpenAI
               def message_id=: (String) -> String
 
               def initialize: (?message_id: String) -> void
-
-              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::message_creation
             end
           end
         end

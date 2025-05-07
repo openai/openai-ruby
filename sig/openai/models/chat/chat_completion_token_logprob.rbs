@@ -8,7 +8,7 @@ module OpenAI
           token: String,
           bytes: ::Array[Integer]?,
           logprob: Float,
-          top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
+          top_logprobs: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
         }
 
       class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
@@ -18,16 +18,14 @@ module OpenAI
 
         attr_accessor logprob: Float
 
-        attr_accessor top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
+        attr_accessor top_logprobs: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
 
         def initialize: (
           token: String,
           bytes: ::Array[Integer]?,
           logprob: Float,
-          top_logprobs: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
+          top_logprobs: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_token_logprob
 
         type top_logprob =
           { token: String, bytes: ::Array[Integer]?, logprob: Float }
@@ -44,8 +42,6 @@ module OpenAI
             bytes: ::Array[Integer]?,
             logprob: Float
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Chat::ChatCompletionTokenLogprob::top_logprob
         end
       end
     end

@@ -12,28 +12,37 @@ module OpenAI
         abstract!
 
         sig { params(other: T.anything).returns(T::Boolean) }
-        def self.===(other); end
+        def self.===(other)
+        end
 
         sig { params(other: T.anything).returns(T::Boolean) }
-        def self.==(other); end
+        def self.==(other)
+        end
 
         class << self
           # @api private
           sig do
             override
-              .params(value: T.anything, state: OpenAI::Internal::Type::Converter::CoerceState)
+              .params(
+                value: T.anything,
+                state: OpenAI::Internal::Type::Converter::CoerceState
+              )
               .returns(T.anything)
           end
-          def coerce(value, state:); end
+          def coerce(value, state:)
+          end
 
           # @api private
           sig do
-            override.params(
-              value: T.anything,
-              state: OpenAI::Internal::Type::Converter::DumpState
-            ).returns(T.anything)
+            override
+              .params(
+                value: T.anything,
+                state: OpenAI::Internal::Type::Converter::DumpState
+              )
+              .returns(T.anything)
           end
-          def dump(value, state:); end
+          def dump(value, state:)
+          end
         end
       end
     end

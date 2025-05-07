@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The audio file object (not file name) to transcribe, in one of these formats:
         # flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
         sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }
@@ -15,7 +17,7 @@ module OpenAI
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         # Whisper V2 model).
-        sig { returns(T.any(String, OpenAI::Models::AudioModel::OrSymbol)) }
+        sig { returns(T.any(String, OpenAI::AudioModel::OrSymbol)) }
         attr_accessor :model
 
         # Additional information to include in the transcription response. `logprobs` will
@@ -23,10 +25,18 @@ module OpenAI
         # model's confidence in the transcription. `logprobs` only works with
         # response_format set to `json` and only with the models `gpt-4o-transcribe` and
         # `gpt-4o-mini-transcribe`.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol])) }
+        sig do
+          returns(
+            T.nilable(T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol])
+          )
+        end
         attr_reader :include
 
-        sig { params(include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol]).void }
+        sig do
+          params(
+            include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol]
+          ).void
+        end
         attr_writer :include
 
         # The language of the input audio. Supplying the input language in
@@ -51,10 +61,12 @@ module OpenAI
         # The format of the output, in one of these options: `json`, `text`, `srt`,
         # `verbose_json`, or `vtt`. For `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`,
         # the only supported format is `json`.
-        sig { returns(T.nilable(OpenAI::Models::AudioResponseFormat::OrSymbol)) }
+        sig { returns(T.nilable(OpenAI::AudioResponseFormat::OrSymbol)) }
         attr_reader :response_format
 
-        sig { params(response_format: OpenAI::Models::AudioResponseFormat::OrSymbol).void }
+        sig do
+          params(response_format: OpenAI::AudioResponseFormat::OrSymbol).void
+        end
         attr_writer :response_format
 
         # The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
@@ -75,32 +87,40 @@ module OpenAI
         # incurs additional latency.
         sig do
           returns(
-            T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol])
+            T.nilable(
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
+              ]
+            )
           )
         end
         attr_reader :timestamp_granularities
 
         sig do
           params(
-            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol]
-          )
-            .void
+            timestamp_granularities:
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
+              ]
+          ).void
         end
         attr_writer :timestamp_granularities
 
         sig do
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
-            include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
+            model: T.any(String, OpenAI::AudioModel::OrSymbol),
+            include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
-            response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
+            response_format: OpenAI::AudioResponseFormat::OrSymbol,
             temperature: Float,
-            timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            timestamp_granularities:
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
+              ],
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # The audio file object (not file name) to transcribe, in one of these formats:
@@ -142,24 +162,29 @@ module OpenAI
           # incurs additional latency.
           timestamp_granularities: nil,
           request_options: {}
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-                model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
-                include: T::Array[OpenAI::Models::Audio::TranscriptionInclude::OrSymbol],
-                language: String,
-                prompt: String,
-                response_format: OpenAI::Models::AudioResponseFormat::OrSymbol,
-                temperature: Float,
-                timestamp_granularities: T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol],
-                request_options: OpenAI::RequestOptions
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+              model: T.any(String, OpenAI::AudioModel::OrSymbol),
+              include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
+              language: String,
+              prompt: String,
+              response_format: OpenAI::AudioResponseFormat::OrSymbol,
+              temperature: Float,
+              timestamp_granularities:
+                T::Array[
+                  OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::OrSymbol
+                ],
+              request_options: OpenAI::RequestOptions
+            }
+          )
+        end
+        def to_hash
+        end
 
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
@@ -167,26 +192,52 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::AudioModel::TaggedSymbol]) }
-          def self.variants; end
+          Variants =
+            T.type_alias { T.any(String, OpenAI::AudioModel::TaggedSymbol) }
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::Model::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
         end
 
         module TimestampGranularity
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity) }
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity
+              )
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          WORD = T.let(:word, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol)
+          WORD =
+            T.let(
+              :word,
+              OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol
+            )
           SEGMENT =
-            T.let(:segment, OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol)
+            T.let(
+              :segment,
+              OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol
+            )
 
           sig do
-            override
-              .returns(T::Array[OpenAI::Models::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol])
+            override.returns(
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::TimestampGranularity::TaggedSymbol
+              ]
+            )
           end
-          def self.values; end
+          def self.values
+          end
         end
       end
     end

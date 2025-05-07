@@ -6,10 +6,16 @@ module OpenAI
 
     module Chat
       class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The content that should be matched when generating a model response. If
         # generated tokens would match this content, the entire model response can be
         # returned much more quickly.
-        sig { returns(T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText])) }
+        sig do
+          returns(
+            T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText])
+          )
+        end
         attr_accessor :content
 
         # The type of the predicted content you want to provide. This type is currently
@@ -21,13 +27,13 @@ module OpenAI
         # being regenerated.
         sig do
           params(
-            content: T.any(
-              String,
-              T::Array[T.any(OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Internal::AnyHash)]
-            ),
+            content:
+              T.any(
+                String,
+                T::Array[OpenAI::Chat::ChatCompletionContentPartText::OrHash]
+              ),
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The content that should be matched when generating a model response. If
@@ -37,14 +43,23 @@ module OpenAI
           # The type of the predicted content you want to provide. This type is currently
           # always `content`.
           type: :content
-        ); end
-        sig do
-          override
-            .returns(
-              {content: T.any(String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]), type: Symbol}
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              content:
+                T.any(
+                  String,
+                  T::Array[OpenAI::Chat::ChatCompletionContentPartText]
+                ),
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         # The content that should be matched when generating a model response. If
         # generated tokens would match this content, the entire model response can be
@@ -52,12 +67,29 @@ module OpenAI
         module Content
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, T::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]) }
-          def self.variants; end
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                T::Array[OpenAI::Chat::ChatCompletionContentPartText]
+              )
+            end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Chat::ChatCompletionPredictionContent::Content::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
 
           ChatCompletionContentPartTextArray =
             T.let(
-              OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletionContentPartText],
+              OpenAI::Internal::Type::ArrayOf[
+                OpenAI::Chat::ChatCompletionContentPartText
+              ],
               OpenAI::Internal::Type::Converter
             )
         end

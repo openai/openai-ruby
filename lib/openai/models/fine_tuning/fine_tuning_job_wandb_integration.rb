@@ -35,23 +35,20 @@ module OpenAI
 
         # @!method initialize(project:, entity: nil, name: nil, tags: nil)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::FineTuning::FineTuningJobWandbIntegration} for more details.
+        #   {OpenAI::FineTuning::FineTuningJobWandbIntegration} for more details.
         #
         #   The settings for your integration with Weights and Biases. This payload
         #   specifies the project that metrics will be sent to. Optionally, you can set an
         #   explicit display name for your run, add tags to your run, and set a default
         #   entity (team, username, etc) to be associated with your run.
         #
-        #   @param project [String] The name of the project that the new run will be created under. ...
+        #   @param project [String] The name of the project that the new run will be created under.
         #
         #   @param entity [String, nil] The entity to use for the run. This allows you to set the team or username of th
-        #   ...
         #
         #   @param name [String, nil] A display name to set for the run. If not set, we will use the Job ID as the nam
-        #   ...
         #
         #   @param tags [Array<String>] A list of tags to be attached to the newly created run. These tags are passed th
-        #   ...
       end
     end
 

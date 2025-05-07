@@ -25,27 +25,27 @@ module OpenAI
         #
         #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
         optional :attributes,
-                 -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::FileCreateParams::Attribute] },
+                 -> {
+                   OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::FileCreateParams::Attribute]
+                 },
                  nil?: true
 
         # @!attribute chunking_strategy
         #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         #   strategy. Only applicable if `file_ids` is non-empty.
         #
-        #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
-        optional :chunking_strategy, union: -> { OpenAI::Models::FileChunkingStrategyParam }
+        #   @return [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam, nil]
+        optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategyParam }
 
         # @!method initialize(file_id:, attributes: nil, chunking_strategy: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::VectorStores::FileCreateParams} for more details.
         #
         #   @param file_id [String] A [File](https://platform.openai.com/docs/api-reference/files) ID that the vecto
-        #   ...
         #
-        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
-        #   ...
+        #   @param chunking_strategy [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

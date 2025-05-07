@@ -9,13 +9,13 @@ module OpenAI
       discriminator :type
 
       # An object describing an image to classify.
-      variant :image_url, -> { OpenAI::Models::ModerationImageURLInput }
+      variant :image_url, -> { OpenAI::ModerationImageURLInput }
 
       # An object describing text to classify.
-      variant :text, -> { OpenAI::Models::ModerationTextInput }
+      variant :text, -> { OpenAI::ModerationTextInput }
 
       # @!method self.variants
-      #   @return [Array(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
+      #   @return [Array(OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput)]
     end
   end
 end

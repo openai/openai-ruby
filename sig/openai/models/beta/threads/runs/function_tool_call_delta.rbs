@@ -8,7 +8,7 @@ module OpenAI
               index: Integer,
               type: :function,
               id: String,
-              function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function
+              function: OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function
             }
 
           class FunctionToolCallDelta < OpenAI::Internal::Type::BaseModel
@@ -20,20 +20,18 @@ module OpenAI
 
             def id=: (String) -> String
 
-            attr_reader function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function?
+            attr_reader function: OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function?
 
             def function=: (
-              OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function
-            ) -> OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function
+              OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function
+            ) -> OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function
 
             def initialize: (
               index: Integer,
               ?id: String,
-              ?function: OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::Function,
+              ?function: OpenAI::Beta::Threads::Runs::FunctionToolCallDelta::Function,
               ?type: :function
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::function_tool_call_delta
 
             type function = { arguments: String, name: String, output: String? }
 
@@ -53,8 +51,6 @@ module OpenAI
                 ?name: String,
                 ?output: String?
               ) -> void
-
-              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta::function
             end
           end
         end

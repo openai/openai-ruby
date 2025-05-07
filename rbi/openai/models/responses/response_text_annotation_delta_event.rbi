@@ -4,13 +4,15 @@ module OpenAI
   module Models
     module Responses
       class ResponseTextAnnotationDeltaEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # A citation to a file.
         sig do
           returns(
             T.any(
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
+              OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
+              OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
+              OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
             )
           )
         end
@@ -39,19 +41,18 @@ module OpenAI
         # Emitted when a text annotation is added.
         sig do
           params(
-            annotation: T.any(
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
-              OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
-            ),
+            annotation:
+              T.any(
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation::OrHash,
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation::OrHash,
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath::OrHash
+              ),
             annotation_index: Integer,
             content_index: Integer,
             item_id: String,
             output_index: Integer,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # A citation to a file.
@@ -66,31 +67,46 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.output_text.annotation.added`.
           type: :"response.output_text.annotation.added"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                annotation: T.any(
-                  OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-                  OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
-                  OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
-                ),
-                annotation_index: Integer,
-                content_index: Integer,
-                item_id: String,
-                output_index: Integer,
-                type: Symbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              annotation:
+                T.any(
+                  OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
+                  OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
+                  OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
+                ),
+              annotation_index: Integer,
+              content_index: Integer,
+              item_id: String,
+              output_index: Integer,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         # A citation to a file.
         module Annotation
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
+              )
+            end
+
           class FileCitation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the file.
             sig { returns(String) }
             attr_accessor :file_id
@@ -104,7 +120,11 @@ module OpenAI
             attr_accessor :type
 
             # A citation to a file.
-            sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(file_id: String, index: Integer, type: Symbol).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # The ID of the file.
               file_id:,
@@ -112,12 +132,22 @@ module OpenAI
               index:,
               # The type of the file citation. Always `file_citation`.
               type: :file_citation
-            ); end
-            sig { override.returns({file_id: String, index: Integer, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns(
+                { file_id: String, index: Integer, type: Symbol }
+              )
+            end
+            def to_hash
+            end
           end
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
             attr_accessor :end_index
@@ -140,8 +170,13 @@ module OpenAI
 
             # A citation for a web resource used to generate a model response.
             sig do
-              params(end_index: Integer, start_index: Integer, title: String, url: String, type: Symbol)
-                .returns(T.attached_class)
+              params(
+                end_index: Integer,
+                start_index: Integer,
+                title: String,
+                url: String,
+                type: Symbol
+              ).returns(T.attached_class)
             end
             def self.new(
               # The index of the last character of the URL citation in the message.
@@ -154,7 +189,9 @@ module OpenAI
               url:,
               # The type of the URL citation. Always `url_citation`.
               type: :url_citation
-            ); end
+            )
+            end
+
             sig do
               override.returns(
                 {
@@ -166,10 +203,14 @@ module OpenAI
                 }
               )
             end
-            def to_hash; end
+            def to_hash
+            end
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the file.
             sig { returns(String) }
             attr_accessor :file_id
@@ -183,7 +224,11 @@ module OpenAI
             attr_accessor :type
 
             # A path to a file.
-            sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(file_id: String, index: Integer, type: Symbol).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # The ID of the file.
               file_id:,
@@ -191,18 +236,27 @@ module OpenAI
               index:,
               # The type of the file path. Always `file_path`.
               type: :file_path
-            ); end
-            sig { override.returns({file_id: String, index: Integer, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns(
+                { file_id: String, index: Integer, type: Symbol }
+              )
+            end
+            def to_hash
+            end
           end
 
           sig do
-            override
-              .returns(
-                [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
-              )
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
       end
     end

@@ -19,8 +19,8 @@ module OpenAI
         #   ID of the model to use. Only `whisper-1` (which is powered by our open source
         #   Whisper V2 model) is currently available.
         #
-        #   @return [String, Symbol, OpenAI::Models::AudioModel]
-        required :model, union: -> { OpenAI::Models::Audio::TranslationCreateParams::Model }
+        #   @return [String, Symbol, OpenAI::AudioModel]
+        required :model, union: -> { OpenAI::Audio::TranslationCreateParams::Model }
 
         # @!attribute prompt
         #   An optional text to guide the model's style or continue a previous audio
@@ -35,8 +35,8 @@ module OpenAI
         #   The format of the output, in one of these options: `json`, `text`, `srt`,
         #   `verbose_json`, or `vtt`.
         #
-        #   @return [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat, nil]
-        optional :response_format, enum: -> { OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat }
+        #   @return [Symbol, OpenAI::Audio::TranslationCreateParams::ResponseFormat, nil]
+        optional :response_format, enum: -> { OpenAI::Audio::TranslationCreateParams::ResponseFormat }
 
         # @!attribute temperature
         #   The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
@@ -53,19 +53,14 @@ module OpenAI
         #   {OpenAI::Models::Audio::TranslationCreateParams} for more details.
         #
         #   @param file [Pathname, StringIO, IO, OpenAI::FilePart] The audio file object (not file name) translate, in one of these formats: flac,
-        #   ...
         #
-        #   @param model [String, Symbol, OpenAI::Models::AudioModel] ID of the model to use. Only `whisper-1` (which is powered by our open source Wh
-        #   ...
+        #   @param model [String, Symbol, OpenAI::AudioModel] ID of the model to use. Only `whisper-1` (which is powered by our open source Wh
         #
         #   @param prompt [String] An optional text to guide the model's style or continue a previous audio segment
-        #   ...
         #
-        #   @param response_format [Symbol, OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
-        #   ...
+        #   @param response_format [Symbol, OpenAI::Audio::TranslationCreateParams::ResponseFormat] The format of the output, in one of these options: `json`, `text`, `srt`, `verbo
         #
         #   @param temperature [Float] The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-        #   ...
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -77,10 +72,10 @@ module OpenAI
           variant String
 
           # ID of the model to use. Only `whisper-1` (which is powered by our open source Whisper V2 model) is currently available.
-          variant enum: -> { OpenAI::Models::AudioModel }
+          variant enum: -> { OpenAI::AudioModel }
 
           # @!method self.variants
-          #   @return [Array(String, Symbol, OpenAI::Models::AudioModel)]
+          #   @return [Array(String, Symbol, OpenAI::AudioModel)]
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,

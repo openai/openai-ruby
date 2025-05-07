@@ -24,16 +24,15 @@ module OpenAI
 
         # @!method initialize(delta:, output_index:, type: :"response.code_interpreter_call.code.delta")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent} for more
-        #   details.
+        #   {OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent} for more details.
         #
         #   Emitted when a partial code snippet is added by the code interpreter.
         #
-        #   @param delta [String] The partial code snippet added by the code interpreter. ...
+        #   @param delta [String] The partial code snippet added by the code interpreter.
         #
-        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress. ...
+        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.code.delta"] The type of the event. Always `response.code_interpreter_call.code.delta`. ...
+        #   @param type [Symbol, :"response.code_interpreter_call.code.delta"] The type of the event. Always `response.code_interpreter_call.code.delta`.
       end
     end
   end

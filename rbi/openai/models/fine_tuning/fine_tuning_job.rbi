@@ -6,6 +6,8 @@ module OpenAI
 
     module FineTuning
       class FineTuningJob < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The object identifier, which can be referenced in the API endpoints.
         sig { returns(String) }
         attr_accessor :id
@@ -16,14 +18,13 @@ module OpenAI
 
         # For fine-tuning jobs that have `failed`, this will contain more information on
         # the cause of the failure.
-        sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Error)) }
+        sig { returns(T.nilable(OpenAI::FineTuning::FineTuningJob::Error)) }
         attr_reader :error
 
         sig do
           params(
-            error: T.nilable(T.any(OpenAI::Models::FineTuning::FineTuningJob::Error, OpenAI::Internal::AnyHash))
-          )
-            .void
+            error: T.nilable(OpenAI::FineTuning::FineTuningJob::Error::OrHash)
+          ).void
         end
         attr_writer :error
 
@@ -39,14 +40,14 @@ module OpenAI
 
         # The hyperparameters used for the fine-tuning job. This value will only be
         # returned when running `supervised` jobs.
-        sig { returns(OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters) }
+        sig { returns(OpenAI::FineTuning::FineTuningJob::Hyperparameters) }
         attr_reader :hyperparameters
 
         sig do
           params(
-            hyperparameters: T.any(OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters, OpenAI::Internal::AnyHash)
-          )
-            .void
+            hyperparameters:
+              OpenAI::FineTuning::FineTuningJob::Hyperparameters::OrHash
+          ).void
         end
         attr_writer :hyperparameters
 
@@ -74,7 +75,7 @@ module OpenAI
 
         # The current status of the fine-tuning job, which can be either
         # `validating_files`, `queued`, `running`, `succeeded`, `failed`, or `cancelled`.
-        sig { returns(OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol) }
+        sig { returns(OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol) }
         attr_accessor :status
 
         # The total number of billable tokens processed by this fine-tuning job. The value
@@ -99,7 +100,13 @@ module OpenAI
         attr_accessor :estimated_finish
 
         # A list of integrations to enable for this fine-tuning job.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject])) }
+        sig do
+          returns(
+            T.nilable(
+              T::Array[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]
+            )
+          )
+        end
         attr_accessor :integrations
 
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -112,10 +119,14 @@ module OpenAI
         attr_accessor :metadata
 
         # The method used for fine-tuning.
-        sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Method)) }
+        sig { returns(T.nilable(OpenAI::FineTuning::FineTuningJob::Method)) }
         attr_reader :method_
 
-        sig { params(method_: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method, OpenAI::Internal::AnyHash)).void }
+        sig do
+          params(
+            method_: OpenAI::FineTuning::FineTuningJob::Method::OrHash
+          ).void
+        end
         attr_writer :method_
 
         # The `fine_tuning.job` object represents a fine-tuning job that has been created
@@ -124,27 +135,30 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            error: T.nilable(T.any(OpenAI::Models::FineTuning::FineTuningJob::Error, OpenAI::Internal::AnyHash)),
+            error: T.nilable(OpenAI::FineTuning::FineTuningJob::Error::OrHash),
             fine_tuned_model: T.nilable(String),
             finished_at: T.nilable(Integer),
-            hyperparameters: T.any(OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters, OpenAI::Internal::AnyHash),
+            hyperparameters:
+              OpenAI::FineTuning::FineTuningJob::Hyperparameters::OrHash,
             model: String,
             organization_id: String,
             result_files: T::Array[String],
             seed: Integer,
-            status: OpenAI::Models::FineTuning::FineTuningJob::Status::OrSymbol,
+            status: OpenAI::FineTuning::FineTuningJob::Status::OrSymbol,
             trained_tokens: T.nilable(Integer),
             training_file: String,
             validation_file: T.nilable(String),
             estimated_finish: T.nilable(Integer),
-            integrations: T.nilable(
-              T::Array[T.any(OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject, OpenAI::Internal::AnyHash)]
-            ),
+            integrations:
+              T.nilable(
+                T::Array[
+                  OpenAI::FineTuning::FineTuningJobWandbIntegrationObject::OrHash
+                ]
+              ),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            method_: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method, OpenAI::Internal::AnyHash),
+            method_: OpenAI::FineTuning::FineTuningJob::Method::OrHash,
             object: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The object identifier, which can be referenced in the API endpoints.
@@ -202,36 +216,47 @@ module OpenAI
           method_: nil,
           # The object type, which is always "fine_tuning.job".
           object: :"fine_tuning.job"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                id: String,
-                created_at: Integer,
-                error: T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Error),
-                fine_tuned_model: T.nilable(String),
-                finished_at: T.nilable(Integer),
-                hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Hyperparameters,
-                model: String,
-                object: Symbol,
-                organization_id: String,
-                result_files: T::Array[String],
-                seed: Integer,
-                status: OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol,
-                trained_tokens: T.nilable(Integer),
-                training_file: String,
-                validation_file: T.nilable(String),
-                estimated_finish: T.nilable(Integer),
-                integrations: T.nilable(T::Array[OpenAI::Models::FineTuning::FineTuningJobWandbIntegrationObject]),
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                method_: OpenAI::Models::FineTuning::FineTuningJob::Method
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              id: String,
+              created_at: Integer,
+              error: T.nilable(OpenAI::FineTuning::FineTuningJob::Error),
+              fine_tuned_model: T.nilable(String),
+              finished_at: T.nilable(Integer),
+              hyperparameters:
+                OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+              model: String,
+              object: Symbol,
+              organization_id: String,
+              result_files: T::Array[String],
+              seed: Integer,
+              status: OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol,
+              trained_tokens: T.nilable(Integer),
+              training_file: String,
+              validation_file: T.nilable(String),
+              estimated_finish: T.nilable(Integer),
+              integrations:
+                T.nilable(
+                  T::Array[
+                    OpenAI::FineTuning::FineTuningJobWandbIntegrationObject
+                  ]
+                ),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              method_: OpenAI::FineTuning::FineTuningJob::Method
+            }
+          )
+        end
+        def to_hash
+        end
 
         class Error < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # A machine-readable error code.
           sig { returns(String) }
           attr_accessor :code
@@ -247,7 +272,13 @@ module OpenAI
 
           # For fine-tuning jobs that have `failed`, this will contain more information on
           # the cause of the failure.
-          sig { params(code: String, message: String, param: T.nilable(String)).returns(T.attached_class) }
+          sig do
+            params(
+              code: String,
+              message: String,
+              param: T.nilable(String)
+            ).returns(T.attached_class)
+          end
           def self.new(
             # A machine-readable error code.
             code:,
@@ -256,12 +287,22 @@ module OpenAI
             # The parameter that was invalid, usually `training_file` or `validation_file`.
             # This field will be null if the failure was not parameter-specific.
             param:
-          ); end
-          sig { override.returns({code: String, message: String, param: T.nilable(String)}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { code: String, message: String, param: T.nilable(String) }
+            )
+          end
+          def to_hash
+          end
         end
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
           sig { returns(T.nilable(T.any(Symbol, Integer))) }
@@ -293,8 +334,7 @@ module OpenAI
               batch_size: T.any(Symbol, Integer),
               learning_rate_multiplier: T.any(Symbol, Float),
               n_epochs: T.any(Symbol, Integer)
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Number of examples in each batch. A larger batch size means that model
@@ -306,26 +346,37 @@ module OpenAI
             # The number of epochs to train the model for. An epoch refers to one full cycle
             # through the training dataset.
             n_epochs: nil
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  batch_size: T.any(Symbol, Integer),
-                  learning_rate_multiplier: T.any(Symbol, Float),
-                  n_epochs: T.any(Symbol, Integer)
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                batch_size: T.any(Symbol, Integer),
+                learning_rate_multiplier: T.any(Symbol, Float),
+                n_epochs: T.any(Symbol, Integer)
+              }
+            )
+          end
+          def to_hash
+          end
 
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
           module BatchSize
             extend OpenAI::Internal::Type::Union
 
-            sig { override.returns([Symbol, Integer]) }
-            def self.variants; end
+            Variants = T.type_alias { T.any(Symbol, Integer) }
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize::Variants
+                ]
+              )
+            end
+            def self.variants
+            end
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -333,8 +384,17 @@ module OpenAI
           module LearningRateMultiplier
             extend OpenAI::Internal::Type::Union
 
-            sig { override.returns([Symbol, Float]) }
-            def self.variants; end
+            Variants = T.type_alias { T.any(Symbol, Float) }
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier::Variants
+                ]
+              )
+            end
+            def self.variants
+            end
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -342,8 +402,17 @@ module OpenAI
           module NEpochs
             extend OpenAI::Internal::Type::Union
 
-            sig { override.returns([Symbol, Integer]) }
-            def self.variants; end
+            Variants = T.type_alias { T.any(Symbol, Integer) }
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::FineTuning::FineTuningJob::Hyperparameters::NEpochs::Variants
+                ]
+              )
+            end
+            def self.variants
+            end
           end
         end
 
@@ -352,56 +421,110 @@ module OpenAI
         module Status
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJob::Status) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::FineTuning::FineTuningJob::Status)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           VALIDATING_FILES =
-            T.let(:validating_files, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
-          QUEUED = T.let(:queued, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
-          RUNNING = T.let(:running, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
-          SUCCEEDED = T.let(:succeeded, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol)
+            T.let(
+              :validating_files,
+              OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol
+            )
+          QUEUED =
+            T.let(
+              :queued,
+              OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol
+            )
+          RUNNING =
+            T.let(
+              :running,
+              OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol
+            )
+          SUCCEEDED =
+            T.let(
+              :succeeded,
+              OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol
+            )
+          FAILED =
+            T.let(
+              :failed,
+              OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol
+            )
+          CANCELLED =
+            T.let(
+              :cancelled,
+              OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJob::Status::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[OpenAI::FineTuning::FineTuningJob::Status::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
         end
 
         class Method < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Configuration for the DPO fine-tuning method.
-          sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo)) }
+          sig do
+            returns(T.nilable(OpenAI::FineTuning::FineTuningJob::Method::Dpo))
+          end
           attr_reader :dpo
 
-          sig { params(dpo: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(
+              dpo: OpenAI::FineTuning::FineTuningJob::Method::Dpo::OrHash
+            ).void
+          end
           attr_writer :dpo
 
           # Configuration for the supervised fine-tuning method.
-          sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised)) }
+          sig do
+            returns(
+              T.nilable(OpenAI::FineTuning::FineTuningJob::Method::Supervised)
+            )
+          end
           attr_reader :supervised
 
           sig do
             params(
-              supervised: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised, OpenAI::Internal::AnyHash)
-            )
-              .void
+              supervised:
+                OpenAI::FineTuning::FineTuningJob::Method::Supervised::OrHash
+            ).void
           end
           attr_writer :supervised
 
           # The type of method. Is either `supervised` or `dpo`.
-          sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
+              )
+            )
+          end
           attr_reader :type
 
-          sig { params(type: OpenAI::Models::FineTuning::FineTuningJob::Method::Type::OrSymbol).void }
+          sig do
+            params(
+              type: OpenAI::FineTuning::FineTuningJob::Method::Type::OrSymbol
+            ).void
+          end
           attr_writer :type
 
           # The method used for fine-tuning.
           sig do
             params(
-              dpo: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo, OpenAI::Internal::AnyHash),
-              supervised: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised, OpenAI::Internal::AnyHash),
-              type: OpenAI::Models::FineTuning::FineTuningJob::Method::Type::OrSymbol
-            )
-              .returns(T.attached_class)
+              dpo: OpenAI::FineTuning::FineTuningJob::Method::Dpo::OrHash,
+              supervised:
+                OpenAI::FineTuning::FineTuningJob::Method::Supervised::OrHash,
+              type: OpenAI::FineTuning::FineTuningJob::Method::Type::OrSymbol
+            ).returns(T.attached_class)
           end
           def self.new(
             # Configuration for the DPO fine-tuning method.
@@ -410,50 +533,73 @@ module OpenAI
             supervised: nil,
             # The type of method. Is either `supervised` or `dpo`.
             type: nil
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  dpo: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo,
-                  supervised: OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised,
-                  type: OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                dpo: OpenAI::FineTuning::FineTuningJob::Method::Dpo,
+                supervised:
+                  OpenAI::FineTuning::FineTuningJob::Method::Supervised,
+                type:
+                  OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
+              }
+            )
+          end
+          def to_hash
+          end
 
           class Dpo < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The hyperparameters used for the fine-tuning job.
-            sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters)) }
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters
+                )
+              )
+            end
             attr_reader :hyperparameters
 
             sig do
               params(
-                hyperparameters: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters, OpenAI::Internal::AnyHash)
-              )
-                .void
+                hyperparameters:
+                  OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::OrHash
+              ).void
             end
             attr_writer :hyperparameters
 
             # Configuration for the DPO fine-tuning method.
             sig do
               params(
-                hyperparameters: T.any(OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters, OpenAI::Internal::AnyHash)
-              )
-                .returns(T.attached_class)
+                hyperparameters:
+                  OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::OrHash
+              ).returns(T.attached_class)
             end
             def self.new(
               # The hyperparameters used for the fine-tuning job.
               hyperparameters: nil
-            ); end
-            sig do
-              override
-                .returns({hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters})
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  hyperparameters:
+                    OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # Number of examples in each batch. A larger batch size means that model
               # parameters are updated less frequently, but with lower variance.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
@@ -475,7 +621,9 @@ module OpenAI
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               attr_reader :learning_rate_multiplier
 
-              sig { params(learning_rate_multiplier: T.any(Symbol, Float)).void }
+              sig do
+                params(learning_rate_multiplier: T.any(Symbol, Float)).void
+              end
               attr_writer :learning_rate_multiplier
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -493,8 +641,7 @@ module OpenAI
                   beta: T.any(Symbol, Float),
                   learning_rate_multiplier: T.any(Symbol, Float),
                   n_epochs: T.any(Symbol, Integer)
-                )
-                  .returns(T.attached_class)
+                ).returns(T.attached_class)
               end
               def self.new(
                 # Number of examples in each batch. A larger batch size means that model
@@ -509,27 +656,38 @@ module OpenAI
                 # The number of epochs to train the model for. An epoch refers to one full cycle
                 # through the training dataset.
                 n_epochs: nil
-              ); end
-              sig do
-                override
-                  .returns(
-                    {
-                      batch_size: T.any(Symbol, Integer),
-                      beta: T.any(Symbol, Float),
-                      learning_rate_multiplier: T.any(Symbol, Float),
-                      n_epochs: T.any(Symbol, Integer)
-                    }
-                  )
+              )
               end
-              def to_hash; end
+
+              sig do
+                override.returns(
+                  {
+                    batch_size: T.any(Symbol, Integer),
+                    beta: T.any(Symbol, Float),
+                    learning_rate_multiplier: T.any(Symbol, Float),
+                    n_epochs: T.any(Symbol, Integer)
+                  }
+                )
+              end
+              def to_hash
+              end
 
               # Number of examples in each batch. A larger batch size means that model
               # parameters are updated less frequently, but with lower variance.
               module BatchSize
                 extend OpenAI::Internal::Type::Union
 
-                sig { override.returns([Symbol, Integer]) }
-                def self.variants; end
+                Variants = T.type_alias { T.any(Symbol, Integer) }
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::BatchSize::Variants
+                    ]
+                  )
+                end
+                def self.variants
+                end
               end
 
               # The beta value for the DPO method. A higher beta value will increase the weight
@@ -537,8 +695,17 @@ module OpenAI
               module Beta
                 extend OpenAI::Internal::Type::Union
 
-                sig { override.returns([Symbol, Float]) }
-                def self.variants; end
+                Variants = T.type_alias { T.any(Symbol, Float) }
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::Beta::Variants
+                    ]
+                  )
+                end
+                def self.variants
+                end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -546,8 +713,17 @@ module OpenAI
               module LearningRateMultiplier
                 extend OpenAI::Internal::Type::Union
 
-                sig { override.returns([Symbol, Float]) }
-                def self.variants; end
+                Variants = T.type_alias { T.any(Symbol, Float) }
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::LearningRateMultiplier::Variants
+                    ]
+                  )
+                end
+                def self.variants
+                end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -555,49 +731,71 @@ module OpenAI
               module NEpochs
                 extend OpenAI::Internal::Type::Union
 
-                sig { override.returns([Symbol, Integer]) }
-                def self.variants; end
+                Variants = T.type_alias { T.any(Symbol, Integer) }
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::FineTuning::FineTuningJob::Method::Dpo::Hyperparameters::NEpochs::Variants
+                    ]
+                  )
+                end
+                def self.variants
+                end
               end
             end
           end
 
           class Supervised < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The hyperparameters used for the fine-tuning job.
-            sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters)) }
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters
+                )
+              )
+            end
             attr_reader :hyperparameters
 
             sig do
               params(
-                hyperparameters: T.any(
-                  OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters,
-                  OpenAI::Internal::AnyHash
-                )
-              )
-                .void
+                hyperparameters:
+                  OpenAI::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::OrHash
+              ).void
             end
             attr_writer :hyperparameters
 
             # Configuration for the supervised fine-tuning method.
             sig do
               params(
-                hyperparameters: T.any(
-                  OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters,
-                  OpenAI::Internal::AnyHash
-                )
-              )
-                .returns(T.attached_class)
+                hyperparameters:
+                  OpenAI::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::OrHash
+              ).returns(T.attached_class)
             end
             def self.new(
               # The hyperparameters used for the fine-tuning job.
               hyperparameters: nil
-            ); end
-            sig do
-              override
-                .returns({hyperparameters: OpenAI::Models::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters})
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  hyperparameters:
+                    OpenAI::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Hyperparameters < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # Number of examples in each batch. A larger batch size means that model
               # parameters are updated less frequently, but with lower variance.
               sig { returns(T.nilable(T.any(Symbol, Integer))) }
@@ -611,7 +809,9 @@ module OpenAI
               sig { returns(T.nilable(T.any(Symbol, Float))) }
               attr_reader :learning_rate_multiplier
 
-              sig { params(learning_rate_multiplier: T.any(Symbol, Float)).void }
+              sig do
+                params(learning_rate_multiplier: T.any(Symbol, Float)).void
+              end
               attr_writer :learning_rate_multiplier
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -628,8 +828,7 @@ module OpenAI
                   batch_size: T.any(Symbol, Integer),
                   learning_rate_multiplier: T.any(Symbol, Float),
                   n_epochs: T.any(Symbol, Integer)
-                )
-                  .returns(T.attached_class)
+                ).returns(T.attached_class)
               end
               def self.new(
                 # Number of examples in each batch. A larger batch size means that model
@@ -641,26 +840,37 @@ module OpenAI
                 # The number of epochs to train the model for. An epoch refers to one full cycle
                 # through the training dataset.
                 n_epochs: nil
-              ); end
-              sig do
-                override
-                  .returns(
-                    {
-                      batch_size: T.any(Symbol, Integer),
-                      learning_rate_multiplier: T.any(Symbol, Float),
-                      n_epochs: T.any(Symbol, Integer)
-                    }
-                  )
+              )
               end
-              def to_hash; end
+
+              sig do
+                override.returns(
+                  {
+                    batch_size: T.any(Symbol, Integer),
+                    learning_rate_multiplier: T.any(Symbol, Float),
+                    n_epochs: T.any(Symbol, Integer)
+                  }
+                )
+              end
+              def to_hash
+              end
 
               # Number of examples in each batch. A larger batch size means that model
               # parameters are updated less frequently, but with lower variance.
               module BatchSize
                 extend OpenAI::Internal::Type::Union
 
-                sig { override.returns([Symbol, Integer]) }
-                def self.variants; end
+                Variants = T.type_alias { T.any(Symbol, Integer) }
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::BatchSize::Variants
+                    ]
+                  )
+                end
+                def self.variants
+                end
               end
 
               # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -668,8 +878,17 @@ module OpenAI
               module LearningRateMultiplier
                 extend OpenAI::Internal::Type::Union
 
-                sig { override.returns([Symbol, Float]) }
-                def self.variants; end
+                Variants = T.type_alias { T.any(Symbol, Float) }
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::LearningRateMultiplier::Variants
+                    ]
+                  )
+                end
+                def self.variants
+                end
               end
 
               # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -677,8 +896,17 @@ module OpenAI
               module NEpochs
                 extend OpenAI::Internal::Type::Union
 
-                sig { override.returns([Symbol, Integer]) }
-                def self.variants; end
+                Variants = T.type_alias { T.any(Symbol, Integer) }
+
+                sig do
+                  override.returns(
+                    T::Array[
+                      OpenAI::FineTuning::FineTuningJob::Method::Supervised::Hyperparameters::NEpochs::Variants
+                    ]
+                  )
+                end
+                def self.variants
+                end
               end
             end
           end
@@ -687,14 +915,32 @@ module OpenAI
           module Type
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJob::Method::Type) }
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::FineTuning::FineTuningJob::Method::Type)
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            SUPERVISED = T.let(:supervised, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)
-            DPO = T.let(:dpo, OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol)
+            SUPERVISED =
+              T.let(
+                :supervised,
+                OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
+              )
+            DPO =
+              T.let(
+                :dpo,
+                OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
+              )
 
-            sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJob::Method::Type::TaggedSymbol]) }
-            def self.values; end
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::FineTuning::FineTuningJob::Method::Type::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
       end

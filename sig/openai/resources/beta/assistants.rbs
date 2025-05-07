@@ -11,16 +11,16 @@ module OpenAI
           ?reasoning_effort: OpenAI::Models::reasoning_effort?,
           ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
           ?temperature: Float?,
-          ?tool_resources: OpenAI::Models::Beta::AssistantCreateParams::ToolResources?,
+          ?tool_resources: OpenAI::Beta::AssistantCreateParams::ToolResources?,
           ?tools: ::Array[OpenAI::Models::Beta::assistant_tool],
           ?top_p: Float?,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::Beta::Assistant
+        ) -> OpenAI::Beta::Assistant
 
         def retrieve: (
           String assistant_id,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::Beta::Assistant
+        ) -> OpenAI::Beta::Assistant
 
         def update: (
           String assistant_id,
@@ -32,11 +32,11 @@ module OpenAI
           ?reasoning_effort: OpenAI::Models::reasoning_effort?,
           ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
           ?temperature: Float?,
-          ?tool_resources: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources?,
+          ?tool_resources: OpenAI::Beta::AssistantUpdateParams::ToolResources?,
           ?tools: ::Array[OpenAI::Models::Beta::assistant_tool],
           ?top_p: Float?,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::Beta::Assistant
+        ) -> OpenAI::Beta::Assistant
 
         def list: (
           ?after: String,
@@ -44,12 +44,12 @@ module OpenAI
           ?limit: Integer,
           ?order: OpenAI::Models::Beta::AssistantListParams::order,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Assistant]
+        ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Assistant]
 
         def delete: (
           String assistant_id,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::Beta::AssistantDeleted
+        ) -> OpenAI::Beta::AssistantDeleted
 
         def initialize: (client: OpenAI::Client) -> void
       end

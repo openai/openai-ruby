@@ -4,37 +4,52 @@ module OpenAI
   module Models
     module Beta
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The type of tool being defined: `file_search`
         sig { returns(Symbol) }
         attr_accessor :type
 
         # Overrides for the file search tool.
-        sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch)) }
+        sig { returns(T.nilable(OpenAI::Beta::FileSearchTool::FileSearch)) }
         attr_reader :file_search
 
         sig do
-          params(file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::AnyHash))
-            .void
+          params(
+            file_search: OpenAI::Beta::FileSearchTool::FileSearch::OrHash
+          ).void
         end
         attr_writer :file_search
 
         sig do
           params(
-            file_search: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch, OpenAI::Internal::AnyHash),
+            file_search: OpenAI::Beta::FileSearchTool::FileSearch::OrHash,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # Overrides for the file search tool.
           file_search: nil,
           # The type of tool being defined: `file_search`
           type: :file_search
-        ); end
-        sig { override.returns({type: Symbol, file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              type: Symbol,
+              file_search: OpenAI::Beta::FileSearchTool::FileSearch
+            }
+          )
+        end
+        def to_hash
+        end
 
         class FileSearch < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The maximum number of results the file search tool should output. The default is
           # 20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
           # 1 and 50 inclusive.
@@ -55,14 +70,20 @@ module OpenAI
           # See the
           # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
           # for more information.
-          sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
+              )
+            )
+          end
           attr_reader :ranking_options
 
           sig do
             params(
-              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::AnyHash)
-            )
-              .void
+              ranking_options:
+                OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::OrHash
+            ).void
           end
           attr_writer :ranking_options
 
@@ -70,9 +91,9 @@ module OpenAI
           sig do
             params(
               max_num_results: Integer,
-              ranking_options: T.any(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, OpenAI::Internal::AnyHash)
-            )
-              .returns(T.attached_class)
+              ranking_options:
+                OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::OrHash
+            ).returns(T.attached_class)
           end
           def self.new(
             # The maximum number of results the file search tool should output. The default is
@@ -91,16 +112,25 @@ module OpenAI
             # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             # for more information.
             ranking_options: nil
-          ); end
-          sig do
-            override
-              .returns(
-                {max_num_results: Integer, ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions}
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                max_num_results: Integer,
+                ranking_options:
+                  OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
+              }
+            )
+          end
+          def to_hash
+          end
 
           class RankingOptions < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The score threshold for the file search. All values must be a floating point
             # number between 0 and 1.
             sig { returns(Float) }
@@ -108,10 +138,21 @@ module OpenAI
 
             # The ranker to use for the file search. If not specified will use the `auto`
             # ranker.
-            sig { returns(T.nilable(OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol)) }
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
+                )
+              )
+            end
             attr_reader :ranker
 
-            sig { params(ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol).void }
+            sig do
+              params(
+                ranker:
+                  OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
+              ).void
+            end
             attr_writer :ranker
 
             # The ranking options for the file search. If not specified, the file search tool
@@ -123,9 +164,9 @@ module OpenAI
             sig do
               params(
                 score_threshold: Float,
-                ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
-              )
-                .returns(T.attached_class)
+                ranker:
+                  OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
+              ).returns(T.attached_class)
             end
             def self.new(
               # The score threshold for the file search. All values must be a floating point
@@ -134,17 +175,20 @@ module OpenAI
               # The ranker to use for the file search. If not specified will use the `auto`
               # ranker.
               ranker: nil
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    score_threshold: Float,
-                    ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  score_threshold: Float,
+                  ranker:
+                    OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::OrSymbol
+                }
+              )
+            end
+            def to_hash
+            end
 
             # The ranker to use for the file search. If not specified will use the `auto`
             # ranker.
@@ -152,22 +196,34 @@ module OpenAI
               extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol =
-                T.type_alias { T.all(Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker) }
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker
+                  )
+                end
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               AUTO =
-                T.let(:auto, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol)
+                T.let(
+                  :auto,
+                  OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                )
               DEFAULT_2024_08_21 =
                 T.let(
                   :default_2024_08_21,
-                  OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                  OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol
                 )
 
               sig do
-                override
-                  .returns(T::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol])
+                override.returns(
+                  T::Array[
+                    OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                  ]
+                )
               end
-              def self.values; end
+              def self.values
+              end
             end
           end
         end

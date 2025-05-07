@@ -13,6 +13,14 @@ module OpenAI
       module AssistantToolChoiceOption
         extend OpenAI::Internal::Type::Union
 
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
+              OpenAI::Beta::AssistantToolChoice
+            )
+          end
+
         # `none` means the model will not call any tools and instead generates a message.
         # `auto` means the model can pick between generating a message or calling one or
         # more tools. `required` means the model must call one or more tools before
@@ -20,24 +28,46 @@ module OpenAI
         module Auto
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Beta::AssistantToolChoiceOption::Auto)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          NONE = T.let(:none, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
-          AUTO = T.let(:auto, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
-          REQUIRED = T.let(:required, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol)
+          NONE =
+            T.let(
+              :none,
+              OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol
+            )
+          AUTO =
+            T.let(
+              :auto,
+              OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol
+            )
+          REQUIRED =
+            T.let(
+              :required,
+              OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         sig do
-          override
-            .returns(
-              [OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol, OpenAI::Models::Beta::AssistantToolChoice]
-            )
+          override.returns(
+            T::Array[OpenAI::Beta::AssistantToolChoiceOption::Variants]
+          )
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

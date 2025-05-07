@@ -7,7 +7,7 @@ module OpenAI
             {
               index: Integer,
               type: :image,
-              image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+              image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
             }
 
           class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
@@ -15,19 +15,17 @@ module OpenAI
 
             attr_accessor type: :image
 
-            attr_reader image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image?
+            attr_reader image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image?
 
             def image=: (
-              OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
-            ) -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+              OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+            ) -> OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
 
             def initialize: (
               index: Integer,
-              ?image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
+              ?image: OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
               ?type: :image
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_output_image
 
             type image = { file_id: String }
 
@@ -37,8 +35,6 @@ module OpenAI
               def file_id=: (String) -> String
 
               def initialize: (?file_id: String) -> void
-
-              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::image
             end
           end
         end

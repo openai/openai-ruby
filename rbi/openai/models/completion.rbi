@@ -3,12 +3,14 @@
 module OpenAI
   module Models
     class Completion < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # A unique identifier for the completion.
       sig { returns(String) }
       attr_accessor :id
 
       # The list of completion choices the model generated for the input prompt.
-      sig { returns(T::Array[OpenAI::Models::CompletionChoice]) }
+      sig { returns(T::Array[OpenAI::CompletionChoice]) }
       attr_accessor :choices
 
       # The Unix timestamp (in seconds) of when the completion was created.
@@ -34,10 +36,10 @@ module OpenAI
       attr_writer :system_fingerprint
 
       # Usage statistics for the completion request.
-      sig { returns(T.nilable(OpenAI::Models::CompletionUsage)) }
+      sig { returns(T.nilable(OpenAI::CompletionUsage)) }
       attr_reader :usage
 
-      sig { params(usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::AnyHash)).void }
+      sig { params(usage: OpenAI::CompletionUsage::OrHash).void }
       attr_writer :usage
 
       # Represents a completion response from the API. Note: both the streamed and
@@ -45,14 +47,13 @@ module OpenAI
       sig do
         params(
           id: String,
-          choices: T::Array[T.any(OpenAI::Models::CompletionChoice, OpenAI::Internal::AnyHash)],
+          choices: T::Array[OpenAI::CompletionChoice::OrHash],
           created: Integer,
           model: String,
           system_fingerprint: String,
-          usage: T.any(OpenAI::Models::CompletionUsage, OpenAI::Internal::AnyHash),
+          usage: OpenAI::CompletionUsage::OrHash,
           object: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # A unique identifier for the completion.
@@ -72,22 +73,24 @@ module OpenAI
         usage: nil,
         # The object type, which is always "text_completion"
         object: :text_completion
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              id: String,
-              choices: T::Array[OpenAI::Models::CompletionChoice],
-              created: Integer,
-              model: String,
-              object: Symbol,
-              system_fingerprint: String,
-              usage: OpenAI::Models::CompletionUsage
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            id: String,
+            choices: T::Array[OpenAI::CompletionChoice],
+            created: Integer,
+            model: String,
+            object: Symbol,
+            system_fingerprint: String,
+            usage: OpenAI::CompletionUsage
+          }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

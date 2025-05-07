@@ -5,12 +5,12 @@ module OpenAI
         file: Pathname | StringIO | IO | OpenAI::FilePart,
         purpose: OpenAI::Models::file_purpose,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::FileObject
+      ) -> OpenAI::FileObject
 
       def retrieve: (
         String file_id,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::FileObject
+      ) -> OpenAI::FileObject
 
       def list: (
         ?after: String,
@@ -18,12 +18,12 @@ module OpenAI
         ?order: OpenAI::Models::FileListParams::order,
         ?purpose: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::CursorPage[OpenAI::Models::FileObject]
+      ) -> OpenAI::Internal::CursorPage[OpenAI::FileObject]
 
       def delete: (
         String file_id,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::FileDeleted
+      ) -> OpenAI::FileDeleted
 
       def content: (
         String file_id,

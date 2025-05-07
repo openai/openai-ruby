@@ -6,6 +6,9 @@ module OpenAI
       module Threads
         module Runs
           class FileSearchToolCallDelta < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # For now, this is always going to be an empty object.
             sig { returns(T.anything) }
             attr_accessor :file_search
@@ -44,9 +47,21 @@ module OpenAI
               # The type of tool call. This is always going to be `file_search` for this type of
               # tool call.
               type: :file_search
-            ); end
-            sig { override.returns({file_search: T.anything, index: Integer, type: Symbol, id: String}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  file_search: T.anything,
+                  index: Integer,
+                  type: Symbol,
+                  id: String
+                }
+              )
+            end
+            def to_hash
+            end
           end
         end
       end

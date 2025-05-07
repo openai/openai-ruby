@@ -25,8 +25,7 @@ module OpenAI
 
         # @!method initialize(file_id: nil, image_url: nil, type: :computer_screenshot)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot} for more
-        #   details.
+        #   {OpenAI::Responses::ResponseComputerToolCallOutputScreenshot} for more details.
         #
         #   A computer screenshot image used with the computer use tool.
         #
@@ -34,7 +33,7 @@ module OpenAI
         #
         #   @param image_url [String] The URL of the screenshot image.
         #
-        #   @param type [Symbol, :computer_screenshot] Specifies the event type. For a computer screenshot, this property is ...
+        #   @param type [Symbol, :computer_screenshot] Specifies the event type. For a computer screenshot, this property is
       end
     end
   end

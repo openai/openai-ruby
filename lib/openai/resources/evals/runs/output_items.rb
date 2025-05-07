@@ -21,7 +21,7 @@ module OpenAI
           #
           # @see OpenAI::Models::Evals::Runs::OutputItemRetrieveParams
           def retrieve(output_item_id, params)
-            parsed, options = OpenAI::Models::Evals::Runs::OutputItemRetrieveParams.dump_request(params)
+            parsed, options = OpenAI::Evals::Runs::OutputItemRetrieveParams.dump_request(params)
             eval_id =
               parsed.delete(:eval_id) do
                 raise ArgumentError.new("missing required path argument #{_1}")
@@ -50,15 +50,12 @@ module OpenAI
           # @param eval_id [String] Path param: The ID of the evaluation to retrieve runs for.
           #
           # @param after [String] Query param: Identifier for the last output item from the previous pagination re
-          # ...
           #
           # @param limit [Integer] Query param: Number of output items to retrieve.
           #
-          # @param order [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Order] Query param: Sort order for output items by timestamp. Use `asc` for ascending o
-          # ...
+          # @param order [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Order] Query param: Sort order for output items by timestamp. Use `asc` for ascending o
           #
-          # @param status [Symbol, OpenAI::Models::Evals::Runs::OutputItemListParams::Status] Query param: Filter output items by status. Use `failed` to filter by failed out
-          # ...
+          # @param status [Symbol, OpenAI::Evals::Runs::OutputItemListParams::Status] Query param: Filter output items by status. Use `failed` to filter by failed out
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -66,7 +63,7 @@ module OpenAI
           #
           # @see OpenAI::Models::Evals::Runs::OutputItemListParams
           def list(run_id, params)
-            parsed, options = OpenAI::Models::Evals::Runs::OutputItemListParams.dump_request(params)
+            parsed, options = OpenAI::Evals::Runs::OutputItemListParams.dump_request(params)
             eval_id =
               parsed.delete(:eval_id) do
                 raise ArgumentError.new("missing required path argument #{_1}")

@@ -7,13 +7,19 @@ module OpenAI
       module Tool
         extend OpenAI::Internal::Type::Union
 
-        sig do
-          override
-            .returns(
-              [OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool]
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::FileSearchTool,
+              OpenAI::Responses::FunctionTool,
+              OpenAI::Responses::ComputerTool,
+              OpenAI::Responses::WebSearchTool
             )
+          end
+
+        sig { override.returns(T::Array[OpenAI::Responses::Tool::Variants]) }
+        def self.variants
         end
-        def self.variants; end
       end
     end
   end

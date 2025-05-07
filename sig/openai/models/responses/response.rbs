@@ -5,8 +5,8 @@ module OpenAI
         {
           id: String,
           created_at: Float,
-          error: OpenAI::Models::Responses::ResponseError?,
-          incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails?,
+          error: OpenAI::Responses::ResponseError?,
+          incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
           instructions: String?,
           metadata: OpenAI::Models::metadata?,
           model: OpenAI::Models::responses_model,
@@ -14,17 +14,17 @@ module OpenAI
           output: ::Array[OpenAI::Models::Responses::response_output_item],
           parallel_tool_calls: bool,
           temperature: Float?,
-          tool_choice: OpenAI::Models::Responses::Response::tool_choice,
+          tool_choice: OpenAI::Responses::Response::tool_choice,
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           max_output_tokens: Integer?,
           previous_response_id: String?,
-          reasoning: OpenAI::Models::Reasoning?,
-          service_tier: OpenAI::Models::Responses::Response::service_tier?,
+          reasoning: OpenAI::Reasoning?,
+          service_tier: OpenAI::Responses::Response::service_tier?,
           status: OpenAI::Models::Responses::response_status,
-          text: OpenAI::Models::Responses::ResponseTextConfig,
-          truncation: OpenAI::Models::Responses::Response::truncation?,
-          usage: OpenAI::Models::Responses::ResponseUsage,
+          text: OpenAI::Responses::ResponseTextConfig,
+          truncation: OpenAI::Responses::Response::truncation?,
+          usage: OpenAI::Responses::ResponseUsage,
           user: String
         }
 
@@ -33,9 +33,9 @@ module OpenAI
 
         attr_accessor created_at: Float
 
-        attr_accessor error: OpenAI::Models::Responses::ResponseError?
+        attr_accessor error: OpenAI::Responses::ResponseError?
 
-        attr_accessor incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails?
+        attr_accessor incomplete_details: OpenAI::Responses::Response::IncompleteDetails?
 
         attr_accessor instructions: String?
 
@@ -51,7 +51,7 @@ module OpenAI
 
         attr_accessor temperature: Float?
 
-        attr_accessor tool_choice: OpenAI::Models::Responses::Response::tool_choice
+        attr_accessor tool_choice: OpenAI::Responses::Response::tool_choice
 
         attr_accessor tools: ::Array[OpenAI::Models::Responses::tool]
 
@@ -61,9 +61,9 @@ module OpenAI
 
         attr_accessor previous_response_id: String?
 
-        attr_accessor reasoning: OpenAI::Models::Reasoning?
+        attr_accessor reasoning: OpenAI::Reasoning?
 
-        attr_accessor service_tier: OpenAI::Models::Responses::Response::service_tier?
+        attr_accessor service_tier: OpenAI::Responses::Response::service_tier?
 
         attr_reader status: OpenAI::Models::Responses::response_status?
 
@@ -71,19 +71,19 @@ module OpenAI
           OpenAI::Models::Responses::response_status
         ) -> OpenAI::Models::Responses::response_status
 
-        attr_reader text: OpenAI::Models::Responses::ResponseTextConfig?
+        attr_reader text: OpenAI::Responses::ResponseTextConfig?
 
         def text=: (
-          OpenAI::Models::Responses::ResponseTextConfig
-        ) -> OpenAI::Models::Responses::ResponseTextConfig
+          OpenAI::Responses::ResponseTextConfig
+        ) -> OpenAI::Responses::ResponseTextConfig
 
-        attr_accessor truncation: OpenAI::Models::Responses::Response::truncation?
+        attr_accessor truncation: OpenAI::Responses::Response::truncation?
 
-        attr_reader usage: OpenAI::Models::Responses::ResponseUsage?
+        attr_reader usage: OpenAI::Responses::ResponseUsage?
 
         def usage=: (
-          OpenAI::Models::Responses::ResponseUsage
-        ) -> OpenAI::Models::Responses::ResponseUsage
+          OpenAI::Responses::ResponseUsage
+        ) -> OpenAI::Responses::ResponseUsage
 
         attr_reader user: String?
 
@@ -92,48 +92,42 @@ module OpenAI
         def initialize: (
           id: String,
           created_at: Float,
-          error: OpenAI::Models::Responses::ResponseError?,
-          incomplete_details: OpenAI::Models::Responses::Response::IncompleteDetails?,
+          error: OpenAI::Responses::ResponseError?,
+          incomplete_details: OpenAI::Responses::Response::IncompleteDetails?,
           instructions: String?,
           metadata: OpenAI::Models::metadata?,
           model: OpenAI::Models::responses_model,
           output: ::Array[OpenAI::Models::Responses::response_output_item],
           parallel_tool_calls: bool,
           temperature: Float?,
-          tool_choice: OpenAI::Models::Responses::Response::tool_choice,
+          tool_choice: OpenAI::Responses::Response::tool_choice,
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
           ?max_output_tokens: Integer?,
           ?previous_response_id: String?,
-          ?reasoning: OpenAI::Models::Reasoning?,
-          ?service_tier: OpenAI::Models::Responses::Response::service_tier?,
+          ?reasoning: OpenAI::Reasoning?,
+          ?service_tier: OpenAI::Responses::Response::service_tier?,
           ?status: OpenAI::Models::Responses::response_status,
-          ?text: OpenAI::Models::Responses::ResponseTextConfig,
-          ?truncation: OpenAI::Models::Responses::Response::truncation?,
-          ?usage: OpenAI::Models::Responses::ResponseUsage,
+          ?text: OpenAI::Responses::ResponseTextConfig,
+          ?truncation: OpenAI::Responses::Response::truncation?,
+          ?usage: OpenAI::Responses::ResponseUsage,
           ?user: String,
           ?object: :response
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Responses::response
-
         type incomplete_details =
-          {
-            reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
-          }
+          { reason: OpenAI::Responses::Response::IncompleteDetails::reason }
 
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
-          attr_reader reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason?
+          attr_reader reason: OpenAI::Responses::Response::IncompleteDetails::reason?
 
           def reason=: (
-            OpenAI::Models::Responses::Response::IncompleteDetails::reason
-          ) -> OpenAI::Models::Responses::Response::IncompleteDetails::reason
+            OpenAI::Responses::Response::IncompleteDetails::reason
+          ) -> OpenAI::Responses::Response::IncompleteDetails::reason
 
           def initialize: (
-            ?reason: OpenAI::Models::Responses::Response::IncompleteDetails::reason
+            ?reason: OpenAI::Responses::Response::IncompleteDetails::reason
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::Response::incomplete_details
 
           type reason = :max_output_tokens | :content_filter
 
@@ -143,19 +137,19 @@ module OpenAI
             MAX_OUTPUT_TOKENS: :max_output_tokens
             CONTENT_FILTER: :content_filter
 
-            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::IncompleteDetails::reason]
+            def self?.values: -> ::Array[OpenAI::Responses::Response::IncompleteDetails::reason]
           end
         end
 
         type tool_choice =
           OpenAI::Models::Responses::tool_choice_options
-          | OpenAI::Models::Responses::ToolChoiceTypes
-          | OpenAI::Models::Responses::ToolChoiceFunction
+          | OpenAI::Responses::ToolChoiceTypes
+          | OpenAI::Responses::ToolChoiceFunction
 
         module ToolChoice
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+          def self?.variants: -> ::Array[OpenAI::Responses::Response::tool_choice]
         end
 
         type service_tier = :auto | :default | :flex
@@ -167,7 +161,7 @@ module OpenAI
           DEFAULT: :default
           FLEX: :flex
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::Response::service_tier]
+          def self?.values: -> ::Array[OpenAI::Responses::Response::service_tier]
         end
 
         type truncation = :auto | :disabled
@@ -178,7 +172,7 @@ module OpenAI
           AUTO: :auto
           DISABLED: :disabled
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::Response::truncation]
+          def self?.values: -> ::Array[OpenAI::Responses::Response::truncation]
         end
       end
     end

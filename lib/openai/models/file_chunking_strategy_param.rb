@@ -10,13 +10,13 @@ module OpenAI
       discriminator :type
 
       # The default strategy. This strategy currently uses a `max_chunk_size_tokens` of `800` and `chunk_overlap_tokens` of `400`.
-      variant :auto, -> { OpenAI::Models::AutoFileChunkingStrategyParam }
+      variant :auto, -> { OpenAI::AutoFileChunkingStrategyParam }
 
       # Customize your own chunking strategy by setting chunk size and chunk overlap.
-      variant :static, -> { OpenAI::Models::StaticFileChunkingStrategyObjectParam }
+      variant :static, -> { OpenAI::StaticFileChunkingStrategyObjectParam }
 
       # @!method self.variants
-      #   @return [Array(OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam)]
+      #   @return [Array(OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam)]
     end
   end
 end

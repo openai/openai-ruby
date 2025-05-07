@@ -23,37 +23,51 @@ module OpenAI
         class << self
           # @api private
           sig { params(url: URI::Generic).returns(Net::HTTP) }
-          def connect(url); end
+          def connect(url)
+          end
 
           # @api private
           sig { params(conn: Net::HTTP, deadline: Float).void }
-          def calibrate_socket_timeout(conn, deadline); end
+          def calibrate_socket_timeout(conn, deadline)
+          end
 
           # @api private
           sig do
             params(
-              request: OpenAI::Internal::Transport::PooledNetRequester::RequestShape,
+              request:
+                OpenAI::Internal::Transport::PooledNetRequester::RequestShape,
               blk: T.proc.params(arg0: String).void
-            )
-              .returns([Net::HTTPGenericRequest, T.proc.void])
+            ).returns([Net::HTTPGenericRequest, T.proc.void])
           end
-          def build_request(request, &blk); end
+          def build_request(request, &blk)
+          end
         end
-
-        # @api private
-        sig { params(url: URI::Generic, deadline: Float, blk: T.proc.params(arg0: Net::HTTP).void).void }
-        private def with_pool(url, deadline:, &blk); end
 
         # @api private
         sig do
-          params(request: OpenAI::Internal::Transport::PooledNetRequester::RequestShape)
-            .returns([Integer, Net::HTTPResponse, T::Enumerable[String]])
+          params(
+            url: URI::Generic,
+            deadline: Float,
+            blk: T.proc.params(arg0: Net::HTTP).void
+          ).void
         end
-        def execute(request); end
+        private def with_pool(url, deadline:, &blk)
+        end
+
+        # @api private
+        sig do
+          params(
+            request:
+              OpenAI::Internal::Transport::PooledNetRequester::RequestShape
+          ).returns([Integer, Net::HTTPResponse, T::Enumerable[String]])
+        end
+        def execute(request)
+        end
 
         # @api private
         sig { params(size: Integer).returns(T.attached_class) }
-        def self.new(size: Etc.nprocessors); end
+        def self.new(size: Etc.nprocessors)
+        end
       end
     end
   end

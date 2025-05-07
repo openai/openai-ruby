@@ -6,13 +6,17 @@ module OpenAI
     module FileChunkingStrategy
       extend OpenAI::Internal::Type::Union
 
-      sig do
-        override
-          .returns(
-            [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
+      Variants =
+        T.type_alias do
+          T.any(
+            OpenAI::StaticFileChunkingStrategyObject,
+            OpenAI::OtherFileChunkingStrategyObject
           )
+        end
+
+      sig { override.returns(T::Array[OpenAI::FileChunkingStrategy::Variants]) }
+      def self.variants
       end
-      def self.variants; end
     end
   end
 end

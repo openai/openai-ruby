@@ -12,18 +12,18 @@ module OpenAI
         ?metadata: OpenAI::Models::metadata?,
         ?parallel_tool_calls: bool?,
         ?previous_response_id: String?,
-        ?reasoning: OpenAI::Models::Reasoning?,
+        ?reasoning: OpenAI::Reasoning?,
         ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
         ?store: bool?,
         ?temperature: Float?,
-        ?text: OpenAI::Models::Responses::ResponseTextConfig,
+        ?text: OpenAI::Responses::ResponseTextConfig,
         ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
         ?tools: ::Array[OpenAI::Models::Responses::tool],
         ?top_p: Float?,
         ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::Responses::Response
+      ) -> OpenAI::Responses::Response
 
       def stream_raw: (
         input: OpenAI::Models::Responses::ResponseCreateParams::input,
@@ -34,11 +34,11 @@ module OpenAI
         ?metadata: OpenAI::Models::metadata?,
         ?parallel_tool_calls: bool?,
         ?previous_response_id: String?,
-        ?reasoning: OpenAI::Models::Reasoning?,
+        ?reasoning: OpenAI::Reasoning?,
         ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
         ?store: bool?,
         ?temperature: Float?,
-        ?text: OpenAI::Models::Responses::ResponseTextConfig,
+        ?text: OpenAI::Responses::ResponseTextConfig,
         ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
         ?tools: ::Array[OpenAI::Models::Responses::tool],
         ?top_p: Float?,
@@ -51,7 +51,7 @@ module OpenAI
         String response_id,
         ?include: ::Array[OpenAI::Models::Responses::response_includable],
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::Responses::Response
+      ) -> OpenAI::Responses::Response
 
       def delete: (
         String response_id,

@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseRefusalDeltaEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The index of the content part that the refusal text is added to.
         sig { returns(Integer) }
         attr_accessor :content_index
@@ -26,8 +28,13 @@ module OpenAI
 
         # Emitted when there is a partial refusal text.
         sig do
-          params(content_index: Integer, delta: String, item_id: String, output_index: Integer, type: Symbol)
-            .returns(T.attached_class)
+          params(
+            content_index: Integer,
+            delta: String,
+            item_id: String,
+            output_index: Integer,
+            type: Symbol
+          ).returns(T.attached_class)
         end
         def self.new(
           # The index of the content part that the refusal text is added to.
@@ -40,18 +47,22 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.refusal.delta`.
           type: :"response.refusal.delta"
-        ); end
-        sig do
-          override
-            .returns({
-                       content_index: Integer,
-                       delta: String,
-                       item_id: String,
-                       output_index: Integer,
-                       type: Symbol
-                     })
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              content_index: Integer,
+              delta: String,
+              item_id: String,
+              output_index: Integer,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

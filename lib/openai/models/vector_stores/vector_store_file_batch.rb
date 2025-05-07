@@ -20,8 +20,8 @@ module OpenAI
 
         # @!attribute file_counts
         #
-        #   @return [OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts]
-        required :file_counts, -> { OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts }
+        #   @return [OpenAI::VectorStores::VectorStoreFileBatch::FileCounts]
+        required :file_counts, -> { OpenAI::VectorStores::VectorStoreFileBatch::FileCounts }
 
         # @!attribute object
         #   The object type, which is always `vector_store.file_batch`.
@@ -33,8 +33,8 @@ module OpenAI
         #   The status of the vector store files batch, which can be either `in_progress`,
         #   `completed`, `cancelled` or `failed`.
         #
-        #   @return [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status]
-        required :status, enum: -> { OpenAI::Models::VectorStores::VectorStoreFileBatch::Status }
+        #   @return [Symbol, OpenAI::VectorStores::VectorStoreFileBatch::Status]
+        required :status, enum: -> { OpenAI::VectorStores::VectorStoreFileBatch::Status }
 
         # @!attribute vector_store_id
         #   The ID of the
@@ -47,26 +47,23 @@ module OpenAI
 
         # @!method initialize(id:, created_at:, file_counts:, status:, vector_store_id:, object: :"vector_store.files_batch")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::VectorStores::VectorStoreFileBatch} for more details.
+        #   {OpenAI::VectorStores::VectorStoreFileBatch} for more details.
         #
         #   A batch of files attached to a vector store.
         #
         #   @param id [String] The identifier, which can be referenced in API endpoints.
         #
         #   @param created_at [Integer] The Unix timestamp (in seconds) for when the vector store files batch was create
-        #   ...
         #
-        #   @param file_counts [OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts]
+        #   @param file_counts [OpenAI::VectorStores::VectorStoreFileBatch::FileCounts]
         #
-        #   @param status [Symbol, OpenAI::Models::VectorStores::VectorStoreFileBatch::Status] The status of the vector store files batch, which can be either `in_progress`, `
-        #   ...
+        #   @param status [Symbol, OpenAI::VectorStores::VectorStoreFileBatch::Status] The status of the vector store files batch, which can be either `in_progress`, `
         #
         #   @param vector_store_id [String] The ID of the [vector store](https://platform.openai.com/docs/api-reference/vect
-        #   ...
         #
         #   @param object [Symbol, :"vector_store.files_batch"] The object type, which is always `vector_store.file_batch`.
 
-        # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#file_counts
+        # @see OpenAI::VectorStores::VectorStoreFileBatch#file_counts
         class FileCounts < OpenAI::Internal::Type::BaseModel
           # @!attribute cancelled
           #   The number of files that where cancelled.
@@ -113,7 +110,7 @@ module OpenAI
         # The status of the vector store files batch, which can be either `in_progress`,
         # `completed`, `cancelled` or `failed`.
         #
-        # @see OpenAI::Models::VectorStores::VectorStoreFileBatch#status
+        # @see OpenAI::VectorStores::VectorStoreFileBatch#status
         module Status
           extend OpenAI::Internal::Type::Enum
 

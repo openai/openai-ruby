@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseAudioTranscriptDeltaEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The partial transcript of the audio response.
         sig { returns(String) }
         attr_accessor :delta
@@ -19,9 +21,12 @@ module OpenAI
           delta:,
           # The type of the event. Always `response.audio.transcript.delta`.
           type: :"response.audio.transcript.delta"
-        ); end
-        sig { override.returns({delta: String, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ delta: String, type: Symbol }) }
+        def to_hash
+        end
       end
     end
   end

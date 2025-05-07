@@ -8,6 +8,9 @@ module OpenAI
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The project identifiers to grant access to.
           sig { returns(T::Array[String]) }
           attr_accessor :project_ids
@@ -15,17 +18,26 @@ module OpenAI
           sig do
             params(
               project_ids: T::Array[String],
-              request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-            )
-              .returns(T.attached_class)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(T.attached_class)
           end
           def self.new(
             # The project identifiers to grant access to.
             project_ids:,
             request_options: {}
-          ); end
-          sig { override.returns({project_ids: T::Array[String], request_options: OpenAI::RequestOptions}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                project_ids: T::Array[String],
+                request_options: OpenAI::RequestOptions
+              }
+            )
+          end
+          def to_hash
+          end
         end
       end
     end

@@ -6,6 +6,9 @@ module OpenAI
       module Threads
         module Runs
           class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The index of the output in the outputs array.
             sig { returns(Integer) }
             attr_accessor :index
@@ -14,24 +17,30 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
-            sig { returns(T.nilable(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image)) }
+            sig do
+              returns(
+                T.nilable(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+                )
+              )
+            end
             attr_reader :image
 
             sig do
               params(
-                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Internal::AnyHash)
-              )
-                .void
+                image:
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image::OrHash
+              ).void
             end
             attr_writer :image
 
             sig do
               params(
                 index: Integer,
-                image: T.any(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image, OpenAI::Internal::AnyHash),
+                image:
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image::OrHash,
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # The index of the output in the outputs array.
@@ -39,16 +48,26 @@ module OpenAI
               image: nil,
               # Always `image`.
               type: :image
-            ); end
-            sig do
-              override
-                .returns(
-                  {index: Integer, type: Symbol, image: OpenAI::Models::Beta::Threads::Runs::CodeInterpreterOutputImage::Image}
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  index: Integer,
+                  type: Symbol,
+                  image:
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Image < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
               # image.
               sig { returns(T.nilable(String)) }
@@ -62,9 +81,12 @@ module OpenAI
                 # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
                 # image.
                 file_id: nil
-              ); end
-              sig { override.returns({file_id: String}) }
-              def to_hash; end
+              )
+              end
+
+              sig { override.returns({ file_id: String }) }
+              def to_hash
+              end
             end
           end
         end

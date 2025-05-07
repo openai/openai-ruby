@@ -6,6 +6,9 @@ module OpenAI
       module Threads
         module Runs
           class CodeInterpreterLogs < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The index of the output in the outputs array.
             sig { returns(Integer) }
             attr_accessor :index
@@ -22,7 +25,11 @@ module OpenAI
             attr_writer :logs
 
             # Text output from the Code Interpreter tool call as part of a run step.
-            sig { params(index: Integer, logs: String, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(index: Integer, logs: String, type: Symbol).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # The index of the output in the outputs array.
               index:,
@@ -30,9 +37,14 @@ module OpenAI
               logs: nil,
               # Always `logs`.
               type: :logs
-            ); end
-            sig { override.returns({index: Integer, type: Symbol, logs: String}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns({ index: Integer, type: Symbol, logs: String })
+            end
+            def to_hash
+            end
           end
         end
       end

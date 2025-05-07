@@ -7,9 +7,8 @@ module OpenAI
         # @!attribute annotation
         #   A citation to a file.
         #
-        #   @return [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
-        required :annotation,
-                 union: -> { OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation }
+        #   @return [OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath]
+        required :annotation, union: -> { OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation }
 
         # @!attribute annotation_index
         #   The index of the annotation that was added.
@@ -43,25 +42,25 @@ module OpenAI
 
         # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, type: :"response.output_text.annotation.added")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent} for more details.
+        #   {OpenAI::Responses::ResponseTextAnnotationDeltaEvent} for more details.
         #
         #   Emitted when a text annotation is added.
         #
-        #   @param annotation [OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath] A citation to a file.
+        #   @param annotation [OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath] A citation to a file.
         #
-        #   @param annotation_index [Integer] The index of the annotation that was added. ...
+        #   @param annotation_index [Integer] The index of the annotation that was added.
         #
-        #   @param content_index [Integer] The index of the content part that the text annotation was added to. ...
+        #   @param content_index [Integer] The index of the content part that the text annotation was added to.
         #
-        #   @param item_id [String] The ID of the output item that the text annotation was added to. ...
+        #   @param item_id [String] The ID of the output item that the text annotation was added to.
         #
-        #   @param output_index [Integer] The index of the output item that the text annotation was added to. ...
+        #   @param output_index [Integer] The index of the output item that the text annotation was added to.
         #
-        #   @param type [Symbol, :"response.output_text.annotation.added"] The type of the event. Always `response.output_text.annotation.added`. ...
+        #   @param type [Symbol, :"response.output_text.annotation.added"] The type of the event. Always `response.output_text.annotation.added`.
 
         # A citation to a file.
         #
-        # @see OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent#annotation
+        # @see OpenAI::Responses::ResponseTextAnnotationDeltaEvent#annotation
         module Annotation
           extend OpenAI::Internal::Type::Union
 
@@ -69,15 +68,16 @@ module OpenAI
 
           # A citation to a file.
           variant :file_citation,
-                  -> { OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation }
+                  -> { OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation }
 
           # A citation for a web resource used to generate a model response.
           variant :url_citation,
-                  -> { OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation }
+                  -> {
+                    OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation
+                  }
 
           # A path to a file.
-          variant :file_path,
-                  -> { OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath }
+          variant :file_path, -> { OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath }
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
@@ -174,20 +174,20 @@ module OpenAI
 
             # @!method initialize(file_id:, index:, type: :file_path)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath}
-            #   for more details.
+            #   {OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath} for
+            #   more details.
             #
             #   A path to a file.
             #
-            #   @param file_id [String] The ID of the file. ...
+            #   @param file_id [String] The ID of the file.
             #
-            #   @param index [Integer] The index of the file in the list of files. ...
+            #   @param index [Integer] The index of the file in the list of files.
             #
-            #   @param type [Symbol, :file_path] The type of the file path. Always `file_path`. ...
+            #   @param type [Symbol, :file_path] The type of the file path. Always `file_path`.
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath)]
+          #   @return [Array(OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation, OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath)]
         end
       end
     end

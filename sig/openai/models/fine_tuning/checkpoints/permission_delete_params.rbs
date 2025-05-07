@@ -16,8 +16,6 @@ module OpenAI
             fine_tuned_model_checkpoint: String,
             ?request_options: OpenAI::request_opts
           ) -> void
-
-          def to_hash: -> OpenAI::Models::FineTuning::Checkpoints::permission_delete_params
         end
       end
     end

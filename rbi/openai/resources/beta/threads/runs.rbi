@@ -16,53 +16,57 @@ module OpenAI
             params(
               thread_id: String,
               assistant_id: String,
-              include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+              include:
+                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
-              additional_messages: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Internal::AnyHash)]
-              ),
+              additional_messages:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash
+                  ]
+                ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
+              model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
-              reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-              response_format: T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::ResponseFormatJSONObject,
-                  OpenAI::Models::ResponseFormatJSONSchema
-                )
-              ),
-              temperature: T.nilable(Float),
-              tool_choice: T.nilable(
-                T.any(
-                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Models::Beta::AssistantToolChoice,
-                  OpenAI::Internal::AnyHash
-                )
-              ),
-              tools: T.nilable(
-                T::Array[
+              reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+              response_format:
+                T.nilable(
                   T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::FileSearchTool,
-                    OpenAI::Models::Beta::FunctionTool
+                    Symbol,
+                    OpenAI::ResponseFormatText::OrHash,
+                    OpenAI::ResponseFormatJSONObject::OrHash,
+                    OpenAI::ResponseFormatJSONSchema::OrHash
                   )
-                ]
-              ),
+                ),
+              temperature: T.nilable(Float),
+              tool_choice:
+                T.nilable(
+                  T.any(
+                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                    OpenAI::Beta::AssistantToolChoice::OrHash
+                  )
+                ),
+              tools:
+                T.nilable(
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::CodeInterpreterTool::OrHash,
+                      OpenAI::Beta::FileSearchTool::OrHash,
+                      OpenAI::Beta::FunctionTool::OrHash
+                    )
+                  ]
+                ),
               top_p: T.nilable(Float),
-              truncation_strategy: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::AnyHash)
-              ),
+              truncation_strategy:
+                T.nilable(
+                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
+                ),
               stream: T.noreturn,
-              request_options: OpenAI::RequestOpts
-            )
-              .returns(OpenAI::Models::Beta::Threads::Run)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Run)
           end
           def create(
             # Path param: The ID of the thread to run.
@@ -177,7 +181,9 @@ module OpenAI
             # `#create` for streaming and non-streaming use cases, respectively.
             stream: false,
             request_options: {}
-          ); end
+          )
+          end
+
           # See {OpenAI::Resources::Beta::Threads::Runs#create} for non-streaming
           # counterpart.
           #
@@ -186,82 +192,86 @@ module OpenAI
             params(
               thread_id: String,
               assistant_id: String,
-              include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+              include:
+                T::Array[OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol],
               additional_instructions: T.nilable(String),
-              additional_messages: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage, OpenAI::Internal::AnyHash)]
-              ),
+              additional_messages:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::OrHash
+                  ]
+                ),
               instructions: T.nilable(String),
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model: T.nilable(T.any(String, OpenAI::Models::ChatModel::OrSymbol)),
+              model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
-              reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-              response_format: T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::ResponseFormatJSONObject,
-                  OpenAI::Models::ResponseFormatJSONSchema
-                )
-              ),
+              reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+              response_format:
+                T.nilable(
+                  T.any(
+                    Symbol,
+                    OpenAI::ResponseFormatText::OrHash,
+                    OpenAI::ResponseFormatJSONObject::OrHash,
+                    OpenAI::ResponseFormatJSONSchema::OrHash
+                  )
+                ),
               temperature: T.nilable(Float),
-              tool_choice: T.nilable(
-                T.any(
-                  OpenAI::Models::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Models::Beta::AssistantToolChoice,
-                  OpenAI::Internal::AnyHash
-                )
-              ),
-              tools: T.nilable(
-                T::Array[
+              tool_choice:
+                T.nilable(
                   T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::FileSearchTool,
-                    OpenAI::Models::Beta::FunctionTool
+                    OpenAI::Beta::AssistantToolChoiceOption::Auto::OrSymbol,
+                    OpenAI::Beta::AssistantToolChoice::OrHash
                   )
-                ]
-              ),
+                ),
+              tools:
+                T.nilable(
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::CodeInterpreterTool::OrHash,
+                      OpenAI::Beta::FileSearchTool::OrHash,
+                      OpenAI::Beta::FunctionTool::OrHash
+                    )
+                  ]
+                ),
               top_p: T.nilable(Float),
-              truncation_strategy: T.nilable(
-                T.any(OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy, OpenAI::Internal::AnyHash)
-              ),
+              truncation_strategy:
+                T.nilable(
+                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
+                ),
               stream: T.noreturn,
-              request_options: OpenAI::RequestOpts
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Internal::Stream[
+                T.any(
+                  OpenAI::Beta::AssistantStreamEvent::ThreadCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
+                  OpenAI::Beta::AssistantStreamEvent::ErrorEvent
+                )
+              ]
             )
-              .returns(
-                OpenAI::Internal::Stream[
-                  T.any(
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent
-                  )
-                ]
-              )
           end
           def create_stream_raw(
             # Path param: The ID of the thread to run.
@@ -376,11 +386,16 @@ module OpenAI
             # `#create` for streaming and non-streaming use cases, respectively.
             stream: true,
             request_options: {}
-          ); end
+          )
+          end
+
           # Retrieves a run.
           sig do
-            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOpts)
-              .returns(OpenAI::Models::Beta::Threads::Run)
+            params(
+              run_id: String,
+              thread_id: String,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Run)
           end
           def retrieve(
             # The ID of the run to retrieve.
@@ -389,16 +404,17 @@ module OpenAI
             # that was run.
             thread_id:,
             request_options: {}
-          ); end
+          )
+          end
+
           # Modifies a run.
           sig do
             params(
               run_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: OpenAI::RequestOpts
-            )
-              .returns(OpenAI::Models::Beta::Threads::Run)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Run)
           end
           def update(
             # Path param: The ID of the run to modify.
@@ -414,7 +430,9 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # Returns a list of runs belonging to a thread.
           sig do
             params(
@@ -422,10 +440,9 @@ module OpenAI
               after: String,
               before: String,
               limit: Integer,
-              order: OpenAI::Models::Beta::Threads::RunListParams::Order::OrSymbol,
-              request_options: OpenAI::RequestOpts
-            )
-              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Run])
+              order: OpenAI::Beta::Threads::RunListParams::Order::OrSymbol,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Run])
           end
           def list(
             # The ID of the thread the run belongs to.
@@ -447,11 +464,16 @@ module OpenAI
             # order and `desc` for descending order.
             order: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # Cancels a run that is `in_progress`.
           sig do
-            params(run_id: String, thread_id: String, request_options: OpenAI::RequestOpts)
-              .returns(OpenAI::Models::Beta::Threads::Run)
+            params(
+              run_id: String,
+              thread_id: String,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Run)
           end
           def cancel(
             # The ID of the run to cancel.
@@ -459,7 +481,9 @@ module OpenAI
             # The ID of the thread to which this run belongs.
             thread_id:,
             request_options: {}
-          ); end
+          )
+          end
+
           # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs_stream_raw} for
           # streaming counterpart.
           #
@@ -471,11 +495,13 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Internal::AnyHash)],
+              tool_outputs:
+                T::Array[
+                  OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash
+                ],
               stream: T.noreturn,
-              request_options: OpenAI::RequestOpts
-            )
-              .returns(OpenAI::Models::Beta::Threads::Run)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Run)
           end
           def submit_tool_outputs(
             # Path param: The ID of the run that requires the tool output submission.
@@ -491,7 +517,9 @@ module OpenAI
             # non-streaming use cases, respectively.
             stream: false,
             request_options: {}
-          ); end
+          )
+          end
+
           # See {OpenAI::Resources::Beta::Threads::Runs#submit_tool_outputs} for
           # non-streaming counterpart.
           #
@@ -503,40 +531,42 @@ module OpenAI
             params(
               run_id: String,
               thread_id: String,
-              tool_outputs: T::Array[T.any(OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput, OpenAI::Internal::AnyHash)],
+              tool_outputs:
+                T::Array[
+                  OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput::OrHash
+                ],
               stream: T.noreturn,
-              request_options: OpenAI::RequestOpts
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Internal::Stream[
+                T.any(
+                  OpenAI::Beta::AssistantStreamEvent::ThreadCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted,
+                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
+                  OpenAI::Beta::AssistantStreamEvent::ErrorEvent
+                )
+              ]
             )
-              .returns(
-                OpenAI::Internal::Stream[
-                  T.any(
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
-                    OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent
-                  )
-                ]
-              )
           end
           def submit_tool_outputs_stream_raw(
             # Path param: The ID of the run that requires the tool output submission.
@@ -552,10 +582,13 @@ module OpenAI
             # non-streaming use cases, respectively.
             stream: true,
             request_options: {}
-          ); end
+          )
+          end
+
           # @api private
           sig { params(client: OpenAI::Client).returns(T.attached_class) }
-          def self.new(client:); end
+          def self.new(client:)
+          end
         end
       end
     end

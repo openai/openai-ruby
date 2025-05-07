@@ -9,6 +9,9 @@ module OpenAI
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             sig { returns(String) }
             attr_accessor :thread_id
 
@@ -22,20 +25,37 @@ module OpenAI
             # See the
             # [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
             # for more information.
-            sig { returns(T.nilable(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol])) }
+            sig do
+              returns(
+                T.nilable(
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ]
+                )
+              )
+            end
             attr_reader :include
 
-            sig { params(include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol]).void }
+            sig do
+              params(
+                include:
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ]
+              ).void
+            end
             attr_writer :include
 
             sig do
               params(
                 thread_id: String,
                 run_id: String,
-                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
-                request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-              )
-                .returns(T.attached_class)
+                include:
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ],
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(T.attached_class)
             end
             def self.new(
               thread_id:,
@@ -49,19 +69,24 @@ module OpenAI
               # for more information.
               include: nil,
               request_options: {}
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    thread_id: String,
-                    run_id: String,
-                    include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
-                    request_options: OpenAI::RequestOptions
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  thread_id: String,
+                  run_id: String,
+                  include:
+                    T::Array[
+                      OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                    ],
+                  request_options: OpenAI::RequestOptions
+                }
+              )
+            end
+            def to_hash
+            end
           end
         end
       end

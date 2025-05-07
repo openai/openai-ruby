@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class AutoFileChunkingStrategyParam < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # Always `auto`.
       sig { returns(Symbol) }
       attr_accessor :type
@@ -13,9 +15,12 @@ module OpenAI
       def self.new(
         # Always `auto`.
         type: :auto
-      ); end
-      sig { override.returns({type: Symbol}) }
-      def to_hash; end
+      )
+      end
+
+      sig { override.returns({ type: Symbol }) }
+      def to_hash
+      end
     end
   end
 end

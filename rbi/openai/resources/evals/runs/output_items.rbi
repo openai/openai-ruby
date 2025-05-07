@@ -11,9 +11,8 @@ module OpenAI
               output_item_id: String,
               eval_id: String,
               run_id: String,
-              request_options: OpenAI::RequestOpts
-            )
-              .returns(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse)
           end
           def retrieve(
             # The ID of the output item to retrieve.
@@ -23,7 +22,9 @@ module OpenAI
             # The ID of the run to retrieve.
             run_id:,
             request_options: {}
-          ); end
+          )
+          end
+
           # Get a list of output items for an evaluation run.
           sig do
             params(
@@ -31,11 +32,15 @@ module OpenAI
               eval_id: String,
               after: String,
               limit: Integer,
-              order: OpenAI::Models::Evals::Runs::OutputItemListParams::Order::OrSymbol,
-              status: OpenAI::Models::Evals::Runs::OutputItemListParams::Status::OrSymbol,
-              request_options: OpenAI::RequestOpts
+              order: OpenAI::Evals::Runs::OutputItemListParams::Order::OrSymbol,
+              status:
+                OpenAI::Evals::Runs::OutputItemListParams::Status::OrSymbol,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Internal::CursorPage[
+                OpenAI::Models::Evals::Runs::OutputItemListResponse
+              ]
             )
-              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Evals::Runs::OutputItemListResponse])
           end
           def list(
             # Path param: The ID of the run to retrieve output items for.
@@ -54,10 +59,13 @@ module OpenAI
             # output items or `pass` to filter by passed output items.
             status: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # @api private
           sig { params(client: OpenAI::Client).returns(T.attached_class) }
-          def self.new(client:); end
+          def self.new(client:)
+          end
         end
       end
     end

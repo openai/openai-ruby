@@ -24,10 +24,9 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::UploadCompleteParams} for more details.
       #
-      #   @param part_ids [Array<String>] The ordered list of Part IDs. ...
+      #   @param part_ids [Array<String>] The ordered list of Part IDs.
       #
       #   @param md5 [String] The optional md5 checksum for the file contents to verify if the bytes uploaded
-      #   ...
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

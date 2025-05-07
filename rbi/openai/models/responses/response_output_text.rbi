@@ -4,14 +4,16 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputText < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The annotations of the text output.
         sig do
           returns(
             T::Array[
               T.any(
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
+                OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::FilePath
               )
             ]
           )
@@ -29,18 +31,17 @@ module OpenAI
         # A text output from the model.
         sig do
           params(
-            annotations: T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
-                OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
-              )
-            ],
+            annotations:
+              T::Array[
+                T.any(
+                  OpenAI::Responses::ResponseOutputText::Annotation::FileCitation::OrHash,
+                  OpenAI::Responses::ResponseOutputText::Annotation::URLCitation::OrHash,
+                  OpenAI::Responses::ResponseOutputText::Annotation::FilePath::OrHash
+                )
+              ],
             text: String,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The annotations of the text output.
@@ -49,30 +50,45 @@ module OpenAI
           text:,
           # The type of the output text. Always `output_text`.
           type: :output_text
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                annotations: T::Array[
+          override.returns(
+            {
+              annotations:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation,
-                    OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation,
-                    OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath
+                    OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+                    OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                    OpenAI::Responses::ResponseOutputText::Annotation::FilePath
                   )
                 ],
-                text: String,
-                type: Symbol
-              }
-            )
+              text: String,
+              type: Symbol
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
 
         # A citation to a file.
         module Annotation
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::FilePath
+              )
+            end
+
           class FileCitation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the file.
             sig { returns(String) }
             attr_accessor :file_id
@@ -86,7 +102,11 @@ module OpenAI
             attr_accessor :type
 
             # A citation to a file.
-            sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(file_id: String, index: Integer, type: Symbol).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # The ID of the file.
               file_id:,
@@ -94,12 +114,22 @@ module OpenAI
               index:,
               # The type of the file citation. Always `file_citation`.
               type: :file_citation
-            ); end
-            sig { override.returns({file_id: String, index: Integer, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns(
+                { file_id: String, index: Integer, type: Symbol }
+              )
+            end
+            def to_hash
+            end
           end
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
             attr_accessor :end_index
@@ -122,8 +152,13 @@ module OpenAI
 
             # A citation for a web resource used to generate a model response.
             sig do
-              params(end_index: Integer, start_index: Integer, title: String, url: String, type: Symbol)
-                .returns(T.attached_class)
+              params(
+                end_index: Integer,
+                start_index: Integer,
+                title: String,
+                url: String,
+                type: Symbol
+              ).returns(T.attached_class)
             end
             def self.new(
               # The index of the last character of the URL citation in the message.
@@ -136,7 +171,9 @@ module OpenAI
               url:,
               # The type of the URL citation. Always `url_citation`.
               type: :url_citation
-            ); end
+            )
+            end
+
             sig do
               override.returns(
                 {
@@ -148,10 +185,14 @@ module OpenAI
                 }
               )
             end
-            def to_hash; end
+            def to_hash
+            end
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the file.
             sig { returns(String) }
             attr_accessor :file_id
@@ -165,7 +206,11 @@ module OpenAI
             attr_accessor :type
 
             # A path to a file.
-            sig { params(file_id: String, index: Integer, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(file_id: String, index: Integer, type: Symbol).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # The ID of the file.
               file_id:,
@@ -173,18 +218,27 @@ module OpenAI
               index:,
               # The type of the file path. Always `file_path`.
               type: :file_path
-            ); end
-            sig { override.returns({file_id: String, index: Integer, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns(
+                { file_id: String, index: Integer, type: Symbol }
+              )
+            end
+            def to_hash
+            end
           end
 
           sig do
-            override
-              .returns(
-                [OpenAI::Models::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Models::Responses::ResponseOutputText::Annotation::FilePath]
-              )
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseOutputText::Annotation::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
       end
     end

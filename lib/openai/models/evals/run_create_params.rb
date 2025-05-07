@@ -11,8 +11,8 @@ module OpenAI
         # @!attribute data_source
         #   Details about the run's data source.
         #
-        #   @return [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource]
-        required :data_source, union: -> { OpenAI::Models::Evals::RunCreateParams::DataSource }
+        #   @return [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource]
+        required :data_source, union: -> { OpenAI::Evals::RunCreateParams::DataSource }
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -35,9 +35,9 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Evals::RunCreateParams} for more details.
         #
-        #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
+        #   @param data_source [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         #   @param name [String] The name of the run.
         #
@@ -48,34 +48,40 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           # A JsonlRunDataSource object with that specifies a JSONL file that matches the eval
-          variant -> { OpenAI::Models::Evals::CreateEvalJSONLRunDataSource }
+          variant -> { OpenAI::Evals::CreateEvalJSONLRunDataSource }
 
           # A CompletionsRunDataSource object describing a model sampling configuration.
-          variant -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource }
+          variant -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource }
 
           # A ResponsesRunDataSource object describing a model sampling configuration.
-          variant -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource }
+          variant -> { OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource }
 
           class CreateEvalResponsesRunDataSource < OpenAI::Internal::Type::BaseModel
             # @!attribute source
             #   A EvalResponsesSource object describing a run data source configuration.
             #
-            #   @return [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses]
+            #   @return [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses]
             required :source,
-                     union: -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source }
+                     union: -> {
+                       OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source
+                     }
 
             # @!attribute type
             #   The type of run data source. Always `completions`.
             #
-            #   @return [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type]
+            #   @return [Symbol, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type]
             required :type,
-                     enum: -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type }
+                     enum: -> {
+                       OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type
+                     }
 
             # @!attribute input_messages
             #
-            #   @return [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference, nil]
+            #   @return [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference, nil]
             optional :input_messages,
-                     union: -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages }
+                     union: -> {
+                       OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages
+                     }
 
             # @!attribute model
             #   The name of the model to use for generating completions (e.g. "o3-mini").
@@ -85,56 +91,62 @@ module OpenAI
 
             # @!attribute sampling_params
             #
-            #   @return [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams, nil]
+            #   @return [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams, nil]
             optional :sampling_params,
-                     -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams }
+                     -> {
+                       OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams
+                     }
 
             # @!method initialize(source:, type:, input_messages: nil, model: nil, sampling_params: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource}
+            #   {OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource}
             #   for more details.
             #
             #   A ResponsesRunDataSource object describing a model sampling configuration.
             #
-            #   @param source [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses] A EvalResponsesSource object describing a run data source configuration. ...
+            #   @param source [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses] A EvalResponsesSource object describing a run data source configuration.
             #
-            #   @param type [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type] The type of run data source. Always `completions`.
+            #   @param type [Symbol, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type] The type of run data source. Always `completions`.
             #
-            #   @param input_messages [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference]
+            #   @param input_messages [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference]
             #
             #   @param model [String] The name of the model to use for generating completions (e.g. "o3-mini").
             #
-            #   @param sampling_params [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams]
+            #   @param sampling_params [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams]
 
             # A EvalResponsesSource object describing a run data source configuration.
             #
-            # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#source
+            # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#source
             module Source
               extend OpenAI::Internal::Type::Union
 
               discriminator :type
 
               variant :file_content,
-                      -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent }
+                      -> {
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent
+                      }
 
               variant :file_id,
-                      -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID }
+                      -> {
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID
+                      }
 
               # A EvalResponsesSource object describing a run data source configuration.
               variant :responses,
-                      -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses }
+                      -> {
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses
+                      }
 
               class FileContent < OpenAI::Internal::Type::BaseModel
                 # @!attribute content
                 #   The content of the jsonl file.
                 #
-                #   @return [Array<OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content>]
+                #   @return [Array<OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content>]
                 required :content,
-                         -> do
-                           OpenAI::Internal::Type::ArrayOf[
-                             OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content
-                           ]
-                         end
+                         -> {
+                           OpenAI::Internal::Type::ArrayOf[OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content]
+                         }
 
                 # @!attribute type
                 #   The type of jsonl source. Always `file_content`.
@@ -143,7 +155,7 @@ module OpenAI
                 required :type, const: :file_content
 
                 # @!method initialize(content:, type: :file_content)
-                #   @param content [Array<OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content>] The content of the jsonl file.
+                #   @param content [Array<OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content>] The content of the jsonl file.
                 #
                 #   @param type [Symbol, :file_content] The type of jsonl source. Always `file_content`.
 
@@ -243,8 +255,8 @@ module OpenAI
                 #   Optional reasoning effort parameter. This is a query parameter used to select
                 #   responses.
                 #
-                #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
-                optional :reasoning_effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
+                #   @return [Symbol, OpenAI::ReasoningEffort, nil]
+                optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
 
                 # @!attribute temperature
                 #   Sampling temperature. This is a query parameter used to select responses.
@@ -266,34 +278,26 @@ module OpenAI
 
                 # @!method initialize(allow_parallel_tool_calls: nil, created_after: nil, created_before: nil, has_tool_calls: nil, instructions_search: nil, metadata: nil, model: nil, reasoning_effort: nil, temperature: nil, top_p: nil, users: nil, type: :responses)
                 #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses}
+                #   {OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses}
                 #   for more details.
                 #
                 #   A EvalResponsesSource object describing a run data source configuration.
                 #
                 #   @param allow_parallel_tool_calls [Boolean, nil] Whether to allow parallel tool calls. This is a query parameter used to select r
-                #   ...
                 #
                 #   @param created_after [Integer, nil] Only include items created after this timestamp (inclusive). This is a query par
-                #   ...
                 #
                 #   @param created_before [Integer, nil] Only include items created before this timestamp (inclusive). This is a query pa
-                #   ...
                 #
                 #   @param has_tool_calls [Boolean, nil] Whether the response has tool calls. This is a query parameter used to select re
-                #   ...
                 #
                 #   @param instructions_search [String, nil] Optional search string for instructions. This is a query parameter used to selec
-                #   ...
                 #
                 #   @param metadata [Object, nil] Metadata filter for the responses. This is a query parameter used to select resp
-                #   ...
                 #
                 #   @param model [String, nil] The name of the model to find responses for. This is a query parameter used to s
-                #   ...
                 #
-                #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Optional reasoning effort parameter. This is a query parameter used to select re
-                #   ...
+                #   @param reasoning_effort [Symbol, OpenAI::ReasoningEffort, nil] Optional reasoning effort parameter. This is a query parameter used to select re
                 #
                 #   @param temperature [Float, nil] Sampling temperature. This is a query parameter used to select responses.
                 #
@@ -305,12 +309,12 @@ module OpenAI
               end
 
               # @!method self.variants
-              #   @return [Array(OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses)]
+              #   @return [Array(OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses)]
             end
 
             # The type of run data source. Always `completions`.
             #
-            # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#type
+            # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#type
             module Type
               extend OpenAI::Internal::Type::Enum
 
@@ -320,28 +324,32 @@ module OpenAI
               #   @return [Array<Symbol>]
             end
 
-            # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#input_messages
+            # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#input_messages
             module InputMessages
               extend OpenAI::Internal::Type::Union
 
               discriminator :type
 
               variant :template,
-                      -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template }
+                      -> {
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template
+                      }
 
               variant :item_reference,
-                      -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference }
+                      -> {
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference
+                      }
 
               class Template < OpenAI::Internal::Type::BaseModel
                 # @!attribute template
                 #   A list of chat messages forming the prompt or context. May include variable
                 #   references to the "item" namespace, ie {{item.name}}.
                 #
-                #   @return [Array<OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem>]
+                #   @return [Array<OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem>]
                 required :template,
                          -> do
                            OpenAI::Internal::Type::ArrayOf[
-                             union: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template
+                             union: OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template
                            ]
                          end
 
@@ -353,11 +361,10 @@ module OpenAI
 
                 # @!method initialize(template:, type: :template)
                 #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template}
+                #   {OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template}
                 #   for more details.
                 #
-                #   @param template [Array<OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
-                #   ...
+                #   @param template [Array<OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
                 #
                 #   @param type [Symbol, :template] The type of input messages. Always `template`.
 
@@ -369,14 +376,18 @@ module OpenAI
                 module Template
                   extend OpenAI::Internal::Type::Union
 
-                  variant -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage }
+                  variant -> {
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage
+                  }
 
                   # A message input to the model with a role indicating instruction following
                   # hierarchy. Instructions given with the `developer` or `system` role take
                   # precedence over instructions given with the `user` role. Messages with the
                   # `assistant` role are presumed to have been generated by the model in previous
                   # interactions.
-                  variant -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem }
+                  variant -> {
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem
+                  }
 
                   class ChatMessage < OpenAI::Internal::Type::BaseModel
                     # @!attribute content
@@ -401,28 +412,34 @@ module OpenAI
                     # @!attribute content
                     #   Text inputs to the model - can contain template strings.
                     #
-                    #   @return [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText]
+                    #   @return [String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText]
                     required :content,
-                             union: -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content }
+                             union: -> {
+                               OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content
+                             }
 
                     # @!attribute role
                     #   The role of the message input. One of `user`, `assistant`, `system`, or
                     #   `developer`.
                     #
-                    #   @return [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Role]
+                    #   @return [Symbol, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Role]
                     required :role,
-                             enum: -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Role }
+                             enum: -> {
+                               OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Role
+                             }
 
                     # @!attribute type
                     #   The type of the message input. Always `message`.
                     #
-                    #   @return [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Type, nil]
+                    #   @return [Symbol, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Type, nil]
                     optional :type,
-                             enum: -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Type }
+                             enum: -> {
+                               OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Type
+                             }
 
                     # @!method initialize(content:, role:, type: nil)
                     #   Some parameter documentations has been truncated, see
-                    #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem}
+                    #   {OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem}
                     #   for more details.
                     #
                     #   A message input to the model with a role indicating instruction following
@@ -431,15 +448,15 @@ module OpenAI
                     #   `assistant` role are presumed to have been generated by the model in previous
                     #   interactions.
                     #
-                    #   @param content [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText] Text inputs to the model - can contain template strings. ...
+                    #   @param content [String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText] Text inputs to the model - can contain template strings.
                     #
-                    #   @param role [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Role] The role of the message input. One of `user`, `assistant`, `system`, or ...
+                    #   @param role [Symbol, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Role] The role of the message input. One of `user`, `assistant`, `system`, or
                     #
-                    #   @param type [Symbol, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Type] The type of the message input. Always `message`. ...
+                    #   @param type [Symbol, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Type] The type of the message input. Always `message`.
 
                     # Text inputs to the model - can contain template strings.
                     #
-                    # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem#content
+                    # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem#content
                     module Content
                       extend OpenAI::Internal::Type::Union
 
@@ -447,10 +464,12 @@ module OpenAI
                       variant String
 
                       # A text input to the model.
-                      variant -> { OpenAI::Models::Responses::ResponseInputText }
+                      variant -> { OpenAI::Responses::ResponseInputText }
 
                       # A text output from the model.
-                      variant -> { OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText }
+                      variant -> {
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText
+                      }
 
                       class OutputText < OpenAI::Internal::Type::BaseModel
                         # @!attribute text
@@ -467,24 +486,24 @@ module OpenAI
 
                         # @!method initialize(text:, type: :output_text)
                         #   Some parameter documentations has been truncated, see
-                        #   {OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText}
+                        #   {OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText}
                         #   for more details.
                         #
                         #   A text output from the model.
                         #
-                        #   @param text [String] The text output from the model. ...
+                        #   @param text [String] The text output from the model.
                         #
-                        #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`. ...
+                        #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
                       end
 
                       # @!method self.variants
-                      #   @return [Array(String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText)]
+                      #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText)]
                     end
 
                     # The role of the message input. One of `user`, `assistant`, `system`, or
                     # `developer`.
                     #
-                    # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem#role
+                    # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem#role
                     module Role
                       extend OpenAI::Internal::Type::Enum
 
@@ -499,7 +518,7 @@ module OpenAI
 
                     # The type of the message input. Always `message`.
                     #
-                    # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem#type
+                    # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem#type
                     module Type
                       extend OpenAI::Internal::Type::Enum
 
@@ -511,7 +530,7 @@ module OpenAI
                   end
 
                   # @!method self.variants
-                  #   @return [Array(OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem)]
+                  #   @return [Array(OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem)]
                 end
               end
 
@@ -535,10 +554,10 @@ module OpenAI
               end
 
               # @!method self.variants
-              #   @return [Array(OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference)]
+              #   @return [Array(OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference)]
             end
 
-            # @see OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#sampling_params
+            # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#sampling_params
             class SamplingParams < OpenAI::Internal::Type::BaseModel
               # @!attribute max_completion_tokens
               #   The maximum number of tokens in the generated output.
@@ -576,7 +595,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource)]
+          #   @return [Array(OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource)]
         end
       end
     end
