@@ -11,10 +11,9 @@ module OpenAI
       #
       # @overload create(input:, model: nil, request_options: {})
       #
-      # @param input [String, Array<String>, Array<OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput>] Input (or inputs) to classify. Can be a single string, an array of strings, or
-      # ...
+      # @param input [String, Array<String>, Array<OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput>] Input (or inputs) to classify. Can be a single string, an array of strings, or
       #
-      # @param model [String, Symbol, OpenAI::Models::ModerationModel] The content moderation model you would like to use. Learn more in ...
+      # @param model [String, Symbol, OpenAI::ModerationModel] The content moderation model you would like to use. Learn more in
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
@@ -22,7 +21,7 @@ module OpenAI
       #
       # @see OpenAI::Models::ModerationCreateParams
       def create(params)
-        parsed, options = OpenAI::Models::ModerationCreateParams.dump_request(params)
+        parsed, options = OpenAI::ModerationCreateParams.dump_request(params)
         @client.request(
           method: :post,
           path: "moderations",

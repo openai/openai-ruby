@@ -13,29 +13,29 @@ module OpenAI
         #
         # @param response_id [String] The ID of the response to retrieve input items for.
         #
-        # @param after [String] An item ID to list items after, used in pagination. ...
+        # @param after [String] An item ID to list items after, used in pagination.
         #
-        # @param before [String] An item ID to list items before, used in pagination. ...
+        # @param before [String] An item ID to list items before, used in pagination.
         #
-        # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include` ...
+        # @param include [Array<Symbol, OpenAI::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
         #
-        # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between ...
+        # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between
         #
-        # @param order [Symbol, OpenAI::Models::Responses::InputItemListParams::Order] The order to return the input items in. Default is `asc`. ...
+        # @param order [Symbol, OpenAI::Responses::InputItemListParams::Order] The order to return the input items in. Default is `asc`.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem>]
         #
         # @see OpenAI::Models::Responses::InputItemListParams
         def list(response_id, params = {})
-          parsed, options = OpenAI::Models::Responses::InputItemListParams.dump_request(params)
+          parsed, options = OpenAI::Responses::InputItemListParams.dump_request(params)
           @client.request(
             method: :get,
             path: ["responses/%1$s/input_items", response_id],
             query: parsed,
             page: OpenAI::Internal::CursorPage,
-            model: OpenAI::Models::Responses::ResponseItem,
+            model: OpenAI::Responses::ResponseItem,
             options: options
           )
         end

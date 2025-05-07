@@ -14,13 +14,13 @@ module OpenAI
         ?presence_penalty: Float?,
         ?seed: Integer?,
         ?stop: OpenAI::Models::CompletionCreateParams::stop?,
-        ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+        ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
         ?suffix: String?,
         ?temperature: Float?,
         ?top_p: Float?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::Completion
+      ) -> OpenAI::Completion
 
       def create_streaming: (
         model: OpenAI::Models::CompletionCreateParams::model,
@@ -35,13 +35,13 @@ module OpenAI
         ?presence_penalty: Float?,
         ?seed: Integer?,
         ?stop: OpenAI::Models::CompletionCreateParams::stop?,
-        ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+        ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
         ?suffix: String?,
         ?temperature: Float?,
         ?top_p: Float?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::Stream[OpenAI::Models::Completion]
+      ) -> OpenAI::Internal::Stream[OpenAI::Completion]
 
       def initialize: (client: OpenAI::Client) -> void
     end

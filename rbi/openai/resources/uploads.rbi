@@ -30,10 +30,9 @@ module OpenAI
           bytes: Integer,
           filename: String,
           mime_type: String,
-          purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::Upload)
+          purpose: OpenAI::FilePurpose::OrSymbol,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Upload)
       end
       def create(
         # The number of bytes in the file you are uploading.
@@ -51,14 +50,23 @@ module OpenAI
         # [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
         purpose:,
         request_options: {}
-      ); end
+      )
+      end
+
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
-      sig { params(upload_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Upload) }
+      sig do
+        params(
+          upload_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Upload)
+      end
       def cancel(
         # The ID of the Upload.
         upload_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # Completes the
       # [Upload](https://platform.openai.com/docs/api-reference/uploads/object).
       #
@@ -77,9 +85,8 @@ module OpenAI
           upload_id: String,
           part_ids: T::Array[String],
           md5: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::Upload)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Upload)
       end
       def complete(
         # The ID of the Upload.
@@ -90,10 +97,13 @@ module OpenAI
         # matches what you expect.
         md5: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

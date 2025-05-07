@@ -2,15 +2,15 @@ module OpenAI
   module Models
     module Responses
       type tool =
-        OpenAI::Models::Responses::FileSearchTool
-        | OpenAI::Models::Responses::FunctionTool
-        | OpenAI::Models::Responses::ComputerTool
-        | OpenAI::Models::Responses::WebSearchTool
+        OpenAI::Responses::FileSearchTool
+        | OpenAI::Responses::FunctionTool
+        | OpenAI::Responses::ComputerTool
+        | OpenAI::Responses::WebSearchTool
 
       module Tool
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Responses::FileSearchTool, OpenAI::Models::Responses::FunctionTool, OpenAI::Models::Responses::ComputerTool, OpenAI::Models::Responses::WebSearchTool]
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::tool]
       end
     end
   end

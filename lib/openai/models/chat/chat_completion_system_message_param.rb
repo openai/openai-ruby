@@ -7,8 +7,8 @@ module OpenAI
         # @!attribute content
         #   The contents of the system message.
         #
-        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        required :content, union: -> { OpenAI::Models::Chat::ChatCompletionSystemMessageParam::Content }
+        #   @return [String, Array<OpenAI::Chat::ChatCompletionContentPartText>]
+        required :content, union: -> { OpenAI::Chat::ChatCompletionSystemMessageParam::Content }
 
         # @!attribute role
         #   The role of the messages author, in this case `system`.
@@ -25,22 +25,21 @@ module OpenAI
 
         # @!method initialize(content:, name: nil, role: :system)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionSystemMessageParam} for more details.
+        #   {OpenAI::Chat::ChatCompletionSystemMessageParam} for more details.
         #
         #   Developer-provided instructions that the model should follow, regardless of
         #   messages sent by the user. With o1 models and newer, use `developer` messages
         #   for this purpose instead.
         #
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>] The contents of the system message.
+        #   @param content [String, Array<OpenAI::Chat::ChatCompletionContentPartText>] The contents of the system message.
         #
         #   @param name [String] An optional name for the participant. Provides the model information to differen
-        #   ...
         #
         #   @param role [Symbol, :system] The role of the messages author, in this case `system`.
 
         # The contents of the system message.
         #
-        # @see OpenAI::Models::Chat::ChatCompletionSystemMessageParam#content
+        # @see OpenAI::Chat::ChatCompletionSystemMessageParam#content
         module Content
           extend OpenAI::Internal::Type::Union
 
@@ -48,14 +47,16 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. For system messages, only type `text` is supported.
-          variant -> { OpenAI::Models::Chat::ChatCompletionSystemMessageParam::Content::ChatCompletionContentPartTextArray }
+          variant -> {
+            OpenAI::Chat::ChatCompletionSystemMessageParam::Content::ChatCompletionContentPartTextArray
+          }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
+          #   @return [Array(String, Array<OpenAI::Chat::ChatCompletionContentPartText>)]
 
           # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartTextArray =
-            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
+            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Chat::ChatCompletionContentPartText }]
         end
       end
     end

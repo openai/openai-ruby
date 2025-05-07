@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The description of the assistant. The maximum length is 512 characters.
         sig { returns(T.nilable(String)) }
         attr_accessor :description
@@ -30,10 +32,27 @@ module OpenAI
         # see all of your available models, or see our
         # [Model overview](https://platform.openai.com/docs/models) for descriptions of
         # them.
-        sig { returns(T.nilable(T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol))) }
+        sig do
+          returns(
+            T.nilable(
+              T.any(
+                String,
+                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
+              )
+            )
+          )
+        end
         attr_reader :model
 
-        sig { params(model: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol)).void }
+        sig do
+          params(
+            model:
+              T.any(
+                String,
+                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
+              )
+          ).void
+        end
         attr_writer :model
 
         # The name of the assistant. The maximum length is 256 characters.
@@ -46,7 +65,7 @@ module OpenAI
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         # result in faster responses and fewer tokens used on reasoning in a response.
-        sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
+        sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
         # Specifies the format that the model must output. Compatible with
@@ -74,9 +93,9 @@ module OpenAI
             T.nilable(
               T.any(
                 Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
+                OpenAI::ResponseFormatText,
+                OpenAI::ResponseFormatJSONObject,
+                OpenAI::ResponseFormatJSONSchema
               )
             )
           )
@@ -93,14 +112,18 @@ module OpenAI
         # specific to the type of tool. For example, the `code_interpreter` tool requires
         # a list of file IDs, while the `file_search` tool requires a list of vector store
         # IDs.
-        sig { returns(T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources)) }
+        sig do
+          returns(T.nilable(OpenAI::Beta::AssistantUpdateParams::ToolResources))
+        end
         attr_reader :tool_resources
 
         sig do
           params(
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash))
-          )
-            .void
+            tool_resources:
+              T.nilable(
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::OrHash
+              )
+          ).void
         end
         attr_writer :tool_resources
 
@@ -112,9 +135,9 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
+                  OpenAI::Beta::CodeInterpreterTool,
+                  OpenAI::Beta::FileSearchTool,
+                  OpenAI::Beta::FunctionTool
                 )
               ]
             )
@@ -124,16 +147,15 @@ module OpenAI
 
         sig do
           params(
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-            ]
-          )
-            .void
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ]
+          ).void
         end
         attr_writer :tools
 
@@ -150,32 +172,38 @@ module OpenAI
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol),
+            model:
+              T.any(
+                String,
+                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
+              ),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-            response_format: T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
-              )
-            ),
+            reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+            response_format:
+              T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, OpenAI::Internal::AnyHash)),
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-            ],
+            tool_resources:
+              T.nilable(
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::OrHash
+              ),
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ],
             top_p: T.nilable(Float),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # The description of the assistant. The maximum length is 512 characters.
@@ -246,40 +274,49 @@ module OpenAI
           # We generally recommend altering this or temperature but not both.
           top_p: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                description: T.nilable(String),
-                instructions: T.nilable(String),
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                model: T.any(String, OpenAI::Models::Beta::AssistantUpdateParams::Model::OrSymbol),
-                name: T.nilable(String),
-                reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-                response_format: T.nilable(
+          override.returns(
+            {
+              description: T.nilable(String),
+              instructions: T.nilable(String),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              model:
+                T.any(
+                  String,
+                  OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
+                ),
+              name: T.nilable(String),
+              reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+              response_format:
+                T.nilable(
                   T.any(
                     Symbol,
-                    OpenAI::Models::ResponseFormatText,
-                    OpenAI::Models::ResponseFormatJSONObject,
-                    OpenAI::Models::ResponseFormatJSONSchema
+                    OpenAI::ResponseFormatText,
+                    OpenAI::ResponseFormatJSONObject,
+                    OpenAI::ResponseFormatJSONSchema
                   )
                 ),
-                temperature: T.nilable(Float),
-                tool_resources: T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources),
-                tools: T::Array[
+              temperature: T.nilable(Float),
+              tool_resources:
+                T.nilable(OpenAI::Beta::AssistantUpdateParams::ToolResources),
+              tools:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Models::Beta::FileSearchTool,
-                    OpenAI::Models::Beta::FunctionTool
+                    OpenAI::Beta::CodeInterpreterTool,
+                    OpenAI::Beta::FileSearchTool,
+                    OpenAI::Beta::FunctionTool
                   )
                 ],
-                top_p: T.nilable(Float),
-                request_options: OpenAI::RequestOptions
-              }
-            )
+              top_p: T.nilable(Float),
+              request_options: OpenAI::RequestOptions
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
 
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -289,95 +326,242 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol]) }
-          def self.variants; end
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+              )
+            end
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model) }
+          sig do
+            override.returns(
+              T::Array[OpenAI::Beta::AssistantUpdateParams::Model::Variants]
+            )
+          end
+          def self.variants
+          end
+
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Beta::AssistantUpdateParams::Model)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          GPT_4_1 = T.let(:"gpt-4.1", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4_1_MINI = T.let(:"gpt-4.1-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4_1_NANO = T.let(:"gpt-4.1-nano", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          GPT_4_1 =
+            T.let(
+              :"gpt-4.1",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4_1_MINI =
+            T.let(
+              :"gpt-4.1-mini",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4_1_NANO =
+            T.let(
+              :"gpt-4.1-nano",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_1_2025_04_14 =
-            T.let(:"gpt-4.1-2025-04-14", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4.1-2025-04-14",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_1_MINI_2025_04_14 =
-            T.let(:"gpt-4.1-mini-2025-04-14", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4.1-mini-2025-04-14",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_1_NANO_2025_04_14 =
-            T.let(:"gpt-4.1-nano-2025-04-14", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          O3_MINI = T.let(:"o3-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4.1-nano-2025-04-14",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          O3_MINI =
+            T.let(
+              :"o3-mini",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           O3_MINI_2025_01_31 =
-            T.let(:"o3-mini-2025-01-31", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          O1 = T.let(:o1, OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          O1_2024_12_17 = T.let(:"o1-2024-12-17", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4O = T.let(:"gpt-4o", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"o3-mini-2025-01-31",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          O1 =
+            T.let(:o1, OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+          O1_2024_12_17 =
+            T.let(
+              :"o1-2024-12-17",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4O =
+            T.let(
+              :"gpt-4o",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4O_2024_11_20 =
-            T.let(:"gpt-4o-2024-11-20", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4o-2024-11-20",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4O_2024_08_06 =
-            T.let(:"gpt-4o-2024-08-06", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4o-2024-08-06",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4O_2024_05_13 =
-            T.let(:"gpt-4o-2024-05-13", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4O_MINI = T.let(:"gpt-4o-mini", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4o-2024-05-13",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4O_MINI =
+            T.let(
+              :"gpt-4o-mini",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4O_MINI_2024_07_18 =
-            T.let(:"gpt-4o-mini-2024-07-18", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4o-mini-2024-07-18",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_5_PREVIEW =
-            T.let(:"gpt-4.5-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4.5-preview",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_5_PREVIEW_2025_02_27 =
-            T.let(:"gpt-4.5-preview-2025-02-27", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4_TURBO = T.let(:"gpt-4-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4.5-preview-2025-02-27",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4_TURBO =
+            T.let(
+              :"gpt-4-turbo",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_TURBO_2024_04_09 =
-            T.let(:"gpt-4-turbo-2024-04-09", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4-turbo-2024-04-09",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_0125_PREVIEW =
-            T.let(:"gpt-4-0125-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4-0125-preview",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_TURBO_PREVIEW =
-            T.let(:"gpt-4-turbo-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4-turbo-preview",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_1106_PREVIEW =
-            T.let(:"gpt-4-1106-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4-1106-preview",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_VISION_PREVIEW =
-            T.let(:"gpt-4-vision-preview", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4 = T.let(:"gpt-4", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4_0314 = T.let(:"gpt-4-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4_0613 = T.let(:"gpt-4-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_4_32K = T.let(:"gpt-4-32k", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4-vision-preview",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4 =
+            T.let(
+              :"gpt-4",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4_0314 =
+            T.let(
+              :"gpt-4-0314",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4_0613 =
+            T.let(
+              :"gpt-4-0613",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_4_32K =
+            T.let(
+              :"gpt-4-32k",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_32K_0314 =
-            T.let(:"gpt-4-32k-0314", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4-32k-0314",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_4_32K_0613 =
-            T.let(:"gpt-4-32k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
-          GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-4-32k-0613",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
+          GPT_3_5_TURBO =
+            T.let(
+              :"gpt-3.5-turbo",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_3_5_TURBO_16K =
-            T.let(:"gpt-3.5-turbo-16k", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-3.5-turbo-16k",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_3_5_TURBO_0613 =
-            T.let(:"gpt-3.5-turbo-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-3.5-turbo-0613",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_3_5_TURBO_1106 =
-            T.let(:"gpt-3.5-turbo-1106", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-3.5-turbo-1106",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_3_5_TURBO_0125 =
-            T.let(:"gpt-3.5-turbo-0125", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-3.5-turbo-0125",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
           GPT_3_5_TURBO_16K_0613 =
-            T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::Models::Beta::AssistantUpdateParams::Model::TaggedSymbol)
+            T.let(
+              :"gpt-3.5-turbo-16k-0613",
+              OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol
+            )
         end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          sig { returns(T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter)) }
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter
+              )
+            )
+          end
           attr_reader :code_interpreter
 
           sig do
             params(
-              code_interpreter: T.any(
-                OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::AnyHash
-              )
-            )
-              .void
+              code_interpreter:
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter::OrHash
+            ).void
           end
           attr_writer :code_interpreter
 
-          sig { returns(T.nilable(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch
+              )
+            )
+          end
           attr_reader :file_search
 
           sig do
             params(
-              file_search: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file_search:
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch::OrHash
+            ).void
           end
           attr_writer :file_search
 
@@ -387,28 +571,32 @@ module OpenAI
           # IDs.
           sig do
             params(
-              code_interpreter: T.any(
-                OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::AnyHash
-              ),
-              file_search: T.any(OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
-            )
-              .returns(T.attached_class)
+              code_interpreter:
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter::OrHash,
+              file_search:
+                OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch::OrHash
+            ).returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil); end
+          def self.new(code_interpreter: nil, file_search: nil)
+          end
 
           sig do
-            override
-              .returns(
-                {
-                  code_interpreter: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
-                  file_search: OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch
-                }
-              )
+            override.returns(
+              {
+                code_interpreter:
+                  OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
+                file_search:
+                  OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch
+              }
+            )
           end
-          def to_hash; end
+          def to_hash
+          end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # Overrides the list of
             # [file](https://platform.openai.com/docs/api-reference/files) IDs made available
             # to the `code_interpreter` tool. There can be a maximum of 20 files associated
@@ -426,12 +614,18 @@ module OpenAI
               # to the `code_interpreter` tool. There can be a maximum of 20 files associated
               # with the tool.
               file_ids: nil
-            ); end
-            sig { override.returns({file_ids: T::Array[String]}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ file_ids: T::Array[String] }) }
+            def to_hash
+            end
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # Overrides the
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             # attached to this assistant. There can be a maximum of 1 vector store attached to
@@ -442,16 +636,23 @@ module OpenAI
             sig { params(vector_store_ids: T::Array[String]).void }
             attr_writer :vector_store_ids
 
-            sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
+            sig do
+              params(vector_store_ids: T::Array[String]).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # Overrides the
               # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
               # attached to this assistant. There can be a maximum of 1 vector store attached to
               # the assistant.
               vector_store_ids: nil
-            ); end
-            sig { override.returns({vector_store_ids: T::Array[String]}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ vector_store_ids: T::Array[String] }) }
+            def to_hash
+            end
           end
         end
       end

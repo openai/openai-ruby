@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class ResponseFormatJSONObject < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The type of response format being defined. Always `json_object`.
       sig { returns(Symbol) }
       attr_accessor :type
@@ -14,9 +16,12 @@ module OpenAI
       def self.new(
         # The type of response format being defined. Always `json_object`.
         type: :json_object
-      ); end
-      sig { override.returns({type: Symbol}) }
-      def to_hash; end
+      )
+      end
+
+      sig { override.returns({ type: Symbol }) }
+      def to_hash
+      end
     end
   end
 end

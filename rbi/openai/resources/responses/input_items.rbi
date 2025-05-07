@@ -10,25 +10,24 @@ module OpenAI
             response_id: String,
             after: String,
             before: String,
-            include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
+            include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
             limit: Integer,
-            order: OpenAI::Models::Responses::InputItemListParams::Order::OrSymbol,
-            request_options: OpenAI::RequestOpts
+            order: OpenAI::Responses::InputItemListParams::Order::OrSymbol,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            OpenAI::Internal::CursorPage[
+              T.any(
+                OpenAI::Responses::ResponseInputMessageItem,
+                OpenAI::Responses::ResponseOutputMessage,
+                OpenAI::Responses::ResponseFileSearchToolCall,
+                OpenAI::Responses::ResponseComputerToolCall,
+                OpenAI::Responses::ResponseComputerToolCallOutputItem,
+                OpenAI::Responses::ResponseFunctionWebSearch,
+                OpenAI::Responses::ResponseFunctionToolCallItem,
+                OpenAI::Responses::ResponseFunctionToolCallOutputItem
+              )
+            ]
           )
-            .returns(
-              OpenAI::Internal::CursorPage[
-                T.any(
-                  OpenAI::Models::Responses::ResponseInputMessageItem,
-                  OpenAI::Models::Responses::ResponseOutputMessage,
-                  OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Models::Responses::ResponseComputerToolCall,
-                  OpenAI::Models::Responses::ResponseComputerToolCallOutputItem,
-                  OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Models::Responses::ResponseFunctionToolCallItem,
-                  OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
-                )
-              ]
-            )
         end
         def list(
           # The ID of the response to retrieve input items for.
@@ -49,10 +48,13 @@ module OpenAI
           # - `desc`: Return the input items in descending order.
           order: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

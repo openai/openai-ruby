@@ -6,6 +6,8 @@ module OpenAI
 
     module VectorStores
       class VectorStoreFile < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         attr_accessor :id
@@ -16,14 +18,18 @@ module OpenAI
 
         # The last error associated with this vector store file. Will be `null` if there
         # are no errors.
-        sig { returns(T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError)) }
+        sig do
+          returns(T.nilable(OpenAI::VectorStores::VectorStoreFile::LastError))
+        end
         attr_reader :last_error
 
         sig do
           params(
-            last_error: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Internal::AnyHash))
-          )
-            .void
+            last_error:
+              T.nilable(
+                OpenAI::VectorStores::VectorStoreFile::LastError::OrHash
+              )
+          ).void
         end
         attr_writer :last_error
 
@@ -34,7 +40,9 @@ module OpenAI
         # The status of the vector store file, which can be either `in_progress`,
         # `completed`, `cancelled`, or `failed`. The status `completed` indicates that the
         # vector store file is ready for use.
-        sig { returns(OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol) }
+        sig do
+          returns(OpenAI::VectorStores::VectorStoreFile::Status::TaggedSymbol)
+        end
         attr_accessor :status
 
         # The total vector store usage in bytes. Note that this may be different from the
@@ -54,14 +62,19 @@ module OpenAI
         # querying for objects via API or the dashboard. Keys are strings with a maximum
         # length of 64 characters. Values are strings with a maximum length of 512
         # characters, booleans, or numbers.
-        sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
+        sig do
+          returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
+        end
         attr_accessor :attributes
 
         # The strategy used to chunk the file.
         sig do
           returns(
             T.nilable(
-              T.any(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)
+              T.any(
+                OpenAI::StaticFileChunkingStrategyObject,
+                OpenAI::OtherFileChunkingStrategyObject
+              )
             )
           )
         end
@@ -69,13 +82,12 @@ module OpenAI
 
         sig do
           params(
-            chunking_strategy: T.any(
-              OpenAI::Models::StaticFileChunkingStrategyObject,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::OtherFileChunkingStrategyObject
-            )
-          )
-            .void
+            chunking_strategy:
+              T.any(
+                OpenAI::StaticFileChunkingStrategyObject::OrHash,
+                OpenAI::OtherFileChunkingStrategyObject::OrHash
+              )
+          ).void
         end
         attr_writer :chunking_strategy
 
@@ -84,19 +96,22 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            last_error: T.nilable(T.any(OpenAI::Models::VectorStores::VectorStoreFile::LastError, OpenAI::Internal::AnyHash)),
-            status: OpenAI::Models::VectorStores::VectorStoreFile::Status::OrSymbol,
+            last_error:
+              T.nilable(
+                OpenAI::VectorStores::VectorStoreFile::LastError::OrHash
+              ),
+            status: OpenAI::VectorStores::VectorStoreFile::Status::OrSymbol,
             usage_bytes: Integer,
             vector_store_id: String,
-            attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            chunking_strategy: T.any(
-              OpenAI::Models::StaticFileChunkingStrategyObject,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::OtherFileChunkingStrategyObject
-            ),
+            attributes:
+              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+            chunking_strategy:
+              T.any(
+                OpenAI::StaticFileChunkingStrategyObject::OrHash,
+                OpenAI::OtherFileChunkingStrategyObject::OrHash
+              ),
             object: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The identifier, which can be referenced in API endpoints.
@@ -128,28 +143,44 @@ module OpenAI
           chunking_strategy: nil,
           # The object type, which is always `vector_store.file`.
           object: :"vector_store.file"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                id: String,
-                created_at: Integer,
-                last_error: T.nilable(OpenAI::Models::VectorStores::VectorStoreFile::LastError),
-                object: Symbol,
-                status: OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol,
-                usage_bytes: Integer,
-                vector_store_id: String,
-                attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-                chunking_strategy: T.any(OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject)
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              id: String,
+              created_at: Integer,
+              last_error:
+                T.nilable(OpenAI::VectorStores::VectorStoreFile::LastError),
+              object: Symbol,
+              status:
+                OpenAI::VectorStores::VectorStoreFile::Status::TaggedSymbol,
+              usage_bytes: Integer,
+              vector_store_id: String,
+              attributes:
+                T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              chunking_strategy:
+                T.any(
+                  OpenAI::StaticFileChunkingStrategyObject,
+                  OpenAI::OtherFileChunkingStrategyObject
+                )
+            }
+          )
+        end
+        def to_hash
+        end
 
         class LastError < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # One of `server_error` or `rate_limit_exceeded`.
-          sig { returns(OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol) }
+          sig do
+            returns(
+              OpenAI::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol
+            )
+          end
           attr_accessor :code
 
           # A human-readable description of the error.
@@ -159,40 +190,70 @@ module OpenAI
           # The last error associated with this vector store file. Will be `null` if there
           # are no errors.
           sig do
-            params(code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::OrSymbol, message: String)
-              .returns(T.attached_class)
+            params(
+              code:
+                OpenAI::VectorStores::VectorStoreFile::LastError::Code::OrSymbol,
+              message: String
+            ).returns(T.attached_class)
           end
           def self.new(
             # One of `server_error` or `rate_limit_exceeded`.
             code:,
             # A human-readable description of the error.
             message:
-          ); end
-          sig do
-            override
-              .returns(
-                {code: OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol, message: String}
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                code:
+                  OpenAI::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol,
+                message: String
+              }
+            )
+          end
+          def to_hash
+          end
 
           # One of `server_error` or `rate_limit_exceeded`.
           module Code
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code) }
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::VectorStores::VectorStoreFile::LastError::Code
+                )
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             SERVER_ERROR =
-              T.let(:server_error, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
+              T.let(
+                :server_error,
+                OpenAI::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol
+              )
             UNSUPPORTED_FILE =
-              T.let(:unsupported_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
+              T.let(
+                :unsupported_file,
+                OpenAI::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol
+              )
             INVALID_FILE =
-              T.let(:invalid_file, OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol)
+              T.let(
+                :invalid_file,
+                OpenAI::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol
+              )
 
-            sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol]) }
-            def self.values; end
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::VectorStores::VectorStoreFile::LastError::Code::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
 
@@ -202,23 +263,58 @@ module OpenAI
         module Status
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::VectorStoreFile::Status) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::VectorStores::VectorStoreFile::Status)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol)
+          IN_PROGRESS =
+            T.let(
+              :in_progress,
+              OpenAI::VectorStores::VectorStoreFile::Status::TaggedSymbol
+            )
+          COMPLETED =
+            T.let(
+              :completed,
+              OpenAI::VectorStores::VectorStoreFile::Status::TaggedSymbol
+            )
+          CANCELLED =
+            T.let(
+              :cancelled,
+              OpenAI::VectorStores::VectorStoreFile::Status::TaggedSymbol
+            )
+          FAILED =
+            T.let(
+              :failed,
+              OpenAI::VectorStores::VectorStoreFile::Status::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::VectorStores::VectorStoreFile::Status::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::VectorStores::VectorStoreFile::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         module Attribute
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, Float, T::Boolean]) }
-          def self.variants; end
+          Variants = T.type_alias { T.any(String, Float, T::Boolean) }
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::VectorStores::VectorStoreFile::Attribute::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
         end
       end
     end

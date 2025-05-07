@@ -6,6 +6,8 @@ module OpenAI
 
     module Chat
       class ChatCompletionFunctionCallOption < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The name of the function to call.
         sig { returns(String) }
         attr_accessor :name
@@ -16,9 +18,12 @@ module OpenAI
         def self.new(
           # The name of the function to call.
           name:
-        ); end
-        sig { override.returns({name: String}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ name: String }) }
+        def to_hash
+        end
       end
     end
   end

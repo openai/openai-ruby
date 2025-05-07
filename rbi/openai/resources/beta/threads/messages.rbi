@@ -9,25 +9,27 @@ module OpenAI
           sig do
             params(
               thread_id: String,
-              content: T.any(
-                String,
-                T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::Threads::ImageURLContentBlock,
-                    OpenAI::Models::Beta::Threads::TextContentBlockParam
-                  )
-                ]
-              ),
-              role: OpenAI::Models::Beta::Threads::MessageCreateParams::Role::OrSymbol,
-              attachments: T.nilable(
-                T::Array[T.any(OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment, OpenAI::Internal::AnyHash)]
-              ),
+              content:
+                T.any(
+                  String,
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::Threads::ImageFileContentBlock::OrHash,
+                      OpenAI::Beta::Threads::ImageURLContentBlock::OrHash,
+                      OpenAI::Beta::Threads::TextContentBlockParam::OrHash
+                    )
+                  ]
+                ),
+              role: OpenAI::Beta::Threads::MessageCreateParams::Role::OrSymbol,
+              attachments:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Beta::Threads::MessageCreateParams::Attachment::OrHash
+                  ]
+                ),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: OpenAI::RequestOpts
-            )
-              .returns(OpenAI::Models::Beta::Threads::Message)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Message)
           end
           def create(
             # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
@@ -52,11 +54,16 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # Retrieve a message.
           sig do
-            params(message_id: String, thread_id: String, request_options: OpenAI::RequestOpts)
-              .returns(OpenAI::Models::Beta::Threads::Message)
+            params(
+              message_id: String,
+              thread_id: String,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Message)
           end
           def retrieve(
             # The ID of the message to retrieve.
@@ -65,16 +72,17 @@ module OpenAI
             # to which this message belongs.
             thread_id:,
             request_options: {}
-          ); end
+          )
+          end
+
           # Modifies a message.
           sig do
             params(
               message_id: String,
               thread_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
-              request_options: OpenAI::RequestOpts
-            )
-              .returns(OpenAI::Models::Beta::Threads::Message)
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::Message)
           end
           def update(
             # Path param: The ID of the message to modify.
@@ -89,7 +97,9 @@ module OpenAI
             # a maximum length of 512 characters.
             metadata: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # Returns a list of messages for a given thread.
           sig do
             params(
@@ -97,11 +107,12 @@ module OpenAI
               after: String,
               before: String,
               limit: Integer,
-              order: OpenAI::Models::Beta::Threads::MessageListParams::Order::OrSymbol,
+              order: OpenAI::Beta::Threads::MessageListParams::Order::OrSymbol,
               run_id: String,
-              request_options: OpenAI::RequestOpts
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Message]
             )
-              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Message])
           end
           def list(
             # The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
@@ -126,11 +137,16 @@ module OpenAI
             # Filter messages by the run ID that generated them.
             run_id: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # Deletes a message.
           sig do
-            params(message_id: String, thread_id: String, request_options: OpenAI::RequestOpts)
-              .returns(OpenAI::Models::Beta::Threads::MessageDeleted)
+            params(
+              message_id: String,
+              thread_id: String,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(OpenAI::Beta::Threads::MessageDeleted)
           end
           def delete(
             # The ID of the message to delete.
@@ -138,10 +154,13 @@ module OpenAI
             # The ID of the thread to which this message belongs.
             thread_id:,
             request_options: {}
-          ); end
+          )
+          end
+
           # @api private
           sig { params(client: OpenAI::Client).returns(T.attached_class) }
-          def self.new(client:); end
+          def self.new(client:)
+          end
         end
       end
     end

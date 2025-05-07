@@ -12,10 +12,12 @@ module OpenAI
                 step_id: String,
                 thread_id: String,
                 run_id: String,
-                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
-                request_options: OpenAI::RequestOpts
-              )
-                .returns(OpenAI::Models::Beta::Threads::Runs::RunStep)
+                include:
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ],
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(OpenAI::Beta::Threads::Runs::RunStep)
             end
             def retrieve(
               # Path param: The ID of the run step to retrieve.
@@ -34,7 +36,9 @@ module OpenAI
               # for more information.
               include: nil,
               request_options: {}
-            ); end
+            )
+            end
+
             # Returns a list of run steps belonging to a run.
             sig do
               params(
@@ -42,12 +46,19 @@ module OpenAI
                 thread_id: String,
                 after: String,
                 before: String,
-                include: T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::OrSymbol],
+                include:
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepInclude::OrSymbol
+                  ],
                 limit: Integer,
-                order: OpenAI::Models::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
-                request_options: OpenAI::RequestOpts
+                order:
+                  OpenAI::Beta::Threads::Runs::StepListParams::Order::OrSymbol,
+                request_options: OpenAI::RequestOptions::OrHash
+              ).returns(
+                OpenAI::Internal::CursorPage[
+                  OpenAI::Beta::Threads::Runs::RunStep
+                ]
               )
-                .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Runs::RunStep])
             end
             def list(
               # Path param: The ID of the run the run steps belong to.
@@ -80,10 +91,13 @@ module OpenAI
               # ascending order and `desc` for descending order.
               order: nil,
               request_options: {}
-            ); end
+            )
+            end
+
             # @api private
             sig { params(client: OpenAI::Client).returns(T.attached_class) }
-            def self.new(client:); end
+            def self.new(client:)
+            end
           end
         end
       end

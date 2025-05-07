@@ -7,13 +7,19 @@ module OpenAI
     module FileChunkingStrategyParam
       extend OpenAI::Internal::Type::Union
 
-      sig do
-        override
-          .returns(
-            [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+      Variants =
+        T.type_alias do
+          T.any(
+            OpenAI::AutoFileChunkingStrategyParam,
+            OpenAI::StaticFileChunkingStrategyObjectParam
           )
+        end
+
+      sig do
+        override.returns(T::Array[OpenAI::FileChunkingStrategyParam::Variants])
       end
-      def self.variants; end
+      def self.variants
+      end
     end
   end
 end

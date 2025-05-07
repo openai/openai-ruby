@@ -5,13 +5,16 @@ module OpenAI
     module Beta
       module Threads
         class TextDelta < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           sig do
             returns(
               T.nilable(
                 T::Array[
                   T.any(
-                    OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                    OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
+                    OpenAI::Beta::Threads::FileCitationDeltaAnnotation,
+                    OpenAI::Beta::Threads::FilePathDeltaAnnotation
                   )
                 ]
               )
@@ -21,15 +24,14 @@ module OpenAI
 
           sig do
             params(
-              annotations: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-                )
-              ]
-            )
-              .void
+              annotations:
+                T::Array[
+                  T.any(
+                    OpenAI::Beta::Threads::FileCitationDeltaAnnotation::OrHash,
+                    OpenAI::Beta::Threads::FilePathDeltaAnnotation::OrHash
+                  )
+                ]
+            ).void
           end
           attr_writer :annotations
 
@@ -42,37 +44,39 @@ module OpenAI
 
           sig do
             params(
-              annotations: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
-                )
-              ],
+              annotations:
+                T::Array[
+                  T.any(
+                    OpenAI::Beta::Threads::FileCitationDeltaAnnotation::OrHash,
+                    OpenAI::Beta::Threads::FilePathDeltaAnnotation::OrHash
+                  )
+                ],
               value: String
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             annotations: nil,
             # The data that makes up the text.
             value: nil
-          ); end
+          )
+          end
+
           sig do
-            override
-              .returns(
-                {
-                  annotations: T::Array[
+            override.returns(
+              {
+                annotations:
+                  T::Array[
                     T.any(
-                      OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation,
-                      OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation
+                      OpenAI::Beta::Threads::FileCitationDeltaAnnotation,
+                      OpenAI::Beta::Threads::FilePathDeltaAnnotation
                     )
                   ],
-                  value: String
-                }
-              )
+                value: String
+              }
+            )
           end
-          def to_hash; end
+          def to_hash
+          end
         end
       end
     end

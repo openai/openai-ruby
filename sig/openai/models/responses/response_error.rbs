@@ -2,22 +2,17 @@ module OpenAI
   module Models
     module Responses
       type response_error =
-        {
-          code: OpenAI::Models::Responses::ResponseError::code,
-          message: String
-        }
+        { code: OpenAI::Responses::ResponseError::code, message: String }
 
       class ResponseError < OpenAI::Internal::Type::BaseModel
-        attr_accessor code: OpenAI::Models::Responses::ResponseError::code
+        attr_accessor code: OpenAI::Responses::ResponseError::code
 
         attr_accessor message: String
 
         def initialize: (
-          code: OpenAI::Models::Responses::ResponseError::code,
+          code: OpenAI::Responses::ResponseError::code,
           message: String
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_error
 
         type code =
           :server_error
@@ -61,7 +56,7 @@ module OpenAI
           FAILED_TO_DOWNLOAD_IMAGE: :failed_to_download_image
           IMAGE_FILE_NOT_FOUND: :image_file_not_found
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseError::code]
+          def self?.values: -> ::Array[OpenAI::Responses::ResponseError::code]
         end
       end
     end

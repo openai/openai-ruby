@@ -3,14 +3,14 @@ module OpenAI
     module Beta
       type assistant_response_format_option =
         :auto
-        | OpenAI::Models::ResponseFormatText
-        | OpenAI::Models::ResponseFormatJSONObject
-        | OpenAI::Models::ResponseFormatJSONSchema
+        | OpenAI::ResponseFormatText
+        | OpenAI::ResponseFormatJSONObject
+        | OpenAI::ResponseFormatJSONSchema
 
       module AssistantResponseFormatOption
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [:auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::assistant_response_format_option]
       end
     end
   end

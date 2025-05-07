@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The text delta that was additionally transcribed.
         sig { returns(String) }
         attr_accessor :delta
@@ -15,14 +17,22 @@ module OpenAI
         # The log probabilities of the delta. Only included if you
         # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         # with the `include[]` parameter set to `logprobs`.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob])) }
+        sig do
+          returns(
+            T.nilable(
+              T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+            )
+          )
+        end
         attr_reader :logprobs
 
         sig do
           params(
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::AnyHash)]
-          )
-            .void
+            logprobs:
+              T::Array[
+                OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob::OrHash
+              ]
+          ).void
         end
         attr_writer :logprobs
 
@@ -33,10 +43,12 @@ module OpenAI
         sig do
           params(
             delta: String,
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob, OpenAI::Internal::AnyHash)],
+            logprobs:
+              T::Array[
+                OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob::OrHash
+              ],
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The text delta that was additionally transcribed.
@@ -47,16 +59,26 @@ module OpenAI
           logprobs: nil,
           # The type of the event. Always `transcript.text.delta`.
           type: :"transcript.text.delta"
-        ); end
-        sig do
-          override
-            .returns(
-              {delta: String, type: Symbol, logprobs: T::Array[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob]}
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              delta: String,
+              type: Symbol,
+              logprobs:
+                T::Array[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob]
+            }
+          )
+        end
+        def to_hash
+        end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The token that was used to generate the log probability.
           sig { returns(T.nilable(String)) }
           attr_reader :token
@@ -78,7 +100,13 @@ module OpenAI
           sig { params(logprob: Float).void }
           attr_writer :logprob
 
-          sig { params(token: String, bytes: T::Array[T.anything], logprob: Float).returns(T.attached_class) }
+          sig do
+            params(
+              token: String,
+              bytes: T::Array[T.anything],
+              logprob: Float
+            ).returns(T.attached_class)
+          end
           def self.new(
             # The token that was used to generate the log probability.
             token: nil,
@@ -86,9 +114,16 @@ module OpenAI
             bytes: nil,
             # The log probability of the token.
             logprob: nil
-          ); end
-          sig { override.returns({token: String, bytes: T::Array[T.anything], logprob: Float}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { token: String, bytes: T::Array[T.anything], logprob: Float }
+            )
+          end
+          def to_hash
+          end
         end
       end
     end

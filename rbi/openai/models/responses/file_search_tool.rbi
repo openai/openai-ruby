@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The type of the file search tool. Always `file_search`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -13,7 +15,11 @@ module OpenAI
         attr_accessor :vector_store_ids
 
         # A filter to apply.
-        sig { returns(T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter))) }
+        sig do
+          returns(
+            T.nilable(T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter))
+          )
+        end
         attr_accessor :filters
 
         # The maximum number of results to return. This number should be between 1 and 50
@@ -25,14 +31,16 @@ module OpenAI
         attr_writer :max_num_results
 
         # Ranking options for search.
-        sig { returns(T.nilable(OpenAI::Models::Responses::FileSearchTool::RankingOptions)) }
+        sig do
+          returns(T.nilable(OpenAI::Responses::FileSearchTool::RankingOptions))
+        end
         attr_reader :ranking_options
 
         sig do
           params(
-            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::AnyHash)
-          )
-            .void
+            ranking_options:
+              OpenAI::Responses::FileSearchTool::RankingOptions::OrHash
+          ).void
         end
         attr_writer :ranking_options
 
@@ -42,14 +50,18 @@ module OpenAI
         sig do
           params(
             vector_store_ids: T::Array[String],
-            filters: T.nilable(
-              T.any(OpenAI::Models::ComparisonFilter, OpenAI::Internal::AnyHash, OpenAI::Models::CompoundFilter)
-            ),
+            filters:
+              T.nilable(
+                T.any(
+                  OpenAI::ComparisonFilter::OrHash,
+                  OpenAI::CompoundFilter::OrHash
+                )
+              ),
             max_num_results: Integer,
-            ranking_options: T.any(OpenAI::Models::Responses::FileSearchTool::RankingOptions, OpenAI::Internal::AnyHash),
+            ranking_options:
+              OpenAI::Responses::FileSearchTool::RankingOptions::OrHash,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The IDs of the vector stores to search.
@@ -63,35 +75,64 @@ module OpenAI
           ranking_options: nil,
           # The type of the file search tool. Always `file_search`.
           type: :file_search
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                type: Symbol,
-                vector_store_ids: T::Array[String],
-                filters: T.nilable(T.any(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)),
-                max_num_results: Integer,
-                ranking_options: OpenAI::Models::Responses::FileSearchTool::RankingOptions
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              type: Symbol,
+              vector_store_ids: T::Array[String],
+              filters:
+                T.nilable(
+                  T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)
+                ),
+              max_num_results: Integer,
+              ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
+            }
+          )
+        end
+        def to_hash
+        end
 
         # A filter to apply.
         module Filters
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]) }
-          def self.variants; end
+          Variants =
+            T.type_alias do
+              T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Responses::FileSearchTool::Filters::Variants]
+            )
+          end
+          def self.variants
+          end
         end
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The ranker to use for the file search.
-          sig { returns(T.nilable(OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol
+              )
+            )
+          end
           attr_reader :ranker
 
-          sig { params(ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol).void }
+          sig do
+            params(
+              ranker:
+                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol
+            ).void
+          end
           attr_writer :ranker
 
           # The score threshold for the file search, a number between 0 and 1. Numbers
@@ -106,10 +147,10 @@ module OpenAI
           # Ranking options for search.
           sig do
             params(
-              ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
+              ranker:
+                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
               score_threshold: Float
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The ranker to use for the file search.
@@ -118,34 +159,54 @@ module OpenAI
             # closer to 1 will attempt to return only the most relevant results, but may
             # return fewer results.
             score_threshold: nil
-          ); end
-          sig do
-            override
-              .returns(
-                {ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol, score_threshold: Float}
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                ranker:
+                  OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::OrSymbol,
+                score_threshold: Float
+              }
+            )
+          end
+          def to_hash
+          end
 
           # The ranker to use for the file search.
           module Ranker
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker) }
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::FileSearchTool::RankingOptions::Ranker
+                )
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            AUTO = T.let(:auto, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol)
+            AUTO =
+              T.let(
+                :auto,
+                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
+              )
             DEFAULT_2024_11_15 =
               T.let(
                 :"default-2024-11-15",
-                OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
+                OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
               )
 
             sig do
-              override.returns(T::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol])
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::FileSearchTool::RankingOptions::Ranker::TaggedSymbol
+                ]
+              )
             end
-            def self.values; end
+            def self.values
+            end
           end
         end
       end

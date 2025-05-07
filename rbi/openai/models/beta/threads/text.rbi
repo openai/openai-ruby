@@ -5,12 +5,15 @@ module OpenAI
     module Beta
       module Threads
         class Text < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           sig do
             returns(
               T::Array[
                 T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                  OpenAI::Models::Beta::Threads::FilePathAnnotation
+                  OpenAI::Beta::Threads::FileCitationAnnotation,
+                  OpenAI::Beta::Threads::FilePathAnnotation
                 )
               ]
             )
@@ -23,37 +26,39 @@ module OpenAI
 
           sig do
             params(
-              annotations: T::Array[
-                T.any(
-                  OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::FilePathAnnotation
-                )
-              ],
+              annotations:
+                T::Array[
+                  T.any(
+                    OpenAI::Beta::Threads::FileCitationAnnotation::OrHash,
+                    OpenAI::Beta::Threads::FilePathAnnotation::OrHash
+                  )
+                ],
               value: String
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             annotations:,
             # The data that makes up the text.
             value:
-          ); end
+          )
+          end
+
           sig do
-            override
-              .returns(
-                {
-                  annotations: T::Array[
+            override.returns(
+              {
+                annotations:
+                  T::Array[
                     T.any(
-                      OpenAI::Models::Beta::Threads::FileCitationAnnotation,
-                      OpenAI::Models::Beta::Threads::FilePathAnnotation
+                      OpenAI::Beta::Threads::FileCitationAnnotation,
+                      OpenAI::Beta::Threads::FilePathAnnotation
                     )
                   ],
-                  value: String
-                }
-              )
+                value: String
+              }
+            )
           end
-          def to_hash; end
+          def to_hash
+          end
         end
       end
     end

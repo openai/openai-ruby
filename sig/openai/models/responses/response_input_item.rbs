@@ -2,17 +2,17 @@ module OpenAI
   module Models
     module Responses
       type response_input_item =
-        OpenAI::Models::Responses::EasyInputMessage
-        | OpenAI::Models::Responses::ResponseInputItem::Message
-        | OpenAI::Models::Responses::ResponseOutputMessage
-        | OpenAI::Models::Responses::ResponseFileSearchToolCall
-        | OpenAI::Models::Responses::ResponseComputerToolCall
-        | OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput
-        | OpenAI::Models::Responses::ResponseFunctionWebSearch
-        | OpenAI::Models::Responses::ResponseFunctionToolCall
-        | OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput
-        | OpenAI::Models::Responses::ResponseReasoningItem
-        | OpenAI::Models::Responses::ResponseInputItem::ItemReference
+        OpenAI::Responses::EasyInputMessage
+        | OpenAI::Responses::ResponseInputItem::Message
+        | OpenAI::Responses::ResponseOutputMessage
+        | OpenAI::Responses::ResponseFileSearchToolCall
+        | OpenAI::Responses::ResponseComputerToolCall
+        | OpenAI::Responses::ResponseInputItem::ComputerCallOutput
+        | OpenAI::Responses::ResponseFunctionWebSearch
+        | OpenAI::Responses::ResponseFunctionToolCall
+        | OpenAI::Responses::ResponseInputItem::FunctionCallOutput
+        | OpenAI::Responses::ResponseReasoningItem
+        | OpenAI::Responses::ResponseInputItem::ItemReference
 
       module ResponseInputItem
         extend OpenAI::Internal::Type::Union
@@ -20,36 +20,34 @@ module OpenAI
         type message =
           {
             content: OpenAI::Models::Responses::response_input_message_content_list,
-            role: OpenAI::Models::Responses::ResponseInputItem::Message::role,
-            status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
-            type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
+            role: OpenAI::Responses::ResponseInputItem::Message::role,
+            status: OpenAI::Responses::ResponseInputItem::Message::status,
+            type: OpenAI::Responses::ResponseInputItem::Message::type_
           }
 
         class Message < OpenAI::Internal::Type::BaseModel
           attr_accessor content: OpenAI::Models::Responses::response_input_message_content_list
 
-          attr_accessor role: OpenAI::Models::Responses::ResponseInputItem::Message::role
+          attr_accessor role: OpenAI::Responses::ResponseInputItem::Message::role
 
-          attr_reader status: OpenAI::Models::Responses::ResponseInputItem::Message::status?
+          attr_reader status: OpenAI::Responses::ResponseInputItem::Message::status?
 
           def status=: (
-            OpenAI::Models::Responses::ResponseInputItem::Message::status
-          ) -> OpenAI::Models::Responses::ResponseInputItem::Message::status
+            OpenAI::Responses::ResponseInputItem::Message::status
+          ) -> OpenAI::Responses::ResponseInputItem::Message::status
 
-          attr_reader type: OpenAI::Models::Responses::ResponseInputItem::Message::type_?
+          attr_reader type: OpenAI::Responses::ResponseInputItem::Message::type_?
 
           def type=: (
-            OpenAI::Models::Responses::ResponseInputItem::Message::type_
-          ) -> OpenAI::Models::Responses::ResponseInputItem::Message::type_
+            OpenAI::Responses::ResponseInputItem::Message::type_
+          ) -> OpenAI::Responses::ResponseInputItem::Message::type_
 
           def initialize: (
             content: OpenAI::Models::Responses::response_input_message_content_list,
-            role: OpenAI::Models::Responses::ResponseInputItem::Message::role,
-            ?status: OpenAI::Models::Responses::ResponseInputItem::Message::status,
-            ?type: OpenAI::Models::Responses::ResponseInputItem::Message::type_
+            role: OpenAI::Responses::ResponseInputItem::Message::role,
+            ?status: OpenAI::Responses::ResponseInputItem::Message::status,
+            ?type: OpenAI::Responses::ResponseInputItem::Message::type_
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::message
 
           type role = :user | :system | :developer
 
@@ -60,7 +58,7 @@ module OpenAI
             SYSTEM: :system
             DEVELOPER: :developer
 
-            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::role]
+            def self?.values: -> ::Array[OpenAI::Responses::ResponseInputItem::Message::role]
           end
 
           type status = :in_progress | :completed | :incomplete
@@ -72,7 +70,7 @@ module OpenAI
             COMPLETED: :completed
             INCOMPLETE: :incomplete
 
-            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::status]
+            def self?.values: -> ::Array[OpenAI::Responses::ResponseInputItem::Message::status]
           end
 
           type type_ = :message
@@ -82,43 +80,41 @@ module OpenAI
 
             MESSAGE: :message
 
-            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::Message::type_]
+            def self?.values: -> ::Array[OpenAI::Responses::ResponseInputItem::Message::type_]
           end
         end
 
         type computer_call_output =
           {
             call_id: String,
-            output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+            output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
             type: :computer_call_output,
             id: String?,
-            acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
-            status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
+            acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            status: OpenAI::Responses::ResponseInputItem::ComputerCallOutput::status?
           }
 
         class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
           attr_accessor call_id: String
 
-          attr_accessor output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot
+          attr_accessor output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot
 
           attr_accessor type: :computer_call_output
 
           attr_accessor id: String?
 
-          attr_accessor acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?
+          attr_accessor acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?
 
-          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?
+          attr_accessor status: OpenAI::Responses::ResponseInputItem::ComputerCallOutput::status?
 
           def initialize: (
             call_id: String,
-            output: OpenAI::Models::Responses::ResponseComputerToolCallOutputScreenshot,
+            output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
             ?id: String?,
-            ?acknowledged_safety_checks: ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
-            ?status: OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status?,
+            ?acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]?,
+            ?status: OpenAI::Responses::ResponseInputItem::ComputerCallOutput::status?,
             ?type: :computer_call_output
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::computer_call_output
 
           type acknowledged_safety_check =
             { id: String, code: String?, message: String? }
@@ -135,8 +131,6 @@ module OpenAI
               ?code: String?,
               ?message: String?
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::acknowledged_safety_check
           end
 
           type status = :in_progress | :completed | :incomplete
@@ -148,7 +142,7 @@ module OpenAI
             COMPLETED: :completed
             INCOMPLETE: :incomplete
 
-            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput::status]
+            def self?.values: -> ::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::status]
           end
         end
 
@@ -158,7 +152,7 @@ module OpenAI
             output: String,
             type: :function_call_output,
             id: String?,
-            status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
+            status: OpenAI::Responses::ResponseInputItem::FunctionCallOutput::status?
           }
 
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
@@ -170,17 +164,15 @@ module OpenAI
 
           attr_accessor id: String?
 
-          attr_accessor status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?
+          attr_accessor status: OpenAI::Responses::ResponseInputItem::FunctionCallOutput::status?
 
           def initialize: (
             call_id: String,
             output: String,
             ?id: String?,
-            ?status: OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status?,
+            ?status: OpenAI::Responses::ResponseInputItem::FunctionCallOutput::status?,
             ?type: :function_call_output
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::function_call_output
 
           type status = :in_progress | :completed | :incomplete
 
@@ -191,27 +183,25 @@ module OpenAI
             COMPLETED: :completed
             INCOMPLETE: :incomplete
 
-            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput::status]
+            def self?.values: -> ::Array[OpenAI::Responses::ResponseInputItem::FunctionCallOutput::status]
           end
         end
 
         type item_reference =
           {
             id: String,
-            type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
+            type: OpenAI::Responses::ResponseInputItem::ItemReference::type_?
           }
 
         class ItemReference < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
-          attr_accessor type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
+          attr_accessor type: OpenAI::Responses::ResponseInputItem::ItemReference::type_?
 
           def initialize: (
             id: String,
-            ?type: OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_?
+            ?type: OpenAI::Responses::ResponseInputItem::ItemReference::type_?
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseInputItem::item_reference
 
           type type_ = :item_reference
 
@@ -220,11 +210,11 @@ module OpenAI
 
             ITEM_REFERENCE: :item_reference
 
-            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ItemReference::type_]
+            def self?.values: -> ::Array[OpenAI::Responses::ResponseInputItem::ItemReference::type_]
           end
         end
 
-        def self?.variants: -> [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseInputItem::ItemReference]
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_input_item]
       end
     end
   end

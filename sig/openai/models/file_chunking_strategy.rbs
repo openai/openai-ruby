@@ -1,13 +1,13 @@
 module OpenAI
   module Models
     type file_chunking_strategy =
-      OpenAI::Models::StaticFileChunkingStrategyObject
-      | OpenAI::Models::OtherFileChunkingStrategyObject
+      OpenAI::StaticFileChunkingStrategyObject
+      | OpenAI::OtherFileChunkingStrategyObject
 
     module FileChunkingStrategy
       extend OpenAI::Internal::Type::Union
 
-      def self?.variants: -> [OpenAI::Models::StaticFileChunkingStrategyObject, OpenAI::Models::OtherFileChunkingStrategyObject]
+      def self?.variants: -> ::Array[OpenAI::Models::file_chunking_strategy]
     end
   end
 end

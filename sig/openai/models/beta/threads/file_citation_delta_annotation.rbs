@@ -7,7 +7,7 @@ module OpenAI
             index: Integer,
             type: :file_citation,
             end_index: Integer,
-            file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+            file_citation: OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
             start_index: Integer,
             text: String
           }
@@ -21,11 +21,11 @@ module OpenAI
 
           def end_index=: (Integer) -> Integer
 
-          attr_reader file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation?
+          attr_reader file_citation: OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation?
 
           def file_citation=: (
-            OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
-          ) -> OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
+            OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
+          ) -> OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
 
           attr_reader start_index: Integer?
 
@@ -38,13 +38,11 @@ module OpenAI
           def initialize: (
             index: Integer,
             ?end_index: Integer,
-            ?file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+            ?file_citation: OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
             ?start_index: Integer,
             ?text: String,
             ?type: :file_citation
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::file_citation_delta_annotation
 
           type file_citation = { file_id: String, quote: String }
 
@@ -58,8 +56,6 @@ module OpenAI
             def quote=: (String) -> String
 
             def initialize: (?file_id: String, ?quote: String) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::file_citation
           end
         end
       end

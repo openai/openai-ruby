@@ -22,25 +22,24 @@ module OpenAI
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `include[]` parameter set to `logprobs`.
         #
-        #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
+        #   @return [Array<OpenAI::Audio::TranscriptionTextDoneEvent::Logprob>, nil]
         optional :logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob] }
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDoneEvent::Logprob] }
 
         # @!method initialize(text:, logprobs: nil, type: :"transcript.text.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent} for more details.
+        #   {OpenAI::Audio::TranscriptionTextDoneEvent} for more details.
         #
         #   Emitted when the transcription is complete. Contains the complete transcription
         #   text. Only emitted when you
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `Stream` parameter set to `true`.
         #
-        #   @param text [String] The text that was transcribed. ...
+        #   @param text [String] The text that was transcribed.
         #
-        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob>] The log probabilities of the individual tokens in the transcription. Only includ
-        #   ...
+        #   @param logprobs [Array<OpenAI::Audio::TranscriptionTextDoneEvent::Logprob>] The log probabilities of the individual tokens in the transcription. Only includ
         #
-        #   @param type [Symbol, :"transcript.text.done"] The type of the event. Always `transcript.text.done`. ...
+        #   @param type [Symbol, :"transcript.text.done"] The type of the event. Always `transcript.text.done`.
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
@@ -63,13 +62,13 @@ module OpenAI
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
           #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Audio::TranscriptionTextDoneEvent::Logprob} for more details.
+          #   {OpenAI::Audio::TranscriptionTextDoneEvent::Logprob} for more details.
           #
-          #   @param token [String] The token that was used to generate the log probability. ...
+          #   @param token [String] The token that was used to generate the log probability.
           #
-          #   @param bytes [Array<Object>] The bytes that were used to generate the log probability. ...
+          #   @param bytes [Array<Object>] The bytes that were used to generate the log probability.
           #
-          #   @param logprob [Float] The log probability of the token. ...
+          #   @param logprob [Float] The log probability of the token.
         end
       end
     end

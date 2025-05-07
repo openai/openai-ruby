@@ -6,6 +6,8 @@ module OpenAI
 
     module FineTuning
       class FineTuningJobEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The object identifier.
         sig { returns(String) }
         attr_accessor :id
@@ -15,7 +17,9 @@ module OpenAI
         attr_accessor :created_at
 
         # The log level of the event.
-        sig { returns(OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol) }
+        sig do
+          returns(OpenAI::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
+        end
         attr_accessor :level
 
         # The message of the event.
@@ -34,10 +38,20 @@ module OpenAI
         attr_writer :data
 
         # The type of event.
-        sig { returns(T.nilable(OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::FineTuningJobEvent::Type::TaggedSymbol
+            )
+          )
+        end
         attr_reader :type
 
-        sig { params(type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol).void }
+        sig do
+          params(
+            type: OpenAI::FineTuning::FineTuningJobEvent::Type::OrSymbol
+          ).void
+        end
         attr_writer :type
 
         # Fine-tuning job event object
@@ -45,13 +59,12 @@ module OpenAI
           params(
             id: String,
             created_at: Integer,
-            level: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::OrSymbol,
+            level: OpenAI::FineTuning::FineTuningJobEvent::Level::OrSymbol,
             message: String,
             data: T.anything,
-            type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::OrSymbol,
+            type: OpenAI::FineTuning::FineTuningJobEvent::Type::OrSymbol,
             object: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The object identifier.
@@ -68,50 +81,93 @@ module OpenAI
           type: nil,
           # The object type, which is always "fine_tuning.job.event".
           object: :"fine_tuning.job.event"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                id: String,
-                created_at: Integer,
-                level: OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol,
-                message: String,
-                object: Symbol,
-                data: T.anything,
-                type: OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              id: String,
+              created_at: Integer,
+              level:
+                OpenAI::FineTuning::FineTuningJobEvent::Level::TaggedSymbol,
+              message: String,
+              object: Symbol,
+              data: T.anything,
+              type: OpenAI::FineTuning::FineTuningJobEvent::Type::TaggedSymbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         # The log level of the event.
         module Level
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Level) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::FineTuning::FineTuningJobEvent::Level)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          INFO = T.let(:info, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-          WARN = T.let(:warn, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
-          ERROR = T.let(:error, OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol)
+          INFO =
+            T.let(
+              :info,
+              OpenAI::FineTuning::FineTuningJobEvent::Level::TaggedSymbol
+            )
+          WARN =
+            T.let(
+              :warn,
+              OpenAI::FineTuning::FineTuningJobEvent::Level::TaggedSymbol
+            )
+          ERROR =
+            T.let(
+              :error,
+              OpenAI::FineTuning::FineTuningJobEvent::Level::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::Level::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::FineTuning::FineTuningJobEvent::Level::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         # The type of event.
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::FineTuning::FineTuningJobEvent::Type) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::FineTuning::FineTuningJobEvent::Type)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          MESSAGE = T.let(:message, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
-          METRICS = T.let(:metrics, OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol)
+          MESSAGE =
+            T.let(
+              :message,
+              OpenAI::FineTuning::FineTuningJobEvent::Type::TaggedSymbol
+            )
+          METRICS =
+            T.let(
+              :metrics,
+              OpenAI::FineTuning::FineTuningJobEvent::Type::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::FineTuning::FineTuningJobEvent::Type::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::FineTuning::FineTuningJobEvent::Type::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

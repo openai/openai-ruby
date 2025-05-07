@@ -28,8 +28,6 @@ module OpenAI
           ?filename: String,
           ?type: :input_file
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_input_file
       end
     end
   end

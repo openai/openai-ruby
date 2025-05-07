@@ -9,13 +9,23 @@ module OpenAI
         module MessageContentDelta
           extend OpenAI::Internal::Type::Union
 
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock]
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::ImageFileDeltaBlock,
+                OpenAI::Beta::Threads::TextDeltaBlock,
+                OpenAI::Beta::Threads::RefusalDeltaBlock,
+                OpenAI::Beta::Threads::ImageURLDeltaBlock
               )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Beta::Threads::MessageContentDelta::Variants]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
       end
     end

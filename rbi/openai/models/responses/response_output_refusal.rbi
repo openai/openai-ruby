@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputRefusal < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The refusal explanationfrom the model.
         sig { returns(String) }
         attr_accessor :refusal
@@ -19,9 +21,12 @@ module OpenAI
           refusal:,
           # The type of the refusal. Always `refusal`.
           type: :refusal
-        ); end
-        sig { override.returns({refusal: String, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ refusal: String, type: Symbol }) }
+        def to_hash
+        end
       end
     end
   end

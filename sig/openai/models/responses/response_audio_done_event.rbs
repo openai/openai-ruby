@@ -7,8 +7,6 @@ module OpenAI
         attr_accessor type: :"response.audio.done"
 
         def initialize: (?type: :"response.audio.done") -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_audio_done_event
       end
     end
   end

@@ -15,25 +15,29 @@ module OpenAI
 
         sig do
           params(
-            type_info: T.any(
-              OpenAI::Internal::AnyHash,
-              T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-              OpenAI::Internal::Type::Converter::Input
-            ),
+            type_info:
+              T.any(
+                OpenAI::Internal::AnyHash,
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              ),
             spec: OpenAI::Internal::AnyHash
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
-        def self.[](type_info, spec = {}); end
+        def self.[](type_info, spec = {})
+        end
 
         sig { params(other: T.anything).returns(T::Boolean) }
-        def ===(other); end
+        def ===(other)
+        end
 
         sig { params(other: T.anything).returns(T::Boolean) }
-        def ==(other); end
+        def ==(other)
+        end
 
         sig { returns(Integer) }
-        def hash; end
+        def hash
+        end
 
         # @api private
         sig do
@@ -44,7 +48,8 @@ module OpenAI
             )
             .returns(T.any(T::Array[T.anything], T.anything))
         end
-        def coerce(value, state:); end
+        def coerce(value, state:)
+        end
 
         # @api private
         sig do
@@ -55,33 +60,38 @@ module OpenAI
             )
             .returns(T.any(T::Array[T.anything], T.anything))
         end
-        def dump(value, state:); end
+        def dump(value, state:)
+        end
 
         # @api private
         sig { returns(Elem) }
-        protected def item_type; end
+        protected def item_type
+        end
 
         # @api private
         sig { returns(T::Boolean) }
-        protected def nilable?; end
+        protected def nilable?
+        end
 
         # @api private
         sig do
           params(
-            type_info: T.any(
-              OpenAI::Internal::AnyHash,
-              T.proc.returns(OpenAI::Internal::Type::Converter::Input),
-              OpenAI::Internal::Type::Converter::Input
-            ),
+            type_info:
+              T.any(
+                OpenAI::Internal::AnyHash,
+                T.proc.returns(OpenAI::Internal::Type::Converter::Input),
+                OpenAI::Internal::Type::Converter::Input
+              ),
             spec: OpenAI::Internal::AnyHash
-          )
-            .void
+          ).void
         end
-        def initialize(type_info, spec = {}); end
+        def initialize(type_info, spec = {})
+        end
 
         # @api private
         sig { params(depth: Integer).returns(String) }
-        def inspect(depth: 0); end
+        def inspect(depth: 0)
+        end
       end
     end
   end

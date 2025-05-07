@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # A cursor for use in pagination. `after` is an object ID that defines your place
         # in the list. For instance, if you make a list request and receive 100 objects,
         # ending with obj_foo, your subsequent call can include after=obj_foo in order to
@@ -28,10 +30,18 @@ module OpenAI
         attr_writer :before
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
-        sig { returns(T.nilable(OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::VectorStores::FileListParams::Filter::OrSymbol)
+          )
+        end
         attr_reader :filter
 
-        sig { params(filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol).void }
+        sig do
+          params(
+            filter: OpenAI::VectorStores::FileListParams::Filter::OrSymbol
+          ).void
+        end
         attr_writer :filter
 
         # A limit on the number of objects to be returned. Limit can range between 1 and
@@ -44,22 +54,29 @@ module OpenAI
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
         # order and `desc` for descending order.
-        sig { returns(T.nilable(OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::VectorStores::FileListParams::Order::OrSymbol)
+          )
+        end
         attr_reader :order
 
-        sig { params(order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol).void }
+        sig do
+          params(
+            order: OpenAI::VectorStores::FileListParams::Order::OrSymbol
+          ).void
+        end
         attr_writer :order
 
         sig do
           params(
             after: String,
             before: String,
-            filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
+            filter: OpenAI::VectorStores::FileListParams::Filter::OrSymbol,
             limit: Integer,
-            order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            order: OpenAI::VectorStores::FileListParams::Order::OrSymbol,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -81,36 +98,64 @@ module OpenAI
           # order and `desc` for descending order.
           order: nil,
           request_options: {}
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                after: String,
-                before: String,
-                filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
-                limit: Integer,
-                order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
-                request_options: OpenAI::RequestOptions
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              after: String,
+              before: String,
+              filter: OpenAI::VectorStores::FileListParams::Filter::OrSymbol,
+              limit: Integer,
+              order: OpenAI::VectorStores::FileListParams::Order::OrSymbol,
+              request_options: OpenAI::RequestOptions
+            }
+          )
+        end
+        def to_hash
+        end
 
         # Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
         module Filter
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Filter) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::VectorStores::FileListParams::Filter)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
-          CANCELLED = T.let(:cancelled, OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol)
+          IN_PROGRESS =
+            T.let(
+              :in_progress,
+              OpenAI::VectorStores::FileListParams::Filter::TaggedSymbol
+            )
+          COMPLETED =
+            T.let(
+              :completed,
+              OpenAI::VectorStores::FileListParams::Filter::TaggedSymbol
+            )
+          FAILED =
+            T.let(
+              :failed,
+              OpenAI::VectorStores::FileListParams::Filter::TaggedSymbol
+            )
+          CANCELLED =
+            T.let(
+              :cancelled,
+              OpenAI::VectorStores::FileListParams::Filter::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Filter::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::VectorStores::FileListParams::Filter::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         # Sort order by the `created_at` timestamp of the objects. `asc` for ascending
@@ -118,14 +163,32 @@ module OpenAI
         module Order
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStores::FileListParams::Order) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::VectorStores::FileListParams::Order)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ASC = T.let(:asc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
-          DESC = T.let(:desc, OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol)
+          ASC =
+            T.let(
+              :asc,
+              OpenAI::VectorStores::FileListParams::Order::TaggedSymbol
+            )
+          DESC =
+            T.let(
+              :desc,
+              OpenAI::VectorStores::FileListParams::Order::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::VectorStores::FileListParams::Order::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::VectorStores::FileListParams::Order::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

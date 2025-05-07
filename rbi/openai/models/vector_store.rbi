@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class VectorStore < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The identifier, which can be referenced in API endpoints.
       sig { returns(String) }
       attr_accessor :id
@@ -11,10 +13,10 @@ module OpenAI
       sig { returns(Integer) }
       attr_accessor :created_at
 
-      sig { returns(OpenAI::Models::VectorStore::FileCounts) }
+      sig { returns(OpenAI::VectorStore::FileCounts) }
       attr_reader :file_counts
 
-      sig { params(file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Internal::AnyHash)).void }
+      sig { params(file_counts: OpenAI::VectorStore::FileCounts::OrHash).void }
       attr_writer :file_counts
 
       # The Unix timestamp (in seconds) for when the vector store was last active.
@@ -41,7 +43,7 @@ module OpenAI
       # The status of the vector store, which can be either `expired`, `in_progress`, or
       # `completed`. A status of `completed` indicates that the vector store is ready
       # for use.
-      sig { returns(OpenAI::Models::VectorStore::Status::TaggedSymbol) }
+      sig { returns(OpenAI::VectorStore::Status::TaggedSymbol) }
       attr_accessor :status
 
       # The total number of bytes used by the files in the vector store.
@@ -49,10 +51,12 @@ module OpenAI
       attr_accessor :usage_bytes
 
       # The expiration policy for a vector store.
-      sig { returns(T.nilable(OpenAI::Models::VectorStore::ExpiresAfter)) }
+      sig { returns(T.nilable(OpenAI::VectorStore::ExpiresAfter)) }
       attr_reader :expires_after
 
-      sig { params(expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Internal::AnyHash)).void }
+      sig do
+        params(expires_after: OpenAI::VectorStore::ExpiresAfter::OrHash).void
+      end
       attr_writer :expires_after
 
       # The Unix timestamp (in seconds) for when the vector store will expire.
@@ -65,17 +69,16 @@ module OpenAI
         params(
           id: String,
           created_at: Integer,
-          file_counts: T.any(OpenAI::Models::VectorStore::FileCounts, OpenAI::Internal::AnyHash),
+          file_counts: OpenAI::VectorStore::FileCounts::OrHash,
           last_active_at: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          status: OpenAI::Models::VectorStore::Status::OrSymbol,
+          status: OpenAI::VectorStore::Status::OrSymbol,
           usage_bytes: Integer,
-          expires_after: T.any(OpenAI::Models::VectorStore::ExpiresAfter, OpenAI::Internal::AnyHash),
+          expires_after: OpenAI::VectorStore::ExpiresAfter::OrHash,
           expires_at: T.nilable(Integer),
           object: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # The identifier, which can be referenced in API endpoints.
@@ -106,28 +109,32 @@ module OpenAI
         expires_at: nil,
         # The object type, which is always `vector_store`.
         object: :vector_store
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              id: String,
-              created_at: Integer,
-              file_counts: OpenAI::Models::VectorStore::FileCounts,
-              last_active_at: T.nilable(Integer),
-              metadata: T.nilable(T::Hash[Symbol, String]),
-              name: String,
-              object: Symbol,
-              status: OpenAI::Models::VectorStore::Status::TaggedSymbol,
-              usage_bytes: Integer,
-              expires_after: OpenAI::Models::VectorStore::ExpiresAfter,
-              expires_at: T.nilable(Integer)
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            id: String,
+            created_at: Integer,
+            file_counts: OpenAI::VectorStore::FileCounts,
+            last_active_at: T.nilable(Integer),
+            metadata: T.nilable(T::Hash[Symbol, String]),
+            name: String,
+            object: Symbol,
+            status: OpenAI::VectorStore::Status::TaggedSymbol,
+            usage_bytes: Integer,
+            expires_after: OpenAI::VectorStore::ExpiresAfter,
+            expires_at: T.nilable(Integer)
+          }
+        )
+      end
+      def to_hash
+      end
 
       class FileCounts < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The number of files that were cancelled.
         sig { returns(Integer) }
         attr_accessor :cancelled
@@ -155,8 +162,7 @@ module OpenAI
             failed: Integer,
             in_progress: Integer,
             total: Integer
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The number of files that were cancelled.
@@ -169,18 +175,22 @@ module OpenAI
           in_progress:,
           # The total number of files.
           total:
-        ); end
-        sig do
-          override
-            .returns({
-                       cancelled: Integer,
-                       completed: Integer,
-                       failed: Integer,
-                       in_progress: Integer,
-                       total: Integer
-                     })
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              cancelled: Integer,
+              completed: Integer,
+              failed: Integer,
+              in_progress: Integer,
+              total: Integer
+            }
+          )
+        end
+        def to_hash
+        end
       end
 
       # The status of the vector store, which can be either `expired`, `in_progress`, or
@@ -189,18 +199,25 @@ module OpenAI
       module Status
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::VectorStore::Status) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::VectorStore::Status) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        EXPIRED = T.let(:expired, OpenAI::Models::VectorStore::Status::TaggedSymbol)
-        IN_PROGRESS = T.let(:in_progress, OpenAI::Models::VectorStore::Status::TaggedSymbol)
-        COMPLETED = T.let(:completed, OpenAI::Models::VectorStore::Status::TaggedSymbol)
+        EXPIRED = T.let(:expired, OpenAI::VectorStore::Status::TaggedSymbol)
+        IN_PROGRESS =
+          T.let(:in_progress, OpenAI::VectorStore::Status::TaggedSymbol)
+        COMPLETED = T.let(:completed, OpenAI::VectorStore::Status::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::Models::VectorStore::Status::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(T::Array[OpenAI::VectorStore::Status::TaggedSymbol])
+        end
+        def self.values
+        end
       end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         # `last_active_at`.
         sig { returns(Symbol) }
@@ -218,9 +235,12 @@ module OpenAI
           # Anchor timestamp after which the expiration policy applies. Supported anchors:
           # `last_active_at`.
           anchor: :last_active_at
-        ); end
-        sig { override.returns({anchor: Symbol, days: Integer}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ anchor: Symbol, days: Integer }) }
+        def to_hash
+        end
       end
     end
   end

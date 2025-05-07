@@ -12,16 +12,16 @@ module OpenAI
           discriminator :type
 
           # References an image [File](https://platform.openai.com/docs/api-reference/files) in the content of a message.
-          variant :image_file, -> { OpenAI::Models::Beta::Threads::ImageFileContentBlock }
+          variant :image_file, -> { OpenAI::Beta::Threads::ImageFileContentBlock }
 
           # References an image URL in the content of a message.
-          variant :image_url, -> { OpenAI::Models::Beta::Threads::ImageURLContentBlock }
+          variant :image_url, -> { OpenAI::Beta::Threads::ImageURLContentBlock }
 
           # The text content that is part of a message.
-          variant :text, -> { OpenAI::Models::Beta::Threads::TextContentBlockParam }
+          variant :text, -> { OpenAI::Beta::Threads::TextContentBlockParam }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlockParam)]
+          #   @return [Array(OpenAI::Beta::Threads::ImageFileContentBlock, OpenAI::Beta::Threads::ImageURLContentBlock, OpenAI::Beta::Threads::TextContentBlockParam)]
         end
       end
     end

@@ -19,7 +19,7 @@ module OpenAI
       # @!attribute data_source_config
       #   Configuration of data sources used in runs of the evaluation.
       #
-      #   @return [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
+      #   @return [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig]
       required :data_source_config, union: -> { OpenAI::Models::EvalCreateResponse::DataSourceConfig }
 
       # @!attribute metadata
@@ -48,7 +48,7 @@ module OpenAI
       # @!attribute testing_criteria
       #   A list of testing criteria.
       #
-      #   @return [Array<OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader, OpenAI::Models::EvalCreateResponse::TestingCriterion::Python, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel>]
+      #   @return [Array<OpenAI::EvalLabelModelGrader, OpenAI::EvalStringCheckGrader, OpenAI::EvalTextSimilarityGrader, OpenAI::Models::EvalCreateResponse::TestingCriterion::Python, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel>]
       required :testing_criteria,
                -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalCreateResponse::TestingCriterion] }
 
@@ -67,13 +67,13 @@ module OpenAI
       #
       #   @param created_at [Integer] The Unix timestamp (in seconds) for when the eval was created.
       #
-      #   @param data_source_config [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
+      #   @param data_source_config [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
       #
-      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
       #   @param name [String] The name of the evaluation.
       #
-      #   @param testing_criteria [Array<OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader, OpenAI::Models::EvalCreateResponse::TestingCriterion::Python, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel>] A list of testing criteria.
+      #   @param testing_criteria [Array<OpenAI::EvalLabelModelGrader, OpenAI::EvalStringCheckGrader, OpenAI::EvalTextSimilarityGrader, OpenAI::Models::EvalCreateResponse::TestingCriterion::Python, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel>] A list of testing criteria.
       #
       #   @param object [Symbol, :eval] The object type.
 
@@ -89,16 +89,16 @@ module OpenAI
         # The response schema defines the shape of the data that will be:
         # - Used to define your testing criteria and
         # - What data is required when creating a run
-        variant :custom, -> { OpenAI::Models::EvalCustomDataSourceConfig }
+        variant :custom, -> { OpenAI::EvalCustomDataSourceConfig }
 
         # A StoredCompletionsDataSourceConfig which specifies the metadata property of your stored completions query.
         # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
         # The schema returned by this data source config is used to defined what variables are available in your evals.
         # `item` and `sample` are both defined when using this data source config.
-        variant :stored_completions, -> { OpenAI::Models::EvalStoredCompletionsDataSourceConfig }
+        variant :stored_completions, -> { OpenAI::EvalStoredCompletionsDataSourceConfig }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig)]
+        #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)]
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -110,13 +110,13 @@ module OpenAI
 
         # A LabelModelGrader object which uses a model to assign labels to each item
         # in the evaluation.
-        variant :label_model, -> { OpenAI::Models::EvalLabelModelGrader }
+        variant :label_model, -> { OpenAI::EvalLabelModelGrader }
 
         # A StringCheckGrader object that performs a string comparison between input and reference using a specified operation.
-        variant :string_check, -> { OpenAI::Models::EvalStringCheckGrader }
+        variant :string_check, -> { OpenAI::EvalStringCheckGrader }
 
         # A TextSimilarityGrader object which grades text based on similarity metrics.
-        variant :text_similarity, -> { OpenAI::Models::EvalTextSimilarityGrader }
+        variant :text_similarity, -> { OpenAI::EvalTextSimilarityGrader }
 
         # A PythonGrader object that runs a python script on the input.
         variant :python, -> { OpenAI::Models::EvalCreateResponse::TestingCriterion::Python }
@@ -234,7 +234,7 @@ module OpenAI
             # @!attribute content
             #   Text inputs to the model - can contain template strings.
             #
-            #   @return [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content::OutputText]
+            #   @return [String, OpenAI::Responses::ResponseInputText, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content::OutputText]
             required :content,
                      union: -> { OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content }
 
@@ -262,11 +262,11 @@ module OpenAI
             #   `assistant` role are presumed to have been generated by the model in previous
             #   interactions.
             #
-            #   @param content [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content::OutputText] Text inputs to the model - can contain template strings. ...
+            #   @param content [String, OpenAI::Responses::ResponseInputText, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content::OutputText] Text inputs to the model - can contain template strings.
             #
-            #   @param role [Symbol, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Role] The role of the message input. One of `user`, `assistant`, `system`, or ...
+            #   @param role [Symbol, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Role] The role of the message input. One of `user`, `assistant`, `system`, or
             #
-            #   @param type [Symbol, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Type] The type of the message input. Always `message`. ...
+            #   @param type [Symbol, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Type] The type of the message input. Always `message`.
 
             # Text inputs to the model - can contain template strings.
             #
@@ -278,7 +278,7 @@ module OpenAI
               variant String
 
               # A text input to the model.
-              variant -> { OpenAI::Models::Responses::ResponseInputText }
+              variant -> { OpenAI::Responses::ResponseInputText }
 
               # A text output from the model.
               variant -> { OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content::OutputText }
@@ -303,13 +303,13 @@ module OpenAI
                 #
                 #   A text output from the model.
                 #
-                #   @param text [String] The text output from the model. ...
+                #   @param text [String] The text output from the model.
                 #
-                #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`. ...
+                #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
               end
 
               # @!method self.variants
-              #   @return [Array(String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content::OutputText)]
+              #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel::Input::Content::OutputText)]
             end
 
             # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -343,7 +343,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader, OpenAI::Models::EvalCreateResponse::TestingCriterion::Python, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel)]
+        #   @return [Array(OpenAI::EvalLabelModelGrader, OpenAI::EvalStringCheckGrader, OpenAI::EvalTextSimilarityGrader, OpenAI::Models::EvalCreateResponse::TestingCriterion::Python, OpenAI::Models::EvalCreateResponse::TestingCriterion::ScoreModel)]
       end
     end
   end

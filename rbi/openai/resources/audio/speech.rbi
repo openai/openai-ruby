@@ -8,14 +8,15 @@ module OpenAI
         sig do
           params(
             input: String,
-            model: T.any(String, OpenAI::Models::Audio::SpeechModel::OrSymbol),
-            voice: T.any(String, OpenAI::Models::Audio::SpeechCreateParams::Voice::OrSymbol),
+            model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
+            voice:
+              T.any(String, OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol),
             instructions: String,
-            response_format: OpenAI::Models::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
+            response_format:
+              OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(StringIO)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(StringIO)
         end
         def create(
           # The text to generate audio for. The maximum length is 4096 characters.
@@ -38,10 +39,13 @@ module OpenAI
           # the default. Does not work with `gpt-4o-mini-tts`.
           speed: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

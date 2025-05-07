@@ -6,12 +6,16 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # ID of the model to use. You can use the
       # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
       # see all of your available models, or see our
       # [Model overview](https://platform.openai.com/docs/models) for descriptions of
       # them.
-      sig { returns(T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol)) }
+      sig do
+        returns(T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol))
+      end
       attr_accessor :model
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -21,7 +25,16 @@ module OpenAI
       # training, so if a prompt is not specified the model will generate as if from the
       # beginning of a new document.
       sig do
-        returns(T.nilable(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])))
+        returns(
+          T.nilable(
+            T.any(
+              String,
+              T::Array[String],
+              T::Array[Integer],
+              T::Array[T::Array[Integer]]
+            )
+          )
+        )
       end
       attr_accessor :prompt
 
@@ -116,14 +129,14 @@ module OpenAI
       attr_accessor :stop
 
       # Options for streaming response. Only set this when you set `stream: true`.
-      sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions)) }
+      sig { returns(T.nilable(OpenAI::Chat::ChatCompletionStreamOptions)) }
       attr_reader :stream_options
 
       sig do
         params(
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash))
-        )
-          .void
+          stream_options:
+            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash)
+        ).void
       end
       attr_writer :stream_options
 
@@ -160,8 +173,16 @@ module OpenAI
 
       sig do
         params(
-          model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
-          prompt: T.nilable(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])),
+          model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
+          prompt:
+            T.nilable(
+              T.any(
+                String,
+                T::Array[String],
+                T::Array[Integer],
+                T::Array[T::Array[Integer]]
+              )
+            ),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -172,14 +193,14 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash)),
+          stream_options:
+            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # ID of the model to use. You can use the
@@ -288,13 +309,16 @@ module OpenAI
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       sig do
-        override
-          .returns(
-            {
-              model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
-              prompt: T.nilable(
+        override.returns(
+          {
+            model:
+              T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
+            prompt:
+              T.nilable(
                 T.any(
                   String,
                   T::Array[String],
@@ -302,26 +326,28 @@ module OpenAI
                   T::Array[T::Array[Integer]]
                 )
               ),
-              best_of: T.nilable(Integer),
-              echo: T.nilable(T::Boolean),
-              frequency_penalty: T.nilable(Float),
-              logit_bias: T.nilable(T::Hash[Symbol, Integer]),
-              logprobs: T.nilable(Integer),
-              max_tokens: T.nilable(Integer),
-              n: T.nilable(Integer),
-              presence_penalty: T.nilable(Float),
-              seed: T.nilable(Integer),
-              stop: T.nilable(T.any(String, T::Array[String])),
-              stream_options: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions),
-              suffix: T.nilable(String),
-              temperature: T.nilable(Float),
-              top_p: T.nilable(Float),
-              user: String,
-              request_options: OpenAI::RequestOptions
-            }
-          )
+            best_of: T.nilable(Integer),
+            echo: T.nilable(T::Boolean),
+            frequency_penalty: T.nilable(Float),
+            logit_bias: T.nilable(T::Hash[Symbol, Integer]),
+            logprobs: T.nilable(Integer),
+            max_tokens: T.nilable(Integer),
+            n: T.nilable(Integer),
+            presence_penalty: T.nilable(Float),
+            seed: T.nilable(Integer),
+            stop: T.nilable(T.any(String, T::Array[String])),
+            stream_options:
+              T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),
+            suffix: T.nilable(String),
+            temperature: T.nilable(Float),
+            top_p: T.nilable(Float),
+            user: String,
+            request_options: OpenAI::RequestOptions
+          }
+        )
       end
-      def to_hash; end
+      def to_hash
+      end
 
       # ID of the model to use. You can use the
       # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -331,16 +357,38 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol]) }
-        def self.variants; end
+        Variants =
+          T.type_alias do
+            T.any(String, OpenAI::CompletionCreateParams::Model::TaggedSymbol)
+          end
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::CompletionCreateParams::Model) }
+        sig do
+          override.returns(
+            T::Array[OpenAI::CompletionCreateParams::Model::Variants]
+          )
+        end
+        def self.variants
+        end
+
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::CompletionCreateParams::Model) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         GPT_3_5_TURBO_INSTRUCT =
-          T.let(:"gpt-3.5-turbo-instruct", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
-        DAVINCI_002 = T.let(:"davinci-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
-        BABBAGE_002 = T.let(:"babbage-002", OpenAI::Models::CompletionCreateParams::Model::TaggedSymbol)
+          T.let(
+            :"gpt-3.5-turbo-instruct",
+            OpenAI::CompletionCreateParams::Model::TaggedSymbol
+          )
+        DAVINCI_002 =
+          T.let(
+            :"davinci-002",
+            OpenAI::CompletionCreateParams::Model::TaggedSymbol
+          )
+        BABBAGE_002 =
+          T.let(
+            :"babbage-002",
+            OpenAI::CompletionCreateParams::Model::TaggedSymbol
+          )
       end
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -352,16 +400,41 @@ module OpenAI
       module Prompt
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]]) }
-        def self.variants; end
+        Variants =
+          T.type_alias do
+            T.any(
+              String,
+              T::Array[String],
+              T::Array[Integer],
+              T::Array[T::Array[Integer]]
+            )
+          end
 
-        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        sig do
+          override.returns(
+            T::Array[OpenAI::CompletionCreateParams::Prompt::Variants]
+          )
+        end
+        def self.variants
+        end
 
-        IntegerArray = T.let(OpenAI::Internal::Type::ArrayOf[Integer], OpenAI::Internal::Type::Converter)
+        StringArray =
+          T.let(
+            OpenAI::Internal::Type::ArrayOf[String],
+            OpenAI::Internal::Type::Converter
+          )
+
+        IntegerArray =
+          T.let(
+            OpenAI::Internal::Type::ArrayOf[Integer],
+            OpenAI::Internal::Type::Converter
+          )
 
         ArrayOfToken2DArray =
           T.let(
-            OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::ArrayOf[Integer]],
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::Internal::Type::ArrayOf[Integer]
+            ],
             OpenAI::Internal::Type::Converter
           )
       end
@@ -373,10 +446,21 @@ module OpenAI
       module Stop
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, T::Array[String]]) }
-        def self.variants; end
+        Variants = T.type_alias { T.nilable(T.any(String, T::Array[String])) }
 
-        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        sig do
+          override.returns(
+            T::Array[OpenAI::CompletionCreateParams::Stop::Variants]
+          )
+        end
+        def self.variants
+        end
+
+        StringArray =
+          T.let(
+            OpenAI::Internal::Type::ArrayOf[String],
+            OpenAI::Internal::Type::Converter
+          )
       end
     end
   end

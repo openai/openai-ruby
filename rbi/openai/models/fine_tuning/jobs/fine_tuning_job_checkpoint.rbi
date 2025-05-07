@@ -5,6 +5,9 @@ module OpenAI
     module FineTuning
       module Jobs
         class FineTuningJobCheckpoint < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The checkpoint identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
           attr_accessor :id
@@ -22,14 +25,16 @@ module OpenAI
           attr_accessor :fine_tuning_job_id
 
           # Metrics at the step number during the fine-tuning job.
-          sig { returns(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics) }
+          sig do
+            returns(OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics)
+          end
           attr_reader :metrics
 
           sig do
             params(
-              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::AnyHash)
-            )
-              .void
+              metrics:
+                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics::OrHash
+            ).void
           end
           attr_writer :metrics
 
@@ -49,11 +54,11 @@ module OpenAI
               created_at: Integer,
               fine_tuned_model_checkpoint: String,
               fine_tuning_job_id: String,
-              metrics: T.any(OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics, OpenAI::Internal::AnyHash),
+              metrics:
+                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics::OrHash,
               step_number: Integer,
               object: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The checkpoint identifier, which can be referenced in the API endpoints.
@@ -70,24 +75,30 @@ module OpenAI
             step_number:,
             # The object type, which is always "fine_tuning.job.checkpoint".
             object: :"fine_tuning.job.checkpoint"
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  id: String,
-                  created_at: Integer,
-                  fine_tuned_model_checkpoint: String,
-                  fine_tuning_job_id: String,
-                  metrics: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
-                  object: Symbol,
-                  step_number: Integer
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                id: String,
+                created_at: Integer,
+                fine_tuned_model_checkpoint: String,
+                fine_tuning_job_id: String,
+                metrics:
+                  OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+                object: Symbol,
+                step_number: Integer
+              }
+            )
+          end
+          def to_hash
+          end
 
           class Metrics < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             sig { returns(T.nilable(Float)) }
             attr_reader :full_valid_loss
 
@@ -140,8 +151,7 @@ module OpenAI
                 train_mean_token_accuracy: Float,
                 valid_loss: Float,
                 valid_mean_token_accuracy: Float
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               full_valid_loss: nil,
@@ -151,22 +161,24 @@ module OpenAI
               train_mean_token_accuracy: nil,
               valid_loss: nil,
               valid_mean_token_accuracy: nil
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    full_valid_loss: Float,
-                    full_valid_mean_token_accuracy: Float,
-                    step: Float,
-                    train_loss: Float,
-                    train_mean_token_accuracy: Float,
-                    valid_loss: Float,
-                    valid_mean_token_accuracy: Float
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  full_valid_loss: Float,
+                  full_valid_mean_token_accuracy: Float,
+                  step: Float,
+                  train_loss: Float,
+                  train_mean_token_accuracy: Float,
+                  valid_loss: Float,
+                  valid_mean_token_accuracy: Float
+                }
+              )
+            end
+            def to_hash
+            end
           end
         end
       end

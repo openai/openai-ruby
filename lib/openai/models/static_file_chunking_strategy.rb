@@ -20,13 +20,11 @@ module OpenAI
 
       # @!method initialize(chunk_overlap_tokens:, max_chunk_size_tokens:)
       #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::StaticFileChunkingStrategy} for more details.
+      #   {OpenAI::StaticFileChunkingStrategy} for more details.
       #
       #   @param chunk_overlap_tokens [Integer] The number of tokens that overlap between chunks. The default value is `400`.
-      #   ...
       #
       #   @param max_chunk_size_tokens [Integer] The maximum number of tokens in each chunk. The default value is `800`. The mini
-      #   ...
     end
   end
 end

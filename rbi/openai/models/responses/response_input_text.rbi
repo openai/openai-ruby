@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputText < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The text input to the model.
         sig { returns(String) }
         attr_accessor :text
@@ -19,9 +21,12 @@ module OpenAI
           text:,
           # The type of the input item. Always `input_text`.
           type: :input_text
-        ); end
-        sig { override.returns({text: String, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ text: String, type: Symbol }) }
+        def to_hash
+        end
       end
     end
   end

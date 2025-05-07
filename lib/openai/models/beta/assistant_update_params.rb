@@ -39,8 +39,8 @@ module OpenAI
         #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
         #   them.
         #
-        #   @return [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model, nil]
-        optional :model, union: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model }
+        #   @return [String, Symbol, OpenAI::Beta::AssistantUpdateParams::Model, nil]
+        optional :model, union: -> { OpenAI::Beta::AssistantUpdateParams::Model }
 
         # @!attribute name
         #   The name of the assistant. The maximum length is 256 characters.
@@ -56,8 +56,8 @@ module OpenAI
         #   supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         #   result in faster responses and fewer tokens used on reasoning in a response.
         #
-        #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
-        optional :reasoning_effort, enum: -> { OpenAI::Models::ReasoningEffort }, nil?: true
+        #   @return [Symbol, OpenAI::ReasoningEffort, nil]
+        optional :reasoning_effort, enum: -> { OpenAI::ReasoningEffort }, nil?: true
 
         # @!attribute response_format
         #   Specifies the format that the model must output. Compatible with
@@ -81,8 +81,8 @@ module OpenAI
         #   indicates the generation exceeded `max_tokens` or the conversation exceeded the
         #   max context length.
         #
-        #   @return [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
-        optional :response_format, union: -> { OpenAI::Models::Beta::AssistantResponseFormatOption }, nil?: true
+        #   @return [Symbol, :auto, OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONObject, OpenAI::ResponseFormatJSONSchema, nil]
+        optional :response_format, union: -> { OpenAI::Beta::AssistantResponseFormatOption }, nil?: true
 
         # @!attribute temperature
         #   What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
@@ -98,16 +98,16 @@ module OpenAI
         #   a list of file IDs, while the `file_search` tool requires a list of vector store
         #   IDs.
         #
-        #   @return [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, nil]
-        optional :tool_resources, -> { OpenAI::Models::Beta::AssistantUpdateParams::ToolResources }, nil?: true
+        #   @return [OpenAI::Beta::AssistantUpdateParams::ToolResources, nil]
+        optional :tool_resources, -> { OpenAI::Beta::AssistantUpdateParams::ToolResources }, nil?: true
 
         # @!attribute tools
         #   A list of tool enabled on the assistant. There can be a maximum of 128 tools per
         #   assistant. Tools can be of types `code_interpreter`, `file_search`, or
         #   `function`.
         #
-        #   @return [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>, nil]
-        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool] }
+        #   @return [Array<OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool>, nil]
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool] }
 
         # @!attribute top_p
         #   An alternative to sampling with temperature, called nucleus sampling, where the
@@ -123,34 +123,27 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Beta::AssistantUpdateParams} for more details.
         #
-        #   @param description [String, nil] The description of the assistant. The maximum length is 512 characters. ...
+        #   @param description [String, nil] The description of the assistant. The maximum length is 512 characters.
         #
         #   @param instructions [String, nil] The system instructions that the assistant uses. The maximum length is 256,000 c
-        #   ...
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
-        #   @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
-        #   ...
+        #   @param model [String, Symbol, OpenAI::Beta::AssistantUpdateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
         #
-        #   @param name [String, nil] The name of the assistant. The maximum length is 256 characters. ...
+        #   @param name [String, nil] The name of the assistant. The maximum length is 256 characters.
         #
-        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] **o-series models only** ...
+        #   @param reasoning_effort [Symbol, OpenAI::ReasoningEffort, nil] **o-series models only**
         #
-        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
-        #   ...
+        #   @param response_format [Symbol, :auto, OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONObject, OpenAI::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
         #
         #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
-        #   ...
         #
-        #   @param tool_resources [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, nil] A set of resources that are used by the assistant's tools. The resources are spe
-        #   ...
+        #   @param tool_resources [OpenAI::Beta::AssistantUpdateParams::ToolResources, nil] A set of resources that are used by the assistant's tools. The resources are spe
         #
-        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>] A list of tool enabled on the assistant. There can be a maximum of 128 tools per
-        #   ...
+        #   @param tools [Array<OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool>] A list of tool enabled on the assistant. There can be a maximum of 128 tools per
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
-        #   ...
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -164,77 +157,77 @@ module OpenAI
 
           variant String
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_1 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1_MINI }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_1_MINI }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1_NANO }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_1_NANO }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1_2025_04_14 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_1_2025_04_14 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1_MINI_2025_04_14 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_1_MINI_2025_04_14 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1_NANO_2025_04_14 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_1_NANO_2025_04_14 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::O3_MINI }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::O3_MINI }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::O3_MINI_2025_01_31 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::O3_MINI_2025_01_31 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::O1 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::O1 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::O1_2024_12_17 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::O1_2024_12_17 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4O }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_2024_11_20 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4O_2024_11_20 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_2024_08_06 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4O_2024_08_06 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_2024_05_13 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4O_2024_05_13 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_MINI }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4O_MINI }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4O_MINI_2024_07_18 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4O_MINI_2024_07_18 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_5_PREVIEW }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_5_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_5_PREVIEW_2025_02_27 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_5_PREVIEW_2025_02_27 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_TURBO }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_TURBO }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_TURBO_2024_04_09 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_TURBO_2024_04_09 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_0125_PREVIEW }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_0125_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_TURBO_PREVIEW }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_TURBO_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_1106_PREVIEW }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_1106_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_VISION_PREVIEW }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_VISION_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_0314 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_0314 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_0613 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_0613 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_32K }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_32K }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_32K_0314 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_32K_0314 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_4_32K_0613 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_4_32K_0613 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_16K }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_16K }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_0613 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_0613 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_1106 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_1106 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_0125 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_0125 }
 
-          variant const: -> { OpenAI::Models::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_16K_0613 }
+          variant const: -> { OpenAI::Beta::AssistantUpdateParams::Model::GPT_3_5_TURBO_16K_0613 }
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]
@@ -284,14 +277,16 @@ module OpenAI
         class ToolResources < OpenAI::Internal::Type::BaseModel
           # @!attribute code_interpreter
           #
-          #   @return [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter, nil]
+          #   @return [OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter, nil]
           optional :code_interpreter,
-                   -> { OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter }
+                   -> {
+                     OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter
+                   }
 
           # @!attribute file_search
           #
-          #   @return [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch, nil]
-          optional :file_search, -> { OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch }
+          #   @return [OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch, nil]
+          optional :file_search, -> { OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch }
 
           # @!method initialize(code_interpreter: nil, file_search: nil)
           #   A set of resources that are used by the assistant's tools. The resources are
@@ -299,10 +294,10 @@ module OpenAI
           #   a list of file IDs, while the `file_search` tool requires a list of vector store
           #   IDs.
           #
-          #   @param code_interpreter [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter]
-          #   @param file_search [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch]
+          #   @param code_interpreter [OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter]
+          #   @param file_search [OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch]
 
-          # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#code_interpreter
+          # @see OpenAI::Beta::AssistantUpdateParams::ToolResources#code_interpreter
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute file_ids
             #   Overrides the list of
@@ -315,14 +310,13 @@ module OpenAI
 
             # @!method initialize(file_ids: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter}
-            #   for more details.
+            #   {OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter} for more
+            #   details.
             #
             #   @param file_ids [Array<String>] Overrides the list of [file](https://platform.openai.com/docs/api-reference/file
-            #   ...
           end
 
-          # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#file_search
+          # @see OpenAI::Beta::AssistantUpdateParams::ToolResources#file_search
           class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute vector_store_ids
             #   Overrides the
@@ -335,11 +329,10 @@ module OpenAI
 
             # @!method initialize(vector_store_ids: nil)
             #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch} for
-            #   more details.
+            #   {OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch} for more
+            #   details.
             #
             #   @param vector_store_ids [Array<String>] Overrides the [vector store](https://platform.openai.com/docs/api-reference/vect
-            #   ...
           end
         end
       end

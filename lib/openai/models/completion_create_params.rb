@@ -16,8 +16,8 @@ module OpenAI
       #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
       #   them.
       #
-      #   @return [String, Symbol, OpenAI::Models::CompletionCreateParams::Model]
-      required :model, union: -> { OpenAI::Models::CompletionCreateParams::Model }
+      #   @return [String, Symbol, OpenAI::CompletionCreateParams::Model]
+      required :model, union: -> { OpenAI::CompletionCreateParams::Model }
 
       # @!attribute prompt
       #   The prompt(s) to generate completions for, encoded as a string, array of
@@ -28,7 +28,7 @@ module OpenAI
       #   beginning of a new document.
       #
       #   @return [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil]
-      required :prompt, union: -> { OpenAI::Models::CompletionCreateParams::Prompt }, nil?: true
+      required :prompt, union: -> { OpenAI::CompletionCreateParams::Prompt }, nil?: true
 
       # @!attribute best_of
       #   Generates `best_of` completions server-side and returns the "best" (the one with
@@ -138,13 +138,13 @@ module OpenAI
       #   returned text will not contain the stop sequence.
       #
       #   @return [String, Array<String>, nil]
-      optional :stop, union: -> { OpenAI::Models::CompletionCreateParams::Stop }, nil?: true
+      optional :stop, union: -> { OpenAI::CompletionCreateParams::Stop }, nil?: true
 
       # @!attribute stream_options
       #   Options for streaming response. Only set this when you set `stream: true`.
       #
-      #   @return [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil]
-      optional :stream_options, -> { OpenAI::Models::Chat::ChatCompletionStreamOptions }, nil?: true
+      #   @return [OpenAI::Chat::ChatCompletionStreamOptions, nil]
+      optional :stream_options, -> { OpenAI::Chat::ChatCompletionStreamOptions }, nil?: true
 
       # @!attribute suffix
       #   The suffix that comes after a completion of inserted text.
@@ -186,50 +186,39 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::CompletionCreateParams} for more details.
       #
-      #   @param model [String, Symbol, OpenAI::Models::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
-      #   ...
+      #   @param model [String, Symbol, OpenAI::CompletionCreateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
       #
       #   @param prompt [String, Array<String>, Array<Integer>, Array<Array<Integer>>, nil] The prompt(s) to generate completions for, encoded as a string, array of strings
-      #   ...
       #
       #   @param best_of [Integer, nil] Generates `best_of` completions server-side and returns the "best" (the one with
-      #   ...
       #
-      #   @param echo [Boolean, nil] Echo back the prompt in addition to the completion ...
+      #   @param echo [Boolean, nil] Echo back the prompt in addition to the completion
       #
       #   @param frequency_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on their
-      #   ...
       #
-      #   @param logit_bias [Hash{Symbol=>Integer}, nil] Modify the likelihood of specified tokens appearing in the completion. ...
+      #   @param logit_bias [Hash{Symbol=>Integer}, nil] Modify the likelihood of specified tokens appearing in the completion.
       #
       #   @param logprobs [Integer, nil] Include the log probabilities on the `logprobs` most likely output tokens, as we
-      #   ...
       #
       #   @param max_tokens [Integer, nil] The maximum number of [tokens](/tokenizer) that can be generated in the completi
-      #   ...
       #
-      #   @param n [Integer, nil] How many completions to generate for each prompt. ...
+      #   @param n [Integer, nil] How many completions to generate for each prompt.
       #
       #   @param presence_penalty [Float, nil] Number between -2.0 and 2.0. Positive values penalize new tokens based on whethe
-      #   ...
       #
       #   @param seed [Integer, nil] If specified, our system will make a best effort to sample deterministically, su
-      #   ...
       #
-      #   @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`. ...
+      #   @param stop [String, Array<String>, nil] Not supported with latest reasoning models `o3` and `o4-mini`.
       #
-      #   @param stream_options [OpenAI::Models::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`. ...
+      #   @param stream_options [OpenAI::Chat::ChatCompletionStreamOptions, nil] Options for streaming response. Only set this when you set `stream: true`.
       #
-      #   @param suffix [String, nil] The suffix that comes after a completion of inserted text. ...
+      #   @param suffix [String, nil] The suffix that comes after a completion of inserted text.
       #
       #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
-      #   ...
       #
       #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
-      #   ...
       #
       #   @param user [String] A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   ...
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -243,11 +232,11 @@ module OpenAI
 
         variant String
 
-        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::GPT_3_5_TURBO_INSTRUCT }
+        variant const: -> { OpenAI::CompletionCreateParams::Model::GPT_3_5_TURBO_INSTRUCT }
 
-        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::DAVINCI_002 }
+        variant const: -> { OpenAI::CompletionCreateParams::Model::DAVINCI_002 }
 
-        variant const: -> { OpenAI::Models::CompletionCreateParams::Model::BABBAGE_002 }
+        variant const: -> { OpenAI::CompletionCreateParams::Model::BABBAGE_002 }
 
         # @!method self.variants
         #   @return [Array(String, Symbol)]
@@ -272,11 +261,11 @@ module OpenAI
 
         variant String
 
-        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::StringArray }
+        variant -> { OpenAI::CompletionCreateParams::Prompt::StringArray }
 
-        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::IntegerArray }
+        variant -> { OpenAI::CompletionCreateParams::Prompt::IntegerArray }
 
-        variant -> { OpenAI::Models::CompletionCreateParams::Prompt::ArrayOfToken2DArray }
+        variant -> { OpenAI::CompletionCreateParams::Prompt::ArrayOfToken2DArray }
 
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
@@ -300,7 +289,7 @@ module OpenAI
 
         variant String
 
-        variant -> { OpenAI::Models::CompletionCreateParams::Stop::StringArray }
+        variant -> { OpenAI::CompletionCreateParams::Stop::StringArray }
 
         # @!method self.variants
         #   @return [Array(String, Array<String>)]

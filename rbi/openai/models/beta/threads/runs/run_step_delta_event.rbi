@@ -8,15 +8,22 @@ module OpenAI
 
         module Runs
           class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }
             attr_accessor :id
 
             # The delta containing the fields that have changed on the run step.
-            sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDelta) }
+            sig { returns(OpenAI::Beta::Threads::Runs::RunStepDelta) }
             attr_reader :delta
 
-            sig { params(delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::AnyHash)).void }
+            sig do
+              params(
+                delta: OpenAI::Beta::Threads::Runs::RunStepDelta::OrHash
+              ).void
+            end
             attr_writer :delta
 
             # The object type, which is always `thread.run.step.delta`.
@@ -28,10 +35,9 @@ module OpenAI
             sig do
               params(
                 id: String,
-                delta: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDelta, OpenAI::Internal::AnyHash),
+                delta: OpenAI::Beta::Threads::Runs::RunStepDelta::OrHash,
                 object: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # The identifier of the run step, which can be referenced in API endpoints.
@@ -40,9 +46,20 @@ module OpenAI
               delta:,
               # The object type, which is always `thread.run.step.delta`.
               object: :"thread.run.step.delta"
-            ); end
-            sig { override.returns({id: String, delta: OpenAI::Models::Beta::Threads::Runs::RunStepDelta, object: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  id: String,
+                  delta: OpenAI::Beta::Threads::Runs::RunStepDelta,
+                  object: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
           end
         end
       end

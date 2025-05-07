@@ -4,28 +4,34 @@ module OpenAI
   module Models
     module Evals
       class CreateEvalCompletionsRunDataSource < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # A StoredCompletionsRunDataSource configuration describing a set of filters
         sig do
           returns(
             T.any(
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
             )
           )
         end
         attr_accessor :source
 
         # The type of run data source. Always `completions`.
-        sig { returns(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type::OrSymbol) }
+        sig do
+          returns(
+            OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type::OrSymbol
+          )
+        end
         attr_accessor :type
 
         sig do
           returns(
             T.nilable(
               T.any(
-                OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
-                OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
               )
             )
           )
@@ -34,13 +40,12 @@ module OpenAI
 
         sig do
           params(
-            input_messages: T.any(
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
-            )
-          )
-            .void
+            input_messages:
+              T.any(
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::OrHash,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference::OrHash
+              )
+          ).void
         end
         attr_writer :input_messages
 
@@ -51,42 +56,43 @@ module OpenAI
         sig { params(model: String).void }
         attr_writer :model
 
-        sig { returns(T.nilable(OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams
+            )
+          )
+        end
         attr_reader :sampling_params
 
         sig do
           params(
-            sampling_params: T.any(
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams,
-              OpenAI::Internal::AnyHash
-            )
-          )
-            .void
+            sampling_params:
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::OrHash
+          ).void
         end
         attr_writer :sampling_params
 
         # A CompletionsRunDataSource object describing a model sampling configuration.
         sig do
           params(
-            source: T.any(
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
-            ),
-            type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type::OrSymbol,
-            input_messages: T.any(
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
-            ),
+            source:
+              T.any(
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::OrHash,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID::OrHash,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions::OrHash
+              ),
+            type:
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type::OrSymbol,
+            input_messages:
+              T.any(
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::OrHash,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference::OrHash
+              ),
             model: String,
-            sampling_params: T.any(
-              OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams,
-              OpenAI::Internal::AnyHash
-            )
-          )
-            .returns(T.attached_class)
+            sampling_params:
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # A StoredCompletionsRunDataSource configuration describing a set of filters
@@ -97,35 +103,59 @@ module OpenAI
           # The name of the model to use for generating completions (e.g. "o3-mini").
           model: nil,
           sampling_params: nil
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                source: T.any(
-                  OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
-                  OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
-                  OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
-                ),
-                type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type::OrSymbol,
-                input_messages: T.any(
-                  OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
-                  OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
-                ),
-                model: String,
-                sampling_params: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              source:
+                T.any(
+                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
+                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
+                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
+                ),
+              type:
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type::OrSymbol,
+              input_messages:
+                T.any(
+                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
+                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
+                ),
+              model: String,
+              sampling_params:
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams
+            }
+          )
+        end
+        def to_hash
+        end
 
         # A StoredCompletionsRunDataSource configuration describing a set of filters
         module Source
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
+              )
+            end
+
           class FileContent < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The content of the jsonl file.
-            sig { returns(T::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content]) }
+            sig do
+              returns(
+                T::Array[
+                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content
+                ]
+              )
+            end
             attr_accessor :content
 
             # The type of jsonl source. Always `file_content`.
@@ -134,34 +164,39 @@ module OpenAI
 
             sig do
               params(
-                content: T::Array[
-                  T.any(
-                    OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content,
-                    OpenAI::Internal::AnyHash
-                  )
-                ],
+                content:
+                  T::Array[
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content::OrHash
+                  ],
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # The content of the jsonl file.
               content:,
               # The type of jsonl source. Always `file_content`.
               type: :file_content
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    content: T::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content],
-                    type: Symbol
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  content:
+                    T::Array[
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content
+                    ],
+                  type: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Content < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               sig { returns(T::Hash[Symbol, T.anything]) }
               attr_accessor :item
 
@@ -177,16 +212,26 @@ module OpenAI
                   sample: T::Hash[Symbol, T.anything]
                 ).returns(T.attached_class)
               end
-              def self.new(item:, sample: nil); end
+              def self.new(item:, sample: nil)
+              end
 
               sig do
-                override.returns({item: T::Hash[Symbol, T.anything], sample: T::Hash[Symbol, T.anything]})
+                override.returns(
+                  {
+                    item: T::Hash[Symbol, T.anything],
+                    sample: T::Hash[Symbol, T.anything]
+                  }
+                )
               end
-              def to_hash; end
+              def to_hash
+              end
             end
           end
 
           class FileID < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The identifier of the file.
             sig { returns(String) }
             attr_accessor :id
@@ -201,12 +246,18 @@ module OpenAI
               id:,
               # The type of jsonl source. Always `file_id`.
               type: :file_id
-            ); end
-            sig { override.returns({id: String, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ id: String, type: Symbol }) }
+            def to_hash
+            end
           end
 
           class StoredCompletions < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The type of source. Always `stored_completions`.
             sig { returns(Symbol) }
             attr_accessor :type
@@ -245,8 +296,7 @@ module OpenAI
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 model: T.nilable(String),
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # An optional Unix timestamp to filter items created after this time.
@@ -266,30 +316,34 @@ module OpenAI
               model: nil,
               # The type of source. Always `stored_completions`.
               type: :stored_completions
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    type: Symbol,
-                    created_after: T.nilable(Integer),
-                    created_before: T.nilable(Integer),
-                    limit: T.nilable(Integer),
-                    metadata: T.nilable(T::Hash[Symbol, String]),
-                    model: T.nilable(String)
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  type: Symbol,
+                  created_after: T.nilable(Integer),
+                  created_before: T.nilable(Integer),
+                  limit: T.nilable(Integer),
+                  metadata: T.nilable(T::Hash[Symbol, String]),
+                  model: T.nilable(String)
+                }
+              )
+            end
+            def to_hash
+            end
           end
 
           sig do
-            override
-              .returns(
-                [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions]
-              )
+            override.returns(
+              T::Array[
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         # The type of run data source. Always `completions`.
@@ -297,28 +351,54 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type) }
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type
+              )
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           COMPLETIONS =
-            T.let(:completions, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type::TaggedSymbol)
+            T.let(
+              :completions,
+              OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::Type::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         module InputMessages
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
+              )
+            end
+
           class Template < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # A list of chat messages forming the prompt or context. May include variable
             # references to the "item" namespace, ie {{item.name}}.
             sig do
               returns(
                 T::Array[
                   T.any(
-                    OpenAI::Models::Responses::EasyInputMessage,
-                    OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                    OpenAI::Responses::EasyInputMessage,
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
                   )
                 ]
               )
@@ -331,16 +411,15 @@ module OpenAI
 
             sig do
               params(
-                template: T::Array[
-                  T.any(
-                    OpenAI::Models::Responses::EasyInputMessage,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
-                  )
-                ],
+                template:
+                  T::Array[
+                    T.any(
+                      OpenAI::Responses::EasyInputMessage::OrHash,
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::OrHash
+                    )
+                  ],
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # A list of chat messages forming the prompt or context. May include variable
@@ -348,22 +427,25 @@ module OpenAI
               template:,
               # The type of input messages. Always `template`.
               type: :template
-            ); end
+            )
+            end
+
             sig do
-              override
-                .returns(
-                  {
-                    template: T::Array[
+              override.returns(
+                {
+                  template:
+                    T::Array[
                       T.any(
-                        OpenAI::Models::Responses::EasyInputMessage,
-                        OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                        OpenAI::Responses::EasyInputMessage,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
                       )
                     ],
-                    type: Symbol
-                  }
-                )
+                  type: Symbol
+                }
+              )
             end
-            def to_hash; end
+            def to_hash
+            end
 
             # A message input to the model with a role indicating instruction following
             # hierarchy. Instructions given with the `developer` or `system` role take
@@ -373,14 +455,25 @@ module OpenAI
             module Template
               extend OpenAI::Internal::Type::Union
 
+              Variants =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Responses::EasyInputMessage,
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                  )
+                end
+
               class Message < OpenAI::Internal::Type::BaseModel
+                OrHash =
+                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
                 # Text inputs to the model - can contain template strings.
                 sig do
                   returns(
                     T.any(
                       String,
-                      OpenAI::Models::Responses::ResponseInputText,
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
+                      OpenAI::Responses::ResponseInputText,
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
                     )
                   )
                 end
@@ -390,7 +483,7 @@ module OpenAI
                 # `developer`.
                 sig do
                   returns(
-                    OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol
                   )
                 end
                 attr_accessor :role
@@ -399,7 +492,7 @@ module OpenAI
                 sig do
                   returns(
                     T.nilable(
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
                     )
                   )
                 end
@@ -407,9 +500,9 @@ module OpenAI
 
                 sig do
                   params(
-                    type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
-                  )
-                    .void
+                    type:
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                  ).void
                 end
                 attr_writer :type
 
@@ -420,16 +513,17 @@ module OpenAI
                 # interactions.
                 sig do
                   params(
-                    content: T.any(
-                      String,
-                      OpenAI::Models::Responses::ResponseInputText,
-                      OpenAI::Internal::AnyHash,
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
-                    ),
-                    role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol,
-                    type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
-                  )
-                    .returns(T.attached_class)
+                    content:
+                      T.any(
+                        String,
+                        OpenAI::Responses::ResponseInputText::OrHash,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText::OrHash
+                      ),
+                    role:
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol,
+                    type:
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                  ).returns(T.attached_class)
                 end
                 def self.new(
                   # Text inputs to the model - can contain template strings.
@@ -439,28 +533,47 @@ module OpenAI
                   role:,
                   # The type of the message input. Always `message`.
                   type: nil
-                ); end
-                sig do
-                  override
-                    .returns(
-                      {
-                        content: T.any(
-                          String,
-                          OpenAI::Models::Responses::ResponseInputText,
-                          OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
-                        ),
-                        role: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol,
-                        type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
-                      }
-                    )
+                )
                 end
-                def to_hash; end
+
+                sig do
+                  override.returns(
+                    {
+                      content:
+                        T.any(
+                          String,
+                          OpenAI::Responses::ResponseInputText,
+                          OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
+                        ),
+                      role:
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::OrSymbol,
+                      type:
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::OrSymbol
+                    }
+                  )
+                end
+                def to_hash
+                end
 
                 # Text inputs to the model - can contain template strings.
                 module Content
                   extend OpenAI::Internal::Type::Union
 
+                  Variants =
+                    T.type_alias do
+                      T.any(
+                        String,
+                        OpenAI::Responses::ResponseInputText,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
+                      )
+                    end
+
                   class OutputText < OpenAI::Internal::Type::BaseModel
+                    OrHash =
+                      T.type_alias do
+                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      end
+
                     # The text output from the model.
                     sig { returns(String) }
                     attr_accessor :text
@@ -470,24 +583,33 @@ module OpenAI
                     attr_accessor :type
 
                     # A text output from the model.
-                    sig { params(text: String, type: Symbol).returns(T.attached_class) }
+                    sig do
+                      params(text: String, type: Symbol).returns(
+                        T.attached_class
+                      )
+                    end
                     def self.new(
                       # The text output from the model.
                       text:,
                       # The type of the output text. Always `output_text`.
                       type: :output_text
-                    ); end
-                    sig { override.returns({text: String, type: Symbol}) }
-                    def to_hash; end
+                    )
+                    end
+
+                    sig { override.returns({ text: String, type: Symbol }) }
+                    def to_hash
+                    end
                   end
 
                   sig do
-                    override
-                      .returns(
-                        [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText]
-                      )
+                    override.returns(
+                      T::Array[
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::Variants
+                      ]
+                    )
                   end
-                  def self.variants; end
+                  def self.variants
+                  end
                 end
 
                 # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -497,40 +619,43 @@ module OpenAI
 
                   TaggedSymbol =
                     T.type_alias do
-                      T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role)
+                      T.all(
+                        Symbol,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role
+                      )
                     end
                   OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   USER =
                     T.let(
                       :user,
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
                     )
                   ASSISTANT =
                     T.let(
                       :assistant,
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
                     )
                   SYSTEM =
                     T.let(
                       :system,
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
                     )
                   DEVELOPER =
                     T.let(
                       :developer,
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
                     )
 
                   sig do
-                    override
-                      .returns(
-                        T::Array[
-                          OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
-                        ]
-                      )
+                    override.returns(
+                      T::Array[
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role::TaggedSymbol
+                      ]
+                    )
                   end
-                  def self.values; end
+                  def self.values
+                  end
                 end
 
                 # The type of the message input. Always `message`.
@@ -539,39 +664,47 @@ module OpenAI
 
                   TaggedSymbol =
                     T.type_alias do
-                      T.all(Symbol, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type)
+                      T.all(
+                        Symbol,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type
+                      )
                     end
                   OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                   MESSAGE =
                     T.let(
                       :message,
-                      OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::TaggedSymbol
+                      OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::TaggedSymbol
                     )
 
                   sig do
-                    override
-                      .returns(
-                        T::Array[
-                          OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::TaggedSymbol
-                        ]
-                      )
+                    override.returns(
+                      T::Array[
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type::TaggedSymbol
+                      ]
+                    )
                   end
-                  def self.values; end
+                  def self.values
+                  end
                 end
               end
 
               sig do
-                override
-                  .returns(
-                    [OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message]
-                  )
+                override.returns(
+                  T::Array[
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Variants
+                  ]
+                )
               end
-              def self.variants; end
+              def self.variants
+              end
             end
           end
 
           class ItemReference < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # A reference to a variable in the "item" namespace. Ie, "item.name"
             sig { returns(String) }
             attr_accessor :item_reference
@@ -580,27 +713,39 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
-            sig { params(item_reference: String, type: Symbol).returns(T.attached_class) }
+            sig do
+              params(item_reference: String, type: Symbol).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # A reference to a variable in the "item" namespace. Ie, "item.name"
               item_reference:,
               # The type of input messages. Always `item_reference`.
               type: :item_reference
-            ); end
-            sig { override.returns({item_reference: String, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ item_reference: String, type: Symbol }) }
+            def to_hash
+            end
           end
 
           sig do
-            override
-              .returns(
-                [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference]
-              )
+            override.returns(
+              T::Array[
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         class SamplingParams < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The maximum number of tokens in the generated output.
           sig { returns(T.nilable(Integer)) }
           attr_reader :max_completion_tokens
@@ -630,8 +775,12 @@ module OpenAI
           attr_writer :top_p
 
           sig do
-            params(max_completion_tokens: Integer, seed: Integer, temperature: Float, top_p: Float)
-              .returns(T.attached_class)
+            params(
+              max_completion_tokens: Integer,
+              seed: Integer,
+              temperature: Float,
+              top_p: Float
+            ).returns(T.attached_class)
           end
           def self.new(
             # The maximum number of tokens in the generated output.
@@ -642,7 +791,9 @@ module OpenAI
             temperature: nil,
             # An alternative to temperature for nucleus sampling; 1.0 includes all tokens.
             top_p: nil
-          ); end
+          )
+          end
+
           sig do
             override.returns(
               {
@@ -653,7 +804,8 @@ module OpenAI
               }
             )
           end
-          def to_hash; end
+          def to_hash
+          end
         end
       end
     end

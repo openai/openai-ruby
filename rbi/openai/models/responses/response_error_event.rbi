@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseErrorEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The error code.
         sig { returns(T.nilable(String)) }
         attr_accessor :code
@@ -22,8 +24,12 @@ module OpenAI
 
         # Emitted when an error occurs.
         sig do
-          params(code: T.nilable(String), message: String, param: T.nilable(String), type: Symbol)
-            .returns(T.attached_class)
+          params(
+            code: T.nilable(String),
+            message: String,
+            param: T.nilable(String),
+            type: Symbol
+          ).returns(T.attached_class)
         end
         def self.new(
           # The error code.
@@ -34,11 +40,21 @@ module OpenAI
           param:,
           # The type of the event. Always `error`.
           type: :error
-        ); end
-        sig do
-          override.returns({code: T.nilable(String), message: String, param: T.nilable(String), type: Symbol})
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              code: T.nilable(String),
+              message: String,
+              param: T.nilable(String),
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

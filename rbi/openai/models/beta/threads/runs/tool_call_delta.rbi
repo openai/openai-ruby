@@ -9,13 +9,22 @@ module OpenAI
           module ToolCallDelta
             extend OpenAI::Internal::Type::Union
 
-            sig do
-              override
-                .returns(
-                  [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]
+            Variants =
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                  OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
+                  OpenAI::Beta::Threads::Runs::FunctionToolCallDelta
                 )
+              end
+
+            sig do
+              override.returns(
+                T::Array[OpenAI::Beta::Threads::Runs::ToolCallDelta::Variants]
+              )
             end
-            def self.variants; end
+            def self.variants
+            end
           end
         end
       end

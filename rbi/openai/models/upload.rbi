@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class Upload < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The Upload unique identifier, which can be referenced in API endpoints.
       sig { returns(String) }
       attr_accessor :id
@@ -34,14 +36,14 @@ module OpenAI
       attr_accessor :purpose
 
       # The status of the Upload.
-      sig { returns(OpenAI::Models::Upload::Status::TaggedSymbol) }
+      sig { returns(OpenAI::Upload::Status::TaggedSymbol) }
       attr_accessor :status
 
       # The `File` object represents a document that has been uploaded to OpenAI.
-      sig { returns(T.nilable(OpenAI::Models::FileObject)) }
+      sig { returns(T.nilable(OpenAI::FileObject)) }
       attr_reader :file
 
-      sig { params(file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::AnyHash))).void }
+      sig { params(file: T.nilable(OpenAI::FileObject::OrHash)).void }
       attr_writer :file
 
       # The Upload object can accept byte chunks in the form of Parts.
@@ -53,11 +55,10 @@ module OpenAI
           expires_at: Integer,
           filename: String,
           purpose: String,
-          status: OpenAI::Models::Upload::Status::OrSymbol,
-          file: T.nilable(T.any(OpenAI::Models::FileObject, OpenAI::Internal::AnyHash)),
+          status: OpenAI::Upload::Status::OrSymbol,
+          file: T.nilable(OpenAI::FileObject::OrHash),
           object: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # The Upload unique identifier, which can be referenced in API endpoints.
@@ -80,39 +81,42 @@ module OpenAI
         file: nil,
         # The object type, which is always "upload".
         object: :upload
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              id: String,
-              bytes: Integer,
-              created_at: Integer,
-              expires_at: Integer,
-              filename: String,
-              object: Symbol,
-              purpose: String,
-              status: OpenAI::Models::Upload::Status::TaggedSymbol,
-              file: T.nilable(OpenAI::Models::FileObject)
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            id: String,
+            bytes: Integer,
+            created_at: Integer,
+            expires_at: Integer,
+            filename: String,
+            object: Symbol,
+            purpose: String,
+            status: OpenAI::Upload::Status::TaggedSymbol,
+            file: T.nilable(OpenAI::FileObject)
+          }
+        )
+      end
+      def to_hash
+      end
 
       # The status of the Upload.
       module Status
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Upload::Status) }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Upload::Status) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        PENDING = T.let(:pending, OpenAI::Models::Upload::Status::TaggedSymbol)
-        COMPLETED = T.let(:completed, OpenAI::Models::Upload::Status::TaggedSymbol)
-        CANCELLED = T.let(:cancelled, OpenAI::Models::Upload::Status::TaggedSymbol)
-        EXPIRED = T.let(:expired, OpenAI::Models::Upload::Status::TaggedSymbol)
+        PENDING = T.let(:pending, OpenAI::Upload::Status::TaggedSymbol)
+        COMPLETED = T.let(:completed, OpenAI::Upload::Status::TaggedSymbol)
+        CANCELLED = T.let(:cancelled, OpenAI::Upload::Status::TaggedSymbol)
+        EXPIRED = T.let(:expired, OpenAI::Upload::Status::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::Models::Upload::Status::TaggedSymbol]) }
-        def self.values; end
+        sig { override.returns(T::Array[OpenAI::Upload::Status::TaggedSymbol]) }
+        def self.values
+        end
       end
     end
   end

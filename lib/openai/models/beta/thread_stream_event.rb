@@ -8,8 +8,8 @@ module OpenAI
         #   Represents a thread that contains
         #   [messages](https://platform.openai.com/docs/api-reference/messages).
         #
-        #   @return [OpenAI::Models::Beta::Thread]
-        required :data, -> { OpenAI::Models::Beta::Thread }
+        #   @return [OpenAI::Beta::Thread]
+        required :data, -> { OpenAI::Beta::Thread }
 
         # @!attribute event
         #
@@ -24,14 +24,13 @@ module OpenAI
 
         # @!method initialize(data:, enabled: nil, event: :"thread.created")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::ThreadStreamEvent} for more details.
+        #   {OpenAI::Beta::ThreadStreamEvent} for more details.
         #
         #   Occurs when a new
         #   [thread](https://platform.openai.com/docs/api-reference/threads/object) is
         #   created.
         #
-        #   @param data [OpenAI::Models::Beta::Thread] Represents a thread that contains [messages](https://platform.openai.com/docs/ap
-        #   ...
+        #   @param data [OpenAI::Beta::Thread] Represents a thread that contains [messages](https://platform.openai.com/docs/ap
         #
         #   @param enabled [Boolean] Whether to enable input audio transcription.
         #

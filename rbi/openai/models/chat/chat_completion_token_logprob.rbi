@@ -6,6 +6,8 @@ module OpenAI
 
     module Chat
       class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The token.
         sig { returns(String) }
         attr_accessor :token
@@ -26,7 +28,11 @@ module OpenAI
         # List of the most likely tokens and their log probability, at this token
         # position. In rare cases, there may be fewer than the number of requested
         # `top_logprobs` returned.
-        sig { returns(T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]) }
+        sig do
+          returns(
+            T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
+          )
+        end
         attr_accessor :top_logprobs
 
         sig do
@@ -34,9 +40,11 @@ module OpenAI
             token: String,
             bytes: T.nilable(T::Array[Integer]),
             logprob: Float,
-            top_logprobs: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob, OpenAI::Internal::AnyHash)]
-          )
-            .returns(T.attached_class)
+            top_logprobs:
+              T::Array[
+                OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob::OrHash
+              ]
+          ).returns(T.attached_class)
         end
         def self.new(
           # The token.
@@ -54,21 +62,27 @@ module OpenAI
           # position. In rare cases, there may be fewer than the number of requested
           # `top_logprobs` returned.
           top_logprobs:
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                token: String,
-                bytes: T.nilable(T::Array[Integer]),
-                logprob: Float,
-                top_logprobs: T::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob::TopLogprob]
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              token: String,
+              bytes: T.nilable(T::Array[Integer]),
+              logprob: Float,
+              top_logprobs:
+                T::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
+            }
+          )
+        end
+        def to_hash
+        end
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The token.
           sig { returns(String) }
           attr_accessor :token
@@ -105,9 +119,20 @@ module OpenAI
             # tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
             # unlikely.
             logprob:
-          ); end
-          sig { override.returns({token: String, bytes: T.nilable(T::Array[Integer]), logprob: Float}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                token: String,
+                bytes: T.nilable(T::Array[Integer]),
+                logprob: Float
+              }
+            )
+          end
+          def to_hash
+          end
         end
       end
     end

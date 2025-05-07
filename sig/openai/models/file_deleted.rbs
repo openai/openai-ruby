@@ -10,8 +10,6 @@ module OpenAI
       attr_accessor object: :file
 
       def initialize: (id: String, deleted: bool, ?object: :file) -> void
-
-      def to_hash: -> OpenAI::Models::file_deleted
     end
   end
 end

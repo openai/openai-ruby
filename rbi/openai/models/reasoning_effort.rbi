@@ -11,15 +11,16 @@ module OpenAI
     module ReasoningEffort
       extend OpenAI::Internal::Type::Enum
 
-      TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ReasoningEffort) }
+      TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ReasoningEffort) }
       OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-      LOW = T.let(:low, OpenAI::Models::ReasoningEffort::TaggedSymbol)
-      MEDIUM = T.let(:medium, OpenAI::Models::ReasoningEffort::TaggedSymbol)
-      HIGH = T.let(:high, OpenAI::Models::ReasoningEffort::TaggedSymbol)
+      LOW = T.let(:low, OpenAI::ReasoningEffort::TaggedSymbol)
+      MEDIUM = T.let(:medium, OpenAI::ReasoningEffort::TaggedSymbol)
+      HIGH = T.let(:high, OpenAI::ReasoningEffort::TaggedSymbol)
 
-      sig { override.returns(T::Array[OpenAI::Models::ReasoningEffort::TaggedSymbol]) }
-      def self.values; end
+      sig { override.returns(T::Array[OpenAI::ReasoningEffort::TaggedSymbol]) }
+      def self.values
+      end
     end
   end
 end

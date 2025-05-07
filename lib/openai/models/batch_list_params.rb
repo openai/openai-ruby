@@ -28,10 +28,8 @@ module OpenAI
       #   {OpenAI::Models::BatchListParams} for more details.
       #
       #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
-      #   ...
       #
       #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
-      #   ...
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

@@ -38,8 +38,8 @@ module OpenAI
           #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
           #   order and `desc` for descending order.
           #
-          #   @return [Symbol, OpenAI::Models::Beta::Threads::MessageListParams::Order, nil]
-          optional :order, enum: -> { OpenAI::Models::Beta::Threads::MessageListParams::Order }
+          #   @return [Symbol, OpenAI::Beta::Threads::MessageListParams::Order, nil]
+          optional :order, enum: -> { OpenAI::Beta::Threads::MessageListParams::Order }
 
           # @!attribute run_id
           #   Filter messages by the run ID that generated them.
@@ -52,18 +52,14 @@ module OpenAI
           #   {OpenAI::Models::Beta::Threads::MessageListParams} for more details.
           #
           #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
-          #   ...
           #
           #   @param before [String] A cursor for use in pagination. `before` is an object ID that defines your place
-          #   ...
           #
           #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
-          #   ...
           #
-          #   @param order [Symbol, OpenAI::Models::Beta::Threads::MessageListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
-          #   ...
+          #   @param order [Symbol, OpenAI::Beta::Threads::MessageListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
           #
-          #   @param run_id [String] Filter messages by the run ID that generated them. ...
+          #   @param run_id [String] Filter messages by the run ID that generated them.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The chunk of bytes for this Part.
         sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }
         attr_accessor :data
@@ -14,23 +16,26 @@ module OpenAI
         sig do
           params(
             data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # The chunk of bytes for this Part.
           data:,
           request_options: {}
-        ); end
-        sig do
-          override
-            .returns({
-                       data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-                       request_options: OpenAI::RequestOptions
-                     })
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              data: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+              request_options: OpenAI::RequestOptions
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

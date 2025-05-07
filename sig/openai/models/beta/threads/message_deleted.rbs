@@ -17,8 +17,6 @@ module OpenAI
             deleted: bool,
             ?object: :"thread.message.deleted"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::message_deleted
         end
       end
     end

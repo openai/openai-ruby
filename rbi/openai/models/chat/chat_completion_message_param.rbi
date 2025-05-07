@@ -11,13 +11,25 @@ module OpenAI
       module ChatCompletionMessageParam
         extend OpenAI::Internal::Type::Union
 
-        sig do
-          override
-            .returns(
-              [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionDeveloperMessageParam,
+              OpenAI::Chat::ChatCompletionSystemMessageParam,
+              OpenAI::Chat::ChatCompletionUserMessageParam,
+              OpenAI::Chat::ChatCompletionAssistantMessageParam,
+              OpenAI::Chat::ChatCompletionToolMessageParam,
+              OpenAI::Chat::ChatCompletionFunctionMessageParam
             )
+          end
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::Chat::ChatCompletionMessageParam::Variants]
+          )
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

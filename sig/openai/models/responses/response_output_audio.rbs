@@ -16,8 +16,6 @@ module OpenAI
           transcript: String,
           ?type: :output_audio
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_output_audio
       end
     end
   end

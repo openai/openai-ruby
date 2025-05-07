@@ -9,8 +9,6 @@ module OpenAI
         attr_accessor type: :input_text
 
         def initialize: (text: String, ?type: :input_text) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_input_text
       end
     end
   end

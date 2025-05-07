@@ -7,9 +7,9 @@ module OpenAI
         {
           id: String,
           created_at: Integer,
-          file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
+          file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
           object: :"vector_store.files_batch",
-          status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status,
+          status: OpenAI::VectorStores::VectorStoreFileBatch::status,
           vector_store_id: String
         }
 
@@ -18,24 +18,22 @@ module OpenAI
 
         attr_accessor created_at: Integer
 
-        attr_accessor file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts
+        attr_accessor file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts
 
         attr_accessor object: :"vector_store.files_batch"
 
-        attr_accessor status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status
+        attr_accessor status: OpenAI::VectorStores::VectorStoreFileBatch::status
 
         attr_accessor vector_store_id: String
 
         def initialize: (
           id: String,
           created_at: Integer,
-          file_counts: OpenAI::Models::VectorStores::VectorStoreFileBatch::FileCounts,
-          status: OpenAI::Models::VectorStores::VectorStoreFileBatch::status,
+          file_counts: OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
+          status: OpenAI::VectorStores::VectorStoreFileBatch::status,
           vector_store_id: String,
           ?object: :"vector_store.files_batch"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStores::vector_store_file_batch
 
         type file_counts =
           {
@@ -64,8 +62,6 @@ module OpenAI
             in_progress: Integer,
             total: Integer
           ) -> void
-
-          def to_hash: -> OpenAI::Models::VectorStores::VectorStoreFileBatch::file_counts
         end
 
         type status = :in_progress | :completed | :cancelled | :failed
@@ -78,7 +74,7 @@ module OpenAI
           CANCELLED: :cancelled
           FAILED: :failed
 
-          def self?.values: -> ::Array[OpenAI::Models::VectorStores::VectorStoreFileBatch::status]
+          def self?.values: -> ::Array[OpenAI::VectorStores::VectorStoreFileBatch::status]
         end
       end
     end

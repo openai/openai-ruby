@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         # and dashes, with a maximum length of 64.
         sig { returns(String) }
@@ -44,8 +46,7 @@ module OpenAI
             description: String,
             strict: T.nilable(T::Boolean),
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
@@ -65,20 +66,22 @@ module OpenAI
           strict: nil,
           # The type of response format being defined. Always `json_schema`.
           type: :json_schema
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                name: String,
-                schema: T::Hash[Symbol, T.anything],
-                type: Symbol,
-                description: String,
-                strict: T.nilable(T::Boolean)
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              name: String,
+              schema: T::Hash[Symbol, T.anything],
+              type: Symbol,
+              description: String,
+              strict: T.nilable(T::Boolean)
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

@@ -24,16 +24,15 @@ module OpenAI
 
         # @!method initialize(code:, output_index:, type: :"response.code_interpreter_call.code.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent} for more
-        #   details.
+        #   {OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent} for more details.
         #
         #   Emitted when code snippet output is finalized by the code interpreter.
         #
-        #   @param code [String] The final code snippet output by the code interpreter. ...
+        #   @param code [String] The final code snippet output by the code interpreter.
         #
-        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress. ...
+        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.code.done"] The type of the event. Always `response.code_interpreter_call.code.done`. ...
+        #   @param type [Symbol, :"response.code_interpreter_call.code.done"] The type of the event. Always `response.code_interpreter_call.code.done`.
       end
     end
   end

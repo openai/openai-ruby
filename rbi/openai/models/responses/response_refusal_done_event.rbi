@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseRefusalDoneEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The index of the content part that the refusal text is finalized.
         sig { returns(Integer) }
         attr_accessor :content_index
@@ -32,8 +34,7 @@ module OpenAI
             output_index: Integer,
             refusal: String,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The index of the content part that the refusal text is finalized.
@@ -46,18 +47,22 @@ module OpenAI
           refusal:,
           # The type of the event. Always `response.refusal.done`.
           type: :"response.refusal.done"
-        ); end
-        sig do
-          override
-            .returns({
-                       content_index: Integer,
-                       item_id: String,
-                       output_index: Integer,
-                       refusal: String,
-                       type: Symbol
-                     })
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              content_index: Integer,
+              item_id: String,
+              output_index: Integer,
+              refusal: String,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

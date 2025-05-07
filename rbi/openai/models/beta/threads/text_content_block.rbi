@@ -5,10 +5,13 @@ module OpenAI
     module Beta
       module Threads
         class TextContentBlock < OpenAI::Internal::Type::BaseModel
-          sig { returns(OpenAI::Models::Beta::Threads::Text) }
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+          sig { returns(OpenAI::Beta::Threads::Text) }
           attr_reader :text
 
-          sig { params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Internal::AnyHash)).void }
+          sig { params(text: OpenAI::Beta::Threads::Text::OrHash).void }
           attr_writer :text
 
           # Always `text`.
@@ -17,16 +20,25 @@ module OpenAI
 
           # The text content that is part of a message.
           sig do
-            params(text: T.any(OpenAI::Models::Beta::Threads::Text, OpenAI::Internal::AnyHash), type: Symbol)
-              .returns(T.attached_class)
+            params(
+              text: OpenAI::Beta::Threads::Text::OrHash,
+              type: Symbol
+            ).returns(T.attached_class)
           end
           def self.new(
             text:,
             # Always `text`.
             type: :text
-          ); end
-          sig { override.returns({text: OpenAI::Models::Beta::Threads::Text, type: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { text: OpenAI::Beta::Threads::Text, type: Symbol }
+            )
+          end
+          def to_hash
+          end
         end
       end
     end

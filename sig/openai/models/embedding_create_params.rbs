@@ -41,15 +41,13 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::embedding_create_params
-
       type input =
         String | ::Array[String] | ::Array[Integer] | ::Array[::Array[Integer]]
 
       module Input
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
+        def self?.variants: -> ::Array[OpenAI::Models::EmbeddingCreateParams::input]
 
         StringArray: OpenAI::Internal::Type::Converter
 
@@ -63,7 +61,7 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, OpenAI::Models::embedding_model]
+        def self?.variants: -> ::Array[OpenAI::Models::EmbeddingCreateParams::model]
       end
 
       type encoding_format = :float | :base64

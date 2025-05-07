@@ -6,13 +6,13 @@ module OpenAI
       # Creates and executes a batch from an uploaded file of requests
       sig do
         params(
-          completion_window: OpenAI::Models::BatchCreateParams::CompletionWindow::OrSymbol,
-          endpoint: OpenAI::Models::BatchCreateParams::Endpoint::OrSymbol,
+          completion_window:
+            OpenAI::BatchCreateParams::CompletionWindow::OrSymbol,
+          endpoint: OpenAI::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::Batch)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Batch)
       end
       def create(
         # The time frame within which the batch should be processed. Currently only `24h`
@@ -41,18 +41,30 @@ module OpenAI
         # a maximum length of 512 characters.
         metadata: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Retrieves a batch.
-      sig { params(batch_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Batch) }
+      sig do
+        params(
+          batch_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Batch)
+      end
       def retrieve(
         # The ID of the batch to retrieve.
         batch_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # List your organization's batches.
       sig do
-        params(after: String, limit: Integer, request_options: OpenAI::RequestOpts)
-          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::Batch])
+        params(
+          after: String,
+          limit: Integer,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Internal::CursorPage[OpenAI::Batch])
       end
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -64,19 +76,29 @@ module OpenAI
         # 100, and the default is 20.
         limit: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Cancels an in-progress batch. The batch will be in status `cancelling` for up to
       # 10 minutes, before changing to `cancelled`, where it will have partial results
       # (if any) available in the output file.
-      sig { params(batch_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::Batch) }
+      sig do
+        params(
+          batch_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Batch)
+      end
       def cancel(
         # The ID of the batch to cancel.
         batch_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

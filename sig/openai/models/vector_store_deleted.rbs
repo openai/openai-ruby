@@ -15,8 +15,6 @@ module OpenAI
         deleted: bool,
         ?object: :"vector_store.deleted"
       ) -> void
-
-      def to_hash: -> OpenAI::Models::vector_store_deleted
     end
   end
 end

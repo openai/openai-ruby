@@ -5,6 +5,9 @@ module OpenAI
     module Beta
       module Threads
         class FileCitationDeltaAnnotation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
           attr_accessor :index
@@ -19,14 +22,20 @@ module OpenAI
           sig { params(end_index: Integer).void }
           attr_writer :end_index
 
-          sig { returns(T.nilable(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
+              )
+            )
+          end
           attr_reader :file_citation
 
           sig do
             params(
-              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file_citation:
+                OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation::OrHash
+            ).void
           end
           attr_writer :file_citation
 
@@ -50,12 +59,12 @@ module OpenAI
             params(
               index: Integer,
               end_index: Integer,
-              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation, OpenAI::Internal::AnyHash),
+              file_citation:
+                OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation::OrHash,
               start_index: Integer,
               text: String,
               type: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # The index of the annotation in the text content part.
@@ -67,23 +76,29 @@ module OpenAI
             text: nil,
             # Always `file_citation`.
             type: :file_citation
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  index: Integer,
-                  type: Symbol,
-                  end_index: Integer,
-                  file_citation: OpenAI::Models::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
-                  start_index: Integer,
-                  text: String
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                index: Integer,
+                type: Symbol,
+                end_index: Integer,
+                file_citation:
+                  OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+                start_index: Integer,
+                text: String
+              }
+            )
+          end
+          def to_hash
+          end
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the specific File the citation is from.
             sig { returns(T.nilable(String)) }
             attr_reader :file_id
@@ -98,15 +113,20 @@ module OpenAI
             sig { params(quote: String).void }
             attr_writer :quote
 
-            sig { params(file_id: String, quote: String).returns(T.attached_class) }
+            sig do
+              params(file_id: String, quote: String).returns(T.attached_class)
+            end
             def self.new(
               # The ID of the specific File the citation is from.
               file_id: nil,
               # The specific quote in the file.
               quote: nil
-            ); end
-            sig { override.returns({file_id: String, quote: String}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ file_id: String, quote: String }) }
+            def to_hash
+            end
           end
         end
       end

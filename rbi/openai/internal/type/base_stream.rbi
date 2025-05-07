@@ -18,39 +18,50 @@ module OpenAI
           #
           # This should not be relied upon for resource clean up, as the garbage collector
           # is not guaranteed to run.
-          sig { params(stream: T::Enumerable[T.anything]).returns(T.proc.params(arg0: Integer).void) }
-          def defer_closing(stream); end
+          sig do
+            params(stream: T::Enumerable[T.anything]).returns(
+              T.proc.params(arg0: Integer).void
+            )
+          end
+          def defer_closing(stream)
+          end
         end
 
         sig { void }
-        def close; end
+        def close
+        end
 
         # @api private
         sig { overridable.returns(T::Enumerable[Elem]) }
-        private def iterator; end
+        private def iterator
+        end
 
         sig { params(blk: T.proc.params(arg0: Elem).void).void }
-        def each(&blk); end
+        def each(&blk)
+        end
 
         sig { returns(T::Enumerator[Elem]) }
-        def to_enum; end
+        def to_enum
+        end
 
         # @api private
         sig do
           params(
-            model: T.any(T::Class[T.anything], OpenAI::Internal::Type::Converter),
+            model:
+              T.any(T::Class[T.anything], OpenAI::Internal::Type::Converter),
             url: URI::Generic,
             status: Integer,
             response: Net::HTTPResponse,
             stream: T::Enumerable[Message]
-          )
-            .void
+          ).void
         end
-        def initialize(model:, url:, status:, response:, stream:); end
+        def initialize(model:, url:, status:, response:, stream:)
+        end
 
         # @api private
         sig { returns(String) }
-        def inspect; end
+        def inspect
+        end
       end
     end
   end

@@ -5,7 +5,7 @@ module OpenAI
         query: OpenAI::Models::VectorStoreSearchParams::query,
         filters: OpenAI::Models::VectorStoreSearchParams::filters,
         max_num_results: Integer,
-        ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+        ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
         rewrite_query: bool
       }
       & OpenAI::Internal::Type::request_parameters
@@ -26,11 +26,11 @@ module OpenAI
 
       def max_num_results=: (Integer) -> Integer
 
-      attr_reader ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions?
+      attr_reader ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions?
 
       def ranking_options=: (
-        OpenAI::Models::VectorStoreSearchParams::RankingOptions
-      ) -> OpenAI::Models::VectorStoreSearchParams::RankingOptions
+        OpenAI::VectorStoreSearchParams::RankingOptions
+      ) -> OpenAI::VectorStoreSearchParams::RankingOptions
 
       attr_reader rewrite_query: bool?
 
@@ -40,55 +40,50 @@ module OpenAI
         query: OpenAI::Models::VectorStoreSearchParams::query,
         ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
         ?max_num_results: Integer,
-        ?ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+        ?ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
         ?rewrite_query: bool,
         ?request_options: OpenAI::request_opts
       ) -> void
-
-      def to_hash: -> OpenAI::Models::vector_store_search_params
 
       type query = String | ::Array[String]
 
       module Query
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, ::Array[String]]
+        def self?.variants: -> ::Array[OpenAI::Models::VectorStoreSearchParams::query]
 
         StringArray: OpenAI::Internal::Type::Converter
       end
 
-      type filters =
-        OpenAI::Models::ComparisonFilter | OpenAI::Models::CompoundFilter
+      type filters = OpenAI::ComparisonFilter | OpenAI::CompoundFilter
 
       module Filters
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
+        def self?.variants: -> ::Array[OpenAI::Models::VectorStoreSearchParams::filters]
       end
 
       type ranking_options =
         {
-          ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
+          ranker: OpenAI::VectorStoreSearchParams::RankingOptions::ranker,
           score_threshold: Float
         }
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
-        attr_reader ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker?
+        attr_reader ranker: OpenAI::VectorStoreSearchParams::RankingOptions::ranker?
 
         def ranker=: (
-          OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker
-        ) -> OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker
+          OpenAI::VectorStoreSearchParams::RankingOptions::ranker
+        ) -> OpenAI::VectorStoreSearchParams::RankingOptions::ranker
 
         attr_reader score_threshold: Float?
 
         def score_threshold=: (Float) -> Float
 
         def initialize: (
-          ?ranker: OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker,
+          ?ranker: OpenAI::VectorStoreSearchParams::RankingOptions::ranker,
           ?score_threshold: Float
         ) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStoreSearchParams::ranking_options
 
         type ranker = :auto | :"default-2024-11-15"
 
@@ -98,7 +93,7 @@ module OpenAI
           AUTO: :auto
           DEFAULT_2024_11_15: :"default-2024-11-15"
 
-          def self?.values: -> ::Array[OpenAI::Models::VectorStoreSearchParams::RankingOptions::ranker]
+          def self?.values: -> ::Array[OpenAI::VectorStoreSearchParams::RankingOptions::ranker]
         end
       end
     end

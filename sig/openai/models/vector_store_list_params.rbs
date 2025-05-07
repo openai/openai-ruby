@@ -39,8 +39,6 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::vector_store_list_params
-
       type order = :asc | :desc
 
       module Order

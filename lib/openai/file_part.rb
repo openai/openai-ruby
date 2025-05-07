@@ -45,9 +45,9 @@ module OpenAI
       @filename =
         case content
         in Pathname
-          filename.nil? ? content.basename.to_path : File.basename(filename)
+          filename.nil? ? content.basename.to_path : ::File.basename(filename)
         else
-          filename.nil? ? nil : File.basename(filename)
+          filename.nil? ? nil : ::File.basename(filename)
         end
       @content_type = content_type
     end

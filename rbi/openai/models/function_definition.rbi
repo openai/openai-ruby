@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class FunctionDefinition < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
       # underscores and dashes, with a maximum length of 64.
       sig { returns(String) }
@@ -43,8 +45,7 @@ module OpenAI
           description: String,
           parameters: T::Hash[Symbol, T.anything],
           strict: T.nilable(T::Boolean)
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         # The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
@@ -67,19 +68,21 @@ module OpenAI
         # more about Structured Outputs in the
         # [function calling guide](docs/guides/function-calling).
         strict: nil
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              name: String,
-              description: String,
-              parameters: T::Hash[Symbol, T.anything],
-              strict: T.nilable(T::Boolean)
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            name: String,
+            description: String,
+            parameters: T::Hash[Symbol, T.anything],
+            strict: T.nilable(T::Boolean)
+          }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

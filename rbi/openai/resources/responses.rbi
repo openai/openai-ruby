@@ -21,63 +21,72 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
-          input: T.any(
-            String,
-            T::Array[
-              T.any(
-                OpenAI::Models::Responses::EasyInputMessage,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::ResponseInputItem::Message,
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCall,
-                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                OpenAI::Models::Responses::ResponseReasoningItem,
-                OpenAI::Models::Responses::ResponseInputItem::ItemReference
-              )
-            ]
-          ),
-          model: T.any(
-            String,
-            OpenAI::Models::ChatModel::OrSymbol,
-            OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol
-          ),
-          include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
+          input:
+            T.any(
+              String,
+              T::Array[
+                T.any(
+                  OpenAI::Responses::EasyInputMessage::OrHash,
+                  OpenAI::Responses::ResponseInputItem::Message::OrHash,
+                  OpenAI::Responses::ResponseOutputMessage::OrHash,
+                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
+                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
+                  OpenAI::Responses::ResponseReasoningItem::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
+                )
+              ]
+            ),
+          model:
+            T.any(
+              String,
+              OpenAI::ChatModel::OrSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+            ),
+          include:
+            T.nilable(
+              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
+            ),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
-          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
-          service_tier: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
+          reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+          service_tier:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
+            ),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
-          tool_choice: T.any(
-            OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-            OpenAI::Models::Responses::ToolChoiceTypes,
-            OpenAI::Internal::AnyHash,
-            OpenAI::Models::Responses::ToolChoiceFunction
-          ),
-          tools: T::Array[
+          text: OpenAI::Responses::ResponseTextConfig::OrHash,
+          tool_choice:
             T.any(
-              OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::FunctionTool,
-              OpenAI::Models::Responses::ComputerTool,
-              OpenAI::Models::Responses::WebSearchTool
-            )
-          ],
+              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceTypes::OrHash,
+              OpenAI::Responses::ToolChoiceFunction::OrHash
+            ),
+          tools:
+            T::Array[
+              T.any(
+                OpenAI::Responses::FileSearchTool::OrHash,
+                OpenAI::Responses::FunctionTool::OrHash,
+                OpenAI::Responses::ComputerTool::OrHash,
+                OpenAI::Responses::WebSearchTool::OrHash
+              )
+            ],
           top_p: T.nilable(Float),
-          truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
+          truncation:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
+            ),
           user: String,
           stream: T.noreturn,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::Responses::Response)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Responses::Response)
       end
       def create(
         # Text, image, or file inputs to the model, used to generate a response.
@@ -211,7 +220,9 @@ module OpenAI
         # for streaming and non-streaming use cases, respectively.
         stream: false,
         request_options: {}
-      ); end
+      )
+      end
+
       # See {OpenAI::Resources::Responses#create} for non-streaming counterpart.
       #
       # Creates a model response. Provide
@@ -227,104 +238,113 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
-          input: T.any(
-            String,
-            T::Array[
-              T.any(
-                OpenAI::Models::Responses::EasyInputMessage,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::ResponseInputItem::Message,
-                OpenAI::Models::Responses::ResponseOutputMessage,
-                OpenAI::Models::Responses::ResponseFileSearchToolCall,
-                OpenAI::Models::Responses::ResponseComputerToolCall,
-                OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput,
-                OpenAI::Models::Responses::ResponseFunctionWebSearch,
-                OpenAI::Models::Responses::ResponseFunctionToolCall,
-                OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput,
-                OpenAI::Models::Responses::ResponseReasoningItem,
-                OpenAI::Models::Responses::ResponseInputItem::ItemReference
-              )
-            ]
-          ),
-          model: T.any(
-            String,
-            OpenAI::Models::ChatModel::OrSymbol,
-            OpenAI::Models::ResponsesModel::ResponsesOnlyModel::OrSymbol
-          ),
-          include: T.nilable(T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol]),
+          input:
+            T.any(
+              String,
+              T::Array[
+                T.any(
+                  OpenAI::Responses::EasyInputMessage::OrHash,
+                  OpenAI::Responses::ResponseInputItem::Message::OrHash,
+                  OpenAI::Responses::ResponseOutputMessage::OrHash,
+                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
+                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
+                  OpenAI::Responses::ResponseReasoningItem::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
+                )
+              ]
+            ),
+          model:
+            T.any(
+              String,
+              OpenAI::ChatModel::OrSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+            ),
+          include:
+            T.nilable(
+              T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
+            ),
           instructions: T.nilable(String),
           max_output_tokens: T.nilable(Integer),
           metadata: T.nilable(T::Hash[Symbol, String]),
           parallel_tool_calls: T.nilable(T::Boolean),
           previous_response_id: T.nilable(String),
-          reasoning: T.nilable(T.any(OpenAI::Models::Reasoning, OpenAI::Internal::AnyHash)),
-          service_tier: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::ServiceTier::OrSymbol),
+          reasoning: T.nilable(OpenAI::Reasoning::OrHash),
+          service_tier:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::ServiceTier::OrSymbol
+            ),
           store: T.nilable(T::Boolean),
           temperature: T.nilable(Float),
-          text: T.any(OpenAI::Models::Responses::ResponseTextConfig, OpenAI::Internal::AnyHash),
-          tool_choice: T.any(
-            OpenAI::Models::Responses::ToolChoiceOptions::OrSymbol,
-            OpenAI::Models::Responses::ToolChoiceTypes,
-            OpenAI::Internal::AnyHash,
-            OpenAI::Models::Responses::ToolChoiceFunction
-          ),
-          tools: T::Array[
+          text: OpenAI::Responses::ResponseTextConfig::OrHash,
+          tool_choice:
             T.any(
-              OpenAI::Models::Responses::FileSearchTool,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::FunctionTool,
-              OpenAI::Models::Responses::ComputerTool,
-              OpenAI::Models::Responses::WebSearchTool
-            )
-          ],
+              OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+              OpenAI::Responses::ToolChoiceTypes::OrHash,
+              OpenAI::Responses::ToolChoiceFunction::OrHash
+            ),
+          tools:
+            T::Array[
+              T.any(
+                OpenAI::Responses::FileSearchTool::OrHash,
+                OpenAI::Responses::FunctionTool::OrHash,
+                OpenAI::Responses::ComputerTool::OrHash,
+                OpenAI::Responses::WebSearchTool::OrHash
+              )
+            ],
           top_p: T.nilable(Float),
-          truncation: T.nilable(OpenAI::Models::Responses::ResponseCreateParams::Truncation::OrSymbol),
+          truncation:
+            T.nilable(
+              OpenAI::Responses::ResponseCreateParams::Truncation::OrSymbol
+            ),
           user: String,
           stream: T.noreturn,
-          request_options: OpenAI::RequestOpts
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(
+          OpenAI::Internal::Stream[
+            T.any(
+              OpenAI::Responses::ResponseAudioDeltaEvent,
+              OpenAI::Responses::ResponseAudioDoneEvent,
+              OpenAI::Responses::ResponseAudioTranscriptDeltaEvent,
+              OpenAI::Responses::ResponseAudioTranscriptDoneEvent,
+              OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent,
+              OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent,
+              OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent,
+              OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent,
+              OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent,
+              OpenAI::Responses::ResponseCompletedEvent,
+              OpenAI::Responses::ResponseContentPartAddedEvent,
+              OpenAI::Responses::ResponseContentPartDoneEvent,
+              OpenAI::Responses::ResponseCreatedEvent,
+              OpenAI::Responses::ResponseErrorEvent,
+              OpenAI::Responses::ResponseFileSearchCallCompletedEvent,
+              OpenAI::Responses::ResponseFileSearchCallInProgressEvent,
+              OpenAI::Responses::ResponseFileSearchCallSearchingEvent,
+              OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent,
+              OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent,
+              OpenAI::Responses::ResponseInProgressEvent,
+              OpenAI::Responses::ResponseFailedEvent,
+              OpenAI::Responses::ResponseIncompleteEvent,
+              OpenAI::Responses::ResponseOutputItemAddedEvent,
+              OpenAI::Responses::ResponseOutputItemDoneEvent,
+              OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent,
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
+              OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent,
+              OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent,
+              OpenAI::Responses::ResponseRefusalDeltaEvent,
+              OpenAI::Responses::ResponseRefusalDoneEvent,
+              OpenAI::Responses::ResponseTextAnnotationDeltaEvent,
+              OpenAI::Responses::ResponseTextDeltaEvent,
+              OpenAI::Responses::ResponseTextDoneEvent,
+              OpenAI::Responses::ResponseWebSearchCallCompletedEvent,
+              OpenAI::Responses::ResponseWebSearchCallInProgressEvent,
+              OpenAI::Responses::ResponseWebSearchCallSearchingEvent
+            )
+          ]
         )
-          .returns(
-            OpenAI::Internal::Stream[
-              T.any(
-                OpenAI::Models::Responses::ResponseAudioDeltaEvent,
-                OpenAI::Models::Responses::ResponseAudioDoneEvent,
-                OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent,
-                OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent,
-                OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent,
-                OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent,
-                OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent,
-                OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent,
-                OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent,
-                OpenAI::Models::Responses::ResponseCompletedEvent,
-                OpenAI::Models::Responses::ResponseContentPartAddedEvent,
-                OpenAI::Models::Responses::ResponseContentPartDoneEvent,
-                OpenAI::Models::Responses::ResponseCreatedEvent,
-                OpenAI::Models::Responses::ResponseErrorEvent,
-                OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent,
-                OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent,
-                OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent,
-                OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent,
-                OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent,
-                OpenAI::Models::Responses::ResponseInProgressEvent,
-                OpenAI::Models::Responses::ResponseFailedEvent,
-                OpenAI::Models::Responses::ResponseIncompleteEvent,
-                OpenAI::Models::Responses::ResponseOutputItemAddedEvent,
-                OpenAI::Models::Responses::ResponseOutputItemDoneEvent,
-                OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent,
-                OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent,
-                OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent,
-                OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent,
-                OpenAI::Models::Responses::ResponseRefusalDeltaEvent,
-                OpenAI::Models::Responses::ResponseRefusalDoneEvent,
-                OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent,
-                OpenAI::Models::Responses::ResponseTextDeltaEvent,
-                OpenAI::Models::Responses::ResponseTextDoneEvent,
-                OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent,
-                OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent,
-                OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent
-              )
-            ]
-          )
       end
       def stream_raw(
         # Text, image, or file inputs to the model, used to generate a response.
@@ -458,15 +478,16 @@ module OpenAI
         # for streaming and non-streaming use cases, respectively.
         stream: true,
         request_options: {}
-      ); end
+      )
+      end
+
       # Retrieves a model response with the given ID.
       sig do
         params(
           response_id: String,
-          include: T::Array[OpenAI::Models::Responses::ResponseIncludable::OrSymbol],
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::Responses::Response)
+          include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Responses::Response)
       end
       def retrieve(
         # The ID of the response to retrieve.
@@ -475,17 +496,27 @@ module OpenAI
         # Response creation above for more information.
         include: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Deletes a model response with the given ID.
-      sig { params(response_id: String, request_options: OpenAI::RequestOpts).void }
+      sig do
+        params(
+          response_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).void
+      end
       def delete(
         # The ID of the response to delete.
         response_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

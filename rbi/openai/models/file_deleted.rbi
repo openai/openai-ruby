@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class FileDeleted < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       sig { returns(String) }
       attr_accessor :id
 
@@ -12,11 +14,19 @@ module OpenAI
       sig { returns(Symbol) }
       attr_accessor :object
 
-      sig { params(id: String, deleted: T::Boolean, object: Symbol).returns(T.attached_class) }
-      def self.new(id:, deleted:, object: :file); end
+      sig do
+        params(id: String, deleted: T::Boolean, object: Symbol).returns(
+          T.attached_class
+        )
+      end
+      def self.new(id:, deleted:, object: :file)
+      end
 
-      sig { override.returns({id: String, deleted: T::Boolean, object: Symbol}) }
-      def to_hash; end
+      sig do
+        override.returns({ id: String, deleted: T::Boolean, object: Symbol })
+      end
+      def to_hash
+      end
     end
   end
 end

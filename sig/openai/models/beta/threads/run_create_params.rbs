@@ -7,7 +7,7 @@ module OpenAI
             assistant_id: String,
             include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
             additional_instructions: String?,
-            additional_messages: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]?,
+            additional_messages: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]?,
             instructions: String?,
             max_completion_tokens: Integer?,
             max_prompt_tokens: Integer?,
@@ -20,7 +20,7 @@ module OpenAI
             tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
             top_p: Float?,
-            truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?
+            truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?
           }
           & OpenAI::Internal::Type::request_parameters
 
@@ -38,7 +38,7 @@ module OpenAI
 
           attr_accessor additional_instructions: String?
 
-          attr_accessor additional_messages: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]?
+          attr_accessor additional_messages: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]?
 
           attr_accessor instructions: String?
 
@@ -66,13 +66,13 @@ module OpenAI
 
           attr_accessor top_p: Float?
 
-          attr_accessor truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?
+          attr_accessor truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?
 
           def initialize: (
             assistant_id: String,
             ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
             ?additional_instructions: String?,
-            ?additional_messages: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]?,
+            ?additional_messages: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]?,
             ?instructions: String?,
             ?max_completion_tokens: Integer?,
             ?max_prompt_tokens: Integer?,
@@ -85,37 +85,33 @@ module OpenAI
             ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
             ?top_p: Float?,
-            ?truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?,
+            ?truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
-          def to_hash: -> OpenAI::Models::Beta::Threads::run_create_params
-
           type additional_message =
             {
-              content: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::content,
-              role: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role,
-              attachments: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?,
+              content: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::content,
+              role: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::role,
+              attachments: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?,
               metadata: OpenAI::Models::metadata?
             }
 
           class AdditionalMessage < OpenAI::Internal::Type::BaseModel
-            attr_accessor content: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::content
+            attr_accessor content: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::content
 
-            attr_accessor role: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role
+            attr_accessor role: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::role
 
-            attr_accessor attachments: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?
+            attr_accessor attachments: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?
 
             attr_accessor metadata: OpenAI::Models::metadata?
 
             def initialize: (
-              content: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::content,
-              role: OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role,
-              ?attachments: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?,
+              content: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::content,
+              role: OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::role,
+              ?attachments: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment]?,
               ?metadata: OpenAI::Models::metadata?
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::RunCreateParams::additional_message
 
             type content =
               String
@@ -124,7 +120,7 @@ module OpenAI
             module Content
               extend OpenAI::Internal::Type::Union
 
-              def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
+              def self?.variants: -> ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::content]
 
               MessageContentPartParamArray: OpenAI::Internal::Type::Converter
             end
@@ -137,13 +133,13 @@ module OpenAI
               USER: :user
               ASSISTANT: :assistant
 
-              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::role]
+              def self?.values: -> ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::role]
             end
 
             type attachment =
               {
                 file_id: String,
-                tools: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
+                tools: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
               }
 
             class Attachment < OpenAI::Internal::Type::BaseModel
@@ -151,22 +147,20 @@ module OpenAI
 
               def file_id=: (String) -> String
 
-              attr_reader tools: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]?
+              attr_reader tools: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]?
 
               def tools=: (
-                ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
-              ) -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
+                ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
+              ) -> ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
 
               def initialize: (
                 ?file_id: String,
-                ?tools: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
+                ?tools: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
               ) -> void
 
-              def to_hash: -> OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::attachment
-
               type tool =
-                OpenAI::Models::Beta::CodeInterpreterTool
-                | OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
+                OpenAI::Beta::CodeInterpreterTool
+                | OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
 
               module Tool
                 extend OpenAI::Internal::Type::Union
@@ -177,11 +171,9 @@ module OpenAI
                   attr_accessor type: :file_search
 
                   def initialize: (?type: :file_search) -> void
-
-                  def to_hash: -> OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::file_search
                 end
 
-                def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch]
+                def self?.variants: -> ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::tool]
               end
             end
           end
@@ -191,26 +183,24 @@ module OpenAI
           module Model
             extend OpenAI::Internal::Type::Union
 
-            def self?.variants: -> [String, OpenAI::Models::chat_model]
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::model]
           end
 
           type truncation_strategy =
             {
-              type: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_,
+              type: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::type_,
               last_messages: Integer?
             }
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-            attr_accessor type: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_
+            attr_accessor type: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::type_
 
             attr_accessor last_messages: Integer?
 
             def initialize: (
-              type: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_,
+              type: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::type_,
               ?last_messages: Integer?
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::RunCreateParams::truncation_strategy
 
             type type_ = :auto | :last_messages
 
@@ -220,7 +210,7 @@ module OpenAI
               AUTO: :auto
               LAST_MESSAGES: :last_messages
 
-              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy::type_]
+              def self?.values: -> ::Array[OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::type_]
             end
           end
         end

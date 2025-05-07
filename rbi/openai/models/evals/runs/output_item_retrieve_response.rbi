@@ -5,6 +5,9 @@ module OpenAI
     module Evals
       module Runs
         class OutputItemRetrieveResponse < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Unique identifier for the evaluation run output item.
           sig { returns(String) }
           attr_accessor :id
@@ -38,14 +41,18 @@ module OpenAI
           attr_accessor :run_id
 
           # A sample containing the input and output of the evaluation run.
-          sig { returns(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample) }
+          sig do
+            returns(
+              OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample
+            )
+          end
           attr_reader :sample
 
           sig do
             params(
-              sample: T.any(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample, OpenAI::Internal::AnyHash)
-            )
-              .void
+              sample:
+                OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::OrHash
+            ).void
           end
           attr_writer :sample
 
@@ -63,11 +70,11 @@ module OpenAI
               eval_id: String,
               results: T::Array[T::Hash[Symbol, T.anything]],
               run_id: String,
-              sample: T.any(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample, OpenAI::Internal::AnyHash),
+              sample:
+                OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::OrHash,
               status: String,
               object: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Unique identifier for the evaluation run output item.
@@ -90,32 +97,38 @@ module OpenAI
             status:,
             # The type of the object. Always "eval.run.output_item".
             object: :"eval.run.output_item"
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  id: String,
-                  created_at: Integer,
-                  datasource_item: T::Hash[Symbol, T.anything],
-                  datasource_item_id: Integer,
-                  eval_id: String,
-                  object: Symbol,
-                  results: T::Array[T::Hash[Symbol, T.anything]],
-                  run_id: String,
-                  sample: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
-                  status: String
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                id: String,
+                created_at: Integer,
+                datasource_item: T::Hash[Symbol, T.anything],
+                datasource_item_id: Integer,
+                eval_id: String,
+                object: Symbol,
+                results: T::Array[T::Hash[Symbol, T.anything]],
+                run_id: String,
+                sample:
+                  OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
+                status: String
+              }
+            )
+          end
+          def to_hash
+          end
 
           class Sample < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # An object representing an error response from the Eval API.
-            sig { returns(OpenAI::Models::Evals::EvalAPIError) }
+            sig { returns(OpenAI::Evals::EvalAPIError) }
             attr_reader :error
 
-            sig { params(error: T.any(OpenAI::Models::Evals::EvalAPIError, OpenAI::Internal::AnyHash)).void }
+            sig { params(error: OpenAI::Evals::EvalAPIError::OrHash).void }
             attr_writer :error
 
             # The reason why the sample generation was finished.
@@ -123,7 +136,13 @@ module OpenAI
             attr_accessor :finish_reason
 
             # An array of input messages.
-            sig { returns(T::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input]) }
+            sig do
+              returns(
+                T::Array[
+                  OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input
+                ]
+              )
+            end
             attr_accessor :input
 
             # The maximum number of tokens allowed for completion.
@@ -135,7 +154,13 @@ module OpenAI
             attr_accessor :model
 
             # An array of output messages.
-            sig { returns(T::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output]) }
+            sig do
+              returns(
+                T::Array[
+                  OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output
+                ]
+              )
+            end
             attr_accessor :output
 
             # The seed used for generating the sample.
@@ -151,32 +176,42 @@ module OpenAI
             attr_accessor :top_p
 
             # Token usage details for the sample.
-            sig { returns(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage) }
+            sig do
+              returns(
+                OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
+              )
+            end
             attr_reader :usage
 
             sig do
               params(
-                usage: T.any(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage, OpenAI::Internal::AnyHash)
-              )
-                .void
+                usage:
+                  OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage::OrHash
+              ).void
             end
             attr_writer :usage
 
             # A sample containing the input and output of the evaluation run.
             sig do
               params(
-                error: T.any(OpenAI::Models::Evals::EvalAPIError, OpenAI::Internal::AnyHash),
+                error: OpenAI::Evals::EvalAPIError::OrHash,
                 finish_reason: String,
-                input: T::Array[T.any(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input, OpenAI::Internal::AnyHash)],
+                input:
+                  T::Array[
+                    OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input::OrHash
+                  ],
                 max_completion_tokens: Integer,
                 model: String,
-                output: T::Array[T.any(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output, OpenAI::Internal::AnyHash)],
+                output:
+                  T::Array[
+                    OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output::OrHash
+                  ],
                 seed: Integer,
                 temperature: Float,
                 top_p: Float,
-                usage: T.any(OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage, OpenAI::Internal::AnyHash)
-              )
-                .returns(T.attached_class)
+                usage:
+                  OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage::OrHash
+              ).returns(T.attached_class)
             end
             def self.new(
               # An object representing an error response from the Eval API.
@@ -199,27 +234,39 @@ module OpenAI
               top_p:,
               # Token usage details for the sample.
               usage:
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    error: OpenAI::Models::Evals::EvalAPIError,
-                    finish_reason: String,
-                    input: T::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input],
-                    max_completion_tokens: Integer,
-                    model: String,
-                    output: T::Array[OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output],
-                    seed: Integer,
-                    temperature: Float,
-                    top_p: Float,
-                    usage: OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  error: OpenAI::Evals::EvalAPIError,
+                  finish_reason: String,
+                  input:
+                    T::Array[
+                      OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input
+                    ],
+                  max_completion_tokens: Integer,
+                  model: String,
+                  output:
+                    T::Array[
+                      OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output
+                    ],
+                  seed: Integer,
+                  temperature: Float,
+                  top_p: Float,
+                  usage:
+                    OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Input < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The content of the message.
               sig { returns(String) }
               attr_accessor :content
@@ -229,18 +276,26 @@ module OpenAI
               attr_accessor :role
 
               # An input message.
-              sig { params(content: String, role: String).returns(T.attached_class) }
+              sig do
+                params(content: String, role: String).returns(T.attached_class)
+              end
               def self.new(
                 # The content of the message.
                 content:,
                 # The role of the message sender (e.g., system, user, developer).
                 role:
-              ); end
-              sig { override.returns({content: String, role: String}) }
-              def to_hash; end
+              )
+              end
+
+              sig { override.returns({ content: String, role: String }) }
+              def to_hash
+              end
             end
 
             class Output < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The content of the message.
               sig { returns(T.nilable(String)) }
               attr_reader :content
@@ -255,18 +310,26 @@ module OpenAI
               sig { params(role: String).void }
               attr_writer :role
 
-              sig { params(content: String, role: String).returns(T.attached_class) }
+              sig do
+                params(content: String, role: String).returns(T.attached_class)
+              end
               def self.new(
                 # The content of the message.
                 content: nil,
                 # The role of the message (e.g. "system", "assistant", "user").
                 role: nil
-              ); end
-              sig { override.returns({content: String, role: String}) }
-              def to_hash; end
+              )
+              end
+
+              sig { override.returns({ content: String, role: String }) }
+              def to_hash
+              end
             end
 
             class Usage < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The number of tokens retrieved from cache.
               sig { returns(Integer) }
               attr_accessor :cached_tokens
@@ -290,8 +353,7 @@ module OpenAI
                   completion_tokens: Integer,
                   prompt_tokens: Integer,
                   total_tokens: Integer
-                )
-                  .returns(T.attached_class)
+                ).returns(T.attached_class)
               end
               def self.new(
                 # The number of tokens retrieved from cache.
@@ -302,19 +364,21 @@ module OpenAI
                 prompt_tokens:,
                 # The total number of tokens used.
                 total_tokens:
-              ); end
-              sig do
-                override
-                  .returns(
-                    {
-                      cached_tokens: Integer,
-                      completion_tokens: Integer,
-                      prompt_tokens: Integer,
-                      total_tokens: Integer
-                    }
-                  )
+              )
               end
-              def to_hash; end
+
+              sig do
+                override.returns(
+                  {
+                    cached_tokens: Integer,
+                    completion_tokens: Integer,
+                    prompt_tokens: Integer,
+                    total_tokens: Integer
+                  }
+                )
+              end
+              def to_hash
+              end
             end
           end
         end

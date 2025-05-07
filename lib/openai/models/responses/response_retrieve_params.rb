@@ -12,15 +12,14 @@ module OpenAI
         #   Additional fields to include in the response. See the `include` parameter for
         #   Response creation above for more information.
         #
-        #   @return [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Models::Responses::ResponseIncludable] }
+        #   @return [Array<Symbol, OpenAI::Responses::ResponseIncludable>, nil]
+        optional :include, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::ResponseIncludable] }
 
         # @!method initialize(include: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseRetrieveParams} for more details.
         #
-        #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include` ...
+        #   @param include [Array<Symbol, OpenAI::Responses::ResponseIncludable>] Additional fields to include in the response. See the `include`
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

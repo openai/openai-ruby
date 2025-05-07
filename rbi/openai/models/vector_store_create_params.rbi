@@ -6,14 +6,16 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
       # strategy. Only applicable if `file_ids` is non-empty.
       sig do
         returns(
           T.nilable(
             T.any(
-              OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Models::StaticFileChunkingStrategyObjectParam
+              OpenAI::AutoFileChunkingStrategyParam,
+              OpenAI::StaticFileChunkingStrategyObjectParam
             )
           )
         )
@@ -22,25 +24,23 @@ module OpenAI
 
       sig do
         params(
-          chunking_strategy: T.any(
-            OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Internal::AnyHash,
-            OpenAI::Models::StaticFileChunkingStrategyObjectParam
-          )
-        )
-          .void
+          chunking_strategy:
+            T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            )
+        ).void
       end
       attr_writer :chunking_strategy
 
       # The expiration policy for a vector store.
-      sig { returns(T.nilable(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter)) }
+      sig { returns(T.nilable(OpenAI::VectorStoreCreateParams::ExpiresAfter)) }
       attr_reader :expires_after
 
       sig do
         params(
-          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::AnyHash)
-        )
-          .void
+          expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter::OrHash
+        ).void
       end
       attr_writer :expires_after
 
@@ -71,18 +71,17 @@ module OpenAI
 
       sig do
         params(
-          chunking_strategy: T.any(
-            OpenAI::Models::AutoFileChunkingStrategyParam,
-            OpenAI::Internal::AnyHash,
-            OpenAI::Models::StaticFileChunkingStrategyObjectParam
-          ),
-          expires_after: T.any(OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, OpenAI::Internal::AnyHash),
+          chunking_strategy:
+            T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
+          expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter::OrHash,
           file_ids: T::Array[String],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
@@ -104,26 +103,31 @@ module OpenAI
         # The name of the vector store.
         name: nil,
         request_options: {}
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              chunking_strategy: T.any(
-                OpenAI::Models::AutoFileChunkingStrategyParam,
-                OpenAI::Models::StaticFileChunkingStrategyObjectParam
-              ),
-              expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
-              file_ids: T::Array[String],
-              metadata: T.nilable(T::Hash[Symbol, String]),
-              name: String,
-              request_options: OpenAI::RequestOptions
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            chunking_strategy:
+              T.any(
+                OpenAI::AutoFileChunkingStrategyParam,
+                OpenAI::StaticFileChunkingStrategyObjectParam
+              ),
+            expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
+            file_ids: T::Array[String],
+            metadata: T.nilable(T::Hash[Symbol, String]),
+            name: String,
+            request_options: OpenAI::RequestOptions
+          }
+        )
+      end
+      def to_hash
+      end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         # `last_active_at`.
         sig { returns(Symbol) }
@@ -141,9 +145,12 @@ module OpenAI
           # Anchor timestamp after which the expiration policy applies. Supported anchors:
           # `last_active_at`.
           anchor: :last_active_at
-        ); end
-        sig { override.returns({anchor: Symbol, days: Integer}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ anchor: Symbol, days: Integer }) }
+        def to_hash
+        end
       end
     end
   end

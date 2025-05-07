@@ -12,11 +12,11 @@ module OpenAI
 
         # @!method initialize(type: :"response.audio.done")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseAudioDoneEvent} for more details.
+        #   {OpenAI::Responses::ResponseAudioDoneEvent} for more details.
         #
         #   Emitted when the audio response is complete.
         #
-        #   @param type [Symbol, :"response.audio.done"] The type of the event. Always `response.audio.done`. ...
+        #   @param type [Symbol, :"response.audio.done"] The type of the event. Always `response.audio.done`.
       end
     end
   end

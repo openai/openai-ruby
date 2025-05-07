@@ -10,17 +10,27 @@ module OpenAI
           module RunStepInclude
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude) }
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude)
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             STEP_DETAILS_TOOL_CALLS_FILE_SEARCH_RESULTS_CONTENT =
               T.let(
                 :"step_details.tool_calls[*].file_search.results[*].content",
-                OpenAI::Models::Beta::Threads::Runs::RunStepInclude::TaggedSymbol
+                OpenAI::Beta::Threads::Runs::RunStepInclude::TaggedSymbol
               )
 
-            sig { override.returns(T::Array[OpenAI::Models::Beta::Threads::Runs::RunStepInclude::TaggedSymbol]) }
-            def self.values; end
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Beta::Threads::Runs::RunStepInclude::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
           end
         end
       end

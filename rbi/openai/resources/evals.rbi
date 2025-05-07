@@ -13,26 +13,25 @@ module OpenAI
       # the [Evals guide](https://platform.openai.com/docs/guides/evals).
       sig do
         params(
-          data_source_config: T.any(
-            OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom,
-            OpenAI::Internal::AnyHash,
-            OpenAI::Models::EvalCreateParams::DataSourceConfig::Logs
-          ),
-          testing_criteria: T::Array[
+          data_source_config:
             T.any(
-              OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::EvalStringCheckGrader,
-              OpenAI::Models::EvalTextSimilarityGrader,
-              OpenAI::Models::EvalCreateParams::TestingCriterion::Python,
-              OpenAI::Models::EvalCreateParams::TestingCriterion::ScoreModel
-            )
-          ],
+              OpenAI::EvalCreateParams::DataSourceConfig::Custom::OrHash,
+              OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash
+            ),
+          testing_criteria:
+            T::Array[
+              T.any(
+                OpenAI::EvalCreateParams::TestingCriterion::LabelModel::OrHash,
+                OpenAI::EvalStringCheckGrader::OrHash,
+                OpenAI::EvalTextSimilarityGrader::OrHash,
+                OpenAI::EvalCreateParams::TestingCriterion::Python::OrHash,
+                OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::OrHash
+              )
+            ],
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::EvalCreateResponse)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Models::EvalCreateResponse)
       end
       def create(
         # The configuration for the data source used for the evaluation runs.
@@ -49,25 +48,31 @@ module OpenAI
         # The name of the evaluation.
         name: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Get an evaluation by ID.
       sig do
-        params(eval_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::EvalRetrieveResponse)
+        params(
+          eval_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Models::EvalRetrieveResponse)
       end
       def retrieve(
         # The ID of the evaluation to retrieve.
         eval_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # Update certain properties of an evaluation.
       sig do
         params(
           eval_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::EvalUpdateResponse)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Models::EvalUpdateResponse)
       end
       def update(
         # The ID of the evaluation to update.
@@ -82,17 +87,20 @@ module OpenAI
         # Rename the evaluation.
         name: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # List evaluations for a project.
       sig do
         params(
           after: String,
           limit: Integer,
-          order: OpenAI::Models::EvalListParams::Order::OrSymbol,
-          order_by: OpenAI::Models::EvalListParams::OrderBy::OrSymbol,
-          request_options: OpenAI::RequestOpts
+          order: OpenAI::EvalListParams::Order::OrSymbol,
+          order_by: OpenAI::EvalListParams::OrderBy::OrSymbol,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(
+          OpenAI::Internal::CursorPage[OpenAI::Models::EvalListResponse]
         )
-          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::EvalListResponse])
       end
       def list(
         # Identifier for the last eval from the previous pagination request.
@@ -106,17 +114,27 @@ module OpenAI
         # creation time or `updated_at` for last updated time.
         order_by: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Delete an evaluation.
-      sig { params(eval_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::EvalDeleteResponse) }
+      sig do
+        params(
+          eval_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Models::EvalDeleteResponse)
+      end
       def delete(
         # The ID of the evaluation to delete.
         eval_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

@@ -12,8 +12,8 @@ module OpenAI
 
           # @!attribute file_citation
           #
-          #   @return [OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation]
-          required :file_citation, -> { OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation }
+          #   @return [OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation]
+          required :file_citation, -> { OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation }
 
           # @!attribute start_index
           #
@@ -39,7 +39,7 @@ module OpenAI
           #
           #   @param end_index [Integer]
           #
-          #   @param file_citation [OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation]
+          #   @param file_citation [OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation]
           #
           #   @param start_index [Integer]
           #
@@ -47,7 +47,7 @@ module OpenAI
           #
           #   @param type [Symbol, :file_citation] Always `file_citation`.
 
-          # @see OpenAI::Models::Beta::Threads::FileCitationAnnotation#file_citation
+          # @see OpenAI::Beta::Threads::FileCitationAnnotation#file_citation
           class FileCitation < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the specific File the citation is from.

@@ -12,13 +12,13 @@ module OpenAI
 
         # @!method initialize(id:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFunctionToolCallItem} for more details.
+        #   {OpenAI::Responses::ResponseFunctionToolCallItem} for more details.
         #
         #   A tool call to run a function. See the
         #   [function calling guide](https://platform.openai.com/docs/guides/function-calling)
         #   for more information.
         #
-        #   @param id [String] The unique ID of the function tool call. ...
+        #   @param id [String] The unique ID of the function tool call.
       end
     end
   end

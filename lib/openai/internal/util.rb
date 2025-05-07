@@ -535,7 +535,7 @@ module OpenAI
             filename = ERB::Util.url_encode(val.filename)
             y << "; filename=\"#{filename}\""
           in Pathname | IO
-            filename = ERB::Util.url_encode(File.basename(val.to_path))
+            filename = ERB::Util.url_encode(::File.basename(val.to_path))
             y << "; filename=\"#{filename}\""
           else
           end

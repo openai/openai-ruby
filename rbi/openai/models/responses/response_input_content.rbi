@@ -7,13 +7,22 @@ module OpenAI
       module ResponseInputContent
         extend OpenAI::Internal::Type::Union
 
-        sig do
-          override
-            .returns(
-              [OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile]
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputText,
+              OpenAI::Responses::ResponseInputImage,
+              OpenAI::Responses::ResponseInputFile
             )
+          end
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::Responses::ResponseInputContent::Variants]
+          )
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

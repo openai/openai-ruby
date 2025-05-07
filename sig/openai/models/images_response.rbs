@@ -3,37 +3,33 @@ module OpenAI
     type images_response =
       {
         created: Integer,
-        data: ::Array[OpenAI::Models::Image],
-        usage: OpenAI::Models::ImagesResponse::Usage
+        data: ::Array[OpenAI::Image],
+        usage: OpenAI::ImagesResponse::Usage
       }
 
     class ImagesResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor created: Integer
 
-      attr_reader data: ::Array[OpenAI::Models::Image]?
+      attr_reader data: ::Array[OpenAI::Image]?
 
-      def data=: (
-        ::Array[OpenAI::Models::Image]
-      ) -> ::Array[OpenAI::Models::Image]
+      def data=: (::Array[OpenAI::Image]) -> ::Array[OpenAI::Image]
 
-      attr_reader usage: OpenAI::Models::ImagesResponse::Usage?
+      attr_reader usage: OpenAI::ImagesResponse::Usage?
 
       def usage=: (
-        OpenAI::Models::ImagesResponse::Usage
-      ) -> OpenAI::Models::ImagesResponse::Usage
+        OpenAI::ImagesResponse::Usage
+      ) -> OpenAI::ImagesResponse::Usage
 
       def initialize: (
         created: Integer,
-        ?data: ::Array[OpenAI::Models::Image],
-        ?usage: OpenAI::Models::ImagesResponse::Usage
+        ?data: ::Array[OpenAI::Image],
+        ?usage: OpenAI::ImagesResponse::Usage
       ) -> void
-
-      def to_hash: -> OpenAI::Models::images_response
 
       type usage =
         {
           input_tokens: Integer,
-          input_tokens_details: OpenAI::Models::ImagesResponse::Usage::InputTokensDetails,
+          input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
           output_tokens: Integer,
           total_tokens: Integer
         }
@@ -41,7 +37,7 @@ module OpenAI
       class Usage < OpenAI::Internal::Type::BaseModel
         attr_accessor input_tokens: Integer
 
-        attr_accessor input_tokens_details: OpenAI::Models::ImagesResponse::Usage::InputTokensDetails
+        attr_accessor input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails
 
         attr_accessor output_tokens: Integer
 
@@ -49,12 +45,10 @@ module OpenAI
 
         def initialize: (
           input_tokens: Integer,
-          input_tokens_details: OpenAI::Models::ImagesResponse::Usage::InputTokensDetails,
+          input_tokens_details: OpenAI::ImagesResponse::Usage::InputTokensDetails,
           output_tokens: Integer,
           total_tokens: Integer
         ) -> void
-
-        def to_hash: -> OpenAI::Models::ImagesResponse::usage
 
         type input_tokens_details =
           { image_tokens: Integer, text_tokens: Integer }
@@ -65,8 +59,6 @@ module OpenAI
           attr_accessor text_tokens: Integer
 
           def initialize: (image_tokens: Integer, text_tokens: Integer) -> void
-
-          def to_hash: -> OpenAI::Models::ImagesResponse::Usage::input_tokens_details
         end
       end
     end

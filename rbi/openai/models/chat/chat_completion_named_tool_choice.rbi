@@ -6,14 +6,16 @@ module OpenAI
 
     module Chat
       class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
-        sig { returns(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function) }
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+        sig { returns(OpenAI::Chat::ChatCompletionNamedToolChoice::Function) }
         attr_reader :function
 
         sig do
           params(
-            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::AnyHash)
-          )
-            .void
+            function:
+              OpenAI::Chat::ChatCompletionNamedToolChoice::Function::OrHash
+          ).void
         end
         attr_writer :function
 
@@ -25,20 +27,33 @@ module OpenAI
         # function.
         sig do
           params(
-            function: T.any(OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, OpenAI::Internal::AnyHash),
+            function:
+              OpenAI::Chat::ChatCompletionNamedToolChoice::Function::OrHash,
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           function:,
           # The type of the tool. Currently, only `function` is supported.
           type: :function
-        ); end
-        sig { override.returns({function: OpenAI::Models::Chat::ChatCompletionNamedToolChoice::Function, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         class Function < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The name of the function to call.
           sig { returns(String) }
           attr_accessor :name
@@ -47,9 +62,12 @@ module OpenAI
           def self.new(
             # The name of the function to call.
             name:
-          ); end
-          sig { override.returns({name: String}) }
-          def to_hash; end
+          )
+          end
+
+          sig { override.returns({ name: String }) }
+          def to_hash
+          end
         end
       end
     end

@@ -41,8 +41,6 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> void
 
-          def to_hash: -> OpenAI::Models::FineTuning::Checkpoints::permission_retrieve_params
-
           type order = :ascending | :descending
 
           module Order

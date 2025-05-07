@@ -2,16 +2,14 @@ module OpenAI
   module Models
     module Responses
       type tool_choice_types =
-        { type: OpenAI::Models::Responses::ToolChoiceTypes::type_ }
+        { type: OpenAI::Responses::ToolChoiceTypes::type_ }
 
       class ToolChoiceTypes < OpenAI::Internal::Type::BaseModel
-        attr_accessor type: OpenAI::Models::Responses::ToolChoiceTypes::type_
+        attr_accessor type: OpenAI::Responses::ToolChoiceTypes::type_
 
         def initialize: (
-          type: OpenAI::Models::Responses::ToolChoiceTypes::type_
+          type: OpenAI::Responses::ToolChoiceTypes::type_
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::tool_choice_types
 
         type type_ =
           :file_search
@@ -27,7 +25,7 @@ module OpenAI
           COMPUTER_USE_PREVIEW: :computer_use_preview
           WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ToolChoiceTypes::type_]
+          def self?.values: -> ::Array[OpenAI::Responses::ToolChoiceTypes::type_]
         end
       end
     end

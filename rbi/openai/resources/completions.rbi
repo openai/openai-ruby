@@ -8,8 +8,16 @@ module OpenAI
       # Creates a completion for the provided prompt and parameters.
       sig do
         params(
-          model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
-          prompt: T.nilable(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])),
+          model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
+          prompt:
+            T.nilable(
+              T.any(
+                String,
+                T::Array[String],
+                T::Array[Integer],
+                T::Array[T::Array[Integer]]
+              )
+            ),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -20,15 +28,15 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash)),
+          stream_options:
+            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::Completion)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Completion)
       end
       def create(
         # ID of the model to use. You can use the
@@ -140,14 +148,24 @@ module OpenAI
         # `#create` for streaming and non-streaming use cases, respectively.
         stream: false,
         request_options: {}
-      ); end
+      )
+      end
+
       # See {OpenAI::Resources::Completions#create} for non-streaming counterpart.
       #
       # Creates a completion for the provided prompt and parameters.
       sig do
         params(
-          model: T.any(String, OpenAI::Models::CompletionCreateParams::Model::OrSymbol),
-          prompt: T.nilable(T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]])),
+          model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
+          prompt:
+            T.nilable(
+              T.any(
+                String,
+                T::Array[String],
+                T::Array[Integer],
+                T::Array[T::Array[Integer]]
+              )
+            ),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -158,15 +176,15 @@ module OpenAI
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
           stop: T.nilable(T.any(String, T::Array[String])),
-          stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash)),
+          stream_options:
+            T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),
           temperature: T.nilable(Float),
           top_p: T.nilable(Float),
           user: String,
           stream: T.noreturn,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Internal::Stream[OpenAI::Models::Completion])
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Internal::Stream[OpenAI::Completion])
       end
       def create_streaming(
         # ID of the model to use. You can use the
@@ -278,10 +296,13 @@ module OpenAI
         # `#create` for streaming and non-streaming use cases, respectively.
         stream: true,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

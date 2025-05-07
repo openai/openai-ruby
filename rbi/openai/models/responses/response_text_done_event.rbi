@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseTextDoneEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The index of the content part that the text content is finalized.
         sig { returns(Integer) }
         attr_accessor :content_index
@@ -26,8 +28,13 @@ module OpenAI
 
         # Emitted when text content is finalized.
         sig do
-          params(content_index: Integer, item_id: String, output_index: Integer, text: String, type: Symbol)
-            .returns(T.attached_class)
+          params(
+            content_index: Integer,
+            item_id: String,
+            output_index: Integer,
+            text: String,
+            type: Symbol
+          ).returns(T.attached_class)
         end
         def self.new(
           # The index of the content part that the text content is finalized.
@@ -40,18 +47,22 @@ module OpenAI
           text:,
           # The type of the event. Always `response.output_text.done`.
           type: :"response.output_text.done"
-        ); end
-        sig do
-          override
-            .returns({
-                       content_index: Integer,
-                       item_id: String,
-                       output_index: Integer,
-                       text: String,
-                       type: Symbol
-                     })
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              content_index: Integer,
+              item_id: String,
+              output_index: Integer,
+              text: String,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

@@ -24,8 +24,8 @@ module OpenAI
 
           # @!attribute file_path
           #
-          #   @return [OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath, nil]
-          optional :file_path, -> { OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath }
+          #   @return [OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath, nil]
+          optional :file_path, -> { OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath }
 
           # @!attribute start_index
           #
@@ -46,7 +46,7 @@ module OpenAI
           #
           #   @param end_index [Integer]
           #
-          #   @param file_path [OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation::FilePath]
+          #   @param file_path [OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath]
           #
           #   @param start_index [Integer]
           #
@@ -54,7 +54,7 @@ module OpenAI
           #
           #   @param type [Symbol, :file_path] Always `file_path`.
 
-          # @see OpenAI::Models::Beta::Threads::FilePathDeltaAnnotation#file_path
+          # @see OpenAI::Beta::Threads::FilePathDeltaAnnotation#file_path
           class FilePath < OpenAI::Internal::Type::BaseModel
             # @!attribute file_id
             #   The ID of the file that was generated.

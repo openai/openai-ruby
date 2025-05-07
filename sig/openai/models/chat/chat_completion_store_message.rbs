@@ -11,8 +11,6 @@ module OpenAI
         def id=: (String _) -> String
 
         def initialize: (id: String) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_store_message
       end
     end
   end

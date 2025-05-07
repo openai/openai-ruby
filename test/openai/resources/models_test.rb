@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
     response = @openai.models.retrieve("gpt-4o-mini")
 
     assert_pattern do
-      response => OpenAI::Models::Model
+      response => OpenAI::Model
     end
 
     assert_pattern do
@@ -31,7 +31,7 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::Model
+      row => OpenAI::Model
     end
 
     assert_pattern do
@@ -48,7 +48,7 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
     response = @openai.models.delete("ft:gpt-4o-mini:acemeco:suffix:abc123")
 
     assert_pattern do
-      response => OpenAI::Models::ModelDeleted
+      response => OpenAI::ModelDeleted
     end
 
     assert_pattern do

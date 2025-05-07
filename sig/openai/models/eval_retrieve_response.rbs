@@ -36,22 +36,20 @@ module OpenAI
         ?object: :eval
       ) -> void
 
-      def to_hash: -> OpenAI::Models::eval_retrieve_response
-
       type data_source_config =
-        OpenAI::Models::EvalCustomDataSourceConfig
-        | OpenAI::Models::EvalStoredCompletionsDataSourceConfig
+        OpenAI::EvalCustomDataSourceConfig
+        | OpenAI::EvalStoredCompletionsDataSourceConfig
 
       module DataSourceConfig
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
+        def self?.variants: -> ::Array[OpenAI::Models::EvalRetrieveResponse::data_source_config]
       end
 
       type testing_criterion =
-        OpenAI::Models::EvalLabelModelGrader
-        | OpenAI::Models::EvalStringCheckGrader
-        | OpenAI::Models::EvalTextSimilarityGrader
+        OpenAI::EvalLabelModelGrader
+        | OpenAI::EvalStringCheckGrader
+        | OpenAI::EvalTextSimilarityGrader
         | OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Python
         | OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel
 
@@ -89,8 +87,6 @@ module OpenAI
             ?pass_threshold: Float,
             ?type: :python
           ) -> void
-
-          def to_hash: -> OpenAI::Models::EvalRetrieveResponse::TestingCriterion::python
         end
 
         type score_model =
@@ -135,8 +131,6 @@ module OpenAI
             ?type: :score_model
           ) -> void
 
-          def to_hash: -> OpenAI::Models::EvalRetrieveResponse::TestingCriterion::score_model
-
           type input =
             {
               content: OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::content,
@@ -161,11 +155,9 @@ module OpenAI
               ?type: OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::type_
             ) -> void
 
-            def to_hash: -> OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::input
-
             type content =
               String
-              | OpenAI::Models::Responses::ResponseInputText
+              | OpenAI::Responses::ResponseInputText
               | OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Content::OutputText
 
             module Content
@@ -179,11 +171,9 @@ module OpenAI
                 attr_accessor type: :output_text
 
                 def initialize: (text: String, ?type: :output_text) -> void
-
-                def to_hash: -> OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Content::output_text
               end
 
-              def self?.variants: -> [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::Content::OutputText]
+              def self?.variants: -> ::Array[OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel::Input::content]
             end
 
             type role = :user | :assistant | :system | :developer
@@ -211,7 +201,7 @@ module OpenAI
           end
         end
 
-        def self?.variants: -> [OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Python, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::ScoreModel]
+        def self?.variants: -> ::Array[OpenAI::Models::EvalRetrieveResponse::testing_criterion]
       end
     end
   end

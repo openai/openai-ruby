@@ -28,8 +28,6 @@ module OpenAI
         purpose: OpenAI::Models::file_purpose,
         ?request_options: OpenAI::request_opts
       ) -> void
-
-      def to_hash: -> OpenAI::Models::upload_create_params
     end
   end
 end

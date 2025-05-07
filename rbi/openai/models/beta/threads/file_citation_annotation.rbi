@@ -5,17 +5,22 @@ module OpenAI
     module Beta
       module Threads
         class FileCitationAnnotation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           sig { returns(Integer) }
           attr_accessor :end_index
 
-          sig { returns(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation) }
+          sig do
+            returns(OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation)
+          end
           attr_reader :file_citation
 
           sig do
             params(
-              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file_citation:
+                OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation::OrHash
+            ).void
           end
           attr_writer :file_citation
 
@@ -36,12 +41,12 @@ module OpenAI
           sig do
             params(
               end_index: Integer,
-              file_citation: T.any(OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation, OpenAI::Internal::AnyHash),
+              file_citation:
+                OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation::OrHash,
               start_index: Integer,
               text: String,
               type: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             end_index:,
@@ -51,22 +56,28 @@ module OpenAI
             text:,
             # Always `file_citation`.
             type: :file_citation
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  end_index: Integer,
-                  file_citation: OpenAI::Models::Beta::Threads::FileCitationAnnotation::FileCitation,
-                  start_index: Integer,
-                  text: String,
-                  type: Symbol
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                end_index: Integer,
+                file_citation:
+                  OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation,
+                start_index: Integer,
+                text: String,
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the specific File the citation is from.
             sig { returns(String) }
             attr_accessor :file_id
@@ -75,9 +86,12 @@ module OpenAI
             def self.new(
               # The ID of the specific File the citation is from.
               file_id:
-            ); end
-            sig { override.returns({file_id: String}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ file_id: String }) }
+            def to_hash
+            end
           end
         end
       end

@@ -8,8 +8,23 @@ module OpenAI
       module TranscriptionCreateResponse
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose]) }
-        def self.variants; end
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Audio::Transcription,
+              OpenAI::Audio::TranscriptionVerbose
+            )
+          end
+
+        sig do
+          override.returns(
+            T::Array[
+              OpenAI::Models::Audio::TranscriptionCreateResponse::Variants
+            ]
+          )
+        end
+        def self.variants
+        end
       end
     end
   end

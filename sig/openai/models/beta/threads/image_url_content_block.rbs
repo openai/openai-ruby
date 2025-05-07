@@ -3,22 +3,17 @@ module OpenAI
     module Beta
       module Threads
         type image_url_content_block =
-          {
-            image_url: OpenAI::Models::Beta::Threads::ImageURL,
-            type: :image_url
-          }
+          { image_url: OpenAI::Beta::Threads::ImageURL, type: :image_url }
 
         class ImageURLContentBlock < OpenAI::Internal::Type::BaseModel
-          attr_accessor image_url: OpenAI::Models::Beta::Threads::ImageURL
+          attr_accessor image_url: OpenAI::Beta::Threads::ImageURL
 
           attr_accessor type: :image_url
 
           def initialize: (
-            image_url: OpenAI::Models::Beta::Threads::ImageURL,
+            image_url: OpenAI::Beta::Threads::ImageURL,
             ?type: :image_url
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::image_url_content_block
         end
       end
     end

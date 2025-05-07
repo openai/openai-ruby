@@ -16,7 +16,7 @@ module OpenAI
           #
           # @overload create(fine_tuned_model_checkpoint, project_ids:, request_options: {})
           #
-          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to create a permission for. ...
+          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to create a permission for.
           #
           # @param project_ids [Array<String>] The project identifiers to grant access to.
           #
@@ -26,7 +26,7 @@ module OpenAI
           #
           # @see OpenAI::Models::FineTuning::Checkpoints::PermissionCreateParams
           def create(fine_tuned_model_checkpoint, params)
-            parsed, options = OpenAI::Models::FineTuning::Checkpoints::PermissionCreateParams.dump_request(params)
+            parsed, options = OpenAI::FineTuning::Checkpoints::PermissionCreateParams.dump_request(params)
             @client.request(
               method: :post,
               path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
@@ -48,13 +48,13 @@ module OpenAI
           #
           # @overload retrieve(fine_tuned_model_checkpoint, after: nil, limit: nil, order: nil, project_id: nil, request_options: {})
           #
-          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to get permissions for. ...
+          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to get permissions for.
           #
           # @param after [String] Identifier for the last permission ID from the previous pagination request.
           #
           # @param limit [Integer] Number of permissions to retrieve.
           #
-          # @param order [Symbol, OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams::Order] The order in which to retrieve permissions.
+          # @param order [Symbol, OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams::Order] The order in which to retrieve permissions.
           #
           # @param project_id [String] The ID of the project to get permissions for.
           #
@@ -64,7 +64,7 @@ module OpenAI
           #
           # @see OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams
           def retrieve(fine_tuned_model_checkpoint, params = {})
-            parsed, options = OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveParams.dump_request(params)
+            parsed, options = OpenAI::FineTuning::Checkpoints::PermissionRetrieveParams.dump_request(params)
             @client.request(
               method: :get,
               path: ["fine_tuning/checkpoints/%1$s/permissions", fine_tuned_model_checkpoint],
@@ -85,9 +85,9 @@ module OpenAI
           #
           # @overload delete(permission_id, fine_tuned_model_checkpoint:, request_options: {})
           #
-          # @param permission_id [String] The ID of the fine-tuned model checkpoint permission to delete. ...
+          # @param permission_id [String] The ID of the fine-tuned model checkpoint permission to delete.
           #
-          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to delete a permission for. ...
+          # @param fine_tuned_model_checkpoint [String] The ID of the fine-tuned model checkpoint to delete a permission for.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -95,7 +95,7 @@ module OpenAI
           #
           # @see OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteParams
           def delete(permission_id, params)
-            parsed, options = OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteParams.dump_request(params)
+            parsed, options = OpenAI::FineTuning::Checkpoints::PermissionDeleteParams.dump_request(params)
             fine_tuned_model_checkpoint =
               parsed.delete(:fine_tuned_model_checkpoint) do
                 raise ArgumentError.new("missing required path argument #{_1}")

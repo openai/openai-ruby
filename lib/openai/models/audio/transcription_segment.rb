@@ -69,20 +69,17 @@ module OpenAI
 
         # @!method initialize(id:, avg_logprob:, compression_ratio:, end_:, no_speech_prob:, seek:, start:, temperature:, text:, tokens:)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Audio::TranscriptionSegment} for more details.
+        #   {OpenAI::Audio::TranscriptionSegment} for more details.
         #
         #   @param id [Integer] Unique identifier of the segment.
         #
         #   @param avg_logprob [Float] Average logprob of the segment. If the value is lower than -1, consider the logp
-        #   ...
         #
         #   @param compression_ratio [Float] Compression ratio of the segment. If the value is greater than 2.4, consider the
-        #   ...
         #
         #   @param end_ [Float] End time of the segment in seconds.
         #
         #   @param no_speech_prob [Float] Probability of no speech in the segment. If the value is higher than 1.0 and the
-        #   ...
         #
         #   @param seek [Integer] Seek offset of the segment.
         #

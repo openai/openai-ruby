@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type eval_label_model_grader =
       {
-        input: ::Array[OpenAI::Models::EvalLabelModelGrader::Input],
+        input: ::Array[OpenAI::EvalLabelModelGrader::Input],
         labels: ::Array[String],
         model: String,
         name: String,
@@ -11,7 +11,7 @@ module OpenAI
       }
 
     class EvalLabelModelGrader < OpenAI::Internal::Type::BaseModel
-      attr_accessor input: ::Array[OpenAI::Models::EvalLabelModelGrader::Input]
+      attr_accessor input: ::Array[OpenAI::EvalLabelModelGrader::Input]
 
       attr_accessor labels: ::Array[String]
 
@@ -24,7 +24,7 @@ module OpenAI
       attr_accessor type: :label_model
 
       def initialize: (
-        input: ::Array[OpenAI::Models::EvalLabelModelGrader::Input],
+        input: ::Array[OpenAI::EvalLabelModelGrader::Input],
         labels: ::Array[String],
         model: String,
         name: String,
@@ -32,38 +32,34 @@ module OpenAI
         ?type: :label_model
       ) -> void
 
-      def to_hash: -> OpenAI::Models::eval_label_model_grader
-
       type input =
         {
-          content: OpenAI::Models::EvalLabelModelGrader::Input::content,
-          role: OpenAI::Models::EvalLabelModelGrader::Input::role,
-          type: OpenAI::Models::EvalLabelModelGrader::Input::type_
+          content: OpenAI::EvalLabelModelGrader::Input::content,
+          role: OpenAI::EvalLabelModelGrader::Input::role,
+          type: OpenAI::EvalLabelModelGrader::Input::type_
         }
 
       class Input < OpenAI::Internal::Type::BaseModel
-        attr_accessor content: OpenAI::Models::EvalLabelModelGrader::Input::content
+        attr_accessor content: OpenAI::EvalLabelModelGrader::Input::content
 
-        attr_accessor role: OpenAI::Models::EvalLabelModelGrader::Input::role
+        attr_accessor role: OpenAI::EvalLabelModelGrader::Input::role
 
-        attr_reader type: OpenAI::Models::EvalLabelModelGrader::Input::type_?
+        attr_reader type: OpenAI::EvalLabelModelGrader::Input::type_?
 
         def type=: (
-          OpenAI::Models::EvalLabelModelGrader::Input::type_
-        ) -> OpenAI::Models::EvalLabelModelGrader::Input::type_
+          OpenAI::EvalLabelModelGrader::Input::type_
+        ) -> OpenAI::EvalLabelModelGrader::Input::type_
 
         def initialize: (
-          content: OpenAI::Models::EvalLabelModelGrader::Input::content,
-          role: OpenAI::Models::EvalLabelModelGrader::Input::role,
-          ?type: OpenAI::Models::EvalLabelModelGrader::Input::type_
+          content: OpenAI::EvalLabelModelGrader::Input::content,
+          role: OpenAI::EvalLabelModelGrader::Input::role,
+          ?type: OpenAI::EvalLabelModelGrader::Input::type_
         ) -> void
-
-        def to_hash: -> OpenAI::Models::EvalLabelModelGrader::input
 
         type content =
           String
-          | OpenAI::Models::Responses::ResponseInputText
-          | OpenAI::Models::EvalLabelModelGrader::Input::Content::OutputText
+          | OpenAI::Responses::ResponseInputText
+          | OpenAI::EvalLabelModelGrader::Input::Content::OutputText
 
         module Content
           extend OpenAI::Internal::Type::Union
@@ -76,11 +72,9 @@ module OpenAI
             attr_accessor type: :output_text
 
             def initialize: (text: String, ?type: :output_text) -> void
-
-            def to_hash: -> OpenAI::Models::EvalLabelModelGrader::Input::Content::output_text
           end
 
-          def self?.variants: -> [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalLabelModelGrader::Input::Content::OutputText]
+          def self?.variants: -> ::Array[OpenAI::EvalLabelModelGrader::Input::content]
         end
 
         type role = :user | :assistant | :system | :developer
@@ -93,7 +87,7 @@ module OpenAI
           SYSTEM: :system
           DEVELOPER: :developer
 
-          def self?.values: -> ::Array[OpenAI::Models::EvalLabelModelGrader::Input::role]
+          def self?.values: -> ::Array[OpenAI::EvalLabelModelGrader::Input::role]
         end
 
         type type_ = :message
@@ -103,7 +97,7 @@ module OpenAI
 
           MESSAGE: :message
 
-          def self?.values: -> ::Array[OpenAI::Models::EvalLabelModelGrader::Input::type_]
+          def self?.values: -> ::Array[OpenAI::EvalLabelModelGrader::Input::type_]
         end
       end
     end

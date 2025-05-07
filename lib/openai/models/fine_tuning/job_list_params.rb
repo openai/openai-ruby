@@ -36,7 +36,6 @@ module OpenAI
         #   @param limit [Integer] Number of fine-tuning jobs to retrieve.
         #
         #   @param metadata [Hash{Symbol=>String}, nil] Optional metadata filter. To filter, use the syntax `metadata[k]=v`. Alternative
-        #   ...
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

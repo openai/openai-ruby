@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseContentPartDoneEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The index of the content part that is done.
         sig { returns(Integer) }
         attr_accessor :content_index
@@ -19,7 +21,10 @@ module OpenAI
         # The content part that is done.
         sig do
           returns(
-            T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)
+            T.any(
+              OpenAI::Responses::ResponseOutputText,
+              OpenAI::Responses::ResponseOutputRefusal
+            )
           )
         end
         attr_accessor :part
@@ -34,14 +39,13 @@ module OpenAI
             content_index: Integer,
             item_id: String,
             output_index: Integer,
-            part: T.any(
-              OpenAI::Models::Responses::ResponseOutputText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Responses::ResponseOutputRefusal
-            ),
+            part:
+              T.any(
+                OpenAI::Responses::ResponseOutputText::OrHash,
+                OpenAI::Responses::ResponseOutputRefusal::OrHash
+              ),
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The index of the content part that is done.
@@ -54,30 +58,48 @@ module OpenAI
           part:,
           # The type of the event. Always `response.content_part.done`.
           type: :"response.content_part.done"
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                content_index: Integer,
-                item_id: String,
-                output_index: Integer,
-                part: T.any(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal),
-                type: Symbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              content_index: Integer,
+              item_id: String,
+              output_index: Integer,
+              part:
+                T.any(
+                  OpenAI::Responses::ResponseOutputText,
+                  OpenAI::Responses::ResponseOutputRefusal
+                ),
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         # The content part that is done.
         module Part
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText,
+                OpenAI::Responses::ResponseOutputRefusal
+              )
+            end
+
           sig do
-            override
-              .returns([OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal])
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseContentPartDoneEvent::Part::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
       end
     end

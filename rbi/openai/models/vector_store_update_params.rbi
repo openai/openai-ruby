@@ -6,15 +6,17 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The expiration policy for a vector store.
-      sig { returns(T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter)) }
+      sig { returns(T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter)) }
       attr_reader :expires_after
 
       sig do
         params(
-          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::AnyHash))
-        )
-          .void
+          expires_after:
+            T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter::OrHash)
+        ).void
       end
       attr_writer :expires_after
 
@@ -33,12 +35,12 @@ module OpenAI
 
       sig do
         params(
-          expires_after: T.nilable(T.any(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter, OpenAI::Internal::AnyHash)),
+          expires_after:
+            T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter::OrHash),
           metadata: T.nilable(T::Hash[Symbol, String]),
           name: T.nilable(String),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # The expiration policy for a vector store.
@@ -53,21 +55,26 @@ module OpenAI
         # The name of the vector store.
         name: nil,
         request_options: {}
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              expires_after: T.nilable(OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter),
-              metadata: T.nilable(T::Hash[Symbol, String]),
-              name: T.nilable(String),
-              request_options: OpenAI::RequestOptions
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            expires_after:
+              T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter),
+            metadata: T.nilable(T::Hash[Symbol, String]),
+            name: T.nilable(String),
+            request_options: OpenAI::RequestOptions
+          }
+        )
+      end
+      def to_hash
+      end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         # `last_active_at`.
         sig { returns(Symbol) }
@@ -85,9 +92,12 @@ module OpenAI
           # Anchor timestamp after which the expiration policy applies. Supported anchors:
           # `last_active_at`.
           anchor: :last_active_at
-        ); end
-        sig { override.returns({anchor: Symbol, days: Integer}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ anchor: Symbol, days: Integer }) }
+        def to_hash
+        end
       end
     end
   end

@@ -19,8 +19,8 @@ module OpenAI
 
           # @!attribute image_file
           #
-          #   @return [OpenAI::Models::Beta::Threads::ImageFileDelta, nil]
-          optional :image_file, -> { OpenAI::Models::Beta::Threads::ImageFileDelta }
+          #   @return [OpenAI::Beta::Threads::ImageFileDelta, nil]
+          optional :image_file, -> { OpenAI::Beta::Threads::ImageFileDelta }
 
           # @!method initialize(index:, image_file: nil, type: :image_file)
           #   References an image [File](https://platform.openai.com/docs/api-reference/files)
@@ -28,7 +28,7 @@ module OpenAI
           #
           #   @param index [Integer] The index of the content part in the message.
           #
-          #   @param image_file [OpenAI::Models::Beta::Threads::ImageFileDelta]
+          #   @param image_file [OpenAI::Beta::Threads::ImageFileDelta]
           #
           #   @param type [Symbol, :image_file] Always `image_file`.
         end

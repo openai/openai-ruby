@@ -19,16 +19,15 @@ module OpenAI
             #
             # @param run_id [String] Path param: The ID of the run to which the run step belongs.
             #
-            # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
-            # ...
+            # @param include [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Models::Beta::Threads::Runs::RunStep]
+            # @return [OpenAI::Beta::Threads::Runs::RunStep]
             #
             # @see OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams
             def retrieve(step_id, params)
-              parsed, options = OpenAI::Models::Beta::Threads::Runs::StepRetrieveParams.dump_request(params)
+              parsed, options = OpenAI::Beta::Threads::Runs::StepRetrieveParams.dump_request(params)
               thread_id =
                 parsed.delete(:thread_id) do
                   raise ArgumentError.new("missing required path argument #{_1}")
@@ -41,7 +40,7 @@ module OpenAI
                 method: :get,
                 path: ["threads/%1$s/runs/%2$s/steps/%3$s", thread_id, run_id, step_id],
                 query: parsed,
-                model: OpenAI::Models::Beta::Threads::Runs::RunStep,
+                model: OpenAI::Beta::Threads::Runs::RunStep,
                 options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
               )
             end
@@ -58,27 +57,22 @@ module OpenAI
             # @param thread_id [String] Path param: The ID of the thread the run and run steps belong to.
             #
             # @param after [String] Query param: A cursor for use in pagination. `after` is an object ID that define
-            # ...
             #
             # @param before [String] Query param: A cursor for use in pagination. `before` is an object ID that defin
-            # ...
             #
-            # @param include [Array<Symbol, OpenAI::Models::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
-            # ...
+            # @param include [Array<Symbol, OpenAI::Beta::Threads::Runs::RunStepInclude>] Query param: A list of additional fields to include in the response. Currently t
             #
             # @param limit [Integer] Query param: A limit on the number of objects to be returned. Limit can range be
-            # ...
             #
-            # @param order [Symbol, OpenAI::Models::Beta::Threads::Runs::StepListParams::Order] Query param: Sort order by the `created_at` timestamp of the objects. `asc` for
-            # ...
+            # @param order [Symbol, OpenAI::Beta::Threads::Runs::StepListParams::Order] Query param: Sort order by the `created_at` timestamp of the objects. `asc` for
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
-            # @return [OpenAI::Internal::CursorPage<OpenAI::Models::Beta::Threads::Runs::RunStep>]
+            # @return [OpenAI::Internal::CursorPage<OpenAI::Beta::Threads::Runs::RunStep>]
             #
             # @see OpenAI::Models::Beta::Threads::Runs::StepListParams
             def list(run_id, params)
-              parsed, options = OpenAI::Models::Beta::Threads::Runs::StepListParams.dump_request(params)
+              parsed, options = OpenAI::Beta::Threads::Runs::StepListParams.dump_request(params)
               thread_id =
                 parsed.delete(:thread_id) do
                   raise ArgumentError.new("missing required path argument #{_1}")
@@ -88,7 +82,7 @@ module OpenAI
                 path: ["threads/%1$s/runs/%2$s/steps", thread_id, run_id],
                 query: parsed,
                 page: OpenAI::Internal::CursorPage,
-                model: OpenAI::Models::Beta::Threads::Runs::RunStep,
+                model: OpenAI::Beta::Threads::Runs::RunStep,
                 options: {extra_headers: {"OpenAI-Beta" => "assistants=v2"}, **options}
               )
             end

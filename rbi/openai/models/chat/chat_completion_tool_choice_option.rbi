@@ -17,30 +17,60 @@ module OpenAI
       module ChatCompletionToolChoiceOption
         extend OpenAI::Internal::Type::Union
 
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol,
+              OpenAI::Chat::ChatCompletionNamedToolChoice
+            )
+          end
+
         # `none` means the model will not call any tool and instead generates a message.
         # `auto` means the model can pick between generating a message or calling one or
         # more tools. `required` means the model must call one or more tools.
         module Auto
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Chat::ChatCompletionToolChoiceOption::Auto)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          NONE = T.let(:none, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
-          AUTO = T.let(:auto, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
-          REQUIRED = T.let(:required, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol)
+          NONE =
+            T.let(
+              :none,
+              OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol
+            )
+          AUTO =
+            T.let(
+              :auto,
+              OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol
+            )
+          REQUIRED =
+            T.let(
+              :required,
+              OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         sig do
-          override
-            .returns(
-              [OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol, OpenAI::Models::Chat::ChatCompletionNamedToolChoice]
-            )
+          override.returns(
+            T::Array[OpenAI::Chat::ChatCompletionToolChoiceOption::Variants]
+          )
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

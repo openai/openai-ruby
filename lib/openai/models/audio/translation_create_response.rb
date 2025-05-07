@@ -7,12 +7,12 @@ module OpenAI
       module TranslationCreateResponse
         extend OpenAI::Internal::Type::Union
 
-        variant -> { OpenAI::Models::Audio::Translation }
+        variant -> { OpenAI::Audio::Translation }
 
-        variant -> { OpenAI::Models::Audio::TranslationVerbose }
+        variant -> { OpenAI::Audio::TranslationVerbose }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose)]
+        #   @return [Array(OpenAI::Audio::Translation, OpenAI::Audio::TranslationVerbose)]
       end
     end
   end

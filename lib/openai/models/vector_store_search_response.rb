@@ -45,7 +45,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::VectorStoreSearchResponse} for more details.
       #
-      #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
       #   @param content [Array<OpenAI::Models::VectorStoreSearchResponse::Content>] Content chunks from the file.
       #

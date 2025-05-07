@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class CompletionUsage < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # Number of tokens in the generated completion.
       sig { returns(Integer) }
       attr_accessor :completion_tokens
@@ -16,26 +18,28 @@ module OpenAI
       attr_accessor :total_tokens
 
       # Breakdown of tokens used in a completion.
-      sig { returns(T.nilable(OpenAI::Models::CompletionUsage::CompletionTokensDetails)) }
+      sig do
+        returns(T.nilable(OpenAI::CompletionUsage::CompletionTokensDetails))
+      end
       attr_reader :completion_tokens_details
 
       sig do
         params(
-          completion_tokens_details: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Internal::AnyHash)
-        )
-          .void
+          completion_tokens_details:
+            OpenAI::CompletionUsage::CompletionTokensDetails::OrHash
+        ).void
       end
       attr_writer :completion_tokens_details
 
       # Breakdown of tokens used in the prompt.
-      sig { returns(T.nilable(OpenAI::Models::CompletionUsage::PromptTokensDetails)) }
+      sig { returns(T.nilable(OpenAI::CompletionUsage::PromptTokensDetails)) }
       attr_reader :prompt_tokens_details
 
       sig do
         params(
-          prompt_tokens_details: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Internal::AnyHash)
-        )
-          .void
+          prompt_tokens_details:
+            OpenAI::CompletionUsage::PromptTokensDetails::OrHash
+        ).void
       end
       attr_writer :prompt_tokens_details
 
@@ -45,10 +49,11 @@ module OpenAI
           completion_tokens: Integer,
           prompt_tokens: Integer,
           total_tokens: Integer,
-          completion_tokens_details: T.any(OpenAI::Models::CompletionUsage::CompletionTokensDetails, OpenAI::Internal::AnyHash),
-          prompt_tokens_details: T.any(OpenAI::Models::CompletionUsage::PromptTokensDetails, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          completion_tokens_details:
+            OpenAI::CompletionUsage::CompletionTokensDetails::OrHash,
+          prompt_tokens_details:
+            OpenAI::CompletionUsage::PromptTokensDetails::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # Number of tokens in the generated completion.
@@ -61,22 +66,27 @@ module OpenAI
         completion_tokens_details: nil,
         # Breakdown of tokens used in the prompt.
         prompt_tokens_details: nil
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              completion_tokens: Integer,
-              prompt_tokens: Integer,
-              total_tokens: Integer,
-              completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
-              prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            completion_tokens: Integer,
+            prompt_tokens: Integer,
+            total_tokens: Integer,
+            completion_tokens_details:
+              OpenAI::CompletionUsage::CompletionTokensDetails,
+            prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
+          }
+        )
+      end
+      def to_hash
+      end
 
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # When using Predicted Outputs, the number of tokens in the prediction that
         # appeared in the completion.
         sig { returns(T.nilable(Integer)) }
@@ -116,8 +126,7 @@ module OpenAI
             audio_tokens: Integer,
             reasoning_tokens: Integer,
             rejected_prediction_tokens: Integer
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # When using Predicted Outputs, the number of tokens in the prediction that
@@ -132,22 +141,26 @@ module OpenAI
           # still counted in the total completion tokens for purposes of billing, output,
           # and context window limits.
           rejected_prediction_tokens: nil
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                accepted_prediction_tokens: Integer,
-                audio_tokens: Integer,
-                reasoning_tokens: Integer,
-                rejected_prediction_tokens: Integer
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              accepted_prediction_tokens: Integer,
+              audio_tokens: Integer,
+              reasoning_tokens: Integer,
+              rejected_prediction_tokens: Integer
+            }
+          )
+        end
+        def to_hash
+        end
       end
 
       class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Audio input tokens present in the prompt.
         sig { returns(T.nilable(Integer)) }
         attr_reader :audio_tokens
@@ -163,15 +176,24 @@ module OpenAI
         attr_writer :cached_tokens
 
         # Breakdown of tokens used in the prompt.
-        sig { params(audio_tokens: Integer, cached_tokens: Integer).returns(T.attached_class) }
+        sig do
+          params(audio_tokens: Integer, cached_tokens: Integer).returns(
+            T.attached_class
+          )
+        end
         def self.new(
           # Audio input tokens present in the prompt.
           audio_tokens: nil,
           # Cached tokens present in the prompt.
           cached_tokens: nil
-        ); end
-        sig { override.returns({audio_tokens: Integer, cached_tokens: Integer}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns({ audio_tokens: Integer, cached_tokens: Integer })
+        end
+        def to_hash
+        end
       end
     end
   end

@@ -8,13 +8,16 @@ module OpenAI
 
         module Runs
           class RunStepDelta < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The details of the run step.
             sig do
               returns(
                 T.nilable(
                   T.any(
-                    OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                    OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
+                    OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                    OpenAI::Beta::Threads::Runs::ToolCallDeltaObject
                   )
                 )
               )
@@ -23,55 +26,66 @@ module OpenAI
 
             sig do
               params(
-                step_details: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
-                )
-              )
-                .void
+                step_details:
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::OrHash,
+                    OpenAI::Beta::Threads::Runs::ToolCallDeltaObject::OrHash
+                  )
+              ).void
             end
             attr_writer :step_details
 
             # The delta containing the fields that have changed on the run step.
             sig do
               params(
-                step_details: T.any(
-                  OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                  OpenAI::Internal::AnyHash,
-                  OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
-                )
-              )
-                .returns(T.attached_class)
+                step_details:
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::OrHash,
+                    OpenAI::Beta::Threads::Runs::ToolCallDeltaObject::OrHash
+                  )
+              ).returns(T.attached_class)
             end
             def self.new(
               # The details of the run step.
               step_details: nil
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    step_details: T.any(
-                      OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                      OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject
-                    )
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  step_details:
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                      OpenAI::Beta::Threads::Runs::ToolCallDeltaObject
+                    )
+                }
+              )
+            end
+            def to_hash
+            end
 
             # The details of the run step.
             module StepDetails
               extend OpenAI::Internal::Type::Union
 
-              sig do
-                override
-                  .returns(
-                    [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta, OpenAI::Models::Beta::Threads::Runs::ToolCallDeltaObject]
+              Variants =
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta,
+                    OpenAI::Beta::Threads::Runs::ToolCallDeltaObject
                   )
+                end
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Beta::Threads::Runs::RunStepDelta::StepDetails::Variants
+                  ]
+                )
               end
-              def self.variants; end
+              def self.variants
+              end
             end
           end
         end

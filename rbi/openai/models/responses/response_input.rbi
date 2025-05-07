@@ -5,7 +5,9 @@ module OpenAI
     module Responses
       ResponseInput =
         T.let(
-          OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseInputItem],
+          OpenAI::Internal::Type::ArrayOf[
+            union: OpenAI::Responses::ResponseInputItem
+          ],
           OpenAI::Internal::Type::Converter
         )
     end

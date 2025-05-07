@@ -13,8 +13,8 @@ module OpenAI
         # @!attribute status
         #   The status of the web search tool call.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status]
-        required :status, enum: -> { OpenAI::Models::Responses::ResponseFunctionWebSearch::Status }
+        #   @return [Symbol, OpenAI::Responses::ResponseFunctionWebSearch::Status]
+        required :status, enum: -> { OpenAI::Responses::ResponseFunctionWebSearch::Status }
 
         # @!attribute type
         #   The type of the web search tool call. Always `web_search_call`.
@@ -24,21 +24,21 @@ module OpenAI
 
         # @!method initialize(id:, status:, type: :web_search_call)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFunctionWebSearch} for more details.
+        #   {OpenAI::Responses::ResponseFunctionWebSearch} for more details.
         #
         #   The results of a web search tool call. See the
         #   [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for
         #   more information.
         #
-        #   @param id [String] The unique ID of the web search tool call. ...
+        #   @param id [String] The unique ID of the web search tool call.
         #
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFunctionWebSearch::Status] The status of the web search tool call. ...
+        #   @param status [Symbol, OpenAI::Responses::ResponseFunctionWebSearch::Status] The status of the web search tool call.
         #
-        #   @param type [Symbol, :web_search_call] The type of the web search tool call. Always `web_search_call`. ...
+        #   @param type [Symbol, :web_search_call] The type of the web search tool call. Always `web_search_call`.
 
         # The status of the web search tool call.
         #
-        # @see OpenAI::Models::Responses::ResponseFunctionWebSearch#status
+        # @see OpenAI::Responses::ResponseFunctionWebSearch#status
         module Status
           extend OpenAI::Internal::Type::Enum
 

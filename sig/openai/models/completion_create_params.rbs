@@ -14,7 +14,7 @@ module OpenAI
         presence_penalty: Float?,
         seed: Integer?,
         stop: OpenAI::Models::CompletionCreateParams::stop?,
-        stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+        stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
         suffix: String?,
         temperature: Float?,
         top_p: Float?,
@@ -50,7 +50,7 @@ module OpenAI
 
       attr_accessor stop: OpenAI::Models::CompletionCreateParams::stop?
 
-      attr_accessor stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?
+      attr_accessor stream_options: OpenAI::Chat::ChatCompletionStreamOptions?
 
       attr_accessor suffix: String?
 
@@ -75,7 +75,7 @@ module OpenAI
         ?presence_penalty: Float?,
         ?seed: Integer?,
         ?stop: OpenAI::Models::CompletionCreateParams::stop?,
-        ?stream_options: OpenAI::Models::Chat::ChatCompletionStreamOptions?,
+        ?stream_options: OpenAI::Chat::ChatCompletionStreamOptions?,
         ?suffix: String?,
         ?temperature: Float?,
         ?top_p: Float?,
@@ -83,17 +83,13 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::completion_create_params
-
       type model =
         String | :"gpt-3.5-turbo-instruct" | :"davinci-002" | :"babbage-002"
 
       module Model
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, (:"gpt-3.5-turbo-instruct"
-        | :"davinci-002"
-        | :"babbage-002")]
+        def self?.variants: -> ::Array[OpenAI::Models::CompletionCreateParams::model]
 
         GPT_3_5_TURBO_INSTRUCT: :"gpt-3.5-turbo-instruct"
         DAVINCI_002: :"davinci-002"
@@ -106,7 +102,7 @@ module OpenAI
       module Prompt
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, ::Array[String], ::Array[Integer], ::Array[::Array[Integer]]]
+        def self?.variants: -> ::Array[OpenAI::Models::CompletionCreateParams::prompt]
 
         StringArray: OpenAI::Internal::Type::Converter
 
@@ -120,7 +116,7 @@ module OpenAI
       module Stop
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, ::Array[String]]
+        def self?.variants: -> ::Array[OpenAI::Models::CompletionCreateParams::stop]
 
         StringArray: OpenAI::Internal::Type::Converter
       end

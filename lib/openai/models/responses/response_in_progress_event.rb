@@ -7,8 +7,8 @@ module OpenAI
         # @!attribute response
         #   The response that is in progress.
         #
-        #   @return [OpenAI::Models::Responses::Response]
-        required :response, -> { OpenAI::Models::Responses::Response }
+        #   @return [OpenAI::Responses::Response]
+        required :response, -> { OpenAI::Responses::Response }
 
         # @!attribute type
         #   The type of the event. Always `response.in_progress`.
@@ -18,13 +18,13 @@ module OpenAI
 
         # @!method initialize(response:, type: :"response.in_progress")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseInProgressEvent} for more details.
+        #   {OpenAI::Responses::ResponseInProgressEvent} for more details.
         #
         #   Emitted when the response is in progress.
         #
-        #   @param response [OpenAI::Models::Responses::Response] The response that is in progress. ...
+        #   @param response [OpenAI::Responses::Response] The response that is in progress.
         #
-        #   @param type [Symbol, :"response.in_progress"] The type of the event. Always `response.in_progress`. ...
+        #   @param type [Symbol, :"response.in_progress"] The type of the event. Always `response.in_progress`.
       end
     end
   end

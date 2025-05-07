@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Identifier for the last job from the previous pagination request.
         sig { returns(T.nilable(String)) }
         attr_reader :after
@@ -31,9 +33,8 @@ module OpenAI
             after: String,
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # Identifier for the last job from the previous pagination request.
@@ -44,19 +45,21 @@ module OpenAI
           # Alternatively, set `metadata=null` to indicate no metadata.
           metadata: nil,
           request_options: {}
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                after: String,
-                limit: Integer,
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                request_options: OpenAI::RequestOptions
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              after: String,
+              limit: Integer,
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              request_options: OpenAI::RequestOptions
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

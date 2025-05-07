@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The unique ID of the file search tool call.
         sig { returns(String) }
         attr_accessor :id
@@ -14,7 +16,11 @@ module OpenAI
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
-        sig { returns(OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol) }
+        sig do
+          returns(
+            OpenAI::Responses::ResponseFileSearchToolCall::Status::OrSymbol
+          )
+        end
         attr_accessor :status
 
         # The type of the file search tool call. Always `file_search_call`.
@@ -22,7 +28,13 @@ module OpenAI
         attr_accessor :type
 
         # The results of the file search tool call.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result])) }
+        sig do
+          returns(
+            T.nilable(
+              T::Array[OpenAI::Responses::ResponseFileSearchToolCall::Result]
+            )
+          )
+        end
         attr_accessor :results
 
         # The results of a file search tool call. See the
@@ -32,13 +44,16 @@ module OpenAI
           params(
             id: String,
             queries: T::Array[String],
-            status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
-            results: T.nilable(
-              T::Array[T.any(OpenAI::Models::Responses::ResponseFileSearchToolCall::Result, OpenAI::Internal::AnyHash)]
-            ),
+            status:
+              OpenAI::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
+            results:
+              T.nilable(
+                T::Array[
+                  OpenAI::Responses::ResponseFileSearchToolCall::Result::OrHash
+                ]
+              ),
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The unique ID of the file search tool call.
@@ -52,20 +67,28 @@ module OpenAI
           results: nil,
           # The type of the file search tool call. Always `file_search_call`.
           type: :file_search_call
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                id: String,
-                queries: T::Array[String],
-                status: OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
-                type: Symbol,
-                results: T.nilable(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result])
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              id: String,
+              queries: T::Array[String],
+              status:
+                OpenAI::Responses::ResponseFileSearchToolCall::Status::OrSymbol,
+              type: Symbol,
+              results:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Responses::ResponseFileSearchToolCall::Result
+                  ]
+                )
+            }
+          )
+        end
+        def to_hash
+        end
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
@@ -73,30 +96,65 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status) }
+            T.type_alias do
+              T.all(
+                Symbol,
+                OpenAI::Responses::ResponseFileSearchToolCall::Status
+              )
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+            T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol
+            )
           SEARCHING =
-            T.let(:searching, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+            T.let(
+              :searching,
+              OpenAI::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol
+            )
           COMPLETED =
-            T.let(:completed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+            T.let(
+              :completed,
+              OpenAI::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol
+            )
           INCOMPLETE =
-            T.let(:incomplete, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
-          FAILED = T.let(:failed, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol)
+            T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol
+            )
+          FAILED =
+            T.let(
+              :failed,
+              OpenAI::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseFileSearchToolCall::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         class Result < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and
           # querying for objects via API or the dashboard. Keys are strings with a maximum
           # length of 64 characters. Values are strings with a maximum length of 512
           # characters, booleans, or numbers.
-          sig { returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])) }
+          sig do
+            returns(
+              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])
+            )
+          end
           attr_accessor :attributes
 
           # The unique ID of the file.
@@ -129,13 +187,13 @@ module OpenAI
 
           sig do
             params(
-              attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              attributes:
+                T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
               file_id: String,
               filename: String,
               score: Float,
               text: String
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -152,26 +210,38 @@ module OpenAI
             score: nil,
             # The text that was retrieved from the file.
             text: nil
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-                  file_id: String,
-                  filename: String,
-                  score: Float,
-                  text: String
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                attributes:
+                  T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+                file_id: String,
+                filename: String,
+                score: Float,
+                text: String
+              }
+            )
+          end
+          def to_hash
+          end
 
           module Attribute
             extend OpenAI::Internal::Type::Union
 
-            sig { override.returns([String, Float, T::Boolean]) }
-            def self.variants; end
+            Variants = T.type_alias { T.any(String, Float, T::Boolean) }
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Responses::ResponseFileSearchToolCall::Result::Attribute::Variants
+                ]
+              )
+            end
+            def self.variants
+            end
           end
         end
       end

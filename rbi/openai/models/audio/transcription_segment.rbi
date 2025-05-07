@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionSegment < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Unique identifier of the segment.
         sig { returns(Integer) }
         attr_accessor :id
@@ -59,8 +61,7 @@ module OpenAI
             temperature: Float,
             text: String,
             tokens: T::Array[Integer]
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # Unique identifier of the segment.
@@ -86,25 +87,27 @@ module OpenAI
           text:,
           # Array of token IDs for the text content.
           tokens:
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                id: Integer,
-                avg_logprob: Float,
-                compression_ratio: Float,
-                end_: Float,
-                no_speech_prob: Float,
-                seek: Integer,
-                start: Float,
-                temperature: Float,
-                text: String,
-                tokens: T::Array[Integer]
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              id: Integer,
+              avg_logprob: Float,
+              compression_ratio: Float,
+              end_: Float,
+              no_speech_prob: Float,
+              seek: Integer,
+              start: Float,
+              temperature: Float,
+              text: String,
+              tokens: T::Array[Integer]
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

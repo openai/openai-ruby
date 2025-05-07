@@ -15,8 +15,6 @@ module OpenAI
             thread_id: String,
             ?request_options: OpenAI::request_opts
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::message_delete_params
         end
       end
     end

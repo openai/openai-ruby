@@ -5,17 +5,20 @@ module OpenAI
     module Beta
       module Threads
         class FilePathAnnotation < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           sig { returns(Integer) }
           attr_accessor :end_index
 
-          sig { returns(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath) }
+          sig { returns(OpenAI::Beta::Threads::FilePathAnnotation::FilePath) }
           attr_reader :file_path
 
           sig do
             params(
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file_path:
+                OpenAI::Beta::Threads::FilePathAnnotation::FilePath::OrHash
+            ).void
           end
           attr_writer :file_path
 
@@ -35,12 +38,12 @@ module OpenAI
           sig do
             params(
               end_index: Integer,
-              file_path: T.any(OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath, OpenAI::Internal::AnyHash),
+              file_path:
+                OpenAI::Beta::Threads::FilePathAnnotation::FilePath::OrHash,
               start_index: Integer,
               text: String,
               type: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             end_index:,
@@ -50,22 +53,27 @@ module OpenAI
             text:,
             # Always `file_path`.
             type: :file_path
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  end_index: Integer,
-                  file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath,
-                  start_index: Integer,
-                  text: String,
-                  type: Symbol
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                end_index: Integer,
+                file_path: OpenAI::Beta::Threads::FilePathAnnotation::FilePath,
+                start_index: Integer,
+                text: String,
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the file that was generated.
             sig { returns(String) }
             attr_accessor :file_id
@@ -74,9 +82,12 @@ module OpenAI
             def self.new(
               # The ID of the file that was generated.
               file_id:
-            ); end
-            sig { override.returns({file_id: String}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ file_id: String }) }
+            def to_hash
+            end
           end
         end
       end

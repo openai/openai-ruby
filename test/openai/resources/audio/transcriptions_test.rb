@@ -12,8 +12,8 @@ class OpenAI::Test::Resources::Audio::TranscriptionsTest < OpenAI::Test::Resourc
 
     assert_pattern do
       case response
-      in OpenAI::Models::Audio::Transcription
-      in OpenAI::Models::Audio::TranscriptionVerbose
+      in OpenAI::Audio::Transcription
+      in OpenAI::Audio::TranscriptionVerbose
       end
     end
   end

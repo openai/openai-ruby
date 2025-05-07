@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallCodeDoneEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The final code snippet output by the code interpreter.
         sig { returns(String) }
         attr_accessor :code
@@ -17,7 +19,11 @@ module OpenAI
         attr_accessor :type
 
         # Emitted when code snippet output is finalized by the code interpreter.
-        sig { params(code: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(code: String, output_index: Integer, type: Symbol).returns(
+            T.attached_class
+          )
+        end
         def self.new(
           # The final code snippet output by the code interpreter.
           code:,
@@ -25,9 +31,16 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.code_interpreter_call.code.done`.
           type: :"response.code_interpreter_call.code.done"
-        ); end
-        sig { override.returns({code: String, output_index: Integer, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            { code: String, output_index: Integer, type: Symbol }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # A list of messages comprising the conversation so far. Depending on the
         # [model](https://platform.openai.com/docs/models) you use, different message
         # types (modalities) are supported, like
@@ -17,12 +19,12 @@ module OpenAI
           returns(
             T::Array[
               T.any(
-                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+                OpenAI::Chat::ChatCompletionDeveloperMessageParam,
+                OpenAI::Chat::ChatCompletionSystemMessageParam,
+                OpenAI::Chat::ChatCompletionUserMessageParam,
+                OpenAI::Chat::ChatCompletionAssistantMessageParam,
+                OpenAI::Chat::ChatCompletionToolMessageParam,
+                OpenAI::Chat::ChatCompletionFunctionMessageParam
               )
             ]
           )
@@ -34,18 +36,19 @@ module OpenAI
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
-        sig { returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol)) }
+        sig { returns(T.any(String, OpenAI::ChatModel::OrSymbol)) }
         attr_accessor :model
 
         # Parameters for audio output. Required when audio output is requested with
         # `modalities: ["audio"]`.
         # [Learn more](https://platform.openai.com/docs/guides/audio).
-        sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam)) }
+        sig { returns(T.nilable(OpenAI::Chat::ChatCompletionAudioParam)) }
         attr_reader :audio
 
         sig do
-          params(audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Internal::AnyHash)))
-            .void
+          params(
+            audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash)
+          ).void
         end
         attr_writer :audio
 
@@ -73,8 +76,8 @@ module OpenAI
           returns(
             T.nilable(
               T.any(
-                OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionFunctionCallOption
+                OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
+                OpenAI::Chat::ChatCompletionFunctionCallOption
               )
             )
           )
@@ -83,27 +86,30 @@ module OpenAI
 
         sig do
           params(
-            function_call: T.any(
-              OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionFunctionCallOption,
-              OpenAI::Internal::AnyHash
-            )
-          )
-            .void
+            function_call:
+              T.any(
+                OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
+                OpenAI::Chat::ChatCompletionFunctionCallOption::OrHash
+              )
+          ).void
         end
         attr_writer :function_call
 
         # Deprecated in favor of `tools`.
         #
         # A list of functions the model may generate JSON inputs for.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Function])) }
+        sig do
+          returns(
+            T.nilable(T::Array[OpenAI::Chat::CompletionCreateParams::Function])
+          )
+        end
         attr_reader :functions
 
         sig do
           params(
-            functions: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Internal::AnyHash)]
-          )
-            .void
+            functions:
+              T::Array[OpenAI::Chat::CompletionCreateParams::Function::OrHash]
+          ).void
         end
         attr_writer :functions
 
@@ -159,7 +165,13 @@ module OpenAI
         # this model generate both text and audio responses, you can use:
         #
         # `["text", "audio"]`
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol])) }
+        sig do
+          returns(
+            T.nilable(
+              T::Array[OpenAI::Chat::CompletionCreateParams::Modality::OrSymbol]
+            )
+          )
+        end
         attr_accessor :modalities
 
         # How many chat completion choices to generate for each input message. Note that
@@ -179,14 +191,16 @@ module OpenAI
 
         # Static predicted output content, such as the content of a text file that is
         # being regenerated.
-        sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionPredictionContent)) }
+        sig do
+          returns(T.nilable(OpenAI::Chat::ChatCompletionPredictionContent))
+        end
         attr_reader :prediction
 
         sig do
           params(
-            prediction: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Internal::AnyHash))
-          )
-            .void
+            prediction:
+              T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash)
+          ).void
         end
         attr_writer :prediction
 
@@ -202,7 +216,7 @@ module OpenAI
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         # result in faster responses and fewer tokens used on reasoning in a response.
-        sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
+        sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
         # An object specifying the format that the model must output.
@@ -219,9 +233,9 @@ module OpenAI
           returns(
             T.nilable(
               T.any(
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONSchema,
-                OpenAI::Models::ResponseFormatJSONObject
+                OpenAI::ResponseFormatText,
+                OpenAI::ResponseFormatJSONSchema,
+                OpenAI::ResponseFormatJSONObject
               )
             )
           )
@@ -230,14 +244,13 @@ module OpenAI
 
         sig do
           params(
-            response_format: T.any(
-              OpenAI::Models::ResponseFormatText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::ResponseFormatJSONSchema,
-              OpenAI::Models::ResponseFormatJSONObject
-            )
-          )
-            .void
+            response_format:
+              T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash
+              )
+          ).void
         end
         attr_writer :response_format
 
@@ -266,7 +279,13 @@ module OpenAI
         #
         # When this parameter is set, the response body will include the `service_tier`
         # utilized.
-        sig { returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
+            )
+          )
+        end
         attr_accessor :service_tier
 
         # Not supported with latest reasoning models `o3` and `o4-mini`.
@@ -283,14 +302,14 @@ module OpenAI
         attr_accessor :store
 
         # Options for streaming response. Only set this when you set `stream: true`.
-        sig { returns(T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions)) }
+        sig { returns(T.nilable(OpenAI::Chat::ChatCompletionStreamOptions)) }
         attr_reader :stream_options
 
         sig do
           params(
-            stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash))
-          )
-            .void
+            stream_options:
+              T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash)
+          ).void
         end
         attr_writer :stream_options
 
@@ -314,8 +333,8 @@ module OpenAI
           returns(
             T.nilable(
               T.any(
-                OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                OpenAI::Models::Chat::ChatCompletionNamedToolChoice
+                OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
+                OpenAI::Chat::ChatCompletionNamedToolChoice
               )
             )
           )
@@ -324,23 +343,24 @@ module OpenAI
 
         sig do
           params(
-            tool_choice: T.any(
-              OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionNamedToolChoice,
-              OpenAI::Internal::AnyHash
-            )
-          )
-            .void
+            tool_choice:
+              T.any(
+                OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
+                OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
+              )
+          ).void
         end
         attr_writer :tool_choice
 
         # A list of tools the model may call. Currently, only functions are supported as a
         # tool. Use this to provide a list of functions the model may generate JSON inputs
         # for. A max of 128 functions are supported.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Chat::ChatCompletionTool])) }
+        sig { returns(T.nilable(T::Array[OpenAI::Chat::ChatCompletionTool])) }
         attr_reader :tools
 
-        sig { params(tools: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Internal::AnyHash)]).void }
+        sig do
+          params(tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash]).void
+        end
         attr_writer :tools
 
         # An integer between 0 and 20 specifying the number of most likely tokens to
@@ -369,75 +389,90 @@ module OpenAI
         # This tool searches the web for relevant results to use in a response. Learn more
         # about the
         # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
-        sig { returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Chat::CompletionCreateParams::WebSearchOptions)
+          )
+        end
         attr_reader :web_search_options
 
         sig do
           params(
-            web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Internal::AnyHash)
-          )
-            .void
+            web_search_options:
+              OpenAI::Chat::CompletionCreateParams::WebSearchOptions::OrHash
+          ).void
         end
         attr_writer :web_search_options
 
         sig do
           params(
-            messages: T::Array[
-              T.any(
-                OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-                OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-                OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-                OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-                OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
-              )
-            ],
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
-            audio: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionAudioParam, OpenAI::Internal::AnyHash)),
+            messages:
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionDeveloperMessageParam::OrHash,
+                  OpenAI::Chat::ChatCompletionSystemMessageParam::OrHash,
+                  OpenAI::Chat::ChatCompletionUserMessageParam::OrHash,
+                  OpenAI::Chat::ChatCompletionAssistantMessageParam::OrHash,
+                  OpenAI::Chat::ChatCompletionToolMessageParam::OrHash,
+                  OpenAI::Chat::ChatCompletionFunctionMessageParam::OrHash
+                )
+              ],
+            model: T.any(String, OpenAI::ChatModel::OrSymbol),
+            audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash),
             frequency_penalty: T.nilable(Float),
-            function_call: T.any(
-              OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionFunctionCallOption,
-              OpenAI::Internal::AnyHash
-            ),
-            functions: T::Array[T.any(OpenAI::Models::Chat::CompletionCreateParams::Function, OpenAI::Internal::AnyHash)],
+            function_call:
+              T.any(
+                OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
+                OpenAI::Chat::ChatCompletionFunctionCallOption::OrHash
+              ),
+            functions:
+              T::Array[OpenAI::Chat::CompletionCreateParams::Function::OrHash],
             logit_bias: T.nilable(T::Hash[Symbol, Integer]),
             logprobs: T.nilable(T::Boolean),
             max_completion_tokens: T.nilable(Integer),
             max_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            modalities: T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]),
+            modalities:
+              T.nilable(
+                T::Array[
+                  OpenAI::Chat::CompletionCreateParams::Modality::OrSymbol
+                ]
+              ),
             n: T.nilable(Integer),
             parallel_tool_calls: T::Boolean,
-            prediction: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionPredictionContent, OpenAI::Internal::AnyHash)),
+            prediction:
+              T.nilable(OpenAI::Chat::ChatCompletionPredictionContent::OrHash),
             presence_penalty: T.nilable(Float),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-            response_format: T.any(
-              OpenAI::Models::ResponseFormatText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::ResponseFormatJSONSchema,
-              OpenAI::Models::ResponseFormatJSONObject
-            ),
+            reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+            response_format:
+              T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash
+              ),
             seed: T.nilable(Integer),
-            service_tier: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol),
+            service_tier:
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
+              ),
             stop: T.nilable(T.any(String, T::Array[String])),
             store: T.nilable(T::Boolean),
-            stream_options: T.nilable(T.any(OpenAI::Models::Chat::ChatCompletionStreamOptions, OpenAI::Internal::AnyHash)),
+            stream_options:
+              T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
             temperature: T.nilable(Float),
-            tool_choice: T.any(
-              OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-              OpenAI::Models::Chat::ChatCompletionNamedToolChoice,
-              OpenAI::Internal::AnyHash
-            ),
-            tools: T::Array[T.any(OpenAI::Models::Chat::ChatCompletionTool, OpenAI::Internal::AnyHash)],
+            tool_choice:
+              T.any(
+                OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
+                OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
+              ),
+            tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
-            web_search_options: T.any(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions, OpenAI::Internal::AnyHash),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            web_search_options:
+              OpenAI::Chat::CompletionCreateParams::WebSearchOptions::OrHash,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # A list of messages comprising the conversation so far. Depending on the
@@ -629,65 +664,83 @@ module OpenAI
           # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           web_search_options: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                messages: T::Array[
+          override.returns(
+            {
+              messages:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam,
-                    OpenAI::Models::Chat::ChatCompletionSystemMessageParam,
-                    OpenAI::Models::Chat::ChatCompletionUserMessageParam,
-                    OpenAI::Models::Chat::ChatCompletionAssistantMessageParam,
-                    OpenAI::Models::Chat::ChatCompletionToolMessageParam,
-                    OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+                    OpenAI::Chat::ChatCompletionDeveloperMessageParam,
+                    OpenAI::Chat::ChatCompletionSystemMessageParam,
+                    OpenAI::Chat::ChatCompletionUserMessageParam,
+                    OpenAI::Chat::ChatCompletionAssistantMessageParam,
+                    OpenAI::Chat::ChatCompletionToolMessageParam,
+                    OpenAI::Chat::ChatCompletionFunctionMessageParam
                   )
                 ],
-                model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
-                audio: T.nilable(OpenAI::Models::Chat::ChatCompletionAudioParam),
-                frequency_penalty: T.nilable(Float),
-                function_call: T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
-                  OpenAI::Models::Chat::ChatCompletionFunctionCallOption
+              model: T.any(String, OpenAI::ChatModel::OrSymbol),
+              audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam),
+              frequency_penalty: T.nilable(Float),
+              function_call:
+                T.any(
+                  OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::OrSymbol,
+                  OpenAI::Chat::ChatCompletionFunctionCallOption
                 ),
-                functions: T::Array[OpenAI::Models::Chat::CompletionCreateParams::Function],
-                logit_bias: T.nilable(T::Hash[Symbol, Integer]),
-                logprobs: T.nilable(T::Boolean),
-                max_completion_tokens: T.nilable(Integer),
-                max_tokens: T.nilable(Integer),
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                modalities: T.nilable(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::OrSymbol]),
-                n: T.nilable(Integer),
-                parallel_tool_calls: T::Boolean,
-                prediction: T.nilable(OpenAI::Models::Chat::ChatCompletionPredictionContent),
-                presence_penalty: T.nilable(Float),
-                reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-                response_format: T.any(
-                  OpenAI::Models::ResponseFormatText,
-                  OpenAI::Models::ResponseFormatJSONSchema,
-                  OpenAI::Models::ResponseFormatJSONObject
+              functions:
+                T::Array[OpenAI::Chat::CompletionCreateParams::Function],
+              logit_bias: T.nilable(T::Hash[Symbol, Integer]),
+              logprobs: T.nilable(T::Boolean),
+              max_completion_tokens: T.nilable(Integer),
+              max_tokens: T.nilable(Integer),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              modalities:
+                T.nilable(
+                  T::Array[
+                    OpenAI::Chat::CompletionCreateParams::Modality::OrSymbol
+                  ]
                 ),
-                seed: T.nilable(Integer),
-                service_tier: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::OrSymbol),
-                stop: T.nilable(T.any(String, T::Array[String])),
-                store: T.nilable(T::Boolean),
-                stream_options: T.nilable(OpenAI::Models::Chat::ChatCompletionStreamOptions),
-                temperature: T.nilable(Float),
-                tool_choice: T.any(
-                  OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
-                  OpenAI::Models::Chat::ChatCompletionNamedToolChoice
+              n: T.nilable(Integer),
+              parallel_tool_calls: T::Boolean,
+              prediction:
+                T.nilable(OpenAI::Chat::ChatCompletionPredictionContent),
+              presence_penalty: T.nilable(Float),
+              reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+              response_format:
+                T.any(
+                  OpenAI::ResponseFormatText,
+                  OpenAI::ResponseFormatJSONSchema,
+                  OpenAI::ResponseFormatJSONObject
                 ),
-                tools: T::Array[OpenAI::Models::Chat::ChatCompletionTool],
-                top_logprobs: T.nilable(Integer),
-                top_p: T.nilable(Float),
-                user: String,
-                web_search_options: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions,
-                request_options: OpenAI::RequestOptions
-              }
-            )
+              seed: T.nilable(Integer),
+              service_tier:
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
+                ),
+              stop: T.nilable(T.any(String, T::Array[String])),
+              store: T.nilable(T::Boolean),
+              stream_options:
+                T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),
+              temperature: T.nilable(Float),
+              tool_choice:
+                T.any(
+                  OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
+                  OpenAI::Chat::ChatCompletionNamedToolChoice
+                ),
+              tools: T::Array[OpenAI::Chat::ChatCompletionTool],
+              top_logprobs: T.nilable(Integer),
+              top_p: T.nilable(Float),
+              user: String,
+              web_search_options:
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
+              request_options: OpenAI::RequestOptions
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
 
         # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
         # wide range of models with different capabilities, performance characteristics,
@@ -697,8 +750,16 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::ChatModel::TaggedSymbol]) }
-          def self.variants; end
+          Variants =
+            T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Chat::CompletionCreateParams::Model::Variants]
+            )
+          end
+          def self.variants
+          end
         end
 
         # Deprecated in favor of `tool_choice`.
@@ -718,6 +779,14 @@ module OpenAI
         module FunctionCall
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol,
+                OpenAI::Chat::ChatCompletionFunctionCallOption
+              )
+            end
+
           # `none` means the model will not call a function and instead generates a message.
           # `auto` means the model can pick between generating a message or calling a
           # function.
@@ -725,33 +794,51 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode) }
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode
+                )
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             NONE =
-              T.let(:none, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol)
+              T.let(
+                :none,
+                OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol
+              )
             AUTO =
-              T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol)
+              T.let(
+                :auto,
+                OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol
+              )
 
             sig do
-              override
-                .returns(
-                  T::Array[OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol]
-                )
+              override.returns(
+                T::Array[
+                  OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol
+                ]
+              )
             end
-            def self.values; end
+            def self.values
+            end
           end
 
           sig do
-            override
-              .returns(
-                [OpenAI::Models::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol, OpenAI::Models::Chat::ChatCompletionFunctionCallOption]
-              )
+            override.returns(
+              T::Array[
+                OpenAI::Chat::CompletionCreateParams::FunctionCall::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         class Function < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
           # underscores and dashes, with a maximum length of 64.
           sig { returns(String) }
@@ -779,8 +866,11 @@ module OpenAI
           attr_writer :parameters
 
           sig do
-            params(name: String, description: String, parameters: T::Hash[Symbol, T.anything])
-              .returns(T.attached_class)
+            params(
+              name: String,
+              description: String,
+              parameters: T::Hash[Symbol, T.anything]
+            ).returns(T.attached_class)
           end
           def self.new(
             # The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
@@ -797,24 +887,51 @@ module OpenAI
             #
             # Omitting `parameters` defines a function with an empty parameter list.
             parameters: nil
-          ); end
-          sig do
-            override.returns({name: String, description: String, parameters: T::Hash[Symbol, T.anything]})
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                name: String,
+                description: String,
+                parameters: T::Hash[Symbol, T.anything]
+              }
+            )
+          end
+          def to_hash
+          end
         end
 
         module Modality
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::Modality) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Chat::CompletionCreateParams::Modality)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          TEXT = T.let(:text, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
-          AUDIO = T.let(:audio, OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol)
+          TEXT =
+            T.let(
+              :text,
+              OpenAI::Chat::CompletionCreateParams::Modality::TaggedSymbol
+            )
+          AUDIO =
+            T.let(
+              :audio,
+              OpenAI::Chat::CompletionCreateParams::Modality::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::Modality::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Chat::CompletionCreateParams::Modality::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         # An object specifying the format that the model must output.
@@ -830,13 +947,24 @@ module OpenAI
         module ResponseFormat
           extend OpenAI::Internal::Type::Union
 
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::ResponseFormatText,
+                OpenAI::ResponseFormatJSONSchema,
+                OpenAI::ResponseFormatJSONObject
               )
+            end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Chat::CompletionCreateParams::ResponseFormat::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -859,15 +987,37 @@ module OpenAI
         module ServiceTier
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Chat::CompletionCreateParams::ServiceTier)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          AUTO = T.let(:auto, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
-          DEFAULT = T.let(:default, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
-          FLEX = T.let(:flex, OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol)
+          AUTO =
+            T.let(
+              :auto,
+              OpenAI::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol
+            )
+          DEFAULT =
+            T.let(
+              :default,
+              OpenAI::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol
+            )
+          FLEX =
+            T.let(
+              :flex,
+              OpenAI::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Chat::CompletionCreateParams::ServiceTier::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         # Not supported with latest reasoning models `o3` and `o4-mini`.
@@ -877,44 +1027,63 @@ module OpenAI
         module Stop
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, T::Array[String]]) }
-          def self.variants; end
+          Variants = T.type_alias { T.nilable(T.any(String, T::Array[String])) }
 
-          StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
+          sig do
+            override.returns(
+              T::Array[OpenAI::Chat::CompletionCreateParams::Stop::Variants]
+            )
+          end
+          def self.variants
+          end
+
+          StringArray =
+            T.let(
+              OpenAI::Internal::Type::ArrayOf[String],
+              OpenAI::Internal::Type::Converter
+            )
         end
 
         class WebSearchOptions < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
           sig do
             returns(
-              T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol)
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol
+              )
             )
           end
           attr_reader :search_context_size
 
           sig do
             params(
-              search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol
-            )
-              .void
+              search_context_size:
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol
+            ).void
           end
           attr_writer :search_context_size
 
           # Approximate location parameters for the search.
-          sig { returns(T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation
+              )
+            )
+          end
           attr_reader :user_location
 
           sig do
             params(
-              user_location: T.nilable(
-                T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation,
-                  OpenAI::Internal::AnyHash
+              user_location:
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::OrHash
                 )
-              )
-            )
-              .void
+            ).void
           end
           attr_writer :user_location
 
@@ -923,15 +1092,13 @@ module OpenAI
           # [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
           sig do
             params(
-              search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
-              user_location: T.nilable(
-                T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation,
-                  OpenAI::Internal::AnyHash
+              search_context_size:
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
+              user_location:
+                T.nilable(
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::OrHash
                 )
-              )
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # High level guidance for the amount of context window space to use for the
@@ -939,17 +1106,23 @@ module OpenAI
             search_context_size: nil,
             # Approximate location parameters for the search.
             user_location: nil
-          ); end
-          sig do
-            override
-              .returns(
-                {
-                  search_context_size: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
-                  user_location: T.nilable(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation)
-                }
-              )
+          )
           end
-          def to_hash; end
+
+          sig do
+            override.returns(
+              {
+                search_context_size:
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::OrSymbol,
+                user_location:
+                  T.nilable(
+                    OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation
+                  )
+              }
+            )
+          end
+          def to_hash
+          end
 
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -957,47 +1130,58 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TaggedSymbol =
-              T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize) }
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize
+                )
+              end
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             LOW =
               T.let(
                 :low,
-                OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
               )
             MEDIUM =
               T.let(
                 :medium,
-                OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
               )
             HIGH =
               T.let(
                 :high,
-                OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
               )
 
             sig do
-              override
-                .returns(
-                  T::Array[OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol]
-                )
+              override.returns(
+                T::Array[
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::SearchContextSize::TaggedSymbol
+                ]
+              )
             end
-            def self.values; end
+            def self.values
+            end
           end
 
           class UserLocation < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # Approximate location parameters for the search.
-            sig { returns(OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate) }
+            sig do
+              returns(
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate
+              )
+            end
             attr_reader :approximate
 
             sig do
               params(
-                approximate: T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                  OpenAI::Internal::AnyHash
-                )
-              )
-                .void
+                approximate:
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate::OrHash
+              ).void
             end
             attr_writer :approximate
 
@@ -1008,32 +1192,35 @@ module OpenAI
             # Approximate location parameters for the search.
             sig do
               params(
-                approximate: T.any(
-                  OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                  OpenAI::Internal::AnyHash
-                ),
+                approximate:
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate::OrHash,
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # Approximate location parameters for the search.
               approximate:,
               # The type of location approximation. Always `approximate`.
               type: :approximate
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    approximate: OpenAI::Models::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
-                    type: Symbol
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  approximate:
+                    OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+                  type: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Approximate < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # Free text input for the city of the user, e.g. `San Francisco`.
               sig { returns(T.nilable(String)) }
               attr_reader :city
@@ -1084,9 +1271,21 @@ module OpenAI
                 # The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
                 # user, e.g. `America/Los_Angeles`.
                 timezone: nil
-              ); end
-              sig { override.returns({city: String, country: String, region: String, timezone: String}) }
-              def to_hash; end
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    city: String,
+                    country: String,
+                    region: String,
+                    timezone: String
+                  }
+                )
+              end
+              def to_hash
+              end
             end
           end
         end

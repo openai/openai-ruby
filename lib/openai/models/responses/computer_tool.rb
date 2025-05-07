@@ -19,8 +19,8 @@ module OpenAI
         # @!attribute environment
         #   The type of computer environment to control.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ComputerTool::Environment]
-        required :environment, enum: -> { OpenAI::Models::Responses::ComputerTool::Environment }
+        #   @return [Symbol, OpenAI::Responses::ComputerTool::Environment]
+        required :environment, enum: -> { OpenAI::Responses::ComputerTool::Environment }
 
         # @!attribute type
         #   The type of the computer use tool. Always `computer_use_preview`.
@@ -36,13 +36,13 @@ module OpenAI
         #
         #   @param display_width [Integer] The width of the computer display.
         #
-        #   @param environment [Symbol, OpenAI::Models::Responses::ComputerTool::Environment] The type of computer environment to control.
+        #   @param environment [Symbol, OpenAI::Responses::ComputerTool::Environment] The type of computer environment to control.
         #
         #   @param type [Symbol, :computer_use_preview] The type of the computer use tool. Always `computer_use_preview`.
 
         # The type of computer environment to control.
         #
-        # @see OpenAI::Models::Responses::ComputerTool#environment
+        # @see OpenAI::Responses::ComputerTool#environment
         module Environment
           extend OpenAI::Internal::Type::Enum
 

@@ -43,20 +43,19 @@ module OpenAI
 
         # @!method initialize(name:, schema:, description: nil, strict: nil, type: :json_schema)
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig} for more
-        #   details.
+        #   {OpenAI::Responses::ResponseFormatTextJSONSchemaConfig} for more details.
         #
         #   JSON Schema response format. Used to generate structured JSON responses. Learn
         #   more about
         #   [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         #
-        #   @param name [String] The name of the response format. Must be a-z, A-Z, 0-9, or contain ...
+        #   @param name [String] The name of the response format. Must be a-z, A-Z, 0-9, or contain
         #
-        #   @param schema [Hash{Symbol=>Object}] The schema for the response format, described as a JSON Schema object. ...
+        #   @param schema [Hash{Symbol=>Object}] The schema for the response format, described as a JSON Schema object.
         #
-        #   @param description [String] A description of what the response format is for, used by the model to ...
+        #   @param description [String] A description of what the response format is for, used by the model to
         #
-        #   @param strict [Boolean, nil] Whether to enable strict schema adherence when generating the output. ...
+        #   @param strict [Boolean, nil] Whether to enable strict schema adherence when generating the output.
         #
         #   @param type [Symbol, :json_schema] The type of response format being defined. Always `json_schema`.
       end

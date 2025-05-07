@@ -5,7 +5,7 @@ module OpenAI
         {
           display_height: Integer,
           display_width: Integer,
-          environment: OpenAI::Models::Responses::ComputerTool::environment,
+          environment: OpenAI::Responses::ComputerTool::environment,
           type: :computer_use_preview
         }
 
@@ -14,18 +14,16 @@ module OpenAI
 
         attr_accessor display_width: Integer
 
-        attr_accessor environment: OpenAI::Models::Responses::ComputerTool::environment
+        attr_accessor environment: OpenAI::Responses::ComputerTool::environment
 
         attr_accessor type: :computer_use_preview
 
         def initialize: (
           display_height: Integer,
           display_width: Integer,
-          environment: OpenAI::Models::Responses::ComputerTool::environment,
+          environment: OpenAI::Responses::ComputerTool::environment,
           ?type: :computer_use_preview
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::computer_tool
 
         type environment = :windows | :mac | :linux | :ubuntu | :browser
 
@@ -38,7 +36,7 @@ module OpenAI
           UBUNTU: :ubuntu
           BROWSER: :browser
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ComputerTool::environment]
+          def self?.values: -> ::Array[OpenAI::Responses::ComputerTool::environment]
         end
       end
     end

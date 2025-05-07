@@ -23,7 +23,7 @@ module OpenAI
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Chat::CompletionUpdateParams} for more details.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

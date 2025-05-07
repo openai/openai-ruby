@@ -2,47 +2,47 @@ module OpenAI
   module Models
     module Responses
       type response_stream_event =
-        OpenAI::Models::Responses::ResponseAudioDeltaEvent
-        | OpenAI::Models::Responses::ResponseAudioDoneEvent
-        | OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent
-        | OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent
-        | OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent
-        | OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent
-        | OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent
-        | OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent
-        | OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent
-        | OpenAI::Models::Responses::ResponseCompletedEvent
-        | OpenAI::Models::Responses::ResponseContentPartAddedEvent
-        | OpenAI::Models::Responses::ResponseContentPartDoneEvent
-        | OpenAI::Models::Responses::ResponseCreatedEvent
-        | OpenAI::Models::Responses::ResponseErrorEvent
-        | OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent
-        | OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent
-        | OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent
-        | OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent
-        | OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent
-        | OpenAI::Models::Responses::ResponseInProgressEvent
-        | OpenAI::Models::Responses::ResponseFailedEvent
-        | OpenAI::Models::Responses::ResponseIncompleteEvent
-        | OpenAI::Models::Responses::ResponseOutputItemAddedEvent
-        | OpenAI::Models::Responses::ResponseOutputItemDoneEvent
-        | OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent
-        | OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent
-        | OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent
-        | OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent
-        | OpenAI::Models::Responses::ResponseRefusalDeltaEvent
-        | OpenAI::Models::Responses::ResponseRefusalDoneEvent
-        | OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent
-        | OpenAI::Models::Responses::ResponseTextDeltaEvent
-        | OpenAI::Models::Responses::ResponseTextDoneEvent
-        | OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent
-        | OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent
-        | OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent
+        OpenAI::Responses::ResponseAudioDeltaEvent
+        | OpenAI::Responses::ResponseAudioDoneEvent
+        | OpenAI::Responses::ResponseAudioTranscriptDeltaEvent
+        | OpenAI::Responses::ResponseAudioTranscriptDoneEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent
+        | OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent
+        | OpenAI::Responses::ResponseCompletedEvent
+        | OpenAI::Responses::ResponseContentPartAddedEvent
+        | OpenAI::Responses::ResponseContentPartDoneEvent
+        | OpenAI::Responses::ResponseCreatedEvent
+        | OpenAI::Responses::ResponseErrorEvent
+        | OpenAI::Responses::ResponseFileSearchCallCompletedEvent
+        | OpenAI::Responses::ResponseFileSearchCallInProgressEvent
+        | OpenAI::Responses::ResponseFileSearchCallSearchingEvent
+        | OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent
+        | OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent
+        | OpenAI::Responses::ResponseInProgressEvent
+        | OpenAI::Responses::ResponseFailedEvent
+        | OpenAI::Responses::ResponseIncompleteEvent
+        | OpenAI::Responses::ResponseOutputItemAddedEvent
+        | OpenAI::Responses::ResponseOutputItemDoneEvent
+        | OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent
+        | OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent
+        | OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent
+        | OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent
+        | OpenAI::Responses::ResponseRefusalDeltaEvent
+        | OpenAI::Responses::ResponseRefusalDoneEvent
+        | OpenAI::Responses::ResponseTextAnnotationDeltaEvent
+        | OpenAI::Responses::ResponseTextDeltaEvent
+        | OpenAI::Responses::ResponseTextDoneEvent
+        | OpenAI::Responses::ResponseWebSearchCallCompletedEvent
+        | OpenAI::Responses::ResponseWebSearchCallInProgressEvent
+        | OpenAI::Responses::ResponseWebSearchCallSearchingEvent
 
       module ResponseStreamEvent
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Responses::ResponseAudioDeltaEvent, OpenAI::Models::Responses::ResponseAudioDoneEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDeltaEvent, OpenAI::Models::Responses::ResponseAudioTranscriptDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDeltaEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCodeDoneEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallCompletedEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInProgressEvent, OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent, OpenAI::Models::Responses::ResponseCompletedEvent, OpenAI::Models::Responses::ResponseContentPartAddedEvent, OpenAI::Models::Responses::ResponseContentPartDoneEvent, OpenAI::Models::Responses::ResponseCreatedEvent, OpenAI::Models::Responses::ResponseErrorEvent, OpenAI::Models::Responses::ResponseFileSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseFileSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseFileSearchCallSearchingEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Models::Responses::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Models::Responses::ResponseInProgressEvent, OpenAI::Models::Responses::ResponseFailedEvent, OpenAI::Models::Responses::ResponseIncompleteEvent, OpenAI::Models::Responses::ResponseOutputItemAddedEvent, OpenAI::Models::Responses::ResponseOutputItemDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartAddedEvent, OpenAI::Models::Responses::ResponseReasoningSummaryPartDoneEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDeltaEvent, OpenAI::Models::Responses::ResponseReasoningSummaryTextDoneEvent, OpenAI::Models::Responses::ResponseRefusalDeltaEvent, OpenAI::Models::Responses::ResponseRefusalDoneEvent, OpenAI::Models::Responses::ResponseTextAnnotationDeltaEvent, OpenAI::Models::Responses::ResponseTextDeltaEvent, OpenAI::Models::Responses::ResponseTextDoneEvent, OpenAI::Models::Responses::ResponseWebSearchCallCompletedEvent, OpenAI::Models::Responses::ResponseWebSearchCallInProgressEvent, OpenAI::Models::Responses::ResponseWebSearchCallSearchingEvent]
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_stream_event]
       end
     end
   end

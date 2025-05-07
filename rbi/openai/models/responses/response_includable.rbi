@@ -19,23 +19,38 @@ module OpenAI
       module ResponseIncludable
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseIncludable) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseIncludable) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         FILE_SEARCH_CALL_RESULTS =
-          T.let(:"file_search_call.results", OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol)
+          T.let(
+            :"file_search_call.results",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
         MESSAGE_INPUT_IMAGE_IMAGE_URL =
-          T.let(:"message.input_image.image_url", OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol)
+          T.let(
+            :"message.input_image.image_url",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
         COMPUTER_CALL_OUTPUT_OUTPUT_IMAGE_URL =
           T.let(
             :"computer_call_output.output.image_url",
-            OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
           )
         REASONING_ENCRYPTED_CONTENT =
-          T.let(:"reasoning.encrypted_content", OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol)
+          T.let(
+            :"reasoning.encrypted_content",
+            OpenAI::Responses::ResponseIncludable::TaggedSymbol
+          )
 
-        sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseIncludable::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(
+            T::Array[OpenAI::Responses::ResponseIncludable::TaggedSymbol]
+          )
+        end
+        def self.values
+        end
       end
     end
   end

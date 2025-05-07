@@ -6,6 +6,8 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       # an array of multi-modal input objects similar to other models.
       sig do
@@ -13,7 +15,12 @@ module OpenAI
           T.any(
             String,
             T::Array[String],
-            T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
+            T::Array[
+              T.any(
+                OpenAI::ModerationImageURLInput,
+                OpenAI::ModerationTextInput
+              )
+            ]
           )
         )
       end
@@ -23,29 +30,32 @@ module OpenAI
       # [the moderation guide](https://platform.openai.com/docs/guides/moderation), and
       # learn about available models
       # [here](https://platform.openai.com/docs/models#moderation).
-      sig { returns(T.nilable(T.any(String, OpenAI::Models::ModerationModel::OrSymbol))) }
+      sig do
+        returns(T.nilable(T.any(String, OpenAI::ModerationModel::OrSymbol)))
+      end
       attr_reader :model
 
-      sig { params(model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol)).void }
+      sig do
+        params(model: T.any(String, OpenAI::ModerationModel::OrSymbol)).void
+      end
       attr_writer :model
 
       sig do
         params(
-          input: T.any(
-            String,
-            T::Array[String],
-            T::Array[
-              T.any(
-                OpenAI::Models::ModerationImageURLInput,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::ModerationTextInput
-              )
-            ]
-          ),
-          model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
-          request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-        )
-          .returns(T.attached_class)
+          input:
+            T.any(
+              String,
+              T::Array[String],
+              T::Array[
+                T.any(
+                  OpenAI::ModerationImageURLInput::OrHash,
+                  OpenAI::ModerationTextInput::OrHash
+                )
+              ]
+            ),
+          model: T.any(String, OpenAI::ModerationModel::OrSymbol),
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(T.attached_class)
       end
       def self.new(
         # Input (or inputs) to classify. Can be a single string, an array of strings, or
@@ -57,41 +67,69 @@ module OpenAI
         # [here](https://platform.openai.com/docs/models#moderation).
         model: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       sig do
-        override
-          .returns(
-            {
-              input: T.any(
+        override.returns(
+          {
+            input:
+              T.any(
                 String,
                 T::Array[String],
-                T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]
+                T::Array[
+                  T.any(
+                    OpenAI::ModerationImageURLInput,
+                    OpenAI::ModerationTextInput
+                  )
+                ]
               ),
-              model: T.any(String, OpenAI::Models::ModerationModel::OrSymbol),
-              request_options: OpenAI::RequestOptions
-            }
-          )
+            model: T.any(String, OpenAI::ModerationModel::OrSymbol),
+            request_options: OpenAI::RequestOptions
+          }
+        )
       end
-      def to_hash; end
+      def to_hash
+      end
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       # an array of multi-modal input objects similar to other models.
       module Input
         extend OpenAI::Internal::Type::Union
 
-        sig do
-          override
-            .returns(
-              [String, T::Array[String], T::Array[T.any(OpenAI::Models::ModerationImageURLInput, OpenAI::Models::ModerationTextInput)]]
+        Variants =
+          T.type_alias do
+            T.any(
+              String,
+              T::Array[String],
+              T::Array[
+                T.any(
+                  OpenAI::ModerationImageURLInput,
+                  OpenAI::ModerationTextInput
+                )
+              ]
             )
-        end
-        def self.variants; end
+          end
 
-        StringArray = T.let(OpenAI::Internal::Type::ArrayOf[String], OpenAI::Internal::Type::Converter)
+        sig do
+          override.returns(
+            T::Array[OpenAI::ModerationCreateParams::Input::Variants]
+          )
+        end
+        def self.variants
+        end
+
+        StringArray =
+          T.let(
+            OpenAI::Internal::Type::ArrayOf[String],
+            OpenAI::Internal::Type::Converter
+          )
 
         ModerationMultiModalInputArray =
           T.let(
-            OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::ModerationMultiModalInput],
+            OpenAI::Internal::Type::ArrayOf[
+              union: OpenAI::ModerationMultiModalInput
+            ],
             OpenAI::Internal::Type::Converter
           )
       end
@@ -103,8 +141,16 @@ module OpenAI
       module Model
         extend OpenAI::Internal::Type::Union
 
-        sig { override.returns([String, OpenAI::Models::ModerationModel::TaggedSymbol]) }
-        def self.variants; end
+        Variants =
+          T.type_alias { T.any(String, OpenAI::ModerationModel::TaggedSymbol) }
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::ModerationCreateParams::Model::Variants]
+          )
+        end
+        def self.variants
+        end
       end
     end
   end

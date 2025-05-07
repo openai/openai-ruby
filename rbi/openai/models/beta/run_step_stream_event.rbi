@@ -9,12 +9,30 @@ module OpenAI
       module RunStepStreamEvent
         extend OpenAI::Internal::Type::Union
 
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCreated,
+              OpenAI::Beta::RunStepStreamEvent::ThreadRunStepInProgress,
+              OpenAI::Beta::RunStepStreamEvent::ThreadRunStepDelta,
+              OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCompleted,
+              OpenAI::Beta::RunStepStreamEvent::ThreadRunStepFailed,
+              OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCancelled,
+              OpenAI::Beta::RunStepStreamEvent::ThreadRunStepExpired
+            )
+          end
+
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Represents a step in execution of a run.
-          sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
+          sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(data: OpenAI::Beta::Threads::Runs::RunStep::OrHash).void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -25,26 +43,37 @@ module OpenAI
           # is created.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
+              data: OpenAI::Beta::Threads::Runs::RunStep::OrHash,
               event: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Represents a step in execution of a run.
             data:,
             event: :"thread.run.step.created"
-          ); end
-          sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { data: OpenAI::Beta::Threads::Runs::RunStep, event: Symbol }
+            )
+          end
+          def to_hash
+          end
         end
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Represents a step in execution of a run.
-          sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
+          sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(data: OpenAI::Beta::Threads::Runs::RunStep::OrHash).void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -55,28 +84,39 @@ module OpenAI
           # moves to an `in_progress` state.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
+              data: OpenAI::Beta::Threads::Runs::RunStep::OrHash,
               event: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Represents a step in execution of a run.
             data:,
             event: :"thread.run.step.in_progress"
-          ); end
-          sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { data: OpenAI::Beta::Threads::Runs::RunStep, event: Symbol }
+            )
+          end
+          def to_hash
+          end
         end
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Represents a run step delta i.e. any changed fields on a run step during
           # streaming.
-          sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent) }
+          sig { returns(OpenAI::Beta::Threads::Runs::RunStepDeltaEvent) }
           attr_reader :data
 
           sig do
-            params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash)).void
+            params(
+              data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent::OrHash
+            ).void
           end
           attr_writer :data
 
@@ -88,27 +128,41 @@ module OpenAI
           # are being streamed.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, OpenAI::Internal::AnyHash),
+              data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent::OrHash,
               event: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Represents a run step delta i.e. any changed fields on a run step during
             # streaming.
             data:,
             event: :"thread.run.step.delta"
-          ); end
-          sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent, event: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
+                event: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
         end
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Represents a step in execution of a run.
-          sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
+          sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(data: OpenAI::Beta::Threads::Runs::RunStep::OrHash).void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -119,26 +173,37 @@ module OpenAI
           # is completed.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
+              data: OpenAI::Beta::Threads::Runs::RunStep::OrHash,
               event: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Represents a step in execution of a run.
             data:,
             event: :"thread.run.step.completed"
-          ); end
-          sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { data: OpenAI::Beta::Threads::Runs::RunStep, event: Symbol }
+            )
+          end
+          def to_hash
+          end
         end
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Represents a step in execution of a run.
-          sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
+          sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(data: OpenAI::Beta::Threads::Runs::RunStep::OrHash).void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -149,26 +214,37 @@ module OpenAI
           # fails.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
+              data: OpenAI::Beta::Threads::Runs::RunStep::OrHash,
               event: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Represents a step in execution of a run.
             data:,
             event: :"thread.run.step.failed"
-          ); end
-          sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { data: OpenAI::Beta::Threads::Runs::RunStep, event: Symbol }
+            )
+          end
+          def to_hash
+          end
         end
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Represents a step in execution of a run.
-          sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
+          sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(data: OpenAI::Beta::Threads::Runs::RunStep::OrHash).void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -179,26 +255,37 @@ module OpenAI
           # is cancelled.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
+              data: OpenAI::Beta::Threads::Runs::RunStep::OrHash,
               event: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Represents a step in execution of a run.
             data:,
             event: :"thread.run.step.cancelled"
-          ); end
-          sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { data: OpenAI::Beta::Threads::Runs::RunStep, event: Symbol }
+            )
+          end
+          def to_hash
+          end
         end
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # Represents a step in execution of a run.
-          sig { returns(OpenAI::Models::Beta::Threads::Runs::RunStep) }
+          sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
           attr_reader :data
 
-          sig { params(data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash)).void }
+          sig do
+            params(data: OpenAI::Beta::Threads::Runs::RunStep::OrHash).void
+          end
           attr_writer :data
 
           sig { returns(Symbol) }
@@ -209,27 +296,31 @@ module OpenAI
           # expires.
           sig do
             params(
-              data: T.any(OpenAI::Models::Beta::Threads::Runs::RunStep, OpenAI::Internal::AnyHash),
+              data: OpenAI::Beta::Threads::Runs::RunStep::OrHash,
               event: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             # Represents a step in execution of a run.
             data:,
             event: :"thread.run.step.expired"
-          ); end
-          sig { override.returns({data: OpenAI::Models::Beta::Threads::Runs::RunStep, event: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { data: OpenAI::Beta::Threads::Runs::RunStep, event: Symbol }
+            )
+          end
+          def to_hash
+          end
         end
 
         sig do
-          override
-            .returns(
-              [OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::RunStepStreamEvent::ThreadRunStepExpired]
-            )
+          override.returns(T::Array[OpenAI::Beta::RunStepStreamEvent::Variants])
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

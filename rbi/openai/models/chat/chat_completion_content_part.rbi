@@ -10,15 +10,27 @@ module OpenAI
       module ChatCompletionContentPart
         extend OpenAI::Internal::Type::Union
 
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionContentPartText,
+              OpenAI::Chat::ChatCompletionContentPartImage,
+              OpenAI::Chat::ChatCompletionContentPartInputAudio,
+              OpenAI::Chat::ChatCompletionContentPart::File
+            )
+          end
+
         class File < OpenAI::Internal::Type::BaseModel
-          sig { returns(OpenAI::Models::Chat::ChatCompletionContentPart::File::File) }
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+          sig { returns(OpenAI::Chat::ChatCompletionContentPart::File::File) }
           attr_reader :file
 
           sig do
             params(
-              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file: OpenAI::Chat::ChatCompletionContentPart::File::File::OrHash
+            ).void
           end
           attr_writer :file
 
@@ -30,20 +42,32 @@ module OpenAI
           # generation.
           sig do
             params(
-              file: T.any(OpenAI::Models::Chat::ChatCompletionContentPart::File::File, OpenAI::Internal::AnyHash),
+              file: OpenAI::Chat::ChatCompletionContentPart::File::File::OrHash,
               type: Symbol
-            )
-              .returns(T.attached_class)
+            ).returns(T.attached_class)
           end
           def self.new(
             file:,
             # The type of the content part. Always `file`.
             type: :file
-          ); end
-          sig { override.returns({file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File, type: Symbol}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                file: OpenAI::Chat::ChatCompletionContentPart::File::File,
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
 
           class File < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The base64 encoded file data, used when passing the file to the model as a
             # string.
             sig { returns(T.nilable(String)) }
@@ -66,7 +90,13 @@ module OpenAI
             sig { params(filename: String).void }
             attr_writer :filename
 
-            sig { params(file_data: String, file_id: String, filename: String).returns(T.attached_class) }
+            sig do
+              params(
+                file_data: String,
+                file_id: String,
+                filename: String
+              ).returns(T.attached_class)
+            end
             def self.new(
               # The base64 encoded file data, used when passing the file to the model as a
               # string.
@@ -75,19 +105,26 @@ module OpenAI
               file_id: nil,
               # The name of the file, used when passing the file to the model as a string.
               filename: nil
-            ); end
-            sig { override.returns({file_data: String, file_id: String, filename: String}) }
-            def to_hash; end
+            )
+            end
+
+            sig do
+              override.returns(
+                { file_data: String, file_id: String, filename: String }
+              )
+            end
+            def to_hash
+            end
           end
         end
 
         sig do
-          override
-            .returns(
-              [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
-            )
+          override.returns(
+            T::Array[OpenAI::Chat::ChatCompletionContentPart::Variants]
+          )
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

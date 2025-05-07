@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class BatchError < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # An error code identifying the error type.
       sig { returns(T.nilable(String)) }
       attr_reader :code
@@ -26,8 +28,12 @@ module OpenAI
       attr_accessor :param
 
       sig do
-        params(code: String, line: T.nilable(Integer), message: String, param: T.nilable(String))
-          .returns(T.attached_class)
+        params(
+          code: String,
+          line: T.nilable(Integer),
+          message: String,
+          param: T.nilable(String)
+        ).returns(T.attached_class)
       end
       def self.new(
         # An error code identifying the error type.
@@ -38,11 +44,21 @@ module OpenAI
         message: nil,
         # The name of the parameter that caused the error, if applicable.
         param: nil
-      ); end
-      sig do
-        override.returns({code: String, line: T.nilable(Integer), message: String, param: T.nilable(String)})
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            code: String,
+            line: T.nilable(Integer),
+            message: String,
+            param: T.nilable(String)
+          }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

@@ -11,8 +11,8 @@ module OpenAI
       #   The time frame within which the batch should be processed. Currently only `24h`
       #   is supported.
       #
-      #   @return [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow]
-      required :completion_window, enum: -> { OpenAI::Models::BatchCreateParams::CompletionWindow }
+      #   @return [Symbol, OpenAI::BatchCreateParams::CompletionWindow]
+      required :completion_window, enum: -> { OpenAI::BatchCreateParams::CompletionWindow }
 
       # @!attribute endpoint
       #   The endpoint to be used for all requests in the batch. Currently
@@ -20,8 +20,8 @@ module OpenAI
       #   are supported. Note that `/v1/embeddings` batches are also restricted to a
       #   maximum of 50,000 embedding inputs across all requests in the batch.
       #
-      #   @return [Symbol, OpenAI::Models::BatchCreateParams::Endpoint]
-      required :endpoint, enum: -> { OpenAI::Models::BatchCreateParams::Endpoint }
+      #   @return [Symbol, OpenAI::BatchCreateParams::Endpoint]
+      required :endpoint, enum: -> { OpenAI::BatchCreateParams::Endpoint }
 
       # @!attribute input_file_id
       #   The ID of an uploaded file that contains requests for the new batch.
@@ -52,15 +52,13 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::BatchCreateParams} for more details.
       #
-      #   @param completion_window [Symbol, OpenAI::Models::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
-      #   ...
+      #   @param completion_window [Symbol, OpenAI::BatchCreateParams::CompletionWindow] The time frame within which the batch should be processed. Currently only `24h`
       #
-      #   @param endpoint [Symbol, OpenAI::Models::BatchCreateParams::Endpoint] The endpoint to be used for all requests in the batch. Currently `/v1/responses`
-      #   ...
+      #   @param endpoint [Symbol, OpenAI::BatchCreateParams::Endpoint] The endpoint to be used for all requests in the batch. Currently `/v1/responses`
       #
-      #   @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch. ...
+      #   @param input_file_id [String] The ID of an uploaded file that contains requests for the new batch.
       #
-      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be ...
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

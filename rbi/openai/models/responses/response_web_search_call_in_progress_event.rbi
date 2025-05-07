@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseWebSearchCallInProgressEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Unique ID for the output item associated with the web search call.
         sig { returns(String) }
         attr_accessor :item_id
@@ -17,7 +19,11 @@ module OpenAI
         attr_accessor :type
 
         # Emitted when a web search call is initiated.
-        sig { params(item_id: String, output_index: Integer, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(item_id: String, output_index: Integer, type: Symbol).returns(
+            T.attached_class
+          )
+        end
         def self.new(
           # Unique ID for the output item associated with the web search call.
           item_id:,
@@ -25,9 +31,16 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.web_search_call.in_progress`.
           type: :"response.web_search_call.in_progress"
-        ); end
-        sig { override.returns({item_id: String, output_index: Integer, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            { item_id: String, output_index: Integer, type: Symbol }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

@@ -7,12 +7,14 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
         # see all of your available models, or see our
         # [Model overview](https://platform.openai.com/docs/models) for descriptions of
         # them.
-        sig { returns(T.any(String, OpenAI::Models::ChatModel::OrSymbol)) }
+        sig { returns(T.any(String, OpenAI::ChatModel::OrSymbol)) }
         attr_accessor :model
 
         # The description of the assistant. The maximum length is 512 characters.
@@ -43,7 +45,7 @@ module OpenAI
         # [reasoning models](https://platform.openai.com/docs/guides/reasoning). Currently
         # supported values are `low`, `medium`, and `high`. Reducing reasoning effort can
         # result in faster responses and fewer tokens used on reasoning in a response.
-        sig { returns(T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol)) }
+        sig { returns(T.nilable(OpenAI::ReasoningEffort::OrSymbol)) }
         attr_accessor :reasoning_effort
 
         # Specifies the format that the model must output. Compatible with
@@ -71,9 +73,9 @@ module OpenAI
             T.nilable(
               T.any(
                 Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
+                OpenAI::ResponseFormatText,
+                OpenAI::ResponseFormatJSONObject,
+                OpenAI::ResponseFormatJSONSchema
               )
             )
           )
@@ -90,14 +92,18 @@ module OpenAI
         # specific to the type of tool. For example, the `code_interpreter` tool requires
         # a list of file IDs, while the `file_search` tool requires a list of vector store
         # IDs.
-        sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources)) }
+        sig do
+          returns(T.nilable(OpenAI::Beta::AssistantCreateParams::ToolResources))
+        end
         attr_reader :tool_resources
 
         sig do
           params(
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Internal::AnyHash))
-          )
-            .void
+            tool_resources:
+              T.nilable(
+                OpenAI::Beta::AssistantCreateParams::ToolResources::OrHash
+              )
+          ).void
         end
         attr_writer :tool_resources
 
@@ -109,9 +115,9 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Models::Beta::CodeInterpreterTool,
-                  OpenAI::Models::Beta::FileSearchTool,
-                  OpenAI::Models::Beta::FunctionTool
+                  OpenAI::Beta::CodeInterpreterTool,
+                  OpenAI::Beta::FileSearchTool,
+                  OpenAI::Beta::FunctionTool
                 )
               ]
             )
@@ -121,16 +127,15 @@ module OpenAI
 
         sig do
           params(
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-            ]
-          )
-            .void
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ]
+          ).void
         end
         attr_writer :tools
 
@@ -144,35 +149,37 @@ module OpenAI
 
         sig do
           params(
-            model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
+            model: T.any(String, OpenAI::ChatModel::OrSymbol),
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: T.nilable(String),
-            reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-            response_format: T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
-              )
-            ),
+            reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+            response_format:
+              T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources, OpenAI::Internal::AnyHash)),
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-            ],
+            tool_resources:
+              T.nilable(
+                OpenAI::Beta::AssistantCreateParams::ToolResources::OrHash
+              ),
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ],
             top_p: T.nilable(Float),
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # ID of the model to use. You can use the
@@ -243,40 +250,45 @@ module OpenAI
           # We generally recommend altering this or temperature but not both.
           top_p: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                model: T.any(String, OpenAI::Models::ChatModel::OrSymbol),
-                description: T.nilable(String),
-                instructions: T.nilable(String),
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                name: T.nilable(String),
-                reasoning_effort: T.nilable(OpenAI::Models::ReasoningEffort::OrSymbol),
-                response_format: T.nilable(
+          override.returns(
+            {
+              model: T.any(String, OpenAI::ChatModel::OrSymbol),
+              description: T.nilable(String),
+              instructions: T.nilable(String),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              name: T.nilable(String),
+              reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
+              response_format:
+                T.nilable(
                   T.any(
                     Symbol,
-                    OpenAI::Models::ResponseFormatText,
-                    OpenAI::Models::ResponseFormatJSONObject,
-                    OpenAI::Models::ResponseFormatJSONSchema
+                    OpenAI::ResponseFormatText,
+                    OpenAI::ResponseFormatJSONObject,
+                    OpenAI::ResponseFormatJSONSchema
                   )
                 ),
-                temperature: T.nilable(Float),
-                tool_resources: T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources),
-                tools: T::Array[
+              temperature: T.nilable(Float),
+              tool_resources:
+                T.nilable(OpenAI::Beta::AssistantCreateParams::ToolResources),
+              tools:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Models::Beta::FileSearchTool,
-                    OpenAI::Models::Beta::FunctionTool
+                    OpenAI::Beta::CodeInterpreterTool,
+                    OpenAI::Beta::FileSearchTool,
+                    OpenAI::Beta::FunctionTool
                   )
                 ],
-                top_p: T.nilable(Float),
-                request_options: OpenAI::RequestOptions
-              }
-            )
+              top_p: T.nilable(Float),
+              request_options: OpenAI::RequestOptions
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
 
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -286,33 +298,53 @@ module OpenAI
         module Model
           extend OpenAI::Internal::Type::Union
 
-          sig { override.returns([String, OpenAI::Models::ChatModel::TaggedSymbol]) }
-          def self.variants; end
+          Variants =
+            T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Beta::AssistantCreateParams::Model::Variants]
+            )
+          end
+          def self.variants
+          end
         end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter)) }
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::AssistantCreateParams::ToolResources::CodeInterpreter
+              )
+            )
+          end
           attr_reader :code_interpreter
 
           sig do
             params(
-              code_interpreter: T.any(
-                OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::AnyHash
-              )
-            )
-              .void
+              code_interpreter:
+                OpenAI::Beta::AssistantCreateParams::ToolResources::CodeInterpreter::OrHash
+            ).void
           end
           attr_writer :code_interpreter
 
-          sig { returns(T.nilable(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch)) }
+          sig do
+            returns(
+              T.nilable(
+                OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch
+              )
+            )
+          end
           attr_reader :file_search
 
           sig do
             params(
-              file_search: T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file_search:
+                OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::OrHash
+            ).void
           end
           attr_writer :file_search
 
@@ -322,28 +354,32 @@ module OpenAI
           # IDs.
           sig do
             params(
-              code_interpreter: T.any(
-                OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter,
-                OpenAI::Internal::AnyHash
-              ),
-              file_search: T.any(OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
-            )
-              .returns(T.attached_class)
+              code_interpreter:
+                OpenAI::Beta::AssistantCreateParams::ToolResources::CodeInterpreter::OrHash,
+              file_search:
+                OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::OrHash
+            ).returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil); end
+          def self.new(code_interpreter: nil, file_search: nil)
+          end
 
           sig do
-            override
-              .returns(
-                {
-                  code_interpreter: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::CodeInterpreter,
-                  file_search: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch
-                }
-              )
+            override.returns(
+              {
+                code_interpreter:
+                  OpenAI::Beta::AssistantCreateParams::ToolResources::CodeInterpreter,
+                file_search:
+                  OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch
+              }
+            )
           end
-          def to_hash; end
+          def to_hash
+          end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             # available to the `code_interpreter` tool. There can be a maximum of 20 files
             # associated with the tool.
@@ -359,12 +395,18 @@ module OpenAI
               # available to the `code_interpreter` tool. There can be a maximum of 20 files
               # associated with the tool.
               file_ids: nil
-            ); end
-            sig { override.returns({file_ids: T::Array[String]}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ file_ids: T::Array[String] }) }
+            def to_hash
+            end
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             # attached to this assistant. There can be a maximum of 1 vector store attached to
@@ -381,35 +423,33 @@ module OpenAI
             # vector store attached to the assistant.
             sig do
               returns(
-                T.nilable(T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore])
+                T.nilable(
+                  T::Array[
+                    OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore
+                  ]
+                )
               )
             end
             attr_reader :vector_stores
 
             sig do
               params(
-                vector_stores: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
-                    OpenAI::Internal::AnyHash
-                  )
-                ]
-              )
-                .void
+                vector_stores:
+                  T::Array[
+                    OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::OrHash
+                  ]
+              ).void
             end
             attr_writer :vector_stores
 
             sig do
               params(
                 vector_store_ids: T::Array[String],
-                vector_stores: T::Array[
-                  T.any(
-                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
-                    OpenAI::Internal::AnyHash
-                  )
-                ]
-              )
-                .returns(T.attached_class)
+                vector_stores:
+                  T::Array[
+                    OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::OrHash
+                  ]
+              ).returns(T.attached_class)
             end
             def self.new(
               # The
@@ -422,27 +462,35 @@ module OpenAI
               # with file_ids and attach it to this assistant. There can be a maximum of 1
               # vector store attached to the assistant.
               vector_stores: nil
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    vector_store_ids: T::Array[String],
-                    vector_stores: T::Array[OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore]
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  vector_store_ids: T::Array[String],
+                  vector_stores:
+                    T::Array[
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore
+                    ]
+                }
+              )
+            end
+            def to_hash
+            end
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               # strategy.
               sig do
                 returns(
                   T.nilable(
                     T.any(
-                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
                     )
                   )
                 )
@@ -451,13 +499,12 @@ module OpenAI
 
               sig do
                 params(
-                  chunking_strategy: T.any(
-                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
-                  )
-                )
-                  .void
+                  chunking_strategy:
+                    T.any(
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto::OrHash,
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::OrHash
+                    )
+                ).void
               end
               attr_writer :chunking_strategy
 
@@ -481,15 +528,14 @@ module OpenAI
 
               sig do
                 params(
-                  chunking_strategy: T.any(
-                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                    OpenAI::Internal::AnyHash,
-                    OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
-                  ),
+                  chunking_strategy:
+                    T.any(
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto::OrHash,
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::OrHash
+                    ),
                   file_ids: T::Array[String],
                   metadata: T.nilable(T::Hash[Symbol, String])
-                )
-                  .returns(T.attached_class)
+                ).returns(T.attached_class)
               end
               def self.new(
                 # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
@@ -506,28 +552,44 @@ module OpenAI
                 # Keys are strings with a maximum length of 64 characters. Values are strings with
                 # a maximum length of 512 characters.
                 metadata: nil
-              ); end
-              sig do
-                override
-                  .returns(
-                    {
-                      chunking_strategy: T.any(
-                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
-                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
-                      ),
-                      file_ids: T::Array[String],
-                      metadata: T.nilable(T::Hash[Symbol, String])
-                    }
-                  )
+              )
               end
-              def to_hash; end
+
+              sig do
+                override.returns(
+                  {
+                    chunking_strategy:
+                      T.any(
+                        OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                      ),
+                    file_ids: T::Array[String],
+                    metadata: T.nilable(T::Hash[Symbol, String])
+                  }
+                )
+              end
+              def to_hash
+              end
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               # strategy.
               module ChunkingStrategy
                 extend OpenAI::Internal::Type::Union
 
+                Variants =
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                    )
+                  end
+
                 class Auto < OpenAI::Internal::Type::BaseModel
+                  OrHash =
+                    T.type_alias do
+                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                    end
+
                   # Always `auto`.
                   sig { returns(Symbol) }
                   attr_accessor :type
@@ -538,27 +600,32 @@ module OpenAI
                   def self.new(
                     # Always `auto`.
                     type: :auto
-                  ); end
-                  sig { override.returns({type: Symbol}) }
-                  def to_hash; end
+                  )
+                  end
+
+                  sig { override.returns({ type: Symbol }) }
+                  def to_hash
+                  end
                 end
 
                 class Static < OpenAI::Internal::Type::BaseModel
+                  OrHash =
+                    T.type_alias do
+                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                    end
+
                   sig do
                     returns(
-                      OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
                     )
                   end
                   attr_reader :static
 
                   sig do
                     params(
-                      static: T.any(
-                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                        OpenAI::Internal::AnyHash
-                      )
-                    )
-                      .void
+                      static:
+                        OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static::OrHash
+                    ).void
                   end
                   attr_writer :static
 
@@ -568,31 +635,36 @@ module OpenAI
 
                   sig do
                     params(
-                      static: T.any(
-                        OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                        OpenAI::Internal::AnyHash
-                      ),
+                      static:
+                        OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static::OrHash,
                       type: Symbol
-                    )
-                      .returns(T.attached_class)
+                    ).returns(T.attached_class)
                   end
                   def self.new(
                     static:,
                     # Always `static`.
                     type: :static
-                  ); end
-                  sig do
-                    override
-                      .returns(
-                        {
-                          static: OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
-                          type: Symbol
-                        }
-                      )
+                  )
                   end
-                  def to_hash; end
+
+                  sig do
+                    override.returns(
+                      {
+                        static:
+                          OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                        type: Symbol
+                      }
+                    )
+                  end
+                  def to_hash
+                  end
 
                   class Static < OpenAI::Internal::Type::BaseModel
+                    OrHash =
+                      T.type_alias do
+                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      end
+
                     # The number of tokens that overlap between chunks. The default value is `400`.
                     #
                     # Note that the overlap must not exceed half of `max_chunk_size_tokens`.
@@ -618,19 +690,31 @@ module OpenAI
                       # The maximum number of tokens in each chunk. The default value is `800`. The
                       # minimum value is `100` and the maximum value is `4096`.
                       max_chunk_size_tokens:
-                    ); end
-                    sig { override.returns({chunk_overlap_tokens: Integer, max_chunk_size_tokens: Integer}) }
-                    def to_hash; end
+                    )
+                    end
+
+                    sig do
+                      override.returns(
+                        {
+                          chunk_overlap_tokens: Integer,
+                          max_chunk_size_tokens: Integer
+                        }
+                      )
+                    end
+                    def to_hash
+                    end
                   end
                 end
 
                 sig do
-                  override
-                    .returns(
-                      [OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
-                    )
+                  override.returns(
+                    T::Array[
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Variants
+                    ]
+                  )
                 end
-                def self.variants; end
+                def self.variants
+                end
               end
             end
           end

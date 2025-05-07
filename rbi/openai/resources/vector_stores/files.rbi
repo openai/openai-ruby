@@ -11,15 +11,15 @@ module OpenAI
           params(
             vector_store_id: String,
             file_id: String,
-            attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            chunking_strategy: T.any(
-              OpenAI::Models::AutoFileChunkingStrategyParam,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::StaticFileChunkingStrategyObjectParam
-            ),
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Models::VectorStores::VectorStoreFile)
+            attributes:
+              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+            chunking_strategy:
+              T.any(
+                OpenAI::AutoFileChunkingStrategyParam::OrHash,
+                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+              ),
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::VectorStores::VectorStoreFile)
         end
         def create(
           # The ID of the vector store for which to create a File.
@@ -38,11 +38,16 @@ module OpenAI
           # strategy. Only applicable if `file_ids` is non-empty.
           chunking_strategy: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Retrieves a vector store file.
         sig do
-          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFile)
+          params(
+            file_id: String,
+            vector_store_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::VectorStores::VectorStoreFile)
         end
         def retrieve(
           # The ID of the file being retrieved.
@@ -50,16 +55,18 @@ module OpenAI
           # The ID of the vector store that the file belongs to.
           vector_store_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # Update attributes on a vector store file.
         sig do
           params(
             file_id: String,
             vector_store_id: String,
-            attributes: T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-            request_options: OpenAI::RequestOpts
-          )
-            .returns(OpenAI::Models::VectorStores::VectorStoreFile)
+            attributes:
+              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::VectorStores::VectorStoreFile)
         end
         def update(
           # Path param: The ID of the file to update attributes.
@@ -73,19 +80,22 @@ module OpenAI
           # maximum length of 512 characters, booleans, or numbers.
           attributes:,
           request_options: {}
-        ); end
+        )
+        end
+
         # Returns a list of vector store files.
         sig do
           params(
             vector_store_id: String,
             after: String,
             before: String,
-            filter: OpenAI::Models::VectorStores::FileListParams::Filter::OrSymbol,
+            filter: OpenAI::VectorStores::FileListParams::Filter::OrSymbol,
             limit: Integer,
-            order: OpenAI::Models::VectorStores::FileListParams::Order::OrSymbol,
-            request_options: OpenAI::RequestOpts
+            order: OpenAI::VectorStores::FileListParams::Order::OrSymbol,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
           )
-            .returns(OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile])
         end
         def list(
           # The ID of the vector store that the files belong to.
@@ -109,14 +119,19 @@ module OpenAI
           # order and `desc` for descending order.
           order: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # Delete a vector store file. This will remove the file from the vector store but
         # the file itself will not be deleted. To delete the file, use the
         # [delete file](https://platform.openai.com/docs/api-reference/files/delete)
         # endpoint.
         sig do
-          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Models::VectorStores::VectorStoreFileDeleted)
+          params(
+            file_id: String,
+            vector_store_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::VectorStores::VectorStoreFileDeleted)
         end
         def delete(
           # The ID of the file to delete.
@@ -124,11 +139,20 @@ module OpenAI
           # The ID of the vector store that the file belongs to.
           vector_store_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # Retrieve the parsed contents of a vector store file.
         sig do
-          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOpts)
-            .returns(OpenAI::Internal::Page[OpenAI::Models::VectorStores::FileContentResponse])
+          params(
+            file_id: String,
+            vector_store_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            OpenAI::Internal::Page[
+              OpenAI::Models::VectorStores::FileContentResponse
+            ]
+          )
         end
         def content(
           # The ID of the file within the vector store.
@@ -136,10 +160,13 @@ module OpenAI
           # The ID of the vector store.
           vector_store_id:,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

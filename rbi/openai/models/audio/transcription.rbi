@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Audio
       class Transcription < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The transcribed text.
         sig { returns(String) }
         attr_accessor :text
@@ -11,14 +13,15 @@ module OpenAI
         # The log probabilities of the tokens in the transcription. Only returned with the
         # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
         # to the `include` array.
-        sig { returns(T.nilable(T::Array[OpenAI::Models::Audio::Transcription::Logprob])) }
+        sig do
+          returns(T.nilable(T::Array[OpenAI::Audio::Transcription::Logprob]))
+        end
         attr_reader :logprobs
 
         sig do
           params(
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::AnyHash)]
-          )
-            .void
+            logprobs: T::Array[OpenAI::Audio::Transcription::Logprob::OrHash]
+          ).void
         end
         attr_writer :logprobs
 
@@ -27,9 +30,8 @@ module OpenAI
         sig do
           params(
             text: String,
-            logprobs: T::Array[T.any(OpenAI::Models::Audio::Transcription::Logprob, OpenAI::Internal::AnyHash)]
-          )
-            .returns(T.attached_class)
+            logprobs: T::Array[OpenAI::Audio::Transcription::Logprob::OrHash]
+          ).returns(T.attached_class)
         end
         def self.new(
           # The transcribed text.
@@ -38,11 +40,24 @@ module OpenAI
           # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
           # to the `include` array.
           logprobs: nil
-        ); end
-        sig { override.returns({text: String, logprobs: T::Array[OpenAI::Models::Audio::Transcription::Logprob]}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              text: String,
+              logprobs: T::Array[OpenAI::Audio::Transcription::Logprob]
+            }
+          )
+        end
+        def to_hash
+        end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
           # The token in the transcription.
           sig { returns(T.nilable(String)) }
           attr_reader :token
@@ -64,7 +79,13 @@ module OpenAI
           sig { params(logprob: Float).void }
           attr_writer :logprob
 
-          sig { params(token: String, bytes: T::Array[Float], logprob: Float).returns(T.attached_class) }
+          sig do
+            params(
+              token: String,
+              bytes: T::Array[Float],
+              logprob: Float
+            ).returns(T.attached_class)
+          end
           def self.new(
             # The token in the transcription.
             token: nil,
@@ -72,9 +93,16 @@ module OpenAI
             bytes: nil,
             # The log probability of the token.
             logprob: nil
-          ); end
-          sig { override.returns({token: String, bytes: T::Array[Float], logprob: Float}) }
-          def to_hash; end
+          )
+          end
+
+          sig do
+            override.returns(
+              { token: String, bytes: T::Array[Float], logprob: Float }
+            )
+          end
+          def to_hash
+          end
         end
       end
     end

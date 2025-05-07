@@ -48,7 +48,7 @@ When using sorbet, it is recommended to use model classes as below. This provide
 
 ```ruby
 openai.chat.completions.create(
-  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
+  messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 ```
@@ -189,7 +189,7 @@ In all places where a `BaseModel` type is specified, vanilla Ruby `Hash` can als
 ```ruby
 # This has tooling readability, for auto-completion, static analysis, and goto definition with supported language services
 params = OpenAI::Models::Chat::CompletionCreateParams.new(
-  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
+  messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 
@@ -245,9 +245,9 @@ Sorbet's typed enums require sub-classing of the [`T::Enum` class](https://sorbe
 Since this library does not depend on `sorbet-runtime`, it uses a [`T.all` intersection type](https://sorbet.org/docs/intersection-types) with a ruby primitive type to construct a "tagged alias" instead.
 
 ```ruby
-module OpenAI::Models::ChatModel
+module OpenAI::ChatModel
   # This alias aids language service driven navigation.
-  TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::ChatModel) }
+  TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ChatModel) }
 end
 ```
 
@@ -257,7 +257,7 @@ It is possible to pass a compatible model / parameter class to a method that exp
 
 ```ruby
 params = OpenAI::Models::Chat::CompletionCreateParams.new(
-  messages: [OpenAI::Models::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
+  messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(role: "user", content: "Say this is a test")],
   model: :"gpt-4.1"
 )
 openai.chat.completions.create(**params)

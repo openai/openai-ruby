@@ -7,8 +7,6 @@ module OpenAI
         attr_accessor name: String
 
         def initialize: (name: String) -> void
-
-        def to_hash: -> OpenAI::Models::Beta::assistant_tool_choice_function
       end
     end
   end

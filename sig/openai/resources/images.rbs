@@ -9,7 +9,7 @@ module OpenAI
         ?size: OpenAI::Models::ImageCreateVariationParams::size?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::ImagesResponse
+      ) -> OpenAI::ImagesResponse
 
       def edit: (
         image: OpenAI::Models::ImageEditParams::image,
@@ -23,7 +23,7 @@ module OpenAI
         ?size: OpenAI::Models::ImageEditParams::size?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::ImagesResponse
+      ) -> OpenAI::ImagesResponse
 
       def generate: (
         prompt: String,
@@ -39,7 +39,7 @@ module OpenAI
         ?style: OpenAI::Models::ImageGenerateParams::style?,
         ?user: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::ImagesResponse
+      ) -> OpenAI::ImagesResponse
 
       def initialize: (client: OpenAI::Client) -> void
     end

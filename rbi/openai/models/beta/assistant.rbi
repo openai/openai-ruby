@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Beta
       class Assistant < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
         attr_accessor :id
@@ -53,9 +55,9 @@ module OpenAI
           returns(
             T::Array[
               T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
+                OpenAI::Beta::CodeInterpreterTool,
+                OpenAI::Beta::FileSearchTool,
+                OpenAI::Beta::FunctionTool
               )
             ]
           )
@@ -87,9 +89,9 @@ module OpenAI
             T.nilable(
               T.any(
                 Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
+                OpenAI::ResponseFormatText,
+                OpenAI::ResponseFormatJSONObject,
+                OpenAI::ResponseFormatJSONSchema
               )
             )
           )
@@ -106,14 +108,14 @@ module OpenAI
         # specific to the type of tool. For example, the `code_interpreter` tool requires
         # a list of file IDs, while the `file_search` tool requires a list of vector store
         # IDs.
-        sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources)) }
+        sig { returns(T.nilable(OpenAI::Beta::Assistant::ToolResources)) }
         attr_reader :tool_resources
 
         sig do
           params(
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Internal::AnyHash))
-          )
-            .void
+            tool_resources:
+              T.nilable(OpenAI::Beta::Assistant::ToolResources::OrHash)
+          ).void
         end
         attr_writer :tool_resources
 
@@ -135,29 +137,29 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
             name: T.nilable(String),
-            tools: T::Array[
-              T.any(
-                OpenAI::Models::Beta::CodeInterpreterTool,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Beta::FileSearchTool,
-                OpenAI::Models::Beta::FunctionTool
-              )
-            ],
-            response_format: T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::Models::ResponseFormatText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::ResponseFormatJSONObject,
-                OpenAI::Models::ResponseFormatJSONSchema
-              )
-            ),
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Beta::CodeInterpreterTool::OrHash,
+                  OpenAI::Beta::FileSearchTool::OrHash,
+                  OpenAI::Beta::FunctionTool::OrHash
+                )
+              ],
+            response_format:
+              T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::ResponseFormatText::OrHash,
+                  OpenAI::ResponseFormatJSONObject::OrHash,
+                  OpenAI::ResponseFormatJSONSchema::OrHash
+                )
+              ),
             temperature: T.nilable(Float),
-            tool_resources: T.nilable(T.any(OpenAI::Models::Beta::Assistant::ToolResources, OpenAI::Internal::AnyHash)),
+            tool_resources:
+              T.nilable(OpenAI::Beta::Assistant::ToolResources::OrHash),
             top_p: T.nilable(Float),
             object: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           # The identifier, which can be referenced in API endpoints.
@@ -226,62 +228,77 @@ module OpenAI
           top_p: nil,
           # The object type, which is always `assistant`.
           object: :assistant
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                id: String,
-                created_at: Integer,
-                description: T.nilable(String),
-                instructions: T.nilable(String),
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                model: String,
-                name: T.nilable(String),
-                object: Symbol,
-                tools: T::Array[
+          override.returns(
+            {
+              id: String,
+              created_at: Integer,
+              description: T.nilable(String),
+              instructions: T.nilable(String),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              model: String,
+              name: T.nilable(String),
+              object: Symbol,
+              tools:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Beta::CodeInterpreterTool,
-                    OpenAI::Models::Beta::FileSearchTool,
-                    OpenAI::Models::Beta::FunctionTool
+                    OpenAI::Beta::CodeInterpreterTool,
+                    OpenAI::Beta::FileSearchTool,
+                    OpenAI::Beta::FunctionTool
                   )
                 ],
-                response_format: T.nilable(
+              response_format:
+                T.nilable(
                   T.any(
                     Symbol,
-                    OpenAI::Models::ResponseFormatText,
-                    OpenAI::Models::ResponseFormatJSONObject,
-                    OpenAI::Models::ResponseFormatJSONSchema
+                    OpenAI::ResponseFormatText,
+                    OpenAI::ResponseFormatJSONObject,
+                    OpenAI::ResponseFormatJSONSchema
                   )
                 ),
-                temperature: T.nilable(Float),
-                tool_resources: T.nilable(OpenAI::Models::Beta::Assistant::ToolResources),
-                top_p: T.nilable(Float)
-              }
-            )
+              temperature: T.nilable(Float),
+              tool_resources: T.nilable(OpenAI::Beta::Assistant::ToolResources),
+              top_p: T.nilable(Float)
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter)) }
+          OrHash =
+            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+          sig do
+            returns(
+              T.nilable(OpenAI::Beta::Assistant::ToolResources::CodeInterpreter)
+            )
+          end
           attr_reader :code_interpreter
 
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Internal::AnyHash)
-            )
-              .void
+              code_interpreter:
+                OpenAI::Beta::Assistant::ToolResources::CodeInterpreter::OrHash
+            ).void
           end
           attr_writer :code_interpreter
 
-          sig { returns(T.nilable(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch)) }
+          sig do
+            returns(
+              T.nilable(OpenAI::Beta::Assistant::ToolResources::FileSearch)
+            )
+          end
           attr_reader :file_search
 
           sig do
             params(
-              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
-            )
-              .void
+              file_search:
+                OpenAI::Beta::Assistant::ToolResources::FileSearch::OrHash
+            ).void
           end
           attr_writer :file_search
 
@@ -291,25 +308,31 @@ module OpenAI
           # IDs.
           sig do
             params(
-              code_interpreter: T.any(OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter, OpenAI::Internal::AnyHash),
-              file_search: T.any(OpenAI::Models::Beta::Assistant::ToolResources::FileSearch, OpenAI::Internal::AnyHash)
-            )
-              .returns(T.attached_class)
+              code_interpreter:
+                OpenAI::Beta::Assistant::ToolResources::CodeInterpreter::OrHash,
+              file_search:
+                OpenAI::Beta::Assistant::ToolResources::FileSearch::OrHash
+            ).returns(T.attached_class)
           end
-          def self.new(code_interpreter: nil, file_search: nil); end
+          def self.new(code_interpreter: nil, file_search: nil)
+          end
 
           sig do
-            override
-              .returns(
-                {
-                  code_interpreter: OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter,
-                  file_search: OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
-                }
-              )
+            override.returns(
+              {
+                code_interpreter:
+                  OpenAI::Beta::Assistant::ToolResources::CodeInterpreter,
+                file_search: OpenAI::Beta::Assistant::ToolResources::FileSearch
+              }
+            )
           end
-          def to_hash; end
+          def to_hash
+          end
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             # available to the `code_interpreter`` tool. There can be a maximum of 20 files
             # associated with the tool.
@@ -325,12 +348,18 @@ module OpenAI
               # available to the `code_interpreter`` tool. There can be a maximum of 20 files
               # associated with the tool.
               file_ids: nil
-            ); end
-            sig { override.returns({file_ids: T::Array[String]}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ file_ids: T::Array[String] }) }
+            def to_hash
+            end
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The ID of the
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
             # attached to this assistant. There can be a maximum of 1 vector store attached to
@@ -341,16 +370,23 @@ module OpenAI
             sig { params(vector_store_ids: T::Array[String]).void }
             attr_writer :vector_store_ids
 
-            sig { params(vector_store_ids: T::Array[String]).returns(T.attached_class) }
+            sig do
+              params(vector_store_ids: T::Array[String]).returns(
+                T.attached_class
+              )
+            end
             def self.new(
               # The ID of the
               # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
               # attached to this assistant. There can be a maximum of 1 vector store attached to
               # the assistant.
               vector_store_ids: nil
-            ); end
-            sig { override.returns({vector_store_ids: T::Array[String]}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ vector_store_ids: T::Array[String] }) }
+            def to_hash
+            end
           end
         end
       end

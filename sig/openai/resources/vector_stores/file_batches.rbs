@@ -5,22 +5,22 @@ module OpenAI
         def create: (
           String vector_store_id,
           file_ids: ::Array[String],
-          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileBatchCreateParams::attribute]?,
+          ?attributes: ::Hash[Symbol, OpenAI::VectorStores::FileBatchCreateParams::attribute]?,
           ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::VectorStores::VectorStoreFileBatch
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
 
         def retrieve: (
           String batch_id,
           vector_store_id: String,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::VectorStores::VectorStoreFileBatch
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
 
         def cancel: (
           String batch_id,
           vector_store_id: String,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::VectorStores::VectorStoreFileBatch
+        ) -> OpenAI::VectorStores::VectorStoreFileBatch
 
         def list_files: (
           String batch_id,
@@ -31,7 +31,7 @@ module OpenAI
           ?limit: Integer,
           ?order: OpenAI::Models::VectorStores::FileBatchListFilesParams::order,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile]
+        ) -> OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
 
         def initialize: (client: OpenAI::Client) -> void
       end

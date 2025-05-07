@@ -9,8 +9,6 @@ module OpenAI
         attr_accessor name: String
 
         def initialize: (name: String) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_function_call_option
       end
     end
   end

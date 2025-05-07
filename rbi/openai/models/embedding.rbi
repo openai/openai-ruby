@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class Embedding < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # The embedding vector, which is a list of floats. The length of vector depends on
       # the model as listed in the
       # [embedding guide](https://platform.openai.com/docs/guides/embeddings).
@@ -18,7 +20,13 @@ module OpenAI
       attr_accessor :object
 
       # Represents an embedding vector returned by embedding endpoint.
-      sig { params(embedding: T::Array[Float], index: Integer, object: Symbol).returns(T.attached_class) }
+      sig do
+        params(
+          embedding: T::Array[Float],
+          index: Integer,
+          object: Symbol
+        ).returns(T.attached_class)
+      end
       def self.new(
         # The embedding vector, which is a list of floats. The length of vector depends on
         # the model as listed in the
@@ -28,9 +36,16 @@ module OpenAI
         index:,
         # The object type, which is always "embedding".
         object: :embedding
-      ); end
-      sig { override.returns({embedding: T::Array[Float], index: Integer, object: Symbol}) }
-      def to_hash; end
+      )
+      end
+
+      sig do
+        override.returns(
+          { embedding: T::Array[Float], index: Integer, object: Symbol }
+        )
+      end
+      def to_hash
+      end
     end
   end
 end

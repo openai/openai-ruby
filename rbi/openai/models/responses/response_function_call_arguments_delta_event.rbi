@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The function-call arguments delta that is added.
         sig { returns(String) }
         attr_accessor :delta
@@ -38,9 +40,21 @@ module OpenAI
           output_index:,
           # The type of the event. Always `response.function_call_arguments.delta`.
           type: :"response.function_call_arguments.delta"
-        ); end
-        sig { override.returns({delta: String, item_id: String, output_index: Integer, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              delta: String,
+              item_id: String,
+              output_index: Integer,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

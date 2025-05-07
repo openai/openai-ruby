@@ -3,7 +3,9 @@
 module OpenAI
   module Models
     class EvalLabelModelGrader < OpenAI::Internal::Type::BaseModel
-      sig { returns(T::Array[OpenAI::Models::EvalLabelModelGrader::Input]) }
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
+      sig { returns(T::Array[OpenAI::EvalLabelModelGrader::Input]) }
       attr_accessor :input
 
       # The labels to assign to each item in the evaluation.
@@ -30,14 +32,13 @@ module OpenAI
       # the evaluation.
       sig do
         params(
-          input: T::Array[T.any(OpenAI::Models::EvalLabelModelGrader::Input, OpenAI::Internal::AnyHash)],
+          input: T::Array[OpenAI::EvalLabelModelGrader::Input::OrHash],
           labels: T::Array[String],
           model: String,
           name: String,
           passing_labels: T::Array[String],
           type: Symbol
-        )
-          .returns(T.attached_class)
+        ).returns(T.attached_class)
       end
       def self.new(
         input:,
@@ -51,30 +52,34 @@ module OpenAI
         passing_labels:,
         # The object type, which is always `label_model`.
         type: :label_model
-      ); end
-      sig do
-        override
-          .returns(
-            {
-              input: T::Array[OpenAI::Models::EvalLabelModelGrader::Input],
-              labels: T::Array[String],
-              model: String,
-              name: String,
-              passing_labels: T::Array[String],
-              type: Symbol
-            }
-          )
+      )
       end
-      def to_hash; end
+
+      sig do
+        override.returns(
+          {
+            input: T::Array[OpenAI::EvalLabelModelGrader::Input],
+            labels: T::Array[String],
+            model: String,
+            name: String,
+            passing_labels: T::Array[String],
+            type: Symbol
+          }
+        )
+      end
+      def to_hash
+      end
 
       class Input < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Text inputs to the model - can contain template strings.
         sig do
           returns(
             T.any(
               String,
-              OpenAI::Models::Responses::ResponseInputText,
-              OpenAI::Models::EvalLabelModelGrader::Input::Content::OutputText
+              OpenAI::Responses::ResponseInputText,
+              OpenAI::EvalLabelModelGrader::Input::Content::OutputText
             )
           )
         end
@@ -82,14 +87,20 @@ module OpenAI
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
         # `developer`.
-        sig { returns(OpenAI::Models::EvalLabelModelGrader::Input::Role::TaggedSymbol) }
+        sig { returns(OpenAI::EvalLabelModelGrader::Input::Role::TaggedSymbol) }
         attr_accessor :role
 
         # The type of the message input. Always `message`.
-        sig { returns(T.nilable(OpenAI::Models::EvalLabelModelGrader::Input::Type::TaggedSymbol)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::EvalLabelModelGrader::Input::Type::TaggedSymbol)
+          )
+        end
         attr_reader :type
 
-        sig { params(type: OpenAI::Models::EvalLabelModelGrader::Input::Type::OrSymbol).void }
+        sig do
+          params(type: OpenAI::EvalLabelModelGrader::Input::Type::OrSymbol).void
+        end
         attr_writer :type
 
         # A message input to the model with a role indicating instruction following
@@ -99,16 +110,15 @@ module OpenAI
         # interactions.
         sig do
           params(
-            content: T.any(
-              String,
-              OpenAI::Models::Responses::ResponseInputText,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::EvalLabelModelGrader::Input::Content::OutputText
-            ),
-            role: OpenAI::Models::EvalLabelModelGrader::Input::Role::OrSymbol,
-            type: OpenAI::Models::EvalLabelModelGrader::Input::Type::OrSymbol
-          )
-            .returns(T.attached_class)
+            content:
+              T.any(
+                String,
+                OpenAI::Responses::ResponseInputText::OrHash,
+                OpenAI::EvalLabelModelGrader::Input::Content::OutputText::OrHash
+              ),
+            role: OpenAI::EvalLabelModelGrader::Input::Role::OrSymbol,
+            type: OpenAI::EvalLabelModelGrader::Input::Type::OrSymbol
+          ).returns(T.attached_class)
         end
         def self.new(
           # Text inputs to the model - can contain template strings.
@@ -118,28 +128,43 @@ module OpenAI
           role:,
           # The type of the message input. Always `message`.
           type: nil
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                content: T.any(
-                  String,
-                  OpenAI::Models::Responses::ResponseInputText,
-                  OpenAI::Models::EvalLabelModelGrader::Input::Content::OutputText
-                ),
-                role: OpenAI::Models::EvalLabelModelGrader::Input::Role::TaggedSymbol,
-                type: OpenAI::Models::EvalLabelModelGrader::Input::Type::TaggedSymbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              content:
+                T.any(
+                  String,
+                  OpenAI::Responses::ResponseInputText,
+                  OpenAI::EvalLabelModelGrader::Input::Content::OutputText
+                ),
+              role: OpenAI::EvalLabelModelGrader::Input::Role::TaggedSymbol,
+              type: OpenAI::EvalLabelModelGrader::Input::Type::TaggedSymbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         # Text inputs to the model - can contain template strings.
         module Content
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                String,
+                OpenAI::Responses::ResponseInputText,
+                OpenAI::EvalLabelModelGrader::Input::Content::OutputText
+              )
+            end
+
           class OutputText < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The text output from the model.
             sig { returns(String) }
             attr_accessor :text
@@ -155,18 +180,21 @@ module OpenAI
               text:,
               # The type of the output text. Always `output_text`.
               type: :output_text
-            ); end
-            sig { override.returns({text: String, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ text: String, type: Symbol }) }
+            def to_hash
+            end
           end
 
           sig do
-            override
-              .returns(
-                [String, OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::EvalLabelModelGrader::Input::Content::OutputText]
-              )
+            override.returns(
+              T::Array[OpenAI::EvalLabelModelGrader::Input::Content::Variants]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -174,29 +202,65 @@ module OpenAI
         module Role
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Role) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::EvalLabelModelGrader::Input::Role)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          USER = T.let(:user, OpenAI::Models::EvalLabelModelGrader::Input::Role::TaggedSymbol)
-          ASSISTANT = T.let(:assistant, OpenAI::Models::EvalLabelModelGrader::Input::Role::TaggedSymbol)
-          SYSTEM = T.let(:system, OpenAI::Models::EvalLabelModelGrader::Input::Role::TaggedSymbol)
-          DEVELOPER = T.let(:developer, OpenAI::Models::EvalLabelModelGrader::Input::Role::TaggedSymbol)
+          USER =
+            T.let(
+              :user,
+              OpenAI::EvalLabelModelGrader::Input::Role::TaggedSymbol
+            )
+          ASSISTANT =
+            T.let(
+              :assistant,
+              OpenAI::EvalLabelModelGrader::Input::Role::TaggedSymbol
+            )
+          SYSTEM =
+            T.let(
+              :system,
+              OpenAI::EvalLabelModelGrader::Input::Role::TaggedSymbol
+            )
+          DEVELOPER =
+            T.let(
+              :developer,
+              OpenAI::EvalLabelModelGrader::Input::Role::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::EvalLabelModelGrader::Input::Role::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[OpenAI::EvalLabelModelGrader::Input::Role::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
         end
 
         # The type of the message input. Always `message`.
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::EvalLabelModelGrader::Input::Type) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::EvalLabelModelGrader::Input::Type)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          MESSAGE = T.let(:message, OpenAI::Models::EvalLabelModelGrader::Input::Type::TaggedSymbol)
+          MESSAGE =
+            T.let(
+              :message,
+              OpenAI::EvalLabelModelGrader::Input::Type::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::EvalLabelModelGrader::Input::Type::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[OpenAI::EvalLabelModelGrader::Input::Type::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

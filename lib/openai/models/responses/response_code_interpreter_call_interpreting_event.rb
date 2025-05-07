@@ -7,8 +7,8 @@ module OpenAI
         # @!attribute code_interpreter_call
         #   A tool call to run code.
         #
-        #   @return [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall]
-        required :code_interpreter_call, -> { OpenAI::Models::Responses::ResponseCodeInterpreterToolCall }
+        #   @return [OpenAI::Responses::ResponseCodeInterpreterToolCall]
+        required :code_interpreter_call, -> { OpenAI::Responses::ResponseCodeInterpreterToolCall }
 
         # @!attribute output_index
         #   The index of the output item that the code interpreter call is in progress.
@@ -24,16 +24,16 @@ module OpenAI
 
         # @!method initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.interpreting")
         #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCodeInterpreterCallInterpretingEvent} for
-        #   more details.
+        #   {OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent} for more
+        #   details.
         #
         #   Emitted when the code interpreter is actively interpreting the code snippet.
         #
-        #   @param code_interpreter_call [OpenAI::Models::Responses::ResponseCodeInterpreterToolCall] A tool call to run code. ...
+        #   @param code_interpreter_call [OpenAI::Responses::ResponseCodeInterpreterToolCall] A tool call to run code.
         #
-        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress. ...
+        #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call.interpreting"] The type of the event. Always `response.code_interpreter_call.interpreting`. ...
+        #   @param type [Symbol, :"response.code_interpreter_call.interpreting"] The type of the event. Always `response.code_interpreter_call.interpreting`.
       end
     end
   end

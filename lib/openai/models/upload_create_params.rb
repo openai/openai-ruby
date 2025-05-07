@@ -34,20 +34,20 @@ module OpenAI
       #   See the
       #   [documentation on File purposes](https://platform.openai.com/docs/api-reference/files/create#files-create-purpose).
       #
-      #   @return [Symbol, OpenAI::Models::FilePurpose]
-      required :purpose, enum: -> { OpenAI::Models::FilePurpose }
+      #   @return [Symbol, OpenAI::FilePurpose]
+      required :purpose, enum: -> { OpenAI::FilePurpose }
 
       # @!method initialize(bytes:, filename:, mime_type:, purpose:, request_options: {})
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::UploadCreateParams} for more details.
       #
-      #   @param bytes [Integer] The number of bytes in the file you are uploading. ...
+      #   @param bytes [Integer] The number of bytes in the file you are uploading.
       #
-      #   @param filename [String] The name of the file to upload. ...
+      #   @param filename [String] The name of the file to upload.
       #
-      #   @param mime_type [String] The MIME type of the file. ...
+      #   @param mime_type [String] The MIME type of the file.
       #
-      #   @param purpose [Symbol, OpenAI::Models::FilePurpose] The intended purpose of the uploaded file. ...
+      #   @param purpose [Symbol, OpenAI::FilePurpose] The intended purpose of the uploaded file.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

@@ -8,14 +8,21 @@ module OpenAI
       module ChatCompletionModality
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::ChatCompletionModality) }
+        TaggedSymbol =
+          T.type_alias { T.all(Symbol, OpenAI::Chat::ChatCompletionModality) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        TEXT = T.let(:text, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol)
-        AUDIO = T.let(:audio, OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol)
+        TEXT = T.let(:text, OpenAI::Chat::ChatCompletionModality::TaggedSymbol)
+        AUDIO =
+          T.let(:audio, OpenAI::Chat::ChatCompletionModality::TaggedSymbol)
 
-        sig { override.returns(T::Array[OpenAI::Models::Chat::ChatCompletionModality::TaggedSymbol]) }
-        def self.values; end
+        sig do
+          override.returns(
+            T::Array[OpenAI::Chat::ChatCompletionModality::TaggedSymbol]
+          )
+        end
+        def self.values
+        end
       end
     end
   end

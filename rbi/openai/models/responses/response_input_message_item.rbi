@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputMessageItem < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The unique ID of the message input.
         sig { returns(String) }
         attr_accessor :id
@@ -14,9 +16,9 @@ module OpenAI
           returns(
             T::Array[
               T.any(
-                OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Models::Responses::ResponseInputImage,
-                OpenAI::Models::Responses::ResponseInputFile
+                OpenAI::Responses::ResponseInputText,
+                OpenAI::Responses::ResponseInputImage,
+                OpenAI::Responses::ResponseInputFile
               )
             ]
           )
@@ -24,40 +26,65 @@ module OpenAI
         attr_accessor :content
 
         # The role of the message input. One of `user`, `system`, or `developer`.
-        sig { returns(OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol) }
+        sig do
+          returns(
+            OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol
+          )
+        end
         attr_accessor :role
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
         # Populated when items are returned via API.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol
+            )
+          )
+        end
         attr_reader :status
 
-        sig { params(status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol).void }
+        sig do
+          params(
+            status:
+              OpenAI::Responses::ResponseInputMessageItem::Status::OrSymbol
+          ).void
+        end
         attr_writer :status
 
         # The type of the message input. Always set to `message`.
-        sig { returns(T.nilable(OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+            )
+          )
+        end
         attr_reader :type
 
-        sig { params(type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol).void }
+        sig do
+          params(
+            type: OpenAI::Responses::ResponseInputMessageItem::Type::OrSymbol
+          ).void
+        end
         attr_writer :type
 
         sig do
           params(
             id: String,
-            content: T::Array[
-              T.any(
-                OpenAI::Models::Responses::ResponseInputText,
-                OpenAI::Internal::AnyHash,
-                OpenAI::Models::Responses::ResponseInputImage,
-                OpenAI::Models::Responses::ResponseInputFile
-              )
-            ],
-            role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::OrSymbol,
-            status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::OrSymbol,
-            type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::OrSymbol
-          )
-            .returns(T.attached_class)
+            content:
+              T::Array[
+                T.any(
+                  OpenAI::Responses::ResponseInputText::OrHash,
+                  OpenAI::Responses::ResponseInputImage::OrHash,
+                  OpenAI::Responses::ResponseInputFile::OrHash
+                )
+              ],
+            role: OpenAI::Responses::ResponseInputMessageItem::Role::OrSymbol,
+            status:
+              OpenAI::Responses::ResponseInputMessageItem::Status::OrSymbol,
+            type: OpenAI::Responses::ResponseInputMessageItem::Type::OrSymbol
+          ).returns(T.attached_class)
         end
         def self.new(
           # The unique ID of the message input.
@@ -72,40 +99,68 @@ module OpenAI
           status: nil,
           # The type of the message input. Always set to `message`.
           type: nil
-        ); end
+        )
+        end
+
         sig do
-          override
-            .returns(
-              {
-                id: String,
-                content: T::Array[
+          override.returns(
+            {
+              id: String,
+              content:
+                T::Array[
                   T.any(
-                    OpenAI::Models::Responses::ResponseInputText,
-                    OpenAI::Models::Responses::ResponseInputImage,
-                    OpenAI::Models::Responses::ResponseInputFile
+                    OpenAI::Responses::ResponseInputText,
+                    OpenAI::Responses::ResponseInputImage,
+                    OpenAI::Responses::ResponseInputFile
                   )
                 ],
-                role: OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
-                status: OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol,
-                type: OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol
-              }
-            )
+              role:
+                OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
+              status:
+                OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol,
+              type:
+                OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+            }
+          )
         end
-        def to_hash; end
+        def to_hash
+        end
 
         # The role of the message input. One of `user`, `system`, or `developer`.
         module Role
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Role) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseInputMessageItem::Role)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          USER = T.let(:user, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-          SYSTEM = T.let(:system, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
-          DEVELOPER = T.let(:developer, OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol)
+          USER =
+            T.let(
+              :user,
+              OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol
+            )
+          SYSTEM =
+            T.let(
+              :system,
+              OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol
+            )
+          DEVELOPER =
+            T.let(
+              :developer,
+              OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Role::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         # The status of item. One of `in_progress`, `completed`, or `incomplete`.
@@ -114,30 +169,63 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           TaggedSymbol =
-            T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Status) }
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseInputMessageItem::Status)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           IN_PROGRESS =
-            T.let(:in_progress, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
-          COMPLETED = T.let(:completed, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
+            T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol
+            )
+          COMPLETED =
+            T.let(
+              :completed,
+              OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol
+            )
           INCOMPLETE =
-            T.let(:incomplete, OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol)
+            T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Status::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseInputMessageItem::Status::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
 
         # The type of the message input. Always set to `message`.
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Responses::ResponseInputMessageItem::Type) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseInputMessageItem::Type)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          MESSAGE = T.let(:message, OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol)
+          MESSAGE =
+            T.let(
+              :message,
+              OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Responses::ResponseInputMessageItem::Type::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Responses::ResponseInputMessageItem::Type::TaggedSymbol
+              ]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

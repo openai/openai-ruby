@@ -26,13 +26,23 @@ module OpenAI
       module AssistantResponseFormatOption
         extend OpenAI::Internal::Type::Union
 
-        sig do
-          override
-            .returns(
-              [Symbol, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema]
+        Variants =
+          T.type_alias do
+            T.any(
+              Symbol,
+              OpenAI::ResponseFormatText,
+              OpenAI::ResponseFormatJSONObject,
+              OpenAI::ResponseFormatJSONSchema
             )
+          end
+
+        sig do
+          override.returns(
+            T::Array[OpenAI::Beta::AssistantResponseFormatOption::Variants]
+          )
         end
-        def self.variants; end
+        def self.variants
+        end
       end
     end
   end

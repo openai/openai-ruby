@@ -2,16 +2,16 @@ module OpenAI
   module Models
     module Responses
       type response_content =
-        OpenAI::Models::Responses::ResponseInputText
-        | OpenAI::Models::Responses::ResponseInputImage
-        | OpenAI::Models::Responses::ResponseInputFile
-        | OpenAI::Models::Responses::ResponseOutputText
-        | OpenAI::Models::Responses::ResponseOutputRefusal
+        OpenAI::Responses::ResponseInputText
+        | OpenAI::Responses::ResponseInputImage
+        | OpenAI::Responses::ResponseInputFile
+        | OpenAI::Responses::ResponseOutputText
+        | OpenAI::Responses::ResponseOutputRefusal
 
       module ResponseContent
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_content]
       end
     end
   end

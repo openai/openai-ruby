@@ -4,14 +4,14 @@ module OpenAI
       module Threads
         module Runs
           type tool_call =
-            OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall
-            | OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall
-            | OpenAI::Models::Beta::Threads::Runs::FunctionToolCall
+            OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall
+            | OpenAI::Beta::Threads::Runs::FileSearchToolCall
+            | OpenAI::Beta::Threads::Runs::FunctionToolCall
 
           module ToolCall
             extend OpenAI::Internal::Type::Union
 
-            def self?.variants: -> [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall]
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call]
           end
         end
       end

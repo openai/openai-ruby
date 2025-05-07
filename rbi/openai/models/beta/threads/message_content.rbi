@@ -9,13 +9,23 @@ module OpenAI
         module MessageContent
           extend OpenAI::Internal::Type::Union
 
-          sig do
-            override
-              .returns(
-                [OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock]
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::ImageFileContentBlock,
+                OpenAI::Beta::Threads::ImageURLContentBlock,
+                OpenAI::Beta::Threads::TextContentBlock,
+                OpenAI::Beta::Threads::RefusalContentBlock
               )
+            end
+
+          sig do
+            override.returns(
+              T::Array[OpenAI::Beta::Threads::MessageContent::Variants]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
       end
     end

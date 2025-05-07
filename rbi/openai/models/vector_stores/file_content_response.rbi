@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module VectorStores
       class FileContentResponse < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The text content
         sig { returns(T.nilable(String)) }
         attr_reader :text
@@ -24,9 +26,12 @@ module OpenAI
           text: nil,
           # The content type (currently only `"text"`)
           type: nil
-        ); end
-        sig { override.returns({text: String, type: String}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ text: String, type: String }) }
+        def to_hash
+        end
       end
     end
   end

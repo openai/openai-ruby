@@ -13,13 +13,13 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         # Represents a transcription response returned by model, based on the provided input.
-        variant -> { OpenAI::Models::Audio::Transcription }
+        variant -> { OpenAI::Audio::Transcription }
 
         # Represents a verbose json transcription response returned by model, based on the provided input.
-        variant -> { OpenAI::Models::Audio::TranscriptionVerbose }
+        variant -> { OpenAI::Audio::TranscriptionVerbose }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionVerbose)]
+        #   @return [Array(OpenAI::Audio::Transcription, OpenAI::Audio::TranscriptionVerbose)]
       end
     end
   end

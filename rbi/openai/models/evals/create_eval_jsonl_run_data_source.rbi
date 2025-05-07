@@ -4,11 +4,13 @@ module OpenAI
   module Models
     module Evals
       class CreateEvalJSONLRunDataSource < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         sig do
           returns(
             T.any(
-              OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
-              OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID
+              OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
+              OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID
             )
           )
         end
@@ -22,40 +24,59 @@ module OpenAI
         # eval
         sig do
           params(
-            source: T.any(
-              OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
-              OpenAI::Internal::AnyHash,
-              OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID
-            ),
+            source:
+              T.any(
+                OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::OrHash,
+                OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID::OrHash
+              ),
             type: Symbol
-          )
-            .returns(T.attached_class)
+          ).returns(T.attached_class)
         end
         def self.new(
           source:,
           # The type of data source. Always `jsonl`.
           type: :jsonl
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                source: T.any(
-                  OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
-                  OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID
-                ),
-                type: Symbol
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              source:
+                T.any(
+                  OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
+                  OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID
+                ),
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
 
         module Source
           extend OpenAI::Internal::Type::Union
 
+          Variants =
+            T.type_alias do
+              T.any(
+                OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
+                OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID
+              )
+            end
+
           class FileContent < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The content of the jsonl file.
-            sig { returns(T::Array[OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content]) }
+            sig do
+              returns(
+                T::Array[
+                  OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content
+                ]
+              )
+            end
             attr_accessor :content
 
             # The type of jsonl source. Always `file_content`.
@@ -64,34 +85,39 @@ module OpenAI
 
             sig do
               params(
-                content: T::Array[
-                  T.any(
-                    OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content,
-                    OpenAI::Internal::AnyHash
-                  )
-                ],
+                content:
+                  T::Array[
+                    OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content::OrHash
+                  ],
                 type: Symbol
-              )
-                .returns(T.attached_class)
+              ).returns(T.attached_class)
             end
             def self.new(
               # The content of the jsonl file.
               content:,
               # The type of jsonl source. Always `file_content`.
               type: :file_content
-            ); end
-            sig do
-              override
-                .returns(
-                  {
-                    content: T::Array[OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
-                    type: Symbol
-                  }
-                )
+            )
             end
-            def to_hash; end
+
+            sig do
+              override.returns(
+                {
+                  content:
+                    T::Array[
+                      OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content
+                    ],
+                  type: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
 
             class Content < OpenAI::Internal::Type::BaseModel
+              OrHash =
+                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
               sig { returns(T::Hash[Symbol, T.anything]) }
               attr_accessor :item
 
@@ -107,16 +133,26 @@ module OpenAI
                   sample: T::Hash[Symbol, T.anything]
                 ).returns(T.attached_class)
               end
-              def self.new(item:, sample: nil); end
+              def self.new(item:, sample: nil)
+              end
 
               sig do
-                override.returns({item: T::Hash[Symbol, T.anything], sample: T::Hash[Symbol, T.anything]})
+                override.returns(
+                  {
+                    item: T::Hash[Symbol, T.anything],
+                    sample: T::Hash[Symbol, T.anything]
+                  }
+                )
               end
-              def to_hash; end
+              def to_hash
+              end
             end
           end
 
           class FileID < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
             # The identifier of the file.
             sig { returns(String) }
             attr_accessor :id
@@ -131,18 +167,23 @@ module OpenAI
               id:,
               # The type of jsonl source. Always `file_id`.
               type: :file_id
-            ); end
-            sig { override.returns({id: String, type: Symbol}) }
-            def to_hash; end
+            )
+            end
+
+            sig { override.returns({ id: String, type: Symbol }) }
+            def to_hash
+            end
           end
 
           sig do
-            override
-              .returns(
-                [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::Source::FileID]
-              )
+            override.returns(
+              T::Array[
+                OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::Variants
+              ]
+            )
           end
-          def self.variants; end
+          def self.variants
+          end
         end
       end
     end

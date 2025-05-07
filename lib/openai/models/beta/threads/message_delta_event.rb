@@ -14,8 +14,8 @@ module OpenAI
           # @!attribute delta
           #   The delta containing the fields that have changed on the Message.
           #
-          #   @return [OpenAI::Models::Beta::Threads::MessageDelta]
-          required :delta, -> { OpenAI::Models::Beta::Threads::MessageDelta }
+          #   @return [OpenAI::Beta::Threads::MessageDelta]
+          required :delta, -> { OpenAI::Beta::Threads::MessageDelta }
 
           # @!attribute object
           #   The object type, which is always `thread.message.delta`.
@@ -29,7 +29,7 @@ module OpenAI
           #
           #   @param id [String] The identifier of the message, which can be referenced in API endpoints.
           #
-          #   @param delta [OpenAI::Models::Beta::Threads::MessageDelta] The delta containing the fields that have changed on the Message.
+          #   @param delta [OpenAI::Beta::Threads::MessageDelta] The delta containing the fields that have changed on the Message.
           #
           #   @param object [Symbol, :"thread.message.delta"] The object type, which is always `thread.message.delta`.
         end

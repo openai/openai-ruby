@@ -42,14 +42,12 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Audio::translation_create_params
-
         type model = String | OpenAI::Models::audio_model
 
         module Model
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, OpenAI::Models::audio_model]
+          def self?.variants: -> ::Array[OpenAI::Models::Audio::TranslationCreateParams::model]
         end
 
         type response_format = :json | :text | :srt | :verbose_json | :vtt

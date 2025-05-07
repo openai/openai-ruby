@@ -8,13 +8,15 @@ module OpenAI
         sig do
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.any(String, OpenAI::Models::AudioModel::OrSymbol),
+            model: T.any(String, OpenAI::AudioModel::OrSymbol),
             prompt: String,
-            response_format: OpenAI::Models::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
+            response_format:
+              OpenAI::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
-            request_options: OpenAI::RequestOpts
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(
+            T.any(OpenAI::Audio::Translation, OpenAI::Audio::TranslationVerbose)
           )
-            .returns(T.any(OpenAI::Models::Audio::Translation, OpenAI::Models::Audio::TranslationVerbose))
         end
         def create(
           # The audio file object (not file name) translate, in one of these formats: flac,
@@ -38,10 +40,13 @@ module OpenAI
           # automatically increase the temperature until certain thresholds are hit.
           temperature: nil,
           request_options: {}
-        ); end
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
-        def self.new(client:); end
+        def self.new(client:)
+        end
       end
     end
   end

@@ -3,6 +3,8 @@
 module OpenAI
   module Models
     class ModerationTextInput < OpenAI::Internal::Type::BaseModel
+      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
       # A string of text to classify.
       sig { returns(String) }
       attr_accessor :text
@@ -18,9 +20,12 @@ module OpenAI
         text:,
         # Always `text`.
         type: :text
-      ); end
-      sig { override.returns({text: String, type: Symbol}) }
-      def to_hash; end
+      )
+      end
+
+      sig { override.returns({ text: String, type: Symbol }) }
+      def to_hash
+      end
     end
   end
 end

@@ -4,55 +4,81 @@ module OpenAI
   module Models
     module Beta
       class AssistantToolChoice < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The type of the tool. If type is `function`, the function name must be set
-        sig { returns(OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol) }
+        sig { returns(OpenAI::Beta::AssistantToolChoice::Type::OrSymbol) }
         attr_accessor :type
 
-        sig { returns(T.nilable(OpenAI::Models::Beta::AssistantToolChoiceFunction)) }
+        sig { returns(T.nilable(OpenAI::Beta::AssistantToolChoiceFunction)) }
         attr_reader :function
 
-        sig { params(function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::AnyHash)).void }
+        sig do
+          params(
+            function: OpenAI::Beta::AssistantToolChoiceFunction::OrHash
+          ).void
+        end
         attr_writer :function
 
         # Specifies a tool the model should use. Use to force the model to call a specific
         # tool.
         sig do
           params(
-            type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,
-            function: T.any(OpenAI::Models::Beta::AssistantToolChoiceFunction, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            type: OpenAI::Beta::AssistantToolChoice::Type::OrSymbol,
+            function: OpenAI::Beta::AssistantToolChoiceFunction::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # The type of the tool. If type is `function`, the function name must be set
           type:,
           function: nil
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                type: OpenAI::Models::Beta::AssistantToolChoice::Type::OrSymbol,
-                function: OpenAI::Models::Beta::AssistantToolChoiceFunction
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              type: OpenAI::Beta::AssistantToolChoice::Type::OrSymbol,
+              function: OpenAI::Beta::AssistantToolChoiceFunction
+            }
+          )
+        end
+        def to_hash
+        end
 
         # The type of the tool. If type is `function`, the function name must be set
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Beta::AssistantToolChoice::Type) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Beta::AssistantToolChoice::Type)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          FUNCTION = T.let(:function, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
+          FUNCTION =
+            T.let(
+              :function,
+              OpenAI::Beta::AssistantToolChoice::Type::TaggedSymbol
+            )
           CODE_INTERPRETER =
-            T.let(:code_interpreter, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
-          FILE_SEARCH = T.let(:file_search, OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol)
+            T.let(
+              :code_interpreter,
+              OpenAI::Beta::AssistantToolChoice::Type::TaggedSymbol
+            )
+          FILE_SEARCH =
+            T.let(
+              :file_search,
+              OpenAI::Beta::AssistantToolChoice::Type::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Beta::AssistantToolChoice::Type::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[OpenAI::Beta::AssistantToolChoice::Type::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

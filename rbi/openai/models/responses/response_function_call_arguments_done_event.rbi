@@ -4,6 +4,8 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionCallArgumentsDoneEvent < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The function-call arguments.
         sig { returns(String) }
         attr_accessor :arguments
@@ -36,9 +38,21 @@ module OpenAI
           # The index of the output item.
           output_index:,
           type: :"response.function_call_arguments.done"
-        ); end
-        sig { override.returns({arguments: String, item_id: String, output_index: Integer, type: Symbol}) }
-        def to_hash; end
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              arguments: String,
+              item_id: String,
+              output_index: Integer,
+              type: Symbol
+            }
+          )
+        end
+        def to_hash
+        end
       end
     end
   end

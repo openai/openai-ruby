@@ -6,14 +6,20 @@ module OpenAI
       # Creates an embedding vector representing the input text.
       sig do
         params(
-          input: T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]),
-          model: T.any(String, OpenAI::Models::EmbeddingModel::OrSymbol),
+          input:
+            T.any(
+              String,
+              T::Array[String],
+              T::Array[Integer],
+              T::Array[T::Array[Integer]]
+            ),
+          model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
           dimensions: Integer,
-          encoding_format: OpenAI::Models::EmbeddingCreateParams::EncodingFormat::OrSymbol,
+          encoding_format:
+            OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
           user: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::CreateEmbeddingResponse)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::CreateEmbeddingResponse)
       end
       def create(
         # Input text to embed, encoded as a string or array of tokens. To embed multiple
@@ -42,10 +48,13 @@ module OpenAI
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

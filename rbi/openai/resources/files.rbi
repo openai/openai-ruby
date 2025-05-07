@@ -27,10 +27,9 @@ module OpenAI
       sig do
         params(
           file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          purpose: OpenAI::Models::FilePurpose::OrSymbol,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::FileObject)
+          purpose: OpenAI::FilePurpose::OrSymbol,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::FileObject)
       end
       def create(
         # The File object (not file name) to be uploaded.
@@ -41,24 +40,32 @@ module OpenAI
         # Flexible file type for any purpose - `evals`: Used for eval data sets
         purpose:,
         request_options: {}
-      ); end
+      )
+      end
+
       # Returns information about a specific file.
-      sig { params(file_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::FileObject) }
+      sig do
+        params(
+          file_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::FileObject)
+      end
       def retrieve(
         # The ID of the file to use for this request.
         file_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # Returns a list of files.
       sig do
         params(
           after: String,
           limit: Integer,
-          order: OpenAI::Models::FileListParams::Order::OrSymbol,
+          order: OpenAI::FileListParams::Order::OrSymbol,
           purpose: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FileObject])
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::Internal::CursorPage[OpenAI::FileObject])
       end
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
@@ -75,24 +82,41 @@ module OpenAI
         # Only return files with the given purpose.
         purpose: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Delete a file.
-      sig { params(file_id: String, request_options: OpenAI::RequestOpts).returns(OpenAI::Models::FileDeleted) }
+      sig do
+        params(
+          file_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::FileDeleted)
+      end
       def delete(
         # The ID of the file to use for this request.
         file_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # Returns the contents of the specified file.
-      sig { params(file_id: String, request_options: OpenAI::RequestOpts).returns(StringIO) }
+      sig do
+        params(
+          file_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(StringIO)
+      end
       def content(
         # The ID of the file to use for this request.
         file_id,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

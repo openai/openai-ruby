@@ -6,6 +6,8 @@ module OpenAI
 
     module Chat
       class ChatCompletionStoreMessage < OpenAI::Models::Chat::ChatCompletionMessage
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # The identifier of the chat message.
         sig { returns(String) }
         attr_accessor :id
@@ -15,9 +17,12 @@ module OpenAI
         def self.new(
           # The identifier of the chat message.
           id:
-        ); end
-        sig { override.returns({id: String}) }
-        def to_hash; end
+        )
+        end
+
+        sig { override.returns({ id: String }) }
+        def to_hash
+        end
       end
     end
   end

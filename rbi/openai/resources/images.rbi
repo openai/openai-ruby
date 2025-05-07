@@ -7,14 +7,16 @@ module OpenAI
       sig do
         params(
           image: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
-          response_format: T.nilable(OpenAI::Models::ImageCreateVariationParams::ResponseFormat::OrSymbol),
-          size: T.nilable(OpenAI::Models::ImageCreateVariationParams::Size::OrSymbol),
+          response_format:
+            T.nilable(
+              OpenAI::ImageCreateVariationParams::ResponseFormat::OrSymbol
+            ),
+          size: T.nilable(OpenAI::ImageCreateVariationParams::Size::OrSymbol),
           user: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::ImagesResponse)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::ImagesResponse)
       end
       def create_variation(
         # The image to use as the basis for the variation(s). Must be a valid PNG file,
@@ -37,30 +39,33 @@ module OpenAI
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Creates an edited or extended image given one or more source images and a
       # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
       sig do
         params(
-          image: T.any(
-            Pathname,
-            StringIO,
-            IO,
-            OpenAI::FilePart,
-            T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-          ),
+          image:
+            T.any(
+              Pathname,
+              StringIO,
+              IO,
+              OpenAI::FilePart,
+              T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
+            ),
           prompt: String,
-          background: T.nilable(OpenAI::Models::ImageEditParams::Background::OrSymbol),
+          background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
           mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
-          quality: T.nilable(OpenAI::Models::ImageEditParams::Quality::OrSymbol),
-          response_format: T.nilable(OpenAI::Models::ImageEditParams::ResponseFormat::OrSymbol),
-          size: T.nilable(OpenAI::Models::ImageEditParams::Size::OrSymbol),
+          quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
+          response_format:
+            T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
+          size: T.nilable(OpenAI::ImageEditParams::Size::OrSymbol),
           user: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::ImagesResponse)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::ImagesResponse)
       end
       def edit(
         # The image(s) to edit. Must be a supported image file or an array of images.
@@ -111,26 +116,31 @@ module OpenAI
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # Creates an image given a prompt.
       # [Learn more](https://platform.openai.com/docs/guides/images).
       sig do
         params(
           prompt: String,
-          background: T.nilable(OpenAI::Models::ImageGenerateParams::Background::OrSymbol),
-          model: T.nilable(T.any(String, OpenAI::Models::ImageModel::OrSymbol)),
-          moderation: T.nilable(OpenAI::Models::ImageGenerateParams::Moderation::OrSymbol),
+          background:
+            T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          moderation:
+            T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
           n: T.nilable(Integer),
           output_compression: T.nilable(Integer),
-          output_format: T.nilable(OpenAI::Models::ImageGenerateParams::OutputFormat::OrSymbol),
-          quality: T.nilable(OpenAI::Models::ImageGenerateParams::Quality::OrSymbol),
-          response_format: T.nilable(OpenAI::Models::ImageGenerateParams::ResponseFormat::OrSymbol),
-          size: T.nilable(OpenAI::Models::ImageGenerateParams::Size::OrSymbol),
-          style: T.nilable(OpenAI::Models::ImageGenerateParams::Style::OrSymbol),
+          output_format:
+            T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol),
+          quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
+          response_format:
+            T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
+          size: T.nilable(OpenAI::ImageGenerateParams::Size::OrSymbol),
+          style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
           user: String,
-          request_options: OpenAI::RequestOpts
-        )
-          .returns(OpenAI::Models::ImagesResponse)
+          request_options: OpenAI::RequestOptions::OrHash
+        ).returns(OpenAI::ImagesResponse)
       end
       def generate(
         # A text description of the desired image(s). The maximum length is 32000
@@ -190,10 +200,13 @@ module OpenAI
         # [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#end-user-ids).
         user: nil,
         request_options: {}
-      ); end
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
-      def self.new(client:); end
+      def self.new(client:)
+      end
     end
   end
 end

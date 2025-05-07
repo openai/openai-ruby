@@ -17,13 +17,13 @@ module OpenAI
       # values safely.
       #
       # @example
-      #   # `chat_model` is a `OpenAI::Models::ChatModel`
+      #   # `chat_model` is a `OpenAI::ChatModel`
       #   case chat_model
-      #   when OpenAI::Models::ChatModel::GPT_4_1
+      #   when OpenAI::ChatModel::GPT_4_1
       #     # ...
-      #   when OpenAI::Models::ChatModel::GPT_4_1_MINI
+      #   when OpenAI::ChatModel::GPT_4_1_MINI
       #     # ...
-      #   when OpenAI::Models::ChatModel::GPT_4_1_NANO
+      #   when OpenAI::ChatModel::GPT_4_1_NANO
       #     # ...
       #   else
       #     puts(chat_model)

@@ -7,6 +7,8 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+
         # Identifier for the last chat completion from the previous pagination request.
         sig { returns(T.nilable(String)) }
         attr_reader :after
@@ -36,10 +38,18 @@ module OpenAI
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         # `desc` for descending order. Defaults to `asc`.
-        sig { returns(T.nilable(OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol)) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Chat::CompletionListParams::Order::OrSymbol)
+          )
+        end
         attr_reader :order
 
-        sig { params(order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol).void }
+        sig do
+          params(
+            order: OpenAI::Chat::CompletionListParams::Order::OrSymbol
+          ).void
+        end
         attr_writer :order
 
         sig do
@@ -48,10 +58,9 @@ module OpenAI
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
-            order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
-            request_options: T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash)
-          )
-            .returns(T.attached_class)
+            order: OpenAI::Chat::CompletionListParams::Order::OrSymbol,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(T.attached_class)
         end
         def self.new(
           # Identifier for the last chat completion from the previous pagination request.
@@ -68,35 +77,50 @@ module OpenAI
           # `desc` for descending order. Defaults to `asc`.
           order: nil,
           request_options: {}
-        ); end
-        sig do
-          override
-            .returns(
-              {
-                after: String,
-                limit: Integer,
-                metadata: T.nilable(T::Hash[Symbol, String]),
-                model: String,
-                order: OpenAI::Models::Chat::CompletionListParams::Order::OrSymbol,
-                request_options: OpenAI::RequestOptions
-              }
-            )
+        )
         end
-        def to_hash; end
+
+        sig do
+          override.returns(
+            {
+              after: String,
+              limit: Integer,
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              model: String,
+              order: OpenAI::Chat::CompletionListParams::Order::OrSymbol,
+              request_options: OpenAI::RequestOptions
+            }
+          )
+        end
+        def to_hash
+        end
 
         # Sort order for Chat Completions by timestamp. Use `asc` for ascending order or
         # `desc` for descending order. Defaults to `asc`.
         module Order
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Models::Chat::CompletionListParams::Order) }
+          TaggedSymbol =
+            T.type_alias do
+              T.all(Symbol, OpenAI::Chat::CompletionListParams::Order)
+            end
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ASC = T.let(:asc, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol)
-          DESC = T.let(:desc, OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol)
+          ASC =
+            T.let(:asc, OpenAI::Chat::CompletionListParams::Order::TaggedSymbol)
+          DESC =
+            T.let(
+              :desc,
+              OpenAI::Chat::CompletionListParams::Order::TaggedSymbol
+            )
 
-          sig { override.returns(T::Array[OpenAI::Models::Chat::CompletionListParams::Order::TaggedSymbol]) }
-          def self.values; end
+          sig do
+            override.returns(
+              T::Array[OpenAI::Chat::CompletionListParams::Order::TaggedSymbol]
+            )
+          end
+          def self.values
+          end
         end
       end
     end

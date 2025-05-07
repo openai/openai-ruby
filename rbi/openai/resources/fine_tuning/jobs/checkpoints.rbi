@@ -11,9 +11,12 @@ module OpenAI
               fine_tuning_job_id: String,
               after: String,
               limit: Integer,
-              request_options: OpenAI::RequestOpts
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(
+              OpenAI::Internal::CursorPage[
+                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint
+              ]
             )
-              .returns(OpenAI::Internal::CursorPage[OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint])
           end
           def list(
             # The ID of the fine-tuning job to get checkpoints for.
@@ -23,10 +26,13 @@ module OpenAI
             # Number of checkpoints to retrieve.
             limit: nil,
             request_options: {}
-          ); end
+          )
+          end
+
           # @api private
           sig { params(client: OpenAI::Client).returns(T.attached_class) }
-          def self.new(client:); end
+          def self.new(client:)
+          end
         end
       end
     end
