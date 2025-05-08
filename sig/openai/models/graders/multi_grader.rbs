@@ -1,0 +1,45 @@
+module OpenAI
+  module Models
+    class MultiGrader = Graders::MultiGrader
+
+    module Graders
+      type multi_grader =
+        {
+          calculate_output: String,
+          graders: ::Hash[Symbol, OpenAI::Graders::MultiGrader::grader],
+          name: String,
+          type: :multi
+        }
+
+      class MultiGrader < OpenAI::Internal::Type::BaseModel
+        attr_accessor calculate_output: String
+
+        attr_accessor graders: ::Hash[Symbol, OpenAI::Graders::MultiGrader::grader]
+
+        attr_accessor name: String
+
+        attr_accessor type: :multi
+
+        def initialize: (
+          calculate_output: String,
+          graders: ::Hash[Symbol, OpenAI::Graders::MultiGrader::grader],
+          name: String,
+          ?type: :multi
+        ) -> void
+
+        type grader =
+          OpenAI::Graders::StringCheckGrader
+          | OpenAI::Graders::TextSimilarityGrader
+          | OpenAI::Graders::PythonGrader
+          | OpenAI::Graders::ScoreModelGrader
+          | OpenAI::Graders::LabelModelGrader
+
+        module Grader
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Graders::MultiGrader::grader]
+        end
+      end
+    end
+  end
+end

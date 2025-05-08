@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Alpha
+        type grader_validate_params =
+          {
+            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class GraderValidateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor grader: OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader
+
+          def initialize: (
+            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          type grader =
+            OpenAI::Graders::StringCheckGrader
+            | OpenAI::Graders::TextSimilarityGrader
+            | OpenAI::Graders::PythonGrader
+            | OpenAI::Graders::ScoreModelGrader
+            | OpenAI::Graders::MultiGrader
+
+          module Grader
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::Alpha::GraderValidateParams::grader]
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Alpha
+        type grader_validate_response =
+          {
+            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
+          }
+
+        class GraderValidateResponse < OpenAI::Internal::Type::BaseModel
+          attr_reader grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader?
+
+          def grader=: (
+            OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
+          ) -> OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
+
+          def initialize: (
+            ?grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
+          ) -> void
+
+          type grader =
+            OpenAI::Graders::StringCheckGrader
+            | OpenAI::Graders::TextSimilarityGrader
+            | OpenAI::Graders::PythonGrader
+            | OpenAI::Graders::ScoreModelGrader
+            | OpenAI::Graders::MultiGrader
+
+          module Grader
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader]
+          end
+        end
+      end
+    end
+  end
+end

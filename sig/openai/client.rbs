@@ -32,6 +32,8 @@ module OpenAI
 
     attr_reader fine_tuning: OpenAI::Resources::FineTuning
 
+    attr_reader graders: OpenAI::Resources::Graders
+
     attr_reader vector_stores: OpenAI::Resources::VectorStores
 
     attr_reader beta: OpenAI::Resources::Beta

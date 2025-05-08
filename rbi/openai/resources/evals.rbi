@@ -16,14 +16,14 @@ module OpenAI
           data_source_config:
             T.any(
               OpenAI::EvalCreateParams::DataSourceConfig::Custom::OrHash,
-              OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash
+              OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions::OrHash
             ),
           testing_criteria:
             T::Array[
               T.any(
                 OpenAI::EvalCreateParams::TestingCriterion::LabelModel::OrHash,
-                OpenAI::EvalStringCheckGrader::OrHash,
-                OpenAI::EvalTextSimilarityGrader::OrHash,
+                OpenAI::Graders::StringCheckGrader::OrHash,
+                OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity::OrHash,
                 OpenAI::EvalCreateParams::TestingCriterion::Python::OrHash,
                 OpenAI::EvalCreateParams::TestingCriterion::ScoreModel::OrHash
               )

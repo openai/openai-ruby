@@ -41,6 +41,16 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJobEvent]
 
+        def pause: (
+          String fine_tuning_job_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::FineTuning::FineTuningJob
+
+        def resume: (
+          String fine_tuning_job_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::FineTuning::FineTuningJob
+
         def initialize: (client: OpenAI::Client) -> void
       end
     end
