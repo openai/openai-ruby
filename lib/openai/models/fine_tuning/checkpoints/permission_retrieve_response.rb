@@ -68,10 +68,13 @@ module OpenAI
             #   The `checkpoint.permission` object represents a permission for a fine-tuned
             #   model checkpoint.
             #
-            #   @param id [String]
-            #   @param created_at [Integer]
-            #   @param project_id [String]
-            #   @param object [Symbol, :"checkpoint.permission"]
+            #   @param id [String] The permission identifier, which can be referenced in the API endpoints.
+            #
+            #   @param created_at [Integer] The Unix timestamp (in seconds) for when the permission was created.
+            #
+            #   @param project_id [String] The project identifier that the permission is for.
+            #
+            #   @param object [Symbol, :"checkpoint.permission"] The object type, which is always "checkpoint.permission".
           end
         end
       end

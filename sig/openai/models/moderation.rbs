@@ -2,29 +2,27 @@ module OpenAI
   module Models
     type moderation =
       {
-        categories: OpenAI::Models::Moderation::Categories,
-        category_applied_input_types: OpenAI::Models::Moderation::CategoryAppliedInputTypes,
-        category_scores: OpenAI::Models::Moderation::CategoryScores,
+        categories: OpenAI::Moderation::Categories,
+        category_applied_input_types: OpenAI::Moderation::CategoryAppliedInputTypes,
+        category_scores: OpenAI::Moderation::CategoryScores,
         flagged: bool
       }
 
     class Moderation < OpenAI::Internal::Type::BaseModel
-      attr_accessor categories: OpenAI::Models::Moderation::Categories
+      attr_accessor categories: OpenAI::Moderation::Categories
 
-      attr_accessor category_applied_input_types: OpenAI::Models::Moderation::CategoryAppliedInputTypes
+      attr_accessor category_applied_input_types: OpenAI::Moderation::CategoryAppliedInputTypes
 
-      attr_accessor category_scores: OpenAI::Models::Moderation::CategoryScores
+      attr_accessor category_scores: OpenAI::Moderation::CategoryScores
 
       attr_accessor flagged: bool
 
       def initialize: (
-        categories: OpenAI::Models::Moderation::Categories,
-        category_applied_input_types: OpenAI::Models::Moderation::CategoryAppliedInputTypes,
-        category_scores: OpenAI::Models::Moderation::CategoryScores,
+        categories: OpenAI::Moderation::Categories,
+        category_applied_input_types: OpenAI::Moderation::CategoryAppliedInputTypes,
+        category_scores: OpenAI::Moderation::CategoryScores,
         flagged: bool
       ) -> void
-
-      def to_hash: -> OpenAI::Models::moderation
 
       type categories =
         {
@@ -85,71 +83,67 @@ module OpenAI
           violence: bool,
           violence_graphic: bool
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Moderation::categories
       end
 
       type category_applied_input_types =
         {
-          harassment: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment],
-          harassment_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening],
-          hate: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate],
-          hate_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate_threatening],
-          illicit: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit],
-          illicit_violent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit_violent],
-          self_harm: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm],
-          self_harm_instructions: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_instruction],
-          self_harm_intent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_intent],
-          sexual: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual],
-          sexual_minors: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual_minor],
-          violence: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence],
-          violence_graphic: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence_graphic]
+          harassment: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment],
+          harassment_threatening: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment_threatening],
+          hate: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate],
+          hate_threatening: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate_threatening],
+          illicit: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit],
+          illicit_violent: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit_violent],
+          self_harm: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm],
+          self_harm_instructions: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_instruction],
+          self_harm_intent: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_intent],
+          sexual: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual],
+          sexual_minors: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual_minor],
+          violence: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence],
+          violence_graphic: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence_graphic]
         }
 
       class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
-        attr_accessor harassment: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment]
+        attr_accessor harassment: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment]
 
-        attr_accessor harassment_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening]
+        attr_accessor harassment_threatening: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment_threatening]
 
-        attr_accessor hate: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate]
+        attr_accessor hate: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate]
 
-        attr_accessor hate_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate_threatening]
+        attr_accessor hate_threatening: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate_threatening]
 
-        attr_accessor illicit: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit]
+        attr_accessor illicit: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit]
 
-        attr_accessor illicit_violent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit_violent]
+        attr_accessor illicit_violent: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit_violent]
 
-        attr_accessor self_harm: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm]
+        attr_accessor self_harm: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm]
 
-        attr_accessor self_harm_instructions: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_instruction]
+        attr_accessor self_harm_instructions: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_instruction]
 
-        attr_accessor self_harm_intent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_intent]
+        attr_accessor self_harm_intent: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_intent]
 
-        attr_accessor sexual: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual]
+        attr_accessor sexual: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual]
 
-        attr_accessor sexual_minors: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual_minor]
+        attr_accessor sexual_minors: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual_minor]
 
-        attr_accessor violence: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence]
+        attr_accessor violence: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence]
 
-        attr_accessor violence_graphic: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence_graphic]
+        attr_accessor violence_graphic: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence_graphic]
 
         def initialize: (
-          harassment: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment],
-          harassment_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening],
-          hate: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate],
-          hate_threatening: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate_threatening],
-          illicit: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit],
-          illicit_violent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit_violent],
-          self_harm: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm],
-          self_harm_instructions: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_instruction],
-          self_harm_intent: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_intent],
-          sexual: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual],
-          sexual_minors: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual_minor],
-          violence: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence],
-          violence_graphic: ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence_graphic]
+          harassment: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment],
+          harassment_threatening: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment_threatening],
+          hate: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate],
+          hate_threatening: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate_threatening],
+          illicit: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit],
+          illicit_violent: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit_violent],
+          self_harm: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm],
+          self_harm_instructions: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_instruction],
+          self_harm_intent: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_intent],
+          sexual: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual],
+          sexual_minors: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual_minor],
+          violence: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence],
+          violence_graphic: ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence_graphic]
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Moderation::category_applied_input_types
 
         type harassment = :text
 
@@ -158,7 +152,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment]
         end
 
         type harassment_threatening = :text
@@ -168,7 +162,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::harassment_threatening]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::harassment_threatening]
         end
 
         type hate = :text
@@ -178,7 +172,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate]
         end
 
         type hate_threatening = :text
@@ -188,7 +182,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::hate_threatening]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::hate_threatening]
         end
 
         type illicit = :text
@@ -198,7 +192,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit]
         end
 
         type illicit_violent = :text
@@ -208,7 +202,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::illicit_violent]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::illicit_violent]
         end
 
         type self_harm = :text | :image
@@ -219,7 +213,7 @@ module OpenAI
           TEXT: :text
           IMAGE: :image
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm]
         end
 
         type self_harm_instruction = :text | :image
@@ -230,7 +224,7 @@ module OpenAI
           TEXT: :text
           IMAGE: :image
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_instruction]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_instruction]
         end
 
         type self_harm_intent = :text | :image
@@ -241,7 +235,7 @@ module OpenAI
           TEXT: :text
           IMAGE: :image
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::self_harm_intent]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::self_harm_intent]
         end
 
         type sexual = :text | :image
@@ -252,7 +246,7 @@ module OpenAI
           TEXT: :text
           IMAGE: :image
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual]
         end
 
         type sexual_minor = :text
@@ -262,7 +256,7 @@ module OpenAI
 
           TEXT: :text
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::sexual_minor]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::sexual_minor]
         end
 
         type violence = :text | :image
@@ -273,7 +267,7 @@ module OpenAI
           TEXT: :text
           IMAGE: :image
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence]
         end
 
         type violence_graphic = :text | :image
@@ -284,7 +278,7 @@ module OpenAI
           TEXT: :text
           IMAGE: :image
 
-          def self?.values: -> ::Array[OpenAI::Models::Moderation::CategoryAppliedInputTypes::violence_graphic]
+          def self?.values: -> ::Array[OpenAI::Moderation::CategoryAppliedInputTypes::violence_graphic]
         end
       end
 
@@ -347,8 +341,6 @@ module OpenAI
           violence: Float,
           violence_graphic: Float
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Moderation::category_scores
       end
     end
   end

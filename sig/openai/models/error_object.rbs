@@ -18,8 +18,6 @@ module OpenAI
         param: String?,
         type: String
       ) -> void
-
-      def to_hash: -> OpenAI::Models::error_object
     end
   end
 end

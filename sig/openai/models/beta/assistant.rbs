@@ -14,7 +14,7 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Beta::assistant_tool],
           response_format: OpenAI::Models::Beta::assistant_response_format_option?,
           temperature: Float?,
-          tool_resources: OpenAI::Models::Beta::Assistant::ToolResources?,
+          tool_resources: OpenAI::Beta::Assistant::ToolResources?,
           top_p: Float?
         }
 
@@ -41,7 +41,7 @@ module OpenAI
 
         attr_accessor temperature: Float?
 
-        attr_accessor tool_resources: OpenAI::Models::Beta::Assistant::ToolResources?
+        attr_accessor tool_resources: OpenAI::Beta::Assistant::ToolResources?
 
         attr_accessor top_p: Float?
 
@@ -56,38 +56,34 @@ module OpenAI
           tools: ::Array[OpenAI::Models::Beta::assistant_tool],
           ?response_format: OpenAI::Models::Beta::assistant_response_format_option?,
           ?temperature: Float?,
-          ?tool_resources: OpenAI::Models::Beta::Assistant::ToolResources?,
+          ?tool_resources: OpenAI::Beta::Assistant::ToolResources?,
           ?top_p: Float?,
           ?object: :assistant
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Beta::assistant
-
         type tool_resources =
           {
-            code_interpreter: OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter,
-            file_search: OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
+            code_interpreter: OpenAI::Beta::Assistant::ToolResources::CodeInterpreter,
+            file_search: OpenAI::Beta::Assistant::ToolResources::FileSearch
           }
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          attr_reader code_interpreter: OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter?
+          attr_reader code_interpreter: OpenAI::Beta::Assistant::ToolResources::CodeInterpreter?
 
           def code_interpreter=: (
-            OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter
-          ) -> OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter
+            OpenAI::Beta::Assistant::ToolResources::CodeInterpreter
+          ) -> OpenAI::Beta::Assistant::ToolResources::CodeInterpreter
 
-          attr_reader file_search: OpenAI::Models::Beta::Assistant::ToolResources::FileSearch?
+          attr_reader file_search: OpenAI::Beta::Assistant::ToolResources::FileSearch?
 
           def file_search=: (
-            OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
-          ) -> OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
+            OpenAI::Beta::Assistant::ToolResources::FileSearch
+          ) -> OpenAI::Beta::Assistant::ToolResources::FileSearch
 
           def initialize: (
-            ?code_interpreter: OpenAI::Models::Beta::Assistant::ToolResources::CodeInterpreter,
-            ?file_search: OpenAI::Models::Beta::Assistant::ToolResources::FileSearch
+            ?code_interpreter: OpenAI::Beta::Assistant::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Beta::Assistant::ToolResources::FileSearch
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Assistant::tool_resources
 
           type code_interpreter = { file_ids: ::Array[String] }
 
@@ -97,8 +93,6 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?file_ids: ::Array[String]) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Assistant::ToolResources::code_interpreter
           end
 
           type file_search = { vector_store_ids: ::Array[String] }
@@ -109,8 +103,6 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?vector_store_ids: ::Array[String]) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Assistant::ToolResources::file_search
           end
         end
       end

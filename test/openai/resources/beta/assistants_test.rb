@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
     response = @openai.beta.assistants.create(model: :"gpt-4.1")
 
     assert_pattern do
-      response => OpenAI::Models::Beta::Assistant
+      response => OpenAI::Beta::Assistant
     end
 
     assert_pattern do
@@ -20,10 +20,10 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String | nil,
         object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool]),
-        response_format: OpenAI::Models::Beta::AssistantResponseFormatOption | nil,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
         temperature: Float | nil,
-        tool_resources: OpenAI::Models::Beta::Assistant::ToolResources | nil,
+        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
         top_p: Float | nil
       }
     end
@@ -33,7 +33,7 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
     response = @openai.beta.assistants.retrieve("assistant_id")
 
     assert_pattern do
-      response => OpenAI::Models::Beta::Assistant
+      response => OpenAI::Beta::Assistant
     end
 
     assert_pattern do
@@ -46,10 +46,10 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String | nil,
         object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool]),
-        response_format: OpenAI::Models::Beta::AssistantResponseFormatOption | nil,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
         temperature: Float | nil,
-        tool_resources: OpenAI::Models::Beta::Assistant::ToolResources | nil,
+        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
         top_p: Float | nil
       }
     end
@@ -59,7 +59,7 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
     response = @openai.beta.assistants.update("assistant_id")
 
     assert_pattern do
-      response => OpenAI::Models::Beta::Assistant
+      response => OpenAI::Beta::Assistant
     end
 
     assert_pattern do
@@ -72,10 +72,10 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String | nil,
         object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool]),
-        response_format: OpenAI::Models::Beta::AssistantResponseFormatOption | nil,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
         temperature: Float | nil,
-        tool_resources: OpenAI::Models::Beta::Assistant::ToolResources | nil,
+        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
         top_p: Float | nil
       }
     end
@@ -92,7 +92,7 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::Beta::Assistant
+      row => OpenAI::Beta::Assistant
     end
 
     assert_pattern do
@@ -105,10 +105,10 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
         model: String,
         name: String | nil,
         object: Symbol,
-        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::AssistantTool]),
-        response_format: OpenAI::Models::Beta::AssistantResponseFormatOption | nil,
+        tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
+        response_format: OpenAI::Beta::AssistantResponseFormatOption | nil,
         temperature: Float | nil,
-        tool_resources: OpenAI::Models::Beta::Assistant::ToolResources | nil,
+        tool_resources: OpenAI::Beta::Assistant::ToolResources | nil,
         top_p: Float | nil
       }
     end
@@ -118,7 +118,7 @@ class OpenAI::Test::Resources::Beta::AssistantsTest < OpenAI::Test::ResourceTest
     response = @openai.beta.assistants.delete("assistant_id")
 
     assert_pattern do
-      response => OpenAI::Models::Beta::AssistantDeleted
+      response => OpenAI::Beta::AssistantDeleted
     end
 
     assert_pattern do

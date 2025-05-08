@@ -19,8 +19,9 @@ module OpenAI
         # @!method initialize(text:, type: :input_text)
         #   A text input to the model.
         #
-        #   @param text [String]
-        #   @param type [Symbol, :input_text]
+        #   @param text [String] The text input to the model.
+        #
+        #   @param type [Symbol, :input_text] The type of the input item. Always `input_text`.
       end
     end
   end

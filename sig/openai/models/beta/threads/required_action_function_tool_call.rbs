@@ -5,24 +5,22 @@ module OpenAI
         type required_action_function_tool_call =
           {
             id: String,
-            function: OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function,
+            function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
             type: :function
           }
 
         class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
           attr_accessor id: String
 
-          attr_accessor function: OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function
+          attr_accessor function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function
 
           attr_accessor type: :function
 
           def initialize: (
             id: String,
-            function: OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::Function,
+            function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
             ?type: :function
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::required_action_function_tool_call
 
           type function = { arguments: String, name: String }
 
@@ -32,8 +30,6 @@ module OpenAI
             attr_accessor name: String
 
             def initialize: (arguments: String, name: String) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::RequiredActionFunctionToolCall::function
           end
         end
       end

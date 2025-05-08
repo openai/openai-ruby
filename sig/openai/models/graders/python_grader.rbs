@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    class PythonGrader = Graders::PythonGrader
+
+    module Graders
+      type python_grader =
+        { name: String, source: String, type: :python, image_tag: String }
+
+      class PythonGrader < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor source: String
+
+        attr_accessor type: :python
+
+        attr_reader image_tag: String?
+
+        def image_tag=: (String) -> String
+
+        def initialize: (
+          name: String,
+          source: String,
+          ?image_tag: String,
+          ?type: :python
+        ) -> void
+      end
+    end
+  end
+end

@@ -21,8 +21,6 @@ module OpenAI
         ?limit: Integer,
         ?request_options: OpenAI::request_opts
       ) -> void
-
-      def to_hash: -> OpenAI::Models::batch_list_params
     end
   end
 end

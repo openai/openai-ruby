@@ -6,68 +6,62 @@ module OpenAI
           type file_search_tool_call =
             {
               id: String,
-              file_search: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
+              file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
               type: :file_search
             }
 
           class FileSearchToolCall < OpenAI::Internal::Type::BaseModel
             attr_accessor id: String
 
-            attr_accessor file_search: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch
+            attr_accessor file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch
 
             attr_accessor type: :file_search
 
             def initialize: (
               id: String,
-              file_search: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
+              file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
               ?type: :file_search
             ) -> void
 
-            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::file_search_tool_call
-
             type file_search =
               {
-                ranking_options: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                results: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                results: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
               }
 
             class FileSearch < OpenAI::Internal::Type::BaseModel
-              attr_reader ranking_options: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions?
+              attr_reader ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions?
 
               def ranking_options=: (
-                OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions
-              ) -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions
+                OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions
+              ) -> OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions
 
-              attr_reader results: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]?
+              attr_reader results: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]?
 
               def results=: (
-                ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
-              ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+              ) -> ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
 
               def initialize: (
-                ?ranking_options: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                ?results: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                ?ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                ?results: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
               ) -> void
-
-              def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::file_search
 
               type ranking_options =
                 {
-                  ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker,
+                  ranker: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker,
                   score_threshold: Float
                 }
 
               class RankingOptions < OpenAI::Internal::Type::BaseModel
-                attr_accessor ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker
+                attr_accessor ranker: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker
 
                 attr_accessor score_threshold: Float
 
                 def initialize: (
-                  ranker: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker,
+                  ranker: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker,
                   score_threshold: Float
                 ) -> void
-
-                def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::ranking_options
 
                 type ranker = :auto | :default_2024_08_21
 
@@ -77,7 +71,7 @@ module OpenAI
                   AUTO: :auto
                   DEFAULT_2024_08_21: :default_2024_08_21
 
-                  def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker]
+                  def self?.values: -> ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::ranker]
                 end
               end
 
@@ -86,7 +80,7 @@ module OpenAI
                   file_id: String,
                   file_name: String,
                   score: Float,
-                  content: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                  content: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
@@ -96,25 +90,23 @@ module OpenAI
 
                 attr_accessor score: Float
 
-                attr_reader content: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]?
+                attr_reader content: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]?
 
                 def content=: (
-                  ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
-                ) -> ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                  ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                ) -> ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
 
                 def initialize: (
                   file_id: String,
                   file_name: String,
                   score: Float,
-                  ?content: ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                  ?content: ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
                 ) -> void
-
-                def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::result
 
                 type content =
                   {
                     text: String,
-                    type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
+                    type: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
                   }
 
                 class Content < OpenAI::Internal::Type::BaseModel
@@ -122,18 +114,16 @@ module OpenAI
 
                   def text=: (String) -> String
 
-                  attr_reader type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_?
+                  attr_reader type: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_?
 
                   def type=: (
-                    OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
-                  ) -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
+                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
+                  ) -> OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
 
                   def initialize: (
                     ?text: String,
-                    ?type: OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
+                    ?type: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_
                   ) -> void
-
-                  def to_hash: -> OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::content
 
                   type type_ = :text
 
@@ -142,7 +132,7 @@ module OpenAI
 
                     TEXT: :text
 
-                    def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_]
+                    def self?.values: -> ::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::type_]
                   end
                 end
               end

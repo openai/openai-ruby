@@ -17,9 +17,12 @@ module OpenAI
         optional :include_usage, OpenAI::Internal::Type::Boolean
 
         # @!method initialize(include_usage: nil)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Chat::ChatCompletionStreamOptions} for more details.
+        #
         #   Options for streaming response. Only set this when you set `stream: true`.
         #
-        #   @param include_usage [Boolean]
+        #   @param include_usage [Boolean] If set, an additional chunk will be streamed before the `data: [DONE]`
       end
     end
 

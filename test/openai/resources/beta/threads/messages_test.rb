@@ -7,24 +7,24 @@ class OpenAI::Test::Resources::Beta::Threads::MessagesTest < OpenAI::Test::Resou
     response = @openai.beta.threads.messages.create("thread_id", content: "string", role: :user)
 
     assert_pattern do
-      response => OpenAI::Models::Beta::Threads::Message
+      response => OpenAI::Beta::Threads::Message
     end
 
     assert_pattern do
       response => {
         id: String,
         assistant_id: String | nil,
-        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Message::Attachment]) | nil,
+        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Message::Attachment]) | nil,
         completed_at: Integer | nil,
-        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContent]),
+        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContent]),
         created_at: Integer,
         incomplete_at: Integer | nil,
-        incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails | nil,
+        incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         object: Symbol,
-        role: OpenAI::Models::Beta::Threads::Message::Role,
+        role: OpenAI::Beta::Threads::Message::Role,
         run_id: String | nil,
-        status: OpenAI::Models::Beta::Threads::Message::Status,
+        status: OpenAI::Beta::Threads::Message::Status,
         thread_id: String
       }
     end
@@ -34,24 +34,24 @@ class OpenAI::Test::Resources::Beta::Threads::MessagesTest < OpenAI::Test::Resou
     response = @openai.beta.threads.messages.retrieve("message_id", thread_id: "thread_id")
 
     assert_pattern do
-      response => OpenAI::Models::Beta::Threads::Message
+      response => OpenAI::Beta::Threads::Message
     end
 
     assert_pattern do
       response => {
         id: String,
         assistant_id: String | nil,
-        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Message::Attachment]) | nil,
+        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Message::Attachment]) | nil,
         completed_at: Integer | nil,
-        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContent]),
+        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContent]),
         created_at: Integer,
         incomplete_at: Integer | nil,
-        incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails | nil,
+        incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         object: Symbol,
-        role: OpenAI::Models::Beta::Threads::Message::Role,
+        role: OpenAI::Beta::Threads::Message::Role,
         run_id: String | nil,
-        status: OpenAI::Models::Beta::Threads::Message::Status,
+        status: OpenAI::Beta::Threads::Message::Status,
         thread_id: String
       }
     end
@@ -61,24 +61,24 @@ class OpenAI::Test::Resources::Beta::Threads::MessagesTest < OpenAI::Test::Resou
     response = @openai.beta.threads.messages.update("message_id", thread_id: "thread_id")
 
     assert_pattern do
-      response => OpenAI::Models::Beta::Threads::Message
+      response => OpenAI::Beta::Threads::Message
     end
 
     assert_pattern do
       response => {
         id: String,
         assistant_id: String | nil,
-        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Message::Attachment]) | nil,
+        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Message::Attachment]) | nil,
         completed_at: Integer | nil,
-        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContent]),
+        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContent]),
         created_at: Integer,
         incomplete_at: Integer | nil,
-        incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails | nil,
+        incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         object: Symbol,
-        role: OpenAI::Models::Beta::Threads::Message::Role,
+        role: OpenAI::Beta::Threads::Message::Role,
         run_id: String | nil,
-        status: OpenAI::Models::Beta::Threads::Message::Status,
+        status: OpenAI::Beta::Threads::Message::Status,
         thread_id: String
       }
     end
@@ -95,24 +95,24 @@ class OpenAI::Test::Resources::Beta::Threads::MessagesTest < OpenAI::Test::Resou
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::Beta::Threads::Message
+      row => OpenAI::Beta::Threads::Message
     end
 
     assert_pattern do
       row => {
         id: String,
         assistant_id: String | nil,
-        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Message::Attachment]) | nil,
+        attachments: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Message::Attachment]) | nil,
         completed_at: Integer | nil,
-        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::MessageContent]),
+        content: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::MessageContent]),
         created_at: Integer,
         incomplete_at: Integer | nil,
-        incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails | nil,
+        incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         object: Symbol,
-        role: OpenAI::Models::Beta::Threads::Message::Role,
+        role: OpenAI::Beta::Threads::Message::Role,
         run_id: String | nil,
-        status: OpenAI::Models::Beta::Threads::Message::Status,
+        status: OpenAI::Beta::Threads::Message::Status,
         thread_id: String
       }
     end
@@ -122,7 +122,7 @@ class OpenAI::Test::Resources::Beta::Threads::MessagesTest < OpenAI::Test::Resou
     response = @openai.beta.threads.messages.delete("message_id", thread_id: "thread_id")
 
     assert_pattern do
-      response => OpenAI::Models::Beta::Threads::MessageDeleted
+      response => OpenAI::Beta::Threads::MessageDeleted
     end
 
     assert_pattern do

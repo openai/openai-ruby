@@ -3,13 +3,13 @@ module OpenAI
     module Beta
       module Threads
         type annotation =
-          OpenAI::Models::Beta::Threads::FileCitationAnnotation
-          | OpenAI::Models::Beta::Threads::FilePathAnnotation
+          OpenAI::Beta::Threads::FileCitationAnnotation
+          | OpenAI::Beta::Threads::FilePathAnnotation
 
         module Annotation
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Beta::Threads::FileCitationAnnotation, OpenAI::Models::Beta::Threads::FilePathAnnotation]
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::annotation]
         end
       end
     end

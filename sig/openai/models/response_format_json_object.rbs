@@ -6,8 +6,6 @@ module OpenAI
       attr_accessor type: :json_object
 
       def initialize: (?type: :json_object) -> void
-
-      def to_hash: -> OpenAI::Models::response_format_json_object
     end
   end
 end

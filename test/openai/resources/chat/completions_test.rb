@@ -8,19 +8,19 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
       @openai.chat.completions.create(messages: [{content: "string", role: :developer}], model: :"gpt-4.1")
 
     assert_pattern do
-      response => OpenAI::Models::Chat::ChatCompletion
+      response => OpenAI::Chat::ChatCompletion
     end
 
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
-        service_tier: OpenAI::Models::Chat::ChatCompletion::ServiceTier | nil,
+        service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
-        usage: OpenAI::Models::CompletionUsage | nil
+        usage: OpenAI::CompletionUsage | nil
       }
     end
   end
@@ -29,19 +29,19 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     response = @openai.chat.completions.retrieve("completion_id")
 
     assert_pattern do
-      response => OpenAI::Models::Chat::ChatCompletion
+      response => OpenAI::Chat::ChatCompletion
     end
 
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
-        service_tier: OpenAI::Models::Chat::ChatCompletion::ServiceTier | nil,
+        service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
-        usage: OpenAI::Models::CompletionUsage | nil
+        usage: OpenAI::CompletionUsage | nil
       }
     end
   end
@@ -50,19 +50,19 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     response = @openai.chat.completions.update("completion_id", metadata: {foo: "string"})
 
     assert_pattern do
-      response => OpenAI::Models::Chat::ChatCompletion
+      response => OpenAI::Chat::ChatCompletion
     end
 
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
-        service_tier: OpenAI::Models::Chat::ChatCompletion::ServiceTier | nil,
+        service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
-        usage: OpenAI::Models::CompletionUsage | nil
+        usage: OpenAI::CompletionUsage | nil
       }
     end
   end
@@ -78,19 +78,19 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::Chat::ChatCompletion
+      row => OpenAI::Chat::ChatCompletion
     end
 
     assert_pattern do
       row => {
         id: String,
-        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Chat::ChatCompletion::Choice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletion::Choice]),
         created: Integer,
         model: String,
         object: Symbol,
-        service_tier: OpenAI::Models::Chat::ChatCompletion::ServiceTier | nil,
+        service_tier: OpenAI::Chat::ChatCompletion::ServiceTier | nil,
         system_fingerprint: String | nil,
-        usage: OpenAI::Models::CompletionUsage | nil
+        usage: OpenAI::CompletionUsage | nil
       }
     end
   end
@@ -99,7 +99,7 @@ class OpenAI::Test::Resources::Chat::CompletionsTest < OpenAI::Test::ResourceTes
     response = @openai.chat.completions.delete("completion_id")
 
     assert_pattern do
-      response => OpenAI::Models::Chat::ChatCompletionDeleted
+      response => OpenAI::Chat::ChatCompletionDeleted
     end
 
     assert_pattern do

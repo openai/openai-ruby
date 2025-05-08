@@ -6,17 +6,17 @@ module OpenAI
           {
             id: String,
             assistant_id: String?,
-            attachments: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment]?,
+            attachments: ::Array[OpenAI::Beta::Threads::Message::Attachment]?,
             completed_at: Integer?,
             content: ::Array[OpenAI::Models::Beta::Threads::message_content],
             created_at: Integer,
             incomplete_at: Integer?,
-            incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails?,
+            incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails?,
             metadata: OpenAI::Models::metadata?,
             object: :"thread.message",
-            role: OpenAI::Models::Beta::Threads::Message::role,
+            role: OpenAI::Beta::Threads::Message::role,
             run_id: String?,
-            status: OpenAI::Models::Beta::Threads::Message::status,
+            status: OpenAI::Beta::Threads::Message::status,
             thread_id: String
           }
 
@@ -25,7 +25,7 @@ module OpenAI
 
           attr_accessor assistant_id: String?
 
-          attr_accessor attachments: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment]?
+          attr_accessor attachments: ::Array[OpenAI::Beta::Threads::Message::Attachment]?
 
           attr_accessor completed_at: Integer?
 
@@ -35,43 +35,41 @@ module OpenAI
 
           attr_accessor incomplete_at: Integer?
 
-          attr_accessor incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails?
+          attr_accessor incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails?
 
           attr_accessor metadata: OpenAI::Models::metadata?
 
           attr_accessor object: :"thread.message"
 
-          attr_accessor role: OpenAI::Models::Beta::Threads::Message::role
+          attr_accessor role: OpenAI::Beta::Threads::Message::role
 
           attr_accessor run_id: String?
 
-          attr_accessor status: OpenAI::Models::Beta::Threads::Message::status
+          attr_accessor status: OpenAI::Beta::Threads::Message::status
 
           attr_accessor thread_id: String
 
           def initialize: (
             id: String,
             assistant_id: String?,
-            attachments: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment]?,
+            attachments: ::Array[OpenAI::Beta::Threads::Message::Attachment]?,
             completed_at: Integer?,
             content: ::Array[OpenAI::Models::Beta::Threads::message_content],
             created_at: Integer,
             incomplete_at: Integer?,
-            incomplete_details: OpenAI::Models::Beta::Threads::Message::IncompleteDetails?,
+            incomplete_details: OpenAI::Beta::Threads::Message::IncompleteDetails?,
             metadata: OpenAI::Models::metadata?,
-            role: OpenAI::Models::Beta::Threads::Message::role,
+            role: OpenAI::Beta::Threads::Message::role,
             run_id: String?,
-            status: OpenAI::Models::Beta::Threads::Message::status,
+            status: OpenAI::Beta::Threads::Message::status,
             thread_id: String,
             ?object: :"thread.message"
           ) -> void
 
-          def to_hash: -> OpenAI::Models::Beta::Threads::message
-
           type attachment =
             {
               file_id: String,
-              tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+              tools: ::Array[OpenAI::Beta::Threads::Message::Attachment::tool]
             }
 
           class Attachment < OpenAI::Internal::Type::BaseModel
@@ -79,22 +77,20 @@ module OpenAI
 
             def file_id=: (String) -> String
 
-            attr_reader tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]?
+            attr_reader tools: ::Array[OpenAI::Beta::Threads::Message::Attachment::tool]?
 
             def tools=: (
-              ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
-            ) -> ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+              ::Array[OpenAI::Beta::Threads::Message::Attachment::tool]
+            ) -> ::Array[OpenAI::Beta::Threads::Message::Attachment::tool]
 
             def initialize: (
               ?file_id: String,
-              ?tools: ::Array[OpenAI::Models::Beta::Threads::Message::Attachment::tool]
+              ?tools: ::Array[OpenAI::Beta::Threads::Message::Attachment::tool]
             ) -> void
 
-            def to_hash: -> OpenAI::Models::Beta::Threads::Message::attachment
-
             type tool =
-              OpenAI::Models::Beta::CodeInterpreterTool
-              | OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+              OpenAI::Beta::CodeInterpreterTool
+              | OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -106,27 +102,23 @@ module OpenAI
                 attr_accessor type: :file_search
 
                 def initialize: (?type: :file_search) -> void
-
-                def to_hash: -> OpenAI::Models::Beta::Threads::Message::Attachment::Tool::assistant_tools_file_search_type_only
               end
 
-              def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly]
+              def self?.variants: -> ::Array[OpenAI::Beta::Threads::Message::Attachment::tool]
             end
           end
 
           type incomplete_details =
             {
-              reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
+              reason: OpenAI::Beta::Threads::Message::IncompleteDetails::reason
             }
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
-            attr_accessor reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
+            attr_accessor reason: OpenAI::Beta::Threads::Message::IncompleteDetails::reason
 
             def initialize: (
-              reason: OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason
+              reason: OpenAI::Beta::Threads::Message::IncompleteDetails::reason
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::Message::incomplete_details
 
             type reason =
               :content_filter
@@ -144,7 +136,7 @@ module OpenAI
               RUN_EXPIRED: :run_expired
               RUN_FAILED: :run_failed
 
-              def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::IncompleteDetails::reason]
+              def self?.values: -> ::Array[OpenAI::Beta::Threads::Message::IncompleteDetails::reason]
             end
           end
 
@@ -156,7 +148,7 @@ module OpenAI
             USER: :user
             ASSISTANT: :assistant
 
-            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::role]
+            def self?.values: -> ::Array[OpenAI::Beta::Threads::Message::role]
           end
 
           type status = :in_progress | :incomplete | :completed
@@ -168,7 +160,7 @@ module OpenAI
             INCOMPLETE: :incomplete
             COMPLETED: :completed
 
-            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::Message::status]
+            def self?.values: -> ::Array[OpenAI::Beta::Threads::Message::status]
           end
         end
       end

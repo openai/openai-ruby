@@ -11,9 +11,11 @@ module OpenAI
             #   with one of three types of tools: `code_interpreter`, `file_search`, or
             #   `function`.
             #
-            #   @return [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>]
+            #   @return [Array<OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Beta::Threads::Runs::FunctionToolCall>]
             required :tool_calls,
-                     -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Beta::Threads::Runs::ToolCall] }
+                     -> {
+                       OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::Threads::Runs::ToolCall]
+                     }
 
             # @!attribute type
             #   Always `tool_calls`.
@@ -22,10 +24,14 @@ module OpenAI
             required :type, const: :tool_calls
 
             # @!method initialize(tool_calls:, type: :tool_calls)
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Beta::Threads::Runs::ToolCallsStepDetails} for more details.
+            #
             #   Details of the tool call.
             #
-            #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>]
-            #   @param type [Symbol, :tool_calls]
+            #   @param tool_calls [Array<OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Beta::Threads::Runs::FunctionToolCall>] An array of tool calls the run step was involved in. These can be associated wit
+            #
+            #   @param type [Symbol, :tool_calls] Always `tool_calls`.
           end
         end
       end

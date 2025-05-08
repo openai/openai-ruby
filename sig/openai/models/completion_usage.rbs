@@ -5,8 +5,8 @@ module OpenAI
         completion_tokens: Integer,
         prompt_tokens: Integer,
         total_tokens: Integer,
-        completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
-        prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
+        completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
+        prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
       }
 
     class CompletionUsage < OpenAI::Internal::Type::BaseModel
@@ -16,27 +16,25 @@ module OpenAI
 
       attr_accessor total_tokens: Integer
 
-      attr_reader completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails?
+      attr_reader completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails?
 
       def completion_tokens_details=: (
-        OpenAI::Models::CompletionUsage::CompletionTokensDetails
-      ) -> OpenAI::Models::CompletionUsage::CompletionTokensDetails
+        OpenAI::CompletionUsage::CompletionTokensDetails
+      ) -> OpenAI::CompletionUsage::CompletionTokensDetails
 
-      attr_reader prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails?
+      attr_reader prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails?
 
       def prompt_tokens_details=: (
-        OpenAI::Models::CompletionUsage::PromptTokensDetails
-      ) -> OpenAI::Models::CompletionUsage::PromptTokensDetails
+        OpenAI::CompletionUsage::PromptTokensDetails
+      ) -> OpenAI::CompletionUsage::PromptTokensDetails
 
       def initialize: (
         completion_tokens: Integer,
         prompt_tokens: Integer,
         total_tokens: Integer,
-        ?completion_tokens_details: OpenAI::Models::CompletionUsage::CompletionTokensDetails,
-        ?prompt_tokens_details: OpenAI::Models::CompletionUsage::PromptTokensDetails
+        ?completion_tokens_details: OpenAI::CompletionUsage::CompletionTokensDetails,
+        ?prompt_tokens_details: OpenAI::CompletionUsage::PromptTokensDetails
       ) -> void
-
-      def to_hash: -> OpenAI::Models::completion_usage
 
       type completion_tokens_details =
         {
@@ -69,8 +67,6 @@ module OpenAI
           ?reasoning_tokens: Integer,
           ?rejected_prediction_tokens: Integer
         ) -> void
-
-        def to_hash: -> OpenAI::Models::CompletionUsage::completion_tokens_details
       end
 
       type prompt_tokens_details =
@@ -89,8 +85,6 @@ module OpenAI
           ?audio_tokens: Integer,
           ?cached_tokens: Integer
         ) -> void
-
-        def to_hash: -> OpenAI::Models::CompletionUsage::prompt_tokens_details
       end
     end
   end

@@ -52,8 +52,6 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
-        def to_hash: -> OpenAI::Models::VectorStores::file_batch_list_files_params
-
         type filter = :in_progress | :completed | :failed | :cancelled
 
         module Filter

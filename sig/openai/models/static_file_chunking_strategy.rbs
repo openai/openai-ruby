@@ -12,8 +12,6 @@ module OpenAI
         chunk_overlap_tokens: Integer,
         max_chunk_size_tokens: Integer
       ) -> void
-
-      def to_hash: -> OpenAI::Models::static_file_chunking_strategy
     end
   end
 end

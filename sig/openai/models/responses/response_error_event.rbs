@@ -19,8 +19,6 @@ module OpenAI
           param: String?,
           ?type: :error
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_error_event
       end
     end
   end

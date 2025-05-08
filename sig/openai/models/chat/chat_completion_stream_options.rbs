@@ -11,8 +11,6 @@ module OpenAI
         def include_usage=: (bool) -> bool
 
         def initialize: (?include_usage: bool) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_stream_options
       end
     end
   end

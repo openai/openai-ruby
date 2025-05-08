@@ -28,8 +28,6 @@ module OpenAI
           output_index: Integer,
           ?type: :"response.refusal.delta"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_refusal_delta_event
       end
     end
   end

@@ -7,23 +7,23 @@ module OpenAI
         input_file_id: String,
         ?metadata: OpenAI::Models::metadata?,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::Batch
+      ) -> OpenAI::Batch
 
       def retrieve: (
         String batch_id,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::Batch
+      ) -> OpenAI::Batch
 
       def list: (
         ?after: String,
         ?limit: Integer,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Batch]
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Batch]
 
       def cancel: (
         String batch_id,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::Batch
+      ) -> OpenAI::Batch
 
       def initialize: (client: OpenAI::Client) -> void
     end

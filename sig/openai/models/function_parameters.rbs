@@ -2,6 +2,6 @@ module OpenAI
   module Models
     type function_parameters = ::Hash[Symbol, top]
 
-    FunctionParameters: function_parameters
+    FunctionParameters: OpenAI::Internal::Type::Converter
   end
 end

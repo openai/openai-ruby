@@ -6,8 +6,8 @@ module OpenAI
           duration: Float,
           language: String,
           text: String,
-          segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment],
-          words: ::Array[OpenAI::Models::Audio::TranscriptionWord]
+          segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          words: ::Array[OpenAI::Audio::TranscriptionWord]
         }
 
       class TranscriptionVerbose < OpenAI::Internal::Type::BaseModel
@@ -17,27 +17,25 @@ module OpenAI
 
         attr_accessor text: String
 
-        attr_reader segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment]?
+        attr_reader segments: ::Array[OpenAI::Audio::TranscriptionSegment]?
 
         def segments=: (
-          ::Array[OpenAI::Models::Audio::TranscriptionSegment]
-        ) -> ::Array[OpenAI::Models::Audio::TranscriptionSegment]
+          ::Array[OpenAI::Audio::TranscriptionSegment]
+        ) -> ::Array[OpenAI::Audio::TranscriptionSegment]
 
-        attr_reader words: ::Array[OpenAI::Models::Audio::TranscriptionWord]?
+        attr_reader words: ::Array[OpenAI::Audio::TranscriptionWord]?
 
         def words=: (
-          ::Array[OpenAI::Models::Audio::TranscriptionWord]
-        ) -> ::Array[OpenAI::Models::Audio::TranscriptionWord]
+          ::Array[OpenAI::Audio::TranscriptionWord]
+        ) -> ::Array[OpenAI::Audio::TranscriptionWord]
 
         def initialize: (
           duration: Float,
           language: String,
           text: String,
-          ?segments: ::Array[OpenAI::Models::Audio::TranscriptionSegment],
-          ?words: ::Array[OpenAI::Models::Audio::TranscriptionWord]
+          ?segments: ::Array[OpenAI::Audio::TranscriptionSegment],
+          ?words: ::Array[OpenAI::Audio::TranscriptionWord]
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Audio::transcription_verbose
       end
     end
   end

@@ -13,7 +13,7 @@ module OpenAI
     }
 
   class RequestOptions < OpenAI::Internal::Type::BaseModel
-    def self.validate!: (self | ::Hash[Symbol, top] opts) -> void
+    def self.validate!: (OpenAI::request_opts opts) -> void
 
     attr_accessor idempotency_key: String?
 

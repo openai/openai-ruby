@@ -1,0 +1,134 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Alpha
+        type grader_run_response =
+          {
+            metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
+            model_grader_token_usage_per_model: ::Hash[Symbol, top],
+            reward: Float,
+            sub_rewards: ::Hash[Symbol, top]
+          }
+
+        class GraderRunResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata
+
+          attr_accessor model_grader_token_usage_per_model: ::Hash[Symbol, top]
+
+          attr_accessor reward: Float
+
+          attr_accessor sub_rewards: ::Hash[Symbol, top]
+
+          def initialize: (
+            metadata: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
+            model_grader_token_usage_per_model: ::Hash[Symbol, top],
+            reward: Float,
+            sub_rewards: ::Hash[Symbol, top]
+          ) -> void
+
+          type metadata =
+            {
+              errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
+              execution_time: Float,
+              name: String,
+              sampled_model_name: String?,
+              scores: ::Hash[Symbol, top],
+              token_usage: Integer?,
+              type: String
+            }
+
+          class Metadata < OpenAI::Internal::Type::BaseModel
+            attr_accessor errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors
+
+            attr_accessor execution_time: Float
+
+            attr_accessor name: String
+
+            attr_accessor sampled_model_name: String?
+
+            attr_accessor scores: ::Hash[Symbol, top]
+
+            attr_accessor token_usage: Integer?
+
+            attr_accessor type: String
+
+            def initialize: (
+              errors: OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
+              execution_time: Float,
+              name: String,
+              sampled_model_name: String?,
+              scores: ::Hash[Symbol, top],
+              token_usage: Integer?,
+              type: String
+            ) -> void
+
+            type errors =
+              {
+                formula_parse_error: bool,
+                invalid_variable_error: bool,
+                model_grader_parse_error: bool,
+                model_grader_refusal_error: bool,
+                model_grader_server_error: bool,
+                model_grader_server_error_details: String?,
+                other_error: bool,
+                python_grader_runtime_error: bool,
+                python_grader_runtime_error_details: String?,
+                python_grader_server_error: bool,
+                python_grader_server_error_type: String?,
+                sample_parse_error: bool,
+                truncated_observation_error: bool,
+                unresponsive_reward_error: bool
+              }
+
+            class Errors < OpenAI::Internal::Type::BaseModel
+              attr_accessor formula_parse_error: bool
+
+              attr_accessor invalid_variable_error: bool
+
+              attr_accessor model_grader_parse_error: bool
+
+              attr_accessor model_grader_refusal_error: bool
+
+              attr_accessor model_grader_server_error: bool
+
+              attr_accessor model_grader_server_error_details: String?
+
+              attr_accessor other_error: bool
+
+              attr_accessor python_grader_runtime_error: bool
+
+              attr_accessor python_grader_runtime_error_details: String?
+
+              attr_accessor python_grader_server_error: bool
+
+              attr_accessor python_grader_server_error_type: String?
+
+              attr_accessor sample_parse_error: bool
+
+              attr_accessor truncated_observation_error: bool
+
+              attr_accessor unresponsive_reward_error: bool
+
+              def initialize: (
+                formula_parse_error: bool,
+                invalid_variable_error: bool,
+                model_grader_parse_error: bool,
+                model_grader_refusal_error: bool,
+                model_grader_server_error: bool,
+                model_grader_server_error_details: String?,
+                other_error: bool,
+                python_grader_runtime_error: bool,
+                python_grader_runtime_error_details: String?,
+                python_grader_server_error: bool,
+                python_grader_server_error_type: String?,
+                sample_parse_error: bool,
+                truncated_observation_error: bool,
+                unresponsive_reward_error: bool
+              ) -> void
+            end
+          end
+        end
+      end
+    end
+  end
+end

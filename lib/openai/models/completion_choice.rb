@@ -9,8 +9,8 @@ module OpenAI
       #   number of tokens specified in the request was reached, or `content_filter` if
       #   content was omitted due to a flag from our content filters.
       #
-      #   @return [Symbol, OpenAI::Models::CompletionChoice::FinishReason]
-      required :finish_reason, enum: -> { OpenAI::Models::CompletionChoice::FinishReason }
+      #   @return [Symbol, OpenAI::CompletionChoice::FinishReason]
+      required :finish_reason, enum: -> { OpenAI::CompletionChoice::FinishReason }
 
       # @!attribute index
       #
@@ -19,8 +19,8 @@ module OpenAI
 
       # @!attribute logprobs
       #
-      #   @return [OpenAI::Models::CompletionChoice::Logprobs, nil]
-      required :logprobs, -> { OpenAI::Models::CompletionChoice::Logprobs }, nil?: true
+      #   @return [OpenAI::CompletionChoice::Logprobs, nil]
+      required :logprobs, -> { OpenAI::CompletionChoice::Logprobs }, nil?: true
 
       # @!attribute text
       #
@@ -28,9 +28,15 @@ module OpenAI
       required :text, String
 
       # @!method initialize(finish_reason:, index:, logprobs:, text:)
-      #   @param finish_reason [Symbol, OpenAI::Models::CompletionChoice::FinishReason]
+      #   Some parameter documentations has been truncated, see {OpenAI::CompletionChoice}
+      #   for more details.
+      #
+      #   @param finish_reason [Symbol, OpenAI::CompletionChoice::FinishReason] The reason the model stopped generating tokens. This will be `stop` if the model
+      #
       #   @param index [Integer]
-      #   @param logprobs [OpenAI::Models::CompletionChoice::Logprobs, nil]
+      #
+      #   @param logprobs [OpenAI::CompletionChoice::Logprobs, nil]
+      #
       #   @param text [String]
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
@@ -38,7 +44,7 @@ module OpenAI
       # number of tokens specified in the request was reached, or `content_filter` if
       # content was omitted due to a flag from our content filters.
       #
-      # @see OpenAI::Models::CompletionChoice#finish_reason
+      # @see OpenAI::CompletionChoice#finish_reason
       module FinishReason
         extend OpenAI::Internal::Type::Enum
 
@@ -50,7 +56,7 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # @see OpenAI::Models::CompletionChoice#logprobs
+      # @see OpenAI::CompletionChoice#logprobs
       class Logprobs < OpenAI::Internal::Type::BaseModel
         # @!attribute text_offset
         #

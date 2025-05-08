@@ -7,8 +7,6 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       def initialize: (?request_options: OpenAI::request_opts) -> void
-
-      def to_hash: -> OpenAI::Models::batch_cancel_params
     end
   end
 end

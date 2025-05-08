@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     response = @openai.files.create(file: Pathname(__FILE__), purpose: :assistants)
 
     assert_pattern do
-      response => OpenAI::Models::FileObject
+      response => OpenAI::FileObject
     end
 
     assert_pattern do
@@ -17,8 +17,8 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
         created_at: Integer,
         filename: String,
         object: Symbol,
-        purpose: OpenAI::Models::FileObject::Purpose,
-        status: OpenAI::Models::FileObject::Status,
+        purpose: OpenAI::FileObject::Purpose,
+        status: OpenAI::FileObject::Status,
         expires_at: Integer | nil,
         status_details: String | nil
       }
@@ -29,7 +29,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     response = @openai.files.retrieve("file_id")
 
     assert_pattern do
-      response => OpenAI::Models::FileObject
+      response => OpenAI::FileObject
     end
 
     assert_pattern do
@@ -39,8 +39,8 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
         created_at: Integer,
         filename: String,
         object: Symbol,
-        purpose: OpenAI::Models::FileObject::Purpose,
-        status: OpenAI::Models::FileObject::Status,
+        purpose: OpenAI::FileObject::Purpose,
+        status: OpenAI::FileObject::Status,
         expires_at: Integer | nil,
         status_details: String | nil
       }
@@ -58,7 +58,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::FileObject
+      row => OpenAI::FileObject
     end
 
     assert_pattern do
@@ -68,8 +68,8 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
         created_at: Integer,
         filename: String,
         object: Symbol,
-        purpose: OpenAI::Models::FileObject::Purpose,
-        status: OpenAI::Models::FileObject::Status,
+        purpose: OpenAI::FileObject::Purpose,
+        status: OpenAI::FileObject::Status,
         expires_at: Integer | nil,
         status_details: String | nil
       }
@@ -80,7 +80,7 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
     response = @openai.files.delete("file_id")
 
     assert_pattern do
-      response => OpenAI::Models::FileDeleted
+      response => OpenAI::FileDeleted
     end
 
     assert_pattern do

@@ -16,12 +16,16 @@ module OpenAI
         #   explicit display name for your run, add tags to your run, and set a default
         #   entity (team, username, etc) to be associated with your run.
         #
-        #   @return [OpenAI::Models::FineTuning::FineTuningJobWandbIntegration]
-        required :wandb, -> { OpenAI::Models::FineTuning::FineTuningJobWandbIntegration }
+        #   @return [OpenAI::FineTuning::FineTuningJobWandbIntegration]
+        required :wandb, -> { OpenAI::FineTuning::FineTuningJobWandbIntegration }
 
         # @!method initialize(wandb:, type: :wandb)
-        #   @param wandb [OpenAI::Models::FineTuning::FineTuningJobWandbIntegration]
-        #   @param type [Symbol, :wandb]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::FineTuning::FineTuningJobWandbIntegrationObject} for more details.
+        #
+        #   @param wandb [OpenAI::FineTuning::FineTuningJobWandbIntegration] The settings for your integration with Weights and Biases. This payload specifie
+        #
+        #   @param type [Symbol, :wandb] The type of the integration being enabled for the fine-tuning job
       end
     end
 

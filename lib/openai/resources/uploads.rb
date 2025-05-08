@@ -6,6 +6,9 @@ module OpenAI
       # @return [OpenAI::Resources::Uploads::Parts]
       attr_reader :parts
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::UploadCreateParams} for more details.
+      #
       # Creates an intermediate
       # [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object
       # that you can add
@@ -28,45 +31,50 @@ module OpenAI
       #
       # @overload create(bytes:, filename:, mime_type:, purpose:, request_options: {})
       #
-      # @param bytes [Integer]
-      # @param filename [String]
-      # @param mime_type [String]
-      # @param purpose [Symbol, OpenAI::Models::FilePurpose]
+      # @param bytes [Integer] The number of bytes in the file you are uploading.
+      #
+      # @param filename [String] The name of the file to upload.
+      #
+      # @param mime_type [String] The MIME type of the file.
+      #
+      # @param purpose [Symbol, OpenAI::FilePurpose] The intended purpose of the uploaded file.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::Upload]
+      # @return [OpenAI::Upload]
       #
       # @see OpenAI::Models::UploadCreateParams
       def create(params)
-        parsed, options = OpenAI::Models::UploadCreateParams.dump_request(params)
-        @client.request(
-          method: :post,
-          path: "uploads",
-          body: parsed,
-          model: OpenAI::Models::Upload,
-          options: options
-        )
+        parsed, options = OpenAI::UploadCreateParams.dump_request(params)
+        @client.request(method: :post, path: "uploads", body: parsed, model: OpenAI::Upload, options: options)
       end
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::UploadCancelParams} for more details.
+      #
       # Cancels the Upload. No Parts may be added after an Upload is cancelled.
       #
       # @overload cancel(upload_id, request_options: {})
       #
-      # @param upload_id [String]
+      # @param upload_id [String] The ID of the Upload.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::Upload]
+      # @return [OpenAI::Upload]
       #
       # @see OpenAI::Models::UploadCancelParams
       def cancel(upload_id, params = {})
         @client.request(
           method: :post,
           path: ["uploads/%1$s/cancel", upload_id],
-          model: OpenAI::Models::Upload,
+          model: OpenAI::Upload,
           options: params[:request_options]
         )
       end
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::UploadCompleteParams} for more details.
+      #
       # Completes the
       # [Upload](https://platform.openai.com/docs/api-reference/uploads/object).
       #
@@ -83,21 +91,24 @@ module OpenAI
       #
       # @overload complete(upload_id, part_ids:, md5: nil, request_options: {})
       #
-      # @param upload_id [String]
-      # @param part_ids [Array<String>]
-      # @param md5 [String]
+      # @param upload_id [String] The ID of the Upload.
+      #
+      # @param part_ids [Array<String>] The ordered list of Part IDs.
+      #
+      # @param md5 [String] The optional md5 checksum for the file contents to verify if the bytes uploaded
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
-      # @return [OpenAI::Models::Upload]
+      # @return [OpenAI::Upload]
       #
       # @see OpenAI::Models::UploadCompleteParams
       def complete(upload_id, params)
-        parsed, options = OpenAI::Models::UploadCompleteParams.dump_request(params)
+        parsed, options = OpenAI::UploadCompleteParams.dump_request(params)
         @client.request(
           method: :post,
           path: ["uploads/%1$s/complete", upload_id],
           body: parsed,
-          model: OpenAI::Models::Upload,
+          model: OpenAI::Upload,
           options: options
         )
       end

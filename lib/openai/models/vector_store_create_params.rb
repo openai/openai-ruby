@@ -11,14 +11,14 @@ module OpenAI
       #   The chunking strategy used to chunk the file(s). If not set, will use the `auto`
       #   strategy. Only applicable if `file_ids` is non-empty.
       #
-      #   @return [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam, nil]
-      optional :chunking_strategy, union: -> { OpenAI::Models::FileChunkingStrategyParam }
+      #   @return [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam, nil]
+      optional :chunking_strategy, union: -> { OpenAI::FileChunkingStrategyParam }
 
       # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
-      #   @return [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter, nil]
-      optional :expires_after, -> { OpenAI::Models::VectorStoreCreateParams::ExpiresAfter }
+      #   @return [OpenAI::VectorStoreCreateParams::ExpiresAfter, nil]
+      optional :expires_after, -> { OpenAI::VectorStoreCreateParams::ExpiresAfter }
 
       # @!attribute file_ids
       #   A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
@@ -46,11 +46,19 @@ module OpenAI
       optional :name, String
 
       # @!method initialize(chunking_strategy: nil, expires_after: nil, file_ids: nil, metadata: nil, name: nil, request_options: {})
-      #   @param chunking_strategy [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
-      #   @param expires_after [OpenAI::Models::VectorStoreCreateParams::ExpiresAfter]
-      #   @param file_ids [Array<String>]
-      #   @param metadata [Hash{Symbol=>String}, nil]
-      #   @param name [String]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::VectorStoreCreateParams} for more details.
+      #
+      #   @param chunking_strategy [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
+      #
+      #   @param expires_after [OpenAI::VectorStoreCreateParams::ExpiresAfter] The expiration policy for a vector store.
+      #
+      #   @param file_ids [Array<String>] A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
+      #
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #
+      #   @param name [String] The name of the vector store.
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
@@ -68,10 +76,14 @@ module OpenAI
         required :days, Integer
 
         # @!method initialize(days:, anchor: :last_active_at)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::VectorStoreCreateParams::ExpiresAfter} for more details.
+        #
         #   The expiration policy for a vector store.
         #
-        #   @param days [Integer]
-        #   @param anchor [Symbol, :last_active_at]
+        #   @param days [Integer] The number of days after the anchor time that the vector store will expire.
+        #
+        #   @param anchor [Symbol, :last_active_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
       end
     end
   end

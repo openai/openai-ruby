@@ -6,7 +6,7 @@ module OpenAI
           {
             index: Integer,
             type: :image_file,
-            image_file: OpenAI::Models::Beta::Threads::ImageFileDelta
+            image_file: OpenAI::Beta::Threads::ImageFileDelta
           }
 
         class ImageFileDeltaBlock < OpenAI::Internal::Type::BaseModel
@@ -14,19 +14,17 @@ module OpenAI
 
           attr_accessor type: :image_file
 
-          attr_reader image_file: OpenAI::Models::Beta::Threads::ImageFileDelta?
+          attr_reader image_file: OpenAI::Beta::Threads::ImageFileDelta?
 
           def image_file=: (
-            OpenAI::Models::Beta::Threads::ImageFileDelta
-          ) -> OpenAI::Models::Beta::Threads::ImageFileDelta
+            OpenAI::Beta::Threads::ImageFileDelta
+          ) -> OpenAI::Beta::Threads::ImageFileDelta
 
           def initialize: (
             index: Integer,
-            ?image_file: OpenAI::Models::Beta::Threads::ImageFileDelta,
+            ?image_file: OpenAI::Beta::Threads::ImageFileDelta,
             ?type: :image_file
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::image_file_delta_block
         end
       end
     end

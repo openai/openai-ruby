@@ -8,8 +8,6 @@ module OpenAI
       attr_accessor type: :text
 
       def initialize: (text: String, ?type: :text) -> void
-
-      def to_hash: -> OpenAI::Models::moderation_text_input
     end
   end
 end

@@ -14,7 +14,7 @@ module OpenAI
       #   because the file was indexed before the `chunking_strategy` concept was
       #   introduced in the API.
       #
-      #   @param type [Symbol, :other]
+      #   @param type [Symbol, :other] Always `other`.
     end
   end
 end

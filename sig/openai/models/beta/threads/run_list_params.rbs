@@ -41,8 +41,6 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> void
 
-          def to_hash: -> OpenAI::Models::Beta::Threads::run_list_params
-
           type order = :asc | :desc
 
           module Order

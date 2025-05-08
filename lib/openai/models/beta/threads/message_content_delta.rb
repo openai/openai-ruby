@@ -12,19 +12,19 @@ module OpenAI
           discriminator :type
 
           # References an image [File](https://platform.openai.com/docs/api-reference/files) in the content of a message.
-          variant :image_file, -> { OpenAI::Models::Beta::Threads::ImageFileDeltaBlock }
+          variant :image_file, -> { OpenAI::Beta::Threads::ImageFileDeltaBlock }
 
           # The text content that is part of a message.
-          variant :text, -> { OpenAI::Models::Beta::Threads::TextDeltaBlock }
+          variant :text, -> { OpenAI::Beta::Threads::TextDeltaBlock }
 
           # The refusal content that is part of a message.
-          variant :refusal, -> { OpenAI::Models::Beta::Threads::RefusalDeltaBlock }
+          variant :refusal, -> { OpenAI::Beta::Threads::RefusalDeltaBlock }
 
           # References an image URL in the content of a message.
-          variant :image_url, -> { OpenAI::Models::Beta::Threads::ImageURLDeltaBlock }
+          variant :image_url, -> { OpenAI::Beta::Threads::ImageURLDeltaBlock }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Beta::Threads::ImageFileDeltaBlock, OpenAI::Models::Beta::Threads::TextDeltaBlock, OpenAI::Models::Beta::Threads::RefusalDeltaBlock, OpenAI::Models::Beta::Threads::ImageURLDeltaBlock)]
+          #   @return [Array(OpenAI::Beta::Threads::ImageFileDeltaBlock, OpenAI::Beta::Threads::TextDeltaBlock, OpenAI::Beta::Threads::RefusalDeltaBlock, OpenAI::Beta::Threads::ImageURLDeltaBlock)]
         end
       end
     end

@@ -6,7 +6,7 @@ module OpenAI
           {
             index: Integer,
             type: :image_url,
-            image_url: OpenAI::Models::Beta::Threads::ImageURLDelta
+            image_url: OpenAI::Beta::Threads::ImageURLDelta
           }
 
         class ImageURLDeltaBlock < OpenAI::Internal::Type::BaseModel
@@ -14,19 +14,17 @@ module OpenAI
 
           attr_accessor type: :image_url
 
-          attr_reader image_url: OpenAI::Models::Beta::Threads::ImageURLDelta?
+          attr_reader image_url: OpenAI::Beta::Threads::ImageURLDelta?
 
           def image_url=: (
-            OpenAI::Models::Beta::Threads::ImageURLDelta
-          ) -> OpenAI::Models::Beta::Threads::ImageURLDelta
+            OpenAI::Beta::Threads::ImageURLDelta
+          ) -> OpenAI::Beta::Threads::ImageURLDelta
 
           def initialize: (
             index: Integer,
-            ?image_url: OpenAI::Models::Beta::Threads::ImageURLDelta,
+            ?image_url: OpenAI::Beta::Threads::ImageURLDelta,
             ?type: :image_url
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::image_url_delta_block
         end
       end
     end

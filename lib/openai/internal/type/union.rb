@@ -6,13 +6,13 @@ module OpenAI
       # @api private
       #
       # @example
-      #   # `chat_completion_content_part` is a `OpenAI::Models::Chat::ChatCompletionContentPart`
+      #   # `chat_completion_content_part` is a `OpenAI::Chat::ChatCompletionContentPart`
       #   case chat_completion_content_part
-      #   when OpenAI::Models::Chat::ChatCompletionContentPartText
+      #   when OpenAI::Chat::ChatCompletionContentPartText
       #     puts(chat_completion_content_part.text)
-      #   when OpenAI::Models::Chat::ChatCompletionContentPartImage
+      #   when OpenAI::Chat::ChatCompletionContentPartImage
       #     puts(chat_completion_content_part.image_url)
-      #   when OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
+      #   when OpenAI::Chat::ChatCompletionContentPartInputAudio
       #     puts(chat_completion_content_part.input_audio)
       #   else
       #     puts(chat_completion_content_part)
@@ -112,6 +112,8 @@ module OpenAI
         # rubocop:disable Style/HashEachMethods
         # rubocop:disable Style/CaseEquality
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
@@ -121,6 +123,8 @@ module OpenAI
           end
         end
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
@@ -128,6 +132,8 @@ module OpenAI
           OpenAI::Internal::Type::Union === other && other.derefed_variants == derefed_variants
         end
 
+        # @api public
+        #
         # @return [Integer]
         def hash = variants.hash
 

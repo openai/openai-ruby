@@ -19,8 +19,6 @@ module OpenAI
             ?metadata: OpenAI::Models::metadata?,
             ?request_options: OpenAI::request_opts
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::message_update_params
         end
       end
     end

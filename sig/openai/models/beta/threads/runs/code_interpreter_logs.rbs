@@ -20,8 +20,6 @@ module OpenAI
               ?logs: String,
               ?type: :logs
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::code_interpreter_logs
           end
         end
       end

@@ -14,10 +14,10 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         # `none` means the model will not call any tools and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools before responding to the user.
-        variant enum: -> { OpenAI::Models::Beta::AssistantToolChoiceOption::Auto }
+        variant enum: -> { OpenAI::Beta::AssistantToolChoiceOption::Auto }
 
         # Specifies a tool the model should use. Use to force the model to call a specific tool.
-        variant -> { OpenAI::Models::Beta::AssistantToolChoice }
+        variant -> { OpenAI::Beta::AssistantToolChoice }
 
         # `none` means the model will not call any tools and instead generates a message.
         # `auto` means the model can pick between generating a message or calling one or
@@ -35,7 +35,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(Symbol, OpenAI::Models::Beta::AssistantToolChoiceOption::Auto, OpenAI::Models::Beta::AssistantToolChoice)]
+        #   @return [Array(Symbol, OpenAI::Beta::AssistantToolChoiceOption::Auto, OpenAI::Beta::AssistantToolChoice)]
       end
     end
   end

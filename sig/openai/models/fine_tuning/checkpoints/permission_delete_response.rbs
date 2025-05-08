@@ -17,8 +17,6 @@ module OpenAI
             deleted: bool,
             ?object: :"checkpoint.permission"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::FineTuning::Checkpoints::permission_delete_response
         end
       end
     end

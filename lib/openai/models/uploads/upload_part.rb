@@ -32,10 +32,13 @@ module OpenAI
         # @!method initialize(id:, created_at:, upload_id:, object: :"upload.part")
         #   The upload Part represents a chunk of bytes we can add to an Upload object.
         #
-        #   @param id [String]
-        #   @param created_at [Integer]
-        #   @param upload_id [String]
-        #   @param object [Symbol, :"upload.part"]
+        #   @param id [String] The upload Part unique identifier, which can be referenced in API endpoints.
+        #
+        #   @param created_at [Integer] The Unix timestamp (in seconds) for when the Part was created.
+        #
+        #   @param upload_id [String] The ID of the Upload object that this Part was added to.
+        #
+        #   @param object [Symbol, :"upload.part"] The object type, which is always `upload.part`.
       end
     end
 

@@ -7,20 +7,20 @@ module OpenAI
         # @!attribute display_height
         #   The height of the computer display.
         #
-        #   @return [Float]
-        required :display_height, Float
+        #   @return [Integer]
+        required :display_height, Integer
 
         # @!attribute display_width
         #   The width of the computer display.
         #
-        #   @return [Float]
-        required :display_width, Float
+        #   @return [Integer]
+        required :display_width, Integer
 
         # @!attribute environment
         #   The type of computer environment to control.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ComputerTool::Environment]
-        required :environment, enum: -> { OpenAI::Models::Responses::ComputerTool::Environment }
+        #   @return [Symbol, OpenAI::Responses::ComputerTool::Environment]
+        required :environment, enum: -> { OpenAI::Responses::ComputerTool::Environment }
 
         # @!attribute type
         #   The type of the computer use tool. Always `computer_use_preview`.
@@ -32,19 +32,23 @@ module OpenAI
         #   A tool that controls a virtual computer. Learn more about the
         #   [computer tool](https://platform.openai.com/docs/guides/tools-computer-use).
         #
-        #   @param display_height [Float]
-        #   @param display_width [Float]
-        #   @param environment [Symbol, OpenAI::Models::Responses::ComputerTool::Environment]
-        #   @param type [Symbol, :computer_use_preview]
+        #   @param display_height [Integer] The height of the computer display.
+        #
+        #   @param display_width [Integer] The width of the computer display.
+        #
+        #   @param environment [Symbol, OpenAI::Responses::ComputerTool::Environment] The type of computer environment to control.
+        #
+        #   @param type [Symbol, :computer_use_preview] The type of the computer use tool. Always `computer_use_preview`.
 
         # The type of computer environment to control.
         #
-        # @see OpenAI::Models::Responses::ComputerTool#environment
+        # @see OpenAI::Responses::ComputerTool#environment
         module Environment
           extend OpenAI::Internal::Type::Enum
 
-          MAC = :mac
           WINDOWS = :windows
+          MAC = :mac
+          LINUX = :linux
           UBUNTU = :ubuntu
           BROWSER = :browser
 

@@ -8,8 +8,6 @@ module OpenAI
         attr_accessor type: :"response.audio.transcript.done"
 
         def initialize: (?type: :"response.audio.transcript.done") -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_audio_transcript_done_event
       end
     end
   end

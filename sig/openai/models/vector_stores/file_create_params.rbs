@@ -4,7 +4,7 @@ module OpenAI
       type file_create_params =
         {
           file_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
+          attributes: ::Hash[Symbol, OpenAI::VectorStores::FileCreateParams::attribute]?,
           chunking_strategy: OpenAI::Models::file_chunking_strategy_param
         }
         & OpenAI::Internal::Type::request_parameters
@@ -15,7 +15,7 @@ module OpenAI
 
         attr_accessor file_id: String
 
-        attr_accessor attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?
+        attr_accessor attributes: ::Hash[Symbol, OpenAI::VectorStores::FileCreateParams::attribute]?
 
         attr_reader chunking_strategy: OpenAI::Models::file_chunking_strategy_param?
 
@@ -25,19 +25,17 @@ module OpenAI
 
         def initialize: (
           file_id: String,
-          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
+          ?attributes: ::Hash[Symbol, OpenAI::VectorStores::FileCreateParams::attribute]?,
           ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
           ?request_options: OpenAI::request_opts
         ) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStores::file_create_params
 
         type attribute = String | Float | bool
 
         module Attribute
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, Float, bool]
+          def self?.variants: -> ::Array[OpenAI::VectorStores::FileCreateParams::attribute]
         end
       end
     end

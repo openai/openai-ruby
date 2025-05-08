@@ -20,8 +20,9 @@ module OpenAI
         #   Learn about
         #   [text inputs](https://platform.openai.com/docs/guides/text-generation).
         #
-        #   @param text [String]
-        #   @param type [Symbol, :text]
+        #   @param text [String] The text content.
+        #
+        #   @param type [Symbol, :text] The type of the content part.
       end
     end
 

@@ -3,29 +3,27 @@ module OpenAI
     module Responses
       type web_search_tool =
         {
-          type: OpenAI::Models::Responses::WebSearchTool::type_,
-          search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
-          user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
+          type: OpenAI::Responses::WebSearchTool::type_,
+          search_context_size: OpenAI::Responses::WebSearchTool::search_context_size,
+          user_location: OpenAI::Responses::WebSearchTool::UserLocation?
         }
 
       class WebSearchTool < OpenAI::Internal::Type::BaseModel
-        attr_accessor type: OpenAI::Models::Responses::WebSearchTool::type_
+        attr_accessor type: OpenAI::Responses::WebSearchTool::type_
 
-        attr_reader search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size?
+        attr_reader search_context_size: OpenAI::Responses::WebSearchTool::search_context_size?
 
         def search_context_size=: (
-          OpenAI::Models::Responses::WebSearchTool::search_context_size
-        ) -> OpenAI::Models::Responses::WebSearchTool::search_context_size
+          OpenAI::Responses::WebSearchTool::search_context_size
+        ) -> OpenAI::Responses::WebSearchTool::search_context_size
 
-        attr_accessor user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
+        attr_accessor user_location: OpenAI::Responses::WebSearchTool::UserLocation?
 
         def initialize: (
-          type: OpenAI::Models::Responses::WebSearchTool::type_,
-          ?search_context_size: OpenAI::Models::Responses::WebSearchTool::search_context_size,
-          ?user_location: OpenAI::Models::Responses::WebSearchTool::UserLocation?
+          type: OpenAI::Responses::WebSearchTool::type_,
+          ?search_context_size: OpenAI::Responses::WebSearchTool::search_context_size,
+          ?user_location: OpenAI::Responses::WebSearchTool::UserLocation?
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::web_search_tool
 
         type type_ = :web_search_preview | :web_search_preview_2025_03_11
 
@@ -35,7 +33,7 @@ module OpenAI
           WEB_SEARCH_PREVIEW: :web_search_preview
           WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::WebSearchTool::type_]
+          def self?.values: -> ::Array[OpenAI::Responses::WebSearchTool::type_]
         end
 
         type search_context_size = :low | :medium | :high
@@ -47,46 +45,36 @@ module OpenAI
           MEDIUM: :medium
           HIGH: :high
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::WebSearchTool::search_context_size]
+          def self?.values: -> ::Array[OpenAI::Responses::WebSearchTool::search_context_size]
         end
 
         type user_location =
           {
             type: :approximate,
-            city: String,
-            country: String,
-            region: String,
-            timezone: String
+            city: String?,
+            country: String?,
+            region: String?,
+            timezone: String?
           }
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
           attr_accessor type: :approximate
 
-          attr_reader city: String?
+          attr_accessor city: String?
 
-          def city=: (String) -> String
+          attr_accessor country: String?
 
-          attr_reader country: String?
+          attr_accessor region: String?
 
-          def country=: (String) -> String
-
-          attr_reader region: String?
-
-          def region=: (String) -> String
-
-          attr_reader timezone: String?
-
-          def timezone=: (String) -> String
+          attr_accessor timezone: String?
 
           def initialize: (
-            ?city: String,
-            ?country: String,
-            ?region: String,
-            ?timezone: String,
+            ?city: String?,
+            ?country: String?,
+            ?region: String?,
+            ?timezone: String?,
             ?type: :approximate
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::WebSearchTool::user_location
         end
       end
     end

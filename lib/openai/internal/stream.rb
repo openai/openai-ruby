@@ -23,17 +23,17 @@ module OpenAI
             next if consume
 
             case msg
-            in { data: String => data } if data.start_with?("[DONE]")
+            in {data: String => data} if data.start_with?("[DONE]")
               consume = true
               next
-            in { data: String => data }
+            in {data: String => data}
               case JSON.parse(data, symbolize_names: true)
-              in { error: error }
+              in {error: error}
                 message =
                   case error
                   in String
                     error
-                  in { message: String => m }
+                  in {message: String => m}
                     m
                   else
                     "An error occurred during streaming"

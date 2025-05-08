@@ -1,0 +1,21 @@
+module OpenAI
+  class FilePart
+    attr_reader content: Pathname | StringIO | IO | String
+
+    attr_reader content_type: String?
+
+    attr_reader filename: String?
+
+    private def read: -> String
+
+    def to_json: (*top a) -> String
+
+    def to_yaml: (*top a) -> String
+
+    def initialize: (
+      Pathname | StringIO | IO | String content,
+      ?filename: String?,
+      ?content_type: String?
+    ) -> void
+  end
+end

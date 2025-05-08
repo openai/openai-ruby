@@ -35,13 +35,20 @@ module OpenAI
         required :type, const: :"response.output_text.done"
 
         # @!method initialize(content_index:, item_id:, output_index:, text:, type: :"response.output_text.done")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::ResponseTextDoneEvent} for more details.
+        #
         #   Emitted when text content is finalized.
         #
-        #   @param content_index [Integer]
-        #   @param item_id [String]
-        #   @param output_index [Integer]
-        #   @param text [String]
-        #   @param type [Symbol, :"response.output_text.done"]
+        #   @param content_index [Integer] The index of the content part that the text content is finalized.
+        #
+        #   @param item_id [String] The ID of the output item that the text content is finalized.
+        #
+        #   @param output_index [Integer] The index of the output item that the text content is finalized.
+        #
+        #   @param text [String] The text content that is finalized.
+        #
+        #   @param type [Symbol, :"response.output_text.done"] The type of the event. Always `response.output_text.done`.
       end
     end
   end

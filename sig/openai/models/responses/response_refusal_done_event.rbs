@@ -28,8 +28,6 @@ module OpenAI
           refusal: String,
           ?type: :"response.refusal.done"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_refusal_done_event
       end
     end
   end

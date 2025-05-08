@@ -5,13 +5,13 @@ module OpenAI
     module Chat
       type chat_completion_system_message_param =
         {
-          content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content,
+          content: OpenAI::Chat::ChatCompletionSystemMessageParam::content,
           role: :system,
           name: String
         }
 
       class ChatCompletionSystemMessageParam < OpenAI::Internal::Type::BaseModel
-        attr_accessor content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content
+        attr_accessor content: OpenAI::Chat::ChatCompletionSystemMessageParam::content
 
         attr_accessor role: :system
 
@@ -20,25 +20,20 @@ module OpenAI
         def name=: (String) -> String
 
         def initialize: (
-          content: OpenAI::Models::Chat::ChatCompletionSystemMessageParam::content,
+          content: OpenAI::Chat::ChatCompletionSystemMessageParam::content,
           ?name: String,
           ?role: :system
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_system_message_param
-
         type content =
-          String | ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
+          String | ::Array[OpenAI::Chat::ChatCompletionContentPartText]
 
         module Content
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]]
+          def self?.variants: -> ::Array[OpenAI::Chat::ChatCompletionSystemMessageParam::content]
 
-          type chat_completion_content_part_text_array =
-            ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText]
-
-          ChatCompletionContentPartTextArray: chat_completion_content_part_text_array
+          ChatCompletionContentPartTextArray: OpenAI::Internal::Type::Converter
         end
       end
     end

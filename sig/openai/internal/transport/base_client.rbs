@@ -11,7 +11,10 @@ module OpenAI
             | Integer
             | ::Array[(String | Integer)?])?]?,
             body: top?,
-            unwrap: Symbol?,
+            unwrap: (Symbol
+            | Integer
+            | ::Array[(Symbol | Integer)]
+            | (^(top arg0) -> top))?,
             page: Class?,
             stream: Class?,
             model: OpenAI::Internal::Type::Converter::input?,
@@ -53,7 +56,7 @@ module OpenAI
         ) -> void
 
         # @api private
-        attr_accessor requester: OpenAI::Internal::Transport::PooledNetRequester
+        attr_reader requester: OpenAI::Internal::Transport::PooledNetRequester
 
         def initialize: (
           base_url: String,
@@ -96,7 +99,10 @@ module OpenAI
           | Integer
           | ::Array[(String | Integer)?])?]?,
           ?body: top?,
-          ?unwrap: Symbol?,
+          ?unwrap: (Symbol
+          | Integer
+          | ::Array[(Symbol | Integer)]
+          | (^(top arg0) -> top))?,
           ?page: Class?,
           ?stream: Class?,
           ?model: OpenAI::Internal::Type::Converter::input?,

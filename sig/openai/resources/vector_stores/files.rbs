@@ -5,23 +5,23 @@ module OpenAI
         def create: (
           String vector_store_id,
           file_id: String,
-          ?attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileCreateParams::attribute]?,
+          ?attributes: ::Hash[Symbol, OpenAI::VectorStores::FileCreateParams::attribute]?,
           ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::VectorStores::VectorStoreFile
+        ) -> OpenAI::VectorStores::VectorStoreFile
 
         def retrieve: (
           String file_id,
           vector_store_id: String,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::VectorStores::VectorStoreFile
+        ) -> OpenAI::VectorStores::VectorStoreFile
 
         def update: (
           String file_id,
           vector_store_id: String,
-          attributes: ::Hash[Symbol, OpenAI::Models::VectorStores::FileUpdateParams::attribute]?,
+          attributes: ::Hash[Symbol, OpenAI::VectorStores::FileUpdateParams::attribute]?,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::VectorStores::VectorStoreFile
+        ) -> OpenAI::VectorStores::VectorStoreFile
 
         def list: (
           String vector_store_id,
@@ -31,13 +31,13 @@ module OpenAI
           ?limit: Integer,
           ?order: OpenAI::Models::VectorStores::FileListParams::order,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::VectorStores::VectorStoreFile]
+        ) -> OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
 
         def delete: (
           String file_id,
           vector_store_id: String,
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Models::VectorStores::VectorStoreFileDeleted
+        ) -> OpenAI::VectorStores::VectorStoreFileDeleted
 
         def content: (
           String file_id,

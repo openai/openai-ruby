@@ -8,7 +8,7 @@ class OpenAI::Test::Resources::UploadsTest < OpenAI::Test::ResourceTest
       @openai.uploads.create(bytes: 0, filename: "filename", mime_type: "mime_type", purpose: :assistants)
 
     assert_pattern do
-      response => OpenAI::Models::Upload
+      response => OpenAI::Upload
     end
 
     assert_pattern do
@@ -20,8 +20,8 @@ class OpenAI::Test::Resources::UploadsTest < OpenAI::Test::ResourceTest
         filename: String,
         object: Symbol,
         purpose: String,
-        status: OpenAI::Models::Upload::Status,
-        file: OpenAI::Models::FileObject | nil
+        status: OpenAI::Upload::Status,
+        file: OpenAI::FileObject | nil
       }
     end
   end
@@ -30,7 +30,7 @@ class OpenAI::Test::Resources::UploadsTest < OpenAI::Test::ResourceTest
     response = @openai.uploads.cancel("upload_abc123")
 
     assert_pattern do
-      response => OpenAI::Models::Upload
+      response => OpenAI::Upload
     end
 
     assert_pattern do
@@ -42,8 +42,8 @@ class OpenAI::Test::Resources::UploadsTest < OpenAI::Test::ResourceTest
         filename: String,
         object: Symbol,
         purpose: String,
-        status: OpenAI::Models::Upload::Status,
-        file: OpenAI::Models::FileObject | nil
+        status: OpenAI::Upload::Status,
+        file: OpenAI::FileObject | nil
       }
     end
   end
@@ -52,7 +52,7 @@ class OpenAI::Test::Resources::UploadsTest < OpenAI::Test::ResourceTest
     response = @openai.uploads.complete("upload_abc123", part_ids: ["string"])
 
     assert_pattern do
-      response => OpenAI::Models::Upload
+      response => OpenAI::Upload
     end
 
     assert_pattern do
@@ -64,8 +64,8 @@ class OpenAI::Test::Resources::UploadsTest < OpenAI::Test::ResourceTest
         filename: String,
         object: Symbol,
         purpose: String,
-        status: OpenAI::Models::Upload::Status,
-        file: OpenAI::Models::FileObject | nil
+        status: OpenAI::Upload::Status,
+        file: OpenAI::FileObject | nil
       }
     end
   end

@@ -5,7 +5,7 @@ module OpenAI
         type run_submit_tool_outputs_params =
           {
             thread_id: String,
-            tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
+            tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
           }
           & OpenAI::Internal::Type::request_parameters
 
@@ -15,15 +15,13 @@ module OpenAI
 
           attr_accessor thread_id: String
 
-          attr_accessor tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
+          attr_accessor tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput]
 
           def initialize: (
             thread_id: String,
-            tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+            tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
             ?request_options: OpenAI::request_opts
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::run_submit_tool_outputs_params
 
           type tool_output = { output: String, tool_call_id: String }
 
@@ -37,8 +35,6 @@ module OpenAI
             def tool_call_id=: (String) -> String
 
             def initialize: (?output: String, ?tool_call_id: String) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::tool_output
           end
         end
       end

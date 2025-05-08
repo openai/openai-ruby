@@ -4,7 +4,7 @@ module OpenAI
       type response_input_message_content_list =
         ::Array[OpenAI::Models::Responses::response_input_content]
 
-      ResponseInputMessageContentList: response_input_message_content_list
+      ResponseInputMessageContentList: OpenAI::Internal::Type::Converter
     end
   end
 end

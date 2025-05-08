@@ -15,8 +15,8 @@ module OpenAI
             # @!attribute delta
             #   The delta containing the fields that have changed on the run step.
             #
-            #   @return [OpenAI::Models::Beta::Threads::Runs::RunStepDelta]
-            required :delta, -> { OpenAI::Models::Beta::Threads::Runs::RunStepDelta }
+            #   @return [OpenAI::Beta::Threads::Runs::RunStepDelta]
+            required :delta, -> { OpenAI::Beta::Threads::Runs::RunStepDelta }
 
             # @!attribute object
             #   The object type, which is always `thread.run.step.delta`.
@@ -28,9 +28,11 @@ module OpenAI
             #   Represents a run step delta i.e. any changed fields on a run step during
             #   streaming.
             #
-            #   @param id [String]
-            #   @param delta [OpenAI::Models::Beta::Threads::Runs::RunStepDelta]
-            #   @param object [Symbol, :"thread.run.step.delta"]
+            #   @param id [String] The identifier of the run step, which can be referenced in API endpoints.
+            #
+            #   @param delta [OpenAI::Beta::Threads::Runs::RunStepDelta] The delta containing the fields that have changed on the run step.
+            #
+            #   @param object [Symbol, :"thread.run.step.delta"] The object type, which is always `thread.run.step.delta`.
           end
         end
 

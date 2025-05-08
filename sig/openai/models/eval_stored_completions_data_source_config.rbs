@@ -19,8 +19,6 @@ module OpenAI
         ?metadata: OpenAI::Models::metadata?,
         ?type: :stored_completions
       ) -> void
-
-      def to_hash: -> OpenAI::Models::eval_stored_completions_data_source_config
     end
   end
 end

@@ -28,8 +28,6 @@ module OpenAI
           text: String,
           ?type: :"response.output_text.done"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_text_done_event
       end
     end
   end

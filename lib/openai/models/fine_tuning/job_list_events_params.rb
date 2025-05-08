@@ -21,8 +21,10 @@ module OpenAI
         optional :limit, Integer
 
         # @!method initialize(after: nil, limit: nil, request_options: {})
-        #   @param after [String]
-        #   @param limit [Integer]
+        #   @param after [String] Identifier for the last event from the previous pagination request.
+        #
+        #   @param limit [Integer] Number of events to retrieve.
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end
     end

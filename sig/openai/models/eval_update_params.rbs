@@ -19,8 +19,6 @@ module OpenAI
         ?name: String,
         ?request_options: OpenAI::request_opts
       ) -> void
-
-      def to_hash: -> OpenAI::Models::eval_update_params
     end
   end
 end

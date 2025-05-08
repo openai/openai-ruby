@@ -5,7 +5,7 @@ module OpenAI
         type message_delta =
           {
             content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
-            role: OpenAI::Models::Beta::Threads::MessageDelta::role
+            role: OpenAI::Beta::Threads::MessageDelta::role
           }
 
         class MessageDelta < OpenAI::Internal::Type::BaseModel
@@ -15,18 +15,16 @@ module OpenAI
             ::Array[OpenAI::Models::Beta::Threads::message_content_delta]
           ) -> ::Array[OpenAI::Models::Beta::Threads::message_content_delta]
 
-          attr_reader role: OpenAI::Models::Beta::Threads::MessageDelta::role?
+          attr_reader role: OpenAI::Beta::Threads::MessageDelta::role?
 
           def role=: (
-            OpenAI::Models::Beta::Threads::MessageDelta::role
-          ) -> OpenAI::Models::Beta::Threads::MessageDelta::role
+            OpenAI::Beta::Threads::MessageDelta::role
+          ) -> OpenAI::Beta::Threads::MessageDelta::role
 
           def initialize: (
             ?content: ::Array[OpenAI::Models::Beta::Threads::message_content_delta],
-            ?role: OpenAI::Models::Beta::Threads::MessageDelta::role
+            ?role: OpenAI::Beta::Threads::MessageDelta::role
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::message_delta
 
           type role = :user | :assistant
 
@@ -36,7 +34,7 @@ module OpenAI
             USER: :user
             ASSISTANT: :assistant
 
-            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::MessageDelta::role]
+            def self?.values: -> ::Array[OpenAI::Beta::Threads::MessageDelta::role]
           end
         end
       end

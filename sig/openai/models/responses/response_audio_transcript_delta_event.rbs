@@ -13,8 +13,6 @@ module OpenAI
           delta: String,
           ?type: :"response.audio.transcript.delta"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_audio_transcript_delta_event
       end
     end
   end

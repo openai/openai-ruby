@@ -29,8 +29,6 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::batch_create_params
-
       type completion_window = :"24h"
 
       module CompletionWindow

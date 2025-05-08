@@ -1,13 +1,13 @@
 module OpenAI
   module Models
     type file_chunking_strategy_param =
-      OpenAI::Models::AutoFileChunkingStrategyParam
-      | OpenAI::Models::StaticFileChunkingStrategyObjectParam
+      OpenAI::AutoFileChunkingStrategyParam
+      | OpenAI::StaticFileChunkingStrategyObjectParam
 
     module FileChunkingStrategyParam
       extend OpenAI::Internal::Type::Union
 
-      def self?.variants: -> [OpenAI::Models::AutoFileChunkingStrategyParam, OpenAI::Models::StaticFileChunkingStrategyObjectParam]
+      def self?.variants: -> ::Array[OpenAI::Models::file_chunking_strategy_param]
     end
   end
 end

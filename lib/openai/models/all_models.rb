@@ -7,9 +7,9 @@ module OpenAI
 
       variant String
 
-      variant enum: -> { OpenAI::Models::ChatModel }
+      variant enum: -> { OpenAI::ChatModel }
 
-      variant enum: -> { OpenAI::Models::AllModels::ResponsesOnlyModel }
+      variant enum: -> { OpenAI::AllModels::ResponsesOnlyModel }
 
       module ResponsesOnlyModel
         extend OpenAI::Internal::Type::Enum
@@ -24,7 +24,7 @@ module OpenAI
       end
 
       # @!method self.variants
-      #   @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::AllModels::ResponsesOnlyModel)]
+      #   @return [Array(String, Symbol, OpenAI::ChatModel, Symbol, OpenAI::AllModels::ResponsesOnlyModel)]
     end
   end
 end

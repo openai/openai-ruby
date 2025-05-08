@@ -2,43 +2,43 @@ module OpenAI
   module Models
     module Beta
       type assistant_stream_event =
-        OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted
-        | OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete
-        | OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent
+        OpenAI::Beta::AssistantStreamEvent::ThreadCreated
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled
+        | OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired
+        | OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated
+        | OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress
+        | OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta
+        | OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted
+        | OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete
+        | OpenAI::Beta::AssistantStreamEvent::ErrorEvent
 
       module AssistantStreamEvent
         extend OpenAI::Internal::Type::Union
 
         type thread_created =
           {
-            data: OpenAI::Models::Beta::Thread,
+            data: OpenAI::Beta::Thread,
             event: :"thread.created",
             enabled: bool
           }
 
         class ThreadCreated < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Thread
+          attr_accessor data: OpenAI::Beta::Thread
 
           attr_accessor event: :"thread.created"
 
@@ -47,448 +47,370 @@ module OpenAI
           def enabled=: (bool) -> bool
 
           def initialize: (
-            data: OpenAI::Models::Beta::Thread,
+            data: OpenAI::Beta::Thread,
             ?enabled: bool,
             ?event: :"thread.created"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_created
         end
 
         type thread_run_created =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.created"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.created" }
 
         class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.created"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.created"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_created
         end
 
         type thread_run_queued =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.queued"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.queued" }
 
         class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.queued"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.queued"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_queued
         end
 
         type thread_run_in_progress =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.in_progress"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.in_progress" }
 
         class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.in_progress"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.in_progress"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_in_progress
         end
 
         type thread_run_requires_action =
           {
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             event: :"thread.run.requires_action"
           }
 
         class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.requires_action"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.requires_action"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_requires_action
         end
 
         type thread_run_completed =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.completed"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.completed" }
 
         class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.completed"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.completed"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_completed
         end
 
         type thread_run_incomplete =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.incomplete"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.incomplete" }
 
         class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.incomplete"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.incomplete"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_incomplete
         end
 
         type thread_run_failed =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.failed"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.failed" }
 
         class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.failed"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.failed"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_failed
         end
 
         type thread_run_cancelling =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.cancelling"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.cancelling" }
 
         class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.cancelling"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.cancelling"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_cancelling
         end
 
         type thread_run_cancelled =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.cancelled"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.cancelled" }
 
         class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.cancelled"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.cancelled"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_cancelled
         end
 
         type thread_run_expired =
-          {
-            data: OpenAI::Models::Beta::Threads::Run,
-            event: :"thread.run.expired"
-          }
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.expired" }
 
         class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Run
+          attr_accessor data: OpenAI::Beta::Threads::Run
 
           attr_accessor event: :"thread.run.expired"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Run,
+            data: OpenAI::Beta::Threads::Run,
             ?event: :"thread.run.expired"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_expired
         end
 
         type thread_run_step_created =
           {
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             event: :"thread.run.step.created"
           }
 
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.created"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.created"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_created
         end
 
         type thread_run_step_in_progress =
           {
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             event: :"thread.run.step.in_progress"
           }
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.in_progress"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.in_progress"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_in_progress
         end
 
         type thread_run_step_delta =
           {
-            data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent,
+            data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
             event: :"thread.run.step.delta"
           }
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent
 
           attr_accessor event: :"thread.run.step.delta"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Runs::RunStepDeltaEvent,
+            data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
             ?event: :"thread.run.step.delta"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_delta
         end
 
         type thread_run_step_completed =
           {
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             event: :"thread.run.step.completed"
           }
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.completed"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.completed"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_completed
         end
 
         type thread_run_step_failed =
           {
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             event: :"thread.run.step.failed"
           }
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.failed"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.failed"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_failed
         end
 
         type thread_run_step_cancelled =
           {
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             event: :"thread.run.step.cancelled"
           }
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.cancelled"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.cancelled"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_cancelled
         end
 
         type thread_run_step_expired =
           {
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             event: :"thread.run.step.expired"
           }
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Runs::RunStep
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.expired"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Runs::RunStep,
+            data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.expired"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_run_step_expired
         end
 
         type thread_message_created =
           {
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             event: :"thread.message.created"
           }
 
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Message
+          attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.created"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.created"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_message_created
         end
 
         type thread_message_in_progress =
           {
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             event: :"thread.message.in_progress"
           }
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Message
+          attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.in_progress"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.in_progress"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_message_in_progress
         end
 
         type thread_message_delta =
           {
-            data: OpenAI::Models::Beta::Threads::MessageDeltaEvent,
+            data: OpenAI::Beta::Threads::MessageDeltaEvent,
             event: :"thread.message.delta"
           }
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::MessageDeltaEvent
+          attr_accessor data: OpenAI::Beta::Threads::MessageDeltaEvent
 
           attr_accessor event: :"thread.message.delta"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::MessageDeltaEvent,
+            data: OpenAI::Beta::Threads::MessageDeltaEvent,
             ?event: :"thread.message.delta"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_message_delta
         end
 
         type thread_message_completed =
           {
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             event: :"thread.message.completed"
           }
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Message
+          attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.completed"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.completed"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_message_completed
         end
 
         type thread_message_incomplete =
           {
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             event: :"thread.message.incomplete"
           }
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::Beta::Threads::Message
+          attr_accessor data: OpenAI::Beta::Threads::Message
 
           attr_accessor event: :"thread.message.incomplete"
 
           def initialize: (
-            data: OpenAI::Models::Beta::Threads::Message,
+            data: OpenAI::Beta::Threads::Message,
             ?event: :"thread.message.incomplete"
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::thread_message_incomplete
         end
 
-        type error_event = { data: OpenAI::Models::ErrorObject, event: :error }
+        type error_event = { data: OpenAI::ErrorObject, event: :error }
 
         class ErrorEvent < OpenAI::Internal::Type::BaseModel
-          attr_accessor data: OpenAI::Models::ErrorObject
+          attr_accessor data: OpenAI::ErrorObject
 
           attr_accessor event: :error
 
-          def initialize: (
-            data: OpenAI::Models::ErrorObject,
-            ?event: :error
-          ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::AssistantStreamEvent::error_event
+          def initialize: (data: OpenAI::ErrorObject, ?event: :error) -> void
         end
 
-        def self?.variants: -> [OpenAI::Models::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Models::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Models::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Models::Beta::AssistantStreamEvent::ErrorEvent]
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::assistant_stream_event]
       end
     end
   end

@@ -2,6 +2,6 @@ module OpenAI
   module Models
     type metadata = ::Hash[Symbol, String]?
 
-    Metadata: metadata
+    Metadata: OpenAI::Internal::Type::Converter
   end
 end

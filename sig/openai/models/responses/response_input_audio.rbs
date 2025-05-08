@@ -4,24 +4,22 @@ module OpenAI
       type response_input_audio =
         {
           data: String,
-          format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
+          format_: OpenAI::Responses::ResponseInputAudio::format_,
           type: :input_audio
         }
 
       class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
         attr_accessor data: String
 
-        attr_accessor format_: OpenAI::Models::Responses::ResponseInputAudio::format_
+        attr_accessor format_: OpenAI::Responses::ResponseInputAudio::format_
 
         attr_accessor type: :input_audio
 
         def initialize: (
           data: String,
-          format_: OpenAI::Models::Responses::ResponseInputAudio::format_,
+          format_: OpenAI::Responses::ResponseInputAudio::format_,
           ?type: :input_audio
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_input_audio
 
         type format_ = :mp3 | :wav
 
@@ -31,7 +29,7 @@ module OpenAI
           MP3: :mp3
           WAV: :wav
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputAudio::format_]
+          def self?.values: -> ::Array[OpenAI::Responses::ResponseInputAudio::format_]
         end
       end
     end

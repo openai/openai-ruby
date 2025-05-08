@@ -35,8 +35,6 @@ module OpenAI
             ?request_options: OpenAI::request_opts
           ) -> void
 
-          def to_hash: -> OpenAI::Models::Chat::Completions::message_list_params
-
           type order = :asc | :desc
 
           module Order

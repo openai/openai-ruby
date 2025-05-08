@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module FineTuning
+      type job_pause_params = {  } & OpenAI::Internal::Type::request_parameters
+
+      class JobPauseParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        def initialize: (?request_options: OpenAI::request_opts) -> void
+      end
+    end
+  end
+end

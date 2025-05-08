@@ -4,14 +4,14 @@ module OpenAI
       module Threads
         module Runs
           type tool_call_delta =
-            OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta
-            | OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta
-            | OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta
+            OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta
+            | OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta
+            | OpenAI::Beta::Threads::Runs::FunctionToolCallDelta
 
           module ToolCallDelta
             extend OpenAI::Internal::Type::Union
 
-            def self?.variants: -> [OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta]
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call_delta]
           end
         end
       end

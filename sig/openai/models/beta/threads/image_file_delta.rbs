@@ -4,27 +4,25 @@ module OpenAI
       module Threads
         type image_file_delta =
           {
-            detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
+            detail: OpenAI::Beta::Threads::ImageFileDelta::detail,
             file_id: String
           }
 
         class ImageFileDelta < OpenAI::Internal::Type::BaseModel
-          attr_reader detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail?
+          attr_reader detail: OpenAI::Beta::Threads::ImageFileDelta::detail?
 
           def detail=: (
-            OpenAI::Models::Beta::Threads::ImageFileDelta::detail
-          ) -> OpenAI::Models::Beta::Threads::ImageFileDelta::detail
+            OpenAI::Beta::Threads::ImageFileDelta::detail
+          ) -> OpenAI::Beta::Threads::ImageFileDelta::detail
 
           attr_reader file_id: String?
 
           def file_id=: (String) -> String
 
           def initialize: (
-            ?detail: OpenAI::Models::Beta::Threads::ImageFileDelta::detail,
+            ?detail: OpenAI::Beta::Threads::ImageFileDelta::detail,
             ?file_id: String
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::image_file_delta
 
           type detail = :auto | :low | :high
 
@@ -35,7 +33,7 @@ module OpenAI
             LOW: :low
             HIGH: :high
 
-            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::ImageFileDelta::detail]
+            def self?.values: -> ::Array[OpenAI::Beta::Threads::ImageFileDelta::detail]
           end
         end
       end

@@ -7,23 +7,23 @@ module OpenAI
             String thread_id,
             content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
             role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
-            ?attachments: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment]?,
+            ?attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
             ?metadata: OpenAI::Models::metadata?,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Message
+          ) -> OpenAI::Beta::Threads::Message
 
           def retrieve: (
             String message_id,
             thread_id: String,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Message
+          ) -> OpenAI::Beta::Threads::Message
 
           def update: (
             String message_id,
             thread_id: String,
             ?metadata: OpenAI::Models::metadata?,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Message
+          ) -> OpenAI::Beta::Threads::Message
 
           def list: (
             String thread_id,
@@ -33,13 +33,13 @@ module OpenAI
             ?order: OpenAI::Models::Beta::Threads::MessageListParams::order,
             ?run_id: String,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Message]
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Message]
 
           def delete: (
             String message_id,
             thread_id: String,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::MessageDeleted
+          ) -> OpenAI::Beta::Threads::MessageDeleted
 
           def initialize: (client: OpenAI::Client) -> void
         end

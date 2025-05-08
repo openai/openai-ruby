@@ -14,7 +14,7 @@ class OpenAI::Test::Resources::ModerationsTest < OpenAI::Test::ResourceTest
       response => {
         id: String,
         model: String,
-        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Moderation])
+        results: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Moderation])
       }
     end
   end

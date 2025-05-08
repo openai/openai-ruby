@@ -19,15 +19,17 @@ module OpenAI
       # @!attribute results
       #   A list of moderation objects.
       #
-      #   @return [Array<OpenAI::Models::Moderation>]
-      required :results, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Moderation] }
+      #   @return [Array<OpenAI::Moderation>]
+      required :results, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Moderation] }
 
       # @!method initialize(id:, model:, results:)
       #   Represents if a given text input is potentially harmful.
       #
-      #   @param id [String]
-      #   @param model [String]
-      #   @param results [Array<OpenAI::Models::Moderation>]
+      #   @param id [String] The unique identifier for the moderation request.
+      #
+      #   @param model [String] The model used to generate the moderation results.
+      #
+      #   @param results [Array<OpenAI::Moderation>] A list of moderation objects.
     end
   end
 end

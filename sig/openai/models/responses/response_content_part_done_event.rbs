@@ -6,7 +6,7 @@ module OpenAI
           content_index: Integer,
           item_id: String,
           output_index: Integer,
-          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          part: OpenAI::Responses::ResponseContentPartDoneEvent::part,
           type: :"response.content_part.done"
         }
 
@@ -17,7 +17,7 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
-        attr_accessor part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part
+        attr_accessor part: OpenAI::Responses::ResponseContentPartDoneEvent::part
 
         attr_accessor type: :"response.content_part.done"
 
@@ -25,20 +25,18 @@ module OpenAI
           content_index: Integer,
           item_id: String,
           output_index: Integer,
-          part: OpenAI::Models::Responses::ResponseContentPartDoneEvent::part,
+          part: OpenAI::Responses::ResponseContentPartDoneEvent::part,
           ?type: :"response.content_part.done"
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Responses::response_content_part_done_event
-
         type part =
-          OpenAI::Models::Responses::ResponseOutputText
-          | OpenAI::Models::Responses::ResponseOutputRefusal
+          OpenAI::Responses::ResponseOutputText
+          | OpenAI::Responses::ResponseOutputRefusal
 
         module Part
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
+          def self?.variants: -> ::Array[OpenAI::Responses::ResponseContentPartDoneEvent::part]
         end
       end
     end

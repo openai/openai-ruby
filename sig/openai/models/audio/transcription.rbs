@@ -4,24 +4,22 @@ module OpenAI
       type transcription =
         {
           text: String,
-          logprobs: ::Array[OpenAI::Models::Audio::Transcription::Logprob]
+          logprobs: ::Array[OpenAI::Audio::Transcription::Logprob]
         }
 
       class Transcription < OpenAI::Internal::Type::BaseModel
         attr_accessor text: String
 
-        attr_reader logprobs: ::Array[OpenAI::Models::Audio::Transcription::Logprob]?
+        attr_reader logprobs: ::Array[OpenAI::Audio::Transcription::Logprob]?
 
         def logprobs=: (
-          ::Array[OpenAI::Models::Audio::Transcription::Logprob]
-        ) -> ::Array[OpenAI::Models::Audio::Transcription::Logprob]
+          ::Array[OpenAI::Audio::Transcription::Logprob]
+        ) -> ::Array[OpenAI::Audio::Transcription::Logprob]
 
         def initialize: (
           text: String,
-          ?logprobs: ::Array[OpenAI::Models::Audio::Transcription::Logprob]
+          ?logprobs: ::Array[OpenAI::Audio::Transcription::Logprob]
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Audio::transcription
 
         type logprob = { token: String, bytes: ::Array[Float], logprob: Float }
 
@@ -43,8 +41,6 @@ module OpenAI
             ?bytes: ::Array[Float],
             ?logprob: Float
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Audio::Transcription::logprob
         end
       end
     end

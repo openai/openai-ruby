@@ -2,19 +2,19 @@ module OpenAI
   module Models
     module Responses
       type response_item =
-        OpenAI::Models::Responses::ResponseInputMessageItem
-        | OpenAI::Models::Responses::ResponseOutputMessage
-        | OpenAI::Models::Responses::ResponseFileSearchToolCall
-        | OpenAI::Models::Responses::ResponseComputerToolCall
-        | OpenAI::Models::Responses::ResponseComputerToolCallOutputItem
-        | OpenAI::Models::Responses::ResponseFunctionWebSearch
-        | OpenAI::Models::Responses::ResponseFunctionToolCallItem
-        | OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem
+        OpenAI::Responses::ResponseInputMessageItem
+        | OpenAI::Responses::ResponseOutputMessage
+        | OpenAI::Responses::ResponseFileSearchToolCall
+        | OpenAI::Responses::ResponseComputerToolCall
+        | OpenAI::Responses::ResponseComputerToolCallOutputItem
+        | OpenAI::Responses::ResponseFunctionWebSearch
+        | OpenAI::Responses::ResponseFunctionToolCallItem
+        | OpenAI::Responses::ResponseFunctionToolCallOutputItem
 
       module ResponseItem
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Responses::ResponseInputMessageItem, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseComputerToolCallOutputItem, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCallItem, OpenAI::Models::Responses::ResponseFunctionToolCallOutputItem]
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_item]
       end
     end
   end

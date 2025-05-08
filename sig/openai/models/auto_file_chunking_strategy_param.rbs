@@ -6,8 +6,6 @@ module OpenAI
       attr_accessor type: :auto
 
       def initialize: (?type: :auto) -> void
-
-      def to_hash: -> OpenAI::Models::auto_file_chunking_strategy_param
     end
   end
 end

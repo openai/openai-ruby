@@ -7,18 +7,18 @@ class OpenAI::Test::Resources::CompletionsTest < OpenAI::Test::ResourceTest
     response = @openai.completions.create(model: :"gpt-3.5-turbo-instruct", prompt: "This is a test.")
 
     assert_pattern do
-      response => OpenAI::Models::Completion
+      response => OpenAI::Completion
     end
 
     assert_pattern do
       response => {
         id: String,
-        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::CompletionChoice]),
+        choices: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::CompletionChoice]),
         created: Integer,
         model: String,
         object: Symbol,
         system_fingerprint: String | nil,
-        usage: OpenAI::Models::CompletionUsage | nil
+        usage: OpenAI::CompletionUsage | nil
       }
     end
   end

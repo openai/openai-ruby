@@ -7,20 +7,20 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
     response = @openai.vector_stores.files.create("vs_abc123", file_id: "file_id")
 
     assert_pattern do
-      response => OpenAI::Models::VectorStores::VectorStoreFile
+      response => OpenAI::VectorStores::VectorStoreFile
     end
 
     assert_pattern do
       response => {
         id: String,
         created_at: Integer,
-        last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError | nil,
+        last_error: OpenAI::VectorStores::VectorStoreFile::LastError | nil,
         object: Symbol,
-        status: OpenAI::Models::VectorStores::VectorStoreFile::Status,
+        status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute]) | nil,
-        chunking_strategy: OpenAI::Models::FileChunkingStrategy | nil
+        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end
   end
@@ -29,20 +29,20 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
     response = @openai.vector_stores.files.retrieve("file-abc123", vector_store_id: "vs_abc123")
 
     assert_pattern do
-      response => OpenAI::Models::VectorStores::VectorStoreFile
+      response => OpenAI::VectorStores::VectorStoreFile
     end
 
     assert_pattern do
       response => {
         id: String,
         created_at: Integer,
-        last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError | nil,
+        last_error: OpenAI::VectorStores::VectorStoreFile::LastError | nil,
         object: Symbol,
-        status: OpenAI::Models::VectorStores::VectorStoreFile::Status,
+        status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute]) | nil,
-        chunking_strategy: OpenAI::Models::FileChunkingStrategy | nil
+        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end
   end
@@ -56,20 +56,20 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
       )
 
     assert_pattern do
-      response => OpenAI::Models::VectorStores::VectorStoreFile
+      response => OpenAI::VectorStores::VectorStoreFile
     end
 
     assert_pattern do
       response => {
         id: String,
         created_at: Integer,
-        last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError | nil,
+        last_error: OpenAI::VectorStores::VectorStoreFile::LastError | nil,
         object: Symbol,
-        status: OpenAI::Models::VectorStores::VectorStoreFile::Status,
+        status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute]) | nil,
-        chunking_strategy: OpenAI::Models::FileChunkingStrategy | nil
+        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end
   end
@@ -85,20 +85,20 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::VectorStores::VectorStoreFile
+      row => OpenAI::VectorStores::VectorStoreFile
     end
 
     assert_pattern do
       row => {
         id: String,
         created_at: Integer,
-        last_error: OpenAI::Models::VectorStores::VectorStoreFile::LastError | nil,
+        last_error: OpenAI::VectorStores::VectorStoreFile::LastError | nil,
         object: Symbol,
-        status: OpenAI::Models::VectorStores::VectorStoreFile::Status,
+        status: OpenAI::VectorStores::VectorStoreFile::Status,
         usage_bytes: Integer,
         vector_store_id: String,
-        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::Models::VectorStores::VectorStoreFile::Attribute]) | nil,
-        chunking_strategy: OpenAI::Models::FileChunkingStrategy | nil
+        attributes: ^(OpenAI::Internal::Type::HashOf[union: OpenAI::VectorStores::VectorStoreFile::Attribute]) | nil,
+        chunking_strategy: OpenAI::FileChunkingStrategy | nil
       }
     end
   end
@@ -107,7 +107,7 @@ class OpenAI::Test::Resources::VectorStores::FilesTest < OpenAI::Test::ResourceT
     response = @openai.vector_stores.files.delete("file_id", vector_store_id: "vector_store_id")
 
     assert_pattern do
-      response => OpenAI::Models::VectorStores::VectorStoreFileDeleted
+      response => OpenAI::VectorStores::VectorStoreFileDeleted
     end
 
     assert_pattern do

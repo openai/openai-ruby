@@ -10,7 +10,7 @@ module OpenAI
             assistant_id: String,
             ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
             ?additional_instructions: String?,
-            ?additional_messages: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]?,
+            ?additional_messages: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]?,
             ?instructions: String?,
             ?max_completion_tokens: Integer?,
             ?max_prompt_tokens: Integer?,
@@ -23,16 +23,16 @@ module OpenAI
             ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
             ?top_p: Float?,
-            ?truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?,
+            ?truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Run
+          ) -> OpenAI::Beta::Threads::Run
 
           def create_stream_raw: (
             String thread_id,
             assistant_id: String,
             ?include: ::Array[OpenAI::Models::Beta::Threads::Runs::run_step_include],
             ?additional_instructions: String?,
-            ?additional_messages: ::Array[OpenAI::Models::Beta::Threads::RunCreateParams::AdditionalMessage]?,
+            ?additional_messages: ::Array[OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage]?,
             ?instructions: String?,
             ?max_completion_tokens: Integer?,
             ?max_prompt_tokens: Integer?,
@@ -45,7 +45,7 @@ module OpenAI
             ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
             ?top_p: Float?,
-            ?truncation_strategy: OpenAI::Models::Beta::Threads::RunCreateParams::TruncationStrategy?,
+            ?truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::assistant_stream_event]
 
@@ -53,14 +53,14 @@ module OpenAI
             String run_id,
             thread_id: String,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Run
+          ) -> OpenAI::Beta::Threads::Run
 
           def update: (
             String run_id,
             thread_id: String,
             ?metadata: OpenAI::Models::metadata?,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Run
+          ) -> OpenAI::Beta::Threads::Run
 
           def list: (
             String thread_id,
@@ -69,25 +69,25 @@ module OpenAI
             ?limit: Integer,
             ?order: OpenAI::Models::Beta::Threads::RunListParams::order,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Threads::Run]
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Threads::Run]
 
           def cancel: (
             String run_id,
             thread_id: String,
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Run
+          ) -> OpenAI::Beta::Threads::Run
 
           def submit_tool_outputs: (
             String run_id,
             thread_id: String,
-            tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+            tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
             ?request_options: OpenAI::request_opts
-          ) -> OpenAI::Models::Beta::Threads::Run
+          ) -> OpenAI::Beta::Threads::Run
 
           def submit_tool_outputs_stream_raw: (
             String run_id,
             thread_id: String,
-            tool_outputs: ::Array[OpenAI::Models::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
+            tool_outputs: ::Array[OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput],
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::assistant_stream_event]
 

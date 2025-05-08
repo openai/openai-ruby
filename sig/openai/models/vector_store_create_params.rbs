@@ -3,7 +3,7 @@ module OpenAI
     type vector_store_create_params =
       {
         chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
-        expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
+        expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
         file_ids: ::Array[String],
         metadata: OpenAI::Models::metadata?,
         name: String
@@ -20,11 +20,11 @@ module OpenAI
         OpenAI::Models::file_chunking_strategy_param
       ) -> OpenAI::Models::file_chunking_strategy_param
 
-      attr_reader expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter?
+      attr_reader expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter?
 
       def expires_after=: (
-        OpenAI::Models::VectorStoreCreateParams::ExpiresAfter
-      ) -> OpenAI::Models::VectorStoreCreateParams::ExpiresAfter
+        OpenAI::VectorStoreCreateParams::ExpiresAfter
+      ) -> OpenAI::VectorStoreCreateParams::ExpiresAfter
 
       attr_reader file_ids: ::Array[String]?
 
@@ -38,14 +38,12 @@ module OpenAI
 
       def initialize: (
         ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
-        ?expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
+        ?expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
         ?file_ids: ::Array[String],
         ?metadata: OpenAI::Models::metadata?,
         ?name: String,
         ?request_options: OpenAI::request_opts
       ) -> void
-
-      def to_hash: -> OpenAI::Models::vector_store_create_params
 
       type expires_after = { anchor: :last_active_at, days: Integer }
 
@@ -55,8 +53,6 @@ module OpenAI
         attr_accessor days: Integer
 
         def initialize: (days: Integer, ?anchor: :last_active_at) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStoreCreateParams::expires_after
       end
     end
   end

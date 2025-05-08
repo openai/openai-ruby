@@ -27,8 +27,8 @@ module OpenAI
       #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
       #   order and `desc` for descending order.
       #
-      #   @return [Symbol, OpenAI::Models::FileListParams::Order, nil]
-      optional :order, enum: -> { OpenAI::Models::FileListParams::Order }
+      #   @return [Symbol, OpenAI::FileListParams::Order, nil]
+      optional :order, enum: -> { OpenAI::FileListParams::Order }
 
       # @!attribute purpose
       #   Only return files with the given purpose.
@@ -37,10 +37,17 @@ module OpenAI
       optional :purpose, String
 
       # @!method initialize(after: nil, limit: nil, order: nil, purpose: nil, request_options: {})
-      #   @param after [String]
-      #   @param limit [Integer]
-      #   @param order [Symbol, OpenAI::Models::FileListParams::Order]
-      #   @param purpose [String]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::FileListParams} for more details.
+      #
+      #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+      #
+      #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+      #
+      #   @param order [Symbol, OpenAI::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+      #
+      #   @param purpose [String] Only return files with the given purpose.
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # Sort order by the `created_at` timestamp of the objects. `asc` for ascending

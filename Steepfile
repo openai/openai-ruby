@@ -2,7 +2,7 @@
 
 require "yaml"
 
-target :lib do
+target(:lib) do
   configure_code_diagnostics(Steep::Diagnostic::Ruby.strict)
 
   signature("sig")

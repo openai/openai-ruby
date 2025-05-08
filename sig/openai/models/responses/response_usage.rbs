@@ -4,32 +4,30 @@ module OpenAI
       type response_usage =
         {
           input_tokens: Integer,
-          input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
+          input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails,
           output_tokens: Integer,
-          output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
+          output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails,
           total_tokens: Integer
         }
 
       class ResponseUsage < OpenAI::Internal::Type::BaseModel
         attr_accessor input_tokens: Integer
 
-        attr_accessor input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails
+        attr_accessor input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails
 
         attr_accessor output_tokens: Integer
 
-        attr_accessor output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails
+        attr_accessor output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails
 
         attr_accessor total_tokens: Integer
 
         def initialize: (
           input_tokens: Integer,
-          input_tokens_details: OpenAI::Models::Responses::ResponseUsage::InputTokensDetails,
+          input_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails,
           output_tokens: Integer,
-          output_tokens_details: OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails,
+          output_tokens_details: OpenAI::Responses::ResponseUsage::OutputTokensDetails,
           total_tokens: Integer
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_usage
 
         type input_tokens_details = { cached_tokens: Integer }
 
@@ -37,8 +35,6 @@ module OpenAI
           attr_accessor cached_tokens: Integer
 
           def initialize: (cached_tokens: Integer) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseUsage::input_tokens_details
         end
 
         type output_tokens_details = { reasoning_tokens: Integer }
@@ -47,8 +43,6 @@ module OpenAI
           attr_accessor reasoning_tokens: Integer
 
           def initialize: (reasoning_tokens: Integer) -> void
-
-          def to_hash: -> OpenAI::Models::Responses::ResponseUsage::output_tokens_details
         end
       end
     end

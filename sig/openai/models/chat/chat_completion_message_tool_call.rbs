@@ -6,24 +6,22 @@ module OpenAI
       type chat_completion_message_tool_call =
         {
           id: String,
-          function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function,
+          function: OpenAI::Chat::ChatCompletionMessageToolCall::Function,
           type: :function
         }
 
       class ChatCompletionMessageToolCall < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function
+        attr_accessor function: OpenAI::Chat::ChatCompletionMessageToolCall::Function
 
         attr_accessor type: :function
 
         def initialize: (
           id: String,
-          function: OpenAI::Models::Chat::ChatCompletionMessageToolCall::Function,
+          function: OpenAI::Chat::ChatCompletionMessageToolCall::Function,
           ?type: :function
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_message_tool_call
 
         type function = { arguments: String, name: String }
 
@@ -33,8 +31,6 @@ module OpenAI
           attr_accessor name: String
 
           def initialize: (arguments: String, name: String) -> void
-
-          def to_hash: -> OpenAI::Models::Chat::ChatCompletionMessageToolCall::function
         end
       end
     end

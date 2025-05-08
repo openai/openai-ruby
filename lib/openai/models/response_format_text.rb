@@ -12,7 +12,7 @@ module OpenAI
       # @!method initialize(type: :text)
       #   Default response format. Used to generate text responses.
       #
-      #   @param type [Symbol, :text]
+      #   @param type [Symbol, :text] The type of response format being defined. Always `text`.
     end
   end
 end

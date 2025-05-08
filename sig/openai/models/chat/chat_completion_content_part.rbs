@@ -4,31 +4,29 @@ module OpenAI
 
     module Chat
       type chat_completion_content_part =
-        OpenAI::Models::Chat::ChatCompletionContentPartText
-        | OpenAI::Models::Chat::ChatCompletionContentPartImage
-        | OpenAI::Models::Chat::ChatCompletionContentPartInputAudio
-        | OpenAI::Models::Chat::ChatCompletionContentPart::File
+        OpenAI::Chat::ChatCompletionContentPartText
+        | OpenAI::Chat::ChatCompletionContentPartImage
+        | OpenAI::Chat::ChatCompletionContentPartInputAudio
+        | OpenAI::Chat::ChatCompletionContentPart::File
 
       module ChatCompletionContentPart
         extend OpenAI::Internal::Type::Union
 
         type file =
           {
-            file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File,
+            file: OpenAI::Chat::ChatCompletionContentPart::File::File,
             type: :file
           }
 
         class File < OpenAI::Internal::Type::BaseModel
-          attr_accessor file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File
+          attr_accessor file: OpenAI::Chat::ChatCompletionContentPart::File::File
 
           attr_accessor type: :file
 
           def initialize: (
-            file: OpenAI::Models::Chat::ChatCompletionContentPart::File::File,
+            file: OpenAI::Chat::ChatCompletionContentPart::File::File,
             ?type: :file
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Chat::ChatCompletionContentPart::file
 
           type file = { file_data: String, file_id: String, filename: String }
 
@@ -50,12 +48,10 @@ module OpenAI
               ?file_id: String,
               ?filename: String
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Chat::ChatCompletionContentPart::File::file
           end
         end
 
-        def self?.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartImage, OpenAI::Models::Chat::ChatCompletionContentPartInputAudio, OpenAI::Models::Chat::ChatCompletionContentPart::File]
+        def self?.variants: -> ::Array[OpenAI::Models::Chat::chat_completion_content_part]
       end
     end
   end

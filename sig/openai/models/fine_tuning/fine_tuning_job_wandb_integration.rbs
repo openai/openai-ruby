@@ -28,8 +28,6 @@ module OpenAI
           ?name: String?,
           ?tags: ::Array[String]
         ) -> void
-
-        def to_hash: -> OpenAI::Models::FineTuning::fine_tuning_job_wandb_integration
       end
     end
   end

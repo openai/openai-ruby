@@ -4,16 +4,16 @@ module OpenAI
       def retrieve: (
         String model,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::Model
+      ) -> OpenAI::Model
 
       def list: (
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::Page[OpenAI::Models::Model]
+      ) -> OpenAI::Internal::Page[OpenAI::Model]
 
       def delete: (
         String model,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::ModelDeleted
+      ) -> OpenAI::ModelDeleted
 
       def initialize: (client: OpenAI::Client) -> void
     end

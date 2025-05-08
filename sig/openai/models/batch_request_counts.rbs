@@ -15,8 +15,6 @@ module OpenAI
         failed: Integer,
         total: Integer
       ) -> void
-
-      def to_hash: -> OpenAI::Models::batch_request_counts
     end
   end
 end

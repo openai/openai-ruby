@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    module FineTuning
+      module Alpha
+        type grader_run_params =
+          {
+            grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
+            model_sample: String,
+            reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class GraderRunParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader
+
+          attr_accessor model_sample: String
+
+          attr_accessor reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer
+
+          def initialize: (
+            grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
+            model_sample: String,
+            reference_answer: OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          type grader =
+            OpenAI::Graders::StringCheckGrader
+            | OpenAI::Graders::TextSimilarityGrader
+            | OpenAI::Graders::PythonGrader
+            | OpenAI::Graders::ScoreModelGrader
+            | OpenAI::Graders::MultiGrader
+
+          module Grader
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader]
+          end
+
+          type reference_answer = String | top | ::Array[top] | Float
+
+          module ReferenceAnswer
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::FineTuning::Alpha::GraderRunParams::reference_answer]
+
+            UnionMember2Array: OpenAI::Internal::Type::Converter
+          end
+        end
+      end
+    end
+  end
+end

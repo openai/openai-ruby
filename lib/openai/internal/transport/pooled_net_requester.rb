@@ -176,7 +176,7 @@ module OpenAI
             conn.finish if !eof && conn&.started?
             closing&.call
           end
-          [Integer(response.code), response, (response.body = body)]
+          [Integer(response.code), response, body]
         end
 
         # @api private

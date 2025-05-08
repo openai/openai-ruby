@@ -50,11 +50,9 @@ module OpenAI
             ?object: :"eval.run.output_item"
           ) -> void
 
-          def to_hash: -> OpenAI::Models::Evals::Runs::output_item_list_response
-
           type sample =
             {
-              error: OpenAI::Models::Evals::EvalAPIError,
+              error: OpenAI::Evals::EvalAPIError,
               finish_reason: String,
               input: ::Array[OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::Input],
               max_completion_tokens: Integer,
@@ -67,7 +65,7 @@ module OpenAI
             }
 
           class Sample < OpenAI::Internal::Type::BaseModel
-            attr_accessor error: OpenAI::Models::Evals::EvalAPIError
+            attr_accessor error: OpenAI::Evals::EvalAPIError
 
             attr_accessor finish_reason: String
 
@@ -88,7 +86,7 @@ module OpenAI
             attr_accessor usage: OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::Usage
 
             def initialize: (
-              error: OpenAI::Models::Evals::EvalAPIError,
+              error: OpenAI::Evals::EvalAPIError,
               finish_reason: String,
               input: ::Array[OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::Input],
               max_completion_tokens: Integer,
@@ -100,8 +98,6 @@ module OpenAI
               usage: OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::Usage
             ) -> void
 
-            def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemListResponse::sample
-
             type input = { content: String, role: String }
 
             class Input < OpenAI::Internal::Type::BaseModel
@@ -110,8 +106,6 @@ module OpenAI
               attr_accessor role: String
 
               def initialize: (content: String, role: String) -> void
-
-              def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::input
             end
 
             type output = { content: String, role: String }
@@ -126,8 +120,6 @@ module OpenAI
               def role=: (String) -> String
 
               def initialize: (?content: String, ?role: String) -> void
-
-              def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::output
             end
 
             type usage =
@@ -153,8 +145,6 @@ module OpenAI
                 prompt_tokens: Integer,
                 total_tokens: Integer
               ) -> void
-
-              def to_hash: -> OpenAI::Models::Evals::Runs::OutputItemListResponse::Sample::usage
             end
           end
         end

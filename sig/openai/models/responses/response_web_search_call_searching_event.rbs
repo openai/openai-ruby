@@ -20,8 +20,6 @@ module OpenAI
           output_index: Integer,
           ?type: :"response.web_search_call.searching"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_web_search_call_searching_event
       end
     end
   end

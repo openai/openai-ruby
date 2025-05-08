@@ -1,26 +1,20 @@
 module OpenAI
   module Models
     type moderation_create_response =
-      {
-        id: String,
-        model: String,
-        results: ::Array[OpenAI::Models::Moderation]
-      }
+      { id: String, model: String, results: ::Array[OpenAI::Moderation] }
 
     class ModerationCreateResponse < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
       attr_accessor model: String
 
-      attr_accessor results: ::Array[OpenAI::Models::Moderation]
+      attr_accessor results: ::Array[OpenAI::Moderation]
 
       def initialize: (
         id: String,
         model: String,
-        results: ::Array[OpenAI::Models::Moderation]
+        results: ::Array[OpenAI::Moderation]
       ) -> void
-
-      def to_hash: -> OpenAI::Models::moderation_create_response
     end
   end
 end

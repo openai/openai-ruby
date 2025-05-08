@@ -4,17 +4,17 @@ module OpenAI
 
     module Chat
       type chat_completion_message_param =
-        OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam
-        | OpenAI::Models::Chat::ChatCompletionSystemMessageParam
-        | OpenAI::Models::Chat::ChatCompletionUserMessageParam
-        | OpenAI::Models::Chat::ChatCompletionAssistantMessageParam
-        | OpenAI::Models::Chat::ChatCompletionToolMessageParam
-        | OpenAI::Models::Chat::ChatCompletionFunctionMessageParam
+        OpenAI::Chat::ChatCompletionDeveloperMessageParam
+        | OpenAI::Chat::ChatCompletionSystemMessageParam
+        | OpenAI::Chat::ChatCompletionUserMessageParam
+        | OpenAI::Chat::ChatCompletionAssistantMessageParam
+        | OpenAI::Chat::ChatCompletionToolMessageParam
+        | OpenAI::Chat::ChatCompletionFunctionMessageParam
 
       module ChatCompletionMessageParam
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Models::Chat::ChatCompletionSystemMessageParam, OpenAI::Models::Chat::ChatCompletionUserMessageParam, OpenAI::Models::Chat::ChatCompletionAssistantMessageParam, OpenAI::Models::Chat::ChatCompletionToolMessageParam, OpenAI::Models::Chat::ChatCompletionFunctionMessageParam]
+        def self?.variants: -> ::Array[OpenAI::Models::Chat::chat_completion_message_param]
       end
     end
   end

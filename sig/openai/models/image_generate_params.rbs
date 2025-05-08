@@ -3,9 +3,13 @@ module OpenAI
     type image_generate_params =
       {
         prompt: String,
+        background: OpenAI::Models::ImageGenerateParams::background?,
         model: OpenAI::Models::ImageGenerateParams::model?,
+        moderation: OpenAI::Models::ImageGenerateParams::moderation?,
         n: Integer?,
-        quality: OpenAI::Models::ImageGenerateParams::quality,
+        output_compression: Integer?,
+        output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        quality: OpenAI::Models::ImageGenerateParams::quality?,
         response_format: OpenAI::Models::ImageGenerateParams::response_format?,
         size: OpenAI::Models::ImageGenerateParams::size?,
         style: OpenAI::Models::ImageGenerateParams::style?,
@@ -19,15 +23,19 @@ module OpenAI
 
       attr_accessor prompt: String
 
+      attr_accessor background: OpenAI::Models::ImageGenerateParams::background?
+
       attr_accessor model: OpenAI::Models::ImageGenerateParams::model?
+
+      attr_accessor moderation: OpenAI::Models::ImageGenerateParams::moderation?
 
       attr_accessor n: Integer?
 
-      attr_reader quality: OpenAI::Models::ImageGenerateParams::quality?
+      attr_accessor output_compression: Integer?
 
-      def quality=: (
-        OpenAI::Models::ImageGenerateParams::quality
-      ) -> OpenAI::Models::ImageGenerateParams::quality
+      attr_accessor output_format: OpenAI::Models::ImageGenerateParams::output_format?
+
+      attr_accessor quality: OpenAI::Models::ImageGenerateParams::quality?
 
       attr_accessor response_format: OpenAI::Models::ImageGenerateParams::response_format?
 
@@ -41,9 +49,13 @@ module OpenAI
 
       def initialize: (
         prompt: String,
+        ?background: OpenAI::Models::ImageGenerateParams::background?,
         ?model: OpenAI::Models::ImageGenerateParams::model?,
+        ?moderation: OpenAI::Models::ImageGenerateParams::moderation?,
         ?n: Integer?,
-        ?quality: OpenAI::Models::ImageGenerateParams::quality,
+        ?output_compression: Integer?,
+        ?output_format: OpenAI::Models::ImageGenerateParams::output_format?,
+        ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
@@ -51,23 +63,60 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::image_generate_params
+      type background = :transparent | :opaque | :auto
+
+      module Background
+        extend OpenAI::Internal::Type::Enum
+
+        TRANSPARENT: :transparent
+        OPAQUE: :opaque
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::background]
+      end
 
       type model = String | OpenAI::Models::image_model
 
       module Model
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, OpenAI::Models::image_model]
+        def self?.variants: -> ::Array[OpenAI::Models::ImageGenerateParams::model]
       end
 
-      type quality = :standard | :hd
+      type moderation = :low | :auto
+
+      module Moderation
+        extend OpenAI::Internal::Type::Enum
+
+        LOW: :low
+        AUTO: :auto
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::moderation]
+      end
+
+      type output_format = :png | :jpeg | :webp
+
+      module OutputFormat
+        extend OpenAI::Internal::Type::Enum
+
+        PNG: :png
+        JPEG: :jpeg
+        WEBP: :webp
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::output_format]
+      end
+
+      type quality = :standard | :hd | :low | :medium | :high | :auto
 
       module Quality
         extend OpenAI::Internal::Type::Enum
 
         STANDARD: :standard
         HD: :hd
+        LOW: :low
+        MEDIUM: :medium
+        HIGH: :high
+        AUTO: :auto
 
         def self?.values: -> ::Array[OpenAI::Models::ImageGenerateParams::quality]
       end
@@ -84,14 +133,24 @@ module OpenAI
       end
 
       type size =
-        :"256x256" | :"512x512" | :"1024x1024" | :"1792x1024" | :"1024x1792"
+        :auto
+        | :"1024x1024"
+        | :"1536x1024"
+        | :"1024x1536"
+        | :"256x256"
+        | :"512x512"
+        | :"1792x1024"
+        | :"1024x1792"
 
       module Size
         extend OpenAI::Internal::Type::Enum
 
+        AUTO: :auto
+        SIZE_1024X1024: :"1024x1024"
+        SIZE_1536X1024: :"1536x1024"
+        SIZE_1024X1536: :"1024x1536"
         SIZE_256X256: :"256x256"
         SIZE_512X512: :"512x512"
-        SIZE_1024X1024: :"1024x1024"
         SIZE_1792X1024: :"1792x1024"
         SIZE_1024X1792: :"1024x1792"
 

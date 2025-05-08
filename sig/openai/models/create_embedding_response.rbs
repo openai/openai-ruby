@@ -2,29 +2,27 @@ module OpenAI
   module Models
     type create_embedding_response =
       {
-        data: ::Array[OpenAI::Models::Embedding],
+        data: ::Array[OpenAI::Embedding],
         model: String,
         object: :list,
-        usage: OpenAI::Models::CreateEmbeddingResponse::Usage
+        usage: OpenAI::CreateEmbeddingResponse::Usage
       }
 
     class CreateEmbeddingResponse < OpenAI::Internal::Type::BaseModel
-      attr_accessor data: ::Array[OpenAI::Models::Embedding]
+      attr_accessor data: ::Array[OpenAI::Embedding]
 
       attr_accessor model: String
 
       attr_accessor object: :list
 
-      attr_accessor usage: OpenAI::Models::CreateEmbeddingResponse::Usage
+      attr_accessor usage: OpenAI::CreateEmbeddingResponse::Usage
 
       def initialize: (
-        data: ::Array[OpenAI::Models::Embedding],
+        data: ::Array[OpenAI::Embedding],
         model: String,
-        usage: OpenAI::Models::CreateEmbeddingResponse::Usage,
+        usage: OpenAI::CreateEmbeddingResponse::Usage,
         ?object: :list
       ) -> void
-
-      def to_hash: -> OpenAI::Models::create_embedding_response
 
       type usage = { prompt_tokens: Integer, total_tokens: Integer }
 
@@ -34,8 +32,6 @@ module OpenAI
         attr_accessor total_tokens: Integer
 
         def initialize: (prompt_tokens: Integer, total_tokens: Integer) -> void
-
-        def to_hash: -> OpenAI::Models::CreateEmbeddingResponse::usage
       end
     end
   end

@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::Uploads::PartsTest < OpenAI::Test::ResourceTest
     response = @openai.uploads.parts.create("upload_abc123", data: Pathname(__FILE__))
 
     assert_pattern do
-      response => OpenAI::Models::Uploads::UploadPart
+      response => OpenAI::Uploads::UploadPart
     end
 
     assert_pattern do

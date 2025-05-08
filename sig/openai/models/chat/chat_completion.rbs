@@ -6,19 +6,19 @@ module OpenAI
       type chat_completion =
         {
           id: String,
-          choices: ::Array[OpenAI::Models::Chat::ChatCompletion::Choice],
+          choices: ::Array[OpenAI::Chat::ChatCompletion::Choice],
           created: Integer,
           model: String,
           object: :"chat.completion",
-          service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
+          service_tier: OpenAI::Chat::ChatCompletion::service_tier?,
           system_fingerprint: String,
-          usage: OpenAI::Models::CompletionUsage
+          usage: OpenAI::CompletionUsage
         }
 
       class ChatCompletion < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor choices: ::Array[OpenAI::Models::Chat::ChatCompletion::Choice]
+        attr_accessor choices: ::Array[OpenAI::Chat::ChatCompletion::Choice]
 
         attr_accessor created: Integer
 
@@ -26,56 +26,50 @@ module OpenAI
 
         attr_accessor object: :"chat.completion"
 
-        attr_accessor service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?
+        attr_accessor service_tier: OpenAI::Chat::ChatCompletion::service_tier?
 
         attr_reader system_fingerprint: String?
 
         def system_fingerprint=: (String) -> String
 
-        attr_reader usage: OpenAI::Models::CompletionUsage?
+        attr_reader usage: OpenAI::CompletionUsage?
 
-        def usage=: (
-          OpenAI::Models::CompletionUsage
-        ) -> OpenAI::Models::CompletionUsage
+        def usage=: (OpenAI::CompletionUsage) -> OpenAI::CompletionUsage
 
         def initialize: (
           id: String,
-          choices: ::Array[OpenAI::Models::Chat::ChatCompletion::Choice],
+          choices: ::Array[OpenAI::Chat::ChatCompletion::Choice],
           created: Integer,
           model: String,
-          ?service_tier: OpenAI::Models::Chat::ChatCompletion::service_tier?,
+          ?service_tier: OpenAI::Chat::ChatCompletion::service_tier?,
           ?system_fingerprint: String,
-          ?usage: OpenAI::Models::CompletionUsage,
+          ?usage: OpenAI::CompletionUsage,
           ?object: :"chat.completion"
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Chat::chat_completion
-
         type choice =
           {
-            finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason,
+            finish_reason: OpenAI::Chat::ChatCompletion::Choice::finish_reason,
             index: Integer,
-            logprobs: OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs?,
-            message: OpenAI::Models::Chat::ChatCompletionMessage
+            logprobs: OpenAI::Chat::ChatCompletion::Choice::Logprobs?,
+            message: OpenAI::Chat::ChatCompletionMessage
           }
 
         class Choice < OpenAI::Internal::Type::BaseModel
-          attr_accessor finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason
+          attr_accessor finish_reason: OpenAI::Chat::ChatCompletion::Choice::finish_reason
 
           attr_accessor index: Integer
 
-          attr_accessor logprobs: OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs?
+          attr_accessor logprobs: OpenAI::Chat::ChatCompletion::Choice::Logprobs?
 
-          attr_accessor message: OpenAI::Models::Chat::ChatCompletionMessage
+          attr_accessor message: OpenAI::Chat::ChatCompletionMessage
 
           def initialize: (
-            finish_reason: OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason,
+            finish_reason: OpenAI::Chat::ChatCompletion::Choice::finish_reason,
             index: Integer,
-            logprobs: OpenAI::Models::Chat::ChatCompletion::Choice::Logprobs?,
-            message: OpenAI::Models::Chat::ChatCompletionMessage
+            logprobs: OpenAI::Chat::ChatCompletion::Choice::Logprobs?,
+            message: OpenAI::Chat::ChatCompletionMessage
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Chat::ChatCompletion::choice
 
           type finish_reason =
             :stop | :length | :tool_calls | :content_filter | :function_call
@@ -89,26 +83,24 @@ module OpenAI
             CONTENT_FILTER: :content_filter
             FUNCTION_CALL: :function_call
 
-            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::Choice::finish_reason]
+            def self?.values: -> ::Array[OpenAI::Chat::ChatCompletion::Choice::finish_reason]
           end
 
           type logprobs =
             {
-              content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?,
-              refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
+              content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?,
+              refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
             }
 
           class Logprobs < OpenAI::Internal::Type::BaseModel
-            attr_accessor content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
+            attr_accessor content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
 
-            attr_accessor refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
+            attr_accessor refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
 
             def initialize: (
-              content: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?,
-              refusal: ::Array[OpenAI::Models::Chat::ChatCompletionTokenLogprob]?
+              content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?,
+              refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Chat::ChatCompletion::Choice::logprobs
           end
         end
 
@@ -121,7 +113,7 @@ module OpenAI
           DEFAULT: :default
           FLEX: :flex
 
-          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletion::service_tier]
+          def self?.values: -> ::Array[OpenAI::Chat::ChatCompletion::service_tier]
         end
       end
     end

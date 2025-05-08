@@ -33,8 +33,8 @@ module OpenAI
           # @!attribute metrics
           #   Metrics at the step number during the fine-tuning job.
           #
-          #   @return [OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics]
-          required :metrics, -> { OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics }
+          #   @return [OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics]
+          required :metrics, -> { OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics }
 
           # @!attribute object
           #   The object type, which is always "fine_tuning.job.checkpoint".
@@ -52,15 +52,21 @@ module OpenAI
           #   The `fine_tuning.job.checkpoint` object represents a model checkpoint for a
           #   fine-tuning job that is ready to use.
           #
-          #   @param id [String]
-          #   @param created_at [Integer]
-          #   @param fine_tuned_model_checkpoint [String]
-          #   @param fine_tuning_job_id [String]
-          #   @param metrics [OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics]
-          #   @param step_number [Integer]
-          #   @param object [Symbol, :"fine_tuning.job.checkpoint"]
+          #   @param id [String] The checkpoint identifier, which can be referenced in the API endpoints.
+          #
+          #   @param created_at [Integer] The Unix timestamp (in seconds) for when the checkpoint was created.
+          #
+          #   @param fine_tuned_model_checkpoint [String] The name of the fine-tuned checkpoint model that is created.
+          #
+          #   @param fine_tuning_job_id [String] The name of the fine-tuning job that this checkpoint was created from.
+          #
+          #   @param metrics [OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics] Metrics at the step number during the fine-tuning job.
+          #
+          #   @param step_number [Integer] The step number that the checkpoint was created at.
+          #
+          #   @param object [Symbol, :"fine_tuning.job.checkpoint"] The object type, which is always "fine_tuning.job.checkpoint".
 
-          # @see OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
+          # @see OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint#metrics
           class Metrics < OpenAI::Internal::Type::BaseModel
             # @!attribute full_valid_loss
             #

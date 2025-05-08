@@ -30,8 +30,6 @@ module OpenAI
           ?strict: bool?,
           ?type: :json_schema
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_format_text_json_schema_config
       end
     end
   end

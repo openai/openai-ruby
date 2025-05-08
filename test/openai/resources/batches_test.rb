@@ -12,7 +12,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
       )
 
     assert_pattern do
-      response => OpenAI::Models::Batch
+      response => OpenAI::Batch
     end
 
     assert_pattern do
@@ -23,12 +23,12 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         endpoint: String,
         input_file_id: String,
         object: Symbol,
-        status: OpenAI::Models::Batch::Status,
+        status: OpenAI::Batch::Status,
         cancelled_at: Integer | nil,
         cancelling_at: Integer | nil,
         completed_at: Integer | nil,
         error_file_id: String | nil,
-        errors: OpenAI::Models::Batch::Errors | nil,
+        errors: OpenAI::Batch::Errors | nil,
         expired_at: Integer | nil,
         expires_at: Integer | nil,
         failed_at: Integer | nil,
@@ -36,7 +36,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::Models::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil
       }
     end
   end
@@ -45,7 +45,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
     response = @openai.batches.retrieve("batch_id")
 
     assert_pattern do
-      response => OpenAI::Models::Batch
+      response => OpenAI::Batch
     end
 
     assert_pattern do
@@ -56,12 +56,12 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         endpoint: String,
         input_file_id: String,
         object: Symbol,
-        status: OpenAI::Models::Batch::Status,
+        status: OpenAI::Batch::Status,
         cancelled_at: Integer | nil,
         cancelling_at: Integer | nil,
         completed_at: Integer | nil,
         error_file_id: String | nil,
-        errors: OpenAI::Models::Batch::Errors | nil,
+        errors: OpenAI::Batch::Errors | nil,
         expired_at: Integer | nil,
         expires_at: Integer | nil,
         failed_at: Integer | nil,
@@ -69,7 +69,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::Models::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil
       }
     end
   end
@@ -85,7 +85,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::Batch
+      row => OpenAI::Batch
     end
 
     assert_pattern do
@@ -96,12 +96,12 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         endpoint: String,
         input_file_id: String,
         object: Symbol,
-        status: OpenAI::Models::Batch::Status,
+        status: OpenAI::Batch::Status,
         cancelled_at: Integer | nil,
         cancelling_at: Integer | nil,
         completed_at: Integer | nil,
         error_file_id: String | nil,
-        errors: OpenAI::Models::Batch::Errors | nil,
+        errors: OpenAI::Batch::Errors | nil,
         expired_at: Integer | nil,
         expires_at: Integer | nil,
         failed_at: Integer | nil,
@@ -109,7 +109,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::Models::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil
       }
     end
   end
@@ -118,7 +118,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
     response = @openai.batches.cancel("batch_id")
 
     assert_pattern do
-      response => OpenAI::Models::Batch
+      response => OpenAI::Batch
     end
 
     assert_pattern do
@@ -129,12 +129,12 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         endpoint: String,
         input_file_id: String,
         object: Symbol,
-        status: OpenAI::Models::Batch::Status,
+        status: OpenAI::Batch::Status,
         cancelled_at: Integer | nil,
         cancelling_at: Integer | nil,
         completed_at: Integer | nil,
         error_file_id: String | nil,
-        errors: OpenAI::Models::Batch::Errors | nil,
+        errors: OpenAI::Batch::Errors | nil,
         expired_at: Integer | nil,
         expires_at: Integer | nil,
         failed_at: Integer | nil,
@@ -142,7 +142,7 @@ class OpenAI::Test::Resources::BatchesTest < OpenAI::Test::ResourceTest
         in_progress_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         output_file_id: String | nil,
-        request_counts: OpenAI::Models::BatchRequestCounts | nil
+        request_counts: OpenAI::BatchRequestCounts | nil
       }
     end
   end

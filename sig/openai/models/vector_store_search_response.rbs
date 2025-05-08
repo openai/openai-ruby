@@ -28,14 +28,12 @@ module OpenAI
         score: Float
       ) -> void
 
-      def to_hash: -> OpenAI::Models::vector_store_search_response
-
       type attribute = String | Float | bool
 
       module Attribute
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, Float, bool]
+        def self?.variants: -> ::Array[OpenAI::Models::VectorStoreSearchResponse::attribute]
       end
 
       type content =
@@ -53,8 +51,6 @@ module OpenAI
           text: String,
           type: OpenAI::Models::VectorStoreSearchResponse::Content::type_
         ) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStoreSearchResponse::content
 
         type type_ = :text
 
