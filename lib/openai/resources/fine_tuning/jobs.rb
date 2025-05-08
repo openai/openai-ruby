@@ -162,6 +162,52 @@ module OpenAI
           )
         end
 
+        # Some parameter documentations has been truncated, see
+        # {OpenAI::Models::FineTuning::JobPauseParams} for more details.
+        #
+        # Pause a fine-tune job.
+        #
+        # @overload pause(fine_tuning_job_id, request_options: {})
+        #
+        # @param fine_tuning_job_id [String] The ID of the fine-tuning job to pause.
+        #
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+        #
+        # @return [OpenAI::FineTuning::FineTuningJob]
+        #
+        # @see OpenAI::Models::FineTuning::JobPauseParams
+        def pause(fine_tuning_job_id, params = {})
+          @client.request(
+            method: :post,
+            path: ["fine_tuning/jobs/%1$s/pause", fine_tuning_job_id],
+            model: OpenAI::FineTuning::FineTuningJob,
+            options: params[:request_options]
+          )
+        end
+
+        # Some parameter documentations has been truncated, see
+        # {OpenAI::Models::FineTuning::JobResumeParams} for more details.
+        #
+        # Resume a fine-tune job.
+        #
+        # @overload resume(fine_tuning_job_id, request_options: {})
+        #
+        # @param fine_tuning_job_id [String] The ID of the fine-tuning job to resume.
+        #
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+        #
+        # @return [OpenAI::FineTuning::FineTuningJob]
+        #
+        # @see OpenAI::Models::FineTuning::JobResumeParams
+        def resume(fine_tuning_job_id, params = {})
+          @client.request(
+            method: :post,
+            path: ["fine_tuning/jobs/%1$s/resume", fine_tuning_job_id],
+            model: OpenAI::FineTuning::FineTuningJob,
+            options: params[:request_options]
+          )
+        end
+
         # @api private
         #
         # @param client [OpenAI::Client]

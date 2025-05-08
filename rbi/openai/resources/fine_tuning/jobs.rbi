@@ -176,6 +176,34 @@ module OpenAI
         )
         end
 
+        # Pause a fine-tune job.
+        sig do
+          params(
+            fine_tuning_job_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::FineTuning::FineTuningJob)
+        end
+        def pause(
+          # The ID of the fine-tuning job to pause.
+          fine_tuning_job_id,
+          request_options: {}
+        )
+        end
+
+        # Resume a fine-tune job.
+        sig do
+          params(
+            fine_tuning_job_id: String,
+            request_options: OpenAI::RequestOptions::OrHash
+          ).returns(OpenAI::FineTuning::FineTuningJob)
+        end
+        def resume(
+          # The ID of the fine-tuning job to resume.
+          fine_tuning_job_id,
+          request_options: {}
+        )
+        end
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
         def self.new(client:)

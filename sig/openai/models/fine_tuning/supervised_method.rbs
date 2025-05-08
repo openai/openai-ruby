@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module FineTuning
+      type supervised_method =
+        { hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters }
+
+      class SupervisedMethod < OpenAI::Internal::Type::BaseModel
+        attr_reader hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters?
+
+        def hyperparameters=: (
+          OpenAI::FineTuning::SupervisedHyperparameters
+        ) -> OpenAI::FineTuning::SupervisedHyperparameters
+
+        def initialize: (
+          ?hyperparameters: OpenAI::FineTuning::SupervisedHyperparameters
+        ) -> void
+      end
+    end
+  end
+end

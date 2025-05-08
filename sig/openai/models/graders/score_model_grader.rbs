@@ -1,0 +1,113 @@
+module OpenAI
+  module Models
+    class ScoreModelGrader = Graders::ScoreModelGrader
+
+    module Graders
+      type score_model_grader =
+        {
+          input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+          model: String,
+          name: String,
+          type: :score_model,
+          range: ::Array[Float],
+          sampling_params: top
+        }
+
+      class ScoreModelGrader < OpenAI::Internal::Type::BaseModel
+        attr_accessor input: ::Array[OpenAI::Graders::ScoreModelGrader::Input]
+
+        attr_accessor model: String
+
+        attr_accessor name: String
+
+        attr_accessor type: :score_model
+
+        attr_reader range: ::Array[Float]?
+
+        def range=: (::Array[Float]) -> ::Array[Float]
+
+        attr_reader sampling_params: top?
+
+        def sampling_params=: (top) -> top
+
+        def initialize: (
+          input: ::Array[OpenAI::Graders::ScoreModelGrader::Input],
+          model: String,
+          name: String,
+          ?range: ::Array[Float],
+          ?sampling_params: top,
+          ?type: :score_model
+        ) -> void
+
+        type input =
+          {
+            content: OpenAI::Graders::ScoreModelGrader::Input::content,
+            role: OpenAI::Graders::ScoreModelGrader::Input::role,
+            type: OpenAI::Graders::ScoreModelGrader::Input::type_
+          }
+
+        class Input < OpenAI::Internal::Type::BaseModel
+          attr_accessor content: OpenAI::Graders::ScoreModelGrader::Input::content
+
+          attr_accessor role: OpenAI::Graders::ScoreModelGrader::Input::role
+
+          attr_reader type: OpenAI::Graders::ScoreModelGrader::Input::type_?
+
+          def type=: (
+            OpenAI::Graders::ScoreModelGrader::Input::type_
+          ) -> OpenAI::Graders::ScoreModelGrader::Input::type_
+
+          def initialize: (
+            content: OpenAI::Graders::ScoreModelGrader::Input::content,
+            role: OpenAI::Graders::ScoreModelGrader::Input::role,
+            ?type: OpenAI::Graders::ScoreModelGrader::Input::type_
+          ) -> void
+
+          type content =
+            String
+            | OpenAI::Responses::ResponseInputText
+            | OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText
+
+          module Content
+            extend OpenAI::Internal::Type::Union
+
+            type output_text = { text: String, type: :output_text }
+
+            class OutputText < OpenAI::Internal::Type::BaseModel
+              attr_accessor text: String
+
+              attr_accessor type: :output_text
+
+              def initialize: (text: String, ?type: :output_text) -> void
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Graders::ScoreModelGrader::Input::content]
+          end
+
+          type role = :user | :assistant | :system | :developer
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            USER: :user
+            ASSISTANT: :assistant
+            SYSTEM: :system
+            DEVELOPER: :developer
+
+            def self?.values: -> ::Array[OpenAI::Graders::ScoreModelGrader::Input::role]
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Graders::ScoreModelGrader::Input::type_]
+          end
+        end
+      end
+    end
+  end
+end

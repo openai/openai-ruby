@@ -59,8 +59,6 @@ module OpenAI
 
   EvalDeleteParams = OpenAI::Models::EvalDeleteParams
 
-  EvalLabelModelGrader = OpenAI::Models::EvalLabelModelGrader
-
   EvalListParams = OpenAI::Models::EvalListParams
 
   EvalRetrieveParams = OpenAI::Models::EvalRetrieveParams
@@ -68,10 +66,6 @@ module OpenAI
   Evals = OpenAI::Models::Evals
 
   EvalStoredCompletionsDataSourceConfig = OpenAI::Models::EvalStoredCompletionsDataSourceConfig
-
-  EvalStringCheckGrader = OpenAI::Models::EvalStringCheckGrader
-
-  EvalTextSimilarityGrader = OpenAI::Models::EvalTextSimilarityGrader
 
   EvalUpdateParams = OpenAI::Models::EvalUpdateParams
 
@@ -103,6 +97,8 @@ module OpenAI
 
   # @type [OpenAI::Internal::Type::Converter]
   FunctionParameters = OpenAI::Models::FunctionParameters
+
+  Graders = OpenAI::Models::Graders
 
   Image = OpenAI::Models::Image
 

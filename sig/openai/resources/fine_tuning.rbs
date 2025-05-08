@@ -1,9 +1,13 @@
 module OpenAI
   module Resources
     class FineTuning
+      attr_reader methods_: OpenAI::Resources::FineTuning::Methods
+
       attr_reader jobs: OpenAI::Resources::FineTuning::Jobs
 
       attr_reader checkpoints: OpenAI::Resources::FineTuning::Checkpoints
+
+      attr_reader alpha: OpenAI::Resources::FineTuning::Alpha
 
       def initialize: (client: OpenAI::Client) -> void
     end

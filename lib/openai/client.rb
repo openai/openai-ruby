@@ -51,6 +51,9 @@ module OpenAI
     # @return [OpenAI::Resources::FineTuning]
     attr_reader :fine_tuning
 
+    # @return [OpenAI::Resources::Graders]
+    attr_reader :graders
+
     # @return [OpenAI::Resources::VectorStores]
     attr_reader :vector_stores
 
@@ -137,6 +140,7 @@ module OpenAI
       @moderations = OpenAI::Resources::Moderations.new(client: self)
       @models = OpenAI::Resources::Models.new(client: self)
       @fine_tuning = OpenAI::Resources::FineTuning.new(client: self)
+      @graders = OpenAI::Resources::Graders.new(client: self)
       @vector_stores = OpenAI::Resources::VectorStores.new(client: self)
       @beta = OpenAI::Resources::Beta.new(client: self)
       @batches = OpenAI::Resources::Batches.new(client: self)

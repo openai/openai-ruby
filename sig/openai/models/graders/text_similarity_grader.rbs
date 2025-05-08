@@ -1,0 +1,65 @@
+module OpenAI
+  module Models
+    class TextSimilarityGrader = Graders::TextSimilarityGrader
+
+    module Graders
+      type text_similarity_grader =
+        {
+          evaluation_metric: OpenAI::Graders::TextSimilarityGrader::evaluation_metric,
+          input: String,
+          name: String,
+          reference: String,
+          type: :text_similarity
+        }
+
+      class TextSimilarityGrader < OpenAI::Internal::Type::BaseModel
+        attr_accessor evaluation_metric: OpenAI::Graders::TextSimilarityGrader::evaluation_metric
+
+        attr_accessor input: String
+
+        attr_accessor name: String
+
+        attr_accessor reference: String
+
+        attr_accessor type: :text_similarity
+
+        def initialize: (
+          evaluation_metric: OpenAI::Graders::TextSimilarityGrader::evaluation_metric,
+          input: String,
+          name: String,
+          reference: String,
+          ?type: :text_similarity
+        ) -> void
+
+        type evaluation_metric =
+          :fuzzy_match
+          | :bleu
+          | :gleu
+          | :meteor
+          | :rouge_1
+          | :rouge_2
+          | :rouge_3
+          | :rouge_4
+          | :rouge_5
+          | :rouge_l
+
+        module EvaluationMetric
+          extend OpenAI::Internal::Type::Enum
+
+          FUZZY_MATCH: :fuzzy_match
+          BLEU: :bleu
+          GLEU: :gleu
+          METEOR: :meteor
+          ROUGE_1: :rouge_1
+          ROUGE_2: :rouge_2
+          ROUGE_3: :rouge_3
+          ROUGE_4: :rouge_4
+          ROUGE_5: :rouge_5
+          ROUGE_L: :rouge_l
+
+          def self?.values: -> ::Array[OpenAI::Graders::TextSimilarityGrader::evaluation_metric]
+        end
+      end
+    end
+  end
+end

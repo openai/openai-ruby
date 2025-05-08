@@ -46,6 +46,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::FineTuning) }
     attr_reader :fine_tuning
 
+    sig { returns(OpenAI::Resources::Graders) }
+    attr_reader :graders
+
     sig { returns(OpenAI::Resources::VectorStores) }
     attr_reader :vector_stores
 
