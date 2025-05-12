@@ -81,6 +81,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol, OpenAI::Audio::SpeechModel)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::Audio::SpeechModel::TaggedSymbol) }
+          end
         end
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
@@ -116,6 +120,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::Audio::SpeechCreateParams::Voice::TaggedSymbol) }
+          end
 
           # @!group
 

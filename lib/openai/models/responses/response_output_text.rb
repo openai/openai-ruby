@@ -157,6 +157,16 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Responses::ResponseOutputText::Annotation::FileCitation, OpenAI::Responses::ResponseOutputText::Annotation::URLCitation, OpenAI::Responses::ResponseOutputText::Annotation::FilePath)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                OpenAI::Responses::ResponseOutputText::Annotation::FilePath
+              )
+            end
+          end
         end
       end
     end

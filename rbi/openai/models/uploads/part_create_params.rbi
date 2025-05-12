@@ -7,7 +7,10 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Uploads::PartCreateParams, OpenAI::Internal::AnyHash)
+          end
 
         # The chunk of bytes for this Part.
         sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }

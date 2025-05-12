@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Audio
       class Transcription < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Audio::Transcription, OpenAI::Internal::AnyHash)
+          end
 
         # The transcribed text.
         sig { returns(String) }
@@ -56,7 +59,12 @@ module OpenAI
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Audio::Transcription::Logprob,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The token in the transcription.
           sig { returns(T.nilable(String)) }

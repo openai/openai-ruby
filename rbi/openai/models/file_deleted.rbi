@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class FileDeleted < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::FileDeleted, OpenAI::Internal::AnyHash) }
 
       sig { returns(String) }
       attr_accessor :id

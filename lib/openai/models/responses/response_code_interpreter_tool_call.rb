@@ -142,6 +142,15 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs, OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+                OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files
+              )
+            end
+          end
         end
 
         # The status of the code interpreter tool call.

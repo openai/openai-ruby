@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::VectorStoreSearchParams, OpenAI::Internal::AnyHash)
+        end
 
       # A query string for a search
       sig { returns(T.any(String, T::Array[String])) }
@@ -146,7 +149,13 @@ module OpenAI
       end
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::VectorStoreSearchParams::RankingOptions,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         sig do
           returns(

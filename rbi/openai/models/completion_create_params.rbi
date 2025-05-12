@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::CompletionCreateParams, OpenAI::Internal::AnyHash)
+        end
 
       # ID of the model to use. You can use the
       # [List models](https://platform.openai.com/docs/api-reference/models/list) API to

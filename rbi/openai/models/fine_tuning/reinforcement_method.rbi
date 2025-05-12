@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module FineTuning
       class ReinforcementMethod < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::FineTuning::ReinforcementMethod,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The grader used for the fine-tuning job.
         sig do

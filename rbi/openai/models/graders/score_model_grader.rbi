@@ -6,7 +6,10 @@ module OpenAI
 
     module Graders
       class ScoreModelGrader < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Graders::ScoreModelGrader, OpenAI::Internal::AnyHash)
+          end
 
         # The input text. This may include template strings.
         sig { returns(T::Array[OpenAI::Graders::ScoreModelGrader::Input]) }
@@ -82,7 +85,12 @@ module OpenAI
 
         class Input < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Graders::ScoreModelGrader::Input,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Text inputs to the model - can contain template strings.
           sig do
@@ -180,7 +188,12 @@ module OpenAI
 
             class OutputText < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The text output from the model.
               sig { returns(String) }

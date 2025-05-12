@@ -6,7 +6,13 @@ module OpenAI
 
     module Responses
       class ResponseItemList < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseItemList,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # A list of items used to generate this response.
         sig do

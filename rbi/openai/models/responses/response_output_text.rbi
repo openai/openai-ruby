@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseOutputText < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseOutputText,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The annotations of the text output.
         sig do
@@ -87,7 +93,12 @@ module OpenAI
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseOutputText::Annotation::FileCitation,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the file.
             sig { returns(String) }
@@ -128,7 +139,12 @@ module OpenAI
 
           class URLCitation < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseOutputText::Annotation::URLCitation,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The index of the last character of the URL citation in the message.
             sig { returns(Integer) }
@@ -191,7 +207,12 @@ module OpenAI
 
           class FilePath < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseOutputText::Annotation::FilePath,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the file.
             sig { returns(String) }

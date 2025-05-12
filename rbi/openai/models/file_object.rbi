@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class FileObject < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::FileObject, OpenAI::Internal::AnyHash) }
 
       # The file identifier, which can be referenced in the API endpoints.
       sig { returns(String) }

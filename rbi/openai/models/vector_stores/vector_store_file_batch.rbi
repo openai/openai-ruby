@@ -6,7 +6,13 @@ module OpenAI
 
     module VectorStores
       class VectorStoreFileBatch < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::VectorStores::VectorStoreFileBatch,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
@@ -100,7 +106,12 @@ module OpenAI
 
         class FileCounts < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::VectorStores::VectorStoreFileBatch::FileCounts,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The number of files that where cancelled.
           sig { returns(Integer) }

@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class EvalListResponse < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::Models::EvalListResponse, OpenAI::Internal::AnyHash)
+        end
 
       # Unique identifier for the evaluation.
       sig { returns(String) }
@@ -180,7 +183,12 @@ module OpenAI
 
         class EvalGraderTextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The threshold for the score.
           sig { returns(Float) }
@@ -201,7 +209,12 @@ module OpenAI
 
         class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The threshold for the score.
           sig { returns(T.nilable(Float)) }
@@ -225,7 +238,12 @@ module OpenAI
 
         class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The threshold for the score.
           sig { returns(T.nilable(Float)) }

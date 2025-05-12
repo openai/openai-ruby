@@ -1,5 +1,7 @@
 module OpenAI
   module Internal
+    extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
     OMIT: Object
   end
 end

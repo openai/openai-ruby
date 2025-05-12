@@ -65,6 +65,10 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>)]
 
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, T::Array[String]) }
+        end
+
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end
@@ -81,6 +85,10 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter) }
+        end
       end
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel

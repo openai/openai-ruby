@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Beta
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Beta::FileSearchTool, OpenAI::Internal::AnyHash)
+          end
 
         # The type of tool being defined: `file_search`
         sig { returns(Symbol) }
@@ -48,7 +51,12 @@ module OpenAI
 
         class FileSearch < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::FileSearchTool::FileSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The maximum number of results the file search tool should output. The default is
           # 20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
@@ -129,7 +137,12 @@ module OpenAI
 
           class RankingOptions < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The score threshold for the file search. All values must be a floating point
             # number between 0 and 1.

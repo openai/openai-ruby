@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallInterpretingEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # A tool call to run code.
         sig { returns(OpenAI::Responses::ResponseCodeInterpreterToolCall) }

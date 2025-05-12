@@ -6,7 +6,13 @@ module OpenAI
 
     module FineTuning
       class FineTuningJobEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::FineTuning::FineTuningJobEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The object identifier.
         sig { returns(String) }

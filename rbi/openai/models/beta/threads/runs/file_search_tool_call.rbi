@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class FileSearchToolCall < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::FileSearchToolCall,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the tool call object.
             sig { returns(String) }
@@ -68,7 +73,12 @@ module OpenAI
 
             class FileSearch < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The ranking options for the file search.
               sig do
@@ -146,7 +156,12 @@ module OpenAI
 
               class RankingOptions < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The ranker to use for the file search. If not specified will use the `auto`
                 # ranker.
@@ -231,7 +246,12 @@ module OpenAI
 
               class Result < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The ID of the file that result was found in.
                 sig { returns(String) }
@@ -314,7 +334,10 @@ module OpenAI
                 class Content < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   # The text content of the file.

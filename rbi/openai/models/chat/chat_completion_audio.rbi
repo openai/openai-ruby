@@ -6,7 +6,10 @@ module OpenAI
 
     module Chat
       class ChatCompletionAudio < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Chat::ChatCompletionAudio, OpenAI::Internal::AnyHash)
+          end
 
         # Unique identifier for this audio response.
         sig { returns(String) }

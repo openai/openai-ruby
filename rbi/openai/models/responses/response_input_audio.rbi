@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputAudio < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputAudio,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Base64-encoded audio data.
         sig { returns(String) }

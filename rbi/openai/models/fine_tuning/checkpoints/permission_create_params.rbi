@@ -9,7 +9,12 @@ module OpenAI
           include OpenAI::Internal::Type::RequestParameters
 
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::Checkpoints::PermissionCreateParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The project identifiers to grant access to.
           sig { returns(T::Array[String]) }

@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::BatchCreateParams, OpenAI::Internal::AnyHash)
+        end
 
       # The time frame within which the batch should be processed. Currently only `24h`
       # is supported.

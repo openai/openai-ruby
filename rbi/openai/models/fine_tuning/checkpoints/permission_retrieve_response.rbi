@@ -6,7 +6,12 @@ module OpenAI
       module Checkpoints
         class PermissionRetrieveResponse < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig do
             returns(
@@ -69,7 +74,12 @@ module OpenAI
 
           class Data < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The permission identifier, which can be referenced in the API endpoints.
             sig { returns(String) }

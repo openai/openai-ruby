@@ -6,7 +6,12 @@ module OpenAI
       module Jobs
         class FineTuningJobCheckpoint < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The checkpoint identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
@@ -97,7 +102,12 @@ module OpenAI
 
           class Metrics < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             sig { returns(T.nilable(Float)) }
             attr_reader :full_valid_loss

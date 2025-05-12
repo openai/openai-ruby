@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class MessageDelta < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::MessageDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The content of the message in array of text and/or images.
           sig do

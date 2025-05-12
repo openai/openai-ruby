@@ -9,7 +9,12 @@ module OpenAI
         module Runs
           class RunStepDeltaEvent < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }

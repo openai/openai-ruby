@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Audio::TranslationCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The audio file object (not file name) translate, in one of these formats: flac,
         # mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.

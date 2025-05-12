@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class MessageDeltaEvent < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::MessageDeltaEvent,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The identifier of the message, which can be referenced in API endpoints.
           sig { returns(String) }

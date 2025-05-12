@@ -7,7 +7,10 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Evals::RunCreateParams, OpenAI::Internal::AnyHash)
+          end
 
         # Details about the run's data source.
         sig do
@@ -99,7 +102,12 @@ module OpenAI
 
           class CreateEvalResponsesRunDataSource < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # A EvalResponsesSource object describing a run data source configuration.
             sig do
@@ -241,7 +249,12 @@ module OpenAI
 
               class FileContent < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The content of the jsonl file.
                 sig do
@@ -291,7 +304,10 @@ module OpenAI
                 class Content < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   sig { returns(T::Hash[Symbol, T.anything]) }
@@ -327,7 +343,12 @@ module OpenAI
 
               class FileID < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The identifier of the file.
                 sig { returns(String) }
@@ -355,7 +376,12 @@ module OpenAI
 
               class Responses < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The type of run data source. Always `responses`.
                 sig { returns(Symbol) }
@@ -544,7 +570,12 @@ module OpenAI
 
               class Template < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # A list of chat messages forming the prompt or context. May include variable
                 # references to the "item" namespace, ie {{item.name}}.
@@ -621,7 +652,10 @@ module OpenAI
                   class ChatMessage < OpenAI::Internal::Type::BaseModel
                     OrHash =
                       T.type_alias do
-                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                        T.any(
+                          OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage,
+                          OpenAI::Internal::AnyHash
+                        )
                       end
 
                     # The content of the message.
@@ -653,7 +687,10 @@ module OpenAI
                   class EvalItem < OpenAI::Internal::Type::BaseModel
                     OrHash =
                       T.type_alias do
-                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                        T.any(
+                          OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem,
+                          OpenAI::Internal::AnyHash
+                        )
                       end
 
                     # Text inputs to the model - can contain template strings.
@@ -760,7 +797,10 @@ module OpenAI
                       class OutputText < OpenAI::Internal::Type::BaseModel
                         OrHash =
                           T.type_alias do
-                            T.any(T.self_type, OpenAI::Internal::AnyHash)
+                            T.any(
+                              OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText,
+                              OpenAI::Internal::AnyHash
+                            )
                           end
 
                         # The text output from the model.
@@ -892,7 +932,12 @@ module OpenAI
 
               class ItemReference < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # A reference to a variable in the "item" namespace. Ie, "item.name"
                 sig { returns(String) }
@@ -935,7 +980,12 @@ module OpenAI
 
             class SamplingParams < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The maximum number of tokens in the generated output.
               sig { returns(T.nilable(Integer)) }

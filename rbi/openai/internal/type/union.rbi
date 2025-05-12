@@ -6,6 +6,7 @@ module OpenAI
       # @api private
       module Union
         include OpenAI::Internal::Type::Converter
+        include OpenAI::Internal::Util::SorbetRuntimeSupport
 
         # @api private
         #

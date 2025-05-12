@@ -130,6 +130,15 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::EvalCreateParams::DataSourceConfig::Custom,
+              OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions
+            )
+          end
+        end
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -338,6 +347,16 @@ module OpenAI
 
                 # @!method self.variants
                 #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText)]
+
+                define_sorbet_constant!(:Variants) do
+                  T.type_alias do
+                    T.any(
+                      String,
+                      OpenAI::Responses::ResponseInputText,
+                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
+                    )
+                  end
+                end
               end
 
               # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -371,6 +390,15 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias do
+                T.any(
+                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage,
+                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem
+                )
+              end
+            end
           end
         end
 
@@ -415,6 +443,18 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::EvalCreateParams::TestingCriterion::LabelModel,
+              OpenAI::Graders::StringCheckGrader,
+              OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity,
+              OpenAI::EvalCreateParams::TestingCriterion::Python,
+              OpenAI::EvalCreateParams::TestingCriterion::ScoreModel
+            )
+          end
+        end
       end
     end
   end

@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Responses
       class ToolChoiceTypes < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Responses::ToolChoiceTypes, OpenAI::Internal::AnyHash)
+          end
 
         # The type of hosted tool the model should to use. Learn more about
         # [built-in tools](https://platform.openai.com/docs/guides/tools).

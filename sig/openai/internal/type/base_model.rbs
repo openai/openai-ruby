@@ -3,9 +3,12 @@ module OpenAI
     module Type
       class BaseModel
         extend OpenAI::Internal::Type::Converter
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
         type known_field =
           { mode: (:coerce | :dump)?, required: bool, nilable: bool }
+
+        def self.inherited: (self child) -> void
 
         def self.known_fields: -> ::Hash[Symbol, (OpenAI::Internal::Type::BaseModel::known_field
         & { type_fn: (^-> OpenAI::Internal::Type::Converter::input) })]
@@ -58,10 +61,10 @@ module OpenAI
         def self.coerce: (
           OpenAI::Internal::Type::BaseModel | ::Hash[top, top] | top value,
           state: OpenAI::Internal::Type::Converter::coerce_state
-        ) -> (instance | top)
+        ) -> (self | top)
 
         def self.dump: (
-          instance | top value,
+          self | top value,
           state: OpenAI::Internal::Type::Converter::dump_state
         ) -> (::Hash[top, top] | top)
 

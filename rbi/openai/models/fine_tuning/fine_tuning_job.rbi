@@ -6,7 +6,10 @@ module OpenAI
 
     module FineTuning
       class FineTuningJob < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::FineTuning::FineTuningJob, OpenAI::Internal::AnyHash)
+          end
 
         # The object identifier, which can be referenced in the API endpoints.
         sig { returns(String) }
@@ -255,7 +258,12 @@ module OpenAI
 
         class Error < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::FineTuningJob::Error,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # A machine-readable error code.
           sig { returns(String) }
@@ -301,7 +309,12 @@ module OpenAI
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
@@ -469,7 +482,12 @@ module OpenAI
 
         class Method < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::FineTuningJob::Method,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
           sig do

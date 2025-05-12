@@ -60,6 +60,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Integer)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(Symbol, Integer) }
+          end
         end
 
         # The beta value for the DPO method. A higher beta value will increase the weight
@@ -75,6 +79,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Float)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(Symbol, Float) }
+          end
         end
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -90,6 +98,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Float)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(Symbol, Float) }
+          end
         end
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -105,6 +117,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Integer)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(Symbol, Integer) }
+          end
         end
       end
     end

@@ -292,6 +292,23 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Beta::RunStreamEvent::ThreadRunCreated, OpenAI::Beta::RunStreamEvent::ThreadRunQueued, OpenAI::Beta::RunStreamEvent::ThreadRunInProgress, OpenAI::Beta::RunStreamEvent::ThreadRunRequiresAction, OpenAI::Beta::RunStreamEvent::ThreadRunCompleted, OpenAI::Beta::RunStreamEvent::ThreadRunIncomplete, OpenAI::Beta::RunStreamEvent::ThreadRunFailed, OpenAI::Beta::RunStreamEvent::ThreadRunCancelling, OpenAI::Beta::RunStreamEvent::ThreadRunCancelled, OpenAI::Beta::RunStreamEvent::ThreadRunExpired)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::RunStreamEvent::ThreadRunCreated,
+              OpenAI::Beta::RunStreamEvent::ThreadRunQueued,
+              OpenAI::Beta::RunStreamEvent::ThreadRunInProgress,
+              OpenAI::Beta::RunStreamEvent::ThreadRunRequiresAction,
+              OpenAI::Beta::RunStreamEvent::ThreadRunCompleted,
+              OpenAI::Beta::RunStreamEvent::ThreadRunIncomplete,
+              OpenAI::Beta::RunStreamEvent::ThreadRunFailed,
+              OpenAI::Beta::RunStreamEvent::ThreadRunCancelling,
+              OpenAI::Beta::RunStreamEvent::ThreadRunCancelled,
+              OpenAI::Beta::RunStreamEvent::ThreadRunExpired
+            )
+          end
+        end
       end
     end
   end

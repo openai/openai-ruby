@@ -36,6 +36,21 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputMessageItem,
+              OpenAI::Responses::ResponseOutputMessage,
+              OpenAI::Responses::ResponseFileSearchToolCall,
+              OpenAI::Responses::ResponseComputerToolCall,
+              OpenAI::Responses::ResponseComputerToolCallOutputItem,
+              OpenAI::Responses::ResponseFunctionWebSearch,
+              OpenAI::Responses::ResponseFunctionToolCallItem,
+              OpenAI::Responses::ResponseFunctionToolCallOutputItem
+            )
+          end
+        end
       end
     end
   end

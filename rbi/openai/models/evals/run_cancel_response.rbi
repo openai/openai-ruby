@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Evals
       class RunCancelResponse < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Models::Evals::RunCancelResponse,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Unique identifier for the evaluation run.
         sig { returns(String) }
@@ -214,7 +220,12 @@ module OpenAI
 
           class Completions < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # A EvalResponsesSource object describing a run data source configuration.
             sig do
@@ -350,7 +361,12 @@ module OpenAI
 
               class FileContent < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::FileContent,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The content of the jsonl file.
                 sig do
@@ -400,7 +416,10 @@ module OpenAI
                 class Content < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::FileContent::Content,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   sig { returns(T::Hash[Symbol, T.anything]) }
@@ -436,7 +455,12 @@ module OpenAI
 
               class FileID < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::FileID,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The identifier of the file.
                 sig { returns(String) }
@@ -464,7 +488,12 @@ module OpenAI
 
               class Responses < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::Responses,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The type of run data source. Always `responses`.
                 sig { returns(Symbol) }
@@ -625,7 +654,12 @@ module OpenAI
 
               class Template < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # A list of chat messages forming the prompt or context. May include variable
                 # references to the "item" namespace, ie {{item.name}}.
@@ -702,7 +736,10 @@ module OpenAI
                   class ChatMessage < OpenAI::Internal::Type::BaseModel
                     OrHash =
                       T.type_alias do
-                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                        T.any(
+                          OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::ChatMessage,
+                          OpenAI::Internal::AnyHash
+                        )
                       end
 
                     # The content of the message.
@@ -734,7 +771,10 @@ module OpenAI
                   class EvalItem < OpenAI::Internal::Type::BaseModel
                     OrHash =
                       T.type_alias do
-                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                        T.any(
+                          OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem,
+                          OpenAI::Internal::AnyHash
+                        )
                       end
 
                     # Text inputs to the model - can contain template strings.
@@ -841,7 +881,10 @@ module OpenAI
                       class OutputText < OpenAI::Internal::Type::BaseModel
                         OrHash =
                           T.type_alias do
-                            T.any(T.self_type, OpenAI::Internal::AnyHash)
+                            T.any(
+                              OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::Content::OutputText,
+                              OpenAI::Internal::AnyHash
+                            )
                           end
 
                         # The text output from the model.
@@ -973,7 +1016,12 @@ module OpenAI
 
               class ItemReference < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::ItemReference,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # A reference to a variable in the "item" namespace. Ie, "item.name"
                 sig { returns(String) }
@@ -1016,7 +1064,12 @@ module OpenAI
 
             class SamplingParams < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::SamplingParams,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The maximum number of tokens in the generated output.
               sig { returns(T.nilable(Integer)) }
@@ -1094,7 +1147,12 @@ module OpenAI
 
         class PerModelUsage < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::Evals::RunCancelResponse::PerModelUsage,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The number of tokens retrieved from cache.
           sig { returns(Integer) }
@@ -1164,7 +1222,12 @@ module OpenAI
 
         class PerTestingCriteriaResult < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::Evals::RunCancelResponse::PerTestingCriteriaResult,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Number of tests failed for this criteria.
           sig { returns(Integer) }
@@ -1206,7 +1269,12 @@ module OpenAI
 
         class ResultCounts < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::Evals::RunCancelResponse::ResultCounts,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Number of output items that resulted in an error.
           sig { returns(Integer) }

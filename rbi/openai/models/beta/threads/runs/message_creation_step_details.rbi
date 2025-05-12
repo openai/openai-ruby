@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class MessageCreationStepDetails < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::MessageCreationStepDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             sig do
               returns(
@@ -57,7 +62,12 @@ module OpenAI
 
             class MessageCreation < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The ID of the message that was created by this run step.
               sig { returns(String) }

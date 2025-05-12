@@ -16,6 +16,10 @@ module OpenAI
 
       # @!method self.variants
       #   @return [Array(OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput)]
+
+      define_sorbet_constant!(:Variants) do
+        T.type_alias { T.any(OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput) }
+      end
     end
   end
 end

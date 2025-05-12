@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::RequiredActionFunctionToolCall,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The ID of the tool call. This ID must be referenced when you submit the tool
           # outputs in using the
@@ -74,7 +79,12 @@ module OpenAI
 
           class Function < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The arguments that the model expects you to pass to the function.
             sig { returns(String) }

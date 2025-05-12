@@ -25,6 +25,16 @@ module OpenAI
 
       # @!method self.variants
       #   @return [Array(String, Symbol, OpenAI::ChatModel, Symbol, OpenAI::ResponsesModel::ResponsesOnlyModel)]
+
+      define_sorbet_constant!(:Variants) do
+        T.type_alias do
+          T.any(
+            String,
+            OpenAI::ChatModel::TaggedSymbol,
+            OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
+          )
+        end
+      end
     end
   end
 end

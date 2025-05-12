@@ -6,7 +6,9 @@ module OpenAI
       module Threads
         class ImageFile < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(OpenAI::Beta::Threads::ImageFile, OpenAI::Internal::AnyHash)
+            end
 
           # The [File](https://platform.openai.com/docs/api-reference/files) ID of the image
           # in the message content. Set `purpose="vision"` when uploading the File if you

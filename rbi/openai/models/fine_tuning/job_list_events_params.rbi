@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::FineTuning::JobListEventsParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Identifier for the last event from the previous pagination request.
         sig { returns(T.nilable(String)) }

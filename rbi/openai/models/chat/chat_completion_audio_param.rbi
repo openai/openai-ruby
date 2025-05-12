@@ -6,7 +6,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionAudioParam,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.

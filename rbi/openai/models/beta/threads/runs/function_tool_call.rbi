@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class FunctionToolCall < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::FunctionToolCall,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the tool call object.
             sig { returns(String) }
@@ -66,7 +71,12 @@ module OpenAI
 
             class Function < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::FunctionToolCall::Function,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The arguments passed to the function.
               sig { returns(String) }

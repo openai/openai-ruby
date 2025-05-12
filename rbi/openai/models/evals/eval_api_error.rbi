@@ -6,7 +6,10 @@ module OpenAI
 
     module Evals
       class EvalAPIError < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Evals::EvalAPIError, OpenAI::Internal::AnyHash)
+          end
 
         # The error code.
         sig { returns(String) }

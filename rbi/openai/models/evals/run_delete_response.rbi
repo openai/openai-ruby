@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Evals
       class RunDeleteResponse < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Models::Evals::RunDeleteResponse,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         sig { returns(T.nilable(T::Boolean)) }
         attr_reader :deleted

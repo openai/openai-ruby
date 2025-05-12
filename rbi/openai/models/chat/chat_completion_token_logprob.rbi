@@ -6,7 +6,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionTokenLogprob,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The token.
         sig { returns(String) }
@@ -81,7 +87,12 @@ module OpenAI
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The token.
           sig { returns(String) }

@@ -6,7 +6,10 @@ module OpenAI
 
     module Graders
       class MultiGrader < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Graders::MultiGrader, OpenAI::Internal::AnyHash)
+          end
 
         # A formula to calculate the output based on grader results.
         sig { returns(String) }

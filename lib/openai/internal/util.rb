@@ -801,6 +801,62 @@ module OpenAI
           end
         end
       end
+
+      # @api private
+      module SorbetRuntimeSupport
+        class MissingSorbetRuntimeError < ::RuntimeError
+        end
+
+        # @api private
+        #
+        # @return [Hash{Symbol=>Object}]
+        private def sorbet_runtime_constants = @sorbet_runtime_constants ||= {}
+
+        # @api private
+        #
+        # @param name [Symbol]
+        def const_missing(name)
+          super unless sorbet_runtime_constants.key?(name)
+
+          unless Object.const_defined?(:T)
+            message = "Trying to access a Sorbet constant #{name.inspect} without `sorbet-runtime`."
+            raise MissingSorbetRuntimeError.new(message)
+          end
+
+          sorbet_runtime_constants.fetch(name).call
+        end
+
+        # @api private
+        #
+        # @param name [Symbol]
+        # @param blk [Proc]
+        def define_sorbet_constant!(name, &blk) = sorbet_runtime_constants.store(name, blk)
+      end
+
+      extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
+      define_sorbet_constant!(:ParsedUri) do
+        T.type_alias do
+          {
+            scheme: T.nilable(String),
+            host: T.nilable(String),
+            port: T.nilable(Integer),
+            path: T.nilable(String),
+            query: T::Hash[String, T::Array[String]]
+          }
+        end
+      end
+
+      define_sorbet_constant!(:ServerSentEvent) do
+        T.type_alias do
+          {
+            event: T.nilable(String),
+            data: T.nilable(String),
+            id: T.nilable(String),
+            retry: T.nilable(Integer)
+          }
+        end
+      end
     end
   end
 end

@@ -7,7 +7,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionContentPartInputAudio < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionContentPartInputAudio,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         sig do
           returns(OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio)
@@ -55,7 +61,12 @@ module OpenAI
 
         class InputAudio < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::ChatCompletionContentPartInputAudio::InputAudio,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Base64 encoded audio data.
           sig { returns(String) }

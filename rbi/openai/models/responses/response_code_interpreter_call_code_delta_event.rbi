@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterCallCodeDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The partial code snippet added by the code interpreter.
         sig { returns(String) }

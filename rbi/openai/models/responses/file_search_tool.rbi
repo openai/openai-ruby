@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Responses
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Responses::FileSearchTool, OpenAI::Internal::AnyHash)
+          end
 
         # The type of the file search tool. Always `file_search`.
         sig { returns(Symbol) }
@@ -115,7 +118,12 @@ module OpenAI
 
         class RankingOptions < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::FileSearchTool::RankingOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The ranker to use for the file search.
           sig do

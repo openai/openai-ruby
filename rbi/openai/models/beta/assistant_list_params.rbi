@@ -7,7 +7,10 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Beta::AssistantListParams, OpenAI::Internal::AnyHash)
+          end
 
         # A cursor for use in pagination. `after` is an object ID that defines your place
         # in the list. For instance, if you make a list request and receive 100 objects,

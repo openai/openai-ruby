@@ -6,7 +6,13 @@ module OpenAI
 
     module FineTuning
       class FineTuningJobWandbIntegration < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::FineTuning::FineTuningJobWandbIntegration,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The name of the project that the new run will be created under.
         sig { returns(String) }

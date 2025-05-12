@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class FileCitationAnnotation < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::FileCitationAnnotation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig { returns(Integer) }
           attr_accessor :end_index
@@ -76,7 +81,12 @@ module OpenAI
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::FileCitationAnnotation::FileCitation,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the specific File the citation is from.
             sig { returns(String) }

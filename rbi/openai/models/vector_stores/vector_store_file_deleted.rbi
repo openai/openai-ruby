@@ -6,7 +6,13 @@ module OpenAI
 
     module VectorStores
       class VectorStoreFileDeleted < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::VectorStores::VectorStoreFileDeleted,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         sig { returns(String) }
         attr_accessor :id

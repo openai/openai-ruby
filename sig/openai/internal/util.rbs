@@ -1,6 +1,8 @@
 module OpenAI
   module Internal
     module Util
+      extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
       def self?.monotonic_secs: -> Float
 
       def self?.arch: -> String
@@ -155,6 +157,17 @@ module OpenAI
       def self?.decode_sse: (
         Enumerable[String] lines
       ) -> Enumerable[OpenAI::Internal::Util::server_sent_event]
+
+      module SorbetRuntimeSupport
+        class MissingSorbetRuntimeError < ::RuntimeError
+        end
+
+        private def sorbet_runtime_constants: -> ::Hash[Symbol, top]
+
+        def const_missing: (Symbol name) -> void
+
+        def define_sorbet_constant!: (Symbol name) { -> top } -> void
+      end
     end
   end
 end

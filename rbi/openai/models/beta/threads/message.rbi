@@ -6,7 +6,9 @@ module OpenAI
       module Threads
         class Message < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(OpenAI::Beta::Threads::Message, OpenAI::Internal::AnyHash)
+            end
 
           # The identifier, which can be referenced in API endpoints.
           sig { returns(String) }
@@ -218,7 +220,12 @@ module OpenAI
 
           class Attachment < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Message::Attachment,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the file to attach to the message.
             sig { returns(T.nilable(String)) }
@@ -305,7 +312,12 @@ module OpenAI
 
               class AssistantToolsFileSearchTypeOnly < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The type of tool being defined: `file_search`
                 sig { returns(Symbol) }
@@ -337,7 +349,12 @@ module OpenAI
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Message::IncompleteDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The reason the message is incomplete.
             sig do

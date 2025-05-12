@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class ModelDeleted < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::ModelDeleted, OpenAI::Internal::AnyHash) }
 
       sig { returns(String) }
       attr_accessor :id

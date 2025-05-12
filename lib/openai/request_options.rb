@@ -69,5 +69,9 @@ module OpenAI
     #   Returns a new instance of RequestOptions.
     #
     #   @param values [Hash{Symbol=>Object}]
+
+    define_sorbet_constant!(:OrHash) do
+      T.type_alias { T.any(OpenAI::RequestOptions, OpenAI::Internal::AnyHash) }
+    end
   end
 end

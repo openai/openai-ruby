@@ -36,6 +36,15 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(Symbol, OpenAI::Beta::AssistantToolChoiceOption::Auto, OpenAI::Beta::AssistantToolChoice)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
+              OpenAI::Beta::AssistantToolChoice
+            )
+          end
+        end
       end
     end
   end

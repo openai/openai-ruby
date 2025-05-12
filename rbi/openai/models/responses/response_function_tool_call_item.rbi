@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionToolCallItem < OpenAI::Models::Responses::ResponseFunctionToolCall
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseFunctionToolCallItem,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The unique ID of the function tool call.
         sig { returns(String) }

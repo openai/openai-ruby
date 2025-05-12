@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputFile < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputFile,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The type of the input item. Always `input_file`.
         sig { returns(Symbol) }

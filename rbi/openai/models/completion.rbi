@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class Completion < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::Completion, OpenAI::Internal::AnyHash) }
 
       # A unique identifier for the completion.
       sig { returns(String) }

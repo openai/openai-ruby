@@ -137,6 +137,10 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(StringIO, Array<StringIO>)]
 
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(StringIO, T::Array[StringIO]) }
+        end
+
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::FileInput]
       end
@@ -172,6 +176,10 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(String, Symbol, OpenAI::ImageModel)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::ImageModel::TaggedSymbol) }
+        end
       end
 
       # The quality of the image that will be generated. `high`, `medium` and `low` are

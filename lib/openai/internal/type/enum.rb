@@ -42,6 +42,7 @@ module OpenAI
       #   end
       module Enum
         include OpenAI::Internal::Type::Converter
+        include OpenAI::Internal::Util::SorbetRuntimeSupport
 
         # All of the valid Symbol values for this enum.
         #

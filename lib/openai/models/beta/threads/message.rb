@@ -184,6 +184,15 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::CodeInterpreterTool,
+                    OpenAI::Beta::Threads::Message::Attachment::Tool::AssistantToolsFileSearchTypeOnly
+                  )
+                end
+              end
             end
           end
 

@@ -730,6 +730,37 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Beta::AssistantStreamEvent::ThreadCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued, OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction, OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete, OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed, OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling, OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled, OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled, OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired, OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated, OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress, OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta, OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted, OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete, OpenAI::Beta::AssistantStreamEvent::ErrorEvent)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::AssistantStreamEvent::ThreadCreated,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
+              OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired,
+              OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated,
+              OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress,
+              OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta,
+              OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted,
+              OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
+              OpenAI::Beta::AssistantStreamEvent::ErrorEvent
+            )
+          end
+        end
       end
     end
   end

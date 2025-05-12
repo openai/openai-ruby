@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::FineTuning::JobCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The name of the model to fine-tune. You can select one of the
         # [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
@@ -279,7 +285,12 @@ module OpenAI
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::JobCreateParams::Hyperparameters,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
@@ -396,7 +407,12 @@ module OpenAI
 
         class Integration < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::JobCreateParams::Integration,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The type of integration to enable. Currently, only "wandb" (Weights and Biases)
           # is supported.
@@ -452,7 +468,12 @@ module OpenAI
 
           class Wandb < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::FineTuning::JobCreateParams::Integration::Wandb,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The name of the project that the new run will be created under.
             sig { returns(String) }
@@ -524,7 +545,12 @@ module OpenAI
 
         class Method < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::FineTuning::JobCreateParams::Method,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The type of method. Is either `supervised`, `dpo`, or `reinforcement`.
           sig do

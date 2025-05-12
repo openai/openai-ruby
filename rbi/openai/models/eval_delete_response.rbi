@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class EvalDeleteResponse < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::Models::EvalDeleteResponse, OpenAI::Internal::AnyHash)
+        end
 
       sig { returns(T::Boolean) }
       attr_accessor :deleted

@@ -9,7 +9,12 @@ module OpenAI
           include OpenAI::Internal::Type::RequestParameters
 
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::RunUpdateParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig { returns(String) }
           attr_accessor :thread_id

@@ -9,7 +9,12 @@ module OpenAI
           include OpenAI::Internal::Type::RequestParameters
 
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::RunSubmitToolOutputsParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig { returns(String) }
           attr_accessor :thread_id
@@ -59,7 +64,12 @@ module OpenAI
 
           class ToolOutput < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::RunSubmitToolOutputsParams::ToolOutput,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The output of the tool call to be submitted to continue the run.
             sig { returns(T.nilable(String)) }

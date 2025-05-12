@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class Embedding < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::Embedding, OpenAI::Internal::AnyHash) }
 
       # The embedding vector, which is a list of floats. The length of vector depends on
       # the model as listed in the

@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class ModerationTextInput < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::ModerationTextInput, OpenAI::Internal::AnyHash)
+        end
 
       # A string of text to classify.
       sig { returns(String) }

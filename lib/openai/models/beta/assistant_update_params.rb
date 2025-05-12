@@ -232,6 +232,10 @@ module OpenAI
           # @!method self.variants
           #   @return [Array(String, Symbol)]
 
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::Beta::AssistantUpdateParams::Model::TaggedSymbol) }
+          end
+
           # @!group
 
           GPT_4_1 = :"gpt-4.1"

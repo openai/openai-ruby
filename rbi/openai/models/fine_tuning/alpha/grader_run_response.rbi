@@ -6,7 +6,12 @@ module OpenAI
       module Alpha
         class GraderRunResponse < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::FineTuning::Alpha::GraderRunResponse,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig do
             returns(
@@ -65,7 +70,12 @@ module OpenAI
 
           class Metadata < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             sig do
               returns(
@@ -142,7 +152,12 @@ module OpenAI
 
             class Errors < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::FineTuning::Alpha::GraderRunResponse::Metadata::Errors,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               sig { returns(T::Boolean) }
               attr_accessor :formula_parse_error

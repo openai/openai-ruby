@@ -58,7 +58,12 @@ module OpenAI
 
         class ThreadCreated < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadCreated,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a thread that contains
           # [messages](https://platform.openai.com/docs/api-reference/messages).
@@ -109,7 +114,12 @@ module OpenAI
 
         class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -149,7 +159,12 @@ module OpenAI
 
         class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -189,7 +204,12 @@ module OpenAI
 
         class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -229,7 +249,12 @@ module OpenAI
 
         class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -269,7 +294,12 @@ module OpenAI
 
         class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -309,7 +339,12 @@ module OpenAI
 
         class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -349,7 +384,12 @@ module OpenAI
 
         class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -389,7 +429,12 @@ module OpenAI
 
         class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -429,7 +474,12 @@ module OpenAI
 
         class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -469,7 +519,12 @@ module OpenAI
 
         class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents an execution run on a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -509,7 +564,12 @@ module OpenAI
 
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -550,7 +610,12 @@ module OpenAI
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -591,7 +656,12 @@ module OpenAI
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a run step delta i.e. any changed fields on a run step during
           # streaming.
@@ -639,7 +709,12 @@ module OpenAI
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -680,7 +755,12 @@ module OpenAI
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -721,7 +801,12 @@ module OpenAI
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -762,7 +847,12 @@ module OpenAI
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -803,7 +893,12 @@ module OpenAI
 
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -844,7 +939,12 @@ module OpenAI
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -885,7 +985,12 @@ module OpenAI
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message delta i.e. any changed fields on a message during
           # streaming.
@@ -928,7 +1033,12 @@ module OpenAI
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -969,7 +1079,12 @@ module OpenAI
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -1010,7 +1125,12 @@ module OpenAI
 
         class ErrorEvent < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantStreamEvent::ErrorEvent,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig { returns(OpenAI::ErrorObject) }
           attr_reader :data

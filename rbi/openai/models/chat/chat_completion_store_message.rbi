@@ -6,7 +6,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionStoreMessage < OpenAI::Models::Chat::ChatCompletionMessage
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionStoreMessage,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The identifier of the chat message.
         sig { returns(String) }

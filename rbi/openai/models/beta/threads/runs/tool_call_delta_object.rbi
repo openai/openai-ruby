@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class ToolCallDeltaObject < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::ToolCallDeltaObject,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Always `tool_calls`.
             sig { returns(Symbol) }

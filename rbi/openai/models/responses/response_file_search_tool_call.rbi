@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseFileSearchToolCall < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseFileSearchToolCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The unique ID of the file search tool call.
         sig { returns(String) }
@@ -143,7 +149,12 @@ module OpenAI
 
         class Result < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseFileSearchToolCall::Result,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
           # for storing additional information about the object in a structured format, and

@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class CodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the tool call.
             sig { returns(String) }
@@ -69,7 +74,12 @@ module OpenAI
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The input to the Code Interpreter tool call.
               sig { returns(String) }
@@ -145,7 +155,10 @@ module OpenAI
                 class Logs < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   # The text output from the Code Interpreter tool call.
@@ -176,7 +189,10 @@ module OpenAI
                 class Image < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   sig do
@@ -227,7 +243,10 @@ module OpenAI
                   class Image < OpenAI::Internal::Type::BaseModel
                     OrHash =
                       T.type_alias do
-                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                        T.any(
+                          OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
+                          OpenAI::Internal::AnyHash
+                        )
                       end
 
                     # The [file](https://platform.openai.com/docs/api-reference/files) ID of the

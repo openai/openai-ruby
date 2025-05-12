@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseCompletedEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseCompletedEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Properties of the completed response.
         sig { returns(OpenAI::Responses::Response) }

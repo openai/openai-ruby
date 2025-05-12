@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class BatchError < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::BatchError, OpenAI::Internal::AnyHash) }
 
       # An error code identifying the error type.
       sig { returns(T.nilable(String)) }

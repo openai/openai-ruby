@@ -6,7 +6,12 @@ module OpenAI
       module Runs
         class OutputItemRetrieveResponse < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Unique identifier for the evaluation run output item.
           sig { returns(String) }
@@ -122,7 +127,12 @@ module OpenAI
 
           class Sample < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # An object representing an error response from the Eval API.
             sig { returns(OpenAI::Evals::EvalAPIError) }
@@ -265,7 +275,12 @@ module OpenAI
 
             class Input < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Input,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The content of the message.
               sig { returns(String) }
@@ -294,7 +309,12 @@ module OpenAI
 
             class Output < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Output,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The content of the message.
               sig { returns(T.nilable(String)) }
@@ -328,7 +348,12 @@ module OpenAI
 
             class Usage < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::Evals::Runs::OutputItemRetrieveResponse::Sample::Usage,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The number of tokens retrieved from cache.
               sig { returns(Integer) }

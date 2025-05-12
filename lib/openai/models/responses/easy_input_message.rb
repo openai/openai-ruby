@@ -56,6 +56,21 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile>)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                String,
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::ResponseInputText,
+                    OpenAI::Responses::ResponseInputImage,
+                    OpenAI::Responses::ResponseInputFile
+                  )
+                ]
+              )
+            end
+          end
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or

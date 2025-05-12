@@ -22,6 +22,16 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Beta::Threads::ImageFileContentBlock, OpenAI::Beta::Threads::ImageURLContentBlock, OpenAI::Beta::Threads::TextContentBlockParam)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::ImageFileContentBlock,
+                OpenAI::Beta::Threads::ImageURLContentBlock,
+                OpenAI::Beta::Threads::TextContentBlockParam
+              )
+            end
+          end
         end
       end
     end

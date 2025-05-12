@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::CompletionCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # A list of messages comprising the conversation so far. Depending on the
         # [model](https://platform.openai.com/docs/models) you use, different message
@@ -837,7 +843,12 @@ module OpenAI
 
         class Function < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::CompletionCreateParams::Function,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The name of the function to be called. Must be a-z, A-Z, 0-9, or contain
           # underscores and dashes, with a maximum length of 64.
@@ -1046,7 +1057,12 @@ module OpenAI
 
         class WebSearchOptions < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::CompletionCreateParams::WebSearchOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # High level guidance for the amount of context window space to use for the
           # search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -1167,7 +1183,12 @@ module OpenAI
 
           class UserLocation < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Approximate location parameters for the search.
             sig do
@@ -1219,7 +1240,12 @@ module OpenAI
 
             class Approximate < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Chat::CompletionCreateParams::WebSearchOptions::UserLocation::Approximate,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # Free text input for the city of the user, e.g. `San Francisco`.
               sig { returns(T.nilable(String)) }

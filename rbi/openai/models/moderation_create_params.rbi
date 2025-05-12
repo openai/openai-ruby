@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::ModerationCreateParams, OpenAI::Internal::AnyHash)
+        end
 
       # Input (or inputs) to classify. Can be a single string, an array of strings, or
       # an array of multi-modal input objects similar to other models.

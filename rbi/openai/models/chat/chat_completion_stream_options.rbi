@@ -6,7 +6,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionStreamOptions < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionStreamOptions,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # If set, an additional chunk will be streamed before the `data: [DONE]` message.
         # The `usage` field on this chunk shows the token usage statistics for the entire
