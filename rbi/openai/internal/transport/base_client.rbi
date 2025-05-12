@@ -122,6 +122,27 @@ module OpenAI
           end
         end
 
+        sig { returns(URI::Generic) }
+        attr_reader :base_url
+
+        sig { returns(Float) }
+        attr_reader :timeout
+
+        sig { returns(Integer) }
+        attr_reader :max_retries
+
+        sig { returns(Float) }
+        attr_reader :initial_retry_delay
+
+        sig { returns(Float) }
+        attr_reader :max_retry_delay
+
+        sig { returns(T::Hash[String, String]) }
+        attr_reader :headers
+
+        sig { returns(T.nilable(String)) }
+        attr_reader :idempotency_header
+
         # @api private
         sig { returns(OpenAI::Internal::Transport::PooledNetRequester) }
         attr_reader :requester
