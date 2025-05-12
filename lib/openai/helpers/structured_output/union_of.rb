@@ -44,7 +44,7 @@ module OpenAI
         # @param variants [Array<generic<Member>>]
         def initialize(*variants)
           case variants
-          in [Symbol => d, Hash => vs ]
+          in [Symbol => d, Hash => vs]
             discriminator(d)
             vs.each { variant(_1, _2) }
           else
