@@ -8,7 +8,7 @@ AllCops:
     - "bin/*"
   NewCops: enable
   SuggestExtensions: false
-  TargetRubyVersion: 3.1.0
+  TargetRubyVersion: 3.2.0
 
 # Whether MFA is required or not should be left to the token configuration.
 Gemspec/RequireMFA:
@@ -112,6 +112,8 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   AllowedPatterns:
     - assert_pattern
+    - type_alias
+    - define_sorbet_constant!
   Exclude:
     - "**/*.rbi"
 
@@ -181,6 +183,9 @@ Style/BisectedAttrAccessor:
 Style/ClassAndModuleChildren:
   Exclude:
     - "test/**/*"
+
+Style/CommentAnnotation:
+  Enabled: false
 
 # We should go back and add these docs, but ignore for now.
 Style/Documentation:
