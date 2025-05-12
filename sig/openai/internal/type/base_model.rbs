@@ -68,17 +68,20 @@ module OpenAI
           state: OpenAI::Internal::Type::Converter::dump_state
         ) -> (::Hash[top, top] | top)
 
+        def self.recursively_to_h: (
+          OpenAI::Internal::Type::BaseModel model,
+          convert: bool
+        ) -> ::Hash[Symbol, top]
+
         def []: (Symbol key) -> top?
 
         def to_h: -> ::Hash[Symbol, top]
 
         alias to_hash to_h
 
-        def deconstruct_keys: (::Array[Symbol]? keys) -> ::Hash[Symbol, top]
+        def deep_to_h: -> ::Hash[Symbol, top]
 
-        def self.walk: (
-          OpenAI::Internal::Type::BaseModel model
-        ) -> ::Hash[Symbol, top]
+        def deconstruct_keys: (::Array[Symbol]? keys) -> ::Hash[Symbol, top]
 
         def to_json: (*top a) -> String
 
