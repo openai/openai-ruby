@@ -9,7 +9,7 @@ module OpenAI
           | ^-> OpenAI::Internal::Type::Converter::input
           | OpenAI::Internal::Type::Converter::input type_info,
           ?::Hash[Symbol, top] spec
-        ) -> self
+        ) -> instance
 
         def ===: (top other) -> bool
 
