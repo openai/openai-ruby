@@ -6,7 +6,13 @@ module OpenAI
 
     module Graders
       class TextSimilarityGrader < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Graders::TextSimilarityGrader,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The evaluation metric to use. One of `fuzzy_match`, `bleu`, `gleu`, `meteor`,
         # `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.

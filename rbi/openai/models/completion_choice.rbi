@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class CompletionChoice < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::CompletionChoice, OpenAI::Internal::AnyHash)
+        end
 
       # The reason the model stopped generating tokens. This will be `stop` if the model
       # hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -92,7 +95,10 @@ module OpenAI
       end
 
       class Logprobs < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::CompletionChoice::Logprobs, OpenAI::Internal::AnyHash)
+          end
 
         sig { returns(T.nilable(T::Array[Integer])) }
         attr_reader :text_offset

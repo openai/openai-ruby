@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Beta
       class CodeInterpreterTool < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Beta::CodeInterpreterTool, OpenAI::Internal::AnyHash)
+          end
 
         # The type of tool being defined: `code_interpreter`
         sig { returns(Symbol) }

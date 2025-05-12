@@ -118,6 +118,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol, OpenAI::AudioModel)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::AudioModel::TaggedSymbol) }
+          end
         end
 
         module TimestampGranularity

@@ -9,7 +9,12 @@ module OpenAI
         module Runs
           class RunStep < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::RunStep,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The identifier of the run step, which can be referenced in API endpoints.
             sig { returns(String) }
@@ -239,7 +244,12 @@ module OpenAI
 
             class LastError < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::RunStep::LastError,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # One of `server_error` or `rate_limit_exceeded`.
               sig do
@@ -423,7 +433,12 @@ module OpenAI
 
             class Usage < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::RunStep::Usage,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # Number of completion tokens used over the course of the run step.
               sig { returns(Integer) }

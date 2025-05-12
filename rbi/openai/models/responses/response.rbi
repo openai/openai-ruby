@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Responses
       class Response < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Responses::Response, OpenAI::Internal::AnyHash)
+          end
 
         # Unique identifier for this Response.
         sig { returns(String) }
@@ -515,7 +518,12 @@ module OpenAI
 
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::Response::IncompleteDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The reason why the response is incomplete.
           sig do

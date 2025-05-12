@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::AssistantUpdateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The description of the assistant. The maximum length is 512 characters.
         sig { returns(T.nilable(String)) }
@@ -529,7 +535,12 @@ module OpenAI
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantUpdateParams::ToolResources,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig do
             returns(
@@ -595,7 +606,12 @@ module OpenAI
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Overrides the list of
             # [file](https://platform.openai.com/docs/api-reference/files) IDs made available
@@ -624,7 +640,12 @@ module OpenAI
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::AssistantUpdateParams::ToolResources::FileSearch,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Overrides the
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)

@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class CodeInterpreterOutputImage < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The index of the output in the outputs array.
             sig { returns(Integer) }
@@ -66,7 +71,12 @@ module OpenAI
 
             class Image < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::Image,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The [file](https://platform.openai.com/docs/api-reference/files) ID of the
               # image.

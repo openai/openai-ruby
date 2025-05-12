@@ -6,7 +6,10 @@ module OpenAI
 
     module Graders
       class LabelModelGrader < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Graders::LabelModelGrader, OpenAI::Internal::AnyHash)
+          end
 
         sig { returns(T::Array[OpenAI::Graders::LabelModelGrader::Input]) }
         attr_accessor :input
@@ -75,7 +78,12 @@ module OpenAI
 
         class Input < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Graders::LabelModelGrader::Input,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Text inputs to the model - can contain template strings.
           sig do
@@ -173,7 +181,12 @@ module OpenAI
 
             class OutputText < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Graders::LabelModelGrader::Input::Content::OutputText,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The text output from the model.
               sig { returns(String) }

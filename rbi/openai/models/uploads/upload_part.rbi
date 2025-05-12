@@ -6,7 +6,10 @@ module OpenAI
 
     module Uploads
       class UploadPart < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Uploads::UploadPart, OpenAI::Internal::AnyHash)
+          end
 
         # The upload Part unique identifier, which can be referenced in API endpoints.
         sig { returns(String) }

@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class Model < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash = T.type_alias { T.any(OpenAI::Model, OpenAI::Internal::AnyHash) }
 
       # The model identifier, which can be referenced in the API endpoints.
       sig { returns(String) }

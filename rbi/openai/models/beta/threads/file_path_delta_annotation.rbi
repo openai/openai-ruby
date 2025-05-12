@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class FilePathDeltaAnnotation < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::FilePathDeltaAnnotation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
@@ -96,7 +101,12 @@ module OpenAI
 
           class FilePath < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the file that was generated.
             sig { returns(T.nilable(String)) }

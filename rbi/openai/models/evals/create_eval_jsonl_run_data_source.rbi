@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Evals
       class CreateEvalJSONLRunDataSource < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Evals::CreateEvalJSONLRunDataSource,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         sig do
           returns(
@@ -67,7 +73,12 @@ module OpenAI
 
           class FileContent < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The content of the jsonl file.
             sig do
@@ -116,7 +127,12 @@ module OpenAI
 
             class Content < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               sig { returns(T::Hash[Symbol, T.anything]) }
               attr_accessor :item
@@ -151,7 +167,12 @@ module OpenAI
 
           class FileID < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The identifier of the file.
             sig { returns(String) }

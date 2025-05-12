@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class ImageFileDelta < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::ImageFileDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Specifies the detail level of the image if specified by the user. `low` uses
           # fewer tokens, you can opt in to high resolution using `high`.

@@ -2,6 +2,8 @@ module OpenAI
   module Internal
     module Transport
       class PooledNetRequester
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
         type request =
           {
             method: Symbol,

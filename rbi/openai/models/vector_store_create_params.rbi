@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::VectorStoreCreateParams, OpenAI::Internal::AnyHash)
+        end
 
       # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
       # strategy. Only applicable if `file_ids` is non-empty.
@@ -126,7 +129,13 @@ module OpenAI
       end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::VectorStoreCreateParams::ExpiresAfter,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         # `last_active_at`.

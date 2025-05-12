@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Responses
       class ResponseUsage < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Responses::ResponseUsage, OpenAI::Internal::AnyHash)
+          end
 
         # The number of input tokens.
         sig { returns(Integer) }
@@ -87,7 +90,12 @@ module OpenAI
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseUsage::InputTokensDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The number of tokens that were retrieved from the cache.
           # [More on prompt caching](https://platform.openai.com/docs/guides/prompt-caching).
@@ -110,7 +118,12 @@ module OpenAI
 
         class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseUsage::OutputTokensDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The number of reasoning tokens.
           sig { returns(Integer) }

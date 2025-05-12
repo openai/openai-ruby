@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Beta
       class ThreadStreamEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Beta::ThreadStreamEvent, OpenAI::Internal::AnyHash)
+          end
 
         # Represents a thread that contains
         # [messages](https://platform.openai.com/docs/api-reference/messages).

@@ -6,7 +6,10 @@ module OpenAI
 
     module Graders
       class PythonGrader < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Graders::PythonGrader, OpenAI::Internal::AnyHash)
+          end
 
         # The name of the grader.
         sig { returns(String) }

@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class CompletionUsage < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::CompletionUsage, OpenAI::Internal::AnyHash)
+        end
 
       # Number of tokens in the generated completion.
       sig { returns(Integer) }
@@ -85,7 +88,13 @@ module OpenAI
       end
 
       class CompletionTokensDetails < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::CompletionUsage::CompletionTokensDetails,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # When using Predicted Outputs, the number of tokens in the prediction that
         # appeared in the completion.
@@ -159,7 +168,13 @@ module OpenAI
       end
 
       class PromptTokensDetails < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::CompletionUsage::PromptTokensDetails,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Audio input tokens present in the prompt.
         sig { returns(T.nilable(Integer)) }

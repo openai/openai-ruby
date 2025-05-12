@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Responses
       class WebSearchTool < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Responses::WebSearchTool, OpenAI::Internal::AnyHash)
+          end
 
         # The type of the web search tool. One of `web_search_preview` or
         # `web_search_preview_2025_03_11`.
@@ -153,7 +156,12 @@ module OpenAI
 
         class UserLocation < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::WebSearchTool::UserLocation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The type of location approximation. Always `approximate`.
           sig { returns(Symbol) }

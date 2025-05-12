@@ -16,6 +16,12 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool)
+          end
+        end
       end
     end
   end

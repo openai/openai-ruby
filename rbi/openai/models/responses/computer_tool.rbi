@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Responses
       class ComputerTool < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Responses::ComputerTool, OpenAI::Internal::AnyHash)
+          end
 
         # The height of the computer display.
         sig { returns(Integer) }

@@ -382,6 +382,16 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::FileContent, OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::FileID, OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::Responses)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::FileContent,
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::FileID,
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::Source::Responses
+                  )
+                end
+              end
             end
 
             # @see OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions#input_messages
@@ -542,6 +552,16 @@ module OpenAI
 
                       # @!method self.variants
                       #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::Content::OutputText)]
+
+                      define_sorbet_constant!(:Variants) do
+                        T.type_alias do
+                          T.any(
+                            String,
+                            OpenAI::Responses::ResponseInputText,
+                            OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem::Content::OutputText
+                          )
+                        end
+                      end
                     end
 
                     # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -575,6 +595,15 @@ module OpenAI
 
                   # @!method self.variants
                   #   @return [Array(OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem)]
+
+                  define_sorbet_constant!(:Variants) do
+                    T.type_alias do
+                      T.any(
+                        OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::ChatMessage,
+                        OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template::Template::EvalItem
+                      )
+                    end
+                  end
                 end
               end
 
@@ -599,6 +628,15 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template, OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::ItemReference)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias do
+                  T.any(
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::Template,
+                    OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions::InputMessages::ItemReference
+                  )
+                end
+              end
             end
 
             # @see OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions#sampling_params
@@ -640,6 +678,16 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Evals::CreateEvalJSONLRunDataSource,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource,
+                OpenAI::Models::Evals::RunCancelResponse::DataSource::Completions
+              )
+            end
+          end
         end
 
         class PerModelUsage < OpenAI::Internal::Type::BaseModel

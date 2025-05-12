@@ -3,7 +3,7 @@
 module OpenAI
   module Models
     class Batch < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash = T.type_alias { T.any(OpenAI::Batch, OpenAI::Internal::AnyHash) }
 
       sig { returns(String) }
       attr_accessor :id
@@ -246,7 +246,10 @@ module OpenAI
       end
 
       class Errors < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Batch::Errors, OpenAI::Internal::AnyHash)
+          end
 
         sig { returns(T.nilable(T::Array[OpenAI::BatchError])) }
         attr_reader :data

@@ -5,6 +5,8 @@ module OpenAI
     module Transport
       # @api private
       class PooledNetRequester
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
         # from the golang stdlib
         # https://github.com/golang/go/blob/c8eced8580028328fde7c03cbfcb720ce15b2358/src/net/http/transport.go#L49
         KEEP_ALIVE_TIMEOUT = 30
@@ -186,6 +188,18 @@ module OpenAI
           @mutex = Mutex.new
           @size = size
           @pools = {}
+        end
+
+        define_sorbet_constant!(:Request) do
+          T.type_alias do
+            {
+              method: Symbol,
+              url: URI::Generic,
+              headers: T::Hash[String, String],
+              body: T.anything,
+              deadline: Float
+            }
+          end
         end
       end
     end

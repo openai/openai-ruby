@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionTextDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Audio::TranscriptionTextDoneEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The text that was transcribed.
         sig { returns(String) }
@@ -79,7 +85,12 @@ module OpenAI
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Audio::TranscriptionTextDoneEvent::Logprob,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The token that was used to generate the log probability.
           sig { returns(T.nilable(String)) }

@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseTextDeltaEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The index of the content part that the text delta was added to.
         sig { returns(Integer) }

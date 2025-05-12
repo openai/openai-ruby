@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class VectorStore < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::VectorStore, OpenAI::Internal::AnyHash) }
 
       # The identifier, which can be referenced in API endpoints.
       sig { returns(String) }
@@ -133,7 +134,10 @@ module OpenAI
       end
 
       class FileCounts < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::VectorStore::FileCounts, OpenAI::Internal::AnyHash)
+          end
 
         # The number of files that were cancelled.
         sig { returns(Integer) }
@@ -216,7 +220,10 @@ module OpenAI
       end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::VectorStore::ExpiresAfter, OpenAI::Internal::AnyHash)
+          end
 
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         # `last_active_at`.

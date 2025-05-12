@@ -6,7 +6,10 @@ module OpenAI
 
     module Chat
       class ChatCompletion < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Chat::ChatCompletion, OpenAI::Internal::AnyHash)
+          end
 
         # A unique identifier for the chat completion.
         sig { returns(String) }
@@ -147,7 +150,12 @@ module OpenAI
 
         class Choice < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::ChatCompletion::Choice,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The reason the model stopped generating tokens. This will be `stop` if the model
           # hit a natural stop point or a provided stop sequence, `length` if the maximum
@@ -292,7 +300,12 @@ module OpenAI
 
           class Logprobs < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::ChatCompletion::Choice::Logprobs,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # A list of message content tokens with log probability information.
             sig do

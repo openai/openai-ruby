@@ -275,6 +275,29 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ItemReference>)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                String,
+                T::Array[
+                  T.any(
+                    OpenAI::Responses::EasyInputMessage,
+                    OpenAI::Responses::ResponseInputItem::Message,
+                    OpenAI::Responses::ResponseOutputMessage,
+                    OpenAI::Responses::ResponseFileSearchToolCall,
+                    OpenAI::Responses::ResponseComputerToolCall,
+                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
+                    OpenAI::Responses::ResponseFunctionWebSearch,
+                    OpenAI::Responses::ResponseFunctionToolCall,
+                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
+                    OpenAI::Responses::ResponseReasoningItem,
+                    OpenAI::Responses::ResponseInputItem::ItemReference
+                  )
+                ]
+              )
+            end
+          end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -330,6 +353,16 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, OpenAI::Responses::ToolChoiceOptions, OpenAI::Responses::ToolChoiceTypes, OpenAI::Responses::ToolChoiceFunction)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
+                OpenAI::Responses::ToolChoiceTypes,
+                OpenAI::Responses::ToolChoiceFunction
+              )
+            end
+          end
         end
 
         # The truncation strategy to use for the model response.

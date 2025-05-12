@@ -2,6 +2,8 @@ module OpenAI
   module Internal
     module Type
       module Converter
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
         type input = OpenAI::Internal::Type::Converter | Class
 
         type coerce_state =

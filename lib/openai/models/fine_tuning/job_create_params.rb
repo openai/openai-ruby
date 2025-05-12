@@ -148,6 +148,10 @@ module OpenAI
           # @!method self.variants
           #   @return [Array(String, Symbol)]
 
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::FineTuning::JobCreateParams::Model::TaggedSymbol) }
+          end
+
           # @!group
 
           BABBAGE_002 = :"babbage-002"
@@ -208,6 +212,10 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(Symbol, :auto, Integer)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(Symbol, Integer) }
+            end
           end
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -223,6 +231,10 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(Symbol, :auto, Float)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(Symbol, Float) }
+            end
           end
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -238,6 +250,10 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(Symbol, :auto, Integer)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(Symbol, Integer) }
+            end
           end
         end
 

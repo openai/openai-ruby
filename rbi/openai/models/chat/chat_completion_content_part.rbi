@@ -22,7 +22,12 @@ module OpenAI
 
         class File < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::ChatCompletionContentPart::File,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig { returns(OpenAI::Chat::ChatCompletionContentPart::File::File) }
           attr_reader :file
@@ -66,7 +71,12 @@ module OpenAI
 
           class File < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Chat::ChatCompletionContentPart::File::File,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The base64 encoded file data, used when passing the file to the model as a
             # string.

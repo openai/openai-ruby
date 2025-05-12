@@ -20,6 +20,16 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputText,
+              OpenAI::Responses::ResponseInputImage,
+              OpenAI::Responses::ResponseInputFile
+            )
+          end
+        end
       end
     end
   end

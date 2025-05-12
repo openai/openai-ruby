@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseReasoningSummaryTextDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The text delta that was added to the summary.
         sig { returns(String) }

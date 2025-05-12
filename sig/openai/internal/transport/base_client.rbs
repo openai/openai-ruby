@@ -2,6 +2,8 @@ module OpenAI
   module Internal
     module Transport
       class BaseClient
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
         type request_components =
           {
             method: Symbol,
@@ -20,7 +22,6 @@ module OpenAI
             model: OpenAI::Internal::Type::Converter::input?,
             options: OpenAI::request_opts?
           }
-
         type request_input =
           {
             method: Symbol,

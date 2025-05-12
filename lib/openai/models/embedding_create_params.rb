@@ -94,6 +94,10 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
 
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]) }
+        end
+
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
@@ -119,6 +123,10 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(String, Symbol, OpenAI::EmbeddingModel)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::EmbeddingModel::TaggedSymbol) }
+        end
       end
 
       # The format to return the embeddings in. Can be either `float` or

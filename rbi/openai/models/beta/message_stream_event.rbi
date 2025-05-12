@@ -22,7 +22,12 @@ module OpenAI
 
         class ThreadMessageCreated < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::MessageStreamEvent::ThreadMessageCreated,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -63,7 +68,12 @@ module OpenAI
 
         class ThreadMessageInProgress < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::MessageStreamEvent::ThreadMessageInProgress,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -104,7 +114,12 @@ module OpenAI
 
         class ThreadMessageDelta < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::MessageStreamEvent::ThreadMessageDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message delta i.e. any changed fields on a message during
           # streaming.
@@ -147,7 +162,12 @@ module OpenAI
 
         class ThreadMessageCompleted < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::MessageStreamEvent::ThreadMessageCompleted,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).
@@ -188,7 +208,12 @@ module OpenAI
 
         class ThreadMessageIncomplete < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::MessageStreamEvent::ThreadMessageIncomplete,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a message within a
           # [thread](https://platform.openai.com/docs/api-reference/threads).

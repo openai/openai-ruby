@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class ResponseFormatText < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::ResponseFormatText, OpenAI::Internal::AnyHash)
+        end
 
       # The type of response format being defined. Always `text`.
       sig { returns(Symbol) }

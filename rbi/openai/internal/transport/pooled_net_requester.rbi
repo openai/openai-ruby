@@ -5,7 +5,9 @@ module OpenAI
     module Transport
       # @api private
       class PooledNetRequester
-        RequestShape =
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
+        Request =
           T.type_alias do
             {
               method: Symbol,
@@ -34,8 +36,7 @@ module OpenAI
           # @api private
           sig do
             params(
-              request:
-                OpenAI::Internal::Transport::PooledNetRequester::RequestShape,
+              request: OpenAI::Internal::Transport::PooledNetRequester::Request,
               blk: T.proc.params(arg0: String).void
             ).returns([Net::HTTPGenericRequest, T.proc.void])
           end
@@ -57,8 +58,7 @@ module OpenAI
         # @api private
         sig do
           params(
-            request:
-              OpenAI::Internal::Transport::PooledNetRequester::RequestShape
+            request: OpenAI::Internal::Transport::PooledNetRequester::Request
           ).returns([Integer, Net::HTTPResponse, T::Enumerable[String]])
         end
         def execute(request)

@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionCallArgumentsDeltaEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The function-call arguments delta that is added.
         sig { returns(String) }

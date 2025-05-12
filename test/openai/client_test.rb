@@ -3,13 +3,8 @@
 require_relative "test_helper"
 
 class OpenAITest < Minitest::Test
+  extend Minitest::Serial
   include WebMock::API
-
-  class << self
-    def test_order = :random
-
-    def run_one_method(...) = Minitest::Runnable.run_one_method(...)
-  end
 
   def before_all
     super

@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::EvalCreateParams, OpenAI::Internal::AnyHash)
+        end
 
       # The configuration for the data source used for the evaluation runs.
       sig do
@@ -132,7 +135,12 @@ module OpenAI
 
         class Custom < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::EvalCreateParams::DataSourceConfig::Custom,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The json schema for each row in the data source.
           sig { returns(T::Hash[Symbol, T.anything]) }
@@ -189,7 +197,12 @@ module OpenAI
 
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The type of data source. Always `stored_completions`.
           sig { returns(Symbol) }
@@ -254,7 +267,12 @@ module OpenAI
 
         class LabelModel < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::EvalCreateParams::TestingCriterion::LabelModel,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # A list of chat messages forming the prompt or context. May include variable
           # references to the "item" namespace, ie {{item.name}}.
@@ -361,7 +379,12 @@ module OpenAI
 
             class SimpleInputMessage < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The content of the message.
               sig { returns(String) }
@@ -389,7 +412,12 @@ module OpenAI
 
             class EvalItem < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # Text inputs to the model - can contain template strings.
               sig do
@@ -495,7 +523,10 @@ module OpenAI
                 class OutputText < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   # The text output from the model.
@@ -625,7 +656,12 @@ module OpenAI
 
         class TextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The threshold for the score.
           sig { returns(Float) }
@@ -646,7 +682,12 @@ module OpenAI
 
         class Python < OpenAI::Models::Graders::PythonGrader
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::EvalCreateParams::TestingCriterion::Python,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The threshold for the score.
           sig { returns(T.nilable(Float)) }
@@ -670,7 +711,12 @@ module OpenAI
 
         class ScoreModel < OpenAI::Models::Graders::ScoreModelGrader
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::EvalCreateParams::TestingCriterion::ScoreModel,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The threshold for the score.
           sig { returns(T.nilable(Float)) }

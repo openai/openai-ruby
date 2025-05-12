@@ -424,6 +424,22 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Responses::ResponseComputerToolCall::Action::Click, OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick, OpenAI::Responses::ResponseComputerToolCall::Action::Drag, OpenAI::Responses::ResponseComputerToolCall::Action::Keypress, OpenAI::Responses::ResponseComputerToolCall::Action::Move, OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot, OpenAI::Responses::ResponseComputerToolCall::Action::Scroll, OpenAI::Responses::ResponseComputerToolCall::Action::Type, OpenAI::Responses::ResponseComputerToolCall::Action::Wait)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::Action::Click,
+                OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Drag,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Keypress,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Move,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Scroll,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Type,
+                OpenAI::Responses::ResponseComputerToolCall::Action::Wait
+              )
+            end
+          end
         end
 
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel

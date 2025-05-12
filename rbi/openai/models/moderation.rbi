@@ -3,7 +3,8 @@
 module OpenAI
   module Models
     class Moderation < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias { T.any(OpenAI::Moderation, OpenAI::Internal::AnyHash) }
 
       # A list of the categories, and whether they are flagged or not.
       sig { returns(OpenAI::Moderation::Categories) }
@@ -73,7 +74,10 @@ module OpenAI
       end
 
       class Categories < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Moderation::Categories, OpenAI::Internal::AnyHash)
+          end
 
         # Content that expresses, incites, or promotes harassing language towards any
         # target.
@@ -233,7 +237,13 @@ module OpenAI
       end
 
       class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Moderation::CategoryAppliedInputTypes,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The applied input type(s) for the category 'harassment'.
         sig do
@@ -919,7 +929,10 @@ module OpenAI
       end
 
       class CategoryScores < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Moderation::CategoryScores, OpenAI::Internal::AnyHash)
+          end
 
         # The score for the category 'harassment'.
         sig { returns(Float) }

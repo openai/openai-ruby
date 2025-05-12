@@ -6,7 +6,9 @@ module OpenAI
       module Threads
         class Run < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(OpenAI::Beta::Threads::Run, OpenAI::Internal::AnyHash)
+            end
 
           # The identifier, which can be referenced in API endpoints.
           sig { returns(String) }
@@ -471,7 +473,12 @@ module OpenAI
 
           class IncompleteDetails < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Run::IncompleteDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The reason why the run is incomplete. This will point to which specific token
             # limit was reached over the course of the run.
@@ -557,7 +564,12 @@ module OpenAI
 
           class LastError < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Run::LastError,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # One of `server_error`, `rate_limit_exceeded`, or `invalid_prompt`.
             sig do
@@ -636,7 +648,12 @@ module OpenAI
 
           class RequiredAction < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Run::RequiredAction,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Details on the tool outputs needed for this run to continue.
             sig do
@@ -689,7 +706,12 @@ module OpenAI
 
             class SubmitToolOutputs < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Run::RequiredAction::SubmitToolOutputs,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # A list of the relevant tool calls.
               sig do
@@ -733,7 +755,12 @@ module OpenAI
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Run::TruncationStrategy,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             # `last_messages`, the thread will be truncated to the n most recent messages in
@@ -825,7 +852,12 @@ module OpenAI
 
           class Usage < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Run::Usage,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Number of completion tokens used over the course of the run.
             sig { returns(Integer) }

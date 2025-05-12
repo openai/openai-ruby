@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::ImageEditParams, OpenAI::Internal::AnyHash)
+        end
 
       # The image(s) to edit. Must be a supported image file or an array of images.
       #

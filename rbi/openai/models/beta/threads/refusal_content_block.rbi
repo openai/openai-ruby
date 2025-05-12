@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class RefusalContentBlock < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::RefusalContentBlock,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig { returns(String) }
           attr_accessor :refusal

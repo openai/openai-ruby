@@ -62,6 +62,18 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::LabelModelGrader)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Graders::StringCheckGrader,
+                OpenAI::Graders::TextSimilarityGrader,
+                OpenAI::Graders::PythonGrader,
+                OpenAI::Graders::ScoreModelGrader,
+                OpenAI::Graders::LabelModelGrader
+              )
+            end
+          end
         end
       end
     end

@@ -99,6 +99,12 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)
+          end
+        end
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -163,6 +169,18 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Graders::LabelModelGrader, OpenAI::Graders::StringCheckGrader, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Graders::LabelModelGrader,
+              OpenAI::Graders::StringCheckGrader,
+              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity,
+              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython,
+              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel
+            )
+          end
+        end
       end
     end
   end

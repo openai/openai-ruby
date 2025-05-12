@@ -29,7 +29,7 @@ module OpenAI
         #
         #   @option spec [Boolean] :"nil?"
         #
-        # @return [OpenAI::Internal::Type::ArrayOf]
+        # @return [self]
         def self.[](...) = new(...)
 
         # @api public

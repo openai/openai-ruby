@@ -6,7 +6,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionContentPartImage < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionContentPartImage,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         sig { returns(OpenAI::Chat::ChatCompletionContentPartImage::ImageURL) }
         attr_reader :image_url
@@ -51,7 +57,12 @@ module OpenAI
 
         class ImageURL < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Chat::ChatCompletionContentPartImage::ImageURL,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Either a URL of the image or the base64 encoded image data.
           sig { returns(String) }

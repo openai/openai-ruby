@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::AssistantCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # ID of the model to use. You can use the
         # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
@@ -312,7 +318,12 @@ module OpenAI
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::AssistantCreateParams::ToolResources,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig do
             returns(
@@ -378,7 +389,12 @@ module OpenAI
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::AssistantCreateParams::ToolResources::CodeInterpreter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             # available to the `code_interpreter` tool. There can be a maximum of 20 files
@@ -405,7 +421,12 @@ module OpenAI
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -481,7 +502,12 @@ module OpenAI
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               # strategy.
@@ -587,7 +613,10 @@ module OpenAI
                 class Auto < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   # Always `auto`.
@@ -611,7 +640,10 @@ module OpenAI
                 class Static < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   sig do
@@ -662,7 +694,10 @@ module OpenAI
                   class Static < OpenAI::Internal::Type::BaseModel
                     OrHash =
                       T.type_alias do
-                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                        T.any(
+                          OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                          OpenAI::Internal::AnyHash
+                        )
                       end
 
                     # The number of tokens that overlap between chunks. The default value is `400`.

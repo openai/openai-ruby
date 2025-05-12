@@ -62,6 +62,18 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(OpenAI::Graders::StringCheckGrader, OpenAI::Graders::TextSimilarityGrader, OpenAI::Graders::PythonGrader, OpenAI::Graders::ScoreModelGrader, OpenAI::Graders::MultiGrader)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias do
+                T.any(
+                  OpenAI::Graders::StringCheckGrader,
+                  OpenAI::Graders::TextSimilarityGrader,
+                  OpenAI::Graders::PythonGrader,
+                  OpenAI::Graders::ScoreModelGrader,
+                  OpenAI::Graders::MultiGrader
+                )
+              end
+            end
           end
 
           # The reference answer for the evaluation.
@@ -78,6 +90,10 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(String, Object, Array<Object>, Float)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(String, T.anything, T::Array[T.anything], Float) }
+            end
 
             # @type [OpenAI::Internal::Type::Converter]
             UnionMember2Array = OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::Unknown]

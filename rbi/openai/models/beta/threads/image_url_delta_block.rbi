@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class ImageURLDeltaBlock < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::ImageURLDeltaBlock,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The index of the content part in the message.
           sig { returns(Integer) }

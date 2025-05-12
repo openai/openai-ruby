@@ -113,6 +113,21 @@ module OpenAI
             # @!method self.variants
             #   @return [Array(String, Array<OpenAI::Beta::Threads::ImageFileContentBlock, OpenAI::Beta::Threads::ImageURLContentBlock, OpenAI::Beta::Threads::TextContentBlockParam>)]
 
+            define_sorbet_constant!(:Variants) do
+              T.type_alias do
+                T.any(
+                  String,
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::Threads::ImageFileContentBlock,
+                      OpenAI::Beta::Threads::ImageURLContentBlock,
+                      OpenAI::Beta::Threads::TextContentBlockParam
+                    )
+                  ]
+                )
+              end
+            end
+
             # @type [OpenAI::Internal::Type::Converter]
             MessageContentPartParamArray =
               OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::Threads::MessageContentPartParam }]
@@ -182,6 +197,15 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::CodeInterpreterTool,
+                    OpenAI::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch
+                  )
+                end
+              end
             end
           end
         end
@@ -380,6 +404,15 @@ module OpenAI
 
                 # @!method self.variants
                 #   @return [Array(OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
+
+                define_sorbet_constant!(:Variants) do
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                    )
+                  end
+                end
               end
             end
           end

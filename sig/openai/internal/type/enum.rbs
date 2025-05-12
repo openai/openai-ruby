@@ -3,6 +3,7 @@ module OpenAI
     module Type
       module Enum
         include OpenAI::Internal::Type::Converter
+        include OpenAI::Internal::Util::SorbetRuntimeSupport
 
         def self.values: -> ::Array[(nil | bool | Integer | Float | Symbol)]
 

@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseComputerToolCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The unique ID of the computer call.
         sig { returns(String) }
@@ -151,7 +157,12 @@ module OpenAI
 
           class Click < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Click,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Indicates which mouse button was pressed during the click. One of `left`,
             # `right`, `wheel`, `back`, or `forward`.
@@ -267,7 +278,12 @@ module OpenAI
 
           class DoubleClick < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::DoubleClick,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Specifies the event type. For a double click action, this property is always set
             # to `double_click`.
@@ -306,7 +322,12 @@ module OpenAI
 
           class Drag < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Drag,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # An array of coordinates representing the path of the drag action. Coordinates
             # will appear as an array of objects, eg
@@ -374,7 +395,12 @@ module OpenAI
 
             class Path < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The x-coordinate.
               sig { returns(Integer) }
@@ -402,7 +428,12 @@ module OpenAI
 
           class Keypress < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Keypress,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The combination of keys the model is requesting to be pressed. This is an array
             # of strings, each representing a key.
@@ -437,7 +468,12 @@ module OpenAI
 
           class Move < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Move,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Specifies the event type. For a move action, this property is always set to
             # `move`.
@@ -476,7 +512,12 @@ module OpenAI
 
           class Screenshot < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Screenshot,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Specifies the event type. For a screenshot action, this property is always set
             # to `screenshot`.
@@ -499,7 +540,12 @@ module OpenAI
 
           class Scroll < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Scroll,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The horizontal scroll distance.
             sig { returns(Integer) }
@@ -564,7 +610,12 @@ module OpenAI
 
           class Type < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Type,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The text to type.
             sig { returns(String) }
@@ -593,7 +644,12 @@ module OpenAI
 
           class Wait < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseComputerToolCall::Action::Wait,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # Specifies the event type. For a wait action, this property is always set to
             # `wait`.
@@ -627,7 +683,12 @@ module OpenAI
 
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The ID of the pending safety check.
           sig { returns(String) }

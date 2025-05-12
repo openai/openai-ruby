@@ -9,7 +9,12 @@ module OpenAI
           include OpenAI::Internal::Type::RequestParameters
 
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::MessageCreateParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The text contents of the message.
           sig do
@@ -211,7 +216,12 @@ module OpenAI
 
           class Attachment < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::MessageCreateParams::Attachment,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the file to attach to the message.
             sig { returns(T.nilable(String)) }
@@ -298,7 +308,12 @@ module OpenAI
 
               class FileSearch < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The type of tool being defined: `file_search`
                 sig { returns(Symbol) }

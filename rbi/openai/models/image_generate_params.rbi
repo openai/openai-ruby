@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::ImageGenerateParams, OpenAI::Internal::AnyHash)
+        end
 
       # A text description of the desired image(s). The maximum length is 32000
       # characters for `gpt-image-1`, 1000 characters for `dall-e-2` and 4000 characters

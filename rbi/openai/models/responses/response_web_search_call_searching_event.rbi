@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseWebSearchCallSearchingEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseWebSearchCallSearchingEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Unique ID for the output item associated with the web search call.
         sig { returns(String) }

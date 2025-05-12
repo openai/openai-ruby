@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseReasoningItem < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseReasoningItem,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The unique identifier of the reasoning content.
         sig { returns(String) }
@@ -92,7 +98,12 @@ module OpenAI
 
         class Summary < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseReasoningItem::Summary,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # A short summary of the reasoning used by the model when generating the response.
           sig { returns(String) }

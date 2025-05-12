@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class CodeInterpreterLogs < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The index of the output in the outputs array.
             sig { returns(Integer) }

@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Responses
       class ResponseError < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Responses::ResponseError, OpenAI::Internal::AnyHash)
+          end
 
         # The error code for the response.
         sig { returns(OpenAI::Responses::ResponseError::Code::TaggedSymbol) }

@@ -162,6 +162,10 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol, OpenAI::ChatModel)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
+          end
         end
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
@@ -362,6 +366,15 @@ module OpenAI
 
                 # @!method self.variants
                 #   @return [Array(OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static)]
+
+                define_sorbet_constant!(:Variants) do
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                      OpenAI::Beta::AssistantCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                    )
+                  end
+                end
               end
             end
           end

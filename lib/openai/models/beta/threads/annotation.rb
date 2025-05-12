@@ -20,6 +20,12 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Beta::Threads::FileCitationAnnotation, OpenAI::Beta::Threads::FilePathAnnotation)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(OpenAI::Beta::Threads::FileCitationAnnotation, OpenAI::Beta::Threads::FilePathAnnotation)
+            end
+          end
         end
       end
     end

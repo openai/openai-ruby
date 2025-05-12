@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class TextContentBlockParam < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::TextContentBlockParam,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Text content to be sent to the model
           sig { returns(String) }

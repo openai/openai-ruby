@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores
         # and dashes, with a maximum length of 64.

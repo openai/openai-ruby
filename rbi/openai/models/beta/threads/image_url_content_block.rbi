@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class ImageURLContentBlock < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::ImageURLContentBlock,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig { returns(OpenAI::Beta::Threads::ImageURL) }
           attr_reader :image_url

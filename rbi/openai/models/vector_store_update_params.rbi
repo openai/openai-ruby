@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::VectorStoreUpdateParams, OpenAI::Internal::AnyHash)
+        end
 
       # The expiration policy for a vector store.
       sig { returns(T.nilable(OpenAI::VectorStoreUpdateParams::ExpiresAfter)) }
@@ -73,7 +76,13 @@ module OpenAI
       end
 
       class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::VectorStoreUpdateParams::ExpiresAfter,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Anchor timestamp after which the expiration policy applies. Supported anchors:
         # `last_active_at`.

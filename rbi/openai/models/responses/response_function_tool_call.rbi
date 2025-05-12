@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseFunctionToolCall < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseFunctionToolCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # A JSON string of the arguments to pass to the function.
         sig { returns(String) }

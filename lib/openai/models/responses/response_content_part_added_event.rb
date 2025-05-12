@@ -66,6 +66,12 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)
+            end
+          end
         end
       end
     end

@@ -6,7 +6,12 @@ module OpenAI
       module Threads
         class FileCitationDeltaAnnotation < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::FileCitationDeltaAnnotation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
@@ -97,7 +102,12 @@ module OpenAI
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the specific File the citation is from.
             sig { returns(T.nilable(String)) }

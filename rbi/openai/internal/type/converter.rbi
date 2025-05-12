@@ -5,6 +5,8 @@ module OpenAI
     module Type
       # @api private
       module Converter
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
         Input =
           T.type_alias do
             T.any(OpenAI::Internal::Type::Converter, T::Class[T.anything])

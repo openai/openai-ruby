@@ -29,8 +29,7 @@ module OpenAI
         sig do
           params(
             client: OpenAI::Internal::Transport::BaseClient,
-            req:
-              OpenAI::Internal::Transport::BaseClient::RequestComponentsShape,
+            req: OpenAI::Internal::Transport::BaseClient::RequestComponents,
             headers: T.any(T::Hash[String, String], Net::HTTPHeader),
             page_data: T.anything
           ).void

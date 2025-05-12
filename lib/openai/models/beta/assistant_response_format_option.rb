@@ -44,6 +44,17 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(Symbol, :auto, OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONObject, OpenAI::ResponseFormatJSONSchema)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              Symbol,
+              OpenAI::ResponseFormatText,
+              OpenAI::ResponseFormatJSONObject,
+              OpenAI::ResponseFormatJSONSchema
+            )
+          end
+        end
       end
     end
   end

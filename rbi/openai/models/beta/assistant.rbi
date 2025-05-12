@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Beta
       class Assistant < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Beta::Assistant, OpenAI::Internal::AnyHash)
+          end
 
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
@@ -270,7 +273,12 @@ module OpenAI
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Assistant::ToolResources,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig do
             returns(
@@ -331,7 +339,12 @@ module OpenAI
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Assistant::ToolResources::CodeInterpreter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             # available to the `code_interpreter`` tool. There can be a maximum of 20 files
@@ -358,7 +371,12 @@ module OpenAI
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Assistant::ToolResources::FileSearch,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)

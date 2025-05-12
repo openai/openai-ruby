@@ -24,7 +24,12 @@ module OpenAI
 
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCreated,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -65,7 +70,12 @@ module OpenAI
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::RunStepStreamEvent::ThreadRunStepInProgress,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -106,7 +116,12 @@ module OpenAI
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::RunStepStreamEvent::ThreadRunStepDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a run step delta i.e. any changed fields on a run step during
           # streaming.
@@ -154,7 +169,12 @@ module OpenAI
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCompleted,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -195,7 +215,12 @@ module OpenAI
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::RunStepStreamEvent::ThreadRunStepFailed,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -236,7 +261,12 @@ module OpenAI
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCancelled,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }
@@ -277,7 +307,12 @@ module OpenAI
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::RunStepStreamEvent::ThreadRunStepExpired,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # Represents a step in execution of a run.
           sig { returns(OpenAI::Beta::Threads::Runs::RunStep) }

@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseComputerToolCallOutputItem,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The unique ID of the computer call tool output.
         sig { returns(String) }
@@ -129,7 +135,12 @@ module OpenAI
 
         class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The ID of the pending safety check.
           sig { returns(String) }

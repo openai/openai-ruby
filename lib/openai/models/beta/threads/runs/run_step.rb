@@ -223,6 +223,15 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Beta::Threads::Runs::ToolCallsStepDetails)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::MessageCreationStepDetails,
+                    OpenAI::Beta::Threads::Runs::ToolCallsStepDetails
+                  )
+                end
+              end
             end
 
             # The type of run step, which can be either `message_creation` or `tool_calls`.

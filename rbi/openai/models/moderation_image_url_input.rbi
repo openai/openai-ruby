@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class ModerationImageURLInput < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::ModerationImageURLInput, OpenAI::Internal::AnyHash)
+        end
 
       # Contains either an image URL or a data URL for a base64 encoded image.
       sig { returns(OpenAI::ModerationImageURLInput::ImageURL) }
@@ -44,7 +47,13 @@ module OpenAI
       end
 
       class ImageURL < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::ModerationImageURLInput::ImageURL,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Either a URL of the image or the base64 encoded image data.
         sig { returns(String) }

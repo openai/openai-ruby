@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Text, image, or file inputs to the model, used to generate a response.
         #

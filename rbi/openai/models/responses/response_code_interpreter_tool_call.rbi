@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseCodeInterpreterToolCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The unique ID of the code interpreter tool call.
         sig { returns(String) }
@@ -105,7 +111,12 @@ module OpenAI
 
           class Logs < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The logs of the code interpreter tool call.
             sig { returns(String) }
@@ -132,7 +143,12 @@ module OpenAI
 
           class Files < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             sig do
               returns(
@@ -180,7 +196,12 @@ module OpenAI
 
             class File < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files::File,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The ID of the file.
               sig { returns(String) }

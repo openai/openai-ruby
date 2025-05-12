@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseComputerToolCallOutputScreenshot < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # Specifies the event type. For a computer screenshot, this property is always set
         # to `computer_screenshot`.

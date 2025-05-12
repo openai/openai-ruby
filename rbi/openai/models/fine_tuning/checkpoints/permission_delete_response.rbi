@@ -6,7 +6,12 @@ module OpenAI
       module Checkpoints
         class PermissionDeleteResponse < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The ID of the fine-tuned model checkpoint permission that was deleted.
           sig { returns(String) }

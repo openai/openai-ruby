@@ -7,7 +7,13 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::VectorStores::FileCreateParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # A [File](https://platform.openai.com/docs/api-reference/files) ID that the
         # vector store should use. Useful for tools like `file_search` that can access

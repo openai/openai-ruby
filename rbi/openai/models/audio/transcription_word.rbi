@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Audio
       class TranscriptionWord < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Audio::TranscriptionWord, OpenAI::Internal::AnyHash)
+          end
 
         # End time of the word in seconds.
         sig { returns(Float) }

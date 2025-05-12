@@ -6,7 +6,13 @@ module OpenAI
 
     module VectorStores
       class VectorStoreFile < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::VectorStores::VectorStoreFile,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The identifier, which can be referenced in API endpoints.
         sig { returns(String) }
@@ -173,7 +179,12 @@ module OpenAI
 
         class LastError < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::VectorStores::VectorStoreFile::LastError,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # One of `server_error` or `rate_limit_exceeded`.
           sig do

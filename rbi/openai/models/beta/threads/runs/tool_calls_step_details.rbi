@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::ToolCallsStepDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # An array of tool calls the run step was involved in. These can be associated
             # with one of three types of tools: `code_interpreter`, `file_search`, or

@@ -6,7 +6,10 @@ module OpenAI
 
     module Chat
       class ChatCompletionTool < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Chat::ChatCompletionTool, OpenAI::Internal::AnyHash)
+          end
 
         sig { returns(OpenAI::FunctionDefinition) }
         attr_reader :function

@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module VectorStores
       class FileContentResponse < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Models::VectorStores::FileContentResponse,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The text content
         sig { returns(T.nilable(String)) }

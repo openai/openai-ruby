@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseReasoningSummaryPartDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The ID of the item this summary part is associated with.
         sig { returns(String) }
@@ -80,7 +86,12 @@ module OpenAI
 
         class Part < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent::Part,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The text of the summary part.
           sig { returns(String) }

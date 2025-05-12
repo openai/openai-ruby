@@ -6,7 +6,10 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::UploadCompleteParams, OpenAI::Internal::AnyHash)
+        end
 
       # The ordered list of Part IDs.
       sig { returns(T::Array[String]) }

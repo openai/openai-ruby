@@ -4,7 +4,10 @@ module OpenAI
   module Models
     module Beta
       class AssistantDeleted < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Beta::AssistantDeleted, OpenAI::Internal::AnyHash)
+          end
 
         sig { returns(String) }
         attr_accessor :id

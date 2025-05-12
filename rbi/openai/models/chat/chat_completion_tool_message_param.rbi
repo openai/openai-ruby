@@ -6,7 +6,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionToolMessageParam < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionToolMessageParam,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The contents of the tool message.
         sig do

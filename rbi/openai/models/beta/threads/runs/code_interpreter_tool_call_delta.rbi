@@ -7,7 +7,12 @@ module OpenAI
         module Runs
           class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
@@ -82,7 +87,12 @@ module OpenAI
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The input to the Code Interpreter tool call.
               sig { returns(T.nilable(String)) }

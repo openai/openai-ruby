@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Beta
       class AssistantToolChoiceFunction < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::AssistantToolChoiceFunction,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The name of the function to call.
         sig { returns(String) }

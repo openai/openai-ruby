@@ -9,7 +9,12 @@ module OpenAI
           include OpenAI::Internal::Type::RequestParameters
 
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::RunCreateParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The ID of the
           # [assistant](https://platform.openai.com/docs/api-reference/assistants) to use to
@@ -444,7 +449,12 @@ module OpenAI
 
           class AdditionalMessage < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The text contents of the message.
             sig do
@@ -651,7 +661,12 @@ module OpenAI
 
             class Attachment < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The ID of the file to attach to the message.
               sig { returns(T.nilable(String)) }
@@ -739,7 +754,10 @@ module OpenAI
                 class FileSearch < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   # The type of tool being defined: `file_search`
@@ -794,7 +812,12 @@ module OpenAI
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The truncation strategy to use for the thread. The default is `auto`. If set to
             # `last_messages`, the thread will be truncated to the n most recent messages in

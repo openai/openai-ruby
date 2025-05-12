@@ -161,6 +161,18 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Beta::MessageStreamEvent::ThreadMessageCreated, OpenAI::Beta::MessageStreamEvent::ThreadMessageInProgress, OpenAI::Beta::MessageStreamEvent::ThreadMessageDelta, OpenAI::Beta::MessageStreamEvent::ThreadMessageCompleted, OpenAI::Beta::MessageStreamEvent::ThreadMessageIncomplete)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::MessageStreamEvent::ThreadMessageCreated,
+              OpenAI::Beta::MessageStreamEvent::ThreadMessageInProgress,
+              OpenAI::Beta::MessageStreamEvent::ThreadMessageDelta,
+              OpenAI::Beta::MessageStreamEvent::ThreadMessageCompleted,
+              OpenAI::Beta::MessageStreamEvent::ThreadMessageIncomplete
+            )
+          end
+        end
       end
     end
   end

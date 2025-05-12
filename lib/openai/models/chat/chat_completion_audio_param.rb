@@ -82,6 +82,10 @@ module OpenAI
           # @!method self.variants
           #   @return [Array(String, Symbol)]
 
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
+          end
+
           # @!group
 
           ALLOY = :alloy

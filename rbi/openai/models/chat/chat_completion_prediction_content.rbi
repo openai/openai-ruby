@@ -6,7 +6,13 @@ module OpenAI
 
     module Chat
       class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionPredictionContent,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The content that should be matched when generating a model response. If
         # generated tokens would match this content, the entire model response can be

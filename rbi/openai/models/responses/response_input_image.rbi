@@ -4,7 +4,13 @@ module OpenAI
   module Models
     module Responses
       class ResponseInputImage < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputImage,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The detail level of the image to be sent to the model. One of `high`, `low`, or
         # `auto`. Defaults to `auto`.

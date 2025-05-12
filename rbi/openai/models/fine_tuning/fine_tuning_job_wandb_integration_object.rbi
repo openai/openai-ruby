@@ -7,7 +7,13 @@ module OpenAI
 
     module FineTuning
       class FineTuningJobWandbIntegrationObject < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(
+              OpenAI::FineTuning::FineTuningJobWandbIntegrationObject,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
         # The type of the integration being enabled for the fine-tuning job
         sig { returns(Symbol) }

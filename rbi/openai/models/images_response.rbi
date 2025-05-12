@@ -3,7 +3,10 @@
 module OpenAI
   module Models
     class ImagesResponse < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+      OrHash =
+        T.type_alias do
+          T.any(OpenAI::ImagesResponse, OpenAI::Internal::AnyHash)
+        end
 
       # The Unix timestamp (in seconds) of when the image was created.
       sig { returns(Integer) }
@@ -54,7 +57,10 @@ module OpenAI
       end
 
       class Usage < OpenAI::Internal::Type::BaseModel
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::ImagesResponse::Usage, OpenAI::Internal::AnyHash)
+          end
 
         # The number of tokens (images and text) in the input prompt.
         sig { returns(Integer) }
@@ -118,7 +124,12 @@ module OpenAI
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::ImagesResponse::Usage::InputTokensDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The number of image tokens in the input prompt.
           sig { returns(Integer) }

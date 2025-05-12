@@ -310,6 +310,16 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias do
+                  T.any(
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent,
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID,
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses
+                  )
+                end
+              end
             end
 
             # The type of run data source. Always `completions`.
@@ -498,6 +508,16 @@ module OpenAI
 
                       # @!method self.variants
                       #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText)]
+
+                      define_sorbet_constant!(:Variants) do
+                        T.type_alias do
+                          T.any(
+                            String,
+                            OpenAI::Responses::ResponseInputText,
+                            OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem::Content::OutputText
+                          )
+                        end
+                      end
                     end
 
                     # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -531,6 +551,15 @@ module OpenAI
 
                   # @!method self.variants
                   #   @return [Array(OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem)]
+
+                  define_sorbet_constant!(:Variants) do
+                    T.type_alias do
+                      T.any(
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage,
+                        OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem
+                      )
+                    end
+                  end
                 end
               end
 
@@ -555,6 +584,15 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference)]
+
+              define_sorbet_constant!(:Variants) do
+                T.type_alias do
+                  T.any(
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template,
+                    OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference
+                  )
+                end
+              end
             end
 
             # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#sampling_params
@@ -596,6 +634,16 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Evals::CreateEvalJSONLRunDataSource,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource,
+                OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource
+              )
+            end
+          end
         end
       end
     end

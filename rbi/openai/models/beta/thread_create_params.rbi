@@ -7,7 +7,10 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Beta::ThreadCreateParams, OpenAI::Internal::AnyHash)
+          end
 
         # A list of [messages](https://platform.openai.com/docs/api-reference/messages) to
         # start the thread with.
@@ -100,7 +103,12 @@ module OpenAI
 
         class Message < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::ThreadCreateParams::Message,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           # The text contents of the message.
           sig do
@@ -298,7 +306,12 @@ module OpenAI
 
           class Attachment < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::ThreadCreateParams::Message::Attachment,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The ID of the file to attach to the message.
             sig { returns(T.nilable(String)) }
@@ -385,7 +398,12 @@ module OpenAI
 
               class FileSearch < OpenAI::Internal::Type::BaseModel
                 OrHash =
-                  T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                  T.type_alias do
+                    T.any(
+                      OpenAI::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                 # The type of tool being defined: `file_search`
                 sig { returns(Symbol) }
@@ -418,7 +436,12 @@ module OpenAI
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
           OrHash =
-            T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::ThreadCreateParams::ToolResources,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
           sig do
             returns(
@@ -484,7 +507,12 @@ module OpenAI
 
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::ThreadCreateParams::ToolResources::CodeInterpreter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # A list of [file](https://platform.openai.com/docs/api-reference/files) IDs made
             # available to the `code_interpreter` tool. There can be a maximum of 20 files
@@ -511,7 +539,12 @@ module OpenAI
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
             OrHash =
-              T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
             # The
             # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
@@ -587,7 +620,12 @@ module OpenAI
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
               OrHash =
-                T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
               # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
               # strategy.
@@ -693,7 +731,10 @@ module OpenAI
                 class Auto < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   # Always `auto`.
@@ -717,7 +758,10 @@ module OpenAI
                 class Static < OpenAI::Internal::Type::BaseModel
                   OrHash =
                     T.type_alias do
-                      T.any(T.self_type, OpenAI::Internal::AnyHash)
+                      T.any(
+                        OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static,
+                        OpenAI::Internal::AnyHash
+                      )
                     end
 
                   sig do
@@ -768,7 +812,10 @@ module OpenAI
                   class Static < OpenAI::Internal::Type::BaseModel
                     OrHash =
                       T.type_alias do
-                        T.any(T.self_type, OpenAI::Internal::AnyHash)
+                        T.any(
+                          OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                          OpenAI::Internal::AnyHash
+                        )
                       end
 
                     # The number of tokens that overlap between chunks. The default value is `400`.

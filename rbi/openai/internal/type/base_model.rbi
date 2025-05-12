@@ -5,10 +5,11 @@ module OpenAI
     module Type
       class BaseModel
         extend OpenAI::Internal::Type::Converter
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
         abstract!
 
-        KnownFieldShape =
+        KnownField =
           T.type_alias do
             {
               mode: T.nilable(Symbol),
@@ -17,19 +18,27 @@ module OpenAI
             }
           end
 
-        OrHash = T.type_alias { T.any(T.self_type, OpenAI::Internal::AnyHash) }
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::Internal::Type::BaseModel, OpenAI::Internal::AnyHash)
+          end
 
         class << self
           # @api private
           #
           # Assumes superclass fields are totally defined before fields are accessed /
           # defined on subclasses.
+          sig { params(child: T.self_type).void }
+          def inherited(child)
+          end
+
+          # @api private
           sig do
             returns(
               T::Hash[
                 Symbol,
                 T.all(
-                  OpenAI::Internal::Type::BaseModel::KnownFieldShape,
+                  OpenAI::Internal::Type::BaseModel::KnownField,
                   {
                     type_fn:
                       T.proc.returns(OpenAI::Internal::Type::Converter::Input)
@@ -47,7 +56,7 @@ module OpenAI
               T::Hash[
                 Symbol,
                 T.all(
-                  OpenAI::Internal::Type::BaseModel::KnownFieldShape,
+                  OpenAI::Internal::Type::BaseModel::KnownField,
                   { type: OpenAI::Internal::Type::Converter::Input }
                 )
               ]
