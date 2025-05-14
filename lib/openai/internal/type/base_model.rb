@@ -386,6 +386,14 @@ module OpenAI
         # @param keys [Array<Symbol>, nil]
         #
         # @return [Hash{Symbol=>Object}]
+        #
+        # @example
+        #   # `comparison_filter` is a `OpenAI::ComparisonFilter`
+        #   comparison_filter => {
+        #     key: key,
+        #     type: type,
+        #     value: value
+        #   }
         def deconstruct_keys(keys)
           (keys || self.class.known_fields.keys)
             .filter_map do |k|
