@@ -22,6 +22,8 @@ module OpenAI
         # https://github.com/golang/go/blob/c8eced8580028328fde7c03cbfcb720ce15b2358/src/net/http/transport.go#L49
         KEEP_ALIVE_TIMEOUT = 30
 
+        DEFAULT_MAX_CONNECTIONS = T.let(T.unsafe(nil), Integer)
+
         class << self
           # @api private
           sig { params(url: URI::Generic).returns(Net::HTTP) }
@@ -66,7 +68,9 @@ module OpenAI
 
         # @api private
         sig { params(size: Integer).returns(T.attached_class) }
-        def self.new(size: Etc.nprocessors)
+        def self.new(
+          size: OpenAI::Internal::Transport::PooledNetRequester::DEFAULT_MAX_CONNECTIONS
+        )
         end
       end
     end
