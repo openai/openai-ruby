@@ -7,7 +7,7 @@ target(:lib) do
 
   signature("sig")
 
-  YAML.safe_load_file("./manifest.yaml", symbolize_names: true) => { dependencies: }
+  YAML.safe_load_file("./manifest.yaml", symbolize_names: true) => {dependencies:}
   # currently these libraries lack the `*.rbs` annotations required by `steep`
   stdlibs = dependencies - %w[English etc net/http rbconfig set stringio]
 
