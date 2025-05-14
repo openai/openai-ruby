@@ -44,6 +44,8 @@ puts(chat_completion)
 
 We provide support for streaming responses using Server-Sent Events (SSE).
 
+**coming soon:** `openai.chat.completions.stream` will soon come with Python SDK style higher level streaming responses support.
+
 ```ruby
 stream = openai.chat.completions.stream_raw(
   messages: [{role: "user", content: "Say this is a test"}],
@@ -75,8 +77,6 @@ end
 ```
 
 Alternatively, you can use the `#next_page?` and `#next_page` methods for more granular control working with pages.
-
-**coming soon:** `openai.chat.completions.stream` will soon come with Python SDK style higher level streaming responses support.
 
 ```ruby
 if page.next_page?
