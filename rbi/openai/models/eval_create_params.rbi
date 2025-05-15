@@ -16,6 +16,7 @@ module OpenAI
         returns(
           T.any(
             OpenAI::EvalCreateParams::DataSourceConfig::Custom,
+            OpenAI::EvalCreateParams::DataSourceConfig::Logs,
             OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions
           )
         )
@@ -59,6 +60,7 @@ module OpenAI
           data_source_config:
             T.any(
               OpenAI::EvalCreateParams::DataSourceConfig::Custom::OrHash,
+              OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash,
               OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions::OrHash
             ),
           testing_criteria:
@@ -100,6 +102,7 @@ module OpenAI
             data_source_config:
               T.any(
                 OpenAI::EvalCreateParams::DataSourceConfig::Custom,
+                OpenAI::EvalCreateParams::DataSourceConfig::Logs,
                 OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions
               ),
             testing_criteria:
@@ -129,6 +132,7 @@ module OpenAI
           T.type_alias do
             T.any(
               OpenAI::EvalCreateParams::DataSourceConfig::Custom,
+              OpenAI::EvalCreateParams::DataSourceConfig::Logs,
               OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions
             )
           end
@@ -195,6 +199,50 @@ module OpenAI
           end
         end
 
+        class Logs < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::EvalCreateParams::DataSourceConfig::Logs,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The type of data source. Always `logs`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Metadata filters for the logs data source.
+          sig { returns(T.nilable(T::Hash[Symbol, T.anything])) }
+          attr_reader :metadata
+
+          sig { params(metadata: T::Hash[Symbol, T.anything]).void }
+          attr_writer :metadata
+
+          # A data source config which specifies the metadata property of your logs query.
+          # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
+          sig do
+            params(metadata: T::Hash[Symbol, T.anything], type: Symbol).returns(
+              T.attached_class
+            )
+          end
+          def self.new(
+            # Metadata filters for the logs data source.
+            metadata: nil,
+            # The type of data source. Always `logs`.
+            type: :logs
+          )
+          end
+
+          sig do
+            override.returns(
+              { type: Symbol, metadata: T::Hash[Symbol, T.anything] }
+            )
+          end
+          def to_hash
+          end
+        end
+
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
           OrHash =
             T.type_alias do
@@ -204,7 +252,7 @@ module OpenAI
               )
             end
 
-          # The type of data source. Always `stored_completions`.
+          # The type of data source. Always `stored-completions`.
           sig { returns(Symbol) }
           attr_accessor :type
 
@@ -215,9 +263,7 @@ module OpenAI
           sig { params(metadata: T::Hash[Symbol, T.anything]).void }
           attr_writer :metadata
 
-          # A data source config which specifies the metadata property of your stored
-          # completions query. This is usually metadata like `usecase=chatbot` or
-          # `prompt-version=v2`, etc.
+          # Deprecated in favor of LogsDataSourceConfig.
           sig do
             params(metadata: T::Hash[Symbol, T.anything], type: Symbol).returns(
               T.attached_class
@@ -226,8 +272,8 @@ module OpenAI
           def self.new(
             # Metadata filters for the stored completions data source.
             metadata: nil,
-            # The type of data source. Always `stored_completions`.
-            type: :stored_completions
+            # The type of data source. Always `stored-completions`.
+            type: :"stored-completions"
           )
           end
 
@@ -281,7 +327,7 @@ module OpenAI
               T::Array[
                 T.any(
                   OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage,
-                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem
+                  OpenAI::EvalItem
                 )
               ]
             )
@@ -316,7 +362,7 @@ module OpenAI
                 T::Array[
                   T.any(
                     OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage::OrHash,
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::OrHash
+                    OpenAI::EvalItem::OrHash
                   )
                 ],
               labels: T::Array[String],
@@ -350,7 +396,7 @@ module OpenAI
                   T::Array[
                     T.any(
                       OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage,
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem
+                      OpenAI::EvalItem
                     )
                   ],
                 labels: T::Array[String],
@@ -373,7 +419,7 @@ module OpenAI
               T.type_alias do
                 T.any(
                   OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage,
-                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem
+                  OpenAI::EvalItem
                 )
               end
 
@@ -407,238 +453,6 @@ module OpenAI
 
               sig { override.returns({ content: String, role: String }) }
               def to_hash
-              end
-            end
-
-            class EvalItem < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
-
-              # Text inputs to the model - can contain template strings.
-              sig do
-                returns(
-                  T.any(
-                    String,
-                    OpenAI::Responses::ResponseInputText,
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
-                  )
-                )
-              end
-              attr_accessor :content
-
-              # The role of the message input. One of `user`, `assistant`, `system`, or
-              # `developer`.
-              sig do
-                returns(
-                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::OrSymbol
-                )
-              end
-              attr_accessor :role
-
-              # The type of the message input. Always `message`.
-              sig do
-                returns(
-                  T.nilable(
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type::OrSymbol
-                  )
-                )
-              end
-              attr_reader :type
-
-              sig do
-                params(
-                  type:
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type::OrSymbol
-                ).void
-              end
-              attr_writer :type
-
-              # A message input to the model with a role indicating instruction following
-              # hierarchy. Instructions given with the `developer` or `system` role take
-              # precedence over instructions given with the `user` role. Messages with the
-              # `assistant` role are presumed to have been generated by the model in previous
-              # interactions.
-              sig do
-                params(
-                  content:
-                    T.any(
-                      String,
-                      OpenAI::Responses::ResponseInputText::OrHash,
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText::OrHash
-                    ),
-                  role:
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::OrSymbol,
-                  type:
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type::OrSymbol
-                ).returns(T.attached_class)
-              end
-              def self.new(
-                # Text inputs to the model - can contain template strings.
-                content:,
-                # The role of the message input. One of `user`, `assistant`, `system`, or
-                # `developer`.
-                role:,
-                # The type of the message input. Always `message`.
-                type: nil
-              )
-              end
-
-              sig do
-                override.returns(
-                  {
-                    content:
-                      T.any(
-                        String,
-                        OpenAI::Responses::ResponseInputText,
-                        OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
-                      ),
-                    role:
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::OrSymbol,
-                    type:
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type::OrSymbol
-                  }
-                )
-              end
-              def to_hash
-              end
-
-              # Text inputs to the model - can contain template strings.
-              module Content
-                extend OpenAI::Internal::Type::Union
-
-                Variants =
-                  T.type_alias do
-                    T.any(
-                      String,
-                      OpenAI::Responses::ResponseInputText,
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
-                    )
-                  end
-
-                class OutputText < OpenAI::Internal::Type::BaseModel
-                  OrHash =
-                    T.type_alias do
-                      T.any(
-                        OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText,
-                        OpenAI::Internal::AnyHash
-                      )
-                    end
-
-                  # The text output from the model.
-                  sig { returns(String) }
-                  attr_accessor :text
-
-                  # The type of the output text. Always `output_text`.
-                  sig { returns(Symbol) }
-                  attr_accessor :type
-
-                  # A text output from the model.
-                  sig do
-                    params(text: String, type: Symbol).returns(T.attached_class)
-                  end
-                  def self.new(
-                    # The text output from the model.
-                    text:,
-                    # The type of the output text. Always `output_text`.
-                    type: :output_text
-                  )
-                  end
-
-                  sig { override.returns({ text: String, type: Symbol }) }
-                  def to_hash
-                  end
-                end
-
-                sig do
-                  override.returns(
-                    T::Array[
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::Variants
-                    ]
-                  )
-                end
-                def self.variants
-                end
-              end
-
-              # The role of the message input. One of `user`, `assistant`, `system`, or
-              # `developer`.
-              module Role
-                extend OpenAI::Internal::Type::Enum
-
-                TaggedSymbol =
-                  T.type_alias do
-                    T.all(
-                      Symbol,
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role
-                    )
-                  end
-                OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-                USER =
-                  T.let(
-                    :user,
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::TaggedSymbol
-                  )
-                ASSISTANT =
-                  T.let(
-                    :assistant,
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::TaggedSymbol
-                  )
-                SYSTEM =
-                  T.let(
-                    :system,
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::TaggedSymbol
-                  )
-                DEVELOPER =
-                  T.let(
-                    :developer,
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::TaggedSymbol
-                  )
-
-                sig do
-                  override.returns(
-                    T::Array[
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role::TaggedSymbol
-                    ]
-                  )
-                end
-                def self.values
-                end
-              end
-
-              # The type of the message input. Always `message`.
-              module Type
-                extend OpenAI::Internal::Type::Enum
-
-                TaggedSymbol =
-                  T.type_alias do
-                    T.all(
-                      Symbol,
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type
-                    )
-                  end
-                OrSymbol = T.type_alias { T.any(Symbol, String) }
-
-                MESSAGE =
-                  T.let(
-                    :message,
-                    OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type::TaggedSymbol
-                  )
-
-                sig do
-                  override.returns(
-                    T::Array[
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type::TaggedSymbol
-                    ]
-                  )
-                end
-                def self.values
-                end
               end
             end
 

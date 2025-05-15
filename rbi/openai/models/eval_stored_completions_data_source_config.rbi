@@ -16,7 +16,7 @@ module OpenAI
       sig { returns(T::Hash[Symbol, T.anything]) }
       attr_accessor :schema
 
-      # The type of data source. Always `stored_completions`.
+      # The type of data source. Always `stored-completions`.
       sig { returns(Symbol) }
       attr_accessor :type
 
@@ -29,11 +29,7 @@ module OpenAI
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
       attr_accessor :metadata
 
-      # A StoredCompletionsDataSourceConfig which specifies the metadata property of
-      # your stored completions query. This is usually metadata like `usecase=chatbot`
-      # or `prompt-version=v2`, etc. The schema returned by this data source config is
-      # used to defined what variables are available in your evals. `item` and `sample`
-      # are both defined when using this data source config.
+      # Deprecated in favor of LogsDataSourceConfig.
       sig do
         params(
           schema: T::Hash[Symbol, T.anything],
@@ -52,8 +48,8 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
-        # The type of data source. Always `stored_completions`.
-        type: :stored_completions
+        # The type of data source. Always `stored-completions`.
+        type: :"stored-completions"
       )
       end
 

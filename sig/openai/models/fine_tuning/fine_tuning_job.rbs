@@ -109,17 +109,13 @@ module OpenAI
 
         type hyperparameters =
           {
-            batch_size: OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size,
+            batch_size: OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size?,
             learning_rate_multiplier: OpenAI::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier,
             n_epochs: OpenAI::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           }
 
         class Hyperparameters < OpenAI::Internal::Type::BaseModel
-          attr_reader batch_size: OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size?
-
-          def batch_size=: (
-            OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size
-          ) -> OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size
+          attr_accessor batch_size: OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size?
 
           attr_reader learning_rate_multiplier: OpenAI::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier?
 
@@ -134,12 +130,12 @@ module OpenAI
           ) -> OpenAI::FineTuning::FineTuningJob::Hyperparameters::n_epochs
 
           def initialize: (
-            ?batch_size: OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size,
+            ?batch_size: OpenAI::FineTuning::FineTuningJob::Hyperparameters::batch_size?,
             ?learning_rate_multiplier: OpenAI::FineTuning::FineTuningJob::Hyperparameters::learning_rate_multiplier,
             ?n_epochs: OpenAI::FineTuning::FineTuningJob::Hyperparameters::n_epochs
           ) -> void
 
-          type batch_size = :auto | Integer
+          type batch_size = (top | :auto | Integer)?
 
           module BatchSize
             extend OpenAI::Internal::Type::Union

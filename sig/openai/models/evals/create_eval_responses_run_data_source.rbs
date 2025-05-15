@@ -1,0 +1,216 @@
+module OpenAI
+  module Models
+    module Evals
+      type create_eval_responses_run_data_source =
+        {
+          source: OpenAI::Evals::CreateEvalResponsesRunDataSource::source,
+          type: OpenAI::Evals::CreateEvalResponsesRunDataSource::type_,
+          input_messages: OpenAI::Evals::CreateEvalResponsesRunDataSource::input_messages,
+          model: String,
+          sampling_params: OpenAI::Evals::CreateEvalResponsesRunDataSource::SamplingParams
+        }
+
+      class CreateEvalResponsesRunDataSource < OpenAI::Internal::Type::BaseModel
+        attr_accessor source: OpenAI::Evals::CreateEvalResponsesRunDataSource::source
+
+        attr_accessor type: OpenAI::Evals::CreateEvalResponsesRunDataSource::type_
+
+        attr_reader input_messages: OpenAI::Evals::CreateEvalResponsesRunDataSource::input_messages?
+
+        def input_messages=: (
+          OpenAI::Evals::CreateEvalResponsesRunDataSource::input_messages
+        ) -> OpenAI::Evals::CreateEvalResponsesRunDataSource::input_messages
+
+        attr_reader model: String?
+
+        def model=: (String) -> String
+
+        attr_reader sampling_params: OpenAI::Evals::CreateEvalResponsesRunDataSource::SamplingParams?
+
+        def sampling_params=: (
+          OpenAI::Evals::CreateEvalResponsesRunDataSource::SamplingParams
+        ) -> OpenAI::Evals::CreateEvalResponsesRunDataSource::SamplingParams
+
+        def initialize: (
+          source: OpenAI::Evals::CreateEvalResponsesRunDataSource::source,
+          type: OpenAI::Evals::CreateEvalResponsesRunDataSource::type_,
+          ?input_messages: OpenAI::Evals::CreateEvalResponsesRunDataSource::input_messages,
+          ?model: String,
+          ?sampling_params: OpenAI::Evals::CreateEvalResponsesRunDataSource::SamplingParams
+        ) -> void
+
+        type source =
+          OpenAI::Evals::EvalJSONLFileContentSource
+          | OpenAI::Evals::EvalJSONLFileIDSource
+          | OpenAI::Evals::CreateEvalResponsesRunDataSource::Source::Responses
+
+        module Source
+          extend OpenAI::Internal::Type::Union
+
+          type responses =
+            {
+              type: :responses,
+              created_after: Integer?,
+              created_before: Integer?,
+              has_tool_calls: bool?,
+              instructions_search: String?,
+              metadata: top?,
+              model: String?,
+              reasoning_effort: OpenAI::Models::reasoning_effort?,
+              temperature: Float?,
+              tools: ::Array[String]?,
+              top_p: Float?,
+              users: ::Array[String]?
+            }
+
+          class Responses < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :responses
+
+            attr_accessor created_after: Integer?
+
+            attr_accessor created_before: Integer?
+
+            attr_accessor has_tool_calls: bool?
+
+            attr_accessor instructions_search: String?
+
+            attr_accessor metadata: top?
+
+            attr_accessor model: String?
+
+            attr_accessor reasoning_effort: OpenAI::Models::reasoning_effort?
+
+            attr_accessor temperature: Float?
+
+            attr_accessor tools: ::Array[String]?
+
+            attr_accessor top_p: Float?
+
+            attr_accessor users: ::Array[String]?
+
+            def initialize: (
+              ?created_after: Integer?,
+              ?created_before: Integer?,
+              ?has_tool_calls: bool?,
+              ?instructions_search: String?,
+              ?metadata: top?,
+              ?model: String?,
+              ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+              ?temperature: Float?,
+              ?tools: ::Array[String]?,
+              ?top_p: Float?,
+              ?users: ::Array[String]?,
+              ?type: :responses
+            ) -> void
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Evals::CreateEvalResponsesRunDataSource::source]
+        end
+
+        type type_ = :responses
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          RESPONSES: :responses
+
+          def self?.values: -> ::Array[OpenAI::Evals::CreateEvalResponsesRunDataSource::type_]
+        end
+
+        type input_messages =
+          OpenAI::Evals::CreateEvalResponsesRunDataSource::InputMessages::Template
+          | OpenAI::Evals::CreateEvalResponsesRunDataSource::InputMessages::ItemReference
+
+        module InputMessages
+          extend OpenAI::Internal::Type::Union
+
+          type template =
+            {
+              template: ::Array[OpenAI::Evals::CreateEvalResponsesRunDataSource::InputMessages::Template::template],
+              type: :template
+            }
+
+          class Template < OpenAI::Internal::Type::BaseModel
+            attr_accessor template: ::Array[OpenAI::Evals::CreateEvalResponsesRunDataSource::InputMessages::Template::template]
+
+            attr_accessor type: :template
+
+            def initialize: (
+              template: ::Array[OpenAI::Evals::CreateEvalResponsesRunDataSource::InputMessages::Template::template],
+              ?type: :template
+            ) -> void
+
+            type template =
+              OpenAI::Evals::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage
+              | OpenAI::EvalItem
+
+            module Template
+              extend OpenAI::Internal::Type::Union
+
+              type chat_message = { content: String, role: String }
+
+              class ChatMessage < OpenAI::Internal::Type::BaseModel
+                attr_accessor content: String
+
+                attr_accessor role: String
+
+                def initialize: (content: String, role: String) -> void
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Evals::CreateEvalResponsesRunDataSource::InputMessages::Template::template]
+            end
+          end
+
+          type item_reference =
+            { item_reference: String, type: :item_reference }
+
+          class ItemReference < OpenAI::Internal::Type::BaseModel
+            attr_accessor item_reference: String
+
+            attr_accessor type: :item_reference
+
+            def initialize: (
+              item_reference: String,
+              ?type: :item_reference
+            ) -> void
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Evals::CreateEvalResponsesRunDataSource::input_messages]
+        end
+
+        type sampling_params =
+          {
+            max_completion_tokens: Integer,
+            seed: Integer,
+            temperature: Float,
+            top_p: Float
+          }
+
+        class SamplingParams < OpenAI::Internal::Type::BaseModel
+          attr_reader max_completion_tokens: Integer?
+
+          def max_completion_tokens=: (Integer) -> Integer
+
+          attr_reader seed: Integer?
+
+          def seed=: (Integer) -> Integer
+
+          attr_reader temperature: Float?
+
+          def temperature=: (Float) -> Float
+
+          attr_reader top_p: Float?
+
+          def top_p=: (Float) -> Float
+
+          def initialize: (
+            ?max_completion_tokens: Integer,
+            ?seed: Integer,
+            ?temperature: Float,
+            ?top_p: Float
+          ) -> void
+        end
+      end
+    end
+  end
+end

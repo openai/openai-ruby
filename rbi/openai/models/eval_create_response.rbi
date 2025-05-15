@@ -21,6 +21,7 @@ module OpenAI
         returns(
           T.any(
             OpenAI::EvalCustomDataSourceConfig,
+            OpenAI::EvalLogsDataSourceConfig,
             OpenAI::EvalStoredCompletionsDataSourceConfig
           )
         )
@@ -73,6 +74,7 @@ module OpenAI
           data_source_config:
             T.any(
               OpenAI::EvalCustomDataSourceConfig::OrHash,
+              OpenAI::EvalLogsDataSourceConfig::OrHash,
               OpenAI::EvalStoredCompletionsDataSourceConfig::OrHash
             ),
           metadata: T.nilable(T::Hash[Symbol, String]),
@@ -121,6 +123,7 @@ module OpenAI
             data_source_config:
               T.any(
                 OpenAI::EvalCustomDataSourceConfig,
+                OpenAI::EvalLogsDataSourceConfig,
                 OpenAI::EvalStoredCompletionsDataSourceConfig
               ),
             metadata: T.nilable(T::Hash[Symbol, String]),
@@ -150,6 +153,7 @@ module OpenAI
           T.type_alias do
             T.any(
               OpenAI::EvalCustomDataSourceConfig,
+              OpenAI::EvalLogsDataSourceConfig,
               OpenAI::EvalStoredCompletionsDataSourceConfig
             )
           end

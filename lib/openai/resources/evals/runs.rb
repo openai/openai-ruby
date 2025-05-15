@@ -16,7 +16,7 @@ module OpenAI
         #
         # @param eval_id [String] The ID of the evaluation to create a run for.
         #
-        # @param data_source [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource] Details about the run's data source.
+        # @param data_source [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::CreateEvalResponsesRunDataSource] Details about the run's data source.
         #
         # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
         #

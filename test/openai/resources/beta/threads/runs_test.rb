@@ -35,7 +35,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
         thread_id: String,
         tool_choice: OpenAI::Beta::AssistantToolChoiceOption | nil,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy | nil,
+        truncation_strategy: OpenAI::Beta::TruncationObject | nil,
         usage: OpenAI::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,
         top_p: Float | nil
@@ -75,7 +75,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
         thread_id: String,
         tool_choice: OpenAI::Beta::AssistantToolChoiceOption | nil,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy | nil,
+        truncation_strategy: OpenAI::Beta::TruncationObject | nil,
         usage: OpenAI::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,
         top_p: Float | nil
@@ -115,7 +115,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
         thread_id: String,
         tool_choice: OpenAI::Beta::AssistantToolChoiceOption | nil,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy | nil,
+        truncation_strategy: OpenAI::Beta::TruncationObject | nil,
         usage: OpenAI::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,
         top_p: Float | nil
@@ -162,7 +162,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
         thread_id: String,
         tool_choice: OpenAI::Beta::AssistantToolChoiceOption | nil,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy | nil,
+        truncation_strategy: OpenAI::Beta::TruncationObject | nil,
         usage: OpenAI::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,
         top_p: Float | nil
@@ -202,7 +202,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
         thread_id: String,
         tool_choice: OpenAI::Beta::AssistantToolChoiceOption | nil,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy | nil,
+        truncation_strategy: OpenAI::Beta::TruncationObject | nil,
         usage: OpenAI::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,
         top_p: Float | nil
@@ -243,7 +243,7 @@ class OpenAI::Test::Resources::Beta::Threads::RunsTest < OpenAI::Test::ResourceT
         thread_id: String,
         tool_choice: OpenAI::Beta::AssistantToolChoiceOption | nil,
         tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AssistantTool]),
-        truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy | nil,
+        truncation_strategy: OpenAI::Beta::TruncationObject | nil,
         usage: OpenAI::Beta::Threads::Run::Usage | nil,
         temperature: Float | nil,
         top_p: Float | nil

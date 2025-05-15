@@ -10,7 +10,7 @@ module OpenAI
       # @!attribute data_source_config
       #   The configuration for the data source used for the evaluation runs.
       #
-      #   @return [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions]
+      #   @return [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions]
       required :data_source_config, union: -> { OpenAI::EvalCreateParams::DataSourceConfig }
 
       # @!attribute testing_criteria
@@ -41,7 +41,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::EvalCreateParams} for more details.
       #
-      #   @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs.
+      #   @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs.
       #
       #   @param testing_criteria [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group.
       #
@@ -63,9 +63,12 @@ module OpenAI
         # - What data is required when creating a run
         variant :custom, -> { OpenAI::EvalCreateParams::DataSourceConfig::Custom }
 
-        # A data source config which specifies the metadata property of your stored completions query.
+        # A data source config which specifies the metadata property of your logs query.
         # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
-        variant :stored_completions, -> { OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions }
+        variant :logs, -> { OpenAI::EvalCreateParams::DataSourceConfig::Logs }
+
+        # Deprecated in favor of LogsDataSourceConfig.
+        variant :"stored-completions", -> { OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions }
 
         class Custom < OpenAI::Internal::Type::BaseModel
           # @!attribute item_schema
@@ -105,12 +108,34 @@ module OpenAI
           #   @param type [Symbol, :custom] The type of data source. Always `custom`.
         end
 
+        class Logs < OpenAI::Internal::Type::BaseModel
+          # @!attribute type
+          #   The type of data source. Always `logs`.
+          #
+          #   @return [Symbol, :logs]
+          required :type, const: :logs
+
+          # @!attribute metadata
+          #   Metadata filters for the logs data source.
+          #
+          #   @return [Hash{Symbol=>Object}, nil]
+          optional :metadata, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+
+          # @!method initialize(metadata: nil, type: :logs)
+          #   A data source config which specifies the metadata property of your logs query.
+          #   This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
+          #
+          #   @param metadata [Hash{Symbol=>Object}] Metadata filters for the logs data source.
+          #
+          #   @param type [Symbol, :logs] The type of data source. Always `logs`.
+        end
+
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
           # @!attribute type
-          #   The type of data source. Always `stored_completions`.
+          #   The type of data source. Always `stored-completions`.
           #
-          #   @return [Symbol, :stored_completions]
-          required :type, const: :stored_completions
+          #   @return [Symbol, :"stored-completions"]
+          required :type, const: :"stored-completions"
 
           # @!attribute metadata
           #   Metadata filters for the stored completions data source.
@@ -118,23 +143,22 @@ module OpenAI
           #   @return [Hash{Symbol=>Object}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
-          # @!method initialize(metadata: nil, type: :stored_completions)
-          #   A data source config which specifies the metadata property of your stored
-          #   completions query. This is usually metadata like `usecase=chatbot` or
-          #   `prompt-version=v2`, etc.
+          # @!method initialize(metadata: nil, type: :"stored-completions")
+          #   Deprecated in favor of LogsDataSourceConfig.
           #
           #   @param metadata [Hash{Symbol=>Object}] Metadata filters for the stored completions data source.
           #
-          #   @param type [Symbol, :stored_completions] The type of data source. Always `stored_completions`.
+          #   @param type [Symbol, :"stored-completions"] The type of data source. Always `stored-completions`.
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions)]
+        #   @return [Array(OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions)]
 
         define_sorbet_constant!(:Variants) do
           T.type_alias do
             T.any(
               OpenAI::EvalCreateParams::DataSourceConfig::Custom,
+              OpenAI::EvalCreateParams::DataSourceConfig::Logs,
               OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions
             )
           end
@@ -169,7 +193,7 @@ module OpenAI
           #   A list of chat messages forming the prompt or context. May include variable
           #   references to the "item" namespace, ie {{item.name}}.
           #
-          #   @return [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>]
+          #   @return [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalItem>]
           required :input,
                    -> {
                      OpenAI::Internal::Type::ArrayOf[union: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input]
@@ -212,7 +236,7 @@ module OpenAI
           #   A LabelModelGrader object which uses a model to assign labels to each item in
           #   the evaluation.
           #
-          #   @param input [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
+          #   @param input [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
           #
           #   @param labels [Array<String>] The labels to classify to each item in the evaluation.
           #
@@ -236,7 +260,7 @@ module OpenAI
             # precedence over instructions given with the `user` role. Messages with the
             # `assistant` role are presumed to have been generated by the model in previous
             # interactions.
-            variant -> { OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem }
+            variant -> { OpenAI::EvalItem }
 
             class SimpleInputMessage < OpenAI::Internal::Type::BaseModel
               # @!attribute content
@@ -257,145 +281,14 @@ module OpenAI
               #   @param role [String] The role of the message (e.g. "system", "assistant", "user").
             end
 
-            class EvalItem < OpenAI::Internal::Type::BaseModel
-              # @!attribute content
-              #   Text inputs to the model - can contain template strings.
-              #
-              #   @return [String, OpenAI::Responses::ResponseInputText, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText]
-              required :content,
-                       union: -> {
-                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content
-                       }
-
-              # @!attribute role
-              #   The role of the message input. One of `user`, `assistant`, `system`, or
-              #   `developer`.
-              #
-              #   @return [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role]
-              required :role,
-                       enum: -> {
-                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role
-                       }
-
-              # @!attribute type
-              #   The type of the message input. Always `message`.
-              #
-              #   @return [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type, nil]
-              optional :type,
-                       enum: -> {
-                         OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type
-                       }
-
-              # @!method initialize(content:, role:, type: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem} for
-              #   more details.
-              #
-              #   A message input to the model with a role indicating instruction following
-              #   hierarchy. Instructions given with the `developer` or `system` role take
-              #   precedence over instructions given with the `user` role. Messages with the
-              #   `assistant` role are presumed to have been generated by the model in previous
-              #   interactions.
-              #
-              #   @param content [String, OpenAI::Responses::ResponseInputText, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText] Text inputs to the model - can contain template strings.
-              #
-              #   @param role [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Role] The role of the message input. One of `user`, `assistant`, `system`, or
-              #
-              #   @param type [Symbol, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Type] The type of the message input. Always `message`.
-
-              # Text inputs to the model - can contain template strings.
-              #
-              # @see OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#content
-              module Content
-                extend OpenAI::Internal::Type::Union
-
-                # A text input to the model.
-                variant String
-
-                # A text input to the model.
-                variant -> { OpenAI::Responses::ResponseInputText }
-
-                # A text output from the model.
-                variant -> {
-                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
-                }
-
-                class OutputText < OpenAI::Internal::Type::BaseModel
-                  # @!attribute text
-                  #   The text output from the model.
-                  #
-                  #   @return [String]
-                  required :text, String
-
-                  # @!attribute type
-                  #   The type of the output text. Always `output_text`.
-                  #
-                  #   @return [Symbol, :output_text]
-                  required :type, const: :output_text
-
-                  # @!method initialize(text:, type: :output_text)
-                  #   Some parameter documentations has been truncated, see
-                  #   {OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText}
-                  #   for more details.
-                  #
-                  #   A text output from the model.
-                  #
-                  #   @param text [String] The text output from the model.
-                  #
-                  #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
-                end
-
-                # @!method self.variants
-                #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText)]
-
-                define_sorbet_constant!(:Variants) do
-                  T.type_alias do
-                    T.any(
-                      String,
-                      OpenAI::Responses::ResponseInputText,
-                      OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
-                    )
-                  end
-                end
-              end
-
-              # The role of the message input. One of `user`, `assistant`, `system`, or
-              # `developer`.
-              #
-              # @see OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#role
-              module Role
-                extend OpenAI::Internal::Type::Enum
-
-                USER = :user
-                ASSISTANT = :assistant
-                SYSTEM = :system
-                DEVELOPER = :developer
-
-                # @!method self.values
-                #   @return [Array<Symbol>]
-              end
-
-              # The type of the message input. Always `message`.
-              #
-              # @see OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem#type
-              module Type
-                extend OpenAI::Internal::Type::Enum
-
-                MESSAGE = :message
-
-                # @!method self.values
-                #   @return [Array<Symbol>]
-              end
-            end
-
             # @!method self.variants
-            #   @return [Array(OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem)]
+            #   @return [Array(OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalItem)]
 
             define_sorbet_constant!(:Variants) do
               T.type_alias do
                 T.any(
                   OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage,
-                  OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem
+                  OpenAI::EvalItem
                 )
               end
             end

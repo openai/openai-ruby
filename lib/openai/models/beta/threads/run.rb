@@ -197,8 +197,8 @@ module OpenAI
           #   Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           #
-          #   @return [OpenAI::Beta::Threads::Run::TruncationStrategy, nil]
-          required :truncation_strategy, -> { OpenAI::Beta::Threads::Run::TruncationStrategy }, nil?: true
+          #   @return [OpenAI::Beta::TruncationObject, nil]
+          required :truncation_strategy, -> { OpenAI::Beta::TruncationObject }, nil?: true
 
           # @!attribute usage
           #   Usage statistics related to the run. This value will be `null` if the run is not
@@ -270,7 +270,7 @@ module OpenAI
           #
           #   @param tools [Array<OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool>] The list of tools that the [assistant](https://platform.openai.com/docs/api-refe
           #
-          #   @param truncation_strategy [OpenAI::Beta::Threads::Run::TruncationStrategy, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
+          #   @param truncation_strategy [OpenAI::Beta::TruncationObject, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
           #
           #   @param usage [OpenAI::Beta::Threads::Run::Usage, nil] Usage statistics related to the run. This value will be `null` if the run is not
           #
@@ -389,52 +389,6 @@ module OpenAI
               #   Details on the tool outputs needed for this run to continue.
               #
               #   @param tool_calls [Array<OpenAI::Beta::Threads::RequiredActionFunctionToolCall>] A list of the relevant tool calls.
-            end
-          end
-
-          # @see OpenAI::Beta::Threads::Run#truncation_strategy
-          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-            # @!attribute type
-            #   The truncation strategy to use for the thread. The default is `auto`. If set to
-            #   `last_messages`, the thread will be truncated to the n most recent messages in
-            #   the thread. When set to `auto`, messages in the middle of the thread will be
-            #   dropped to fit the context length of the model, `max_prompt_tokens`.
-            #
-            #   @return [Symbol, OpenAI::Beta::Threads::Run::TruncationStrategy::Type]
-            required :type, enum: -> { OpenAI::Beta::Threads::Run::TruncationStrategy::Type }
-
-            # @!attribute last_messages
-            #   The number of most recent messages from the thread when constructing the context
-            #   for the run.
-            #
-            #   @return [Integer, nil]
-            optional :last_messages, Integer, nil?: true
-
-            # @!method initialize(type:, last_messages: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Threads::Run::TruncationStrategy} for more details.
-            #
-            #   Controls for how a thread will be truncated prior to the run. Use this to
-            #   control the intial context window of the run.
-            #
-            #   @param type [Symbol, OpenAI::Beta::Threads::Run::TruncationStrategy::Type] The truncation strategy to use for the thread. The default is `auto`. If set to
-            #
-            #   @param last_messages [Integer, nil] The number of most recent messages from the thread when constructing the context
-
-            # The truncation strategy to use for the thread. The default is `auto`. If set to
-            # `last_messages`, the thread will be truncated to the n most recent messages in
-            # the thread. When set to `auto`, messages in the middle of the thread will be
-            # dropped to fit the context length of the model, `max_prompt_tokens`.
-            #
-            # @see OpenAI::Beta::Threads::Run::TruncationStrategy#type
-            module Type
-              extend OpenAI::Internal::Type::Enum
-
-              AUTO = :auto
-              LAST_MESSAGES = :last_messages
-
-              # @!method self.values
-              #   @return [Array<Symbol>]
             end
           end
 

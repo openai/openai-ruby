@@ -38,6 +38,7 @@ module OpenAI
 
       type data_source_config =
         OpenAI::EvalCustomDataSourceConfig
+        | OpenAI::EvalLogsDataSourceConfig
         | OpenAI::EvalStoredCompletionsDataSourceConfig
 
       module DataSourceConfig

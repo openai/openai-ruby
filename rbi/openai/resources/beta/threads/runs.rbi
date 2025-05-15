@@ -61,9 +61,7 @@ module OpenAI
                 ),
               top_p: T.nilable(Float),
               truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                ),
+                T.nilable(OpenAI::Beta::TruncationObject::OrHash),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(OpenAI::Beta::Threads::Run)
@@ -237,9 +235,7 @@ module OpenAI
                 ),
               top_p: T.nilable(Float),
               truncation_strategy:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::OrHash
-                ),
+                T.nilable(OpenAI::Beta::TruncationObject::OrHash),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(

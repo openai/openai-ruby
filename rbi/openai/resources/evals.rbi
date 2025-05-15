@@ -16,6 +16,7 @@ module OpenAI
           data_source_config:
             T.any(
               OpenAI::EvalCreateParams::DataSourceConfig::Custom::OrHash,
+              OpenAI::EvalCreateParams::DataSourceConfig::Logs::OrHash,
               OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions::OrHash
             ),
           testing_criteria:
