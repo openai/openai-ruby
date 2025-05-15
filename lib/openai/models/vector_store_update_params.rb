@@ -10,8 +10,8 @@ module OpenAI
       # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
-      #   @return [OpenAI::VectorStoreUpdateParams::ExpiresAfter, nil]
-      optional :expires_after, -> { OpenAI::VectorStoreUpdateParams::ExpiresAfter }, nil?: true
+      #   @return [OpenAI::VectorStoreExpirationAfter, nil]
+      optional :expires_after, -> { OpenAI::VectorStoreExpirationAfter }, nil?: true
 
       # @!attribute metadata
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -34,38 +34,13 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::VectorStoreUpdateParams} for more details.
       #
-      #   @param expires_after [OpenAI::VectorStoreUpdateParams::ExpiresAfter, nil] The expiration policy for a vector store.
+      #   @param expires_after [OpenAI::VectorStoreExpirationAfter, nil] The expiration policy for a vector store.
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
       #   @param name [String, nil] The name of the vector store.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
-
-      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-        # @!attribute anchor
-        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
-        #   `last_active_at`.
-        #
-        #   @return [Symbol, :last_active_at]
-        required :anchor, const: :last_active_at
-
-        # @!attribute days
-        #   The number of days after the anchor time that the vector store will expire.
-        #
-        #   @return [Integer]
-        required :days, Integer
-
-        # @!method initialize(days:, anchor: :last_active_at)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::VectorStoreUpdateParams::ExpiresAfter} for more details.
-        #
-        #   The expiration policy for a vector store.
-        #
-        #   @param days [Integer] The number of days after the anchor time that the vector store will expire.
-        #
-        #   @param anchor [Symbol, :last_active_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
-      end
     end
   end
 end

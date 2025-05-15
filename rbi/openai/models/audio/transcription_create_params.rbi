@@ -26,6 +26,22 @@ module OpenAI
         sig { returns(T.any(String, OpenAI::AudioModel::OrSymbol)) }
         attr_accessor :model
 
+        # Controls how the audio is cut into chunks. When set to `"auto"`, the server
+        # first normalizes loudness and then uses voice activity detection (VAD) to choose
+        # boundaries. `server_vad` object can be provided to tweak VAD detection
+        # parameters manually. If unset, the audio is transcribed as a single block.
+        sig do
+          returns(
+            T.nilable(
+              T.any(
+                Symbol,
+                OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig
+              )
+            )
+          )
+        end
+        attr_accessor :chunking_strategy
+
         # Additional information to include in the transcription response. `logprobs` will
         # return the log probabilities of the tokens in the response to understand the
         # model's confidence in the transcription. `logprobs` only works with
@@ -116,6 +132,13 @@ module OpenAI
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
+            chunking_strategy:
+              T.nilable(
+                T.any(
+                  Symbol,
+                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::OrHash
+                )
+              ),
             include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
             language: String,
             prompt: String,
@@ -136,6 +159,11 @@ module OpenAI
           # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
           # Whisper V2 model).
           model:,
+          # Controls how the audio is cut into chunks. When set to `"auto"`, the server
+          # first normalizes loudness and then uses voice activity detection (VAD) to choose
+          # boundaries. `server_vad` object can be provided to tweak VAD detection
+          # parameters manually. If unset, the audio is transcribed as a single block.
+          chunking_strategy: nil,
           # Additional information to include in the transcription response. `logprobs` will
           # return the log probabilities of the tokens in the response to understand the
           # model's confidence in the transcription. `logprobs` only works with
@@ -176,6 +204,13 @@ module OpenAI
             {
               file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
               model: T.any(String, OpenAI::AudioModel::OrSymbol),
+              chunking_strategy:
+                T.nilable(
+                  T.any(
+                    Symbol,
+                    OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig
+                  )
+                ),
               include: T::Array[OpenAI::Audio::TranscriptionInclude::OrSymbol],
               language: String,
               prompt: String,
@@ -205,6 +240,144 @@ module OpenAI
             override.returns(
               T::Array[
                 OpenAI::Audio::TranscriptionCreateParams::Model::Variants
+              ]
+            )
+          end
+          def self.variants
+          end
+        end
+
+        # Controls how the audio is cut into chunks. When set to `"auto"`, the server
+        # first normalizes loudness and then uses voice activity detection (VAD) to choose
+        # boundaries. `server_vad` object can be provided to tweak VAD detection
+        # parameters manually. If unset, the audio is transcribed as a single block.
+        module ChunkingStrategy
+          extend OpenAI::Internal::Type::Union
+
+          Variants =
+            T.type_alias do
+              T.any(
+                Symbol,
+                OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig
+              )
+            end
+
+          class VadConfig < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # Must be set to `server_vad` to enable manual chunking using server side VAD.
+            sig do
+              returns(
+                OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type::OrSymbol
+              )
+            end
+            attr_accessor :type
+
+            # Amount of audio to include before the VAD detected speech (in milliseconds).
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :prefix_padding_ms
+
+            sig { params(prefix_padding_ms: Integer).void }
+            attr_writer :prefix_padding_ms
+
+            # Duration of silence to detect speech stop (in milliseconds). With shorter values
+            # the model will respond more quickly, but may jump in on short pauses from the
+            # user.
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :silence_duration_ms
+
+            sig { params(silence_duration_ms: Integer).void }
+            attr_writer :silence_duration_ms
+
+            # Sensitivity threshold (0.0 to 1.0) for voice activity detection. A higher
+            # threshold will require louder audio to activate the model, and thus might
+            # perform better in noisy environments.
+            sig { returns(T.nilable(Float)) }
+            attr_reader :threshold
+
+            sig { params(threshold: Float).void }
+            attr_writer :threshold
+
+            sig do
+              params(
+                type:
+                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type::OrSymbol,
+                prefix_padding_ms: Integer,
+                silence_duration_ms: Integer,
+                threshold: Float
+              ).returns(T.attached_class)
+            end
+            def self.new(
+              # Must be set to `server_vad` to enable manual chunking using server side VAD.
+              type:,
+              # Amount of audio to include before the VAD detected speech (in milliseconds).
+              prefix_padding_ms: nil,
+              # Duration of silence to detect speech stop (in milliseconds). With shorter values
+              # the model will respond more quickly, but may jump in on short pauses from the
+              # user.
+              silence_duration_ms: nil,
+              # Sensitivity threshold (0.0 to 1.0) for voice activity detection. A higher
+              # threshold will require louder audio to activate the model, and thus might
+              # perform better in noisy environments.
+              threshold: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  type:
+                    OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type::OrSymbol,
+                  prefix_padding_ms: Integer,
+                  silence_duration_ms: Integer,
+                  threshold: Float
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # Must be set to `server_vad` to enable manual chunking using server side VAD.
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol =
+                T.type_alias do
+                  T.all(
+                    Symbol,
+                    OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type
+                  )
+                end
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              SERVER_VAD =
+                T.let(
+                  :server_vad,
+                  OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type::TaggedSymbol
+                )
+
+              sig do
+                override.returns(
+                  T::Array[
+                    OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::Type::TaggedSymbol
+                  ]
+                )
+              end
+              def self.values
+              end
+            end
+          end
+
+          sig do
+            override.returns(
+              T::Array[
+                OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::Variants
               ]
             )
           end

@@ -17,7 +17,7 @@ module OpenAI
       #
       # @overload create(data_source_config:, testing_criteria:, metadata: nil, name: nil, request_options: {})
       #
-      # @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs.
+      # @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs.
       #
       # @param testing_criteria [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group.
       #

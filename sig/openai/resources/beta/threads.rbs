@@ -45,7 +45,7 @@ module OpenAI
           ?tool_resources: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources?,
           ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
           ?top_p: Float?,
-          ?truncation_strategy: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
+          ?truncation_strategy: OpenAI::Beta::TruncationObject?,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Beta::Threads::Run
 
@@ -64,7 +64,7 @@ module OpenAI
           ?tool_resources: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources?,
           ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
           ?top_p: Float?,
-          ?truncation_strategy: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
+          ?truncation_strategy: OpenAI::Beta::TruncationObject?,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::assistant_stream_event]
 

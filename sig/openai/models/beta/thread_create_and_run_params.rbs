@@ -17,7 +17,7 @@ module OpenAI
           tool_resources: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources?,
           tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
           top_p: Float?,
-          truncation_strategy: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy?
+          truncation_strategy: OpenAI::Beta::TruncationObject?
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -59,7 +59,7 @@ module OpenAI
 
         attr_accessor top_p: Float?
 
-        attr_accessor truncation_strategy: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy?
+        attr_accessor truncation_strategy: OpenAI::Beta::TruncationObject?
 
         def initialize: (
           assistant_id: String,
@@ -76,7 +76,7 @@ module OpenAI
           ?tool_resources: OpenAI::Beta::ThreadCreateAndRunParams::ToolResources?,
           ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
           ?top_p: Float?,
-          ?truncation_strategy: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy?,
+          ?truncation_strategy: OpenAI::Beta::TruncationObject?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
@@ -381,34 +381,6 @@ module OpenAI
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?vector_store_ids: ::Array[String]) -> void
-          end
-        end
-
-        type truncation_strategy =
-          {
-            type: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
-            last_messages: Integer?
-          }
-
-        class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-          attr_accessor type: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_
-
-          attr_accessor last_messages: Integer?
-
-          def initialize: (
-            type: OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_,
-            ?last_messages: Integer?
-          ) -> void
-
-          type type_ = :auto | :last_messages
-
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            AUTO: :auto
-            LAST_MESSAGES: :last_messages
-
-            def self?.values: -> ::Array[OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::type_]
           end
         end
       end

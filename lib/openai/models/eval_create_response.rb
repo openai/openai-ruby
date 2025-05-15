@@ -19,7 +19,7 @@ module OpenAI
       # @!attribute data_source_config
       #   Configuration of data sources used in runs of the evaluation.
       #
-      #   @return [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig]
+      #   @return [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig]
       required :data_source_config, union: -> { OpenAI::Models::EvalCreateResponse::DataSourceConfig }
 
       # @!attribute metadata
@@ -67,7 +67,7 @@ module OpenAI
       #
       #   @param created_at [Integer] The Unix timestamp (in seconds) for when the eval was created.
       #
-      #   @param data_source_config [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
+      #   @param data_source_config [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
@@ -91,18 +91,25 @@ module OpenAI
         # - What data is required when creating a run
         variant :custom, -> { OpenAI::EvalCustomDataSourceConfig }
 
-        # A StoredCompletionsDataSourceConfig which specifies the metadata property of your stored completions query.
+        # A LogsDataSourceConfig which specifies the metadata property of your logs query.
         # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
         # The schema returned by this data source config is used to defined what variables are available in your evals.
         # `item` and `sample` are both defined when using this data source config.
-        variant :stored_completions, -> { OpenAI::EvalStoredCompletionsDataSourceConfig }
+        variant :logs, -> { OpenAI::EvalLogsDataSourceConfig }
+
+        # Deprecated in favor of LogsDataSourceConfig.
+        variant :"stored-completions", -> { OpenAI::EvalStoredCompletionsDataSourceConfig }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)]
+        #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)]
 
         define_sorbet_constant!(:Variants) do
           T.type_alias do
-            T.any(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)
+            T.any(
+              OpenAI::EvalCustomDataSourceConfig,
+              OpenAI::EvalLogsDataSourceConfig,
+              OpenAI::EvalStoredCompletionsDataSourceConfig
+            )
           end
         end
       end

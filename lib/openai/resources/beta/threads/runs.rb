@@ -52,7 +52,7 @@ module OpenAI
           #
           # @param top_p [Float, nil] Body param: An alternative to sampling with temperature, called nucleus sampling
           #
-          # @param truncation_strategy [OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
+          # @param truncation_strategy [OpenAI::Beta::TruncationObject, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -120,7 +120,7 @@ module OpenAI
           #
           # @param top_p [Float, nil] Body param: An alternative to sampling with temperature, called nucleus sampling
           #
-          # @param truncation_strategy [OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
+          # @param truncation_strategy [OpenAI::Beta::TruncationObject, nil] Body param: Controls for how a thread will be truncated prior to the run. Use th
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

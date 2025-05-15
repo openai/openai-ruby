@@ -318,11 +318,8 @@ module OpenAI
 
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
-          sig { returns(T.nilable(T.any(Symbol, Integer))) }
-          attr_reader :batch_size
-
-          sig { params(batch_size: T.any(Symbol, Integer)).void }
-          attr_writer :batch_size
+          sig { returns(T.nilable(T.any(T.anything, Symbol, Integer))) }
+          attr_accessor :batch_size
 
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           # avoid overfitting.
@@ -344,7 +341,7 @@ module OpenAI
           # returned when running `supervised` jobs.
           sig do
             params(
-              batch_size: T.any(Symbol, Integer),
+              batch_size: T.nilable(T.any(T.anything, Symbol, Integer)),
               learning_rate_multiplier: T.any(Symbol, Float),
               n_epochs: T.any(Symbol, Integer)
             ).returns(T.attached_class)
@@ -365,7 +362,7 @@ module OpenAI
           sig do
             override.returns(
               {
-                batch_size: T.any(Symbol, Integer),
+                batch_size: T.nilable(T.any(T.anything, Symbol, Integer)),
                 learning_rate_multiplier: T.any(Symbol, Float),
                 n_epochs: T.any(Symbol, Integer)
               }
@@ -379,7 +376,8 @@ module OpenAI
           module BatchSize
             extend OpenAI::Internal::Type::Union
 
-            Variants = T.type_alias { T.any(Symbol, Integer) }
+            Variants =
+              T.type_alias { T.nilable(T.any(T.anything, Symbol, Integer)) }
 
             sig do
               override.returns(

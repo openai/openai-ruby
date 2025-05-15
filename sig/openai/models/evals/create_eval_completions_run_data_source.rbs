@@ -40,55 +40,12 @@ module OpenAI
         ) -> void
 
         type source =
-          OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent
-          | OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID
+          OpenAI::Evals::EvalJSONLFileContentSource
+          | OpenAI::Evals::EvalJSONLFileIDSource
           | OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
 
         module Source
           extend OpenAI::Internal::Type::Union
-
-          type file_content =
-            {
-              content: ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content],
-              type: :file_content
-            }
-
-          class FileContent < OpenAI::Internal::Type::BaseModel
-            attr_accessor content: ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content]
-
-            attr_accessor type: :file_content
-
-            def initialize: (
-              content: ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content],
-              ?type: :file_content
-            ) -> void
-
-            type content =
-              { item: ::Hash[Symbol, top], sample: ::Hash[Symbol, top] }
-
-            class Content < OpenAI::Internal::Type::BaseModel
-              attr_accessor item: ::Hash[Symbol, top]
-
-              attr_reader sample: ::Hash[Symbol, top]?
-
-              def sample=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
-
-              def initialize: (
-                item: ::Hash[Symbol, top],
-                ?sample: ::Hash[Symbol, top]
-              ) -> void
-            end
-          end
-
-          type file_id = { id: String, type: :file_id }
-
-          class FileID < OpenAI::Internal::Type::BaseModel
-            attr_accessor id: String
-
-            attr_accessor type: :file_id
-
-            def initialize: (id: String, ?type: :file_id) -> void
-          end
 
           type stored_completions =
             {
@@ -160,80 +117,10 @@ module OpenAI
             ) -> void
 
             type template =
-              OpenAI::Responses::EasyInputMessage
-              | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+              OpenAI::Responses::EasyInputMessage | OpenAI::EvalItem
 
             module Template
               extend OpenAI::Internal::Type::Union
-
-              type message =
-                {
-                  content: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content,
-                  role: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role,
-                  type: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
-                }
-
-              class Message < OpenAI::Internal::Type::BaseModel
-                attr_accessor content: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content
-
-                attr_accessor role: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role
-
-                attr_reader type: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_?
-
-                def type=: (
-                  OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
-                ) -> OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
-
-                def initialize: (
-                  content: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content,
-                  role: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role,
-                  ?type: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_
-                ) -> void
-
-                type content =
-                  String
-                  | OpenAI::Responses::ResponseInputText
-                  | OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
-
-                module Content
-                  extend OpenAI::Internal::Type::Union
-
-                  type output_text = { text: String, type: :output_text }
-
-                  class OutputText < OpenAI::Internal::Type::BaseModel
-                    attr_accessor text: String
-
-                    attr_accessor type: :output_text
-
-                    def initialize: (text: String, ?type: :output_text) -> void
-                  end
-
-                  def self?.variants: -> ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::content]
-                end
-
-                type role = :user | :assistant | :system | :developer
-
-                module Role
-                  extend OpenAI::Internal::Type::Enum
-
-                  USER: :user
-                  ASSISTANT: :assistant
-                  SYSTEM: :system
-                  DEVELOPER: :developer
-
-                  def self?.values: -> ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::role]
-                end
-
-                type type_ = :message
-
-                module Type
-                  extend OpenAI::Internal::Type::Enum
-
-                  MESSAGE: :message
-
-                  def self?.values: -> ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::type_]
-                end
-              end
 
               def self?.variants: -> ::Array[OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::template]
             end

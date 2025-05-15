@@ -159,10 +159,8 @@ module OpenAI
         #   Controls for how a thread will be truncated prior to the run. Use this to
         #   control the intial context window of the run.
         #
-        #   @return [OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy, nil]
-        optional :truncation_strategy,
-                 -> { OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy },
-                 nil?: true
+        #   @return [OpenAI::Beta::TruncationObject, nil]
+        optional :truncation_strategy, -> { OpenAI::Beta::TruncationObject }, nil?: true
 
         # @!method initialize(assistant_id:, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, response_format: nil, temperature: nil, thread: nil, tool_choice: nil, tool_resources: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
@@ -196,7 +194,7 @@ module OpenAI
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
         #
-        #   @param truncation_strategy [OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
+        #   @param truncation_strategy [OpenAI::Beta::TruncationObject, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -706,51 +704,6 @@ module OpenAI
             #   details.
             #
             #   @param vector_store_ids [Array<String>] The ID of the [vector store](https://platform.openai.com/docs/api-reference/vect
-          end
-        end
-
-        class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-          # @!attribute type
-          #   The truncation strategy to use for the thread. The default is `auto`. If set to
-          #   `last_messages`, the thread will be truncated to the n most recent messages in
-          #   the thread. When set to `auto`, messages in the middle of the thread will be
-          #   dropped to fit the context length of the model, `max_prompt_tokens`.
-          #
-          #   @return [Symbol, OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type]
-          required :type, enum: -> { OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type }
-
-          # @!attribute last_messages
-          #   The number of most recent messages from the thread when constructing the context
-          #   for the run.
-          #
-          #   @return [Integer, nil]
-          optional :last_messages, Integer, nil?: true
-
-          # @!method initialize(type:, last_messages: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy} for more details.
-          #
-          #   Controls for how a thread will be truncated prior to the run. Use this to
-          #   control the intial context window of the run.
-          #
-          #   @param type [Symbol, OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type] The truncation strategy to use for the thread. The default is `auto`. If set to
-          #
-          #   @param last_messages [Integer, nil] The number of most recent messages from the thread when constructing the context
-
-          # The truncation strategy to use for the thread. The default is `auto`. If set to
-          # `last_messages`, the thread will be truncated to the n most recent messages in
-          # the thread. When set to `auto`, messages in the middle of the thread will be
-          # dropped to fit the context length of the model, `max_prompt_tokens`.
-          #
-          # @see OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy#type
-          module Type
-            extend OpenAI::Internal::Type::Enum
-
-            AUTO = :auto
-            LAST_MESSAGES = :last_messages
-
-            # @!method self.values
-            #   @return [Array<Symbol>]
           end
         end
       end

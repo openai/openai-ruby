@@ -187,10 +187,8 @@ module OpenAI
           #   Controls for how a thread will be truncated prior to the run. Use this to
           #   control the intial context window of the run.
           #
-          #   @return [OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy, nil]
-          optional :truncation_strategy,
-                   -> { OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy },
-                   nil?: true
+          #   @return [OpenAI::Beta::TruncationObject, nil]
+          optional :truncation_strategy, -> { OpenAI::Beta::TruncationObject }, nil?: true
 
           # @!method initialize(assistant_id:, include: nil, additional_instructions: nil, additional_messages: nil, instructions: nil, max_completion_tokens: nil, max_prompt_tokens: nil, metadata: nil, model: nil, parallel_tool_calls: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_choice: nil, tools: nil, top_p: nil, truncation_strategy: nil, request_options: {})
           #   Some parameter documentations has been truncated, see
@@ -228,7 +226,7 @@ module OpenAI
           #
           #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
           #
-          #   @param truncation_strategy [OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
+          #   @param truncation_strategy [OpenAI::Beta::TruncationObject, nil] Controls for how a thread will be truncated prior to the run. Use this to contro
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -417,51 +415,6 @@ module OpenAI
 
             define_sorbet_constant!(:Variants) do
               T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
-            end
-          end
-
-          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
-            # @!attribute type
-            #   The truncation strategy to use for the thread. The default is `auto`. If set to
-            #   `last_messages`, the thread will be truncated to the n most recent messages in
-            #   the thread. When set to `auto`, messages in the middle of the thread will be
-            #   dropped to fit the context length of the model, `max_prompt_tokens`.
-            #
-            #   @return [Symbol, OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type]
-            required :type, enum: -> { OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type }
-
-            # @!attribute last_messages
-            #   The number of most recent messages from the thread when constructing the context
-            #   for the run.
-            #
-            #   @return [Integer, nil]
-            optional :last_messages, Integer, nil?: true
-
-            # @!method initialize(type:, last_messages: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy} for more details.
-            #
-            #   Controls for how a thread will be truncated prior to the run. Use this to
-            #   control the intial context window of the run.
-            #
-            #   @param type [Symbol, OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy::Type] The truncation strategy to use for the thread. The default is `auto`. If set to
-            #
-            #   @param last_messages [Integer, nil] The number of most recent messages from the thread when constructing the context
-
-            # The truncation strategy to use for the thread. The default is `auto`. If set to
-            # `last_messages`, the thread will be truncated to the n most recent messages in
-            # the thread. When set to `auto`, messages in the middle of the thread will be
-            # dropped to fit the context length of the model, `max_prompt_tokens`.
-            #
-            # @see OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy#type
-            module Type
-              extend OpenAI::Internal::Type::Enum
-
-              AUTO = :auto
-              LAST_MESSAGES = :last_messages
-
-              # @!method self.values
-              #   @return [Array<Symbol>]
             end
           end
         end
