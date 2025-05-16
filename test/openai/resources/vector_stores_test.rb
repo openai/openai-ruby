@@ -21,7 +21,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         object: Symbol,
         status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
+        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
         expires_at: Integer | nil
       }
     end
@@ -45,7 +45,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         object: Symbol,
         status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
+        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
         expires_at: Integer | nil
       }
     end
@@ -69,7 +69,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         object: Symbol,
         status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
+        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
         expires_at: Integer | nil
       }
     end
@@ -100,7 +100,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
         object: Symbol,
         status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
+        expires_after: OpenAI::VectorStore::ExpiresAfter | nil,
         expires_at: Integer | nil
       }
     end

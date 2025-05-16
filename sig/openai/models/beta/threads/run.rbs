@@ -27,7 +27,7 @@ module OpenAI
             thread_id: String,
             tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-            truncation_strategy: OpenAI::Beta::TruncationObject?,
+            truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?,
             usage: OpenAI::Beta::Threads::Run::Usage?,
             temperature: Float?,
             top_p: Float?
@@ -80,7 +80,7 @@ module OpenAI
 
           attr_accessor tools: ::Array[OpenAI::Models::Beta::assistant_tool]
 
-          attr_accessor truncation_strategy: OpenAI::Beta::TruncationObject?
+          attr_accessor truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?
 
           attr_accessor usage: OpenAI::Beta::Threads::Run::Usage?
 
@@ -111,7 +111,7 @@ module OpenAI
             thread_id: String,
             tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             tools: ::Array[OpenAI::Models::Beta::assistant_tool],
-            truncation_strategy: OpenAI::Beta::TruncationObject?,
+            truncation_strategy: OpenAI::Beta::Threads::Run::TruncationStrategy?,
             usage: OpenAI::Beta::Threads::Run::Usage?,
             ?temperature: Float?,
             ?top_p: Float?,
@@ -200,6 +200,34 @@ module OpenAI
               def initialize: (
                 tool_calls: ::Array[OpenAI::Beta::Threads::RequiredActionFunctionToolCall]
               ) -> void
+            end
+          end
+
+          type truncation_strategy =
+            {
+              type: OpenAI::Beta::Threads::Run::TruncationStrategy::type_,
+              last_messages: Integer?
+            }
+
+          class TruncationStrategy < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: OpenAI::Beta::Threads::Run::TruncationStrategy::type_
+
+            attr_accessor last_messages: Integer?
+
+            def initialize: (
+              type: OpenAI::Beta::Threads::Run::TruncationStrategy::type_,
+              ?last_messages: Integer?
+            ) -> void
+
+            type type_ = :auto | :last_messages
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              AUTO: :auto
+              LAST_MESSAGES: :last_messages
+
+              def self?.values: -> ::Array[OpenAI::Beta::Threads::Run::TruncationStrategy::type_]
             end
           end
 

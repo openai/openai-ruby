@@ -67,8 +67,8 @@ module OpenAI
       # @!attribute expires_after
       #   The expiration policy for a vector store.
       #
-      #   @return [OpenAI::VectorStoreExpirationAfter, nil]
-      optional :expires_after, -> { OpenAI::VectorStoreExpirationAfter }
+      #   @return [OpenAI::VectorStore::ExpiresAfter, nil]
+      optional :expires_after, -> { OpenAI::VectorStore::ExpiresAfter }
 
       # @!attribute expires_at
       #   The Unix timestamp (in seconds) for when the vector store will expire.
@@ -99,7 +99,7 @@ module OpenAI
       #
       #   @param usage_bytes [Integer] The total number of bytes used by the files in the vector store.
       #
-      #   @param expires_after [OpenAI::VectorStoreExpirationAfter] The expiration policy for a vector store.
+      #   @param expires_after [OpenAI::VectorStore::ExpiresAfter] The expiration policy for a vector store.
       #
       #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) for when the vector store will expire.
       #
@@ -163,6 +163,32 @@ module OpenAI
 
         # @!method self.values
         #   @return [Array<Symbol>]
+      end
+
+      # @see OpenAI::VectorStore#expires_after
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        # @!attribute anchor
+        #   Anchor timestamp after which the expiration policy applies. Supported anchors:
+        #   `last_active_at`.
+        #
+        #   @return [Symbol, :last_active_at]
+        required :anchor, const: :last_active_at
+
+        # @!attribute days
+        #   The number of days after the anchor time that the vector store will expire.
+        #
+        #   @return [Integer]
+        required :days, Integer
+
+        # @!method initialize(days:, anchor: :last_active_at)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::VectorStore::ExpiresAfter} for more details.
+        #
+        #   The expiration policy for a vector store.
+        #
+        #   @param days [Integer] The number of days after the anchor time that the vector store will expire.
+        #
+        #   @param anchor [Symbol, :last_active_at] Anchor timestamp after which the expiration policy applies. Supported anchors: `
       end
     end
   end

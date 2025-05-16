@@ -22,7 +22,7 @@ module OpenAI
         required :name, String
 
         # @!attribute type
-        #   The type of grader.
+        #   The object type, which is always `multi`.
         #
         #   @return [Symbol, :multi]
         required :type, const: :multi
@@ -37,7 +37,7 @@ module OpenAI
         #
         #   @param name [String] The name of the grader.
         #
-        #   @param type [Symbol, :multi] The type of grader.
+        #   @param type [Symbol, :multi] The object type, which is always `multi`.
 
         # A StringCheckGrader object that performs a string comparison between input and
         # reference using a specified operation.

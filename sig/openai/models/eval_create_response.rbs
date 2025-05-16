@@ -38,11 +38,32 @@ module OpenAI
 
       type data_source_config =
         OpenAI::EvalCustomDataSourceConfig
-        | OpenAI::EvalLogsDataSourceConfig
+        | OpenAI::Models::EvalCreateResponse::DataSourceConfig::Logs
         | OpenAI::EvalStoredCompletionsDataSourceConfig
 
       module DataSourceConfig
         extend OpenAI::Internal::Type::Union
+
+        type logs =
+          {
+            schema: ::Hash[Symbol, top],
+            type: :logs,
+            metadata: OpenAI::Models::metadata?
+          }
+
+        class Logs < OpenAI::Internal::Type::BaseModel
+          attr_accessor schema: ::Hash[Symbol, top]
+
+          attr_accessor type: :logs
+
+          attr_accessor metadata: OpenAI::Models::metadata?
+
+          def initialize: (
+            schema: ::Hash[Symbol, top],
+            ?metadata: OpenAI::Models::metadata?,
+            ?type: :logs
+          ) -> void
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::EvalCreateResponse::data_source_config]
       end

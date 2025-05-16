@@ -188,13 +188,21 @@ module OpenAI
 
         # Controls for how a thread will be truncated prior to the run. Use this to
         # control the intial context window of the run.
-        sig { returns(T.nilable(OpenAI::Beta::TruncationObject)) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy
+            )
+          )
+        end
         attr_reader :truncation_strategy
 
         sig do
           params(
             truncation_strategy:
-              T.nilable(OpenAI::Beta::TruncationObject::OrHash)
+              T.nilable(
+                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash
+              )
           ).void
         end
         attr_writer :truncation_strategy
@@ -242,7 +250,9 @@ module OpenAI
               ),
             top_p: T.nilable(Float),
             truncation_strategy:
-              T.nilable(OpenAI::Beta::TruncationObject::OrHash),
+              T.nilable(
+                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::OrHash
+              ),
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -382,7 +392,10 @@ module OpenAI
                   ]
                 ),
               top_p: T.nilable(Float),
-              truncation_strategy: T.nilable(OpenAI::Beta::TruncationObject),
+              truncation_strategy:
+                T.nilable(
+                  OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy
+                ),
               request_options: OpenAI::RequestOptions
             }
           )
@@ -1447,6 +1460,103 @@ module OpenAI
 
             sig { override.returns({ vector_store_ids: T::Array[String] }) }
             def to_hash
+            end
+          end
+        end
+
+        class TruncationStrategy < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The truncation strategy to use for the thread. The default is `auto`. If set to
+          # `last_messages`, the thread will be truncated to the n most recent messages in
+          # the thread. When set to `auto`, messages in the middle of the thread will be
+          # dropped to fit the context length of the model, `max_prompt_tokens`.
+          sig do
+            returns(
+              OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol
+            )
+          end
+          attr_accessor :type
+
+          # The number of most recent messages from the thread when constructing the context
+          # for the run.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :last_messages
+
+          # Controls for how a thread will be truncated prior to the run. Use this to
+          # control the intial context window of the run.
+          sig do
+            params(
+              type:
+                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol,
+              last_messages: T.nilable(Integer)
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The truncation strategy to use for the thread. The default is `auto`. If set to
+            # `last_messages`, the thread will be truncated to the n most recent messages in
+            # the thread. When set to `auto`, messages in the middle of the thread will be
+            # dropped to fit the context length of the model, `max_prompt_tokens`.
+            type:,
+            # The number of most recent messages from the thread when constructing the context
+            # for the run.
+            last_messages: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                type:
+                  OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::OrSymbol,
+                last_messages: T.nilable(Integer)
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # The truncation strategy to use for the thread. The default is `auto`. If set to
+          # `last_messages`, the thread will be truncated to the n most recent messages in
+          # the thread. When set to `auto`, messages in the middle of the thread will be
+          # dropped to fit the context length of the model, `max_prompt_tokens`.
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(
+                  Symbol,
+                  OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type
+                )
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            AUTO =
+              T.let(
+                :auto,
+                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol
+              )
+            LAST_MESSAGES =
+              T.let(
+                :last_messages,
+                OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Beta::ThreadCreateAndRunParams::TruncationStrategy::Type::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
             end
           end
         end

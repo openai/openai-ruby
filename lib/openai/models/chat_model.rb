@@ -37,6 +37,7 @@ module OpenAI
       GPT_4O_SEARCH_PREVIEW_2025_03_11 = :"gpt-4o-search-preview-2025-03-11"
       GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 = :"gpt-4o-mini-search-preview-2025-03-11"
       CHATGPT_4O_LATEST = :"chatgpt-4o-latest"
+      CODEX_MINI_LATEST = :"codex-mini-latest"
       GPT_4O_MINI = :"gpt-4o-mini"
       GPT_4O_MINI_2024_07_18 = :"gpt-4o-mini-2024-07-18"
       GPT_4_TURBO = :"gpt-4-turbo"

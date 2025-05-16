@@ -15,7 +15,7 @@ module OpenAI
               T.any(
                 OpenAI::Evals::CreateEvalJSONLRunDataSource::OrHash,
                 OpenAI::Evals::CreateEvalCompletionsRunDataSource::OrHash,
-                OpenAI::Evals::CreateEvalResponsesRunDataSource::OrHash
+                OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::OrHash
               ),
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,

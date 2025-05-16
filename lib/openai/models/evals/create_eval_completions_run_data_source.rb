@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute source
         #   A StoredCompletionsRunDataSource configuration describing a set of filters
         #
-        #   @return [OpenAI::Evals::EvalJSONLFileContentSource, OpenAI::Evals::EvalJSONLFileIDSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions]
+        #   @return [OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions]
         required :source, union: -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source }
 
         # @!attribute type
@@ -41,7 +41,7 @@ module OpenAI
         #
         #   A CompletionsRunDataSource object describing a model sampling configuration.
         #
-        #   @param source [OpenAI::Evals::EvalJSONLFileContentSource, OpenAI::Evals::EvalJSONLFileIDSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions] A StoredCompletionsRunDataSource configuration describing a set of filters
+        #   @param source [OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions] A StoredCompletionsRunDataSource configuration describing a set of filters
         #
         #   @param type [Symbol, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type] The type of run data source. Always `completions`.
         #
@@ -59,13 +59,70 @@ module OpenAI
 
           discriminator :type
 
-          variant :file_content, -> { OpenAI::Evals::EvalJSONLFileContentSource }
+          variant :file_content, -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent }
 
-          variant :file_id, -> { OpenAI::Evals::EvalJSONLFileIDSource }
+          variant :file_id, -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID }
 
           # A StoredCompletionsRunDataSource configuration describing a set of filters
           variant :stored_completions,
                   -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions }
+
+          class FileContent < OpenAI::Internal::Type::BaseModel
+            # @!attribute content
+            #   The content of the jsonl file.
+            #
+            #   @return [Array<OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content>]
+            required :content,
+                     -> {
+                       OpenAI::Internal::Type::ArrayOf[OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content]
+                     }
+
+            # @!attribute type
+            #   The type of jsonl source. Always `file_content`.
+            #
+            #   @return [Symbol, :file_content]
+            required :type, const: :file_content
+
+            # @!method initialize(content:, type: :file_content)
+            #   @param content [Array<OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent::Content>] The content of the jsonl file.
+            #
+            #   @param type [Symbol, :file_content] The type of jsonl source. Always `file_content`.
+
+            class Content < OpenAI::Internal::Type::BaseModel
+              # @!attribute item
+              #
+              #   @return [Hash{Symbol=>Object}]
+              required :item, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+
+              # @!attribute sample
+              #
+              #   @return [Hash{Symbol=>Object}, nil]
+              optional :sample, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+
+              # @!method initialize(item:, sample: nil)
+              #   @param item [Hash{Symbol=>Object}]
+              #   @param sample [Hash{Symbol=>Object}]
+            end
+          end
+
+          class FileID < OpenAI::Internal::Type::BaseModel
+            # @!attribute id
+            #   The identifier of the file.
+            #
+            #   @return [String]
+            required :id, String
+
+            # @!attribute type
+            #   The type of jsonl source. Always `file_id`.
+            #
+            #   @return [Symbol, :file_id]
+            required :type, const: :file_id
+
+            # @!method initialize(id:, type: :file_id)
+            #   @param id [String] The identifier of the file.
+            #
+            #   @param type [Symbol, :file_id] The type of jsonl source. Always `file_id`.
+          end
 
           class StoredCompletions < OpenAI::Internal::Type::BaseModel
             # @!attribute type
@@ -130,13 +187,13 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Evals::EvalJSONLFileContentSource, OpenAI::Evals::EvalJSONLFileIDSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions)]
+          #   @return [Array(OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions)]
 
           define_sorbet_constant!(:Variants) do
             T.type_alias do
               T.any(
-                OpenAI::Evals::EvalJSONLFileContentSource,
-                OpenAI::Evals::EvalJSONLFileIDSource,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
                 OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
               )
             end
@@ -171,7 +228,7 @@ module OpenAI
             #   A list of chat messages forming the prompt or context. May include variable
             #   references to the "item" namespace, ie {{item.name}}.
             #
-            #   @return [Array<OpenAI::Responses::EasyInputMessage, OpenAI::EvalItem>]
+            #   @return [Array<OpenAI::Responses::EasyInputMessage, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message>]
             required :template,
                      -> {
                        OpenAI::Internal::Type::ArrayOf[union: OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template]
@@ -188,7 +245,7 @@ module OpenAI
             #   {OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template} for
             #   more details.
             #
-            #   @param template [Array<OpenAI::Responses::EasyInputMessage, OpenAI::EvalItem>] A list of chat messages forming the prompt or context. May include variable refe
+            #   @param template [Array<OpenAI::Responses::EasyInputMessage, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message>] A list of chat messages forming the prompt or context. May include variable refe
             #
             #   @param type [Symbol, :template] The type of input messages. Always `template`.
 
@@ -214,13 +271,152 @@ module OpenAI
               # precedence over instructions given with the `user` role. Messages with the
               # `assistant` role are presumed to have been generated by the model in previous
               # interactions.
-              variant :message, -> { OpenAI::EvalItem }
+              variant :message,
+                      -> {
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                      }
+
+              class Message < OpenAI::Internal::Type::BaseModel
+                # @!attribute content
+                #   Text inputs to the model - can contain template strings.
+                #
+                #   @return [String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText]
+                required :content,
+                         union: -> {
+                           OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content
+                         }
+
+                # @!attribute role
+                #   The role of the message input. One of `user`, `assistant`, `system`, or
+                #   `developer`.
+                #
+                #   @return [Symbol, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role]
+                required :role,
+                         enum: -> {
+                           OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role
+                         }
+
+                # @!attribute type
+                #   The type of the message input. Always `message`.
+                #
+                #   @return [Symbol, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type, nil]
+                optional :type,
+                         enum: -> {
+                           OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type
+                         }
+
+                # @!method initialize(content:, role:, type: nil)
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message}
+                #   for more details.
+                #
+                #   A message input to the model with a role indicating instruction following
+                #   hierarchy. Instructions given with the `developer` or `system` role take
+                #   precedence over instructions given with the `user` role. Messages with the
+                #   `assistant` role are presumed to have been generated by the model in previous
+                #   interactions.
+                #
+                #   @param content [String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText] Text inputs to the model - can contain template strings.
+                #
+                #   @param role [Symbol, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Role] The role of the message input. One of `user`, `assistant`, `system`, or
+                #
+                #   @param type [Symbol, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Type] The type of the message input. Always `message`.
+
+                # Text inputs to the model - can contain template strings.
+                #
+                # @see OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message#content
+                module Content
+                  extend OpenAI::Internal::Type::Union
+
+                  # A text input to the model.
+                  variant String
+
+                  # A text input to the model.
+                  variant -> { OpenAI::Responses::ResponseInputText }
+
+                  # A text output from the model.
+                  variant -> {
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
+                  }
+
+                  class OutputText < OpenAI::Internal::Type::BaseModel
+                    # @!attribute text
+                    #   The text output from the model.
+                    #
+                    #   @return [String]
+                    required :text, String
+
+                    # @!attribute type
+                    #   The type of the output text. Always `output_text`.
+                    #
+                    #   @return [Symbol, :output_text]
+                    required :type, const: :output_text
+
+                    # @!method initialize(text:, type: :output_text)
+                    #   Some parameter documentations has been truncated, see
+                    #   {OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText}
+                    #   for more details.
+                    #
+                    #   A text output from the model.
+                    #
+                    #   @param text [String] The text output from the model.
+                    #
+                    #   @param type [Symbol, :output_text] The type of the output text. Always `output_text`.
+                  end
+
+                  # @!method self.variants
+                  #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText)]
+
+                  define_sorbet_constant!(:Variants) do
+                    T.type_alias do
+                      T.any(
+                        String,
+                        OpenAI::Responses::ResponseInputText,
+                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
+                      )
+                    end
+                  end
+                end
+
+                # The role of the message input. One of `user`, `assistant`, `system`, or
+                # `developer`.
+                #
+                # @see OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message#role
+                module Role
+                  extend OpenAI::Internal::Type::Enum
+
+                  USER = :user
+                  ASSISTANT = :assistant
+                  SYSTEM = :system
+                  DEVELOPER = :developer
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
+
+                # The type of the message input. Always `message`.
+                #
+                # @see OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message#type
+                module Type
+                  extend OpenAI::Internal::Type::Enum
+
+                  MESSAGE = :message
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
+              end
 
               # @!method self.variants
-              #   @return [Array(OpenAI::Responses::EasyInputMessage, OpenAI::EvalItem)]
+              #   @return [Array(OpenAI::Responses::EasyInputMessage, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(OpenAI::Responses::EasyInputMessage, OpenAI::EvalItem) }
+                T.type_alias do
+                  T.any(
+                    OpenAI::Responses::EasyInputMessage,
+                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
+                  )
+                end
               end
             end
           end

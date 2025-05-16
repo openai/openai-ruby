@@ -137,7 +137,7 @@ module OpenAI
 
           type input =
             OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage
-            | OpenAI::EvalItem
+            | OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem
 
           module Input
             extend OpenAI::Internal::Type::Union
@@ -150,6 +150,75 @@ module OpenAI
               attr_accessor role: String
 
               def initialize: (content: String, role: String) -> void
+            end
+
+            type eval_item =
+              {
+                content: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
+                role: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
+                type: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+              }
+
+            class EvalItem < OpenAI::Internal::Type::BaseModel
+              attr_accessor content: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
+
+              attr_accessor role: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role
+
+              attr_reader type: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_?
+
+              def type=: (
+                OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+              ) -> OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+
+              def initialize: (
+                content: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
+                role: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
+                ?type: OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+              ) -> void
+
+              type content =
+                String
+                | OpenAI::Responses::ResponseInputText
+                | OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
+
+              module Content
+                extend OpenAI::Internal::Type::Union
+
+                type output_text = { text: String, type: :output_text }
+
+                class OutputText < OpenAI::Internal::Type::BaseModel
+                  attr_accessor text: String
+
+                  attr_accessor type: :output_text
+
+                  def initialize: (text: String, ?type: :output_text) -> void
+                end
+
+                def self?.variants: -> ::Array[OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content]
+              end
+
+              type role = :user | :assistant | :system | :developer
+
+              module Role
+                extend OpenAI::Internal::Type::Enum
+
+                USER: :user
+                ASSISTANT: :assistant
+                SYSTEM: :system
+                DEVELOPER: :developer
+
+                def self?.values: -> ::Array[OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role]
+              end
+
+              type type_ = :message
+
+              module Type
+                extend OpenAI::Internal::Type::Enum
+
+                MESSAGE: :message
+
+                def self?.values: -> ::Array[OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_]
+              end
             end
 
             def self?.variants: -> ::Array[OpenAI::EvalCreateParams::TestingCriterion::LabelModel::input]

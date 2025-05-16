@@ -52,11 +52,11 @@ module OpenAI
       attr_accessor :usage_bytes
 
       # The expiration policy for a vector store.
-      sig { returns(T.nilable(OpenAI::VectorStoreExpirationAfter)) }
+      sig { returns(T.nilable(OpenAI::VectorStore::ExpiresAfter)) }
       attr_reader :expires_after
 
       sig do
-        params(expires_after: OpenAI::VectorStoreExpirationAfter::OrHash).void
+        params(expires_after: OpenAI::VectorStore::ExpiresAfter::OrHash).void
       end
       attr_writer :expires_after
 
@@ -76,7 +76,7 @@ module OpenAI
           name: String,
           status: OpenAI::VectorStore::Status::OrSymbol,
           usage_bytes: Integer,
-          expires_after: OpenAI::VectorStoreExpirationAfter::OrHash,
+          expires_after: OpenAI::VectorStore::ExpiresAfter::OrHash,
           expires_at: T.nilable(Integer),
           object: Symbol
         ).returns(T.attached_class)
@@ -125,7 +125,7 @@ module OpenAI
             object: Symbol,
             status: OpenAI::VectorStore::Status::TaggedSymbol,
             usage_bytes: Integer,
-            expires_after: OpenAI::VectorStoreExpirationAfter,
+            expires_after: OpenAI::VectorStore::ExpiresAfter,
             expires_at: T.nilable(Integer)
           }
         )
@@ -216,6 +216,37 @@ module OpenAI
           override.returns(T::Array[OpenAI::VectorStore::Status::TaggedSymbol])
         end
         def self.values
+        end
+      end
+
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        OrHash =
+          T.type_alias do
+            T.any(OpenAI::VectorStore::ExpiresAfter, OpenAI::Internal::AnyHash)
+          end
+
+        # Anchor timestamp after which the expiration policy applies. Supported anchors:
+        # `last_active_at`.
+        sig { returns(Symbol) }
+        attr_accessor :anchor
+
+        # The number of days after the anchor time that the vector store will expire.
+        sig { returns(Integer) }
+        attr_accessor :days
+
+        # The expiration policy for a vector store.
+        sig { params(days: Integer, anchor: Symbol).returns(T.attached_class) }
+        def self.new(
+          # The number of days after the anchor time that the vector store will expire.
+          days:,
+          # Anchor timestamp after which the expiration policy applies. Supported anchors:
+          # `last_active_at`.
+          anchor: :last_active_at
+        )
+        end
+
+        sig { override.returns({ anchor: Symbol, days: Integer }) }
+        def to_hash
         end
       end
     end

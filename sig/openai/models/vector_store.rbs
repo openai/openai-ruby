@@ -11,7 +11,7 @@ module OpenAI
         object: :vector_store,
         status: OpenAI::VectorStore::status,
         usage_bytes: Integer,
-        expires_after: OpenAI::VectorStoreExpirationAfter,
+        expires_after: OpenAI::VectorStore::ExpiresAfter,
         expires_at: Integer?
       }
 
@@ -34,11 +34,11 @@ module OpenAI
 
       attr_accessor usage_bytes: Integer
 
-      attr_reader expires_after: OpenAI::VectorStoreExpirationAfter?
+      attr_reader expires_after: OpenAI::VectorStore::ExpiresAfter?
 
       def expires_after=: (
-        OpenAI::VectorStoreExpirationAfter
-      ) -> OpenAI::VectorStoreExpirationAfter
+        OpenAI::VectorStore::ExpiresAfter
+      ) -> OpenAI::VectorStore::ExpiresAfter
 
       attr_accessor expires_at: Integer?
 
@@ -51,7 +51,7 @@ module OpenAI
         name: String,
         status: OpenAI::VectorStore::status,
         usage_bytes: Integer,
-        ?expires_after: OpenAI::VectorStoreExpirationAfter,
+        ?expires_after: OpenAI::VectorStore::ExpiresAfter,
         ?expires_at: Integer?,
         ?object: :vector_store
       ) -> void
@@ -95,6 +95,16 @@ module OpenAI
         COMPLETED: :completed
 
         def self?.values: -> ::Array[OpenAI::VectorStore::status]
+      end
+
+      type expires_after = { anchor: :last_active_at, days: Integer }
+
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        attr_accessor anchor: :last_active_at
+
+        attr_accessor days: Integer
+
+        def initialize: (days: Integer, ?anchor: :last_active_at) -> void
       end
     end
   end
