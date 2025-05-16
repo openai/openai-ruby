@@ -1,5 +1,76 @@
 # Changelog
 
+## 0.1.0-beta.1 (2025-05-16)
+
+Full Changelog: [v0.1.0-alpha.5...v0.1.0-beta.1](https://github.com/openai/openai-ruby/compare/v0.1.0-alpha.5...v0.1.0-beta.1)
+
+### Features
+
+* **api:** add image sizes, reasoning encryption ([c4565ed](https://github.com/openai/openai-ruby/commit/c4565ed4c5ea2dc45fd8c0fb1f11b78ce1dd44ac))
+* **api:** Add reinforcement fine-tuning api support ([65834c6](https://github.com/openai/openai-ruby/commit/65834c605a43d8d4b0bce44bd9048efe3dc874e8))
+* **api:** adding new image model support ([641f4eb](https://github.com/openai/openai-ruby/commit/641f4eb0fadf75909a32dc48644bf0e220fbbe81))
+* **api:** manual updates ([c4989d6](https://github.com/openai/openai-ruby/commit/c4989d68cbd3d95313d42f692187b58c063447a9))
+* bump default connection pool size limit to minimum of 99 ([3fc0971](https://github.com/openai/openai-ruby/commit/3fc0971b30a6e683d09f18e5dda08a13f5d87cdc))
+* expose base client options as read only attributes ([1d53fee](https://github.com/openai/openai-ruby/commit/1d53feee889c2db6824f0ba761b0138afdf84b24))
+* expose recursive `#to_h` conversion ([734833c](https://github.com/openai/openai-ruby/commit/734833c004063cc8387f102c0eb608cb3445b2f4))
+* initial structured outputs support ([#565](https://github.com/openai/openai-ruby/issues/565)) ([a613a39](https://github.com/openai/openai-ruby/commit/a613a39f25a9faee787bd696e6384d0f1ac34cb0))
+* support sorbet aliases at the runtime ([0ef168a](https://github.com/openai/openai-ruby/commit/0ef168abd7e0a5a0c5f8d2e5f49ee87e81995d99))
+* support specifying content-type with FilePart class ([ece942c](https://github.com/openai/openai-ruby/commit/ece942cb2c7982ed73e20321318a0f8634c22023))
+* support webmock for testing ([9e1a0f1](https://github.com/openai/openai-ruby/commit/9e1a0f1db37f0778063c2a417a55ac04fee1f1b2))
+
+
+### Bug Fixes
+
+* ensure gem release is unaffected by renaming ([513acd8](https://github.com/openai/openai-ruby/commit/513acd850f86110f1820a97468f50baf3a3ae0b3))
+* fix workflow syntax ([b5d45ce](https://github.com/openai/openai-ruby/commit/b5d45ce80ebfc7811446c134a1925fb0731f7971))
+* **internal:** ensure formatting always uses c.utf-8 locale ([3d51f78](https://github.com/openai/openai-ruby/commit/3d51f780bcedad3ca4ff5f7823af97f891a5f85e))
+* **internal:** fix formatting script for macos ([6784709](https://github.com/openai/openai-ruby/commit/67847092007552991375fa6f72ccda5925051bb0))
+* JSON.fast_generate is deprecated ([591fdf0](https://github.com/openai/openai-ruby/commit/591fdf0174765fce77b857b02006efd5b37fe073))
+* make a typo for `FilePart.content` ([c78ea0f](https://github.com/openai/openai-ruby/commit/c78ea0fad674def58c3d15eec516a18149777d09))
+
+
+### Chores
+
+* add generator safe directory ([5c9767e](https://github.com/openai/openai-ruby/commit/5c9767ed5d4204dd17bcda1b5a5b79d5e628e0e1))
+* always check if current page is empty in `next_page?` ([8e8464e](https://github.com/openai/openai-ruby/commit/8e8464e2b6d9dc814c68f0e20268a2eafba37361))
+* broadly detect json family of content-type headers ([77f7239](https://github.com/openai/openai-ruby/commit/77f7239e03a45323f70baee9d1430ecec242705c))
+* bump minimum supported Ruby version to 3.2 ([41ce053](https://github.com/openai/openai-ruby/commit/41ce0535c5f7a7304c744d5e7b43a728d360c54f))
+* **ci:** add timeout thresholds for CI jobs ([6fba7b2](https://github.com/openai/openai-ruby/commit/6fba7b2a1d4043b3ee41f49da43a50c305d613d3))
+* **ci:** only use depot for staging repos ([57a10b0](https://github.com/openai/openai-ruby/commit/57a10b07135a824e8eee35e57a1d78f223befef9))
+* **ci:** run on more branches and use depot runners ([0ae14a8](https://github.com/openai/openai-ruby/commit/0ae14a87ecc37f73077f0aaa442047452a6503b6))
+* consistently use string in examples, even for enums ([cec4b05](https://github.com/openai/openai-ruby/commit/cec4b051bb0f4357032779cde2c11babe4196fcd))
+* ensure examples have busybox compat shebangs ([7720dca](https://github.com/openai/openai-ruby/commit/7720dcabd020a5c672838dcf935fd9c9ba5b94e1))
+* explicitly mark apis public under `Internal` module ([ca0d841](https://github.com/openai/openai-ruby/commit/ca0d841a571433528ae15974041c5ea142f9109e))
+* fix misc linting / minor issues ([918ac6b](https://github.com/openai/openai-ruby/commit/918ac6bb9cec9fefe26337d6712e48c110d34320))
+* **internal:** annotate request options with type aliases in sorbet ([4918836](https://github.com/openai/openai-ruby/commit/4918836aac697a899b19e4c3767126d0d86914d4))
+* **internal:** codegen related update ([139a140](https://github.com/openai/openai-ruby/commit/139a140e6c5d37b638ad31a5fa8816e4d3fda5b8))
+* **internal:** codegen related update ([ebf0cae](https://github.com/openai/openai-ruby/commit/ebf0cae7f0935c96eb21a980c9b3d46892d2cea7))
+* **internal:** codegen related update ([71cf48f](https://github.com/openai/openai-ruby/commit/71cf48f5fe64cd8ae20615c7d019b3e1c40f2529))
+* **internal:** codegen related update ([f3fc915](https://github.com/openai/openai-ruby/commit/f3fc915680f295098029d615129708a1e6a29ed3))
+* **internal:** improve response envelope unwrap functionality ([a05d2c5](https://github.com/openai/openai-ruby/commit/a05d2c5d16ce052c1fb84005739e6b6d853f5e8e))
+* **internal:** minor type annotation improvements ([67b0e35](https://github.com/openai/openai-ruby/commit/67b0e35c2c8d48c50c71c20a71304896a63f6b44))
+* **internal:** remove unnecessary `rbi/lib` folder ([df9e099](https://github.com/openai/openai-ruby/commit/df9e0991a3aac2a5a480bfb3cf622139ca1b1373))
+* **internal:** touch up formatting ([d3c5587](https://github.com/openai/openai-ruby/commit/d3c558710b94968ba45bf579cad1d8112d7534f1))
+* **internal:** version bump ([ef2a5d4](https://github.com/openai/openai-ruby/commit/ef2a5d46f21a0df6b4b6ebc4e9d4dd4f6a6a6e5f))
+* loosen rubocop rules that don't always make sense ([4244f89](https://github.com/openai/openai-ruby/commit/4244f8967d1583d97efa679d096eee04fd764240))
+* migrate away from deprecated `JSON#fast_generate` ([3be700f](https://github.com/openai/openai-ruby/commit/3be700f04d782b538fcde678016532cfbc2eb66d))
+* more accurate type annotations and aliases ([04b111d](https://github.com/openai/openai-ruby/commit/04b111dcdc2c5d458159be87a180174243a9d058))
+* re-export top level models under library namespace ([8c5e78a](https://github.com/openai/openai-ruby/commit/8c5e78a1b2374c072c590f859008f69bd8d46d63))
+* remove Gemfile.lock ([2306cb4](https://github.com/openai/openai-ruby/commit/2306cb447a81fd494a1a1696f99d90191103e187))
+* remove Gemfile.lock during bootstrap ([c248f15](https://github.com/openai/openai-ruby/commit/c248f1522ed120fed49cb94a79a49cc8db146bf5))
+* reorganize type aliases ([1815c45](https://github.com/openai/openai-ruby/commit/1815c45472109efaf891e2296f37b83b2acf275d))
+* revert ignoring Gemfile.lock ([9a2827b](https://github.com/openai/openai-ruby/commit/9a2827b01a5a38985c4b92521534fc7a11f3c91a))
+* show truncated parameter docs in yard ([bf84473](https://github.com/openai/openai-ruby/commit/bf844738622cd1c9a5c31bffc1e5378c132c31fd))
+* validate request option coercion correctness ([c5b4f52](https://github.com/openai/openai-ruby/commit/c5b4f523e1cc110b5a944c53a1530fa0d9456eae))
+
+
+### Documentation
+
+* fix out of place README snippet ([39d155f](https://github.com/openai/openai-ruby/commit/39d155f1f3be511ab2089a8856054aa767fc6ba3))
+* illustrate environmental defaults for auth variables ([7d8ee4f](https://github.com/openai/openai-ruby/commit/7d8ee4f61fee6e53a07a44b20ca36f27bf3cc463))
+* **readme:** fix typo ([a6c7609](https://github.com/openai/openai-ruby/commit/a6c76091c66abaf1c9bdfaaa348f9593639cadc4))
+* rewrite much of README.md for readability ([f3c721e](https://github.com/openai/openai-ruby/commit/f3c721e71de583da61bc02566200ac0dc574aa33))
+
 ## 0.1.0-alpha.5 (2025-04-18)
 
 Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/openai/openai-ruby/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
