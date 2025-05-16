@@ -11,7 +11,8 @@ module OpenAI
           T.any(OpenAI::EvalCreateParams, OpenAI::Internal::AnyHash)
         end
 
-      # The configuration for the data source used for the evaluation runs.
+      # The configuration for the data source used for the evaluation runs. Dictates the
+      # schema of the data used in the evaluation.
       sig do
         returns(
           T.any(
@@ -23,7 +24,10 @@ module OpenAI
       end
       attr_accessor :data_source_config
 
-      # A list of graders for all eval runs in this group.
+      # A list of graders for all eval runs in this group. Graders can reference
+      # variables in the data source using double curly braces notation, like
+      # `{{item.variable_name}}`. To reference the model's output, use the `sample`
+      # namespace (ie, `{{sample.output_text}}`).
       sig do
         returns(
           T::Array[
@@ -79,9 +83,13 @@ module OpenAI
         ).returns(T.attached_class)
       end
       def self.new(
-        # The configuration for the data source used for the evaluation runs.
+        # The configuration for the data source used for the evaluation runs. Dictates the
+        # schema of the data used in the evaluation.
         data_source_config:,
-        # A list of graders for all eval runs in this group.
+        # A list of graders for all eval runs in this group. Graders can reference
+        # variables in the data source using double curly braces notation, like
+        # `{{item.variable_name}}`. To reference the model's output, use the `sample`
+        # namespace (ie, `{{sample.output_text}}`).
         testing_criteria:,
         # Set of 16 key-value pairs that can be attached to an object. This can be useful
         # for storing additional information about the object in a structured format, and
@@ -124,7 +132,8 @@ module OpenAI
       def to_hash
       end
 
-      # The configuration for the data source used for the evaluation runs.
+      # The configuration for the data source used for the evaluation runs. Dictates the
+      # schema of the data used in the evaluation.
       module DataSourceConfig
         extend OpenAI::Internal::Type::Union
 
@@ -252,7 +261,7 @@ module OpenAI
               )
             end
 
-          # The type of data source. Always `stored-completions`.
+          # The type of data source. Always `stored_completions`.
           sig { returns(Symbol) }
           attr_accessor :type
 
@@ -272,8 +281,8 @@ module OpenAI
           def self.new(
             # Metadata filters for the stored completions data source.
             metadata: nil,
-            # The type of data source. Always `stored-completions`.
-            type: :"stored-completions"
+            # The type of data source. Always `stored_completions`.
+            type: :stored_completions
           )
           end
 
@@ -321,7 +330,7 @@ module OpenAI
             end
 
           # A list of chat messages forming the prompt or context. May include variable
-          # references to the "item" namespace, ie {{item.name}}.
+          # references to the `item` namespace, ie {{item.name}}.
           sig do
             returns(
               T::Array[
@@ -374,7 +383,7 @@ module OpenAI
           end
           def self.new(
             # A list of chat messages forming the prompt or context. May include variable
-            # references to the "item" namespace, ie {{item.name}}.
+            # references to the `item` namespace, ie {{item.name}}.
             input:,
             # The labels to classify to each item in the evaluation.
             labels:,
@@ -411,7 +420,7 @@ module OpenAI
           end
 
           # A chat message that makes up the prompt or context. May include variable
-          # references to the "item" namespace, ie {{item.name}}.
+          # references to the `item` namespace, ie {{item.name}}.
           module Input
             extend OpenAI::Internal::Type::Union
 

@@ -3,21 +3,21 @@ module OpenAI
     type eval_stored_completions_data_source_config =
       {
         schema: ::Hash[Symbol, top],
-        type: :"stored-completions",
+        type: :stored_completions,
         metadata: OpenAI::Models::metadata?
       }
 
     class EvalStoredCompletionsDataSourceConfig < OpenAI::Internal::Type::BaseModel
       attr_accessor schema: ::Hash[Symbol, top]
 
-      attr_accessor type: :"stored-completions"
+      attr_accessor type: :stored_completions
 
       attr_accessor metadata: OpenAI::Models::metadata?
 
       def initialize: (
         schema: ::Hash[Symbol, top],
         ?metadata: OpenAI::Models::metadata?,
-        ?type: :"stored-completions"
+        ?type: :stored_completions
       ) -> void
     end
   end

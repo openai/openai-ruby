@@ -225,7 +225,7 @@ module OpenAI
                 )
               end
 
-            # A EvalResponsesSource object describing a run data source configuration.
+            # Determines what populates the `item` namespace in this run's data source.
             sig do
               returns(
                 T.any(
@@ -241,6 +241,10 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # Used when sampling from a model. Dictates the structure of the messages passed
+            # into the model. Can either be a reference to a prebuilt trajectory (ie,
+            # `item.input_trajectory`), or a template with variable references to the `item`
+            # namespace.
             sig do
               returns(
                 T.nilable(
@@ -309,8 +313,12 @@ module OpenAI
               ).returns(T.attached_class)
             end
             def self.new(
-              # A EvalResponsesSource object describing a run data source configuration.
+              # Determines what populates the `item` namespace in this run's data source.
               source:,
+              # Used when sampling from a model. Dictates the structure of the messages passed
+              # into the model. Can either be a reference to a prebuilt trajectory (ie,
+              # `item.input_trajectory`), or a template with variable references to the `item`
+              # namespace.
               input_messages: nil,
               # The name of the model to use for generating completions (e.g. "o3-mini").
               model: nil,
@@ -344,7 +352,7 @@ module OpenAI
             def to_hash
             end
 
-            # A EvalResponsesSource object describing a run data source configuration.
+            # Determines what populates the `item` namespace in this run's data source.
             module Source
               extend OpenAI::Internal::Type::Union
 
@@ -507,11 +515,6 @@ module OpenAI
                 sig { returns(T.nilable(Integer)) }
                 attr_accessor :created_before
 
-                # Whether the response has tool calls. This is a query parameter used to select
-                # responses.
-                sig { returns(T.nilable(T::Boolean)) }
-                attr_accessor :has_tool_calls
-
                 # Optional string to search the 'instructions' field. This is a query parameter
                 # used to select responses.
                 sig { returns(T.nilable(String)) }
@@ -555,7 +558,6 @@ module OpenAI
                   params(
                     created_after: T.nilable(Integer),
                     created_before: T.nilable(Integer),
-                    has_tool_calls: T.nilable(T::Boolean),
                     instructions_search: T.nilable(String),
                     metadata: T.nilable(T.anything),
                     model: T.nilable(String),
@@ -575,9 +577,6 @@ module OpenAI
                   # Only include items created before this timestamp (inclusive). This is a query
                   # parameter used to select responses.
                   created_before: nil,
-                  # Whether the response has tool calls. This is a query parameter used to select
-                  # responses.
-                  has_tool_calls: nil,
                   # Optional string to search the 'instructions' field. This is a query parameter
                   # used to select responses.
                   instructions_search: nil,
@@ -609,7 +608,6 @@ module OpenAI
                       type: Symbol,
                       created_after: T.nilable(Integer),
                       created_before: T.nilable(Integer),
-                      has_tool_calls: T.nilable(T::Boolean),
                       instructions_search: T.nilable(String),
                       metadata: T.nilable(T.anything),
                       model: T.nilable(String),
@@ -637,6 +635,10 @@ module OpenAI
               end
             end
 
+            # Used when sampling from a model. Dictates the structure of the messages passed
+            # into the model. Can either be a reference to a prebuilt trajectory (ie,
+            # `item.input_trajectory`), or a template with variable references to the `item`
+            # namespace.
             module InputMessages
               extend OpenAI::Internal::Type::Union
 
@@ -658,7 +660,7 @@ module OpenAI
                   end
 
                 # A list of chat messages forming the prompt or context. May include variable
-                # references to the "item" namespace, ie {{item.name}}.
+                # references to the `item` namespace, ie {{item.name}}.
                 sig do
                   returns(
                     T::Array[
@@ -689,7 +691,7 @@ module OpenAI
                 end
                 def self.new(
                   # A list of chat messages forming the prompt or context. May include variable
-                  # references to the "item" namespace, ie {{item.name}}.
+                  # references to the `item` namespace, ie {{item.name}}.
                   template:,
                   # The type of input messages. Always `template`.
                   type: :template
@@ -1019,7 +1021,7 @@ module OpenAI
                     )
                   end
 
-                # A reference to a variable in the "item" namespace. Ie, "item.name"
+                # A reference to a variable in the `item` namespace. Ie, "item.name"
                 sig { returns(String) }
                 attr_accessor :item_reference
 
@@ -1033,7 +1035,7 @@ module OpenAI
                   )
                 end
                 def self.new(
-                  # A reference to a variable in the "item" namespace. Ie, "item.name"
+                  # A reference to a variable in the `item` namespace. Ie, "item.name"
                   item_reference:,
                   # The type of input messages. Always `item_reference`.
                   type: :item_reference

@@ -12,10 +12,10 @@ module OpenAI
       required :schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
       # @!attribute type
-      #   The type of data source. Always `stored-completions`.
+      #   The type of data source. Always `stored_completions`.
       #
-      #   @return [Symbol, :"stored-completions"]
-      required :type, const: :"stored-completions"
+      #   @return [Symbol, :stored_completions]
+      required :type, const: :stored_completions
 
       # @!attribute metadata
       #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -28,7 +28,7 @@ module OpenAI
       #   @return [Hash{Symbol=>String}, nil]
       optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
-      # @!method initialize(schema:, metadata: nil, type: :"stored-completions")
+      # @!method initialize(schema:, metadata: nil, type: :stored_completions)
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::EvalStoredCompletionsDataSourceConfig} for more details.
       #
@@ -38,7 +38,7 @@ module OpenAI
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
-      #   @param type [Symbol, :"stored-completions"] The type of data source. Always `stored-completions`.
+      #   @param type [Symbol, :stored_completions] The type of data source. Always `stored_completions`.
     end
   end
 end

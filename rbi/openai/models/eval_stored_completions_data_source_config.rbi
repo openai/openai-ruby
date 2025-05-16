@@ -16,7 +16,7 @@ module OpenAI
       sig { returns(T::Hash[Symbol, T.anything]) }
       attr_accessor :schema
 
-      # The type of data source. Always `stored-completions`.
+      # The type of data source. Always `stored_completions`.
       sig { returns(Symbol) }
       attr_accessor :type
 
@@ -48,8 +48,8 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
-        # The type of data source. Always `stored-completions`.
-        type: :"stored-completions"
+        # The type of data source. Always `stored_completions`.
+        type: :stored_completions
       )
       end
 

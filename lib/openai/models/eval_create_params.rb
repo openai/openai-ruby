@@ -8,13 +8,17 @@ module OpenAI
       include OpenAI::Internal::Type::RequestParameters
 
       # @!attribute data_source_config
-      #   The configuration for the data source used for the evaluation runs.
+      #   The configuration for the data source used for the evaluation runs. Dictates the
+      #   schema of the data used in the evaluation.
       #
       #   @return [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions]
       required :data_source_config, union: -> { OpenAI::EvalCreateParams::DataSourceConfig }
 
       # @!attribute testing_criteria
-      #   A list of graders for all eval runs in this group.
+      #   A list of graders for all eval runs in this group. Graders can reference
+      #   variables in the data source using double curly braces notation, like
+      #   `{{item.variable_name}}`. To reference the model's output, use the `sample`
+      #   namespace (ie, `{{sample.output_text}}`).
       #
       #   @return [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>]
       required :testing_criteria,
@@ -41,9 +45,9 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::EvalCreateParams} for more details.
       #
-      #   @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs.
+      #   @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs. Dictates the
       #
-      #   @param testing_criteria [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group.
+      #   @param testing_criteria [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group. Graders can reference variabl
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
@@ -51,7 +55,8 @@ module OpenAI
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
-      # The configuration for the data source used for the evaluation runs.
+      # The configuration for the data source used for the evaluation runs. Dictates the
+      # schema of the data used in the evaluation.
       module DataSourceConfig
         extend OpenAI::Internal::Type::Union
 
@@ -68,7 +73,7 @@ module OpenAI
         variant :logs, -> { OpenAI::EvalCreateParams::DataSourceConfig::Logs }
 
         # Deprecated in favor of LogsDataSourceConfig.
-        variant :"stored-completions", -> { OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions }
+        variant :stored_completions, -> { OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions }
 
         class Custom < OpenAI::Internal::Type::BaseModel
           # @!attribute item_schema
@@ -130,12 +135,13 @@ module OpenAI
           #   @param type [Symbol, :logs] The type of data source. Always `logs`.
         end
 
+        # @deprecated
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
           # @!attribute type
-          #   The type of data source. Always `stored-completions`.
+          #   The type of data source. Always `stored_completions`.
           #
-          #   @return [Symbol, :"stored-completions"]
-          required :type, const: :"stored-completions"
+          #   @return [Symbol, :stored_completions]
+          required :type, const: :stored_completions
 
           # @!attribute metadata
           #   Metadata filters for the stored completions data source.
@@ -143,12 +149,12 @@ module OpenAI
           #   @return [Hash{Symbol=>Object}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
-          # @!method initialize(metadata: nil, type: :"stored-completions")
+          # @!method initialize(metadata: nil, type: :stored_completions)
           #   Deprecated in favor of LogsDataSourceConfig.
           #
           #   @param metadata [Hash{Symbol=>Object}] Metadata filters for the stored completions data source.
           #
-          #   @param type [Symbol, :"stored-completions"] The type of data source. Always `stored-completions`.
+          #   @param type [Symbol, :stored_completions] The type of data source. Always `stored_completions`.
         end
 
         # @!method self.variants
@@ -191,7 +197,7 @@ module OpenAI
         class LabelModel < OpenAI::Internal::Type::BaseModel
           # @!attribute input
           #   A list of chat messages forming the prompt or context. May include variable
-          #   references to the "item" namespace, ie {{item.name}}.
+          #   references to the `item` namespace, ie {{item.name}}.
           #
           #   @return [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage, OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem>]
           required :input,
@@ -249,7 +255,7 @@ module OpenAI
           #   @param type [Symbol, :label_model] The object type, which is always `label_model`.
 
           # A chat message that makes up the prompt or context. May include variable
-          # references to the "item" namespace, ie {{item.name}}.
+          # references to the `item` namespace, ie {{item.name}}.
           module Input
             extend OpenAI::Internal::Type::Union
 

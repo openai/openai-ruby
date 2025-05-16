@@ -5,7 +5,7 @@ module OpenAI
     module Evals
       class CreateEvalCompletionsRunDataSource < OpenAI::Internal::Type::BaseModel
         # @!attribute source
-        #   A StoredCompletionsRunDataSource configuration describing a set of filters
+        #   Determines what populates the `item` namespace in this run's data source.
         #
         #   @return [OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions]
         required :source, union: -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source }
@@ -17,6 +17,10 @@ module OpenAI
         required :type, enum: -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type }
 
         # @!attribute input_messages
+        #   Used when sampling from a model. Dictates the structure of the messages passed
+        #   into the model. Can either be a reference to a prebuilt trajectory (ie,
+        #   `item.input_trajectory`), or a template with variable references to the `item`
+        #   namespace.
         #
         #   @return [OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference, nil]
         optional :input_messages,
@@ -41,17 +45,17 @@ module OpenAI
         #
         #   A CompletionsRunDataSource object describing a model sampling configuration.
         #
-        #   @param source [OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions] A StoredCompletionsRunDataSource configuration describing a set of filters
+        #   @param source [OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions] Determines what populates the `item` namespace in this run's data source.
         #
         #   @param type [Symbol, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Type] The type of run data source. Always `completions`.
         #
-        #   @param input_messages [OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference]
+        #   @param input_messages [OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference] Used when sampling from a model. Dictates the structure of the messages passed i
         #
         #   @param model [String] The name of the model to use for generating completions (e.g. "o3-mini").
         #
         #   @param sampling_params [OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams]
 
-        # A StoredCompletionsRunDataSource configuration describing a set of filters
+        # Determines what populates the `item` namespace in this run's data source.
         #
         # @see OpenAI::Evals::CreateEvalCompletionsRunDataSource#source
         module Source
@@ -212,6 +216,11 @@ module OpenAI
           #   @return [Array<Symbol>]
         end
 
+        # Used when sampling from a model. Dictates the structure of the messages passed
+        # into the model. Can either be a reference to a prebuilt trajectory (ie,
+        # `item.input_trajectory`), or a template with variable references to the `item`
+        # namespace.
+        #
         # @see OpenAI::Evals::CreateEvalCompletionsRunDataSource#input_messages
         module InputMessages
           extend OpenAI::Internal::Type::Union
@@ -226,7 +235,7 @@ module OpenAI
           class Template < OpenAI::Internal::Type::BaseModel
             # @!attribute template
             #   A list of chat messages forming the prompt or context. May include variable
-            #   references to the "item" namespace, ie {{item.name}}.
+            #   references to the `item` namespace, ie {{item.name}}.
             #
             #   @return [Array<OpenAI::Responses::EasyInputMessage, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message>]
             required :template,
@@ -423,7 +432,7 @@ module OpenAI
 
           class ItemReference < OpenAI::Internal::Type::BaseModel
             # @!attribute item_reference
-            #   A reference to a variable in the "item" namespace. Ie, "item.name"
+            #   A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
             #
             #   @return [String]
             required :item_reference, String
@@ -435,7 +444,7 @@ module OpenAI
             required :type, const: :item_reference
 
             # @!method initialize(item_reference:, type: :item_reference)
-            #   @param item_reference [String] A reference to a variable in the "item" namespace. Ie, "item.name"
+            #   @param item_reference [String] A reference to a variable in the `item` namespace. Ie, "item.input_trajectory"
             #
             #   @param type [Symbol, :item_reference] The type of input messages. Always `item_reference`.
           end
