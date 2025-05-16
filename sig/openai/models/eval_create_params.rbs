@@ -75,10 +75,10 @@ module OpenAI
         end
 
         type stored_completions =
-          { type: :"stored-completions", metadata: ::Hash[Symbol, top] }
+          { type: :stored_completions, metadata: ::Hash[Symbol, top] }
 
         class StoredCompletions < OpenAI::Internal::Type::BaseModel
-          attr_accessor type: :"stored-completions"
+          attr_accessor type: :stored_completions
 
           attr_reader metadata: ::Hash[Symbol, top]?
 
@@ -86,7 +86,7 @@ module OpenAI
 
           def initialize: (
             ?metadata: ::Hash[Symbol, top],
-            ?type: :"stored-completions"
+            ?type: :stored_completions
           ) -> void
         end
 

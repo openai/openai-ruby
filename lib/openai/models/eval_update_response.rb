@@ -61,7 +61,7 @@ module OpenAI
       #
       #   - Improve the quality of my chatbot
       #   - See how well my chatbot handles customer support
-      #   - Check if o3-mini is better at my usecase than gpt-4o
+      #   - Check if o4-mini is better at my usecase than gpt-4o
       #
       #   @param id [String] Unique identifier for the evaluation.
       #
@@ -98,7 +98,7 @@ module OpenAI
         variant :logs, -> { OpenAI::Models::EvalUpdateResponse::DataSourceConfig::Logs }
 
         # Deprecated in favor of LogsDataSourceConfig.
-        variant :"stored-completions", -> { OpenAI::EvalStoredCompletionsDataSourceConfig }
+        variant :stored_completions, -> { OpenAI::EvalStoredCompletionsDataSourceConfig }
 
         class Logs < OpenAI::Internal::Type::BaseModel
           # @!attribute schema

@@ -130,7 +130,6 @@ module OpenAI
                   type: :responses,
                   created_after: Integer?,
                   created_before: Integer?,
-                  has_tool_calls: bool?,
                   instructions_search: String?,
                   metadata: top?,
                   model: String?,
@@ -147,8 +146,6 @@ module OpenAI
                 attr_accessor created_after: Integer?
 
                 attr_accessor created_before: Integer?
-
-                attr_accessor has_tool_calls: bool?
 
                 attr_accessor instructions_search: String?
 
@@ -169,7 +166,6 @@ module OpenAI
                 def initialize: (
                   ?created_after: Integer?,
                   ?created_before: Integer?,
-                  ?has_tool_calls: bool?,
                   ?instructions_search: String?,
                   ?metadata: top?,
                   ?model: String?,

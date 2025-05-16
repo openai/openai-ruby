@@ -58,7 +58,7 @@ module OpenAI
 
           class CreateEvalResponsesRunDataSource < OpenAI::Internal::Type::BaseModel
             # @!attribute source
-            #   A EvalResponsesSource object describing a run data source configuration.
+            #   Determines what populates the `item` namespace in this run's data source.
             #
             #   @return [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses]
             required :source,
@@ -76,6 +76,10 @@ module OpenAI
                      }
 
             # @!attribute input_messages
+            #   Used when sampling from a model. Dictates the structure of the messages passed
+            #   into the model. Can either be a reference to a prebuilt trajectory (ie,
+            #   `item.input_trajectory`), or a template with variable references to the `item`
+            #   namespace.
             #
             #   @return [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference, nil]
             optional :input_messages,
@@ -104,17 +108,17 @@ module OpenAI
             #
             #   A ResponsesRunDataSource object describing a model sampling configuration.
             #
-            #   @param source [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses] A EvalResponsesSource object describing a run data source configuration.
+            #   @param source [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileID, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses] Determines what populates the `item` namespace in this run's data source.
             #
             #   @param type [Symbol, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Type] The type of run data source. Always `responses`.
             #
-            #   @param input_messages [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference]
+            #   @param input_messages [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::ItemReference] Used when sampling from a model. Dictates the structure of the messages passed i
             #
             #   @param model [String] The name of the model to use for generating completions (e.g. "o3-mini").
             #
             #   @param sampling_params [OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams]
 
-            # A EvalResponsesSource object describing a run data source configuration.
+            # Determines what populates the `item` namespace in this run's data source.
             #
             # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#source
             module Source
@@ -216,13 +220,6 @@ module OpenAI
                 #   @return [Integer, nil]
                 optional :created_before, Integer, nil?: true
 
-                # @!attribute has_tool_calls
-                #   Whether the response has tool calls. This is a query parameter used to select
-                #   responses.
-                #
-                #   @return [Boolean, nil]
-                optional :has_tool_calls, OpenAI::Internal::Type::Boolean, nil?: true
-
                 # @!attribute instructions_search
                 #   Optional string to search the 'instructions' field. This is a query parameter
                 #   used to select responses.
@@ -275,7 +272,7 @@ module OpenAI
                 #   @return [Array<String>, nil]
                 optional :users, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-                # @!method initialize(created_after: nil, created_before: nil, has_tool_calls: nil, instructions_search: nil, metadata: nil, model: nil, reasoning_effort: nil, temperature: nil, tools: nil, top_p: nil, users: nil, type: :responses)
+                # @!method initialize(created_after: nil, created_before: nil, instructions_search: nil, metadata: nil, model: nil, reasoning_effort: nil, temperature: nil, tools: nil, top_p: nil, users: nil, type: :responses)
                 #   Some parameter documentations has been truncated, see
                 #   {OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::Responses}
                 #   for more details.
@@ -285,8 +282,6 @@ module OpenAI
                 #   @param created_after [Integer, nil] Only include items created after this timestamp (inclusive). This is a query par
                 #
                 #   @param created_before [Integer, nil] Only include items created before this timestamp (inclusive). This is a query pa
-                #
-                #   @param has_tool_calls [Boolean, nil] Whether the response has tool calls. This is a query parameter used to select re
                 #
                 #   @param instructions_search [String, nil] Optional string to search the 'instructions' field. This is a query parameter us
                 #
@@ -333,6 +328,11 @@ module OpenAI
               #   @return [Array<Symbol>]
             end
 
+            # Used when sampling from a model. Dictates the structure of the messages passed
+            # into the model. Can either be a reference to a prebuilt trajectory (ie,
+            # `item.input_trajectory`), or a template with variable references to the `item`
+            # namespace.
+            #
             # @see OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource#input_messages
             module InputMessages
               extend OpenAI::Internal::Type::Union
@@ -352,7 +352,7 @@ module OpenAI
               class Template < OpenAI::Internal::Type::BaseModel
                 # @!attribute template
                 #   A list of chat messages forming the prompt or context. May include variable
-                #   references to the "item" namespace, ie {{item.name}}.
+                #   references to the `item` namespace, ie {{item.name}}.
                 #
                 #   @return [Array<OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::ChatMessage, OpenAI::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::InputMessages::Template::Template::EvalItem>]
                 required :template,
@@ -564,7 +564,7 @@ module OpenAI
 
               class ItemReference < OpenAI::Internal::Type::BaseModel
                 # @!attribute item_reference
-                #   A reference to a variable in the "item" namespace. Ie, "item.name"
+                #   A reference to a variable in the `item` namespace. Ie, "item.name"
                 #
                 #   @return [String]
                 required :item_reference, String
@@ -576,7 +576,7 @@ module OpenAI
                 required :type, const: :item_reference
 
                 # @!method initialize(item_reference:, type: :item_reference)
-                #   @param item_reference [String] A reference to a variable in the "item" namespace. Ie, "item.name"
+                #   @param item_reference [String] A reference to a variable in the `item` namespace. Ie, "item.name"
                 #
                 #   @param type [Symbol, :item_reference] The type of input messages. Always `item_reference`.
               end
