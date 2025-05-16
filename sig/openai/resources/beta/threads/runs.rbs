@@ -23,7 +23,7 @@ module OpenAI
             ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
             ?top_p: Float?,
-            ?truncation_strategy: OpenAI::Beta::TruncationObject?,
+            ?truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Beta::Threads::Run
 
@@ -45,7 +45,7 @@ module OpenAI
             ?tool_choice: OpenAI::Models::Beta::assistant_tool_choice_option?,
             ?tools: ::Array[OpenAI::Models::Beta::assistant_tool]?,
             ?top_p: Float?,
-            ?truncation_strategy: OpenAI::Beta::TruncationObject?,
+            ?truncation_strategy: OpenAI::Beta::Threads::RunCreateParams::TruncationStrategy?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::assistant_stream_event]
 

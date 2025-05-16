@@ -18,7 +18,7 @@ module OpenAI
       #
       # @param chunking_strategy [OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam] The chunking strategy used to chunk the file(s). If not set, will use the `auto`
       #
-      # @param expires_after [OpenAI::VectorStoreExpirationAfter] The expiration policy for a vector store.
+      # @param expires_after [OpenAI::VectorStoreCreateParams::ExpiresAfter] The expiration policy for a vector store.
       #
       # @param file_ids [Array<String>] A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
       #
@@ -71,7 +71,7 @@ module OpenAI
       #
       # @param vector_store_id [String] The ID of the vector store to modify.
       #
-      # @param expires_after [OpenAI::VectorStoreExpirationAfter, nil] The expiration policy for a vector store.
+      # @param expires_after [OpenAI::VectorStoreUpdateParams::ExpiresAfter, nil] The expiration policy for a vector store.
       #
       # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #

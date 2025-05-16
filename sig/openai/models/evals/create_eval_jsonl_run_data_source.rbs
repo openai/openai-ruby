@@ -18,11 +18,54 @@ module OpenAI
         ) -> void
 
         type source =
-          OpenAI::Evals::EvalJSONLFileContentSource
-          | OpenAI::Evals::EvalJSONLFileIDSource
+          OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent
+          | OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID
 
         module Source
           extend OpenAI::Internal::Type::Union
+
+          type file_content =
+            {
+              content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
+              type: :file_content
+            }
+
+          class FileContent < OpenAI::Internal::Type::BaseModel
+            attr_accessor content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content]
+
+            attr_accessor type: :file_content
+
+            def initialize: (
+              content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
+              ?type: :file_content
+            ) -> void
+
+            type content =
+              { item: ::Hash[Symbol, top], sample: ::Hash[Symbol, top] }
+
+            class Content < OpenAI::Internal::Type::BaseModel
+              attr_accessor item: ::Hash[Symbol, top]
+
+              attr_reader sample: ::Hash[Symbol, top]?
+
+              def sample=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
+
+              def initialize: (
+                item: ::Hash[Symbol, top],
+                ?sample: ::Hash[Symbol, top]
+              ) -> void
+            end
+          end
+
+          type file_id = { id: String, type: :file_id }
+
+          class FileID < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor type: :file_id
+
+            def initialize: (id: String, ?type: :file_id) -> void
+          end
 
           def self?.variants: -> ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::source]
         end

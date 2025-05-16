@@ -19,7 +19,7 @@ module OpenAI
       # @!attribute data_source_config
       #   Configuration of data sources used in runs of the evaluation.
       #
-      #   @return [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig]
+      #   @return [OpenAI::EvalCustomDataSourceConfig, OpenAI::Models::EvalListResponse::DataSourceConfig::Logs, OpenAI::EvalStoredCompletionsDataSourceConfig]
       required :data_source_config, union: -> { OpenAI::Models::EvalListResponse::DataSourceConfig }
 
       # @!attribute metadata
@@ -67,7 +67,7 @@ module OpenAI
       #
       #   @param created_at [Integer] The Unix timestamp (in seconds) for when the eval was created.
       #
-      #   @param data_source_config [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
+      #   @param data_source_config [OpenAI::EvalCustomDataSourceConfig, OpenAI::Models::EvalListResponse::DataSourceConfig::Logs, OpenAI::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
       #
       #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
       #
@@ -95,19 +95,61 @@ module OpenAI
         # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
         # The schema returned by this data source config is used to defined what variables are available in your evals.
         # `item` and `sample` are both defined when using this data source config.
-        variant :logs, -> { OpenAI::EvalLogsDataSourceConfig }
+        variant :logs, -> { OpenAI::Models::EvalListResponse::DataSourceConfig::Logs }
 
         # Deprecated in favor of LogsDataSourceConfig.
         variant :"stored-completions", -> { OpenAI::EvalStoredCompletionsDataSourceConfig }
 
+        class Logs < OpenAI::Internal::Type::BaseModel
+          # @!attribute schema
+          #   The json schema for the run data source items. Learn how to build JSON schemas
+          #   [here](https://json-schema.org/).
+          #
+          #   @return [Hash{Symbol=>Object}]
+          required :schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+
+          # @!attribute type
+          #   The type of data source. Always `logs`.
+          #
+          #   @return [Symbol, :logs]
+          required :type, const: :logs
+
+          # @!attribute metadata
+          #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+          #   for storing additional information about the object in a structured format, and
+          #   querying for objects via API or the dashboard.
+          #
+          #   Keys are strings with a maximum length of 64 characters. Values are strings with
+          #   a maximum length of 512 characters.
+          #
+          #   @return [Hash{Symbol=>String}, nil]
+          optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
+
+          # @!method initialize(schema:, metadata: nil, type: :logs)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::EvalListResponse::DataSourceConfig::Logs} for more details.
+          #
+          #   A LogsDataSourceConfig which specifies the metadata property of your logs query.
+          #   This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc. The
+          #   schema returned by this data source config is used to defined what variables are
+          #   available in your evals. `item` and `sample` are both defined when using this
+          #   data source config.
+          #
+          #   @param schema [Hash{Symbol=>Object}] The json schema for the run data source items.
+          #
+          #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+          #
+          #   @param type [Symbol, :logs] The type of data source. Always `logs`.
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)]
+        #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::Models::EvalListResponse::DataSourceConfig::Logs, OpenAI::EvalStoredCompletionsDataSourceConfig)]
 
         define_sorbet_constant!(:Variants) do
           T.type_alias do
             T.any(
               OpenAI::EvalCustomDataSourceConfig,
-              OpenAI::EvalLogsDataSourceConfig,
+              OpenAI::Models::EvalListResponse::DataSourceConfig::Logs,
               OpenAI::EvalStoredCompletionsDataSourceConfig
             )
           end

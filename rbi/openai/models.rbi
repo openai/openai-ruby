@@ -59,11 +59,7 @@ module OpenAI
 
   EvalDeleteParams = OpenAI::Models::EvalDeleteParams
 
-  EvalItem = OpenAI::Models::EvalItem
-
   EvalListParams = OpenAI::Models::EvalListParams
-
-  EvalLogsDataSourceConfig = OpenAI::Models::EvalLogsDataSourceConfig
 
   EvalRetrieveParams = OpenAI::Models::EvalRetrieveParams
 
@@ -183,8 +179,6 @@ module OpenAI
   VectorStoreDeleted = OpenAI::Models::VectorStoreDeleted
 
   VectorStoreDeleteParams = OpenAI::Models::VectorStoreDeleteParams
-
-  VectorStoreExpirationAfter = OpenAI::Models::VectorStoreExpirationAfter
 
   VectorStoreListParams = OpenAI::Models::VectorStoreListParams
 

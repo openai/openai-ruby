@@ -35,7 +35,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :name
 
-        # The type of grader.
+        # The object type, which is always `multi`.
         sig { returns(Symbol) }
         attr_accessor :type
 
@@ -65,7 +65,7 @@ module OpenAI
           graders:,
           # The name of the grader.
           name:,
-          # The type of grader.
+          # The object type, which is always `multi`.
           type: :multi
         )
         end
