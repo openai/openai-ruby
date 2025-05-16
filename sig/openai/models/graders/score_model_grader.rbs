@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    class ScoreModelGrader = Graders::ScoreModelGrader
+
+    module Graders
+      type score_model_grader =
+        {
+          input: ::Array[OpenAI::EvalItem],
+          model: String,
+          name: String,
+          type: :score_model,
+          range: ::Array[Float],
+          sampling_params: top
+        }
+
+      class ScoreModelGrader < OpenAI::Internal::Type::BaseModel
+        attr_accessor input: ::Array[OpenAI::EvalItem]
+
+        attr_accessor model: String
+
+        attr_accessor name: String
+
+        attr_accessor type: :score_model
+
+        attr_reader range: ::Array[Float]?
+
+        def range=: (::Array[Float]) -> ::Array[Float]
+
+        attr_reader sampling_params: top?
+
+        def sampling_params=: (top) -> top
+
+        def initialize: (
+          input: ::Array[OpenAI::EvalItem],
+          model: String,
+          name: String,
+          ?range: ::Array[Float],
+          ?sampling_params: top,
+          ?type: :score_model
+        ) -> void
+      end
+    end
+  end
+end

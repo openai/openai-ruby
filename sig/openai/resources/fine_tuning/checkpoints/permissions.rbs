@@ -19,7 +19,8 @@ module OpenAI
           ) -> OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse
 
           def delete: (
-            String fine_tuned_model_checkpoint,
+            String permission_id,
+            fine_tuned_model_checkpoint: String,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Models::FineTuning::Checkpoints::PermissionDeleteResponse
 

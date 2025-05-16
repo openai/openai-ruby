@@ -14,17 +14,20 @@ module OpenAI
 
             # @!attribute message_creation
             #
-            #   @return [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation, nil]
+            #   @return [OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation, nil]
             optional :message_creation,
-                     -> { OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation }
+                     -> {
+                       OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+                     }
 
             # @!method initialize(message_creation: nil, type: :message_creation)
             #   Details of the message creation by the run step.
             #
-            #   @param message_creation [OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation]
-            #   @param type [Symbol, :message_creation]
+            #   @param message_creation [OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation]
+            #
+            #   @param type [Symbol, :message_creation] Always `message_creation`.
 
-            # @see OpenAI::Models::Beta::Threads::Runs::RunStepDeltaMessageDelta#message_creation
+            # @see OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta#message_creation
             class MessageCreation < OpenAI::Internal::Type::BaseModel
               # @!attribute message_id
               #   The ID of the message that was created by this run step.
@@ -33,7 +36,7 @@ module OpenAI
               optional :message_id, String
 
               # @!method initialize(message_id: nil)
-              #   @param message_id [String]
+              #   @param message_id [String] The ID of the message that was created by this run step.
             end
           end
         end

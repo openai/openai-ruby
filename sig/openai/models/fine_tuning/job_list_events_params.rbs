@@ -22,8 +22,6 @@ module OpenAI
           ?limit: Integer,
           ?request_options: OpenAI::request_opts
         ) -> void
-
-        def to_hash: -> OpenAI::Models::FineTuning::job_list_events_params
       end
     end
   end

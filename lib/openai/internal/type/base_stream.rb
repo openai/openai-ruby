@@ -3,11 +3,13 @@
 module OpenAI
   module Internal
     module Type
+      # @api private
+      #
       # @generic Elem
       #
       # This module provides a base implementation for streaming responses in the SDK.
       #
-      # @see https://rubyapi.org/3.1/o/enumerable
+      # @see https://rubyapi.org/3.2/o/enumerable
       module BaseStream
         include Enumerable
 
@@ -22,10 +24,12 @@ module OpenAI
           #
           # @return [Proc]
           #
-          # @see https://rubyapi.org/3.1/o/objectspace#method-c-define_finalizer
+          # @see https://rubyapi.org/3.2/o/objectspace#method-c-define_finalizer
           def defer_closing(stream) = ->(_id) { OpenAI::Internal::Util.close_fused!(stream) }
         end
 
+        # @api public
+        #
         # @return [void]
         def close = OpenAI::Internal::Util.close_fused!(@iterator)
 
@@ -34,6 +38,8 @@ module OpenAI
         # @return [Enumerable<generic<Elem>>]
         private def iterator = (raise NotImplementedError)
 
+        # @api public
+        #
         # @param blk [Proc]
         #
         # @yieldparam [generic<Elem>]
@@ -45,6 +51,8 @@ module OpenAI
           @iterator.each(&blk)
         end
 
+        # @api public
+        #
         # @return [Enumerator<generic<Elem>>]
         def to_enum = @iterator
 

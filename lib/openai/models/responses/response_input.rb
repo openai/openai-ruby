@@ -3,8 +3,8 @@
 module OpenAI
   module Models
     module Responses
-      ResponseInput =
-        OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Models::Responses::ResponseInputItem }]
+      # @type [OpenAI::Internal::Type::Converter]
+      ResponseInput = OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Responses::ResponseInputItem }]
     end
   end
 end

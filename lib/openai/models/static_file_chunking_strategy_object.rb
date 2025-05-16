@@ -5,8 +5,8 @@ module OpenAI
     class StaticFileChunkingStrategyObject < OpenAI::Internal::Type::BaseModel
       # @!attribute static
       #
-      #   @return [OpenAI::Models::StaticFileChunkingStrategy]
-      required :static, -> { OpenAI::Models::StaticFileChunkingStrategy }
+      #   @return [OpenAI::StaticFileChunkingStrategy]
+      required :static, -> { OpenAI::StaticFileChunkingStrategy }
 
       # @!attribute type
       #   Always `static`.
@@ -15,8 +15,9 @@ module OpenAI
       required :type, const: :static
 
       # @!method initialize(static:, type: :static)
-      #   @param static [OpenAI::Models::StaticFileChunkingStrategy]
-      #   @param type [Symbol, :static]
+      #   @param static [OpenAI::StaticFileChunkingStrategy]
+      #
+      #   @param type [Symbol, :static] Always `static`.
     end
   end
 end

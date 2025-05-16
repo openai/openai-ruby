@@ -21,19 +21,24 @@ module OpenAI
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `include[]` parameter set to `logprobs`.
         #
-        #   @return [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>, nil]
+        #   @return [Array<OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob>, nil]
         optional :logprobs,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob] }
+                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob] }
 
         # @!method initialize(delta:, logprobs: nil, type: :"transcript.text.delta")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Audio::TranscriptionTextDeltaEvent} for more details.
+        #
         #   Emitted when there is an additional text delta. This is also the first event
         #   emitted when the transcription starts. Only emitted when you
         #   [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
         #   with the `Stream` parameter set to `true`.
         #
-        #   @param delta [String]
-        #   @param logprobs [Array<OpenAI::Models::Audio::TranscriptionTextDeltaEvent::Logprob>]
-        #   @param type [Symbol, :"transcript.text.delta"]
+        #   @param delta [String] The text delta that was additionally transcribed.
+        #
+        #   @param logprobs [Array<OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob>] The log probabilities of the delta. Only included if you [create a transcription
+        #
+        #   @param type [Symbol, :"transcript.text.delta"] The type of the event. Always `transcript.text.delta`.
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
@@ -55,9 +60,14 @@ module OpenAI
           optional :logprob, Float
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
-          #   @param token [String]
-          #   @param bytes [Array<Object>]
-          #   @param logprob [Float]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Audio::TranscriptionTextDeltaEvent::Logprob} for more details.
+          #
+          #   @param token [String] The token that was used to generate the log probability.
+          #
+          #   @param bytes [Array<Object>] The bytes that were used to generate the log probability.
+          #
+          #   @param logprob [Float] The log probability of the token.
         end
       end
     end

@@ -6,22 +6,22 @@ module OpenAI
       type chat_completion_assistant_message_param =
         {
           role: :assistant,
-          audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?,
-          content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
-          function_call: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
+          audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?,
+          content: OpenAI::Chat::ChatCompletionAssistantMessageParam::content?,
+          function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
           name: String,
           refusal: String?,
-          tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
+          tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
         }
 
       class ChatCompletionAssistantMessageParam < OpenAI::Internal::Type::BaseModel
         attr_accessor role: :assistant
 
-        attr_accessor audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?
+        attr_accessor audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?
 
-        attr_accessor content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?
+        attr_accessor content: OpenAI::Chat::ChatCompletionAssistantMessageParam::content?
 
-        attr_accessor function_call: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall?
+        attr_accessor function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?
 
         attr_reader name: String?
 
@@ -29,23 +29,21 @@ module OpenAI
 
         attr_accessor refusal: String?
 
-        attr_reader tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]?
+        attr_reader tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]?
 
         def tool_calls=: (
-          ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
-        ) -> ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall]
+          ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
+        ) -> ::Array[OpenAI::Chat::ChatCompletionMessageToolCall]
 
         def initialize: (
-          ?audio: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Audio?,
-          ?content: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::content?,
-          ?function_call: OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
+          ?audio: OpenAI::Chat::ChatCompletionAssistantMessageParam::Audio?,
+          ?content: OpenAI::Chat::ChatCompletionAssistantMessageParam::content?,
+          ?function_call: OpenAI::Chat::ChatCompletionAssistantMessageParam::FunctionCall?,
           ?name: String,
           ?refusal: String?,
-          ?tool_calls: ::Array[OpenAI::Models::Chat::ChatCompletionMessageToolCall],
+          ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionMessageToolCall],
           ?role: :assistant
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_assistant_message_param
 
         type audio = { id: String }
 
@@ -53,33 +51,28 @@ module OpenAI
           attr_accessor id: String
 
           def initialize: (id: String) -> void
-
-          def to_hash: -> OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::audio
         end
 
         type content =
           String
-          | ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
+          | ::Array[OpenAI::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
 
         module Content
           extend OpenAI::Internal::Type::Union
 
           type array_of_content_part =
-            OpenAI::Models::Chat::ChatCompletionContentPartText
-            | OpenAI::Models::Chat::ChatCompletionContentPartRefusal
+            OpenAI::Chat::ChatCompletionContentPartText
+            | OpenAI::Chat::ChatCompletionContentPartRefusal
 
           module ArrayOfContentPart
             extend OpenAI::Internal::Type::Union
 
-            def self?.variants: -> [OpenAI::Models::Chat::ChatCompletionContentPartText, OpenAI::Models::Chat::ChatCompletionContentPartRefusal]
+            def self?.variants: -> ::Array[OpenAI::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
           end
 
-          def self?.variants: -> [String, ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]]
+          def self?.variants: -> ::Array[OpenAI::Chat::ChatCompletionAssistantMessageParam::content]
 
-          type array_of_content_part_array =
-            ::Array[OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::Content::array_of_content_part]
-
-          ArrayOfContentPartArray: array_of_content_part_array
+          ArrayOfContentPartArray: OpenAI::Internal::Type::Converter
         end
 
         type function_call = { arguments: String, name: String }
@@ -90,8 +83,6 @@ module OpenAI
           attr_accessor name: String
 
           def initialize: (arguments: String, name: String) -> void
-
-          def to_hash: -> OpenAI::Models::Chat::ChatCompletionAssistantMessageParam::function_call
         end
       end
     end

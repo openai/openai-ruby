@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type image_create_variation_params =
       {
-        image: (Pathname | StringIO),
+        image: (Pathname | StringIO | IO | OpenAI::FilePart),
         model: OpenAI::Models::ImageCreateVariationParams::model?,
         n: Integer?,
         response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
@@ -15,7 +15,7 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      attr_accessor image: Pathname | StringIO
+      attr_accessor image: Pathname | StringIO | IO | OpenAI::FilePart
 
       attr_accessor model: OpenAI::Models::ImageCreateVariationParams::model?
 
@@ -30,7 +30,7 @@ module OpenAI
       def user=: (String) -> String
 
       def initialize: (
-        image: Pathname | StringIO,
+        image: Pathname | StringIO | IO | OpenAI::FilePart,
         ?model: OpenAI::Models::ImageCreateVariationParams::model?,
         ?n: Integer?,
         ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
@@ -39,14 +39,12 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> OpenAI::Models::image_create_variation_params
-
       type model = String | OpenAI::Models::image_model
 
       module Model
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [String, OpenAI::Models::image_model]
+        def self?.variants: -> ::Array[OpenAI::Models::ImageCreateVariationParams::model]
       end
 
       type response_format = :url | :b64_json

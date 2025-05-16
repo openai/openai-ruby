@@ -4,7 +4,7 @@ module OpenAI
       type response_input =
         ::Array[OpenAI::Models::Responses::response_input_item]
 
-      ResponseInput: response_input
+      ResponseInput: OpenAI::Internal::Type::Converter
     end
   end
 end

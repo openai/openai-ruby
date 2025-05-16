@@ -3,6 +3,7 @@ module OpenAI
     module Type
       module Union
         include OpenAI::Internal::Type::Converter
+        include OpenAI::Internal::Util::SorbetRuntimeSupport
 
         private def self.known_variants: -> ::Array[[Symbol?, (^-> OpenAI::Internal::Type::Converter::input)]]
 

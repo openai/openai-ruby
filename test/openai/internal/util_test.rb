@@ -87,8 +87,9 @@ class OpenAI::Test::UtilDataHandlingTest < Minitest::Test
       OpenAI::Internal::Util.dig([], 1.0) => nil
 
       OpenAI::Internal::Util.dig(Object, 1) => nil
-      OpenAI::Internal::Util.dig([], 1.0, 2) => 2
       OpenAI::Internal::Util.dig([], 1.0) { 2 } => 2
+      OpenAI::Internal::Util.dig([], ->(_) { 2 }) => 2
+      OpenAI::Internal::Util.dig([1], -> { _1 in [1] }) => true
     end
   end
 end
@@ -157,6 +158,38 @@ class OpenAI::Test::UtilUriHandlingTest < Minitest::Test
   end
 end
 
+class OpenAI::Test::RegexMatchTest < Minitest::Test
+  def test_json_content
+    cases = {
+      "application/json" => true,
+      "application/jsonl" => false,
+      "application/vnd.github.v3+json" => true,
+      "application/vnd.api+json" => true
+    }
+    cases.each do |header, verdict|
+      assert_pattern do
+        OpenAI::Internal::Util::JSON_CONTENT.match?(header) => ^verdict
+      end
+    end
+  end
+
+  def test_jsonl_content
+    cases = {
+      "application/x-ndjson" => true,
+      "application/x-ldjson" => true,
+      "application/jsonl" => true,
+      "application/x-jsonl" => true,
+      "application/json" => false,
+      "application/vnd.api+json" => false
+    }
+    cases.each do |header, verdict|
+      assert_pattern do
+        OpenAI::Internal::Util::JSONL_CONTENT.match?(header) => ^verdict
+      end
+    end
+  end
+end
+
 class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
   class FakeCGI < CGI
     def initialize(headers, io)
@@ -184,8 +217,12 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
     file = Pathname(__FILE__)
     headers = {"content-type" => "multipart/form-data"}
     cases = {
+      "abc" => "abc",
       StringIO.new("abc") => "abc",
-      file => /^class OpenAI/
+      OpenAI::FilePart.new("abc") => "abc",
+      OpenAI::FilePart.new(StringIO.new("abc")) => "abc",
+      file => /^class OpenAI/,
+      OpenAI::FilePart.new(file) => /^class OpenAI/
     }
     cases.each do |body, val|
       encoded = OpenAI::Internal::Util.encode_content(headers, body)
@@ -203,7 +240,13 @@ class OpenAI::Test::UtilFormDataEncodingTest < Minitest::Test
       {a: 2, b: nil} => {"a" => "2", "b" => "null"},
       {a: 2, b: [1, 2, 3]} => {"a" => "2", "b" => "1"},
       {strio: StringIO.new("a")} => {"strio" => "a"},
-      {pathname: Pathname(__FILE__)} => {"pathname" => -> { _1.read in /^class OpenAI/ }}
+      {strio: OpenAI::FilePart.new("a")} => {"strio" => "a"},
+      {pathname: Pathname(__FILE__)} => {"pathname" => -> { _1.read in /^class OpenAI/ }},
+      {pathname: OpenAI::FilePart.new(Pathname(__FILE__))} => {
+        "pathname" => -> {
+          _1.read in /^class OpenAI/
+        }
+      }
     }
     cases.each do |body, testcase|
       encoded = OpenAI::Internal::Util.encode_content(headers, body)

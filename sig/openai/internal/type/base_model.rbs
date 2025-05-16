@@ -3,9 +3,12 @@ module OpenAI
     module Type
       class BaseModel
         extend OpenAI::Internal::Type::Converter
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
         type known_field =
           { mode: (:coerce | :dump)?, required: bool, nilable: bool }
+
+        def self.inherited: (self child) -> void
 
         def self.known_fields: -> ::Hash[Symbol, (OpenAI::Internal::Type::BaseModel::known_field
         & { type_fn: (^-> OpenAI::Internal::Type::Converter::input) })]
@@ -65,23 +68,26 @@ module OpenAI
           state: OpenAI::Internal::Type::Converter::dump_state
         ) -> (::Hash[top, top] | top)
 
+        def self.recursively_to_h: (
+          OpenAI::Internal::Type::BaseModel model,
+          convert: bool
+        ) -> ::Hash[Symbol, top]
+
         def []: (Symbol key) -> top?
 
         def to_h: -> ::Hash[Symbol, top]
 
         alias to_hash to_h
 
-        def deconstruct_keys: (::Array[Symbol]? keys) -> ::Hash[Symbol, top]
+        def deep_to_h: -> ::Hash[Symbol, top]
 
-        def self.walk: (
-          OpenAI::Internal::Type::BaseModel model
-        ) -> ::Hash[Symbol, top]
+        def deconstruct_keys: (::Array[Symbol]? keys) -> ::Hash[Symbol, top]
 
         def to_json: (*top a) -> String
 
         def to_yaml: (*top a) -> String
 
-        def initialize: (?::Hash[Symbol, top] | self data) -> void
+        def initialize: (?::Hash[Symbol, top] | instance data) -> void
 
         def self.inspect: (?depth: Integer) -> String
 

@@ -17,10 +17,10 @@ module OpenAI
         required :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
         # @!attribute filters
-        #   A filter to apply based on file attributes.
+        #   A filter to apply.
         #
-        #   @return [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter, nil]
-        optional :filters, union: -> { OpenAI::Models::Responses::FileSearchTool::Filters }
+        #   @return [OpenAI::ComparisonFilter, OpenAI::CompoundFilter, nil]
+        optional :filters, union: -> { OpenAI::Responses::FileSearchTool::Filters }, nil?: true
 
         # @!attribute max_num_results
         #   The maximum number of results to return. This number should be between 1 and 50
@@ -32,43 +32,54 @@ module OpenAI
         # @!attribute ranking_options
         #   Ranking options for search.
         #
-        #   @return [OpenAI::Models::Responses::FileSearchTool::RankingOptions, nil]
-        optional :ranking_options, -> { OpenAI::Models::Responses::FileSearchTool::RankingOptions }
+        #   @return [OpenAI::Responses::FileSearchTool::RankingOptions, nil]
+        optional :ranking_options, -> { OpenAI::Responses::FileSearchTool::RankingOptions }
 
         # @!method initialize(vector_store_ids:, filters: nil, max_num_results: nil, ranking_options: nil, type: :file_search)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::FileSearchTool} for more details.
+        #
         #   A tool that searches for relevant content from uploaded files. Learn more about
         #   the
         #   [file search tool](https://platform.openai.com/docs/guides/tools-file-search).
         #
-        #   @param vector_store_ids [Array<String>]
-        #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-        #   @param max_num_results [Integer]
-        #   @param ranking_options [OpenAI::Models::Responses::FileSearchTool::RankingOptions]
-        #   @param type [Symbol, :file_search]
-
-        # A filter to apply based on file attributes.
+        #   @param vector_store_ids [Array<String>] The IDs of the vector stores to search.
         #
-        # @see OpenAI::Models::Responses::FileSearchTool#filters
+        #   @param filters [OpenAI::ComparisonFilter, OpenAI::CompoundFilter, nil] A filter to apply.
+        #
+        #   @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 and 50
+        #
+        #   @param ranking_options [OpenAI::Responses::FileSearchTool::RankingOptions] Ranking options for search.
+        #
+        #   @param type [Symbol, :file_search] The type of the file search tool. Always `file_search`.
+
+        # A filter to apply.
+        #
+        # @see OpenAI::Responses::FileSearchTool#filters
         module Filters
           extend OpenAI::Internal::Type::Union
 
           # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
-          variant -> { OpenAI::Models::ComparisonFilter }
+          variant -> { OpenAI::ComparisonFilter }
 
           # Combine multiple filters using `and` or `or`.
-          variant -> { OpenAI::Models::CompoundFilter }
+          variant -> { OpenAI::CompoundFilter }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
+          #   @return [Array(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter) }
+          end
         end
 
-        # @see OpenAI::Models::Responses::FileSearchTool#ranking_options
+        # @see OpenAI::Responses::FileSearchTool#ranking_options
         class RankingOptions < OpenAI::Internal::Type::BaseModel
           # @!attribute ranker
           #   The ranker to use for the file search.
           #
-          #   @return [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker, nil]
-          optional :ranker, enum: -> { OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker }
+          #   @return [Symbol, OpenAI::Responses::FileSearchTool::RankingOptions::Ranker, nil]
+          optional :ranker, enum: -> { OpenAI::Responses::FileSearchTool::RankingOptions::Ranker }
 
           # @!attribute score_threshold
           #   The score threshold for the file search, a number between 0 and 1. Numbers
@@ -79,14 +90,18 @@ module OpenAI
           optional :score_threshold, Float
 
           # @!method initialize(ranker: nil, score_threshold: nil)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Responses::FileSearchTool::RankingOptions} for more details.
+          #
           #   Ranking options for search.
           #
-          #   @param ranker [Symbol, OpenAI::Models::Responses::FileSearchTool::RankingOptions::Ranker]
-          #   @param score_threshold [Float]
+          #   @param ranker [Symbol, OpenAI::Responses::FileSearchTool::RankingOptions::Ranker] The ranker to use for the file search.
+          #
+          #   @param score_threshold [Float] The score threshold for the file search, a number between 0 and 1. Numbers close
 
           # The ranker to use for the file search.
           #
-          # @see OpenAI::Models::Responses::FileSearchTool::RankingOptions#ranker
+          # @see OpenAI::Responses::FileSearchTool::RankingOptions#ranker
           module Ranker
             extend OpenAI::Internal::Type::Enum
 

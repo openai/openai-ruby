@@ -2,22 +2,17 @@ module OpenAI
   module Models
     module Responses
       type response_incomplete_event =
-        {
-          response: OpenAI::Models::Responses::Response,
-          type: :"response.incomplete"
-        }
+        { response: OpenAI::Responses::Response, type: :"response.incomplete" }
 
       class ResponseIncompleteEvent < OpenAI::Internal::Type::BaseModel
-        attr_accessor response: OpenAI::Models::Responses::Response
+        attr_accessor response: OpenAI::Responses::Response
 
         attr_accessor type: :"response.incomplete"
 
         def initialize: (
-          response: OpenAI::Models::Responses::Response,
+          response: OpenAI::Responses::Response,
           ?type: :"response.incomplete"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_incomplete_event
       end
     end
   end

@@ -15,8 +15,6 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           ?request_options: OpenAI::request_opts
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::completion_update_params
       end
     end
   end

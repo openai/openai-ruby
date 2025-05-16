@@ -5,7 +5,7 @@ module OpenAI
         type file_path_annotation =
           {
             end_index: Integer,
-            file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath,
+            file_path: OpenAI::Beta::Threads::FilePathAnnotation::FilePath,
             start_index: Integer,
             text: String,
             type: :file_path
@@ -14,7 +14,7 @@ module OpenAI
         class FilePathAnnotation < OpenAI::Internal::Type::BaseModel
           attr_accessor end_index: Integer
 
-          attr_accessor file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath
+          attr_accessor file_path: OpenAI::Beta::Threads::FilePathAnnotation::FilePath
 
           attr_accessor start_index: Integer
 
@@ -24,13 +24,11 @@ module OpenAI
 
           def initialize: (
             end_index: Integer,
-            file_path: OpenAI::Models::Beta::Threads::FilePathAnnotation::FilePath,
+            file_path: OpenAI::Beta::Threads::FilePathAnnotation::FilePath,
             start_index: Integer,
             text: String,
             ?type: :file_path
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::file_path_annotation
 
           type file_path = { file_id: String }
 
@@ -38,8 +36,6 @@ module OpenAI
             attr_accessor file_id: String
 
             def initialize: (file_id: String) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::FilePathAnnotation::file_path
           end
         end
       end

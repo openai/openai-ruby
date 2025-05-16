@@ -68,16 +68,28 @@ module OpenAI
         required :tokens, OpenAI::Internal::Type::ArrayOf[Integer]
 
         # @!method initialize(id:, avg_logprob:, compression_ratio:, end_:, no_speech_prob:, seek:, start:, temperature:, text:, tokens:)
-        #   @param id [Integer]
-        #   @param avg_logprob [Float]
-        #   @param compression_ratio [Float]
-        #   @param end_ [Float]
-        #   @param no_speech_prob [Float]
-        #   @param seek [Integer]
-        #   @param start [Float]
-        #   @param temperature [Float]
-        #   @param text [String]
-        #   @param tokens [Array<Integer>]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Audio::TranscriptionSegment} for more details.
+        #
+        #   @param id [Integer] Unique identifier of the segment.
+        #
+        #   @param avg_logprob [Float] Average logprob of the segment. If the value is lower than -1, consider the logp
+        #
+        #   @param compression_ratio [Float] Compression ratio of the segment. If the value is greater than 2.4, consider the
+        #
+        #   @param end_ [Float] End time of the segment in seconds.
+        #
+        #   @param no_speech_prob [Float] Probability of no speech in the segment. If the value is higher than 1.0 and the
+        #
+        #   @param seek [Integer] Seek offset of the segment.
+        #
+        #   @param start [Float] Start time of the segment in seconds.
+        #
+        #   @param temperature [Float] Temperature parameter used for generating the segment.
+        #
+        #   @param text [String] Text content of the segment.
+        #
+        #   @param tokens [Array<Integer>] Array of token IDs for the text content.
       end
     end
   end

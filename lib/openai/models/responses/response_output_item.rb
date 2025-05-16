@@ -10,30 +10,45 @@ module OpenAI
         discriminator :type
 
         # An output message from the model.
-        variant :message, -> { OpenAI::Models::Responses::ResponseOutputMessage }
+        variant :message, -> { OpenAI::Responses::ResponseOutputMessage }
 
         # The results of a file search tool call. See the
         # [file search guide](https://platform.openai.com/docs/guides/tools-file-search) for more information.
-        variant :file_search_call, -> { OpenAI::Models::Responses::ResponseFileSearchToolCall }
+        variant :file_search_call, -> { OpenAI::Responses::ResponseFileSearchToolCall }
 
         # A tool call to run a function. See the
         # [function calling guide](https://platform.openai.com/docs/guides/function-calling) for more information.
-        variant :function_call, -> { OpenAI::Models::Responses::ResponseFunctionToolCall }
+        variant :function_call, -> { OpenAI::Responses::ResponseFunctionToolCall }
 
         # The results of a web search tool call. See the
         # [web search guide](https://platform.openai.com/docs/guides/tools-web-search) for more information.
-        variant :web_search_call, -> { OpenAI::Models::Responses::ResponseFunctionWebSearch }
+        variant :web_search_call, -> { OpenAI::Responses::ResponseFunctionWebSearch }
 
         # A tool call to a computer use tool. See the
         # [computer use guide](https://platform.openai.com/docs/guides/tools-computer-use) for more information.
-        variant :computer_call, -> { OpenAI::Models::Responses::ResponseComputerToolCall }
+        variant :computer_call, -> { OpenAI::Responses::ResponseComputerToolCall }
 
         # A description of the chain of thought used by a reasoning model while generating
-        # a response.
-        variant :reasoning, -> { OpenAI::Models::Responses::ResponseReasoningItem }
+        # a response. Be sure to include these items in your `input` to the Responses API
+        # for subsequent turns of a conversation if you are manually
+        # [managing context](https://platform.openai.com/docs/guides/conversation-state).
+        variant :reasoning, -> { OpenAI::Responses::ResponseReasoningItem }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseReasoningItem)]
+        #   @return [Array(OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseReasoningItem)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseOutputMessage,
+              OpenAI::Responses::ResponseFileSearchToolCall,
+              OpenAI::Responses::ResponseFunctionToolCall,
+              OpenAI::Responses::ResponseFunctionWebSearch,
+              OpenAI::Responses::ResponseComputerToolCall,
+              OpenAI::Responses::ResponseReasoningItem
+            )
+          end
+        end
       end
     end
   end

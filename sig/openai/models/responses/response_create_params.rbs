@@ -11,11 +11,11 @@ module OpenAI
           metadata: OpenAI::Models::metadata?,
           parallel_tool_calls: bool?,
           previous_response_id: String?,
-          reasoning: OpenAI::Models::Reasoning?,
+          reasoning: OpenAI::Reasoning?,
           service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           store: bool?,
           temperature: Float?,
-          text: OpenAI::Models::Responses::ResponseTextConfig,
+          text: OpenAI::Responses::ResponseTextConfig,
           tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
           tools: ::Array[OpenAI::Models::Responses::tool],
           top_p: Float?,
@@ -44,7 +44,7 @@ module OpenAI
 
         attr_accessor previous_response_id: String?
 
-        attr_accessor reasoning: OpenAI::Models::Reasoning?
+        attr_accessor reasoning: OpenAI::Reasoning?
 
         attr_accessor service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?
 
@@ -52,11 +52,11 @@ module OpenAI
 
         attr_accessor temperature: Float?
 
-        attr_reader text: OpenAI::Models::Responses::ResponseTextConfig?
+        attr_reader text: OpenAI::Responses::ResponseTextConfig?
 
         def text=: (
-          OpenAI::Models::Responses::ResponseTextConfig
-        ) -> OpenAI::Models::Responses::ResponseTextConfig
+          OpenAI::Responses::ResponseTextConfig
+        ) -> OpenAI::Responses::ResponseTextConfig
 
         attr_reader tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice?
 
@@ -87,11 +87,11 @@ module OpenAI
           ?metadata: OpenAI::Models::metadata?,
           ?parallel_tool_calls: bool?,
           ?previous_response_id: String?,
-          ?reasoning: OpenAI::Models::Reasoning?,
+          ?reasoning: OpenAI::Reasoning?,
           ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
           ?store: bool?,
           ?temperature: Float?,
-          ?text: OpenAI::Models::Responses::ResponseTextConfig,
+          ?text: OpenAI::Responses::ResponseTextConfig,
           ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
           ?tools: ::Array[OpenAI::Models::Responses::tool],
           ?top_p: Float?,
@@ -100,14 +100,12 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Responses::response_create_params
-
         type input = String | OpenAI::Models::Responses::response_input
 
         module Input
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, OpenAI::Models::Responses::response_input]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::input]
         end
 
         type service_tier = :auto | :default | :flex
@@ -124,13 +122,13 @@ module OpenAI
 
         type tool_choice =
           OpenAI::Models::Responses::tool_choice_options
-          | OpenAI::Models::Responses::ToolChoiceTypes
-          | OpenAI::Models::Responses::ToolChoiceFunction
+          | OpenAI::Responses::ToolChoiceTypes
+          | OpenAI::Responses::ToolChoiceFunction
 
         module ToolChoice
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Responses::tool_choice_options, OpenAI::Models::Responses::ToolChoiceTypes, OpenAI::Models::Responses::ToolChoiceFunction]
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCreateParams::tool_choice]
         end
 
         type truncation = :auto | :disabled

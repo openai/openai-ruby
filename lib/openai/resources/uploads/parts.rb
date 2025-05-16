@@ -4,6 +4,9 @@ module OpenAI
   module Resources
     class Uploads
       class Parts
+        # Some parameter documentations has been truncated, see
+        # {OpenAI::Models::Uploads::PartCreateParams} for more details.
+        #
         # Adds a
         # [Part](https://platform.openai.com/docs/api-reference/uploads/part-object) to an
         # [Upload](https://platform.openai.com/docs/api-reference/uploads/object) object.
@@ -18,21 +21,23 @@ module OpenAI
         #
         # @overload create(upload_id, data:, request_options: {})
         #
-        # @param upload_id [String]
-        # @param data [Pathname, StringIO]
+        # @param upload_id [String] The ID of the Upload.
+        #
+        # @param data [Pathname, StringIO, IO, OpenAI::FilePart] The chunk of bytes for this Part.
+        #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Models::Uploads::UploadPart]
+        # @return [OpenAI::Uploads::UploadPart]
         #
         # @see OpenAI::Models::Uploads::PartCreateParams
         def create(upload_id, params)
-          parsed, options = OpenAI::Models::Uploads::PartCreateParams.dump_request(params)
+          parsed, options = OpenAI::Uploads::PartCreateParams.dump_request(params)
           @client.request(
             method: :post,
             path: ["uploads/%1$s/parts", upload_id],
             headers: {"content-type" => "multipart/form-data"},
             body: parsed,
-            model: OpenAI::Models::Uploads::UploadPart,
+            model: OpenAI::Uploads::UploadPart,
             options: options
           )
         end

@@ -8,7 +8,6 @@ module OpenAI
         metadata: OpenAI::Models::metadata?,
         name: String,
         object: :eval,
-        share_with_openai: bool,
         testing_criteria: ::Array[OpenAI::Models::EvalListResponse::testing_criterion]
       }
 
@@ -25,8 +24,6 @@ module OpenAI
 
       attr_accessor object: :eval
 
-      attr_accessor share_with_openai: bool
-
       attr_accessor testing_criteria: ::Array[OpenAI::Models::EvalListResponse::testing_criterion]
 
       def initialize: (
@@ -35,32 +32,62 @@ module OpenAI
         data_source_config: OpenAI::Models::EvalListResponse::data_source_config,
         metadata: OpenAI::Models::metadata?,
         name: String,
-        share_with_openai: bool,
         testing_criteria: ::Array[OpenAI::Models::EvalListResponse::testing_criterion],
         ?object: :eval
       ) -> void
 
-      def to_hash: -> OpenAI::Models::eval_list_response
-
       type data_source_config =
-        OpenAI::Models::EvalCustomDataSourceConfig
-        | OpenAI::Models::EvalStoredCompletionsDataSourceConfig
+        OpenAI::EvalCustomDataSourceConfig
+        | OpenAI::EvalLogsDataSourceConfig
+        | OpenAI::EvalStoredCompletionsDataSourceConfig
 
       module DataSourceConfig
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
+        def self?.variants: -> ::Array[OpenAI::Models::EvalListResponse::data_source_config]
       end
 
       type testing_criterion =
-        OpenAI::Models::EvalLabelModelGrader
-        | OpenAI::Models::EvalStringCheckGrader
-        | OpenAI::Models::EvalTextSimilarityGrader
+        OpenAI::Graders::LabelModelGrader
+        | OpenAI::Graders::StringCheckGrader
+        | OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity
+        | OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython
+        | OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel
 
       module TestingCriterion
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader]
+        type eval_grader_text_similarity = { pass_threshold: Float }
+
+        class EvalGraderTextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
+          def pass_threshold: -> Float
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (pass_threshold: Float) -> void
+        end
+
+        type eval_grader_python = { pass_threshold: Float }
+
+        class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
+          def pass_threshold: -> Float?
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (?pass_threshold: Float) -> void
+        end
+
+        type eval_grader_score_model = { pass_threshold: Float }
+
+        class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
+          def pass_threshold: -> Float?
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (?pass_threshold: Float) -> void
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::EvalListResponse::testing_criterion]
       end
     end
   end

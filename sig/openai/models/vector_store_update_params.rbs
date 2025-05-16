@@ -2,7 +2,7 @@ module OpenAI
   module Models
     type vector_store_update_params =
       {
-        expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?,
+        expires_after: OpenAI::VectorStoreExpirationAfter?,
         metadata: OpenAI::Models::metadata?,
         name: String?
       }
@@ -12,32 +12,18 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      attr_accessor expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?
+      attr_accessor expires_after: OpenAI::VectorStoreExpirationAfter?
 
       attr_accessor metadata: OpenAI::Models::metadata?
 
       attr_accessor name: String?
 
       def initialize: (
-        ?expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?,
+        ?expires_after: OpenAI::VectorStoreExpirationAfter?,
         ?metadata: OpenAI::Models::metadata?,
         ?name: String?,
         ?request_options: OpenAI::request_opts
       ) -> void
-
-      def to_hash: -> OpenAI::Models::vector_store_update_params
-
-      type expires_after = { anchor: :last_active_at, days: Integer }
-
-      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
-        attr_accessor anchor: :last_active_at
-
-        attr_accessor days: Integer
-
-        def initialize: (days: Integer, ?anchor: :last_active_at) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStoreUpdateParams::expires_after
-      end
     end
   end
 end

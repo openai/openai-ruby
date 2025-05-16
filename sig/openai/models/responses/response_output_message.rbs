@@ -4,41 +4,39 @@ module OpenAI
       type response_output_message =
         {
           id: String,
-          content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
+          content: ::Array[OpenAI::Responses::ResponseOutputMessage::content],
           role: :assistant,
-          status: OpenAI::Models::Responses::ResponseOutputMessage::status,
+          status: OpenAI::Responses::ResponseOutputMessage::status,
           type: :message
         }
 
       class ResponseOutputMessage < OpenAI::Internal::Type::BaseModel
         attr_accessor id: String
 
-        attr_accessor content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content]
+        attr_accessor content: ::Array[OpenAI::Responses::ResponseOutputMessage::content]
 
         attr_accessor role: :assistant
 
-        attr_accessor status: OpenAI::Models::Responses::ResponseOutputMessage::status
+        attr_accessor status: OpenAI::Responses::ResponseOutputMessage::status
 
         attr_accessor type: :message
 
         def initialize: (
           id: String,
-          content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
-          status: OpenAI::Models::Responses::ResponseOutputMessage::status,
+          content: ::Array[OpenAI::Responses::ResponseOutputMessage::content],
+          status: OpenAI::Responses::ResponseOutputMessage::status,
           ?role: :assistant,
           ?type: :message
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Responses::response_output_message
-
         type content =
-          OpenAI::Models::Responses::ResponseOutputText
-          | OpenAI::Models::Responses::ResponseOutputRefusal
+          OpenAI::Responses::ResponseOutputText
+          | OpenAI::Responses::ResponseOutputRefusal
 
         module Content
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
+          def self?.variants: -> ::Array[OpenAI::Responses::ResponseOutputMessage::content]
         end
 
         type status = :in_progress | :completed | :incomplete
@@ -50,7 +48,7 @@ module OpenAI
           COMPLETED: :completed
           INCOMPLETE: :incomplete
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::status]
+          def self?.values: -> ::Array[OpenAI::Responses::ResponseOutputMessage::status]
         end
       end
     end

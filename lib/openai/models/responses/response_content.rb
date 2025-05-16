@@ -8,22 +8,34 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         # A text input to the model.
-        variant -> { OpenAI::Models::Responses::ResponseInputText }
+        variant -> { OpenAI::Responses::ResponseInputText }
 
         # An image input to the model. Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
-        variant -> { OpenAI::Models::Responses::ResponseInputImage }
+        variant -> { OpenAI::Responses::ResponseInputImage }
 
         # A file input to the model.
-        variant -> { OpenAI::Models::Responses::ResponseInputFile }
+        variant -> { OpenAI::Responses::ResponseInputFile }
 
         # A text output from the model.
-        variant -> { OpenAI::Models::Responses::ResponseOutputText }
+        variant -> { OpenAI::Responses::ResponseOutputText }
 
         # A refusal from the model.
-        variant -> { OpenAI::Models::Responses::ResponseOutputRefusal }
+        variant -> { OpenAI::Responses::ResponseOutputRefusal }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Responses::ResponseInputText, OpenAI::Models::Responses::ResponseInputImage, OpenAI::Models::Responses::ResponseInputFile, OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+        #   @return [Array(OpenAI::Responses::ResponseInputText, OpenAI::Responses::ResponseInputImage, OpenAI::Responses::ResponseInputFile, OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputText,
+              OpenAI::Responses::ResponseInputImage,
+              OpenAI::Responses::ResponseInputFile,
+              OpenAI::Responses::ResponseOutputText,
+              OpenAI::Responses::ResponseOutputRefusal
+            )
+          end
+        end
       end
     end
   end

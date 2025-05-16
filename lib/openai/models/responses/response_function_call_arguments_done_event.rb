@@ -30,9 +30,12 @@ module OpenAI
         # @!method initialize(arguments:, item_id:, output_index:, type: :"response.function_call_arguments.done")
         #   Emitted when function-call arguments are finalized.
         #
-        #   @param arguments [String]
-        #   @param item_id [String]
-        #   @param output_index [Integer]
+        #   @param arguments [String] The function-call arguments.
+        #
+        #   @param item_id [String] The ID of the item.
+        #
+        #   @param output_index [Integer] The index of the output item.
+        #
         #   @param type [Symbol, :"response.function_call_arguments.done"]
       end
     end

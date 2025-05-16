@@ -6,7 +6,7 @@ module OpenAI
           {
             index: Integer,
             type: :text,
-            text: OpenAI::Models::Beta::Threads::TextDelta
+            text: OpenAI::Beta::Threads::TextDelta
           }
 
         class TextDeltaBlock < OpenAI::Internal::Type::BaseModel
@@ -14,19 +14,17 @@ module OpenAI
 
           attr_accessor type: :text
 
-          attr_reader text: OpenAI::Models::Beta::Threads::TextDelta?
+          attr_reader text: OpenAI::Beta::Threads::TextDelta?
 
           def text=: (
-            OpenAI::Models::Beta::Threads::TextDelta
-          ) -> OpenAI::Models::Beta::Threads::TextDelta
+            OpenAI::Beta::Threads::TextDelta
+          ) -> OpenAI::Beta::Threads::TextDelta
 
           def initialize: (
             index: Integer,
-            ?text: OpenAI::Models::Beta::Threads::TextDelta,
+            ?text: OpenAI::Beta::Threads::TextDelta,
             ?type: :text
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::text_delta_block
         end
       end
     end

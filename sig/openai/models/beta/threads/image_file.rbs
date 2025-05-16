@@ -3,26 +3,21 @@ module OpenAI
     module Beta
       module Threads
         type image_file =
-          {
-            file_id: String,
-            detail: OpenAI::Models::Beta::Threads::ImageFile::detail
-          }
+          { file_id: String, detail: OpenAI::Beta::Threads::ImageFile::detail }
 
         class ImageFile < OpenAI::Internal::Type::BaseModel
           attr_accessor file_id: String
 
-          attr_reader detail: OpenAI::Models::Beta::Threads::ImageFile::detail?
+          attr_reader detail: OpenAI::Beta::Threads::ImageFile::detail?
 
           def detail=: (
-            OpenAI::Models::Beta::Threads::ImageFile::detail
-          ) -> OpenAI::Models::Beta::Threads::ImageFile::detail
+            OpenAI::Beta::Threads::ImageFile::detail
+          ) -> OpenAI::Beta::Threads::ImageFile::detail
 
           def initialize: (
             file_id: String,
-            ?detail: OpenAI::Models::Beta::Threads::ImageFile::detail
+            ?detail: OpenAI::Beta::Threads::ImageFile::detail
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::Threads::image_file
 
           type detail = :auto | :low | :high
 
@@ -33,7 +28,7 @@ module OpenAI
             LOW: :low
             HIGH: :high
 
-            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::ImageFile::detail]
+            def self?.values: -> ::Array[OpenAI::Beta::Threads::ImageFile::detail]
           end
         end
       end

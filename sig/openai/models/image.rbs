@@ -20,8 +20,6 @@ module OpenAI
         ?revised_prompt: String,
         ?url: String
       ) -> void
-
-      def to_hash: -> OpenAI::Models::image
     end
   end
 end

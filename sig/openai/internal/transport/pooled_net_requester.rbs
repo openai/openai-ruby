@@ -2,6 +2,8 @@ module OpenAI
   module Internal
     module Transport
       class PooledNetRequester
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
         type request =
           {
             method: Symbol,
@@ -12,6 +14,8 @@ module OpenAI
           }
 
         KEEP_ALIVE_TIMEOUT: 30
+
+        DEFAULT_MAX_CONNECTIONS: Integer
 
         def self.connect: (URI::Generic url) -> top
 

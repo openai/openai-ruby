@@ -17,13 +17,13 @@ module OpenAI
       # values safely.
       #
       # @example
-      #   # `chat_model` is a `OpenAI::Models::ChatModel`
+      #   # `chat_model` is a `OpenAI::ChatModel`
       #   case chat_model
-      #   when OpenAI::Models::ChatModel::GPT_4_1
+      #   when OpenAI::ChatModel::GPT_4_1
       #     # ...
-      #   when OpenAI::Models::ChatModel::GPT_4_1_MINI
+      #   when OpenAI::ChatModel::GPT_4_1_MINI
       #     # ...
-      #   when OpenAI::Models::ChatModel::GPT_4_1_NANO
+      #   when OpenAI::ChatModel::GPT_4_1_NANO
       #     # ...
       #   else
       #     puts(chat_model)
@@ -42,17 +42,22 @@ module OpenAI
       #   end
       module Enum
         include OpenAI::Internal::Type::Converter
+        include OpenAI::Internal::Util::SorbetRuntimeSupport
 
         # All of the valid Symbol values for this enum.
         #
         # @return [Array<NilClass, Boolean, Integer, Float, Symbol>]
         def values = constants.map { const_get(_1) }
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
         def ===(other) = values.include?(other)
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
@@ -62,6 +67,8 @@ module OpenAI
           # rubocop:enable Style/CaseEquality
         end
 
+        # @api public
+        #
         # @return [Integer]
         def hash = values.to_set.hash
 
@@ -94,17 +101,16 @@ module OpenAI
           end
         end
 
-        # @!parse
-        #   # @api private
-        #   #
-        #   # @param value [Symbol, Object]
-        #   #
-        #   # @param state [Hash{Symbol=>Object}] .
-        #   #
-        #   #   @option state [Boolean] :can_retry
-        #   #
-        #   # @return [Symbol, Object]
-        #   def dump(value, state:) = super
+        # @!method dump(value, state:)
+        #   @api private
+        #
+        #   @param value [Symbol, Object]
+        #
+        #   @param state [Hash{Symbol=>Object}] .
+        #
+        #     @option state [Boolean] :can_retry
+        #
+        #   @return [Symbol, Object]
 
         # @api private
         #

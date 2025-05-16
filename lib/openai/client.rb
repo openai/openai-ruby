@@ -51,6 +51,9 @@ module OpenAI
     # @return [OpenAI::Resources::FineTuning]
     attr_reader :fine_tuning
 
+    # @return [OpenAI::Resources::Graders]
+    attr_reader :graders
+
     # @return [OpenAI::Resources::VectorStores]
     attr_reader :vector_stores
 
@@ -101,10 +104,10 @@ module OpenAI
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
       base_url: ENV["OPENAI_BASE_URL"],
-      max_retries: DEFAULT_MAX_RETRIES,
-      timeout: DEFAULT_TIMEOUT_IN_SECONDS,
-      initial_retry_delay: DEFAULT_INITIAL_RETRY_DELAY,
-      max_retry_delay: DEFAULT_MAX_RETRY_DELAY
+      max_retries: self.class::DEFAULT_MAX_RETRIES,
+      timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
+      initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
+      max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY
     )
       base_url ||= "https://api.openai.com/v1"
 
@@ -137,6 +140,7 @@ module OpenAI
       @moderations = OpenAI::Resources::Moderations.new(client: self)
       @models = OpenAI::Resources::Models.new(client: self)
       @fine_tuning = OpenAI::Resources::FineTuning.new(client: self)
+      @graders = OpenAI::Resources::Graders.new(client: self)
       @vector_stores = OpenAI::Resources::VectorStores.new(client: self)
       @beta = OpenAI::Resources::Beta.new(client: self)
       @batches = OpenAI::Resources::Batches.new(client: self)

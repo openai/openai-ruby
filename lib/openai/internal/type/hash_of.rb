@@ -28,8 +28,12 @@ module OpenAI
         #   @option spec [Proc] :union
         #
         #   @option spec [Boolean] :"nil?"
+        #
+        # @return [self]
         def self.[](...) = new(...)
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
@@ -50,6 +54,8 @@ module OpenAI
           end
         end
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
@@ -59,6 +65,8 @@ module OpenAI
           # rubocop:enable Layout/LineLength
         end
 
+        # @api public
+        #
         # @return [Integer]
         def hash = [self.class, item_type].hash
 

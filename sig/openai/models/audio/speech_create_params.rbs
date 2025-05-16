@@ -46,14 +46,12 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Audio::speech_create_params
-
         type model = String | OpenAI::Models::Audio::speech_model
 
         module Model
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, OpenAI::Models::Audio::speech_model]
+          def self?.variants: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::model]
         end
 
         type voice =
@@ -73,17 +71,7 @@ module OpenAI
         module Voice
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [String, (:alloy
-          | :ash
-          | :ballad
-          | :coral
-          | :echo
-          | :fable
-          | :onyx
-          | :nova
-          | :sage
-          | :shimmer
-          | :verse)]
+          def self?.variants: -> ::Array[OpenAI::Models::Audio::SpeechCreateParams::voice]
 
           ALLOY: :alloy
           ASH: :ash

@@ -5,7 +5,7 @@ module OpenAI
         {
           type: :input_file,
           file_data: String,
-          file_id: String,
+          file_id: String?,
           filename: String
         }
 
@@ -16,9 +16,7 @@ module OpenAI
 
         def file_data=: (String) -> String
 
-        attr_reader file_id: String?
-
-        def file_id=: (String) -> String
+        attr_accessor file_id: String?
 
         attr_reader filename: String?
 
@@ -26,12 +24,10 @@ module OpenAI
 
         def initialize: (
           ?file_data: String,
-          ?file_id: String,
+          ?file_id: String?,
           ?filename: String,
           ?type: :input_file
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_input_file
       end
     end
   end

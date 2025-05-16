@@ -12,14 +12,24 @@ module OpenAI
             discriminator :type
 
             # Details of the Code Interpreter tool call the run step was involved in.
-            variant :code_interpreter, -> { OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta }
+            variant :code_interpreter, -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta }
 
-            variant :file_search, -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta }
+            variant :file_search, -> { OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta }
 
-            variant :function, -> { OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta }
+            variant :function, -> { OpenAI::Beta::Threads::Runs::FunctionToolCallDelta }
 
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Models::Beta::Threads::Runs::FunctionToolCallDelta)]
+            #   @return [Array(OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta, OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta, OpenAI::Beta::Threads::Runs::FunctionToolCallDelta)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                  OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
+                  OpenAI::Beta::Threads::Runs::FunctionToolCallDelta
+                )
+              end
+            end
           end
         end
       end

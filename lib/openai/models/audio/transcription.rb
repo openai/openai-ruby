@@ -15,15 +15,19 @@ module OpenAI
         #   models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
         #   to the `include` array.
         #
-        #   @return [Array<OpenAI::Models::Audio::Transcription::Logprob>, nil]
-        optional :logprobs, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Audio::Transcription::Logprob] }
+        #   @return [Array<OpenAI::Audio::Transcription::Logprob>, nil]
+        optional :logprobs, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Audio::Transcription::Logprob] }
 
         # @!method initialize(text:, logprobs: nil)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Audio::Transcription} for more details.
+        #
         #   Represents a transcription response returned by model, based on the provided
         #   input.
         #
-        #   @param text [String]
-        #   @param logprobs [Array<OpenAI::Models::Audio::Transcription::Logprob>]
+        #   @param text [String] The transcribed text.
+        #
+        #   @param logprobs [Array<OpenAI::Audio::Transcription::Logprob>] The log probabilities of the tokens in the transcription. Only returned with the
 
         class Logprob < OpenAI::Internal::Type::BaseModel
           # @!attribute token
@@ -45,9 +49,11 @@ module OpenAI
           optional :logprob, Float
 
           # @!method initialize(token: nil, bytes: nil, logprob: nil)
-          #   @param token [String]
-          #   @param bytes [Array<Float>]
-          #   @param logprob [Float]
+          #   @param token [String] The token in the transcription.
+          #
+          #   @param bytes [Array<Float>] The bytes of the token.
+          #
+          #   @param logprob [Float] The log probability of the token.
         end
       end
     end

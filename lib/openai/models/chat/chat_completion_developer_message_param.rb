@@ -7,8 +7,8 @@ module OpenAI
         # @!attribute content
         #   The contents of the developer message.
         #
-        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        required :content, union: -> { OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::Content }
+        #   @return [String, Array<OpenAI::Chat::ChatCompletionContentPartText>]
+        required :content, union: -> { OpenAI::Chat::ChatCompletionDeveloperMessageParam::Content }
 
         # @!attribute role
         #   The role of the messages author, in this case `developer`.
@@ -24,17 +24,22 @@ module OpenAI
         optional :name, String
 
         # @!method initialize(content:, name: nil, role: :developer)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Chat::ChatCompletionDeveloperMessageParam} for more details.
+        #
         #   Developer-provided instructions that the model should follow, regardless of
         #   messages sent by the user. With o1 models and newer, `developer` messages
         #   replace the previous `system` messages.
         #
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        #   @param name [String]
-        #   @param role [Symbol, :developer]
+        #   @param content [String, Array<OpenAI::Chat::ChatCompletionContentPartText>] The contents of the developer message.
+        #
+        #   @param name [String] An optional name for the participant. Provides the model information to differen
+        #
+        #   @param role [Symbol, :developer] The role of the messages author, in this case `developer`.
 
         # The contents of the developer message.
         #
-        # @see OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam#content
+        # @see OpenAI::Chat::ChatCompletionDeveloperMessageParam#content
         module Content
           extend OpenAI::Internal::Type::Union
 
@@ -42,13 +47,20 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. For developer messages, only type `text` is supported.
-          variant -> { OpenAI::Models::Chat::ChatCompletionDeveloperMessageParam::Content::ChatCompletionContentPartTextArray }
+          variant -> {
+            OpenAI::Chat::ChatCompletionDeveloperMessageParam::Content::ChatCompletionContentPartTextArray
+          }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
+          #   @return [Array(String, Array<OpenAI::Chat::ChatCompletionContentPartText>)]
 
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText]) }
+          end
+
+          # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartTextArray =
-            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
+            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Chat::ChatCompletionContentPartText }]
         end
       end
     end

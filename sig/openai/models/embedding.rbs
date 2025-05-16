@@ -15,8 +15,6 @@ module OpenAI
         index: Integer,
         ?object: :embedding
       ) -> void
-
-      def to_hash: -> OpenAI::Models::embedding
     end
   end
 end

@@ -28,16 +28,15 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Evals::run_create_params
-
         type data_source =
-          OpenAI::Models::Evals::CreateEvalJSONLRunDataSource
-          | OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource
+          OpenAI::Evals::CreateEvalJSONLRunDataSource
+          | OpenAI::Evals::CreateEvalCompletionsRunDataSource
+          | OpenAI::Evals::CreateEvalResponsesRunDataSource
 
         module DataSource
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
+          def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCreateParams::data_source]
         end
       end
     end

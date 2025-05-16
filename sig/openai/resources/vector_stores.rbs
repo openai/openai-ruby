@@ -7,25 +7,25 @@ module OpenAI
 
       def create: (
         ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
-        ?expires_after: OpenAI::Models::VectorStoreCreateParams::ExpiresAfter,
+        ?expires_after: OpenAI::VectorStoreExpirationAfter,
         ?file_ids: ::Array[String],
         ?metadata: OpenAI::Models::metadata?,
         ?name: String,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::VectorStore
+      ) -> OpenAI::VectorStore
 
       def retrieve: (
         String vector_store_id,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::VectorStore
+      ) -> OpenAI::VectorStore
 
       def update: (
         String vector_store_id,
-        ?expires_after: OpenAI::Models::VectorStoreUpdateParams::ExpiresAfter?,
+        ?expires_after: OpenAI::VectorStoreExpirationAfter?,
         ?metadata: OpenAI::Models::metadata?,
         ?name: String?,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::VectorStore
+      ) -> OpenAI::VectorStore
 
       def list: (
         ?after: String,
@@ -33,19 +33,19 @@ module OpenAI
         ?limit: Integer,
         ?order: OpenAI::Models::VectorStoreListParams::order,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Internal::CursorPage[OpenAI::Models::VectorStore]
+      ) -> OpenAI::Internal::CursorPage[OpenAI::VectorStore]
 
       def delete: (
         String vector_store_id,
         ?request_options: OpenAI::request_opts
-      ) -> OpenAI::Models::VectorStoreDeleted
+      ) -> OpenAI::VectorStoreDeleted
 
       def search: (
         String vector_store_id,
         query: OpenAI::Models::VectorStoreSearchParams::query,
         ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
         ?max_num_results: Integer,
-        ?ranking_options: OpenAI::Models::VectorStoreSearchParams::RankingOptions,
+        ?ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
         ?rewrite_query: bool,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse]

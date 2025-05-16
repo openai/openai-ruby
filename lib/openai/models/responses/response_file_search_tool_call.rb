@@ -20,8 +20,8 @@ module OpenAI
         #   The status of the file search tool call. One of `in_progress`, `searching`,
         #   `incomplete` or `failed`,
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status]
-        required :status, enum: -> { OpenAI::Models::Responses::ResponseFileSearchToolCall::Status }
+        #   @return [Symbol, OpenAI::Responses::ResponseFileSearchToolCall::Status]
+        required :status, enum: -> { OpenAI::Responses::ResponseFileSearchToolCall::Status }
 
         # @!attribute type
         #   The type of the file search tool call. Always `file_search_call`.
@@ -32,26 +32,35 @@ module OpenAI
         # @!attribute results
         #   The results of the file search tool call.
         #
-        #   @return [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil]
+        #   @return [Array<OpenAI::Responses::ResponseFileSearchToolCall::Result>, nil]
         optional :results,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Responses::ResponseFileSearchToolCall::Result] },
+                 -> {
+                   OpenAI::Internal::Type::ArrayOf[OpenAI::Responses::ResponseFileSearchToolCall::Result]
+                 },
                  nil?: true
 
         # @!method initialize(id:, queries:, status:, results: nil, type: :file_search_call)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::ResponseFileSearchToolCall} for more details.
+        #
         #   The results of a file search tool call. See the
         #   [file search guide](https://platform.openai.com/docs/guides/tools-file-search)
         #   for more information.
         #
-        #   @param id [String]
-        #   @param queries [Array<String>]
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseFileSearchToolCall::Status]
-        #   @param results [Array<OpenAI::Models::Responses::ResponseFileSearchToolCall::Result>, nil]
-        #   @param type [Symbol, :file_search_call]
+        #   @param id [String] The unique ID of the file search tool call.
+        #
+        #   @param queries [Array<String>] The queries used to search for files.
+        #
+        #   @param status [Symbol, OpenAI::Responses::ResponseFileSearchToolCall::Status] The status of the file search tool call. One of `in_progress`,
+        #
+        #   @param results [Array<OpenAI::Responses::ResponseFileSearchToolCall::Result>, nil] The results of the file search tool call.
+        #
+        #   @param type [Symbol, :file_search_call] The type of the file search tool call. Always `file_search_call`.
 
         # The status of the file search tool call. One of `in_progress`, `searching`,
         # `incomplete` or `failed`,
         #
-        # @see OpenAI::Models::Responses::ResponseFileSearchToolCall#status
+        # @see OpenAI::Responses::ResponseFileSearchToolCall#status
         module Status
           extend OpenAI::Internal::Type::Enum
 
@@ -75,7 +84,9 @@ module OpenAI
           #
           #   @return [Hash{Symbol=>String, Float, Boolean}, nil]
           optional :attributes,
-                   -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Models::Responses::ResponseFileSearchToolCall::Result::Attribute] },
+                   -> {
+                     OpenAI::Internal::Type::HashOf[union: OpenAI::Responses::ResponseFileSearchToolCall::Result::Attribute]
+                   },
                    nil?: true
 
           # @!attribute file_id
@@ -103,11 +114,18 @@ module OpenAI
           optional :text, String
 
           # @!method initialize(attributes: nil, file_id: nil, filename: nil, score: nil, text: nil)
-          #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil]
-          #   @param file_id [String]
-          #   @param filename [String]
-          #   @param score [Float]
-          #   @param text [String]
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Responses::ResponseFileSearchToolCall::Result} for more details.
+          #
+          #   @param attributes [Hash{Symbol=>String, Float, Boolean}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+          #
+          #   @param file_id [String] The unique ID of the file.
+          #
+          #   @param filename [String] The name of the file.
+          #
+          #   @param score [Float] The relevance score of the file - a value between 0 and 1.
+          #
+          #   @param text [String] The text that was retrieved from the file.
 
           module Attribute
             extend OpenAI::Internal::Type::Union
@@ -120,6 +138,10 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(String, Float, Boolean)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias { T.any(String, Float, T::Boolean) }
+            end
           end
         end
       end

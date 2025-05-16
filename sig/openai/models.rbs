@@ -1,0 +1,191 @@
+module OpenAI
+  module AllModels = OpenAI::Models::AllModels
+
+  module Audio = OpenAI::Models::Audio
+
+  module AudioModel = OpenAI::Models::AudioModel
+
+  module AudioResponseFormat = OpenAI::Models::AudioResponseFormat
+
+  class AutoFileChunkingStrategyParam = OpenAI::Models::AutoFileChunkingStrategyParam
+
+  class Batch = OpenAI::Models::Batch
+
+  class BatchCancelParams = OpenAI::Models::BatchCancelParams
+
+  class BatchCreateParams = OpenAI::Models::BatchCreateParams
+
+  class BatchError = OpenAI::Models::BatchError
+
+  class BatchListParams = OpenAI::Models::BatchListParams
+
+  class BatchRequestCounts = OpenAI::Models::BatchRequestCounts
+
+  class BatchRetrieveParams = OpenAI::Models::BatchRetrieveParams
+
+  module Beta = OpenAI::Models::Beta
+
+  module Chat = OpenAI::Models::Chat
+
+  module ChatModel = OpenAI::Models::ChatModel
+
+  class ComparisonFilter = OpenAI::Models::ComparisonFilter
+
+  class Completion = OpenAI::Models::Completion
+
+  class CompletionChoice = OpenAI::Models::CompletionChoice
+
+  class CompletionCreateParams = OpenAI::Models::CompletionCreateParams
+
+  class CompletionUsage = OpenAI::Models::CompletionUsage
+
+  class CompoundFilter = OpenAI::Models::CompoundFilter
+
+  class CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
+
+  class Embedding = OpenAI::Models::Embedding
+
+  class EmbeddingCreateParams = OpenAI::Models::EmbeddingCreateParams
+
+  module EmbeddingModel = OpenAI::Models::EmbeddingModel
+
+  class ErrorObject = OpenAI::Models::ErrorObject
+
+  class EvalCreateParams = OpenAI::Models::EvalCreateParams
+
+  class EvalCustomDataSourceConfig = OpenAI::Models::EvalCustomDataSourceConfig
+
+  class EvalDeleteParams = OpenAI::Models::EvalDeleteParams
+
+  class EvalItem = OpenAI::Models::EvalItem
+
+  class EvalListParams = OpenAI::Models::EvalListParams
+
+  class EvalLogsDataSourceConfig = OpenAI::Models::EvalLogsDataSourceConfig
+
+  class EvalRetrieveParams = OpenAI::Models::EvalRetrieveParams
+
+  module Evals = OpenAI::Models::Evals
+
+  class EvalStoredCompletionsDataSourceConfig = OpenAI::Models::EvalStoredCompletionsDataSourceConfig
+
+  class EvalUpdateParams = OpenAI::Models::EvalUpdateParams
+
+  module FileChunkingStrategy = OpenAI::Models::FileChunkingStrategy
+
+  module FileChunkingStrategyParam = OpenAI::Models::FileChunkingStrategyParam
+
+  class FileContent = OpenAI::Models::FileContent
+
+  class FileContentParams = OpenAI::Models::FileContentParams
+
+  class FileCreateParams = OpenAI::Models::FileCreateParams
+
+  class FileDeleted = OpenAI::Models::FileDeleted
+
+  class FileDeleteParams = OpenAI::Models::FileDeleteParams
+
+  class FileListParams = OpenAI::Models::FileListParams
+
+  class FileObject = OpenAI::Models::FileObject
+
+  module FilePurpose = OpenAI::Models::FilePurpose
+
+  class FileRetrieveParams = OpenAI::Models::FileRetrieveParams
+
+  module FineTuning = OpenAI::Models::FineTuning
+
+  class FunctionDefinition = OpenAI::Models::FunctionDefinition
+
+  FunctionParameters: OpenAI::Internal::Type::Converter
+
+  module Graders = OpenAI::Models::Graders
+
+  class Image = OpenAI::Models::Image
+
+  class ImageCreateVariationParams = OpenAI::Models::ImageCreateVariationParams
+
+  class ImageEditParams = OpenAI::Models::ImageEditParams
+
+  class ImageGenerateParams = OpenAI::Models::ImageGenerateParams
+
+  module ImageModel = OpenAI::Models::ImageModel
+
+  class ImagesResponse = OpenAI::Models::ImagesResponse
+
+  Metadata: OpenAI::Internal::Type::Converter
+
+  class Model = OpenAI::Models::Model
+
+  class ModelDeleted = OpenAI::Models::ModelDeleted
+
+  class ModelDeleteParams = OpenAI::Models::ModelDeleteParams
+
+  class ModelListParams = OpenAI::Models::ModelListParams
+
+  class ModelRetrieveParams = OpenAI::Models::ModelRetrieveParams
+
+  class Moderation = OpenAI::Models::Moderation
+
+  class ModerationCreateParams = OpenAI::Models::ModerationCreateParams
+
+  class ModerationImageURLInput = OpenAI::Models::ModerationImageURLInput
+
+  module ModerationModel = OpenAI::Models::ModerationModel
+
+  module ModerationMultiModalInput = OpenAI::Models::ModerationMultiModalInput
+
+  class ModerationTextInput = OpenAI::Models::ModerationTextInput
+
+  class OtherFileChunkingStrategyObject = OpenAI::Models::OtherFileChunkingStrategyObject
+
+  class Reasoning = OpenAI::Models::Reasoning
+
+  module ReasoningEffort = OpenAI::Models::ReasoningEffort
+
+  class ResponseFormatJSONObject = OpenAI::Models::ResponseFormatJSONObject
+
+  class ResponseFormatJSONSchema = OpenAI::Models::ResponseFormatJSONSchema
+
+  class ResponseFormatText = OpenAI::Models::ResponseFormatText
+
+  module Responses = OpenAI::Models::Responses
+
+  module ResponsesModel = OpenAI::Models::ResponsesModel
+
+  class StaticFileChunkingStrategy = OpenAI::Models::StaticFileChunkingStrategy
+
+  class StaticFileChunkingStrategyObject = OpenAI::Models::StaticFileChunkingStrategyObject
+
+  class StaticFileChunkingStrategyObjectParam = OpenAI::Models::StaticFileChunkingStrategyObjectParam
+
+  class Upload = OpenAI::Models::Upload
+
+  class UploadCancelParams = OpenAI::Models::UploadCancelParams
+
+  class UploadCompleteParams = OpenAI::Models::UploadCompleteParams
+
+  class UploadCreateParams = OpenAI::Models::UploadCreateParams
+
+  module Uploads = OpenAI::Models::Uploads
+
+  class VectorStore = OpenAI::Models::VectorStore
+
+  class VectorStoreCreateParams = OpenAI::Models::VectorStoreCreateParams
+
+  class VectorStoreDeleted = OpenAI::Models::VectorStoreDeleted
+
+  class VectorStoreDeleteParams = OpenAI::Models::VectorStoreDeleteParams
+
+  class VectorStoreExpirationAfter = OpenAI::Models::VectorStoreExpirationAfter
+
+  class VectorStoreListParams = OpenAI::Models::VectorStoreListParams
+
+  class VectorStoreRetrieveParams = OpenAI::Models::VectorStoreRetrieveParams
+
+  module VectorStores = OpenAI::Models::VectorStores
+
+  class VectorStoreSearchParams = OpenAI::Models::VectorStoreSearchParams
+
+  class VectorStoreUpdateParams = OpenAI::Models::VectorStoreUpdateParams
+end

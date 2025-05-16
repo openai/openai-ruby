@@ -9,8 +9,6 @@ module OpenAI
         include OpenAI::Internal::Type::RequestParameters
 
         def initialize: (?request_options: OpenAI::request_opts) -> void
-
-        def to_hash: -> OpenAI::Models::Beta::thread_delete_params
       end
     end
   end

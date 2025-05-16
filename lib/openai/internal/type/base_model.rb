@@ -6,6 +6,7 @@ module OpenAI
       # @abstract
       class BaseModel
         extend OpenAI::Internal::Type::Converter
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
         class << self
           # @api private
@@ -13,10 +14,16 @@ module OpenAI
           # Assumes superclass fields are totally defined before fields are accessed /
           # defined on subclasses.
           #
-          # @return [Hash{Symbol=>Hash{Symbol=>Object}}]
-          def known_fields
-            @known_fields ||= (self < OpenAI::Internal::Type::BaseModel ? superclass.known_fields.dup : {})
+          # @param child [Class<OpenAI::Internal::Type::BaseModel>]
+          def inherited(child)
+            super
+            child.known_fields.replace(known_fields.dup)
           end
+
+          # @api private
+          #
+          # @return [Hash{Symbol=>Hash{Symbol=>Object}}]
+          def known_fields = @known_fields ||= {}
 
           # @api private
           #
@@ -159,6 +166,8 @@ module OpenAI
             @mode = nil
           end
 
+          # @api public
+          #
           # @param other [Object]
           #
           # @return [Boolean]
@@ -166,15 +175,21 @@ module OpenAI
             other.is_a?(Class) && other <= OpenAI::Internal::Type::BaseModel && other.fields == fields
           end
 
+          # @api public
+          #
           # @return [Integer]
           def hash = fields.hash
         end
 
+        # @api public
+        #
         # @param other [Object]
         #
         # @return [Boolean]
         def ==(other) = self.class == other.class && @data == other.to_h
 
+        # @api public
+        #
         # @return [Integer]
         def hash = [self.class, @data].hash
 
@@ -191,7 +206,7 @@ module OpenAI
           #
           #   @option state [Integer] :branched
           #
-          # @return [OpenAI::Internal::Type::BaseModel, Object]
+          # @return [self, Object]
           def coerce(value, state:)
             exactness = state.fetch(:exactness)
 
@@ -250,7 +265,7 @@ module OpenAI
 
           # @api private
           #
-          # @param value [OpenAI::Internal::Type::BaseModel, Object]
+          # @param value [self, Object]
           #
           # @param state [Hash{Symbol=>Object}] .
           #
@@ -291,6 +306,41 @@ module OpenAI
           end
         end
 
+        class << self
+          # @api private
+          #
+          # @param model [OpenAI::Internal::Type::BaseModel]
+          # @param convert [Boolean]
+          #
+          # @return [Hash{Symbol=>Object}]
+          def recursively_to_h(model, convert:)
+            rec = ->(x) do
+              case x
+              in OpenAI::Internal::Type::BaseModel
+                if convert
+                  fields = x.class.known_fields
+                  x.to_h.to_h do |key, val|
+                    [key, rec.call(fields.key?(key) ? x.public_send(key) : val)]
+                  rescue OpenAI::Errors::ConversionError
+                    [key, rec.call(val)]
+                  end
+                else
+                  rec.call(x.to_h)
+                end
+              in Hash
+                x.transform_values(&rec)
+              in Array
+                x.map(&rec)
+              else
+                x
+              end
+            end
+            rec.call(model)
+          end
+        end
+
+        # @api public
+        #
         # Returns the raw value associated with the given key, if found. Otherwise, nil is
         # returned.
         #
@@ -309,6 +359,8 @@ module OpenAI
           @data[key]
         end
 
+        # @api public
+        #
         # Returns a Hash of the data underlying this object. O(1)
         #
         # Keys are Symbols and values are the raw values from the response. The return
@@ -323,9 +375,25 @@ module OpenAI
 
         alias_method :to_hash, :to_h
 
+        # @api public
+        #
+        # In addition to the behaviour of `#to_h`, this method will recursively call
+        # `#to_h` on nested models.
+        #
+        # @return [Hash{Symbol=>Object}]
+        def deep_to_h = self.class.recursively_to_h(@data, convert: false)
+
         # @param keys [Array<Symbol>, nil]
         #
         # @return [Hash{Symbol=>Object}]
+        #
+        # @example
+        #   # `comparison_filter` is a `OpenAI::ComparisonFilter`
+        #   comparison_filter => {
+        #     key: key,
+        #     type: type,
+        #     value: value
+        #   }
         def deconstruct_keys(keys)
           (keys || self.class.known_fields.keys)
             .filter_map do |k|
@@ -338,34 +406,15 @@ module OpenAI
             .to_h
         end
 
-        class << self
-          # @api private
-          #
-          # @param model [OpenAI::Internal::Type::BaseModel]
-          #
-          # @return [Hash{Symbol=>Object}]
-          def walk(model)
-            walk = ->(x) do
-              case x
-              in OpenAI::Internal::Type::BaseModel
-                walk.call(x.to_h)
-              in Hash
-                x.transform_values(&walk)
-              in Array
-                x.map(&walk)
-              else
-                x
-              end
-            end
-            walk.call(model)
-          end
-        end
-
+        # @api public
+        #
         # @param a [Object]
         #
         # @return [String]
         def to_json(*a) = OpenAI::Internal::Type::Converter.dump(self.class, self).to_json(*a)
 
+        # @api public
+        #
         # @param a [Object]
         #
         # @return [String]
@@ -373,16 +422,8 @@ module OpenAI
 
         # Create a new instance of a model.
         #
-        # @param data [Hash{Symbol=>Object}, OpenAI::Internal::Type::BaseModel]
-        def initialize(data = {})
-          case OpenAI::Internal::Util.coerce_hash(data)
-          in Hash => coerced
-            @data = coerced
-          else
-            message = "Expected a #{Hash} or #{OpenAI::Internal::Type::BaseModel}, got #{data.inspect}"
-            raise ArgumentError.new(message)
-          end
-        end
+        # @param data [Hash{Symbol=>Object}, self]
+        def initialize(data = {}) = (@data = OpenAI::Internal::Util.coerce_hash!(data).to_h)
 
         class << self
           # @api private
@@ -407,15 +448,22 @@ module OpenAI
           end
         end
 
-        # @api private
+        # @api public
         #
         # @return [String]
-        def to_s = self.class.walk(@data).to_s
+        def to_s = deep_to_h.to_s
 
         # @api private
         #
         # @return [String]
-        def inspect = "#<#{self.class}:0x#{object_id.to_s(16)} #{self}>"
+        def inspect
+          converted = self.class.recursively_to_h(self, convert: true)
+          "#<#{self.class}:0x#{object_id.to_s(16)} #{converted}>"
+        end
+
+        define_sorbet_constant!(:KnownField) do
+          T.type_alias { {mode: T.nilable(Symbol), required: T::Boolean, nilable: T::Boolean} }
+        end
       end
     end
   end

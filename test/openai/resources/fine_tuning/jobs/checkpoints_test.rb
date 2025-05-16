@@ -14,7 +14,7 @@ class OpenAI::Test::Resources::FineTuning::Jobs::CheckpointsTest < OpenAI::Test:
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint
+      row => OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint
     end
 
     assert_pattern do
@@ -23,7 +23,7 @@ class OpenAI::Test::Resources::FineTuning::Jobs::CheckpointsTest < OpenAI::Test:
         created_at: Integer,
         fine_tuned_model_checkpoint: String,
         fine_tuning_job_id: String,
-        metrics: OpenAI::Models::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+        metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
         object: Symbol,
         step_number: Integer
       }

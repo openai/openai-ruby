@@ -1,0 +1,23 @@
+module OpenAI
+  module Internal
+    module Type
+      class FileInput
+        extend OpenAI::Internal::Type::Converter
+
+        def self.===: (top other) -> bool
+
+        def self.==: (top other) -> bool
+
+        def self.coerce: (
+          StringIO | String | top value,
+          state: OpenAI::Internal::Type::Converter::coerce_state
+        ) -> (StringIO | top)
+
+        def self.dump: (
+          Pathname | StringIO | IO | String | top value,
+          state: OpenAI::Internal::Type::Converter::dump_state
+        ) -> (Pathname | StringIO | IO | String | top)
+      end
+    end
+  end
+end

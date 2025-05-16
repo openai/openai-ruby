@@ -12,14 +12,24 @@ module OpenAI
             discriminator :type
 
             # Details of the Code Interpreter tool call the run step was involved in.
-            variant :code_interpreter, -> { OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall }
+            variant :code_interpreter, -> { OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall }
 
-            variant :file_search, -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall }
+            variant :file_search, -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall }
 
-            variant :function, -> { OpenAI::Models::Beta::Threads::Runs::FunctionToolCall }
+            variant :function, -> { OpenAI::Beta::Threads::Runs::FunctionToolCall }
 
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall)]
+            #   @return [Array(OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Beta::Threads::Runs::FunctionToolCall)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall,
+                  OpenAI::Beta::Threads::Runs::FileSearchToolCall,
+                  OpenAI::Beta::Threads::Runs::FunctionToolCall
+                )
+              end
+            end
           end
         end
       end

@@ -11,13 +11,13 @@ module OpenAI
       #   A query string for a search
       #
       #   @return [String, Array<String>]
-      required :query, union: -> { OpenAI::Models::VectorStoreSearchParams::Query }
+      required :query, union: -> { OpenAI::VectorStoreSearchParams::Query }
 
       # @!attribute filters
       #   A filter to apply based on file attributes.
       #
-      #   @return [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter, nil]
-      optional :filters, union: -> { OpenAI::Models::VectorStoreSearchParams::Filters }
+      #   @return [OpenAI::ComparisonFilter, OpenAI::CompoundFilter, nil]
+      optional :filters, union: -> { OpenAI::VectorStoreSearchParams::Filters }
 
       # @!attribute max_num_results
       #   The maximum number of results to return. This number should be between 1 and 50
@@ -29,8 +29,8 @@ module OpenAI
       # @!attribute ranking_options
       #   Ranking options for search.
       #
-      #   @return [OpenAI::Models::VectorStoreSearchParams::RankingOptions, nil]
-      optional :ranking_options, -> { OpenAI::Models::VectorStoreSearchParams::RankingOptions }
+      #   @return [OpenAI::VectorStoreSearchParams::RankingOptions, nil]
+      optional :ranking_options, -> { OpenAI::VectorStoreSearchParams::RankingOptions }
 
       # @!attribute rewrite_query
       #   Whether to rewrite the natural language query for vector search.
@@ -39,11 +39,19 @@ module OpenAI
       optional :rewrite_query, OpenAI::Internal::Type::Boolean
 
       # @!method initialize(query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
-      #   @param query [String, Array<String>]
-      #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
-      #   @param max_num_results [Integer]
-      #   @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions]
-      #   @param rewrite_query [Boolean]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::VectorStoreSearchParams} for more details.
+      #
+      #   @param query [String, Array<String>] A query string for a search
+      #
+      #   @param filters [OpenAI::ComparisonFilter, OpenAI::CompoundFilter] A filter to apply based on file attributes.
+      #
+      #   @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 and 50
+      #
+      #   @param ranking_options [OpenAI::VectorStoreSearchParams::RankingOptions] Ranking options for search.
+      #
+      #   @param rewrite_query [Boolean] Whether to rewrite the natural language query for vector search.
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
       # A query string for a search
@@ -52,11 +60,16 @@ module OpenAI
 
         variant String
 
-        variant -> { OpenAI::Models::VectorStoreSearchParams::Query::StringArray }
+        variant -> { OpenAI::VectorStoreSearchParams::Query::StringArray }
 
         # @!method self.variants
         #   @return [Array(String, Array<String>)]
 
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, T::Array[String]) }
+        end
+
+        # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
       end
 
@@ -65,20 +78,24 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
-        variant -> { OpenAI::Models::ComparisonFilter }
+        variant -> { OpenAI::ComparisonFilter }
 
         # Combine multiple filters using `and` or `or`.
-        variant -> { OpenAI::Models::CompoundFilter }
+        variant -> { OpenAI::CompoundFilter }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter)]
+        #   @return [Array(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter) }
+        end
       end
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
         # @!attribute ranker
         #
-        #   @return [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker, nil]
-        optional :ranker, enum: -> { OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker }
+        #   @return [Symbol, OpenAI::VectorStoreSearchParams::RankingOptions::Ranker, nil]
+        optional :ranker, enum: -> { OpenAI::VectorStoreSearchParams::RankingOptions::Ranker }
 
         # @!attribute score_threshold
         #
@@ -88,10 +105,10 @@ module OpenAI
         # @!method initialize(ranker: nil, score_threshold: nil)
         #   Ranking options for search.
         #
-        #   @param ranker [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker]
+        #   @param ranker [Symbol, OpenAI::VectorStoreSearchParams::RankingOptions::Ranker]
         #   @param score_threshold [Float]
 
-        # @see OpenAI::Models::VectorStoreSearchParams::RankingOptions#ranker
+        # @see OpenAI::VectorStoreSearchParams::RankingOptions#ranker
         module Ranker
           extend OpenAI::Internal::Type::Enum
 

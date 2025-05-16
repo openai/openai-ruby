@@ -23,11 +23,16 @@ module OpenAI
         required :type, const: :"response.web_search_call.in_progress"
 
         # @!method initialize(item_id:, output_index:, type: :"response.web_search_call.in_progress")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::ResponseWebSearchCallInProgressEvent} for more details.
+        #
         #   Emitted when a web search call is initiated.
         #
-        #   @param item_id [String]
-        #   @param output_index [Integer]
-        #   @param type [Symbol, :"response.web_search_call.in_progress"]
+        #   @param item_id [String] Unique ID for the output item associated with the web search call.
+        #
+        #   @param output_index [Integer] The index of the output item that the web search call is associated with.
+        #
+        #   @param type [Symbol, :"response.web_search_call.in_progress"] The type of the event. Always `response.web_search_call.in_progress`.
       end
     end
   end

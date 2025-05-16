@@ -2,14 +2,14 @@ module OpenAI
   module Models
     module Beta
       type assistant_tool =
-        OpenAI::Models::Beta::CodeInterpreterTool
-        | OpenAI::Models::Beta::FileSearchTool
-        | OpenAI::Models::Beta::FunctionTool
+        OpenAI::Beta::CodeInterpreterTool
+        | OpenAI::Beta::FileSearchTool
+        | OpenAI::Beta::FunctionTool
 
       module AssistantTool
         extend OpenAI::Internal::Type::Union
 
-        def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool]
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::assistant_tool]
       end
     end
   end

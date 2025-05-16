@@ -16,10 +16,10 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         # `none` means the model will not call any tool and instead generates a message. `auto` means the model can pick between generating a message or calling one or more tools. `required` means the model must call one or more tools.
-        variant enum: -> { OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto }
+        variant enum: -> { OpenAI::Chat::ChatCompletionToolChoiceOption::Auto }
 
         # Specifies a tool the model should use. Use to force the model to call a specific function.
-        variant -> { OpenAI::Models::Chat::ChatCompletionNamedToolChoice }
+        variant -> { OpenAI::Chat::ChatCompletionNamedToolChoice }
 
         # `none` means the model will not call any tool and instead generates a message.
         # `auto` means the model can pick between generating a message or calling one or
@@ -36,7 +36,16 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(Symbol, OpenAI::Models::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Models::Chat::ChatCompletionNamedToolChoice)]
+        #   @return [Array(Symbol, OpenAI::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Chat::ChatCompletionNamedToolChoice)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol,
+              OpenAI::Chat::ChatCompletionNamedToolChoice
+            )
+          end
+        end
       end
     end
 

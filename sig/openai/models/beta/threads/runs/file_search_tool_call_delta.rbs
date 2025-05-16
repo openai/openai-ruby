@@ -23,8 +23,6 @@ module OpenAI
               ?id: String,
               ?type: :file_search
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::Threads::Runs::file_search_tool_call_delta
           end
         end
       end

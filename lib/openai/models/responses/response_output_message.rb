@@ -13,9 +13,11 @@ module OpenAI
         # @!attribute content
         #   The content of the output message.
         #
-        #   @return [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
+        #   @return [Array<OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal>]
         required :content,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::Responses::ResponseOutputMessage::Content] }
+                 -> {
+                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputMessage::Content]
+                 }
 
         # @!attribute role
         #   The role of the output message. Always `assistant`.
@@ -27,8 +29,8 @@ module OpenAI
         #   The status of the message input. One of `in_progress`, `completed`, or
         #   `incomplete`. Populated when input items are returned via API.
         #
-        #   @return [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status]
-        required :status, enum: -> { OpenAI::Models::Responses::ResponseOutputMessage::Status }
+        #   @return [Symbol, OpenAI::Responses::ResponseOutputMessage::Status]
+        required :status, enum: -> { OpenAI::Responses::ResponseOutputMessage::Status }
 
         # @!attribute type
         #   The type of the output message. Always `message`.
@@ -37,13 +39,20 @@ module OpenAI
         required :type, const: :message
 
         # @!method initialize(id:, content:, status:, role: :assistant, type: :message)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::ResponseOutputMessage} for more details.
+        #
         #   An output message from the model.
         #
-        #   @param id [String]
-        #   @param content [Array<OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal>]
-        #   @param status [Symbol, OpenAI::Models::Responses::ResponseOutputMessage::Status]
-        #   @param role [Symbol, :assistant]
-        #   @param type [Symbol, :message]
+        #   @param id [String] The unique ID of the output message.
+        #
+        #   @param content [Array<OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal>] The content of the output message.
+        #
+        #   @param status [Symbol, OpenAI::Responses::ResponseOutputMessage::Status] The status of the message input. One of `in_progress`, `completed`, or
+        #
+        #   @param role [Symbol, :assistant] The role of the output message. Always `assistant`.
+        #
+        #   @param type [Symbol, :message] The type of the output message. Always `message`.
 
         # A text output from the model.
         module Content
@@ -52,19 +61,25 @@ module OpenAI
           discriminator :type
 
           # A text output from the model.
-          variant :output_text, -> { OpenAI::Models::Responses::ResponseOutputText }
+          variant :output_text, -> { OpenAI::Responses::ResponseOutputText }
 
           # A refusal from the model.
-          variant :refusal, -> { OpenAI::Models::Responses::ResponseOutputRefusal }
+          variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+          #   @return [Array(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)
+            end
+          end
         end
 
         # The status of the message input. One of `in_progress`, `completed`, or
         # `incomplete`. Populated when input items are returned via API.
         #
-        # @see OpenAI::Models::Responses::ResponseOutputMessage#status
+        # @see OpenAI::Responses::ResponseOutputMessage#status
         module Status
           extend OpenAI::Internal::Type::Enum
 

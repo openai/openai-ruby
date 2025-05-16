@@ -8,7 +8,7 @@ AllCops:
     - "bin/*"
   NewCops: enable
   SuggestExtensions: false
-  TargetRubyVersion: 3.1.0
+  TargetRubyVersion: 3.2.0
 
 # Whether MFA is required or not should be left to the token configuration.
 Gemspec/RequireMFA:
@@ -63,11 +63,21 @@ Layout/MultilineMethodParameterLineBreaks:
 # Prefer compact hash literals.
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
+  Exclude:
+    - "**/*.rbi"
+
+Lint/BooleanSymbol:
+  Enabled: false
 
 # This option occasionally mangles identifier names
 Lint/DeprecatedConstants:
   Exclude:
     - "**/*.rbi"
+
+# We use pattern assertion in tests to ensure correctness.
+Lint/DuplicateMatchPattern:
+  Exclude:
+    - "test/**/*"
 
 # Fairly useful in tests for pattern assertions.
 Lint/EmptyInPattern:
@@ -79,6 +89,10 @@ Lint/MissingCopEnableDirective:
     - "examples/**/*.rb"
 
 Lint/MissingSuper:
+  Exclude:
+    - "**/*.rbi"
+
+Lint/SymbolConversion:
   Exclude:
     - "**/*.rbi"
 
@@ -98,6 +112,8 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   AllowedPatterns:
     - assert_pattern
+    - type_alias
+    - define_sorbet_constant!
   Exclude:
     - "**/*.rbi"
 
@@ -117,6 +133,9 @@ Metrics/ParameterLists:
   Enabled: false
 
 Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/AccessorMethodName:
   Enabled: false
 
 # Need to preserve block identifier for documentation.
@@ -164,6 +183,9 @@ Style/BisectedAttrAccessor:
 Style/ClassAndModuleChildren:
   Exclude:
     - "test/**/*"
+
+Style/CommentAnnotation:
+  Enabled: false
 
 # We should go back and add these docs, but ignore for now.
 Style/Documentation:
@@ -230,6 +252,10 @@ Style/RedundantException:
   Enabled: false
 
 Style/RedundantInitialize:
+  Exclude:
+    - "**/*.rbi"
+
+Style/RedundantParentheses:
   Exclude:
     - "**/*.rbi"
 

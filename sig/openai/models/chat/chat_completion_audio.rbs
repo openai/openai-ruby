@@ -21,8 +21,6 @@ module OpenAI
           expires_at: Integer,
           transcript: String
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Chat::chat_completion_audio
       end
     end
   end

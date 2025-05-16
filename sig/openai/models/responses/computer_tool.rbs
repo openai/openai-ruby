@@ -3,41 +3,40 @@ module OpenAI
     module Responses
       type computer_tool =
         {
-          display_height: Float,
-          display_width: Float,
-          environment: OpenAI::Models::Responses::ComputerTool::environment,
+          display_height: Integer,
+          display_width: Integer,
+          environment: OpenAI::Responses::ComputerTool::environment,
           type: :computer_use_preview
         }
 
       class ComputerTool < OpenAI::Internal::Type::BaseModel
-        attr_accessor display_height: Float
+        attr_accessor display_height: Integer
 
-        attr_accessor display_width: Float
+        attr_accessor display_width: Integer
 
-        attr_accessor environment: OpenAI::Models::Responses::ComputerTool::environment
+        attr_accessor environment: OpenAI::Responses::ComputerTool::environment
 
         attr_accessor type: :computer_use_preview
 
         def initialize: (
-          display_height: Float,
-          display_width: Float,
-          environment: OpenAI::Models::Responses::ComputerTool::environment,
+          display_height: Integer,
+          display_width: Integer,
+          environment: OpenAI::Responses::ComputerTool::environment,
           ?type: :computer_use_preview
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Responses::computer_tool
-
-        type environment = :mac | :windows | :ubuntu | :browser
+        type environment = :windows | :mac | :linux | :ubuntu | :browser
 
         module Environment
           extend OpenAI::Internal::Type::Enum
 
-          MAC: :mac
           WINDOWS: :windows
+          MAC: :mac
+          LINUX: :linux
           UBUNTU: :ubuntu
           BROWSER: :browser
 
-          def self?.values: -> ::Array[OpenAI::Models::Responses::ComputerTool::environment]
+          def self?.values: -> ::Array[OpenAI::Responses::ComputerTool::environment]
         end
       end
     end

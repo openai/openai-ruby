@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module FineTuning
+      type supervised_hyperparameters =
+        {
+          batch_size: OpenAI::FineTuning::SupervisedHyperparameters::batch_size,
+          learning_rate_multiplier: OpenAI::FineTuning::SupervisedHyperparameters::learning_rate_multiplier,
+          n_epochs: OpenAI::FineTuning::SupervisedHyperparameters::n_epochs
+        }
+
+      class SupervisedHyperparameters < OpenAI::Internal::Type::BaseModel
+        attr_reader batch_size: OpenAI::FineTuning::SupervisedHyperparameters::batch_size?
+
+        def batch_size=: (
+          OpenAI::FineTuning::SupervisedHyperparameters::batch_size
+        ) -> OpenAI::FineTuning::SupervisedHyperparameters::batch_size
+
+        attr_reader learning_rate_multiplier: OpenAI::FineTuning::SupervisedHyperparameters::learning_rate_multiplier?
+
+        def learning_rate_multiplier=: (
+          OpenAI::FineTuning::SupervisedHyperparameters::learning_rate_multiplier
+        ) -> OpenAI::FineTuning::SupervisedHyperparameters::learning_rate_multiplier
+
+        attr_reader n_epochs: OpenAI::FineTuning::SupervisedHyperparameters::n_epochs?
+
+        def n_epochs=: (
+          OpenAI::FineTuning::SupervisedHyperparameters::n_epochs
+        ) -> OpenAI::FineTuning::SupervisedHyperparameters::n_epochs
+
+        def initialize: (
+          ?batch_size: OpenAI::FineTuning::SupervisedHyperparameters::batch_size,
+          ?learning_rate_multiplier: OpenAI::FineTuning::SupervisedHyperparameters::learning_rate_multiplier,
+          ?n_epochs: OpenAI::FineTuning::SupervisedHyperparameters::n_epochs
+        ) -> void
+
+        type batch_size = :auto | Integer
+
+        module BatchSize
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::FineTuning::SupervisedHyperparameters::batch_size]
+        end
+
+        type learning_rate_multiplier = :auto | Float
+
+        module LearningRateMultiplier
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::FineTuning::SupervisedHyperparameters::learning_rate_multiplier]
+        end
+
+        type n_epochs = :auto | Integer
+
+        module NEpochs
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::FineTuning::SupervisedHyperparameters::n_epochs]
+        end
+      end
+    end
+  end
+end

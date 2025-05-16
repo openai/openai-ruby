@@ -25,8 +25,8 @@ module OpenAI
         # @!attribute part
         #   The content part that is done.
         #
-        #   @return [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
-        required :part, union: -> { OpenAI::Models::Responses::ResponseContentPartDoneEvent::Part }
+        #   @return [OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal]
+        required :part, union: -> { OpenAI::Responses::ResponseContentPartDoneEvent::Part }
 
         # @!attribute type
         #   The type of the event. Always `response.content_part.done`.
@@ -35,30 +35,43 @@ module OpenAI
         required :type, const: :"response.content_part.done"
 
         # @!method initialize(content_index:, item_id:, output_index:, part:, type: :"response.content_part.done")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::ResponseContentPartDoneEvent} for more details.
+        #
         #   Emitted when a content part is done.
         #
-        #   @param content_index [Integer]
-        #   @param item_id [String]
-        #   @param output_index [Integer]
-        #   @param part [OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal]
-        #   @param type [Symbol, :"response.content_part.done"]
+        #   @param content_index [Integer] The index of the content part that is done.
+        #
+        #   @param item_id [String] The ID of the output item that the content part was added to.
+        #
+        #   @param output_index [Integer] The index of the output item that the content part was added to.
+        #
+        #   @param part [OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal] The content part that is done.
+        #
+        #   @param type [Symbol, :"response.content_part.done"] The type of the event. Always `response.content_part.done`.
 
         # The content part that is done.
         #
-        # @see OpenAI::Models::Responses::ResponseContentPartDoneEvent#part
+        # @see OpenAI::Responses::ResponseContentPartDoneEvent#part
         module Part
           extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
           # A text output from the model.
-          variant :output_text, -> { OpenAI::Models::Responses::ResponseOutputText }
+          variant :output_text, -> { OpenAI::Responses::ResponseOutputText }
 
           # A refusal from the model.
-          variant :refusal, -> { OpenAI::Models::Responses::ResponseOutputRefusal }
+          variant :refusal, -> { OpenAI::Responses::ResponseOutputRefusal }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Responses::ResponseOutputText, OpenAI::Models::Responses::ResponseOutputRefusal)]
+          #   @return [Array(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(OpenAI::Responses::ResponseOutputText, OpenAI::Responses::ResponseOutputRefusal)
+            end
+          end
         end
       end
     end

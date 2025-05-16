@@ -19,23 +19,28 @@ module OpenAI
       #   - `lt`: less than
       #   - `lte`: less than or equal
       #
-      #   @return [Symbol, OpenAI::Models::ComparisonFilter::Type]
-      required :type, enum: -> { OpenAI::Models::ComparisonFilter::Type }
+      #   @return [Symbol, OpenAI::ComparisonFilter::Type]
+      required :type, enum: -> { OpenAI::ComparisonFilter::Type }
 
       # @!attribute value
       #   The value to compare against the attribute key; supports string, number, or
       #   boolean types.
       #
       #   @return [String, Float, Boolean]
-      required :value, union: -> { OpenAI::Models::ComparisonFilter::Value }
+      required :value, union: -> { OpenAI::ComparisonFilter::Value }
 
       # @!method initialize(key:, type:, value:)
+      #   Some parameter documentations has been truncated, see {OpenAI::ComparisonFilter}
+      #   for more details.
+      #
       #   A filter used to compare a specified attribute key to a given value using a
       #   defined comparison operation.
       #
-      #   @param key [String]
-      #   @param type [Symbol, OpenAI::Models::ComparisonFilter::Type]
-      #   @param value [String, Float, Boolean]
+      #   @param key [String] The key to compare against the value.
+      #
+      #   @param type [Symbol, OpenAI::ComparisonFilter::Type] Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
+      #
+      #   @param value [String, Float, Boolean] The value to compare against the attribute key; supports string, number, or bool
 
       # Specifies the comparison operator: `eq`, `ne`, `gt`, `gte`, `lt`, `lte`.
       #
@@ -46,7 +51,7 @@ module OpenAI
       # - `lt`: less than
       # - `lte`: less than or equal
       #
-      # @see OpenAI::Models::ComparisonFilter#type
+      # @see OpenAI::ComparisonFilter#type
       module Type
         extend OpenAI::Internal::Type::Enum
 
@@ -64,7 +69,7 @@ module OpenAI
       # The value to compare against the attribute key; supports string, number, or
       # boolean types.
       #
-      # @see OpenAI::Models::ComparisonFilter#value
+      # @see OpenAI::ComparisonFilter#value
       module Value
         extend OpenAI::Internal::Type::Union
 
@@ -76,6 +81,10 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(String, Float, Boolean)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, Float, T::Boolean) }
+        end
       end
     end
   end

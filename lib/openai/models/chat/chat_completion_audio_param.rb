@@ -8,28 +8,32 @@ module OpenAI
         #   Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         #   or `pcm16`.
         #
-        #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
-        required :format_, enum: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Format }, api_name: :format
+        #   @return [Symbol, OpenAI::Chat::ChatCompletionAudioParam::Format]
+        required :format_, enum: -> { OpenAI::Chat::ChatCompletionAudioParam::Format }, api_name: :format
 
         # @!attribute voice
         #   The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         #   `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
         #
-        #   @return [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
-        required :voice, union: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice }
+        #   @return [String, Symbol, OpenAI::Chat::ChatCompletionAudioParam::Voice]
+        required :voice, union: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice }
 
         # @!method initialize(format_:, voice:)
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Chat::ChatCompletionAudioParam} for more details.
+        #
         #   Parameters for audio output. Required when audio output is requested with
         #   `modalities: ["audio"]`.
         #   [Learn more](https://platform.openai.com/docs/guides/audio).
         #
-        #   @param format_ [Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Format]
-        #   @param voice [String, Symbol, OpenAI::Models::Chat::ChatCompletionAudioParam::Voice]
+        #   @param format_ [Symbol, OpenAI::Chat::ChatCompletionAudioParam::Format] Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`,
+        #
+        #   @param voice [String, Symbol, OpenAI::Chat::ChatCompletionAudioParam::Voice] The voice the model uses to respond. Supported voices are
 
         # Specifies the output audio format. Must be one of `wav`, `mp3`, `flac`, `opus`,
         # or `pcm16`.
         #
-        # @see OpenAI::Models::Chat::ChatCompletionAudioParam#format_
+        # @see OpenAI::Chat::ChatCompletionAudioParam#format_
         module Format
           extend OpenAI::Internal::Type::Enum
 
@@ -47,36 +51,40 @@ module OpenAI
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
         #
-        # @see OpenAI::Models::Chat::ChatCompletionAudioParam#voice
+        # @see OpenAI::Chat::ChatCompletionAudioParam#voice
         module Voice
           extend OpenAI::Internal::Type::Union
 
           variant String
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ALLOY }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::ALLOY }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ASH }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::ASH }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::BALLAD }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::BALLAD }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::CORAL }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::CORAL }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ECHO }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::ECHO }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::FABLE }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::FABLE }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::ONYX }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::ONYX }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::NOVA }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::NOVA }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::SAGE }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::SAGE }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::SHIMMER }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::SHIMMER }
 
-          variant const: -> { OpenAI::Models::Chat::ChatCompletionAudioParam::Voice::VERSE }
+          variant const: -> { OpenAI::Chat::ChatCompletionAudioParam::Voice::VERSE }
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, OpenAI::Chat::ChatCompletionAudioParam::Voice::TaggedSymbol) }
+          end
 
           # @!group
 

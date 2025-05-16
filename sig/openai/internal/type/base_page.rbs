@@ -4,7 +4,7 @@ module OpenAI
       module BasePage[Elem]
         def next_page?: -> bool
 
-        def next_page: -> self
+        def next_page: -> instance
 
         def auto_paging_each: { (Elem arg0) -> void } -> void
 

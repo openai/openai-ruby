@@ -6,26 +6,32 @@ module OpenAI
       # @return [OpenAI::Resources::Evals::Runs]
       attr_reader :runs
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::EvalCreateParams} for more details.
+      #
       # Create the structure of an evaluation that can be used to test a model's
       # performance. An evaluation is a set of testing criteria and a datasource. After
       # creating an evaluation, you can run it on different models and model parameters.
       # We support several types of graders and datasources. For more information, see
       # the [Evals guide](https://platform.openai.com/docs/guides/evals).
       #
-      # @overload create(data_source_config:, testing_criteria:, metadata: nil, name: nil, share_with_openai: nil, request_options: {})
+      # @overload create(data_source_config:, testing_criteria:, metadata: nil, name: nil, request_options: {})
       #
-      # @param data_source_config [OpenAI::Models::EvalCreateParams::DataSourceConfig::Custom, OpenAI::Models::EvalCreateParams::DataSourceConfig::StoredCompletions]
-      # @param testing_criteria [Array<OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
-      # @param metadata [Hash{Symbol=>String}, nil]
-      # @param name [String]
-      # @param share_with_openai [Boolean]
+      # @param data_source_config [OpenAI::EvalCreateParams::DataSourceConfig::Custom, OpenAI::EvalCreateParams::DataSourceConfig::Logs, OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions] The configuration for the data source used for the evaluation runs.
+      #
+      # @param testing_criteria [Array<OpenAI::EvalCreateParams::TestingCriterion::LabelModel, OpenAI::Graders::StringCheckGrader, OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity, OpenAI::EvalCreateParams::TestingCriterion::Python, OpenAI::EvalCreateParams::TestingCriterion::ScoreModel>] A list of graders for all eval runs in this group.
+      #
+      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #
+      # @param name [String] The name of the evaluation.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::EvalCreateResponse]
       #
       # @see OpenAI::Models::EvalCreateParams
       def create(params)
-        parsed, options = OpenAI::Models::EvalCreateParams.dump_request(params)
+        parsed, options = OpenAI::EvalCreateParams.dump_request(params)
         @client.request(
           method: :post,
           path: "evals",
@@ -39,7 +45,8 @@ module OpenAI
       #
       # @overload retrieve(eval_id, request_options: {})
       #
-      # @param eval_id [String]
+      # @param eval_id [String] The ID of the evaluation to retrieve.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::EvalRetrieveResponse]
@@ -54,20 +61,26 @@ module OpenAI
         )
       end
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::EvalUpdateParams} for more details.
+      #
       # Update certain properties of an evaluation.
       #
       # @overload update(eval_id, metadata: nil, name: nil, request_options: {})
       #
-      # @param eval_id [String]
-      # @param metadata [Hash{Symbol=>String}, nil]
-      # @param name [String]
+      # @param eval_id [String] The ID of the evaluation to update.
+      #
+      # @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #
+      # @param name [String] Rename the evaluation.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::EvalUpdateResponse]
       #
       # @see OpenAI::Models::EvalUpdateParams
       def update(eval_id, params = {})
-        parsed, options = OpenAI::Models::EvalUpdateParams.dump_request(params)
+        parsed, options = OpenAI::EvalUpdateParams.dump_request(params)
         @client.request(
           method: :post,
           path: ["evals/%1$s", eval_id],
@@ -77,21 +90,28 @@ module OpenAI
         )
       end
 
+      # Some parameter documentations has been truncated, see
+      # {OpenAI::Models::EvalListParams} for more details.
+      #
       # List evaluations for a project.
       #
       # @overload list(after: nil, limit: nil, order: nil, order_by: nil, request_options: {})
       #
-      # @param after [String]
-      # @param limit [Integer]
-      # @param order [Symbol, OpenAI::Models::EvalListParams::Order]
-      # @param order_by [Symbol, OpenAI::Models::EvalListParams::OrderBy]
+      # @param after [String] Identifier for the last eval from the previous pagination request.
+      #
+      # @param limit [Integer] Number of evals to retrieve.
+      #
+      # @param order [Symbol, OpenAI::EvalListParams::Order] Sort order for evals by timestamp. Use `asc` for ascending order or `desc` for d
+      #
+      # @param order_by [Symbol, OpenAI::EvalListParams::OrderBy] Evals can be ordered by creation time or last updated time. Use
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Internal::CursorPage<OpenAI::Models::EvalListResponse>]
       #
       # @see OpenAI::Models::EvalListParams
       def list(params = {})
-        parsed, options = OpenAI::Models::EvalListParams.dump_request(params)
+        parsed, options = OpenAI::EvalListParams.dump_request(params)
         @client.request(
           method: :get,
           path: "evals",
@@ -106,7 +126,8 @@ module OpenAI
       #
       # @overload delete(eval_id, request_options: {})
       #
-      # @param eval_id [String]
+      # @param eval_id [String] The ID of the evaluation to delete.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::EvalDeleteResponse]

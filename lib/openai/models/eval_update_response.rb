@@ -19,7 +19,7 @@ module OpenAI
       # @!attribute data_source_config
       #   Configuration of data sources used in runs of the evaluation.
       #
-      #   @return [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
+      #   @return [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig]
       required :data_source_config, union: -> { OpenAI::Models::EvalUpdateResponse::DataSourceConfig }
 
       # @!attribute metadata
@@ -45,20 +45,17 @@ module OpenAI
       #   @return [Symbol, :eval]
       required :object, const: :eval
 
-      # @!attribute share_with_openai
-      #   Indicates whether the evaluation is shared with OpenAI.
-      #
-      #   @return [Boolean]
-      required :share_with_openai, OpenAI::Internal::Type::Boolean
-
       # @!attribute testing_criteria
       #   A list of testing criteria.
       #
-      #   @return [Array<OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
+      #   @return [Array<OpenAI::Graders::LabelModelGrader, OpenAI::Graders::StringCheckGrader, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderScoreModel>]
       required :testing_criteria,
                -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::EvalUpdateResponse::TestingCriterion] }
 
-      # @!method initialize(id:, created_at:, data_source_config:, metadata:, name:, share_with_openai:, testing_criteria:, object: :eval)
+      # @!method initialize(id:, created_at:, data_source_config:, metadata:, name:, testing_criteria:, object: :eval)
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::EvalUpdateResponse} for more details.
+      #
       #   An Eval object with a data source config and testing criteria. An Eval
       #   represents a task to be done for your LLM integration. Like:
       #
@@ -66,14 +63,19 @@ module OpenAI
       #   - See how well my chatbot handles customer support
       #   - Check if o3-mini is better at my usecase than gpt-4o
       #
-      #   @param id [String]
-      #   @param created_at [Integer]
-      #   @param data_source_config [OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig]
-      #   @param metadata [Hash{Symbol=>String}, nil]
-      #   @param name [String]
-      #   @param share_with_openai [Boolean]
-      #   @param testing_criteria [Array<OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader>]
-      #   @param object [Symbol, :eval]
+      #   @param id [String] Unique identifier for the evaluation.
+      #
+      #   @param created_at [Integer] The Unix timestamp (in seconds) for when the eval was created.
+      #
+      #   @param data_source_config [OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig] Configuration of data sources used in runs of the evaluation.
+      #
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #
+      #   @param name [String] The name of the evaluation.
+      #
+      #   @param testing_criteria [Array<OpenAI::Graders::LabelModelGrader, OpenAI::Graders::StringCheckGrader, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderScoreModel>] A list of testing criteria.
+      #
+      #   @param object [Symbol, :eval] The object type.
 
       # Configuration of data sources used in runs of the evaluation.
       #
@@ -87,16 +89,29 @@ module OpenAI
         # The response schema defines the shape of the data that will be:
         # - Used to define your testing criteria and
         # - What data is required when creating a run
-        variant :custom, -> { OpenAI::Models::EvalCustomDataSourceConfig }
+        variant :custom, -> { OpenAI::EvalCustomDataSourceConfig }
 
-        # A StoredCompletionsDataSourceConfig which specifies the metadata property of your stored completions query.
+        # A LogsDataSourceConfig which specifies the metadata property of your logs query.
         # This is usually metadata like `usecase=chatbot` or `prompt-version=v2`, etc.
         # The schema returned by this data source config is used to defined what variables are available in your evals.
         # `item` and `sample` are both defined when using this data source config.
-        variant :stored_completions, -> { OpenAI::Models::EvalStoredCompletionsDataSourceConfig }
+        variant :logs, -> { OpenAI::EvalLogsDataSourceConfig }
+
+        # Deprecated in favor of LogsDataSourceConfig.
+        variant :"stored-completions", -> { OpenAI::EvalStoredCompletionsDataSourceConfig }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::EvalCustomDataSourceConfig, OpenAI::Models::EvalStoredCompletionsDataSourceConfig)]
+        #   @return [Array(OpenAI::EvalCustomDataSourceConfig, OpenAI::EvalLogsDataSourceConfig, OpenAI::EvalStoredCompletionsDataSourceConfig)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::EvalCustomDataSourceConfig,
+              OpenAI::EvalLogsDataSourceConfig,
+              OpenAI::EvalStoredCompletionsDataSourceConfig
+            )
+          end
+        end
       end
 
       # A LabelModelGrader object which uses a model to assign labels to each item in
@@ -104,20 +119,75 @@ module OpenAI
       module TestingCriterion
         extend OpenAI::Internal::Type::Union
 
-        discriminator :type
-
         # A LabelModelGrader object which uses a model to assign labels to each item
         # in the evaluation.
-        variant :label_model, -> { OpenAI::Models::EvalLabelModelGrader }
+        variant -> { OpenAI::Graders::LabelModelGrader }
 
         # A StringCheckGrader object that performs a string comparison between input and reference using a specified operation.
-        variant :string_check, -> { OpenAI::Models::EvalStringCheckGrader }
+        variant -> { OpenAI::Graders::StringCheckGrader }
 
         # A TextSimilarityGrader object which grades text based on similarity metrics.
-        variant :text_similarity, -> { OpenAI::Models::EvalTextSimilarityGrader }
+        variant -> { OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderTextSimilarity }
+
+        # A PythonGrader object that runs a python script on the input.
+        variant -> { OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderPython }
+
+        # A ScoreModelGrader object that uses a model to assign a score to the input.
+        variant -> { OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderScoreModel }
+
+        class EvalGraderTextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
+          # @!attribute pass_threshold
+          #   The threshold for the score.
+          #
+          #   @return [Float]
+          required :pass_threshold, Float
+
+          # @!method initialize(pass_threshold:)
+          #   A TextSimilarityGrader object which grades text based on similarity metrics.
+          #
+          #   @param pass_threshold [Float] The threshold for the score.
+        end
+
+        class EvalGraderPython < OpenAI::Models::Graders::PythonGrader
+          # @!attribute pass_threshold
+          #   The threshold for the score.
+          #
+          #   @return [Float, nil]
+          optional :pass_threshold, Float
+
+          # @!method initialize(pass_threshold: nil)
+          #   A PythonGrader object that runs a python script on the input.
+          #
+          #   @param pass_threshold [Float] The threshold for the score.
+        end
+
+        class EvalGraderScoreModel < OpenAI::Models::Graders::ScoreModelGrader
+          # @!attribute pass_threshold
+          #   The threshold for the score.
+          #
+          #   @return [Float, nil]
+          optional :pass_threshold, Float
+
+          # @!method initialize(pass_threshold: nil)
+          #   A ScoreModelGrader object that uses a model to assign a score to the input.
+          #
+          #   @param pass_threshold [Float] The threshold for the score.
+        end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::EvalLabelModelGrader, OpenAI::Models::EvalStringCheckGrader, OpenAI::Models::EvalTextSimilarityGrader)]
+        #   @return [Array(OpenAI::Graders::LabelModelGrader, OpenAI::Graders::StringCheckGrader, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderTextSimilarity, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderPython, OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderScoreModel)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(
+              OpenAI::Graders::LabelModelGrader,
+              OpenAI::Graders::StringCheckGrader,
+              OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderTextSimilarity,
+              OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderPython,
+              OpenAI::Models::EvalUpdateResponse::TestingCriterion::EvalGraderScoreModel
+            )
+          end
+        end
       end
     end
   end

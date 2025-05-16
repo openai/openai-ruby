@@ -8,14 +8,20 @@ module OpenAI
 
         discriminator :type
 
-        variant :code_interpreter, -> { OpenAI::Models::Beta::CodeInterpreterTool }
+        variant :code_interpreter, -> { OpenAI::Beta::CodeInterpreterTool }
 
-        variant :file_search, -> { OpenAI::Models::Beta::FileSearchTool }
+        variant :file_search, -> { OpenAI::Beta::FileSearchTool }
 
-        variant :function, -> { OpenAI::Models::Beta::FunctionTool }
+        variant :function, -> { OpenAI::Beta::FunctionTool }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool)]
+        #   @return [Array(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias do
+            T.any(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::FileSearchTool, OpenAI::Beta::FunctionTool)
+          end
+        end
       end
     end
   end

@@ -7,21 +7,21 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     response = @openai.vector_stores.create
 
     assert_pattern do
-      response => OpenAI::Models::VectorStore
+      response => OpenAI::VectorStore
     end
 
     assert_pattern do
       response => {
         id: String,
         created_at: Integer,
-        file_counts: OpenAI::Models::VectorStore::FileCounts,
+        file_counts: OpenAI::VectorStore::FileCounts,
         last_active_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        status: OpenAI::Models::VectorStore::Status,
+        status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::Models::VectorStore::ExpiresAfter | nil,
+        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
         expires_at: Integer | nil
       }
     end
@@ -31,21 +31,21 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     response = @openai.vector_stores.retrieve("vector_store_id")
 
     assert_pattern do
-      response => OpenAI::Models::VectorStore
+      response => OpenAI::VectorStore
     end
 
     assert_pattern do
       response => {
         id: String,
         created_at: Integer,
-        file_counts: OpenAI::Models::VectorStore::FileCounts,
+        file_counts: OpenAI::VectorStore::FileCounts,
         last_active_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        status: OpenAI::Models::VectorStore::Status,
+        status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::Models::VectorStore::ExpiresAfter | nil,
+        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
         expires_at: Integer | nil
       }
     end
@@ -55,21 +55,21 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     response = @openai.vector_stores.update("vector_store_id")
 
     assert_pattern do
-      response => OpenAI::Models::VectorStore
+      response => OpenAI::VectorStore
     end
 
     assert_pattern do
       response => {
         id: String,
         created_at: Integer,
-        file_counts: OpenAI::Models::VectorStore::FileCounts,
+        file_counts: OpenAI::VectorStore::FileCounts,
         last_active_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        status: OpenAI::Models::VectorStore::Status,
+        status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::Models::VectorStore::ExpiresAfter | nil,
+        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
         expires_at: Integer | nil
       }
     end
@@ -86,21 +86,21 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     return if row.nil?
 
     assert_pattern do
-      row => OpenAI::Models::VectorStore
+      row => OpenAI::VectorStore
     end
 
     assert_pattern do
       row => {
         id: String,
         created_at: Integer,
-        file_counts: OpenAI::Models::VectorStore::FileCounts,
+        file_counts: OpenAI::VectorStore::FileCounts,
         last_active_at: Integer | nil,
         metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
         name: String,
         object: Symbol,
-        status: OpenAI::Models::VectorStore::Status,
+        status: OpenAI::VectorStore::Status,
         usage_bytes: Integer,
-        expires_after: OpenAI::Models::VectorStore::ExpiresAfter | nil,
+        expires_after: OpenAI::VectorStoreExpirationAfter | nil,
         expires_at: Integer | nil
       }
     end
@@ -110,7 +110,7 @@ class OpenAI::Test::Resources::VectorStoresTest < OpenAI::Test::ResourceTest
     response = @openai.vector_stores.delete("vector_store_id")
 
     assert_pattern do
-      response => OpenAI::Models::VectorStoreDeleted
+      response => OpenAI::VectorStoreDeleted
     end
 
     assert_pattern do

@@ -24,9 +24,11 @@ module OpenAI
       # @!method initialize(completed:, failed:, total:)
       #   The request counts for different statuses within the batch.
       #
-      #   @param completed [Integer]
-      #   @param failed [Integer]
-      #   @param total [Integer]
+      #   @param completed [Integer] Number of requests that have been completed successfully.
+      #
+      #   @param failed [Integer] Number of requests that have failed.
+      #
+      #   @param total [Integer] Total number of requests in the batch.
     end
   end
 end

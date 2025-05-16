@@ -24,8 +24,13 @@ module OpenAI
       optional :limit, Integer
 
       # @!method initialize(after: nil, limit: nil, request_options: {})
-      #   @param after [String]
-      #   @param limit [Integer]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::BatchListParams} for more details.
+      #
+      #   @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+      #
+      #   @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end

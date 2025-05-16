@@ -23,11 +23,16 @@ module OpenAI
         required :type, const: :"response.file_search_call.completed"
 
         # @!method initialize(item_id:, output_index:, type: :"response.file_search_call.completed")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::ResponseFileSearchCallCompletedEvent} for more details.
+        #
         #   Emitted when a file search call is completed (results found).
         #
-        #   @param item_id [String]
-        #   @param output_index [Integer]
-        #   @param type [Symbol, :"response.file_search_call.completed"]
+        #   @param item_id [String] The ID of the output item that the file search call is initiated.
+        #
+        #   @param output_index [Integer] The index of the output item that the file search call is initiated.
+        #
+        #   @param type [Symbol, :"response.file_search_call.completed"] The type of the event. Always `response.file_search_call.completed`.
       end
     end
   end

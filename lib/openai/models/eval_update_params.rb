@@ -25,8 +25,13 @@ module OpenAI
       optional :name, String
 
       # @!method initialize(metadata: nil, name: nil, request_options: {})
-      #   @param metadata [Hash{Symbol=>String}, nil]
-      #   @param name [String]
+      #   Some parameter documentations has been truncated, see
+      #   {OpenAI::Models::EvalUpdateParams} for more details.
+      #
+      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #
+      #   @param name [String] Rename the evaluation.
+      #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end
   end

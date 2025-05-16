@@ -6,7 +6,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           data_source: OpenAI::Models::Evals::RunCancelResponse::data_source,
-          error: OpenAI::Models::Evals::EvalAPIError,
+          error: OpenAI::Evals::EvalAPIError,
           eval_id: String,
           metadata: OpenAI::Models::metadata?,
           model: String,
@@ -26,7 +26,7 @@ module OpenAI
 
         attr_accessor data_source: OpenAI::Models::Evals::RunCancelResponse::data_source
 
-        attr_accessor error: OpenAI::Models::Evals::EvalAPIError
+        attr_accessor error: OpenAI::Evals::EvalAPIError
 
         attr_accessor eval_id: String
 
@@ -52,7 +52,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           data_source: OpenAI::Models::Evals::RunCancelResponse::data_source,
-          error: OpenAI::Models::Evals::EvalAPIError,
+          error: OpenAI::Evals::EvalAPIError,
           eval_id: String,
           metadata: OpenAI::Models::metadata?,
           model: String,
@@ -65,16 +65,15 @@ module OpenAI
           ?object: :"eval.run"
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Evals::run_cancel_response
-
         type data_source =
-          OpenAI::Models::Evals::CreateEvalJSONLRunDataSource
-          | OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource
+          OpenAI::Evals::CreateEvalJSONLRunDataSource
+          | OpenAI::Evals::CreateEvalCompletionsRunDataSource
+          | OpenAI::Evals::CreateEvalResponsesRunDataSource
 
         module DataSource
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
+          def self?.variants: -> ::Array[OpenAI::Models::Evals::RunCancelResponse::data_source]
         end
 
         type per_model_usage =
@@ -108,8 +107,6 @@ module OpenAI
             prompt_tokens: Integer,
             total_tokens: Integer
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Evals::RunCancelResponse::per_model_usage
         end
 
         type per_testing_criteria_result =
@@ -127,8 +124,6 @@ module OpenAI
             passed: Integer,
             testing_criteria: String
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Evals::RunCancelResponse::per_testing_criteria_result
         end
 
         type result_counts =
@@ -149,8 +144,6 @@ module OpenAI
             passed: Integer,
             total: Integer
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Evals::RunCancelResponse::result_counts
         end
       end
     end

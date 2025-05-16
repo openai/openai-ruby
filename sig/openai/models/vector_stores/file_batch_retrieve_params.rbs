@@ -14,8 +14,6 @@ module OpenAI
           vector_store_id: String,
           ?request_options: OpenAI::request_opts
         ) -> void
-
-        def to_hash: -> OpenAI::Models::VectorStores::file_batch_retrieve_params
       end
     end
   end

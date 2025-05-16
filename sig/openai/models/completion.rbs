@@ -3,18 +3,18 @@ module OpenAI
     type completion =
       {
         id: String,
-        choices: ::Array[OpenAI::Models::CompletionChoice],
+        choices: ::Array[OpenAI::CompletionChoice],
         created: Integer,
         model: String,
         object: :text_completion,
         system_fingerprint: String,
-        usage: OpenAI::Models::CompletionUsage
+        usage: OpenAI::CompletionUsage
       }
 
     class Completion < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
 
-      attr_accessor choices: ::Array[OpenAI::Models::CompletionChoice]
+      attr_accessor choices: ::Array[OpenAI::CompletionChoice]
 
       attr_accessor created: Integer
 
@@ -26,23 +26,19 @@ module OpenAI
 
       def system_fingerprint=: (String) -> String
 
-      attr_reader usage: OpenAI::Models::CompletionUsage?
+      attr_reader usage: OpenAI::CompletionUsage?
 
-      def usage=: (
-        OpenAI::Models::CompletionUsage
-      ) -> OpenAI::Models::CompletionUsage
+      def usage=: (OpenAI::CompletionUsage) -> OpenAI::CompletionUsage
 
       def initialize: (
         id: String,
-        choices: ::Array[OpenAI::Models::CompletionChoice],
+        choices: ::Array[OpenAI::CompletionChoice],
         created: Integer,
         model: String,
         ?system_fingerprint: String,
-        ?usage: OpenAI::Models::CompletionUsage,
+        ?usage: OpenAI::CompletionUsage,
         ?object: :text_completion
       ) -> void
-
-      def to_hash: -> OpenAI::Models::completion
     end
   end
 end

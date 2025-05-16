@@ -4,29 +4,27 @@ module OpenAI
       type file_search_tool =
         {
           type: :file_search,
-          file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch
+          file_search: OpenAI::Beta::FileSearchTool::FileSearch
         }
 
       class FileSearchTool < OpenAI::Internal::Type::BaseModel
         attr_accessor type: :file_search
 
-        attr_reader file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch?
+        attr_reader file_search: OpenAI::Beta::FileSearchTool::FileSearch?
 
         def file_search=: (
-          OpenAI::Models::Beta::FileSearchTool::FileSearch
-        ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch
+          OpenAI::Beta::FileSearchTool::FileSearch
+        ) -> OpenAI::Beta::FileSearchTool::FileSearch
 
         def initialize: (
-          ?file_search: OpenAI::Models::Beta::FileSearchTool::FileSearch,
+          ?file_search: OpenAI::Beta::FileSearchTool::FileSearch,
           ?type: :file_search
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Beta::file_search_tool
 
         type file_search =
           {
             max_num_results: Integer,
-            ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
+            ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
           }
 
         class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -34,40 +32,36 @@ module OpenAI
 
           def max_num_results=: (Integer) -> Integer
 
-          attr_reader ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions?
+          attr_reader ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions?
 
           def ranking_options=: (
-            OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
-          ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
+            OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
+          ) -> OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
 
           def initialize: (
             ?max_num_results: Integer,
-            ?ranking_options: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions
+            ?ranking_options: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::FileSearchTool::file_search
 
           type ranking_options =
             {
               score_threshold: Float,
-              ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              ranker: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             }
 
           class RankingOptions < OpenAI::Internal::Type::BaseModel
             attr_accessor score_threshold: Float
 
-            attr_reader ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker?
+            attr_reader ranker: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker?
 
             def ranker=: (
-              OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
-            ) -> OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+            ) -> OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
 
             def initialize: (
               score_threshold: Float,
-              ?ranker: OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
+              ?ranker: OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::FileSearchTool::FileSearch::ranking_options
 
             type ranker = :auto | :default_2024_08_21
 
@@ -77,7 +71,7 @@ module OpenAI
               AUTO: :auto
               DEFAULT_2024_08_21: :default_2024_08_21
 
-              def self?.values: -> ::Array[OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::ranker]
+              def self?.values: -> ::Array[OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::ranker]
             end
           end
         end

@@ -15,8 +15,8 @@ module OpenAI
             # @!attribute file_search
             #   For now, this is always going to be an empty object.
             #
-            #   @return [OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch]
-            required :file_search, -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch }
+            #   @return [OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch]
+            required :file_search, -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch }
 
             # @!attribute type
             #   The type of tool call. This is always going to be `file_search` for this type of
@@ -26,41 +26,51 @@ module OpenAI
             required :type, const: :file_search
 
             # @!method initialize(id:, file_search:, type: :file_search)
-            #   @param id [String]
-            #   @param file_search [OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch]
-            #   @param type [Symbol, :file_search]
+            #   Some parameter documentations has been truncated, see
+            #   {OpenAI::Beta::Threads::Runs::FileSearchToolCall} for more details.
+            #
+            #   @param id [String] The ID of the tool call object.
+            #
+            #   @param file_search [OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch] For now, this is always going to be an empty object.
+            #
+            #   @param type [Symbol, :file_search] The type of tool call. This is always going to be `file_search` for this type of
 
-            # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall#file_search
+            # @see OpenAI::Beta::Threads::Runs::FileSearchToolCall#file_search
             class FileSearch < OpenAI::Internal::Type::BaseModel
               # @!attribute ranking_options
               #   The ranking options for the file search.
               #
-              #   @return [OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions, nil]
+              #   @return [OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions, nil]
               optional :ranking_options,
-                       -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions }
+                       -> { OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions }
 
               # @!attribute results
               #   The results of the file search.
               #
-              #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>, nil]
+              #   @return [Array<OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>, nil]
               optional :results,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result] }
+                       -> {
+                         OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
+                       }
 
               # @!method initialize(ranking_options: nil, results: nil)
               #   For now, this is always going to be an empty object.
               #
-              #   @param ranking_options [OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions]
-              #   @param results [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>]
+              #   @param ranking_options [OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions] The ranking options for the file search.
+              #
+              #   @param results [Array<OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result>] The results of the file search.
 
-              # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch#ranking_options
+              # @see OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch#ranking_options
               class RankingOptions < OpenAI::Internal::Type::BaseModel
                 # @!attribute ranker
                 #   The ranker to use for the file search. If not specified will use the `auto`
                 #   ranker.
                 #
-                #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker]
+                #   @return [Symbol, OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker]
                 required :ranker,
-                         enum: -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker }
+                         enum: -> {
+                           OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker
+                         }
 
                 # @!attribute score_threshold
                 #   The score threshold for the file search. All values must be a floating point
@@ -70,15 +80,20 @@ module OpenAI
                 required :score_threshold, Float
 
                 # @!method initialize(ranker:, score_threshold:)
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions}
+                #   for more details.
+                #
                 #   The ranking options for the file search.
                 #
-                #   @param ranker [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker]
-                #   @param score_threshold [Float]
+                #   @param ranker [Symbol, OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker] The ranker to use for the file search. If not specified will use the `auto` rank
+                #
+                #   @param score_threshold [Float] The score threshold for the file search. All values must be a floating point num
 
                 # The ranker to use for the file search. If not specified will use the `auto`
                 # ranker.
                 #
-                # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions#ranker
+                # @see OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions#ranker
                 module Ranker
                   extend OpenAI::Internal::Type::Enum
 
@@ -114,17 +129,26 @@ module OpenAI
                 #   The content of the result that was found. The content is only included if
                 #   requested via the include query parameter.
                 #
-                #   @return [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>, nil]
+                #   @return [Array<OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>, nil]
                 optional :content,
-                         -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content] }
+                         -> {
+                           OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
+                         }
 
                 # @!method initialize(file_id:, file_name:, score:, content: nil)
+                #   Some parameter documentations has been truncated, see
+                #   {OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result} for more
+                #   details.
+                #
                 #   A result instance of the file search.
                 #
-                #   @param file_id [String]
-                #   @param file_name [String]
-                #   @param score [Float]
-                #   @param content [Array<OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>]
+                #   @param file_id [String] The ID of the file that result was found in.
+                #
+                #   @param file_name [String] The name of the file that result was found in.
+                #
+                #   @param score [Float] The score of the result. All values must be a floating point number between 0 an
+                #
+                #   @param content [Array<OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content>] The content of the result that was found. The content is only included if reques
 
                 class Content < OpenAI::Internal::Type::BaseModel
                   # @!attribute text
@@ -136,17 +160,20 @@ module OpenAI
                   # @!attribute type
                   #   The type of the content.
                   #
-                  #   @return [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type, nil]
+                  #   @return [Symbol, OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type, nil]
                   optional :type,
-                           enum: -> { OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type }
+                           enum: -> {
+                             OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type
+                           }
 
                   # @!method initialize(text: nil, type: nil)
-                  #   @param text [String]
-                  #   @param type [Symbol, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type]
+                  #   @param text [String] The text content of the file.
+                  #
+                  #   @param type [Symbol, OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type] The type of the content.
 
                   # The type of the content.
                   #
-                  # @see OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content#type
+                  # @see OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content#type
                   module Type
                     extend OpenAI::Internal::Type::Enum
 

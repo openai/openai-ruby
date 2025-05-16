@@ -8,9 +8,9 @@ module OpenAI
           class MessageCreationStepDetails < OpenAI::Internal::Type::BaseModel
             # @!attribute message_creation
             #
-            #   @return [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation]
+            #   @return [OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation]
             required :message_creation,
-                     -> { OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation }
+                     -> { OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation }
 
             # @!attribute type
             #   Always `message_creation`.
@@ -21,10 +21,11 @@ module OpenAI
             # @!method initialize(message_creation:, type: :message_creation)
             #   Details of the message creation by the run step.
             #
-            #   @param message_creation [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation]
-            #   @param type [Symbol, :message_creation]
+            #   @param message_creation [OpenAI::Beta::Threads::Runs::MessageCreationStepDetails::MessageCreation]
+            #
+            #   @param type [Symbol, :message_creation] Always `message_creation`.
 
-            # @see OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails#message_creation
+            # @see OpenAI::Beta::Threads::Runs::MessageCreationStepDetails#message_creation
             class MessageCreation < OpenAI::Internal::Type::BaseModel
               # @!attribute message_id
               #   The ID of the message that was created by this run step.
@@ -33,7 +34,7 @@ module OpenAI
               required :message_id, String
 
               # @!method initialize(message_id:)
-              #   @param message_id [String]
+              #   @param message_id [String] The ID of the message that was created by this run step.
             end
           end
         end

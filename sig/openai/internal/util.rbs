@@ -1,6 +1,8 @@
 module OpenAI
   module Internal
     module Util
+      extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
       def self?.monotonic_secs: -> Float
 
       def self?.arch: -> String
@@ -19,6 +21,8 @@ module OpenAI
 
       def self?.coerce_hash: (top input) -> (::Hash[top, top] | top)
 
+      def self?.coerce_hash!: (top input) -> ::Hash[top, top]?
+
       def self?.deep_merge_lr: (top lhs, top rhs, ?concat: bool) -> top
 
       def self?.deep_merge: (
@@ -29,8 +33,10 @@ module OpenAI
 
       def self?.dig: (
         ::Hash[Symbol, top] | ::Array[top] | top data,
-        (Symbol | Integer | ::Array[(Symbol | Integer)])? pick,
-        ?top? sentinel
+        (Symbol
+        | Integer
+        | ::Array[(Symbol | Integer)]
+        | (^(top arg0) -> top))? pick
       ) {
         -> top?
       } -> top?
@@ -73,16 +79,6 @@ module OpenAI
         | ::Array[(String | Integer)?])?] headers
       ) -> ::Hash[String, String]
 
-      class SerializationAdapter
-        attr_reader inner: Pathname | IO
-
-        def to_json: (*top a) -> String
-
-        def to_yaml: (*top a) -> String
-
-        def initialize: (Pathname | IO inner) -> void
-      end
-
       class ReadIOAdapter
         def close?: -> bool?
 
@@ -102,6 +98,16 @@ module OpenAI
       def self?.writable_enum: {
         (Enumerator::Yielder y) -> void
       } -> Enumerable[String]
+
+      JSON_CONTENT: Regexp
+      JSONL_CONTENT: Regexp
+
+      def self?.write_multipart_content: (
+        Enumerator::Yielder y,
+        val: top,
+        closing: ::Array[^-> void],
+        ?content_type: String?
+      ) -> void
 
       def self?.write_multipart_chunk: (
         Enumerator::Yielder y,
@@ -151,6 +157,17 @@ module OpenAI
       def self?.decode_sse: (
         Enumerable[String] lines
       ) -> Enumerable[OpenAI::Internal::Util::server_sent_event]
+
+      module SorbetRuntimeSupport
+        class MissingSorbetRuntimeError < ::RuntimeError
+        end
+
+        private def sorbet_runtime_constants: -> ::Hash[Symbol, top]
+
+        def const_missing: (Symbol name) -> void
+
+        def define_sorbet_constant!: (Symbol name) { -> top } -> void
+      end
     end
   end
 end

@@ -26,8 +26,13 @@ module OpenAI
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
           # @!method initialize(thread_id:, metadata: nil, request_options: {})
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Models::Beta::Threads::MessageUpdateParams} for more details.
+          #
           #   @param thread_id [String]
-          #   @param metadata [Hash{Symbol=>String}, nil]
+          #
+          #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+          #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end
       end

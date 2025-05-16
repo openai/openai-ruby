@@ -7,8 +7,8 @@ module OpenAI
         # @!attribute content
         #   The contents of the tool message.
         #
-        #   @return [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        required :content, union: -> { OpenAI::Models::Chat::ChatCompletionToolMessageParam::Content }
+        #   @return [String, Array<OpenAI::Chat::ChatCompletionContentPartText>]
+        required :content, union: -> { OpenAI::Chat::ChatCompletionToolMessageParam::Content }
 
         # @!attribute role
         #   The role of the messages author, in this case `tool`.
@@ -23,13 +23,15 @@ module OpenAI
         required :tool_call_id, String
 
         # @!method initialize(content:, tool_call_id:, role: :tool)
-        #   @param content [String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>]
-        #   @param tool_call_id [String]
-        #   @param role [Symbol, :tool]
+        #   @param content [String, Array<OpenAI::Chat::ChatCompletionContentPartText>] The contents of the tool message.
+        #
+        #   @param tool_call_id [String] Tool call that this message is responding to.
+        #
+        #   @param role [Symbol, :tool] The role of the messages author, in this case `tool`.
 
         # The contents of the tool message.
         #
-        # @see OpenAI::Models::Chat::ChatCompletionToolMessageParam#content
+        # @see OpenAI::Chat::ChatCompletionToolMessageParam#content
         module Content
           extend OpenAI::Internal::Type::Union
 
@@ -37,13 +39,20 @@ module OpenAI
           variant String
 
           # An array of content parts with a defined type. For tool messages, only type `text` is supported.
-          variant -> { OpenAI::Models::Chat::ChatCompletionToolMessageParam::Content::ChatCompletionContentPartTextArray }
+          variant -> {
+            OpenAI::Chat::ChatCompletionToolMessageParam::Content::ChatCompletionContentPartTextArray
+          }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Chat::ChatCompletionContentPartText>)]
+          #   @return [Array(String, Array<OpenAI::Chat::ChatCompletionContentPartText>)]
 
+          define_sorbet_constant!(:Variants) do
+            T.type_alias { T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText]) }
+          end
+
+          # @type [OpenAI::Internal::Type::Converter]
           ChatCompletionContentPartTextArray =
-            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Models::Chat::ChatCompletionContentPartText }]
+            OpenAI::Internal::Type::ArrayOf[-> { OpenAI::Chat::ChatCompletionContentPartText }]
         end
       end
     end

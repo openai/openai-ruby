@@ -7,20 +7,24 @@ module OpenAI
       #   Array of filters to combine. Items can be `ComparisonFilter` or
       #   `CompoundFilter`.
       #
-      #   @return [Array<OpenAI::Models::ComparisonFilter, Object>]
-      required :filters, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Models::CompoundFilter::Filter] }
+      #   @return [Array<OpenAI::ComparisonFilter, Object>]
+      required :filters, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::CompoundFilter::Filter] }
 
       # @!attribute type
       #   Type of operation: `and` or `or`.
       #
-      #   @return [Symbol, OpenAI::Models::CompoundFilter::Type]
-      required :type, enum: -> { OpenAI::Models::CompoundFilter::Type }
+      #   @return [Symbol, OpenAI::CompoundFilter::Type]
+      required :type, enum: -> { OpenAI::CompoundFilter::Type }
 
       # @!method initialize(filters:, type:)
+      #   Some parameter documentations has been truncated, see {OpenAI::CompoundFilter}
+      #   for more details.
+      #
       #   Combine multiple filters using `and` or `or`.
       #
-      #   @param filters [Array<OpenAI::Models::ComparisonFilter, Object>]
-      #   @param type [Symbol, OpenAI::Models::CompoundFilter::Type]
+      #   @param filters [Array<OpenAI::ComparisonFilter, Object>] Array of filters to combine. Items can be `ComparisonFilter` or `CompoundFilter`
+      #
+      #   @param type [Symbol, OpenAI::CompoundFilter::Type] Type of operation: `and` or `or`.
 
       # A filter used to compare a specified attribute key to a given value using a
       # defined comparison operation.
@@ -28,17 +32,21 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         # A filter used to compare a specified attribute key to a given value using a defined comparison operation.
-        variant -> { OpenAI::Models::ComparisonFilter }
+        variant -> { OpenAI::ComparisonFilter }
 
         variant OpenAI::Internal::Type::Unknown
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::ComparisonFilter, Object)]
+        #   @return [Array(OpenAI::ComparisonFilter, Object)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(OpenAI::ComparisonFilter, T.anything) }
+        end
       end
 
       # Type of operation: `and` or `or`.
       #
-      # @see OpenAI::Models::CompoundFilter#type
+      # @see OpenAI::CompoundFilter#type
       module Type
         extend OpenAI::Internal::Type::Enum
 

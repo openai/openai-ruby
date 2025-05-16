@@ -3,6 +3,9 @@
 module OpenAI
   module Test
     module Resources
+      module Alpha
+      end
+
       module Audio
       end
 
@@ -30,11 +33,17 @@ module OpenAI
       end
 
       module FineTuning
+        module Alpha
+        end
+
         module Checkpoints
         end
 
         module Jobs
         end
+      end
+
+      module Graders
       end
 
       module Jobs

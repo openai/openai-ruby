@@ -7,9 +7,9 @@ module OpenAI
 
       variant String
 
-      variant enum: -> { OpenAI::Models::ChatModel }
+      variant enum: -> { OpenAI::ChatModel }
 
-      variant enum: -> { OpenAI::Models::AllModels::ResponsesOnlyModel }
+      variant enum: -> { OpenAI::AllModels::ResponsesOnlyModel }
 
       module ResponsesOnlyModel
         extend OpenAI::Internal::Type::Enum
@@ -24,7 +24,13 @@ module OpenAI
       end
 
       # @!method self.variants
-      #   @return [Array(String, Symbol, OpenAI::Models::ChatModel, Symbol, OpenAI::Models::AllModels::ResponsesOnlyModel)]
+      #   @return [Array(String, Symbol, OpenAI::ChatModel, Symbol, OpenAI::AllModels::ResponsesOnlyModel)]
+
+      define_sorbet_constant!(:Variants) do
+        T.type_alias do
+          T.any(String, OpenAI::ChatModel::TaggedSymbol, OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
+        end
+      end
     end
   end
 end

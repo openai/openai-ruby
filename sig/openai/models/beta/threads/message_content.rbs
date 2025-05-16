@@ -3,15 +3,15 @@ module OpenAI
     module Beta
       module Threads
         type message_content =
-          OpenAI::Models::Beta::Threads::ImageFileContentBlock
-          | OpenAI::Models::Beta::Threads::ImageURLContentBlock
-          | OpenAI::Models::Beta::Threads::TextContentBlock
-          | OpenAI::Models::Beta::Threads::RefusalContentBlock
+          OpenAI::Beta::Threads::ImageFileContentBlock
+          | OpenAI::Beta::Threads::ImageURLContentBlock
+          | OpenAI::Beta::Threads::TextContentBlock
+          | OpenAI::Beta::Threads::RefusalContentBlock
 
         module MessageContent
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> [OpenAI::Models::Beta::Threads::ImageFileContentBlock, OpenAI::Models::Beta::Threads::ImageURLContentBlock, OpenAI::Models::Beta::Threads::TextContentBlock, OpenAI::Models::Beta::Threads::RefusalContentBlock]
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::message_content]
         end
       end
     end

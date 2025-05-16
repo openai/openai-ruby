@@ -20,8 +20,6 @@ module OpenAI
           output_index: Integer,
           ?type: :"response.output_item.done"
         ) -> void
-
-        def to_hash: -> OpenAI::Models::Responses::response_output_item_done_event
       end
     end
   end

@@ -11,8 +11,8 @@ module OpenAI
         # @!attribute data_source
         #   Details about the run's data source.
         #
-        #   @return [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
-        required :data_source, union: -> { OpenAI::Models::Evals::RunCreateParams::DataSource }
+        #   @return [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::CreateEvalResponsesRunDataSource]
+        required :data_source, union: -> { OpenAI::Evals::RunCreateParams::DataSource }
 
         # @!attribute metadata
         #   Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -32,9 +32,15 @@ module OpenAI
         optional :name, String
 
         # @!method initialize(data_source:, metadata: nil, name: nil, request_options: {})
-        #   @param data_source [OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource]
-        #   @param metadata [Hash{Symbol=>String}, nil]
-        #   @param name [String]
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Models::Evals::RunCreateParams} for more details.
+        #
+        #   @param data_source [OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::CreateEvalResponsesRunDataSource] Details about the run's data source.
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #
+        #   @param name [String] The name of the run.
+        #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # Details about the run's data source.
@@ -42,13 +48,26 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           # A JsonlRunDataSource object with that specifies a JSONL file that matches the eval
-          variant -> { OpenAI::Models::Evals::CreateEvalJSONLRunDataSource }
+          variant -> { OpenAI::Evals::CreateEvalJSONLRunDataSource }
 
           # A CompletionsRunDataSource object describing a model sampling configuration.
-          variant -> { OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource }
+          variant -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource }
+
+          # A ResponsesRunDataSource object describing a model sampling configuration.
+          variant -> { OpenAI::Evals::CreateEvalResponsesRunDataSource }
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Evals::CreateEvalJSONLRunDataSource, OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource)]
+          #   @return [Array(OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Evals::CreateEvalResponsesRunDataSource)]
+
+          define_sorbet_constant!(:Variants) do
+            T.type_alias do
+              T.any(
+                OpenAI::Evals::CreateEvalJSONLRunDataSource,
+                OpenAI::Evals::CreateEvalCompletionsRunDataSource,
+                OpenAI::Evals::CreateEvalResponsesRunDataSource
+              )
+            end
+          end
         end
       end
     end

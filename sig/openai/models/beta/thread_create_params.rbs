@@ -3,9 +3,9 @@ module OpenAI
     module Beta
       type thread_create_params =
         {
-          messages: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
+          messages: ::Array[OpenAI::Beta::ThreadCreateParams::Message],
           metadata: OpenAI::Models::metadata?,
-          tool_resources: OpenAI::Models::Beta::ThreadCreateParams::ToolResources?
+          tool_resources: OpenAI::Beta::ThreadCreateParams::ToolResources?
         }
         & OpenAI::Internal::Type::request_parameters
 
@@ -13,50 +13,46 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        attr_reader messages: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message]?
+        attr_reader messages: ::Array[OpenAI::Beta::ThreadCreateParams::Message]?
 
         def messages=: (
-          ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message]
-        ) -> ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message]
+          ::Array[OpenAI::Beta::ThreadCreateParams::Message]
+        ) -> ::Array[OpenAI::Beta::ThreadCreateParams::Message]
 
         attr_accessor metadata: OpenAI::Models::metadata?
 
-        attr_accessor tool_resources: OpenAI::Models::Beta::ThreadCreateParams::ToolResources?
+        attr_accessor tool_resources: OpenAI::Beta::ThreadCreateParams::ToolResources?
 
         def initialize: (
-          ?messages: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message],
+          ?messages: ::Array[OpenAI::Beta::ThreadCreateParams::Message],
           ?metadata: OpenAI::Models::metadata?,
-          ?tool_resources: OpenAI::Models::Beta::ThreadCreateParams::ToolResources?,
+          ?tool_resources: OpenAI::Beta::ThreadCreateParams::ToolResources?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
-        def to_hash: -> OpenAI::Models::Beta::thread_create_params
-
         type message =
           {
-            content: OpenAI::Models::Beta::ThreadCreateParams::Message::content,
-            role: OpenAI::Models::Beta::ThreadCreateParams::Message::role,
-            attachments: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment]?,
+            content: OpenAI::Beta::ThreadCreateParams::Message::content,
+            role: OpenAI::Beta::ThreadCreateParams::Message::role,
+            attachments: ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment]?,
             metadata: OpenAI::Models::metadata?
           }
 
         class Message < OpenAI::Internal::Type::BaseModel
-          attr_accessor content: OpenAI::Models::Beta::ThreadCreateParams::Message::content
+          attr_accessor content: OpenAI::Beta::ThreadCreateParams::Message::content
 
-          attr_accessor role: OpenAI::Models::Beta::ThreadCreateParams::Message::role
+          attr_accessor role: OpenAI::Beta::ThreadCreateParams::Message::role
 
-          attr_accessor attachments: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment]?
+          attr_accessor attachments: ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment]?
 
           attr_accessor metadata: OpenAI::Models::metadata?
 
           def initialize: (
-            content: OpenAI::Models::Beta::ThreadCreateParams::Message::content,
-            role: OpenAI::Models::Beta::ThreadCreateParams::Message::role,
-            ?attachments: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment]?,
+            content: OpenAI::Beta::ThreadCreateParams::Message::content,
+            role: OpenAI::Beta::ThreadCreateParams::Message::role,
+            ?attachments: ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment]?,
             ?metadata: OpenAI::Models::metadata?
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::message
 
           type content =
             String
@@ -65,12 +61,9 @@ module OpenAI
           module Content
             extend OpenAI::Internal::Type::Union
 
-            def self?.variants: -> [String, ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]]
+            def self?.variants: -> ::Array[OpenAI::Beta::ThreadCreateParams::Message::content]
 
-            type message_content_part_param_array =
-              ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
-
-            MessageContentPartParamArray: message_content_part_param_array
+            MessageContentPartParamArray: OpenAI::Internal::Type::Converter
           end
 
           type role = :user | :assistant
@@ -81,13 +74,13 @@ module OpenAI
             USER: :user
             ASSISTANT: :assistant
 
-            def self?.values: -> ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::role]
+            def self?.values: -> ::Array[OpenAI::Beta::ThreadCreateParams::Message::role]
           end
 
           type attachment =
             {
               file_id: String,
-              tools: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::tool]
+              tools: ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment::tool]
             }
 
           class Attachment < OpenAI::Internal::Type::BaseModel
@@ -95,22 +88,20 @@ module OpenAI
 
             def file_id=: (String) -> String
 
-            attr_reader tools: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::tool]?
+            attr_reader tools: ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment::tool]?
 
             def tools=: (
-              ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::tool]
-            ) -> ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::tool]
+              ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment::tool]
+            ) -> ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment::tool]
 
             def initialize: (
               ?file_id: String,
-              ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::tool]
+              ?tools: ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment::tool]
             ) -> void
 
-            def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::Message::attachment
-
             type tool =
-              OpenAI::Models::Beta::CodeInterpreterTool
-              | OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch
+              OpenAI::Beta::CodeInterpreterTool
+              | OpenAI::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch
 
             module Tool
               extend OpenAI::Internal::Type::Union
@@ -121,40 +112,36 @@ module OpenAI
                 attr_accessor type: :file_search
 
                 def initialize: (?type: :file_search) -> void
-
-                def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::file_search
               end
 
-              def self?.variants: -> [OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::ThreadCreateParams::Message::Attachment::Tool::FileSearch]
+              def self?.variants: -> ::Array[OpenAI::Beta::ThreadCreateParams::Message::Attachment::tool]
             end
           end
         end
 
         type tool_resources =
           {
-            code_interpreter: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter,
-            file_search: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch
+            code_interpreter: OpenAI::Beta::ThreadCreateParams::ToolResources::CodeInterpreter,
+            file_search: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch
           }
 
         class ToolResources < OpenAI::Internal::Type::BaseModel
-          attr_reader code_interpreter: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter?
+          attr_reader code_interpreter: OpenAI::Beta::ThreadCreateParams::ToolResources::CodeInterpreter?
 
           def code_interpreter=: (
-            OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter
-          ) -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter
+            OpenAI::Beta::ThreadCreateParams::ToolResources::CodeInterpreter
+          ) -> OpenAI::Beta::ThreadCreateParams::ToolResources::CodeInterpreter
 
-          attr_reader file_search: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch?
+          attr_reader file_search: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch?
 
           def file_search=: (
-            OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch
-          ) -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch
+            OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch
+          ) -> OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch
 
           def initialize: (
-            ?code_interpreter: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::CodeInterpreter,
-            ?file_search: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch
+            ?code_interpreter: OpenAI::Beta::ThreadCreateParams::ToolResources::CodeInterpreter,
+            ?file_search: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch
           ) -> void
-
-          def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::tool_resources
 
           type code_interpreter = { file_ids: ::Array[String] }
 
@@ -164,14 +151,12 @@ module OpenAI
             def file_ids=: (::Array[String]) -> ::Array[String]
 
             def initialize: (?file_ids: ::Array[String]) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::code_interpreter
           end
 
           type file_search =
             {
               vector_store_ids: ::Array[String],
-              vector_stores: ::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
+              vector_stores: ::Array[OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
             }
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -179,32 +164,30 @@ module OpenAI
 
             def vector_store_ids=: (::Array[String]) -> ::Array[String]
 
-            attr_reader vector_stores: ::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]?
+            attr_reader vector_stores: ::Array[OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]?
 
             def vector_stores=: (
-              ::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
-            ) -> ::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
+              ::Array[OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
+            ) -> ::Array[OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
 
             def initialize: (
               ?vector_store_ids: ::Array[String],
-              ?vector_stores: ::Array[OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
+              ?vector_stores: ::Array[OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore]
             ) -> void
-
-            def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::file_search
 
             type vector_store =
               {
-                chunking_strategy: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                chunking_strategy: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy,
                 file_ids: ::Array[String],
                 metadata: OpenAI::Models::metadata?
               }
 
             class VectorStore < OpenAI::Internal::Type::BaseModel
-              attr_reader chunking_strategy: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy?
+              attr_reader chunking_strategy: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy?
 
               def chunking_strategy=: (
-                OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy
-              ) -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy
+                OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy
+              ) -> OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy
 
               attr_reader file_ids: ::Array[String]?
 
@@ -213,16 +196,14 @@ module OpenAI
               attr_accessor metadata: OpenAI::Models::metadata?
 
               def initialize: (
-                ?chunking_strategy: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                ?chunking_strategy: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy,
                 ?file_ids: ::Array[String],
                 ?metadata: OpenAI::Models::metadata?
               ) -> void
 
-              def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::vector_store
-
               type chunking_strategy =
-                OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto
-                | OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
+                OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto
+                | OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static
 
               module ChunkingStrategy
                 extend OpenAI::Internal::Type::Union
@@ -233,27 +214,23 @@ module OpenAI
                   attr_accessor type: :auto
 
                   def initialize: (?type: :auto) -> void
-
-                  def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::auto
                 end
 
                 type static =
                   {
-                    static: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                    static: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
                     type: :static
                   }
 
                 class Static < OpenAI::Internal::Type::BaseModel
-                  attr_accessor static: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
+                  attr_accessor static: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static
 
                   attr_accessor type: :static
 
                   def initialize: (
-                    static: OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                    static: OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
                     ?type: :static
                   ) -> void
-
-                  def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::static
 
                   type static =
                     {
@@ -270,12 +247,10 @@ module OpenAI
                       chunk_overlap_tokens: Integer,
                       max_chunk_size_tokens: Integer
                     ) -> void
-
-                    def to_hash: -> OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::static
                   end
                 end
 
-                def self?.variants: -> [OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Auto, OpenAI::Models::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static]
+                def self?.variants: -> ::Array[OpenAI::Beta::ThreadCreateParams::ToolResources::FileSearch::VectorStore::chunking_strategy]
               end
             end
           end

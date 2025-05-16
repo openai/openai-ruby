@@ -11,8 +11,6 @@ module OpenAI
         attr_accessor word: String
 
         def initialize: (end_: Float, start: Float, word: String) -> void
-
-        def to_hash: -> OpenAI::Models::Audio::transcription_word
       end
     end
   end

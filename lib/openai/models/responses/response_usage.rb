@@ -13,8 +13,8 @@ module OpenAI
         # @!attribute input_tokens_details
         #   A detailed breakdown of the input tokens.
         #
-        #   @return [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails]
-        required :input_tokens_details, -> { OpenAI::Models::Responses::ResponseUsage::InputTokensDetails }
+        #   @return [OpenAI::Responses::ResponseUsage::InputTokensDetails]
+        required :input_tokens_details, -> { OpenAI::Responses::ResponseUsage::InputTokensDetails }
 
         # @!attribute output_tokens
         #   The number of output tokens.
@@ -25,8 +25,8 @@ module OpenAI
         # @!attribute output_tokens_details
         #   A detailed breakdown of the output tokens.
         #
-        #   @return [OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails]
-        required :output_tokens_details, -> { OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails }
+        #   @return [OpenAI::Responses::ResponseUsage::OutputTokensDetails]
+        required :output_tokens_details, -> { OpenAI::Responses::ResponseUsage::OutputTokensDetails }
 
         # @!attribute total_tokens
         #   The total number of tokens used.
@@ -38,13 +38,17 @@ module OpenAI
         #   Represents token usage details including input tokens, output tokens, a
         #   breakdown of output tokens, and the total tokens used.
         #
-        #   @param input_tokens [Integer]
-        #   @param input_tokens_details [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails]
-        #   @param output_tokens [Integer]
-        #   @param output_tokens_details [OpenAI::Models::Responses::ResponseUsage::OutputTokensDetails]
-        #   @param total_tokens [Integer]
+        #   @param input_tokens [Integer] The number of input tokens.
+        #
+        #   @param input_tokens_details [OpenAI::Responses::ResponseUsage::InputTokensDetails] A detailed breakdown of the input tokens.
+        #
+        #   @param output_tokens [Integer] The number of output tokens.
+        #
+        #   @param output_tokens_details [OpenAI::Responses::ResponseUsage::OutputTokensDetails] A detailed breakdown of the output tokens.
+        #
+        #   @param total_tokens [Integer] The total number of tokens used.
 
-        # @see OpenAI::Models::Responses::ResponseUsage#input_tokens_details
+        # @see OpenAI::Responses::ResponseUsage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute cached_tokens
           #   The number of tokens that were retrieved from the cache.
@@ -54,12 +58,15 @@ module OpenAI
           required :cached_tokens, Integer
 
           # @!method initialize(cached_tokens:)
+          #   Some parameter documentations has been truncated, see
+          #   {OpenAI::Responses::ResponseUsage::InputTokensDetails} for more details.
+          #
           #   A detailed breakdown of the input tokens.
           #
-          #   @param cached_tokens [Integer]
+          #   @param cached_tokens [Integer] The number of tokens that were retrieved from the cache.
         end
 
-        # @see OpenAI::Models::Responses::ResponseUsage#output_tokens_details
+        # @see OpenAI::Responses::ResponseUsage#output_tokens_details
         class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute reasoning_tokens
           #   The number of reasoning tokens.
@@ -70,7 +77,7 @@ module OpenAI
           # @!method initialize(reasoning_tokens:)
           #   A detailed breakdown of the output tokens.
           #
-          #   @param reasoning_tokens [Integer]
+          #   @param reasoning_tokens [Integer] The number of reasoning tokens.
         end
       end
     end

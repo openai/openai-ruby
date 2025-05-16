@@ -3,9 +3,9 @@
 module OpenAI
   module Errors
     class Error < StandardError
-      # @!parse
-      #   # @return [StandardError, nil]
-      #   attr_accessor :cause
+      # @!attribute cause
+      #
+      #   @return [StandardError, nil]
     end
 
     class ConversionError < OpenAI::Errors::Error
@@ -49,25 +49,25 @@ module OpenAI
     end
 
     class APIConnectionError < OpenAI::Errors::APIError
-      # @!parse
-      #   # @return [nil]
-      #   attr_accessor :status
+      # @!attribute status
+      #
+      #   @return [nil]
 
-      # @!parse
-      #   # @return [nil]
-      #   attr_accessor :body
+      # @!attribute body
+      #
+      #   @return [nil]
 
-      # @!parse
-      #   # @return [nil]
-      #   attr_accessor :code
+      # @!attribute code
+      #
+      #   @return [nil]
 
-      # @!parse
-      #   # @return [nil]
-      #   attr_accessor :param
+      # @!attribute param
+      #
+      #   @return [nil]
 
-      # @!parse
-      #   # @return [nil]
-      #   attr_accessor :type
+      # @!attribute type
+      #
+      #   @return [nil]
 
       # @api private
       #
@@ -120,7 +120,7 @@ module OpenAI
       # @param response [nil]
       # @param message [String, nil]
       #
-      # @return [OpenAI::Errors::APIStatusError]
+      # @return [self]
       def self.for(url:, status:, body:, request:, response:, message: nil)
         kwargs = {
           url: url,

@@ -2,29 +2,27 @@ module OpenAI
   module Models
     type completion_choice =
       {
-        finish_reason: OpenAI::Models::CompletionChoice::finish_reason,
+        finish_reason: OpenAI::CompletionChoice::finish_reason,
         index: Integer,
-        logprobs: OpenAI::Models::CompletionChoice::Logprobs?,
+        logprobs: OpenAI::CompletionChoice::Logprobs?,
         text: String
       }
 
     class CompletionChoice < OpenAI::Internal::Type::BaseModel
-      attr_accessor finish_reason: OpenAI::Models::CompletionChoice::finish_reason
+      attr_accessor finish_reason: OpenAI::CompletionChoice::finish_reason
 
       attr_accessor index: Integer
 
-      attr_accessor logprobs: OpenAI::Models::CompletionChoice::Logprobs?
+      attr_accessor logprobs: OpenAI::CompletionChoice::Logprobs?
 
       attr_accessor text: String
 
       def initialize: (
-        finish_reason: OpenAI::Models::CompletionChoice::finish_reason,
+        finish_reason: OpenAI::CompletionChoice::finish_reason,
         index: Integer,
-        logprobs: OpenAI::Models::CompletionChoice::Logprobs?,
+        logprobs: OpenAI::CompletionChoice::Logprobs?,
         text: String
       ) -> void
-
-      def to_hash: -> OpenAI::Models::completion_choice
 
       type finish_reason = :stop | :length | :content_filter
 
@@ -35,7 +33,7 @@ module OpenAI
         LENGTH: :length
         CONTENT_FILTER: :content_filter
 
-        def self?.values: -> ::Array[OpenAI::Models::CompletionChoice::finish_reason]
+        def self?.values: -> ::Array[OpenAI::CompletionChoice::finish_reason]
       end
 
       type logprobs =
@@ -71,8 +69,6 @@ module OpenAI
           ?tokens: ::Array[String],
           ?top_logprobs: ::Array[::Hash[Symbol, Float]]
         ) -> void
-
-        def to_hash: -> OpenAI::Models::CompletionChoice::logprobs
       end
     end
   end

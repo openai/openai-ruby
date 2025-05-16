@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    class LabelModelGrader = Graders::LabelModelGrader
+
+    module Graders
+      type label_model_grader =
+        {
+          input: ::Array[OpenAI::EvalItem],
+          labels: ::Array[String],
+          model: String,
+          name: String,
+          passing_labels: ::Array[String],
+          type: :label_model
+        }
+
+      class LabelModelGrader < OpenAI::Internal::Type::BaseModel
+        attr_accessor input: ::Array[OpenAI::EvalItem]
+
+        attr_accessor labels: ::Array[String]
+
+        attr_accessor model: String
+
+        attr_accessor name: String
+
+        attr_accessor passing_labels: ::Array[String]
+
+        attr_accessor type: :label_model
+
+        def initialize: (
+          input: ::Array[OpenAI::EvalItem],
+          labels: ::Array[String],
+          model: String,
+          name: String,
+          passing_labels: ::Array[String],
+          ?type: :label_model
+        ) -> void
+      end
+    end
+  end
+end

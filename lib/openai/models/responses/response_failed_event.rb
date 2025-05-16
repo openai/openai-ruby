@@ -7,8 +7,8 @@ module OpenAI
         # @!attribute response
         #   The response that failed.
         #
-        #   @return [OpenAI::Models::Responses::Response]
-        required :response, -> { OpenAI::Models::Responses::Response }
+        #   @return [OpenAI::Responses::Response]
+        required :response, -> { OpenAI::Responses::Response }
 
         # @!attribute type
         #   The type of the event. Always `response.failed`.
@@ -17,10 +17,14 @@ module OpenAI
         required :type, const: :"response.failed"
 
         # @!method initialize(response:, type: :"response.failed")
+        #   Some parameter documentations has been truncated, see
+        #   {OpenAI::Responses::ResponseFailedEvent} for more details.
+        #
         #   An event that is emitted when a response fails.
         #
-        #   @param response [OpenAI::Models::Responses::Response]
-        #   @param type [Symbol, :"response.failed"]
+        #   @param response [OpenAI::Responses::Response] The response that failed.
+        #
+        #   @param type [Symbol, :"response.failed"] The type of the event. Always `response.failed`.
       end
     end
   end

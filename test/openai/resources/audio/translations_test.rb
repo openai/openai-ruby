@@ -12,8 +12,8 @@ class OpenAI::Test::Resources::Audio::TranslationsTest < OpenAI::Test::ResourceT
 
     assert_pattern do
       case response
-      in OpenAI::Models::Audio::Translation
-      in OpenAI::Models::Audio::TranslationVerbose
+      in OpenAI::Audio::Translation
+      in OpenAI::Audio::TranslationVerbose
       end
     end
   end

@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_reasoning_summary_part_added_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+          summary_index: Integer,
+          type: :"response.reasoning_summary_part.added"
+        }
+
+      class ResponseReasoningSummaryPartAddedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part
+
+        attr_accessor summary_index: Integer
+
+        attr_accessor type: :"response.reasoning_summary_part.added"
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          part: OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+          summary_index: Integer,
+          ?type: :"response.reasoning_summary_part.added"
+        ) -> void
+
+        type part = { text: String, type: :summary_text }
+
+        class Part < OpenAI::Internal::Type::BaseModel
+          attr_accessor text: String
+
+          attr_accessor type: :summary_text
+
+          def initialize: (text: String, ?type: :summary_text) -> void
+        end
+      end
+    end
+  end
+end
