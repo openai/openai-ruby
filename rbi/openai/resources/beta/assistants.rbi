@@ -7,7 +7,7 @@ module OpenAI
         # Create an assistant with a model and instructions.
         sig do
           params(
-            model: OpenAI::Beta::AssistantCreateParams::Model::Variants,
+            model: T.any(String, OpenAI::ChatModel::OrSymbol),
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
@@ -132,7 +132,11 @@ module OpenAI
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: OpenAI::Beta::AssistantUpdateParams::Model::Variants,
+            model:
+              T.any(
+                String,
+                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
+              ),
             name: T.nilable(String),
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             response_format:

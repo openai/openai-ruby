@@ -338,12 +338,7 @@ module OpenAI
           end
           attr_reader :learning_rate_multiplier
 
-          sig do
-            params(
-              learning_rate_multiplier:
-                OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier::Variants
-            ).void
-          end
+          sig { params(learning_rate_multiplier: T.any(Symbol, Float)).void }
           attr_writer :learning_rate_multiplier
 
           # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -357,26 +352,16 @@ module OpenAI
           end
           attr_reader :n_epochs
 
-          sig do
-            params(
-              n_epochs:
-                OpenAI::FineTuning::FineTuningJob::Hyperparameters::NEpochs::Variants
-            ).void
-          end
+          sig { params(n_epochs: T.any(Symbol, Integer)).void }
           attr_writer :n_epochs
 
           # The hyperparameters used for the fine-tuning job. This value will only be
           # returned when running `supervised` jobs.
           sig do
             params(
-              batch_size:
-                T.nilable(
-                  OpenAI::FineTuning::FineTuningJob::Hyperparameters::BatchSize::Variants
-                ),
-              learning_rate_multiplier:
-                OpenAI::FineTuning::FineTuningJob::Hyperparameters::LearningRateMultiplier::Variants,
-              n_epochs:
-                OpenAI::FineTuning::FineTuningJob::Hyperparameters::NEpochs::Variants
+              batch_size: T.nilable(T.any(T.anything, Symbol, Integer)),
+              learning_rate_multiplier: T.any(Symbol, Float),
+              n_epochs: T.any(Symbol, Integer)
             ).returns(T.attached_class)
           end
           def self.new(

@@ -10,7 +10,7 @@ module OpenAI
       #
       # @overload create_variation(image:, model: nil, n: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
-      # @param image [Pathname, StringIO, IO, OpenAI::FilePart] The image to use as the basis for the variation(s). Must be a valid PNG file, le
+      # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart] The image to use as the basis for the variation(s). Must be a valid PNG file, le
       #
       # @param model [String, Symbol, OpenAI::ImageModel, nil] The model to use for image generation. Only `dall-e-2` is supported at this time
       #
@@ -47,13 +47,13 @@ module OpenAI
       #
       # @overload edit(image:, prompt:, background: nil, mask: nil, model: nil, n: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
       #
-      # @param image [Pathname, StringIO, IO, OpenAI::FilePart, Array<Pathname, StringIO, IO, OpenAI::FilePart>] The image(s) to edit. Must be a supported image file or an array of images.
+      # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>] The image(s) to edit. Must be a supported image file or an array of images.
       #
       # @param prompt [String] A text description of the desired image(s). The maximum length is 1000 character
       #
       # @param background [Symbol, OpenAI::ImageEditParams::Background, nil] Allows to set transparency for the background of the generated image(s).
       #
-      # @param mask [Pathname, StringIO, IO, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
+      # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart] An additional image whose fully transparent areas (e.g. where alpha is zero) ind
       #
       # @param model [String, Symbol, OpenAI::ImageModel, nil] The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are sup
       #

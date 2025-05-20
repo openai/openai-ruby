@@ -16,7 +16,9 @@ module OpenAI
       # see all of your available models, or see our
       # [Model overview](https://platform.openai.com/docs/models) for descriptions of
       # them.
-      sig { returns(OpenAI::CompletionCreateParams::Model::Variants) }
+      sig do
+        returns(T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol))
+      end
       attr_accessor :model
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -165,7 +167,7 @@ module OpenAI
 
       sig do
         params(
-          model: OpenAI::CompletionCreateParams::Model::Variants,
+          model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
           prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
@@ -299,7 +301,8 @@ module OpenAI
       sig do
         override.returns(
           {
-            model: OpenAI::CompletionCreateParams::Model::Variants,
+            model:
+              T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
             prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
             best_of: T.nilable(Integer),
             echo: T.nilable(T::Boolean),

@@ -2,17 +2,17 @@ module OpenAI
   module Models
     module Uploads
       type part_create_params =
-        { data: (Pathname | StringIO | IO | OpenAI::FilePart) }
+        { data: OpenAI::Internal::file_input }
         & OpenAI::Internal::Type::request_parameters
 
       class PartCreateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        attr_accessor data: Pathname | StringIO | IO | OpenAI::FilePart
+        attr_accessor data: OpenAI::Internal::file_input
 
         def initialize: (
-          data: Pathname | StringIO | IO | OpenAI::FilePart,
+          data: OpenAI::Internal::file_input,
           ?request_options: OpenAI::request_opts
         ) -> void
       end

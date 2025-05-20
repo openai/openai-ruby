@@ -2,7 +2,7 @@ module OpenAI
   module Resources
     class Images
       def create_variation: (
-        image: Pathname | StringIO | IO | OpenAI::FilePart,
+        image: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageCreateVariationParams::model?,
         ?n: Integer?,
         ?response_format: OpenAI::Models::ImageCreateVariationParams::response_format?,
@@ -15,7 +15,7 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
-        ?mask: Pathname | StringIO | IO | OpenAI::FilePart,
+        ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
         ?quality: OpenAI::Models::ImageEditParams::quality?,

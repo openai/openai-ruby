@@ -8,7 +8,7 @@ module OpenAI
       # Creates a completion for the provided prompt and parameters.
       sig do
         params(
-          model: OpenAI::CompletionCreateParams::Model::Variants,
+          model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
           prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
@@ -148,7 +148,7 @@ module OpenAI
       # Creates a completion for the provided prompt and parameters.
       sig do
         params(
-          model: OpenAI::CompletionCreateParams::Model::Variants,
+          model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
           prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),

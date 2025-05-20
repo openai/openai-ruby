@@ -7,7 +7,7 @@ module OpenAI
       sig do
         params(
           input: OpenAI::EmbeddingCreateParams::Input::Variants,
-          model: OpenAI::EmbeddingCreateParams::Model::Variants,
+          model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
           dimensions: Integer,
           encoding_format:
             OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,

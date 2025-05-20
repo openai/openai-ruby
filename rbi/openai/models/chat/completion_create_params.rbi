@@ -42,7 +42,7 @@ module OpenAI
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
-        sig { returns(OpenAI::Chat::CompletionCreateParams::Model::Variants) }
+        sig { returns(T.any(String, OpenAI::ChatModel::OrSymbol)) }
         attr_accessor :model
 
         # Parameters for audio output. Required when audio output is requested with
@@ -427,7 +427,7 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionFunctionMessageParam::OrHash
                 )
               ],
-            model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
+            model: T.any(String, OpenAI::ChatModel::OrSymbol),
             audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash),
             frequency_penalty: T.nilable(Float),
             function_call:
@@ -692,7 +692,7 @@ module OpenAI
                     OpenAI::Chat::ChatCompletionFunctionMessageParam
                   )
                 ],
-              model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
+              model: T.any(String, OpenAI::ChatModel::OrSymbol),
               audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam),
               frequency_penalty: T.nilable(Float),
               function_call:

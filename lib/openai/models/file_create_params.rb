@@ -10,7 +10,7 @@ module OpenAI
       # @!attribute file
       #   The File object (not file name) to be uploaded.
       #
-      #   @return [Pathname, StringIO, IO, OpenAI::FilePart]
+      #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart]
       required :file, OpenAI::Internal::Type::FileInput
 
       # @!attribute purpose
@@ -26,7 +26,7 @@ module OpenAI
       #   Some parameter documentations has been truncated, see
       #   {OpenAI::Models::FileCreateParams} for more details.
       #
-      #   @param file [Pathname, StringIO, IO, OpenAI::FilePart] The File object (not file name) to be uploaded.
+      #   @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
       #
       #   @param purpose [Symbol, OpenAI::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
       #

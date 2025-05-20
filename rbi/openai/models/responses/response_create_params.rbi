@@ -34,7 +34,15 @@ module OpenAI
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
-        sig { returns(OpenAI::ResponsesModel::Variants) }
+        sig do
+          returns(
+            T.any(
+              String,
+              OpenAI::ChatModel::OrSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+            )
+          )
+        end
         attr_accessor :model
 
         # Specify additional output data to include in the model response. Currently
@@ -258,7 +266,12 @@ module OpenAI
         sig do
           params(
             input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
-            model: OpenAI::ResponsesModel::Variants,
+            model:
+              T.any(
+                String,
+                OpenAI::ChatModel::OrSymbol,
+                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+              ),
             include:
               T.nilable(
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -436,7 +449,12 @@ module OpenAI
           override.returns(
             {
               input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
-              model: OpenAI::ResponsesModel::Variants,
+              model:
+                T.any(
+                  String,
+                  OpenAI::ChatModel::OrSymbol,
+                  OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+                ),
               include:
                 T.nilable(
                   T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]

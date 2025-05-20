@@ -233,7 +233,12 @@ module OpenAI
               T.nilable(OpenAI::Responses::Response::IncompleteDetails::OrHash),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: OpenAI::ResponsesModel::Variants,
+            model:
+              T.any(
+                String,
+                OpenAI::ChatModel::OrSymbol,
+                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+              ),
             output:
               T::Array[
                 T.any(

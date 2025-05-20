@@ -18,14 +18,18 @@ module OpenAI
 
         # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
         # `tts-1`, `tts-1-hd` or `gpt-4o-mini-tts`.
-        sig { returns(OpenAI::Audio::SpeechCreateParams::Model::Variants) }
+        sig { returns(T.any(String, OpenAI::Audio::SpeechModel::OrSymbol)) }
         attr_accessor :model
 
         # The voice to use when generating the audio. Supported voices are `alloy`, `ash`,
         # `ballad`, `coral`, `echo`, `fable`, `onyx`, `nova`, `sage`, `shimmer`, and
         # `verse`. Previews of the voices are available in the
         # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
-        sig { returns(OpenAI::Audio::SpeechCreateParams::Voice::Variants) }
+        sig do
+          returns(
+            T.any(String, OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol)
+          )
+        end
         attr_accessor :voice
 
         # Control the voice of your generated audio with additional instructions. Does not
@@ -66,8 +70,9 @@ module OpenAI
         sig do
           params(
             input: String,
-            model: OpenAI::Audio::SpeechCreateParams::Model::Variants,
-            voice: OpenAI::Audio::SpeechCreateParams::Voice::Variants,
+            model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
+            voice:
+              T.any(String, OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol),
             instructions: String,
             response_format:
               OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
@@ -103,8 +108,12 @@ module OpenAI
           override.returns(
             {
               input: String,
-              model: OpenAI::Audio::SpeechCreateParams::Model::Variants,
-              voice: OpenAI::Audio::SpeechCreateParams::Voice::Variants,
+              model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
+              voice:
+                T.any(
+                  String,
+                  OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol
+                ),
               instructions: String,
               response_format:
                 OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
