@@ -21,19 +21,19 @@ module OpenAI
       # learn about available models
       # [here](https://platform.openai.com/docs/models#moderation).
       sig do
-        returns(T.nilable(OpenAI::ModerationCreateParams::Model::Variants))
+        returns(T.nilable(T.any(String, OpenAI::ModerationModel::OrSymbol)))
       end
       attr_reader :model
 
       sig do
-        params(model: OpenAI::ModerationCreateParams::Model::Variants).void
+        params(model: T.any(String, OpenAI::ModerationModel::OrSymbol)).void
       end
       attr_writer :model
 
       sig do
         params(
           input: OpenAI::ModerationCreateParams::Input::Variants,
-          model: OpenAI::ModerationCreateParams::Model::Variants,
+          model: T.any(String, OpenAI::ModerationModel::OrSymbol),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
       end
@@ -54,7 +54,7 @@ module OpenAI
         override.returns(
           {
             input: OpenAI::ModerationCreateParams::Input::Variants,
-            model: OpenAI::ModerationCreateParams::Model::Variants,
+            model: T.any(String, OpenAI::ModerationModel::OrSymbol),
             request_options: OpenAI::RequestOptions
           }
         )

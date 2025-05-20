@@ -40,18 +40,16 @@ module OpenAI
       # indicate where `image` should be edited. If there are multiple images provided,
       # the mask will be applied on the first image. Must be a valid PNG file, less than
       # 4MB, and have the same dimensions as `image`.
-      sig do
-        returns(T.nilable(T.any(Pathname, StringIO, IO, OpenAI::FilePart)))
-      end
+      sig { returns(T.nilable(OpenAI::Internal::FileInput)) }
       attr_reader :mask
 
-      sig { params(mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart)).void }
+      sig { params(mask: OpenAI::Internal::FileInput).void }
       attr_writer :mask
 
       # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
       # supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1`
       # is used.
-      sig { returns(T.nilable(OpenAI::ImageEditParams::Model::Variants)) }
+      sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
       attr_accessor :model
 
       # The number of images to generate. Must be between 1 and 10.
@@ -93,8 +91,8 @@ module OpenAI
           image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
-          mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          model: T.nilable(OpenAI::ImageEditParams::Model::Variants),
+          mask: OpenAI::Internal::FileInput,
+          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
@@ -163,8 +161,8 @@ module OpenAI
             prompt: String,
             background:
               T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
-            mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.nilable(OpenAI::ImageEditParams::Model::Variants),
+            mask: OpenAI::Internal::FileInput,
+            model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
             n: T.nilable(Integer),
             quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
             response_format:

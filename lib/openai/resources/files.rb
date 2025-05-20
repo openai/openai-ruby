@@ -30,7 +30,7 @@ module OpenAI
       #
       # @overload create(file:, purpose:, request_options: {})
       #
-      # @param file [Pathname, StringIO, IO, OpenAI::FilePart] The File object (not file name) to be uploaded.
+      # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
       #
       # @param purpose [Symbol, OpenAI::FilePurpose] The intended purpose of the uploaded file. One of: - `assistants`: Used in the A
       #

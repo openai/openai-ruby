@@ -4,7 +4,7 @@ module OpenAI
       class Parts
         def create: (
           String upload_id,
-          data: Pathname | StringIO | IO | OpenAI::FilePart,
+          data: OpenAI::Internal::file_input,
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Uploads::UploadPart
 

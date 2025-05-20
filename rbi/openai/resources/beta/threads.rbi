@@ -112,10 +112,7 @@ module OpenAI
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::Model::Variants
-              ),
+            model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
             parallel_tool_calls: T::Boolean,
             response_format:
               T.nilable(
@@ -265,10 +262,7 @@ module OpenAI
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.nilable(
-                OpenAI::Beta::ThreadCreateAndRunParams::Model::Variants
-              ),
+            model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
             parallel_tool_calls: T::Boolean,
             response_format:
               T.nilable(

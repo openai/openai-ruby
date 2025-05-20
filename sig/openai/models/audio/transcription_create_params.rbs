@@ -3,7 +3,7 @@ module OpenAI
     module Audio
       type transcription_create_params =
         {
-          file: (Pathname | StringIO | IO | OpenAI::FilePart),
+          file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           include: ::Array[OpenAI::Models::Audio::transcription_include],
@@ -19,7 +19,7 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        attr_accessor file: Pathname | StringIO | IO | OpenAI::FilePart
+        attr_accessor file: OpenAI::Internal::file_input
 
         attr_accessor model: OpenAI::Models::Audio::TranscriptionCreateParams::model
 
@@ -56,7 +56,7 @@ module OpenAI
         ) -> ::Array[OpenAI::Audio::TranscriptionCreateParams::timestamp_granularity]
 
         def initialize: (
-          file: Pathname | StringIO | IO | OpenAI::FilePart,
+          file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],

@@ -25,6 +25,7 @@ class OpenAI::Test::SorbetRuntimeSupportTest < Minitest::Test
     err = OpenAI::Internal::Util::SorbetRuntimeSupport::MissingSorbetRuntimeError
 
     assert_raises(err) { OpenAI::Internal::AnyHash }
+    assert_raises(err) { OpenAI::Internal::FileInput }
     assert_raises(err) { OpenAI::Internal::Type::Converter::Input }
     assert_raises(err) { OpenAI::Internal::Type::Converter::CoerceState }
     assert_raises(err) { OpenAI::Internal::Type::Converter::DumpState }

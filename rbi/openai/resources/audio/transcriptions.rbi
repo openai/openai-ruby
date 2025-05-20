@@ -10,8 +10,8 @@ module OpenAI
         # Transcribes audio into the input language.
         sig do
           params(
-            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: OpenAI::Audio::TranscriptionCreateParams::Model::Variants,
+            file: OpenAI::Internal::FileInput,
+            model: T.any(String, OpenAI::AudioModel::OrSymbol),
             chunking_strategy:
               T.nilable(
                 T.any(
@@ -91,8 +91,8 @@ module OpenAI
         # Transcribes audio into the input language.
         sig do
           params(
-            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: OpenAI::Audio::TranscriptionCreateParams::Model::Variants,
+            file: OpenAI::Internal::FileInput,
+            model: T.any(String, OpenAI::AudioModel::OrSymbol),
             chunking_strategy:
               T.nilable(
                 T.any(

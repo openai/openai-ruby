@@ -12,7 +12,7 @@ module OpenAI
         end
 
       # The File object (not file name) to be uploaded.
-      sig { returns(T.any(Pathname, StringIO, IO, OpenAI::FilePart)) }
+      sig { returns(OpenAI::Internal::FileInput) }
       attr_accessor :file
 
       # The intended purpose of the uploaded file. One of: - `assistants`: Used in the
@@ -24,7 +24,7 @@ module OpenAI
 
       sig do
         params(
-          file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+          file: OpenAI::Internal::FileInput,
           purpose: OpenAI::FilePurpose::OrSymbol,
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(T.attached_class)
@@ -44,7 +44,7 @@ module OpenAI
       sig do
         override.returns(
           {
-            file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
+            file: OpenAI::Internal::FileInput,
             purpose: OpenAI::FilePurpose::OrSymbol,
             request_options: OpenAI::RequestOptions
           }

@@ -99,11 +99,7 @@ module OpenAI
           # be used to execute this run. If a value is provided here, it will override the
           # model associated with the assistant. If not, the model associated with the
           # assistant will be used.
-          sig do
-            returns(
-              T.nilable(OpenAI::Beta::Threads::RunCreateParams::Model::Variants)
-            )
-          end
+          sig { returns(T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol))) }
           attr_accessor :model
 
           # Whether to enable
@@ -245,10 +241,7 @@ module OpenAI
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model:
-                T.nilable(
-                  OpenAI::Beta::Threads::RunCreateParams::Model::Variants
-                ),
+              model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
               response_format:
@@ -412,10 +405,7 @@ module OpenAI
                 max_completion_tokens: T.nilable(Integer),
                 max_prompt_tokens: T.nilable(Integer),
                 metadata: T.nilable(T::Hash[Symbol, String]),
-                model:
-                  T.nilable(
-                    OpenAI::Beta::Threads::RunCreateParams::Model::Variants
-                  ),
+                model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
                 parallel_tool_calls: T::Boolean,
                 reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
                 response_format:

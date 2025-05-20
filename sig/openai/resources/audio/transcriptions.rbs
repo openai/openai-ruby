@@ -3,7 +3,7 @@ module OpenAI
     class Audio
       class Transcriptions
         def create: (
-          file: Pathname | StringIO | IO | OpenAI::FilePart,
+          file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],
@@ -16,7 +16,7 @@ module OpenAI
         ) -> OpenAI::Models::Audio::transcription_create_response
 
         def create_streaming: (
-          file: Pathname | StringIO | IO | OpenAI::FilePart,
+          file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],

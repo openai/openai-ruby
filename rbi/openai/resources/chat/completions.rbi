@@ -39,7 +39,7 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionFunctionMessageParam::OrHash
                 )
               ],
-            model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
+            model: T.any(String, OpenAI::ChatModel::OrSymbol),
             audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash),
             frequency_penalty: T.nilable(Float),
             function_call:
@@ -326,7 +326,7 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionFunctionMessageParam::OrHash
                 )
               ],
-            model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
+            model: T.any(String, OpenAI::ChatModel::OrSymbol),
             audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash),
             frequency_penalty: T.nilable(Float),
             function_call:

@@ -28,7 +28,7 @@ module OpenAI
       # see all of your available models, or see our
       # [Model overview](https://platform.openai.com/docs/models) for descriptions of
       # them.
-      sig { returns(OpenAI::EmbeddingCreateParams::Model::Variants) }
+      sig { returns(T.any(String, OpenAI::EmbeddingModel::OrSymbol)) }
       attr_accessor :model
 
       # The number of dimensions the resulting output embeddings should have. Only
@@ -68,7 +68,7 @@ module OpenAI
       sig do
         params(
           input: OpenAI::EmbeddingCreateParams::Input::Variants,
-          model: OpenAI::EmbeddingCreateParams::Model::Variants,
+          model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
           dimensions: Integer,
           encoding_format:
             OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
@@ -111,7 +111,7 @@ module OpenAI
         override.returns(
           {
             input: OpenAI::EmbeddingCreateParams::Input::Variants,
-            model: OpenAI::EmbeddingCreateParams::Model::Variants,
+            model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
             dimensions: Integer,
             encoding_format:
               OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,

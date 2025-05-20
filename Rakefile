@@ -9,6 +9,7 @@ require "rake/clean"
 require "rubocop/rake_task"
 
 tapioca = "sorbet/tapioca"
+examples = "examples"
 ignore_file = ".ignore"
 
 CLEAN.push(*%w[.idea/ .ruby-lsp/ .yardoc/ doc/], *FileList["*.gem"], ignore_file)
@@ -39,7 +40,7 @@ locale = {"LC_ALL" => "C.UTF-8"}
 
 desc("Lint `*.rb(i)`")
 multitask(:"lint:rubocop") do
-  find = %w[find ./lib ./test ./rbi -type f -and ( -name *.rb -or -name *.rbi ) -print0]
+  find = %w[find ./lib ./test ./rbi ./examples -type f -and ( -name *.rb -or -name *.rbi ) -print0]
 
   rubocop = %w[rubocop]
   rubocop += %w[--format github] if ENV.key?("CI")
@@ -54,7 +55,7 @@ end
 desc("Format `*.rb`")
 multitask(:"format:rb") do
   # while `syntax_tree` is much faster than `rubocop`, `rubocop` is the only formatter with full syntax support
-  find = %w[find ./lib ./test -type f -and -name *.rb -print0]
+  find = %w[find ./lib ./test ./examples -type f -and -name *.rb -print0]
   fmt = xargs + %w[rubocop --fail-level F --autocorrect --format simple --]
   sh("#{find.shelljoin} | #{fmt.shelljoin}")
 end
@@ -117,12 +118,14 @@ multitask(:"typecheck:steep") do
   sh(*%w[steep check])
 end
 
+directory(examples)
+
 desc("Typecheck `*.rbi`")
-multitask(:"typecheck:sorbet") do
-  sh(*%w[srb typecheck])
+multitask("typecheck:sorbet": examples) do
+  sh(*%w[srb typecheck --dir], examples)
 end
 
-file(tapioca) do
+directory(tapioca) do
   sh(*%w[tapioca init])
 end
 

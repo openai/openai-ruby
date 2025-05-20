@@ -14,70 +14,34 @@ module OpenAI
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::FineTuning::SupervisedHyperparameters::BatchSize::Variants
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, Integer))) }
         attr_reader :batch_size
 
-        sig do
-          params(
-            batch_size:
-              OpenAI::FineTuning::SupervisedHyperparameters::BatchSize::Variants
-          ).void
-        end
+        sig { params(batch_size: T.any(Symbol, Integer)).void }
         attr_writer :batch_size
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
         # avoid overfitting.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier::Variants
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, Float))) }
         attr_reader :learning_rate_multiplier
 
-        sig do
-          params(
-            learning_rate_multiplier:
-              OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier::Variants
-          ).void
-        end
+        sig { params(learning_rate_multiplier: T.any(Symbol, Float)).void }
         attr_writer :learning_rate_multiplier
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
         # through the training dataset.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::FineTuning::SupervisedHyperparameters::NEpochs::Variants
-            )
-          )
-        end
+        sig { returns(T.nilable(T.any(Symbol, Integer))) }
         attr_reader :n_epochs
 
-        sig do
-          params(
-            n_epochs:
-              OpenAI::FineTuning::SupervisedHyperparameters::NEpochs::Variants
-          ).void
-        end
+        sig { params(n_epochs: T.any(Symbol, Integer)).void }
         attr_writer :n_epochs
 
         # The hyperparameters used for the fine-tuning job.
         sig do
           params(
-            batch_size:
-              OpenAI::FineTuning::SupervisedHyperparameters::BatchSize::Variants,
-            learning_rate_multiplier:
-              OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier::Variants,
-            n_epochs:
-              OpenAI::FineTuning::SupervisedHyperparameters::NEpochs::Variants
+            batch_size: T.any(Symbol, Integer),
+            learning_rate_multiplier: T.any(Symbol, Float),
+            n_epochs: T.any(Symbol, Integer)
           ).returns(T.attached_class)
         end
         def self.new(
@@ -96,12 +60,9 @@ module OpenAI
         sig do
           override.returns(
             {
-              batch_size:
-                OpenAI::FineTuning::SupervisedHyperparameters::BatchSize::Variants,
-              learning_rate_multiplier:
-                OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier::Variants,
-              n_epochs:
-                OpenAI::FineTuning::SupervisedHyperparameters::NEpochs::Variants
+              batch_size: T.any(Symbol, Integer),
+              learning_rate_multiplier: T.any(Symbol, Float),
+              n_epochs: T.any(Symbol, Integer)
             }
           )
         end

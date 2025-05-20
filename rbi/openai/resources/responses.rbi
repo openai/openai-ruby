@@ -22,7 +22,12 @@ module OpenAI
       sig do
         params(
           input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
-          model: OpenAI::ResponsesModel::Variants,
+          model:
+            T.any(
+              String,
+              OpenAI::ChatModel::OrSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+            ),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -216,7 +221,12 @@ module OpenAI
       sig do
         params(
           input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
-          model: OpenAI::ResponsesModel::Variants,
+          model:
+            T.any(
+              String,
+              OpenAI::ChatModel::OrSymbol,
+              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
+            ),
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]

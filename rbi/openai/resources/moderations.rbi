@@ -8,7 +8,7 @@ module OpenAI
       sig do
         params(
           input: OpenAI::ModerationCreateParams::Input::Variants,
-          model: OpenAI::ModerationCreateParams::Model::Variants,
+          model: T.any(String, OpenAI::ModerationModel::OrSymbol),
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(OpenAI::Models::ModerationCreateResponse)
       end
