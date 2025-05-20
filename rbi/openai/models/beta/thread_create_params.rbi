@@ -113,16 +113,7 @@ module OpenAI
           # The text contents of the message.
           sig do
             returns(
-              T.any(
-                String,
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::Threads::ImageFileContentBlock,
-                    OpenAI::Beta::Threads::ImageURLContentBlock,
-                    OpenAI::Beta::Threads::TextContentBlockParam
-                  )
-                ]
-              )
+              OpenAI::Beta::ThreadCreateParams::Message::Content::Variants
             )
           end
           attr_accessor :content
@@ -160,16 +151,7 @@ module OpenAI
           sig do
             params(
               content:
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::ImageFileContentBlock::OrHash,
-                      OpenAI::Beta::Threads::ImageURLContentBlock::OrHash,
-                      OpenAI::Beta::Threads::TextContentBlockParam::OrHash
-                    )
-                  ]
-                ),
+                OpenAI::Beta::ThreadCreateParams::Message::Content::Variants,
               role: OpenAI::Beta::ThreadCreateParams::Message::Role::OrSymbol,
               attachments:
                 T.nilable(
@@ -206,16 +188,7 @@ module OpenAI
             override.returns(
               {
                 content:
-                  T.any(
-                    String,
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::ImageFileContentBlock,
-                        OpenAI::Beta::Threads::ImageURLContentBlock,
-                        OpenAI::Beta::Threads::TextContentBlockParam
-                      )
-                    ]
-                  ),
+                  OpenAI::Beta::ThreadCreateParams::Message::Content::Variants,
                 role: OpenAI::Beta::ThreadCreateParams::Message::Role::OrSymbol,
                 attachments:
                   T.nilable(
@@ -239,11 +212,7 @@ module OpenAI
                 T.any(
                   String,
                   T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::ImageFileContentBlock,
-                      OpenAI::Beta::Threads::ImageURLContentBlock,
-                      OpenAI::Beta::Threads::TextContentBlockParam
-                    )
+                    OpenAI::Beta::Threads::MessageContentPartParam::Variants
                   ]
                 )
               end

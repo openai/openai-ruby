@@ -13,18 +13,7 @@ module OpenAI
           end
 
         # The output item that was added.
-        sig do
-          returns(
-            T.any(
-              OpenAI::Responses::ResponseOutputMessage,
-              OpenAI::Responses::ResponseFileSearchToolCall,
-              OpenAI::Responses::ResponseFunctionToolCall,
-              OpenAI::Responses::ResponseFunctionWebSearch,
-              OpenAI::Responses::ResponseComputerToolCall,
-              OpenAI::Responses::ResponseReasoningItem
-            )
-          )
-        end
+        sig { returns(OpenAI::Responses::ResponseOutputItem::Variants) }
         attr_accessor :item
 
         # The index of the output item that was added.
@@ -64,15 +53,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              item:
-                T.any(
-                  OpenAI::Responses::ResponseOutputMessage,
-                  OpenAI::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Responses::ResponseFunctionToolCall,
-                  OpenAI::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Responses::ResponseComputerToolCall,
-                  OpenAI::Responses::ResponseReasoningItem
-                ),
+              item: OpenAI::Responses::ResponseOutputItem::Variants,
               output_index: Integer,
               type: Symbol
             }

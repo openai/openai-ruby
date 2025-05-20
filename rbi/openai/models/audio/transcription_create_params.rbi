@@ -23,7 +23,9 @@ module OpenAI
         # ID of the model to use. The options are `gpt-4o-transcribe`,
         # `gpt-4o-mini-transcribe`, and `whisper-1` (which is powered by our open source
         # Whisper V2 model).
-        sig { returns(T.any(String, OpenAI::AudioModel::OrSymbol)) }
+        sig do
+          returns(OpenAI::Audio::TranscriptionCreateParams::Model::Variants)
+        end
         attr_accessor :model
 
         # Controls how the audio is cut into chunks. When set to `"auto"`, the server
@@ -131,7 +133,7 @@ module OpenAI
         sig do
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.any(String, OpenAI::AudioModel::OrSymbol),
+            model: OpenAI::Audio::TranscriptionCreateParams::Model::Variants,
             chunking_strategy:
               T.nilable(
                 T.any(
@@ -203,7 +205,7 @@ module OpenAI
           override.returns(
             {
               file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-              model: T.any(String, OpenAI::AudioModel::OrSymbol),
+              model: OpenAI::Audio::TranscriptionCreateParams::Model::Variants,
               chunking_strategy:
                 T.nilable(
                   T.any(

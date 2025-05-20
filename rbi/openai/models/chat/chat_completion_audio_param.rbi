@@ -23,14 +23,7 @@ module OpenAI
 
         # The voice the model uses to respond. Supported voices are `alloy`, `ash`,
         # `ballad`, `coral`, `echo`, `fable`, `nova`, `onyx`, `sage`, and `shimmer`.
-        sig do
-          returns(
-            T.any(
-              String,
-              OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol
-            )
-          )
-        end
+        sig { returns(OpenAI::Chat::ChatCompletionAudioParam::Voice::Variants) }
         attr_accessor :voice
 
         # Parameters for audio output. Required when audio output is requested with
@@ -39,11 +32,7 @@ module OpenAI
         sig do
           params(
             format_: OpenAI::Chat::ChatCompletionAudioParam::Format::OrSymbol,
-            voice:
-              T.any(
-                String,
-                OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol
-              )
+            voice: OpenAI::Chat::ChatCompletionAudioParam::Voice::Variants
           ).returns(T.attached_class)
         end
         def self.new(
@@ -60,11 +49,7 @@ module OpenAI
           override.returns(
             {
               format_: OpenAI::Chat::ChatCompletionAudioParam::Format::OrSymbol,
-              voice:
-                T.any(
-                  String,
-                  OpenAI::Chat::ChatCompletionAudioParam::Voice::OrSymbol
-                )
+              voice: OpenAI::Chat::ChatCompletionAudioParam::Voice::Variants
             }
           )
         end

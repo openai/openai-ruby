@@ -20,16 +20,7 @@ module OpenAI
       # for counting tokens. In addition to the per-input token limit, all embedding
       # models enforce a maximum of 300,000 tokens summed across all inputs in a single
       # request.
-      sig do
-        returns(
-          T.any(
-            String,
-            T::Array[String],
-            T::Array[Integer],
-            T::Array[T::Array[Integer]]
-          )
-        )
-      end
+      sig { returns(OpenAI::EmbeddingCreateParams::Input::Variants) }
       attr_accessor :input
 
       # ID of the model to use. You can use the
@@ -37,7 +28,7 @@ module OpenAI
       # see all of your available models, or see our
       # [Model overview](https://platform.openai.com/docs/models) for descriptions of
       # them.
-      sig { returns(T.any(String, OpenAI::EmbeddingModel::OrSymbol)) }
+      sig { returns(OpenAI::EmbeddingCreateParams::Model::Variants) }
       attr_accessor :model
 
       # The number of dimensions the resulting output embeddings should have. Only
@@ -76,14 +67,8 @@ module OpenAI
 
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            ),
-          model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
+          input: OpenAI::EmbeddingCreateParams::Input::Variants,
+          model: OpenAI::EmbeddingCreateParams::Model::Variants,
           dimensions: Integer,
           encoding_format:
             OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,
@@ -125,14 +110,8 @@ module OpenAI
       sig do
         override.returns(
           {
-            input:
-              T.any(
-                String,
-                T::Array[String],
-                T::Array[Integer],
-                T::Array[T::Array[Integer]]
-              ),
-            model: T.any(String, OpenAI::EmbeddingModel::OrSymbol),
+            input: OpenAI::EmbeddingCreateParams::Input::Variants,
+            model: OpenAI::EmbeddingCreateParams::Model::Variants,
             dimensions: Integer,
             encoding_format:
               OpenAI::EmbeddingCreateParams::EncodingFormat::OrSymbol,

@@ -16,16 +16,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(
             OpenAI::Internal::CursorPage[
-              T.any(
-                OpenAI::Responses::ResponseInputMessageItem,
-                OpenAI::Responses::ResponseOutputMessage,
-                OpenAI::Responses::ResponseFileSearchToolCall,
-                OpenAI::Responses::ResponseComputerToolCall,
-                OpenAI::Responses::ResponseComputerToolCallOutputItem,
-                OpenAI::Responses::ResponseFunctionWebSearch,
-                OpenAI::Responses::ResponseFunctionToolCallItem,
-                OpenAI::Responses::ResponseFunctionToolCallOutputItem
-              )
+              OpenAI::Responses::ResponseItem::Variants
             ]
           )
         end

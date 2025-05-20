@@ -17,17 +17,7 @@ module OpenAI
         # The contents of the user message.
         sig do
           returns(
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Chat::ChatCompletionContentPartText,
-                  OpenAI::Chat::ChatCompletionContentPartImage,
-                  OpenAI::Chat::ChatCompletionContentPartInputAudio,
-                  OpenAI::Chat::ChatCompletionContentPart::File
-                )
-              ]
-            )
+            OpenAI::Chat::ChatCompletionUserMessageParam::Content::Variants
           )
         end
         attr_accessor :content
@@ -49,17 +39,7 @@ module OpenAI
         sig do
           params(
             content:
-              T.any(
-                String,
-                T::Array[
-                  T.any(
-                    OpenAI::Chat::ChatCompletionContentPartText::OrHash,
-                    OpenAI::Chat::ChatCompletionContentPartImage::OrHash,
-                    OpenAI::Chat::ChatCompletionContentPartInputAudio::OrHash,
-                    OpenAI::Chat::ChatCompletionContentPart::File::OrHash
-                  )
-                ]
-              ),
+              OpenAI::Chat::ChatCompletionUserMessageParam::Content::Variants,
             name: String,
             role: Symbol
           ).returns(T.attached_class)
@@ -79,17 +59,7 @@ module OpenAI
           override.returns(
             {
               content:
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Chat::ChatCompletionContentPartText,
-                      OpenAI::Chat::ChatCompletionContentPartImage,
-                      OpenAI::Chat::ChatCompletionContentPartInputAudio,
-                      OpenAI::Chat::ChatCompletionContentPart::File
-                    )
-                  ]
-                ),
+                OpenAI::Chat::ChatCompletionUserMessageParam::Content::Variants,
               role: Symbol,
               name: String
             }
@@ -106,14 +76,7 @@ module OpenAI
             T.type_alias do
               T.any(
                 String,
-                T::Array[
-                  T.any(
-                    OpenAI::Chat::ChatCompletionContentPartText,
-                    OpenAI::Chat::ChatCompletionContentPartImage,
-                    OpenAI::Chat::ChatCompletionContentPartInputAudio,
-                    OpenAI::Chat::ChatCompletionContentPart::File
-                  )
-                ]
+                T::Array[OpenAI::Chat::ChatCompletionContentPart::Variants]
               )
             end
 

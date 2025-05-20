@@ -10,7 +10,12 @@ module OpenAI
             vector_store_id: String,
             file_ids: T::Array[String],
             attributes:
-              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              T.nilable(
+                T::Hash[
+                  Symbol,
+                  OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
+                ]
+              ),
             chunking_strategy:
               T.any(
                 OpenAI::AutoFileChunkingStrategyParam::OrHash,

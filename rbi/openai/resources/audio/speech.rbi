@@ -8,9 +8,8 @@ module OpenAI
         sig do
           params(
             input: String,
-            model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
-            voice:
-              T.any(String, OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol),
+            model: OpenAI::Audio::SpeechCreateParams::Model::Variants,
+            voice: OpenAI::Audio::SpeechCreateParams::Voice::Variants,
             instructions: String,
             response_format:
               OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,

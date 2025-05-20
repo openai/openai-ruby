@@ -29,7 +29,10 @@ module OpenAI
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
+              model:
+                T.nilable(
+                  OpenAI::Beta::Threads::RunCreateParams::Model::Variants
+                ),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
               response_format:
@@ -205,7 +208,10 @@ module OpenAI
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
+              model:
+                T.nilable(
+                  OpenAI::Beta::Threads::RunCreateParams::Model::Variants
+                ),
               parallel_tool_calls: T::Boolean,
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
               response_format:
@@ -244,32 +250,7 @@ module OpenAI
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
               OpenAI::Internal::Stream[
-                T.any(
-                  OpenAI::Beta::AssistantStreamEvent::ThreadCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
-                  OpenAI::Beta::AssistantStreamEvent::ErrorEvent
-                )
+                OpenAI::Beta::AssistantStreamEvent::Variants
               ]
             )
           end
@@ -539,32 +520,7 @@ module OpenAI
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(
               OpenAI::Internal::Stream[
-                T.any(
-                  OpenAI::Beta::AssistantStreamEvent::ThreadCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunQueued,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunInProgress,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunRequiresAction,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCompleted,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunIncomplete,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunFailed,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelling,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunCancelled,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunExpired,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepInProgress,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepDelta,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCompleted,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepFailed,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepCancelled,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadRunStepExpired,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCreated,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageInProgress,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageDelta,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageCompleted,
-                  OpenAI::Beta::AssistantStreamEvent::ThreadMessageIncomplete,
-                  OpenAI::Beta::AssistantStreamEvent::ErrorEvent
-                )
+                OpenAI::Beta::AssistantStreamEvent::Variants
               ]
             )
           end

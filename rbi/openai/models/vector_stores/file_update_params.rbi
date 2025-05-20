@@ -24,7 +24,14 @@ module OpenAI
         # length of 64 characters. Values are strings with a maximum length of 512
         # characters, booleans, or numbers.
         sig do
-          returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
+          returns(
+            T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::FileUpdateParams::Attribute::Variants
+              ]
+            )
+          )
         end
         attr_accessor :attributes
 
@@ -32,7 +39,12 @@ module OpenAI
           params(
             vector_store_id: String,
             attributes:
-              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              T.nilable(
+                T::Hash[
+                  Symbol,
+                  OpenAI::VectorStores::FileUpdateParams::Attribute::Variants
+                ]
+              ),
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(T.attached_class)
         end
@@ -53,7 +65,12 @@ module OpenAI
             {
               vector_store_id: String,
               attributes:
-                T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+                T.nilable(
+                  T::Hash[
+                    Symbol,
+                    OpenAI::VectorStores::FileUpdateParams::Attribute::Variants
+                  ]
+                ),
               request_options: OpenAI::RequestOptions
             }
           )

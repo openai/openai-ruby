@@ -55,7 +55,11 @@ module OpenAI
         # be used to execute this run. If a value is provided here, it will override the
         # model associated with the assistant. If not, the model associated with the
         # assistant will be used.
-        sig { returns(T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol))) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Beta::ThreadCreateAndRunParams::Model::Variants)
+          )
+        end
         attr_accessor :model
 
         # Whether to enable
@@ -214,7 +218,10 @@ module OpenAI
             max_completion_tokens: T.nilable(Integer),
             max_prompt_tokens: T.nilable(Integer),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
+            model:
+              T.nilable(
+                OpenAI::Beta::ThreadCreateAndRunParams::Model::Variants
+              ),
             parallel_tool_calls: T::Boolean,
             response_format:
               T.nilable(
@@ -357,7 +364,10 @@ module OpenAI
               max_completion_tokens: T.nilable(Integer),
               max_prompt_tokens: T.nilable(Integer),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model: T.nilable(T.any(String, OpenAI::ChatModel::OrSymbol)),
+              model:
+                T.nilable(
+                  OpenAI::Beta::ThreadCreateAndRunParams::Model::Variants
+                ),
               parallel_tool_calls: T::Boolean,
               response_format:
                 T.nilable(
@@ -550,16 +560,7 @@ module OpenAI
             # The text contents of the message.
             sig do
               returns(
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::ImageFileContentBlock,
-                      OpenAI::Beta::Threads::ImageURLContentBlock,
-                      OpenAI::Beta::Threads::TextContentBlockParam
-                    )
-                  ]
-                )
+                OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Content::Variants
               )
             end
             attr_accessor :content
@@ -601,16 +602,7 @@ module OpenAI
             sig do
               params(
                 content:
-                  T.any(
-                    String,
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::ImageFileContentBlock::OrHash,
-                        OpenAI::Beta::Threads::ImageURLContentBlock::OrHash,
-                        OpenAI::Beta::Threads::TextContentBlockParam::OrHash
-                      )
-                    ]
-                  ),
+                  OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Content::Variants,
                 role:
                   OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol,
                 attachments:
@@ -648,16 +640,7 @@ module OpenAI
               override.returns(
                 {
                   content:
-                    T.any(
-                      String,
-                      T::Array[
-                        T.any(
-                          OpenAI::Beta::Threads::ImageFileContentBlock,
-                          OpenAI::Beta::Threads::ImageURLContentBlock,
-                          OpenAI::Beta::Threads::TextContentBlockParam
-                        )
-                      ]
-                    ),
+                    OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Content::Variants,
                   role:
                     OpenAI::Beta::ThreadCreateAndRunParams::Thread::Message::Role::OrSymbol,
                   attachments:
@@ -682,11 +665,7 @@ module OpenAI
                   T.any(
                     String,
                     T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::ImageFileContentBlock,
-                        OpenAI::Beta::Threads::ImageURLContentBlock,
-                        OpenAI::Beta::Threads::TextContentBlockParam
-                      )
+                      OpenAI::Beta::Threads::MessageContentPartParam::Variants
                     ]
                   )
                 end

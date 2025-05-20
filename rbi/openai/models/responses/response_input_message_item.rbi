@@ -19,15 +19,7 @@ module OpenAI
         # A list of one or many input items to the model, containing different content
         # types.
         sig do
-          returns(
-            T::Array[
-              T.any(
-                OpenAI::Responses::ResponseInputText,
-                OpenAI::Responses::ResponseInputImage,
-                OpenAI::Responses::ResponseInputFile
-              )
-            ]
-          )
+          returns(T::Array[OpenAI::Responses::ResponseInputContent::Variants])
         end
         attr_accessor :content
 
@@ -113,13 +105,7 @@ module OpenAI
             {
               id: String,
               content:
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseInputText,
-                    OpenAI::Responses::ResponseInputImage,
-                    OpenAI::Responses::ResponseInputFile
-                  )
-                ],
+                T::Array[OpenAI::Responses::ResponseInputContent::Variants],
               role:
                 OpenAI::Responses::ResponseInputMessageItem::Role::TaggedSymbol,
               status:

@@ -19,7 +19,7 @@ module OpenAI
         # returned much more quickly.
         sig do
           returns(
-            T.any(String, T::Array[OpenAI::Chat::ChatCompletionContentPartText])
+            OpenAI::Chat::ChatCompletionPredictionContent::Content::Variants
           )
         end
         attr_accessor :content
@@ -34,10 +34,7 @@ module OpenAI
         sig do
           params(
             content:
-              T.any(
-                String,
-                T::Array[OpenAI::Chat::ChatCompletionContentPartText::OrHash]
-              ),
+              OpenAI::Chat::ChatCompletionPredictionContent::Content::Variants,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -56,10 +53,7 @@ module OpenAI
           override.returns(
             {
               content:
-                T.any(
-                  String,
-                  T::Array[OpenAI::Chat::ChatCompletionContentPartText]
-                ),
+                OpenAI::Chat::ChatCompletionPredictionContent::Content::Variants,
               type: Symbol
             }
           )

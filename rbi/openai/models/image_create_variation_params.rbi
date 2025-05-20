@@ -18,7 +18,9 @@ module OpenAI
 
       # The model to use for image generation. Only `dall-e-2` is supported at this
       # time.
-      sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
+      sig do
+        returns(T.nilable(OpenAI::ImageCreateVariationParams::Model::Variants))
+      end
       attr_accessor :model
 
       # The number of images to generate. Must be between 1 and 10.
@@ -56,7 +58,7 @@ module OpenAI
       sig do
         params(
           image: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          model: T.nilable(OpenAI::ImageCreateVariationParams::Model::Variants),
           n: T.nilable(Integer),
           response_format:
             T.nilable(
@@ -95,7 +97,8 @@ module OpenAI
         override.returns(
           {
             image: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+            model:
+              T.nilable(OpenAI::ImageCreateVariationParams::Model::Variants),
             n: T.nilable(Integer),
             response_format:
               T.nilable(

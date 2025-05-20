@@ -69,21 +69,19 @@ module OpenAI
         # length of 64 characters. Values are strings with a maximum length of 512
         # characters, booleans, or numbers.
         sig do
-          returns(T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]))
+          returns(
+            T.nilable(
+              T::Hash[
+                Symbol,
+                OpenAI::VectorStores::VectorStoreFile::Attribute::Variants
+              ]
+            )
+          )
         end
         attr_accessor :attributes
 
         # The strategy used to chunk the file.
-        sig do
-          returns(
-            T.nilable(
-              T.any(
-                OpenAI::StaticFileChunkingStrategyObject,
-                OpenAI::OtherFileChunkingStrategyObject
-              )
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::FileChunkingStrategy::Variants)) }
         attr_reader :chunking_strategy
 
         sig do
@@ -110,7 +108,12 @@ module OpenAI
             usage_bytes: Integer,
             vector_store_id: String,
             attributes:
-              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              T.nilable(
+                T::Hash[
+                  Symbol,
+                  OpenAI::VectorStores::VectorStoreFile::Attribute::Variants
+                ]
+              ),
             chunking_strategy:
               T.any(
                 OpenAI::StaticFileChunkingStrategyObject::OrHash,
@@ -165,12 +168,13 @@ module OpenAI
               usage_bytes: Integer,
               vector_store_id: String,
               attributes:
-                T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
-              chunking_strategy:
-                T.any(
-                  OpenAI::StaticFileChunkingStrategyObject,
-                  OpenAI::OtherFileChunkingStrategyObject
-                )
+                T.nilable(
+                  T::Hash[
+                    Symbol,
+                    OpenAI::VectorStores::VectorStoreFile::Attribute::Variants
+                  ]
+                ),
+              chunking_strategy: OpenAI::FileChunkingStrategy::Variants
             }
           )
         end

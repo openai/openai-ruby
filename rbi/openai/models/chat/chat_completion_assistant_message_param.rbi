@@ -43,15 +43,7 @@ module OpenAI
         sig do
           returns(
             T.nilable(
-              T.any(
-                String,
-                T::Array[
-                  T.any(
-                    OpenAI::Chat::ChatCompletionContentPartText,
-                    OpenAI::Chat::ChatCompletionContentPartRefusal
-                  )
-                ]
-              )
+              OpenAI::Chat::ChatCompletionAssistantMessageParam::Content::Variants
             )
           )
         end
@@ -115,15 +107,7 @@ module OpenAI
               ),
             content:
               T.nilable(
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Chat::ChatCompletionContentPartText::OrHash,
-                      OpenAI::Chat::ChatCompletionContentPartRefusal::OrHash
-                    )
-                  ]
-                )
+                OpenAI::Chat::ChatCompletionAssistantMessageParam::Content::Variants
               ),
             function_call:
               T.nilable(
@@ -168,15 +152,7 @@ module OpenAI
                 ),
               content:
                 T.nilable(
-                  T.any(
-                    String,
-                    T::Array[
-                      T.any(
-                        OpenAI::Chat::ChatCompletionContentPartText,
-                        OpenAI::Chat::ChatCompletionContentPartRefusal
-                      )
-                    ]
-                  )
+                  OpenAI::Chat::ChatCompletionAssistantMessageParam::Content::Variants
                 ),
               function_call:
                 T.nilable(
@@ -228,10 +204,7 @@ module OpenAI
               T.any(
                 String,
                 T::Array[
-                  T.any(
-                    OpenAI::Chat::ChatCompletionContentPartText,
-                    OpenAI::Chat::ChatCompletionContentPartRefusal
-                  )
+                  OpenAI::Chat::ChatCompletionAssistantMessageParam::Content::ArrayOfContentPart::Variants
                 ]
               )
             end

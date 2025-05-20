@@ -13,12 +13,7 @@ module OpenAI
           sig do
             returns(
               T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::Threads::FileCitationDeltaAnnotation,
-                    OpenAI::Beta::Threads::FilePathDeltaAnnotation
-                  )
-                ]
+                T::Array[OpenAI::Beta::Threads::AnnotationDelta::Variants]
               )
             )
           end
@@ -67,12 +62,7 @@ module OpenAI
             override.returns(
               {
                 annotations:
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::FileCitationDeltaAnnotation,
-                      OpenAI::Beta::Threads::FilePathDeltaAnnotation
-                    )
-                  ],
+                  T::Array[OpenAI::Beta::Threads::AnnotationDelta::Variants],
                 value: String
               }
             )

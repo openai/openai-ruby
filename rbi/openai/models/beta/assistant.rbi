@@ -54,17 +54,7 @@ module OpenAI
         # A list of tool enabled on the assistant. There can be a maximum of 128 tools per
         # assistant. Tools can be of types `code_interpreter`, `file_search`, or
         # `function`.
-        sig do
-          returns(
-            T::Array[
-              T.any(
-                OpenAI::Beta::CodeInterpreterTool,
-                OpenAI::Beta::FileSearchTool,
-                OpenAI::Beta::FunctionTool
-              )
-            ]
-          )
-        end
+        sig { returns(T::Array[OpenAI::Beta::AssistantTool::Variants]) }
         attr_accessor :tools
 
         # Specifies the format that the model must output. Compatible with
@@ -89,14 +79,7 @@ module OpenAI
         # max context length.
         sig do
           returns(
-            T.nilable(
-              T.any(
-                Symbol,
-                OpenAI::ResponseFormatText,
-                OpenAI::ResponseFormatJSONObject,
-                OpenAI::ResponseFormatJSONSchema
-              )
-            )
+            T.nilable(OpenAI::Beta::AssistantResponseFormatOption::Variants)
           )
         end
         attr_accessor :response_format
@@ -245,22 +228,10 @@ module OpenAI
               model: String,
               name: T.nilable(String),
               object: Symbol,
-              tools:
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::CodeInterpreterTool,
-                    OpenAI::Beta::FileSearchTool,
-                    OpenAI::Beta::FunctionTool
-                  )
-                ],
+              tools: T::Array[OpenAI::Beta::AssistantTool::Variants],
               response_format:
                 T.nilable(
-                  T.any(
-                    Symbol,
-                    OpenAI::ResponseFormatText,
-                    OpenAI::ResponseFormatJSONObject,
-                    OpenAI::ResponseFormatJSONSchema
-                  )
+                  OpenAI::Beta::AssistantResponseFormatOption::Variants
                 ),
               temperature: T.nilable(Float),
               tool_resources: T.nilable(OpenAI::Beta::Assistant::ToolResources),

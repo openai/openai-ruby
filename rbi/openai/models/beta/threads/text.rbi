@@ -10,16 +10,7 @@ module OpenAI
               T.any(OpenAI::Beta::Threads::Text, OpenAI::Internal::AnyHash)
             end
 
-          sig do
-            returns(
-              T::Array[
-                T.any(
-                  OpenAI::Beta::Threads::FileCitationAnnotation,
-                  OpenAI::Beta::Threads::FilePathAnnotation
-                )
-              ]
-            )
-          end
+          sig { returns(T::Array[OpenAI::Beta::Threads::Annotation::Variants]) }
           attr_accessor :annotations
 
           # The data that makes up the text.
@@ -49,12 +40,7 @@ module OpenAI
             override.returns(
               {
                 annotations:
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::FileCitationAnnotation,
-                      OpenAI::Beta::Threads::FilePathAnnotation
-                    )
-                  ],
+                  T::Array[OpenAI::Beta::Threads::Annotation::Variants],
                 value: String
               }
             )

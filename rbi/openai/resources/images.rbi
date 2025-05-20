@@ -7,7 +7,7 @@ module OpenAI
       sig do
         params(
           image: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          model: T.nilable(OpenAI::ImageCreateVariationParams::Model::Variants),
           n: T.nilable(Integer),
           response_format:
             T.nilable(
@@ -46,18 +46,11 @@ module OpenAI
       # prompt. This endpoint only supports `gpt-image-1` and `dall-e-2`.
       sig do
         params(
-          image:
-            T.any(
-              Pathname,
-              StringIO,
-              IO,
-              OpenAI::FilePart,
-              T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-            ),
+          image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
           mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          model: T.nilable(OpenAI::ImageEditParams::Model::Variants),
           n: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
@@ -126,7 +119,7 @@ module OpenAI
           prompt: String,
           background:
             T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
-          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          model: T.nilable(OpenAI::ImageGenerateParams::Model::Variants),
           moderation:
             T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
           n: T.nilable(Integer),

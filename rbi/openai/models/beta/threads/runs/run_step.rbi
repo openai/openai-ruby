@@ -96,10 +96,7 @@ module OpenAI
             # The details of the run step.
             sig do
               returns(
-                T.any(
-                  OpenAI::Beta::Threads::Runs::MessageCreationStepDetails,
-                  OpenAI::Beta::Threads::Runs::ToolCallsStepDetails
-                )
+                OpenAI::Beta::Threads::Runs::RunStep::StepDetails::Variants
               )
             end
             attr_accessor :step_details
@@ -228,10 +225,7 @@ module OpenAI
                   status:
                     OpenAI::Beta::Threads::Runs::RunStep::Status::TaggedSymbol,
                   step_details:
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::MessageCreationStepDetails,
-                      OpenAI::Beta::Threads::Runs::ToolCallsStepDetails
-                    ),
+                    OpenAI::Beta::Threads::Runs::RunStep::StepDetails::Variants,
                   thread_id: String,
                   type:
                     OpenAI::Beta::Threads::Runs::RunStep::Type::TaggedSymbol,

@@ -18,17 +18,7 @@ module OpenAI
       #
       # For `dall-e-2`, you can only provide one image, and it should be a square `png`
       # file less than 4MB.
-      sig do
-        returns(
-          T.any(
-            Pathname,
-            StringIO,
-            IO,
-            OpenAI::FilePart,
-            T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-          )
-        )
-      end
+      sig { returns(OpenAI::ImageEditParams::Image::Variants) }
       attr_accessor :image
 
       # A text description of the desired image(s). The maximum length is 1000
@@ -61,7 +51,7 @@ module OpenAI
       # The model to use for image generation. Only `dall-e-2` and `gpt-image-1` are
       # supported. Defaults to `dall-e-2` unless a parameter specific to `gpt-image-1`
       # is used.
-      sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
+      sig { returns(T.nilable(OpenAI::ImageEditParams::Model::Variants)) }
       attr_accessor :model
 
       # The number of images to generate. Must be between 1 and 10.
@@ -100,18 +90,11 @@ module OpenAI
 
       sig do
         params(
-          image:
-            T.any(
-              Pathname,
-              StringIO,
-              IO,
-              OpenAI::FilePart,
-              T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-            ),
+          image: OpenAI::ImageEditParams::Image::Variants,
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
           mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-          model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+          model: T.nilable(OpenAI::ImageEditParams::Model::Variants),
           n: T.nilable(Integer),
           quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
           response_format:
@@ -176,19 +159,12 @@ module OpenAI
       sig do
         override.returns(
           {
-            image:
-              T.any(
-                Pathname,
-                StringIO,
-                IO,
-                OpenAI::FilePart,
-                T::Array[T.any(Pathname, StringIO, IO, OpenAI::FilePart)]
-              ),
+            image: OpenAI::ImageEditParams::Image::Variants,
             prompt: String,
             background:
               T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
             mask: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
+            model: T.nilable(OpenAI::ImageEditParams::Model::Variants),
             n: T.nilable(Integer),
             quality: T.nilable(OpenAI::ImageEditParams::Quality::OrSymbol),
             response_format:

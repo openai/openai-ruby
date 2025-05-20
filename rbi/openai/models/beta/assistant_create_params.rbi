@@ -20,7 +20,7 @@ module OpenAI
         # see all of your available models, or see our
         # [Model overview](https://platform.openai.com/docs/models) for descriptions of
         # them.
-        sig { returns(T.any(String, OpenAI::ChatModel::OrSymbol)) }
+        sig { returns(OpenAI::Beta::AssistantCreateParams::Model::Variants) }
         attr_accessor :model
 
         # The description of the assistant. The maximum length is 512 characters.
@@ -155,7 +155,7 @@ module OpenAI
 
         sig do
           params(
-            model: T.any(String, OpenAI::ChatModel::OrSymbol),
+            model: OpenAI::Beta::AssistantCreateParams::Model::Variants,
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
@@ -262,7 +262,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              model: T.any(String, OpenAI::ChatModel::OrSymbol),
+              model: OpenAI::Beta::AssistantCreateParams::Model::Variants,
               description: T.nilable(String),
               instructions: T.nilable(String),
               metadata: T.nilable(T::Hash[Symbol, String]),

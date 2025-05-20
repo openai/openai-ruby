@@ -18,13 +18,7 @@ module OpenAI
 
       # Configuration of data sources used in runs of the evaluation.
       sig do
-        returns(
-          T.any(
-            OpenAI::EvalCustomDataSourceConfig,
-            OpenAI::Models::EvalListResponse::DataSourceConfig::Logs,
-            OpenAI::EvalStoredCompletionsDataSourceConfig
-          )
-        )
+        returns(OpenAI::Models::EvalListResponse::DataSourceConfig::Variants)
       end
       attr_accessor :data_source_config
 
@@ -48,15 +42,7 @@ module OpenAI
       # A list of testing criteria.
       sig do
         returns(
-          T::Array[
-            T.any(
-              OpenAI::Graders::LabelModelGrader,
-              OpenAI::Graders::StringCheckGrader,
-              OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity,
-              OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython,
-              OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel
-            )
-          ]
+          T::Array[OpenAI::Models::EvalListResponse::TestingCriterion::Variants]
         )
       end
       attr_accessor :testing_criteria
@@ -121,23 +107,13 @@ module OpenAI
             id: String,
             created_at: Integer,
             data_source_config:
-              T.any(
-                OpenAI::EvalCustomDataSourceConfig,
-                OpenAI::Models::EvalListResponse::DataSourceConfig::Logs,
-                OpenAI::EvalStoredCompletionsDataSourceConfig
-              ),
+              OpenAI::Models::EvalListResponse::DataSourceConfig::Variants,
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,
             object: Symbol,
             testing_criteria:
               T::Array[
-                T.any(
-                  OpenAI::Graders::LabelModelGrader,
-                  OpenAI::Graders::StringCheckGrader,
-                  OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderTextSimilarity,
-                  OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderPython,
-                  OpenAI::Models::EvalListResponse::TestingCriterion::EvalGraderScoreModel
-                )
+                OpenAI::Models::EvalListResponse::TestingCriterion::Variants
               ]
           }
         )

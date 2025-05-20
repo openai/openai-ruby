@@ -21,31 +21,8 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Responses::EasyInputMessage::OrHash,
-                  OpenAI::Responses::ResponseInputItem::Message::OrHash,
-                  OpenAI::Responses::ResponseOutputMessage::OrHash,
-                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
-                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
-                )
-              ]
-            ),
-          model:
-            T.any(
-              String,
-              OpenAI::ChatModel::OrSymbol,
-              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-            ),
+          input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
+          model: OpenAI::ResponsesModel::Variants,
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -238,31 +215,8 @@ module OpenAI
       # your own data as input for the model's response.
       sig do
         params(
-          input:
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Responses::EasyInputMessage::OrHash,
-                  OpenAI::Responses::ResponseInputItem::Message::OrHash,
-                  OpenAI::Responses::ResponseOutputMessage::OrHash,
-                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
-                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
-                )
-              ]
-            ),
-          model:
-            T.any(
-              String,
-              OpenAI::ChatModel::OrSymbol,
-              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-            ),
+          input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
+          model: OpenAI::ResponsesModel::Variants,
           include:
             T.nilable(
               T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -305,44 +259,7 @@ module OpenAI
           request_options: OpenAI::RequestOptions::OrHash
         ).returns(
           OpenAI::Internal::Stream[
-            T.any(
-              OpenAI::Responses::ResponseAudioDeltaEvent,
-              OpenAI::Responses::ResponseAudioDoneEvent,
-              OpenAI::Responses::ResponseAudioTranscriptDeltaEvent,
-              OpenAI::Responses::ResponseAudioTranscriptDoneEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent,
-              OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent,
-              OpenAI::Responses::ResponseCompletedEvent,
-              OpenAI::Responses::ResponseContentPartAddedEvent,
-              OpenAI::Responses::ResponseContentPartDoneEvent,
-              OpenAI::Responses::ResponseCreatedEvent,
-              OpenAI::Responses::ResponseErrorEvent,
-              OpenAI::Responses::ResponseFileSearchCallCompletedEvent,
-              OpenAI::Responses::ResponseFileSearchCallInProgressEvent,
-              OpenAI::Responses::ResponseFileSearchCallSearchingEvent,
-              OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent,
-              OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent,
-              OpenAI::Responses::ResponseInProgressEvent,
-              OpenAI::Responses::ResponseFailedEvent,
-              OpenAI::Responses::ResponseIncompleteEvent,
-              OpenAI::Responses::ResponseOutputItemAddedEvent,
-              OpenAI::Responses::ResponseOutputItemDoneEvent,
-              OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent,
-              OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent,
-              OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent,
-              OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent,
-              OpenAI::Responses::ResponseRefusalDeltaEvent,
-              OpenAI::Responses::ResponseRefusalDoneEvent,
-              OpenAI::Responses::ResponseTextAnnotationDeltaEvent,
-              OpenAI::Responses::ResponseTextDeltaEvent,
-              OpenAI::Responses::ResponseTextDoneEvent,
-              OpenAI::Responses::ResponseWebSearchCallCompletedEvent,
-              OpenAI::Responses::ResponseWebSearchCallInProgressEvent,
-              OpenAI::Responses::ResponseWebSearchCallSearchingEvent
-            )
+            OpenAI::Responses::ResponseStreamEvent::Variants
           ]
         )
       end

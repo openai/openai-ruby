@@ -14,20 +14,7 @@ module OpenAI
 
         # Text, image, or audio input to the model, used to generate a response. Can also
         # contain previous assistant responses.
-        sig do
-          returns(
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Responses::ResponseInputText,
-                  OpenAI::Responses::ResponseInputImage,
-                  OpenAI::Responses::ResponseInputFile
-                )
-              ]
-            )
-          )
-        end
+        sig { returns(OpenAI::Responses::EasyInputMessage::Content::Variants) }
         attr_accessor :content
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -55,17 +42,7 @@ module OpenAI
         # interactions.
         sig do
           params(
-            content:
-              T.any(
-                String,
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseInputText::OrHash,
-                    OpenAI::Responses::ResponseInputImage::OrHash,
-                    OpenAI::Responses::ResponseInputFile::OrHash
-                  )
-                ]
-              ),
+            content: OpenAI::Responses::EasyInputMessage::Content::Variants,
             role: OpenAI::Responses::EasyInputMessage::Role::OrSymbol,
             type: OpenAI::Responses::EasyInputMessage::Type::OrSymbol
           ).returns(T.attached_class)
@@ -85,17 +62,7 @@ module OpenAI
         sig do
           override.returns(
             {
-              content:
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Responses::ResponseInputText,
-                      OpenAI::Responses::ResponseInputImage,
-                      OpenAI::Responses::ResponseInputFile
-                    )
-                  ]
-                ),
+              content: OpenAI::Responses::EasyInputMessage::Content::Variants,
               role: OpenAI::Responses::EasyInputMessage::Role::OrSymbol,
               type: OpenAI::Responses::EasyInputMessage::Type::OrSymbol
             }
@@ -113,13 +80,7 @@ module OpenAI
             T.type_alias do
               T.any(
                 String,
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseInputText,
-                    OpenAI::Responses::ResponseInputImage,
-                    OpenAI::Responses::ResponseInputFile
-                  )
-                ]
+                T::Array[OpenAI::Responses::ResponseInputContent::Variants]
               )
             end
 
