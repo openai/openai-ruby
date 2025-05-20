@@ -20,12 +20,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Audio::TranscriptionTextDeltaEvent, OpenAI::Audio::TranscriptionTextDoneEvent)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(OpenAI::Audio::TranscriptionTextDeltaEvent, OpenAI::Audio::TranscriptionTextDoneEvent)
-          end
-        end
       end
     end
   end

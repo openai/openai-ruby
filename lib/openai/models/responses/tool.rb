@@ -23,17 +23,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Responses::FileSearchTool, OpenAI::Responses::FunctionTool, OpenAI::Responses::ComputerTool, OpenAI::Responses::WebSearchTool)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::FileSearchTool,
-              OpenAI::Responses::FunctionTool,
-              OpenAI::Responses::ComputerTool,
-              OpenAI::Responses::WebSearchTool
-            )
-          end
-        end
       end
     end
   end

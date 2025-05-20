@@ -133,16 +133,6 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText)]
-
-            define_sorbet_constant!(:Variants) do
-              T.type_alias do
-                T.any(
-                  String,
-                  OpenAI::Responses::ResponseInputText,
-                  OpenAI::Graders::ScoreModelGrader::Input::Content::OutputText
-                )
-              end
-            end
           end
 
           # The role of the message input. One of `user`, `assistant`, `system`, or

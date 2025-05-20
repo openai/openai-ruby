@@ -38,10 +38,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::ComparisonFilter, Object)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(OpenAI::ComparisonFilter, T.anything) }
-        end
       end
 
       # Type of operation: `and` or `or`.

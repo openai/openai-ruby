@@ -89,15 +89,6 @@ module OpenAI
 
                 # @!method self.variants
                 #   @return [Array(OpenAI::Beta::Threads::Runs::CodeInterpreterLogs, OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage)]
-
-                define_sorbet_constant!(:Variants) do
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
-                    )
-                  end
-                end
               end
             end
           end

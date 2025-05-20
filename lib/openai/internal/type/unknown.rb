@@ -10,6 +10,7 @@ module OpenAI
       # When we don't know what to expect for the value.
       class Unknown
         extend OpenAI::Internal::Type::Converter
+        extend OpenAI::Internal::Util::SorbetRuntimeSupport
 
         # rubocop:disable Lint/UnusedMethodArgument
 
@@ -58,6 +59,13 @@ module OpenAI
           #     @option state [Boolean] :can_retry
           #
           #   @return [Object]
+
+          # @api private
+          #
+          # @return [Object]
+          def to_sorbet_type
+            T.anything
+          end
         end
 
         # rubocop:enable Lint/UnusedMethodArgument

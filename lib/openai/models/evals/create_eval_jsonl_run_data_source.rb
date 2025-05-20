@@ -95,15 +95,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent,
-                OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileID
-              )
-            end
-          end
         end
       end
     end

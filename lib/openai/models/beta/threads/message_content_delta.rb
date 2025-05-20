@@ -25,17 +25,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Beta::Threads::ImageFileDeltaBlock, OpenAI::Beta::Threads::TextDeltaBlock, OpenAI::Beta::Threads::RefusalDeltaBlock, OpenAI::Beta::Threads::ImageURLDeltaBlock)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::Threads::ImageFileDeltaBlock,
-                OpenAI::Beta::Threads::TextDeltaBlock,
-                OpenAI::Beta::Threads::RefusalDeltaBlock,
-                OpenAI::Beta::Threads::ImageURLDeltaBlock
-              )
-            end
-          end
         end
       end
     end

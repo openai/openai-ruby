@@ -303,21 +303,6 @@ module OpenAI
               # @!method self.variants
               #   @return [Array(String, Array<OpenAI::Beta::Threads::ImageFileContentBlock, OpenAI::Beta::Threads::ImageURLContentBlock, OpenAI::Beta::Threads::TextContentBlockParam>)]
 
-              define_sorbet_constant!(:Variants) do
-                T.type_alias do
-                  T.any(
-                    String,
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::ImageFileContentBlock,
-                        OpenAI::Beta::Threads::ImageURLContentBlock,
-                        OpenAI::Beta::Threads::TextContentBlockParam
-                      )
-                    ]
-                  )
-                end
-              end
-
               # @type [OpenAI::Internal::Type::Converter]
               MessageContentPartParamArray =
                 OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::Threads::MessageContentPartParam }]
@@ -387,15 +372,6 @@ module OpenAI
 
                 # @!method self.variants
                 #   @return [Array(OpenAI::Beta::CodeInterpreterTool, OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch)]
-
-                define_sorbet_constant!(:Variants) do
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool,
-                      OpenAI::Beta::Threads::RunCreateParams::AdditionalMessage::Attachment::Tool::FileSearch
-                    )
-                  end
-                end
               end
             end
           end
@@ -414,10 +390,6 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(String, Symbol, OpenAI::ChatModel)]
-
-            define_sorbet_constant!(:Variants) do
-              T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
-            end
           end
 
           class TruncationStrategy < OpenAI::Internal::Type::BaseModel

@@ -76,10 +76,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol, OpenAI::AudioModel)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::AudioModel::TaggedSymbol) }
-          end
         end
 
         # The format of the output, in one of these options: `json`, `text`, `srt`,

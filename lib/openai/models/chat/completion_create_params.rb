@@ -412,10 +412,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol, OpenAI::ChatModel)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::ChatModel::TaggedSymbol) }
-          end
         end
 
         # @deprecated
@@ -458,15 +454,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode, OpenAI::Chat::ChatCompletionFunctionCallOption)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Chat::CompletionCreateParams::FunctionCall::FunctionCallMode::TaggedSymbol,
-                OpenAI::Chat::ChatCompletionFunctionCallOption
-              )
-            end
-          end
         end
 
         # @deprecated
@@ -546,16 +533,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONSchema, OpenAI::ResponseFormatJSONObject)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::ResponseFormatText,
-                OpenAI::ResponseFormatJSONSchema,
-                OpenAI::ResponseFormatJSONObject
-              )
-            end
-          end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is
@@ -599,10 +576,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Array<String>)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.nilable(T.any(String, T::Array[String])) }
-          end
 
           # @type [OpenAI::Internal::Type::Converter]
           StringArray = OpenAI::Internal::Type::ArrayOf[String]

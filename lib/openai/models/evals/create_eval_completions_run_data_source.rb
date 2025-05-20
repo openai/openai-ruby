@@ -192,16 +192,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID, OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileContent,
-                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::FileID,
-                OpenAI::Evals::CreateEvalCompletionsRunDataSource::Source::StoredCompletions
-              )
-            end
-          end
         end
 
         # The type of run data source. Always `completions`.
@@ -375,16 +365,6 @@ module OpenAI
 
                   # @!method self.variants
                   #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText)]
-
-                  define_sorbet_constant!(:Variants) do
-                    T.type_alias do
-                      T.any(
-                        String,
-                        OpenAI::Responses::ResponseInputText,
-                        OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message::Content::OutputText
-                      )
-                    end
-                  end
                 end
 
                 # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -418,15 +398,6 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Responses::EasyInputMessage, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message)]
-
-              define_sorbet_constant!(:Variants) do
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::EasyInputMessage,
-                    OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template::Template::Message
-                  )
-                end
-              end
             end
           end
 
@@ -451,15 +422,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template, OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::Template,
-                OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages::ItemReference
-              )
-            end
-          end
         end
 
         # @see OpenAI::Evals::CreateEvalCompletionsRunDataSource#sampling_params

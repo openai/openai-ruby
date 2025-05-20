@@ -131,10 +131,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, Symbol, OpenAI::AudioModel)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(String, OpenAI::AudioModel::TaggedSymbol) }
-          end
         end
 
         # Controls how the audio is cut into chunks. When set to `"auto"`, the server
@@ -209,12 +205,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(Symbol, OpenAI::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig)
-            end
-          end
         end
 
         module TimestampGranularity

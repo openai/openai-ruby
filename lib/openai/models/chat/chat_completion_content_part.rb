@@ -77,17 +77,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Chat::ChatCompletionContentPartText, OpenAI::Chat::ChatCompletionContentPartImage, OpenAI::Chat::ChatCompletionContentPartInputAudio, OpenAI::Chat::ChatCompletionContentPart::File)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionContentPartText,
-              OpenAI::Chat::ChatCompletionContentPartImage,
-              OpenAI::Chat::ChatCompletionContentPartInputAudio,
-              OpenAI::Chat::ChatCompletionContentPart::File
-            )
-          end
-        end
       end
     end
 

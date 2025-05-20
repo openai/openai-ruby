@@ -328,16 +328,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, OpenAI::Responses::ToolChoiceOptions, OpenAI::Responses::ToolChoiceTypes, OpenAI::Responses::ToolChoiceFunction)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ToolChoiceOptions::TaggedSymbol,
-                OpenAI::Responses::ToolChoiceTypes,
-                OpenAI::Responses::ToolChoiceFunction
-              )
-            end
-          end
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is

@@ -20,10 +20,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Audio::Transcription, OpenAI::Audio::TranscriptionVerbose)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(OpenAI::Audio::Transcription, OpenAI::Audio::TranscriptionVerbose) }
-        end
       end
     end
   end

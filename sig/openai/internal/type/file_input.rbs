@@ -17,6 +17,8 @@ module OpenAI
           Pathname | StringIO | IO | String | top value,
           state: OpenAI::Internal::Type::Converter::dump_state
         ) -> (Pathname | StringIO | IO | String | top)
+
+        def self.to_sorbet_type: -> top
       end
     end
   end

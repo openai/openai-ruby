@@ -17,12 +17,6 @@ module OpenAI
 
       # @!method self.variants
       #   @return [Array(OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam)]
-
-      define_sorbet_constant!(:Variants) do
-        T.type_alias do
-          T.any(OpenAI::AutoFileChunkingStrategyParam, OpenAI::StaticFileChunkingStrategyObjectParam)
-        end
-      end
     end
   end
 end
