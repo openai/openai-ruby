@@ -87,10 +87,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Integer)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(Symbol, Integer) }
-          end
         end
 
         # Multiplier on amount of compute used for exploring search space during training.
@@ -105,10 +101,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Float)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(Symbol, Float) }
-          end
         end
 
         # The number of training steps between evaluation runs.
@@ -123,10 +115,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Integer)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(Symbol, Integer) }
-          end
         end
 
         # Number of evaluation samples to generate per training step.
@@ -141,10 +129,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Integer)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(Symbol, Integer) }
-          end
         end
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -160,10 +144,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Float)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(Symbol, Float) }
-          end
         end
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -179,10 +159,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(Symbol, :auto, Integer)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(Symbol, Integer) }
-          end
         end
 
         # Level of reasoning effort.

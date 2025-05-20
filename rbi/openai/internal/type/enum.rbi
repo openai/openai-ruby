@@ -68,6 +68,11 @@ module OpenAI
         end
 
         # @api private
+        sig { returns(T.anything) }
+        def to_sorbet_type
+        end
+
+        # @api private
         sig { params(depth: Integer).returns(String) }
         def inspect(depth: 0)
         end

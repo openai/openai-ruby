@@ -12,6 +12,7 @@ module OpenAI
       # Hash of items of a given type.
       class HashOf
         include OpenAI::Internal::Type::Converter
+        include OpenAI::Internal::Util::SorbetRuntimeSupport
 
         private_class_method :new
 
@@ -128,6 +129,13 @@ module OpenAI
           else
             super
           end
+        end
+
+        # @api private
+        #
+        # @return [Object]
+        def to_sorbet_type
+          T::Hash[OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)]
         end
 
         # @api private

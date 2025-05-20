@@ -274,10 +274,6 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<Integer>, Array<Array<Integer>>)]
 
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(String, T::Array[String], T::Array[Integer], T::Array[T::Array[Integer]]) }
-        end
-
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
@@ -301,10 +297,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(String, Array<String>)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.nilable(T.any(String, T::Array[String])) }
-        end
 
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]

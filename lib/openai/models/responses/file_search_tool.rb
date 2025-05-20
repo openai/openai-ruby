@@ -67,10 +67,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias { T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter) }
-          end
         end
 
         # @see OpenAI::Responses::FileSearchTool#ranking_options

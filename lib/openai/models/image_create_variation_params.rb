@@ -80,10 +80,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(String, Symbol, OpenAI::ImageModel)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(String, OpenAI::ImageModel::TaggedSymbol) }
-        end
       end
 
       # The format in which the generated images are returned. Must be one of `url` or

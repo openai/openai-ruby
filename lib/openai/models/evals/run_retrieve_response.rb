@@ -376,16 +376,6 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileID, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::Responses)]
-
-              define_sorbet_constant!(:Variants) do
-                T.type_alias do
-                  T.any(
-                    OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileContent,
-                    OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::FileID,
-                    OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::Source::Responses
-                  )
-                end
-              end
             end
 
             # Used when sampling from a model. Dictates the structure of the messages passed
@@ -551,16 +541,6 @@ module OpenAI
 
                       # @!method self.variants
                       #   @return [Array(String, OpenAI::Responses::ResponseInputText, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText)]
-
-                      define_sorbet_constant!(:Variants) do
-                        T.type_alias do
-                          T.any(
-                            String,
-                            OpenAI::Responses::ResponseInputText,
-                            OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText
-                          )
-                        end
-                      end
                     end
 
                     # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -594,15 +574,6 @@ module OpenAI
 
                   # @!method self.variants
                   #   @return [Array(OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem)]
-
-                  define_sorbet_constant!(:Variants) do
-                    T.type_alias do
-                      T.any(
-                        OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage,
-                        OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem
-                      )
-                    end
-                  end
                 end
               end
 
@@ -627,15 +598,6 @@ module OpenAI
 
               # @!method self.variants
               #   @return [Array(OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::ItemReference)]
-
-              define_sorbet_constant!(:Variants) do
-                T.type_alias do
-                  T.any(
-                    OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::Template,
-                    OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::InputMessages::ItemReference
-                  )
-                end
-              end
             end
 
             # @see OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses#sampling_params
@@ -677,16 +639,6 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Evals::CreateEvalJSONLRunDataSource, OpenAI::Evals::CreateEvalCompletionsRunDataSource, OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                OpenAI::Evals::CreateEvalJSONLRunDataSource,
-                OpenAI::Evals::CreateEvalCompletionsRunDataSource,
-                OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses
-              )
-            end
-          end
         end
 
         class PerModelUsage < OpenAI::Internal::Type::BaseModel

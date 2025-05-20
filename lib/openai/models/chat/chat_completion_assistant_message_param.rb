@@ -126,31 +126,10 @@ module OpenAI
 
             # @!method self.variants
             #   @return [Array(OpenAI::Chat::ChatCompletionContentPartText, OpenAI::Chat::ChatCompletionContentPartRefusal)]
-
-            define_sorbet_constant!(:Variants) do
-              T.type_alias do
-                T.any(
-                  OpenAI::Chat::ChatCompletionContentPartText,
-                  OpenAI::Chat::ChatCompletionContentPartRefusal
-                )
-              end
-            end
           end
 
           # @!method self.variants
           #   @return [Array(String, Array<OpenAI::Chat::ChatCompletionContentPartText, OpenAI::Chat::ChatCompletionContentPartRefusal>)]
-
-          define_sorbet_constant!(:Variants) do
-            T.type_alias do
-              T.any(
-                String,
-                T::Array[T.any(
-                  OpenAI::Chat::ChatCompletionContentPartText,
-                  OpenAI::Chat::ChatCompletionContentPartRefusal
-                )]
-              )
-            end
-          end
 
           # @type [OpenAI::Internal::Type::Converter]
           ArrayOfContentPartArray =

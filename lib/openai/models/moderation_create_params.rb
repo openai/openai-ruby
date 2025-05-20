@@ -50,16 +50,6 @@ module OpenAI
         # @!method self.variants
         #   @return [Array(String, Array<String>, Array<OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput>)]
 
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[T.any(OpenAI::ModerationImageURLInput, OpenAI::ModerationTextInput)]
-            )
-          end
-        end
-
         # @type [OpenAI::Internal::Type::Converter]
         StringArray = OpenAI::Internal::Type::ArrayOf[String]
 
@@ -84,10 +74,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(String, Symbol, OpenAI::ModerationModel)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(String, OpenAI::ModerationModel::TaggedSymbol) }
-        end
       end
     end
   end

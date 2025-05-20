@@ -37,15 +37,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(Symbol, OpenAI::Chat::ChatCompletionToolChoiceOption::Auto, OpenAI::Chat::ChatCompletionNamedToolChoice)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::TaggedSymbol,
-              OpenAI::Chat::ChatCompletionNamedToolChoice
-            )
-          end
-        end
       end
     end
 

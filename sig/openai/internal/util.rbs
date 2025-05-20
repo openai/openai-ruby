@@ -5,6 +5,10 @@ module OpenAI
 
       def self?.monotonic_secs: -> Float
 
+      def self?.walk_namespaces: (
+        Module | Class ns
+      ) -> Enumerable[(Module | Class)]
+
       def self?.arch: -> String
 
       def self?.os: -> String
@@ -166,7 +170,15 @@ module OpenAI
 
         def const_missing: (Symbol name) -> void
 
+        def sorbet_constant_defined?: (Symbol name) -> bool
+
         def define_sorbet_constant!: (Symbol name) { -> top } -> void
+
+        def to_sorbet_type: -> top
+
+        def self.to_sorbet_type: (
+          OpenAI::Internal::Util::SorbetRuntimeSupport | top `type`
+        ) -> top
       end
     end
   end

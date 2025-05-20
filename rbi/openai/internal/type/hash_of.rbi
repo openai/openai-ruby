@@ -8,6 +8,7 @@ module OpenAI
       # Hash of items of a given type.
       class HashOf
         include OpenAI::Internal::Type::Converter
+        include OpenAI::Internal::Util::SorbetRuntimeSupport
 
         abstract!
 
@@ -61,6 +62,11 @@ module OpenAI
             .returns(T.any(OpenAI::Internal::AnyHash, T.anything))
         end
         def dump(value, state:)
+        end
+
+        # @api private
+        sig { returns(T.anything) }
+        def to_sorbet_type
         end
 
         # @api private

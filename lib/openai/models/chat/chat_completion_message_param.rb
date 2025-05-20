@@ -34,19 +34,6 @@ module OpenAI
 
         # @!method self.variants
         #   @return [Array(OpenAI::Chat::ChatCompletionDeveloperMessageParam, OpenAI::Chat::ChatCompletionSystemMessageParam, OpenAI::Chat::ChatCompletionUserMessageParam, OpenAI::Chat::ChatCompletionAssistantMessageParam, OpenAI::Chat::ChatCompletionToolMessageParam, OpenAI::Chat::ChatCompletionFunctionMessageParam)]
-
-        define_sorbet_constant!(:Variants) do
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionDeveloperMessageParam,
-              OpenAI::Chat::ChatCompletionSystemMessageParam,
-              OpenAI::Chat::ChatCompletionUserMessageParam,
-              OpenAI::Chat::ChatCompletionAssistantMessageParam,
-              OpenAI::Chat::ChatCompletionToolMessageParam,
-              OpenAI::Chat::ChatCompletionFunctionMessageParam
-            )
-          end
-        end
       end
     end
 
