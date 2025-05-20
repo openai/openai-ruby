@@ -22,13 +22,7 @@ module OpenAI
 
         # Information about the run's data source.
         sig do
-          returns(
-            T.any(
-              OpenAI::Evals::CreateEvalJSONLRunDataSource,
-              OpenAI::Evals::CreateEvalCompletionsRunDataSource,
-              OpenAI::Models::Evals::RunListResponse::DataSource::Responses
-            )
-          )
+          returns(OpenAI::Models::Evals::RunListResponse::DataSource::Variants)
         end
         attr_accessor :data_source
 
@@ -176,11 +170,7 @@ module OpenAI
               id: String,
               created_at: Integer,
               data_source:
-                T.any(
-                  OpenAI::Evals::CreateEvalJSONLRunDataSource,
-                  OpenAI::Evals::CreateEvalCompletionsRunDataSource,
-                  OpenAI::Models::Evals::RunListResponse::DataSource::Responses
-                ),
+                OpenAI::Models::Evals::RunListResponse::DataSource::Variants,
               error: OpenAI::Evals::EvalAPIError,
               eval_id: String,
               metadata: T.nilable(T::Hash[Symbol, String]),
@@ -228,11 +218,7 @@ module OpenAI
             # Determines what populates the `item` namespace in this run's data source.
             sig do
               returns(
-                T.any(
-                  OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent,
-                  OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileID,
-                  OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::Responses
-                )
+                OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::Variants
               )
             end
             attr_accessor :source
@@ -248,10 +234,7 @@ module OpenAI
             sig do
               returns(
                 T.nilable(
-                  T.any(
-                    OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template,
-                    OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::ItemReference
-                  )
+                  OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Variants
                 )
               )
             end
@@ -332,17 +315,10 @@ module OpenAI
               override.returns(
                 {
                   source:
-                    T.any(
-                      OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileContent,
-                      OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::FileID,
-                      OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::Responses
-                    ),
+                    OpenAI::Models::Evals::RunListResponse::DataSource::Responses::Source::Variants,
                   type: Symbol,
                   input_messages:
-                    T.any(
-                      OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template,
-                      OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::ItemReference
-                    ),
+                    OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Variants,
                   model: String,
                   sampling_params:
                     OpenAI::Models::Evals::RunListResponse::DataSource::Responses::SamplingParams
@@ -664,10 +640,7 @@ module OpenAI
                 sig do
                   returns(
                     T::Array[
-                      T.any(
-                        OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage,
-                        OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem
-                      )
+                      OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::Variants
                     ]
                   )
                 end
@@ -703,10 +676,7 @@ module OpenAI
                     {
                       template:
                         T::Array[
-                          T.any(
-                            OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::ChatMessage,
-                            OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem
-                          )
+                          OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::Variants
                         ],
                       type: Symbol
                     }
@@ -778,11 +748,7 @@ module OpenAI
                     # Text inputs to the model - can contain template strings.
                     sig do
                       returns(
-                        T.any(
-                          String,
-                          OpenAI::Responses::ResponseInputText,
-                          OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText
-                        )
+                        OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::Variants
                       )
                     end
                     attr_accessor :content
@@ -848,11 +814,7 @@ module OpenAI
                       override.returns(
                         {
                           content:
-                            T.any(
-                              String,
-                              OpenAI::Responses::ResponseInputText,
-                              OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::OutputText
-                            ),
+                            OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Content::Variants,
                           role:
                             OpenAI::Models::Evals::RunListResponse::DataSource::Responses::InputMessages::Template::Template::EvalItem::Role::TaggedSymbol,
                           type:

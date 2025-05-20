@@ -11,7 +11,7 @@ module OpenAI
         sig do
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.any(String, OpenAI::AudioModel::OrSymbol),
+            model: OpenAI::Audio::TranscriptionCreateParams::Model::Variants,
             chunking_strategy:
               T.nilable(
                 T.any(
@@ -31,10 +31,7 @@ module OpenAI
             stream: T.noreturn,
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(
-            T.any(
-              OpenAI::Audio::Transcription,
-              OpenAI::Audio::TranscriptionVerbose
-            )
+            OpenAI::Models::Audio::TranscriptionCreateResponse::Variants
           )
         end
         def create(
@@ -95,7 +92,7 @@ module OpenAI
         sig do
           params(
             file: T.any(Pathname, StringIO, IO, OpenAI::FilePart),
-            model: T.any(String, OpenAI::AudioModel::OrSymbol),
+            model: OpenAI::Audio::TranscriptionCreateParams::Model::Variants,
             chunking_strategy:
               T.nilable(
                 T.any(
@@ -116,10 +113,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(
             OpenAI::Internal::Stream[
-              T.any(
-                OpenAI::Audio::TranscriptionTextDeltaEvent,
-                OpenAI::Audio::TranscriptionTextDoneEvent
-              )
+              OpenAI::Audio::TranscriptionStreamEvent::Variants
             ]
           )
         end

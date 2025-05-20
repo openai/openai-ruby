@@ -19,11 +19,7 @@ module OpenAI
       # Configuration of data sources used in runs of the evaluation.
       sig do
         returns(
-          T.any(
-            OpenAI::EvalCustomDataSourceConfig,
-            OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs,
-            OpenAI::EvalStoredCompletionsDataSourceConfig
-          )
+          OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Variants
         )
       end
       attr_accessor :data_source_config
@@ -49,13 +45,7 @@ module OpenAI
       sig do
         returns(
           T::Array[
-            T.any(
-              OpenAI::Graders::LabelModelGrader,
-              OpenAI::Graders::StringCheckGrader,
-              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity,
-              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython,
-              OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel
-            )
+            OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Variants
           ]
         )
       end
@@ -121,23 +111,13 @@ module OpenAI
             id: String,
             created_at: Integer,
             data_source_config:
-              T.any(
-                OpenAI::EvalCustomDataSourceConfig,
-                OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Logs,
-                OpenAI::EvalStoredCompletionsDataSourceConfig
-              ),
+              OpenAI::Models::EvalRetrieveResponse::DataSourceConfig::Variants,
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: String,
             object: Symbol,
             testing_criteria:
               T::Array[
-                T.any(
-                  OpenAI::Graders::LabelModelGrader,
-                  OpenAI::Graders::StringCheckGrader,
-                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderTextSimilarity,
-                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderPython,
-                  OpenAI::Models::EvalRetrieveResponse::TestingCriterion::EvalGraderScoreModel
-                )
+                OpenAI::Models::EvalRetrieveResponse::TestingCriterion::Variants
               ]
           }
         )

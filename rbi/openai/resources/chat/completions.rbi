@@ -39,7 +39,7 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionFunctionMessageParam::OrHash
                 )
               ],
-            model: T.any(String, OpenAI::ChatModel::OrSymbol),
+            model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
             audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash),
             frequency_penalty: T.nilable(Float),
             function_call:
@@ -77,7 +77,8 @@ module OpenAI
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
               ),
-            stop: T.nilable(T.any(String, T::Array[String])),
+            stop:
+              T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
             store: T.nilable(T::Boolean),
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
@@ -325,7 +326,7 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionFunctionMessageParam::OrHash
                 )
               ],
-            model: T.any(String, OpenAI::ChatModel::OrSymbol),
+            model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
             audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash),
             frequency_penalty: T.nilable(Float),
             function_call:
@@ -363,7 +364,8 @@ module OpenAI
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
               ),
-            stop: T.nilable(T.any(String, T::Array[String])),
+            stop:
+              T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
             store: T.nilable(T::Boolean),
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),

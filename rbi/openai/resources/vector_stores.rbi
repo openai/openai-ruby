@@ -140,7 +140,7 @@ module OpenAI
       sig do
         params(
           vector_store_id: String,
-          query: T.any(String, T::Array[String]),
+          query: OpenAI::VectorStoreSearchParams::Query::Variants,
           filters:
             T.any(
               OpenAI::ComparisonFilter::OrHash,

@@ -14,47 +14,113 @@ module OpenAI
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
-        sig { returns(T.nilable(T.any(Symbol, Integer))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::ReinforcementHyperparameters::BatchSize::Variants
+            )
+          )
+        end
         attr_reader :batch_size
 
-        sig { params(batch_size: T.any(Symbol, Integer)).void }
+        sig do
+          params(
+            batch_size:
+              OpenAI::FineTuning::ReinforcementHyperparameters::BatchSize::Variants
+          ).void
+        end
         attr_writer :batch_size
 
         # Multiplier on amount of compute used for exploring search space during training.
-        sig { returns(T.nilable(T.any(Symbol, Float))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier::Variants
+            )
+          )
+        end
         attr_reader :compute_multiplier
 
-        sig { params(compute_multiplier: T.any(Symbol, Float)).void }
+        sig do
+          params(
+            compute_multiplier:
+              OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier::Variants
+          ).void
+        end
         attr_writer :compute_multiplier
 
         # The number of training steps between evaluation runs.
-        sig { returns(T.nilable(T.any(Symbol, Integer))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::ReinforcementHyperparameters::EvalInterval::Variants
+            )
+          )
+        end
         attr_reader :eval_interval
 
-        sig { params(eval_interval: T.any(Symbol, Integer)).void }
+        sig do
+          params(
+            eval_interval:
+              OpenAI::FineTuning::ReinforcementHyperparameters::EvalInterval::Variants
+          ).void
+        end
         attr_writer :eval_interval
 
         # Number of evaluation samples to generate per training step.
-        sig { returns(T.nilable(T.any(Symbol, Integer))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::ReinforcementHyperparameters::EvalSamples::Variants
+            )
+          )
+        end
         attr_reader :eval_samples
 
-        sig { params(eval_samples: T.any(Symbol, Integer)).void }
+        sig do
+          params(
+            eval_samples:
+              OpenAI::FineTuning::ReinforcementHyperparameters::EvalSamples::Variants
+          ).void
+        end
         attr_writer :eval_samples
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
         # avoid overfitting.
-        sig { returns(T.nilable(T.any(Symbol, Float))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier::Variants
+            )
+          )
+        end
         attr_reader :learning_rate_multiplier
 
-        sig { params(learning_rate_multiplier: T.any(Symbol, Float)).void }
+        sig do
+          params(
+            learning_rate_multiplier:
+              OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier::Variants
+          ).void
+        end
         attr_writer :learning_rate_multiplier
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
         # through the training dataset.
-        sig { returns(T.nilable(T.any(Symbol, Integer))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::ReinforcementHyperparameters::NEpochs::Variants
+            )
+          )
+        end
         attr_reader :n_epochs
 
-        sig { params(n_epochs: T.any(Symbol, Integer)).void }
+        sig do
+          params(
+            n_epochs:
+              OpenAI::FineTuning::ReinforcementHyperparameters::NEpochs::Variants
+          ).void
+        end
         attr_writer :n_epochs
 
         # Level of reasoning effort.
@@ -78,12 +144,18 @@ module OpenAI
         # The hyperparameters used for the reinforcement fine-tuning job.
         sig do
           params(
-            batch_size: T.any(Symbol, Integer),
-            compute_multiplier: T.any(Symbol, Float),
-            eval_interval: T.any(Symbol, Integer),
-            eval_samples: T.any(Symbol, Integer),
-            learning_rate_multiplier: T.any(Symbol, Float),
-            n_epochs: T.any(Symbol, Integer),
+            batch_size:
+              OpenAI::FineTuning::ReinforcementHyperparameters::BatchSize::Variants,
+            compute_multiplier:
+              OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier::Variants,
+            eval_interval:
+              OpenAI::FineTuning::ReinforcementHyperparameters::EvalInterval::Variants,
+            eval_samples:
+              OpenAI::FineTuning::ReinforcementHyperparameters::EvalSamples::Variants,
+            learning_rate_multiplier:
+              OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier::Variants,
+            n_epochs:
+              OpenAI::FineTuning::ReinforcementHyperparameters::NEpochs::Variants,
             reasoning_effort:
               OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
           ).returns(T.attached_class)
@@ -112,12 +184,18 @@ module OpenAI
         sig do
           override.returns(
             {
-              batch_size: T.any(Symbol, Integer),
-              compute_multiplier: T.any(Symbol, Float),
-              eval_interval: T.any(Symbol, Integer),
-              eval_samples: T.any(Symbol, Integer),
-              learning_rate_multiplier: T.any(Symbol, Float),
-              n_epochs: T.any(Symbol, Integer),
+              batch_size:
+                OpenAI::FineTuning::ReinforcementHyperparameters::BatchSize::Variants,
+              compute_multiplier:
+                OpenAI::FineTuning::ReinforcementHyperparameters::ComputeMultiplier::Variants,
+              eval_interval:
+                OpenAI::FineTuning::ReinforcementHyperparameters::EvalInterval::Variants,
+              eval_samples:
+                OpenAI::FineTuning::ReinforcementHyperparameters::EvalSamples::Variants,
+              learning_rate_multiplier:
+                OpenAI::FineTuning::ReinforcementHyperparameters::LearningRateMultiplier::Variants,
+              n_epochs:
+                OpenAI::FineTuning::ReinforcementHyperparameters::NEpochs::Variants,
               reasoning_effort:
                 OpenAI::FineTuning::ReinforcementHyperparameters::ReasoningEffort::OrSymbol
             }

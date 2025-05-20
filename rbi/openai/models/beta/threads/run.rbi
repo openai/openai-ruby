@@ -143,14 +143,7 @@ module OpenAI
           # max context length.
           sig do
             returns(
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText,
-                  OpenAI::ResponseFormatJSONObject,
-                  OpenAI::ResponseFormatJSONSchema
-                )
-              )
+              T.nilable(OpenAI::Beta::AssistantResponseFormatOption::Variants)
             )
           end
           attr_accessor :response_format
@@ -179,12 +172,7 @@ module OpenAI
           # call that tool.
           sig do
             returns(
-              T.nilable(
-                T.any(
-                  OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
-                  OpenAI::Beta::AssistantToolChoice
-                )
-              )
+              T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants)
             )
           end
           attr_accessor :tool_choice
@@ -192,17 +180,7 @@ module OpenAI
           # The list of tools that the
           # [assistant](https://platform.openai.com/docs/api-reference/assistants) used for
           # this run.
-          sig do
-            returns(
-              T::Array[
-                T.any(
-                  OpenAI::Beta::CodeInterpreterTool,
-                  OpenAI::Beta::FileSearchTool,
-                  OpenAI::Beta::FunctionTool
-                )
-              ]
-            )
-          end
+          sig { returns(T::Array[OpenAI::Beta::AssistantTool::Variants]) }
           attr_accessor :tools
 
           # Controls for how a thread will be truncated prior to the run. Use this to
@@ -435,31 +413,14 @@ module OpenAI
                   T.nilable(OpenAI::Beta::Threads::Run::RequiredAction),
                 response_format:
                   T.nilable(
-                    T.any(
-                      Symbol,
-                      OpenAI::ResponseFormatText,
-                      OpenAI::ResponseFormatJSONObject,
-                      OpenAI::ResponseFormatJSONSchema
-                    )
+                    OpenAI::Beta::AssistantResponseFormatOption::Variants
                   ),
                 started_at: T.nilable(Integer),
                 status: OpenAI::Beta::Threads::RunStatus::TaggedSymbol,
                 thread_id: String,
                 tool_choice:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Beta::AssistantToolChoiceOption::Auto::TaggedSymbol,
-                      OpenAI::Beta::AssistantToolChoice
-                    )
-                  ),
-                tools:
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::CodeInterpreterTool,
-                      OpenAI::Beta::FileSearchTool,
-                      OpenAI::Beta::FunctionTool
-                    )
-                  ],
+                  T.nilable(OpenAI::Beta::AssistantToolChoiceOption::Variants),
+                tools: T::Array[OpenAI::Beta::AssistantTool::Variants],
                 truncation_strategy:
                   T.nilable(OpenAI::Beta::Threads::Run::TruncationStrategy),
                 usage: T.nilable(OpenAI::Beta::Threads::Run::Usage),

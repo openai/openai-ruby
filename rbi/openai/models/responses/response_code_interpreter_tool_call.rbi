@@ -24,10 +24,7 @@ module OpenAI
         sig do
           returns(
             T::Array[
-              T.any(
-                OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files
-              )
+              OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Variants
             ]
           )
         end
@@ -83,10 +80,7 @@ module OpenAI
               code: String,
               results:
                 T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Logs,
-                    OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Files
-                  )
+                  OpenAI::Responses::ResponseCodeInterpreterToolCall::Result::Variants
                 ],
               status:
                 OpenAI::Responses::ResponseCodeInterpreterToolCall::Status::TaggedSymbol,

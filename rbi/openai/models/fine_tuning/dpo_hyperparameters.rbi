@@ -14,43 +14,83 @@ module OpenAI
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
-        sig { returns(T.nilable(T.any(Symbol, Integer))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::DpoHyperparameters::BatchSize::Variants
+            )
+          )
+        end
         attr_reader :batch_size
 
-        sig { params(batch_size: T.any(Symbol, Integer)).void }
+        sig do
+          params(
+            batch_size:
+              OpenAI::FineTuning::DpoHyperparameters::BatchSize::Variants
+          ).void
+        end
         attr_writer :batch_size
 
         # The beta value for the DPO method. A higher beta value will increase the weight
         # of the penalty between the policy and reference model.
-        sig { returns(T.nilable(T.any(Symbol, Float))) }
+        sig do
+          returns(
+            T.nilable(OpenAI::FineTuning::DpoHyperparameters::Beta::Variants)
+          )
+        end
         attr_reader :beta
 
-        sig { params(beta: T.any(Symbol, Float)).void }
+        sig do
+          params(
+            beta: OpenAI::FineTuning::DpoHyperparameters::Beta::Variants
+          ).void
+        end
         attr_writer :beta
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
         # avoid overfitting.
-        sig { returns(T.nilable(T.any(Symbol, Float))) }
+        sig do
+          returns(
+            T.nilable(
+              OpenAI::FineTuning::DpoHyperparameters::LearningRateMultiplier::Variants
+            )
+          )
+        end
         attr_reader :learning_rate_multiplier
 
-        sig { params(learning_rate_multiplier: T.any(Symbol, Float)).void }
+        sig do
+          params(
+            learning_rate_multiplier:
+              OpenAI::FineTuning::DpoHyperparameters::LearningRateMultiplier::Variants
+          ).void
+        end
         attr_writer :learning_rate_multiplier
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
         # through the training dataset.
-        sig { returns(T.nilable(T.any(Symbol, Integer))) }
+        sig do
+          returns(
+            T.nilable(OpenAI::FineTuning::DpoHyperparameters::NEpochs::Variants)
+          )
+        end
         attr_reader :n_epochs
 
-        sig { params(n_epochs: T.any(Symbol, Integer)).void }
+        sig do
+          params(
+            n_epochs: OpenAI::FineTuning::DpoHyperparameters::NEpochs::Variants
+          ).void
+        end
         attr_writer :n_epochs
 
         # The hyperparameters used for the DPO fine-tuning job.
         sig do
           params(
-            batch_size: T.any(Symbol, Integer),
-            beta: T.any(Symbol, Float),
-            learning_rate_multiplier: T.any(Symbol, Float),
-            n_epochs: T.any(Symbol, Integer)
+            batch_size:
+              OpenAI::FineTuning::DpoHyperparameters::BatchSize::Variants,
+            beta: OpenAI::FineTuning::DpoHyperparameters::Beta::Variants,
+            learning_rate_multiplier:
+              OpenAI::FineTuning::DpoHyperparameters::LearningRateMultiplier::Variants,
+            n_epochs: OpenAI::FineTuning::DpoHyperparameters::NEpochs::Variants
           ).returns(T.attached_class)
         end
         def self.new(
@@ -72,10 +112,13 @@ module OpenAI
         sig do
           override.returns(
             {
-              batch_size: T.any(Symbol, Integer),
-              beta: T.any(Symbol, Float),
-              learning_rate_multiplier: T.any(Symbol, Float),
-              n_epochs: T.any(Symbol, Integer)
+              batch_size:
+                OpenAI::FineTuning::DpoHyperparameters::BatchSize::Variants,
+              beta: OpenAI::FineTuning::DpoHyperparameters::Beta::Variants,
+              learning_rate_multiplier:
+                OpenAI::FineTuning::DpoHyperparameters::LearningRateMultiplier::Variants,
+              n_epochs:
+                OpenAI::FineTuning::DpoHyperparameters::NEpochs::Variants
             }
           )
         end

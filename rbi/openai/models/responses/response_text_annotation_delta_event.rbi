@@ -15,11 +15,7 @@ module OpenAI
         # A citation to a file.
         sig do
           returns(
-            T.any(
-              OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-              OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
-              OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
-            )
+            OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::Variants
           )
         end
         attr_accessor :annotation
@@ -80,11 +76,7 @@ module OpenAI
           override.returns(
             {
               annotation:
-                T.any(
-                  OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FileCitation,
-                  OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::URLCitation,
-                  OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::FilePath
-                ),
+                OpenAI::Responses::ResponseTextAnnotationDeltaEvent::Annotation::Variants,
               annotation_index: Integer,
               content_index: Integer,
               item_id: String,

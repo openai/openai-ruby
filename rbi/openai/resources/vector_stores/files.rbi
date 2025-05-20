@@ -12,7 +12,12 @@ module OpenAI
             vector_store_id: String,
             file_id: String,
             attributes:
-              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              T.nilable(
+                T::Hash[
+                  Symbol,
+                  OpenAI::VectorStores::FileCreateParams::Attribute::Variants
+                ]
+              ),
             chunking_strategy:
               T.any(
                 OpenAI::AutoFileChunkingStrategyParam::OrHash,
@@ -64,7 +69,12 @@ module OpenAI
             file_id: String,
             vector_store_id: String,
             attributes:
-              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+              T.nilable(
+                T::Hash[
+                  Symbol,
+                  OpenAI::VectorStores::FileUpdateParams::Attribute::Variants
+                ]
+              ),
             request_options: OpenAI::RequestOptions::OrHash
           ).returns(OpenAI::VectorStores::VectorStoreFile)
         end

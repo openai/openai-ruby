@@ -25,26 +25,7 @@ module OpenAI
         # - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         # - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         sig do
-          returns(
-            T.any(
-              String,
-              T::Array[
-                T.any(
-                  OpenAI::Responses::EasyInputMessage,
-                  OpenAI::Responses::ResponseInputItem::Message,
-                  OpenAI::Responses::ResponseOutputMessage,
-                  OpenAI::Responses::ResponseFileSearchToolCall,
-                  OpenAI::Responses::ResponseComputerToolCall,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-                  OpenAI::Responses::ResponseFunctionWebSearch,
-                  OpenAI::Responses::ResponseFunctionToolCall,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-                  OpenAI::Responses::ResponseReasoningItem,
-                  OpenAI::Responses::ResponseInputItem::ItemReference
-                )
-              ]
-            )
-          )
+          returns(OpenAI::Responses::ResponseCreateParams::Input::Variants)
         end
         attr_accessor :input
 
@@ -53,15 +34,7 @@ module OpenAI
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
-        sig do
-          returns(
-            T.any(
-              String,
-              OpenAI::ChatModel::OrSymbol,
-              OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-            )
-          )
-        end
+        sig { returns(OpenAI::ResponsesModel::Variants) }
         attr_accessor :model
 
         # Specify additional output data to include in the model response. Currently
@@ -284,31 +257,8 @@ module OpenAI
 
         sig do
           params(
-            input:
-              T.any(
-                String,
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::EasyInputMessage::OrHash,
-                    OpenAI::Responses::ResponseInputItem::Message::OrHash,
-                    OpenAI::Responses::ResponseOutputMessage::OrHash,
-                    OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                    OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput::OrHash,
-                    OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                    OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::OrHash,
-                    OpenAI::Responses::ResponseReasoningItem::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ItemReference::OrHash
-                  )
-                ]
-              ),
-            model:
-              T.any(
-                String,
-                OpenAI::ChatModel::OrSymbol,
-                OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-              ),
+            input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
+            model: OpenAI::ResponsesModel::Variants,
             include:
               T.nilable(
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -485,31 +435,8 @@ module OpenAI
         sig do
           override.returns(
             {
-              input:
-                T.any(
-                  String,
-                  T::Array[
-                    T.any(
-                      OpenAI::Responses::EasyInputMessage,
-                      OpenAI::Responses::ResponseInputItem::Message,
-                      OpenAI::Responses::ResponseOutputMessage,
-                      OpenAI::Responses::ResponseFileSearchToolCall,
-                      OpenAI::Responses::ResponseComputerToolCall,
-                      OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-                      OpenAI::Responses::ResponseFunctionWebSearch,
-                      OpenAI::Responses::ResponseFunctionToolCall,
-                      OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-                      OpenAI::Responses::ResponseReasoningItem,
-                      OpenAI::Responses::ResponseInputItem::ItemReference
-                    )
-                  ]
-                ),
-              model:
-                T.any(
-                  String,
-                  OpenAI::ChatModel::OrSymbol,
-                  OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
-                ),
+              input: OpenAI::Responses::ResponseCreateParams::Input::Variants,
+              model: OpenAI::ResponsesModel::Variants,
               include:
                 T.nilable(
                   T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -571,21 +498,7 @@ module OpenAI
             T.type_alias do
               T.any(
                 String,
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::EasyInputMessage,
-                    OpenAI::Responses::ResponseInputItem::Message,
-                    OpenAI::Responses::ResponseOutputMessage,
-                    OpenAI::Responses::ResponseFileSearchToolCall,
-                    OpenAI::Responses::ResponseComputerToolCall,
-                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-                    OpenAI::Responses::ResponseFunctionWebSearch,
-                    OpenAI::Responses::ResponseFunctionToolCall,
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-                    OpenAI::Responses::ResponseReasoningItem,
-                    OpenAI::Responses::ResponseInputItem::ItemReference
-                  )
-                ]
+                T::Array[OpenAI::Responses::ResponseInputItem::Variants]
               )
             end
 

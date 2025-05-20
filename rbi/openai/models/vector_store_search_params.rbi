@@ -12,7 +12,7 @@ module OpenAI
         end
 
       # A query string for a search
-      sig { returns(T.any(String, T::Array[String])) }
+      sig { returns(OpenAI::VectorStoreSearchParams::Query::Variants) }
       attr_accessor :query
 
       # A filter to apply based on file attributes.
@@ -65,7 +65,7 @@ module OpenAI
 
       sig do
         params(
-          query: T.any(String, T::Array[String]),
+          query: OpenAI::VectorStoreSearchParams::Query::Variants,
           filters:
             T.any(
               OpenAI::ComparisonFilter::OrHash,
@@ -97,7 +97,7 @@ module OpenAI
       sig do
         override.returns(
           {
-            query: T.any(String, T::Array[String]),
+            query: OpenAI::VectorStoreSearchParams::Query::Variants,
             filters: T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter),
             max_num_results: Integer,
             ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,

@@ -40,23 +40,14 @@ module OpenAI
         # them.
         sig do
           returns(
-            T.nilable(
-              T.any(
-                String,
-                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
-              )
-            )
+            T.nilable(OpenAI::Beta::AssistantUpdateParams::Model::Variants)
           )
         end
         attr_reader :model
 
         sig do
           params(
-            model:
-              T.any(
-                String,
-                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
-              )
+            model: OpenAI::Beta::AssistantUpdateParams::Model::Variants
           ).void
         end
         attr_writer :model
@@ -178,11 +169,7 @@ module OpenAI
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.any(
-                String,
-                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
-              ),
+            model: OpenAI::Beta::AssistantUpdateParams::Model::Variants,
             name: T.nilable(String),
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             response_format:
@@ -289,11 +276,7 @@ module OpenAI
               description: T.nilable(String),
               instructions: T.nilable(String),
               metadata: T.nilable(T::Hash[Symbol, String]),
-              model:
-                T.any(
-                  String,
-                  OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
-                ),
+              model: OpenAI::Beta::AssistantUpdateParams::Model::Variants,
               name: T.nilable(String),
               reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
               response_format:

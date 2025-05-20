@@ -16,9 +16,7 @@ module OpenAI
       # see all of your available models, or see our
       # [Model overview](https://platform.openai.com/docs/models) for descriptions of
       # them.
-      sig do
-        returns(T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol))
-      end
+      sig { returns(OpenAI::CompletionCreateParams::Model::Variants) }
       attr_accessor :model
 
       # The prompt(s) to generate completions for, encoded as a string, array of
@@ -28,16 +26,7 @@ module OpenAI
       # training, so if a prompt is not specified the model will generate as if from the
       # beginning of a new document.
       sig do
-        returns(
-          T.nilable(
-            T.any(
-              String,
-              T::Array[String],
-              T::Array[Integer],
-              T::Array[T::Array[Integer]]
-            )
-          )
-        )
+        returns(T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants))
       end
       attr_accessor :prompt
 
@@ -128,7 +117,7 @@ module OpenAI
       #
       # Up to 4 sequences where the API will stop generating further tokens. The
       # returned text will not contain the stop sequence.
-      sig { returns(T.nilable(T.any(String, T::Array[String]))) }
+      sig { returns(T.nilable(OpenAI::CompletionCreateParams::Stop::Variants)) }
       attr_accessor :stop
 
       # Options for streaming response. Only set this when you set `stream: true`.
@@ -176,16 +165,8 @@ module OpenAI
 
       sig do
         params(
-          model: T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
-          prompt:
-            T.nilable(
-              T.any(
-                String,
-                T::Array[String],
-                T::Array[Integer],
-                T::Array[T::Array[Integer]]
-              )
-            ),
+          model: OpenAI::CompletionCreateParams::Model::Variants,
+          prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
           best_of: T.nilable(Integer),
           echo: T.nilable(T::Boolean),
           frequency_penalty: T.nilable(Float),
@@ -195,7 +176,7 @@ module OpenAI
           n: T.nilable(Integer),
           presence_penalty: T.nilable(Float),
           seed: T.nilable(Integer),
-          stop: T.nilable(T.any(String, T::Array[String])),
+          stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
           stream_options:
             T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
           suffix: T.nilable(String),
@@ -318,17 +299,8 @@ module OpenAI
       sig do
         override.returns(
           {
-            model:
-              T.any(String, OpenAI::CompletionCreateParams::Model::OrSymbol),
-            prompt:
-              T.nilable(
-                T.any(
-                  String,
-                  T::Array[String],
-                  T::Array[Integer],
-                  T::Array[T::Array[Integer]]
-                )
-              ),
+            model: OpenAI::CompletionCreateParams::Model::Variants,
+            prompt: T.nilable(OpenAI::CompletionCreateParams::Prompt::Variants),
             best_of: T.nilable(Integer),
             echo: T.nilable(T::Boolean),
             frequency_penalty: T.nilable(Float),
@@ -338,7 +310,7 @@ module OpenAI
             n: T.nilable(Integer),
             presence_penalty: T.nilable(Float),
             seed: T.nilable(Integer),
-            stop: T.nilable(T.any(String, T::Array[String])),
+            stop: T.nilable(OpenAI::CompletionCreateParams::Stop::Variants),
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),
             suffix: T.nilable(String),

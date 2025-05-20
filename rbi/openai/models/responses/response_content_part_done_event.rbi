@@ -27,10 +27,7 @@ module OpenAI
         # The content part that is done.
         sig do
           returns(
-            T.any(
-              OpenAI::Responses::ResponseOutputText,
-              OpenAI::Responses::ResponseOutputRefusal
-            )
+            OpenAI::Responses::ResponseContentPartDoneEvent::Part::Variants
           )
         end
         attr_accessor :part
@@ -74,10 +71,7 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               part:
-                T.any(
-                  OpenAI::Responses::ResponseOutputText,
-                  OpenAI::Responses::ResponseOutputRefusal
-                ),
+                OpenAI::Responses::ResponseContentPartDoneEvent::Part::Variants,
               type: Symbol
             }
           )

@@ -36,7 +36,9 @@ module OpenAI
 
           # The reference answer for the evaluation.
           sig do
-            returns(T.any(String, T.anything, T::Array[T.anything], Float))
+            returns(
+              OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants
+            )
           end
           attr_accessor :reference_answer
 
@@ -52,7 +54,7 @@ module OpenAI
                 ),
               model_sample: String,
               reference_answer:
-                T.any(String, T.anything, T::Array[T.anything], Float),
+                OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants,
               request_options: OpenAI::RequestOptions::OrHash
             ).returns(T.attached_class)
           end
@@ -80,7 +82,7 @@ module OpenAI
                   ),
                 model_sample: String,
                 reference_answer:
-                  T.any(String, T.anything, T::Array[T.anything], Float),
+                  OpenAI::FineTuning::Alpha::GraderRunParams::ReferenceAnswer::Variants,
                 request_options: OpenAI::RequestOptions
               }
             )

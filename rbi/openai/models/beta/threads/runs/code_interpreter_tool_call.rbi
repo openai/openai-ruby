@@ -91,10 +91,7 @@ module OpenAI
               sig do
                 returns(
                   T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                    )
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Variants
                   ]
                 )
               end
@@ -129,10 +126,7 @@ module OpenAI
                     input: String,
                     outputs:
                       T::Array[
-                        T.any(
-                          OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Logs,
-                          OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image
-                        )
+                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Variants
                       ]
                   }
                 )

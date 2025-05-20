@@ -163,7 +163,12 @@ module OpenAI
           # characters, booleans, or numbers.
           sig do
             returns(
-              T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)])
+              T.nilable(
+                T::Hash[
+                  Symbol,
+                  OpenAI::Responses::ResponseFileSearchToolCall::Result::Attribute::Variants
+                ]
+              )
             )
           end
           attr_accessor :attributes
@@ -199,7 +204,12 @@ module OpenAI
           sig do
             params(
               attributes:
-                T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+                T.nilable(
+                  T::Hash[
+                    Symbol,
+                    OpenAI::Responses::ResponseFileSearchToolCall::Result::Attribute::Variants
+                  ]
+                ),
               file_id: String,
               filename: String,
               score: Float,
@@ -228,7 +238,12 @@ module OpenAI
             override.returns(
               {
                 attributes:
-                  T.nilable(T::Hash[Symbol, T.any(String, Float, T::Boolean)]),
+                  T.nilable(
+                    T::Hash[
+                      Symbol,
+                      OpenAI::Responses::ResponseFileSearchToolCall::Result::Attribute::Variants
+                    ]
+                  ),
                 file_id: String,
                 filename: String,
                 score: Float,

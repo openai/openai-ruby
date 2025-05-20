@@ -42,7 +42,7 @@ module OpenAI
         # and price points. Refer to the
         # [model guide](https://platform.openai.com/docs/models) to browse and compare
         # available models.
-        sig { returns(T.any(String, OpenAI::ChatModel::OrSymbol)) }
+        sig { returns(OpenAI::Chat::CompletionCreateParams::Model::Variants) }
         attr_accessor :model
 
         # Parameters for audio output. Required when audio output is requested with
@@ -298,7 +298,11 @@ module OpenAI
         #
         # Up to 4 sequences where the API will stop generating further tokens. The
         # returned text will not contain the stop sequence.
-        sig { returns(T.nilable(T.any(String, T::Array[String]))) }
+        sig do
+          returns(
+            T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants)
+          )
+        end
         attr_accessor :stop
 
         # Whether or not to store the output of this chat completion request for use in
@@ -423,7 +427,7 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionFunctionMessageParam::OrHash
                 )
               ],
-            model: T.any(String, OpenAI::ChatModel::OrSymbol),
+            model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
             audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam::OrHash),
             frequency_penalty: T.nilable(Float),
             function_call:
@@ -461,7 +465,8 @@ module OpenAI
               T.nilable(
                 OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
               ),
-            stop: T.nilable(T.any(String, T::Array[String])),
+            stop:
+              T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
             store: T.nilable(T::Boolean),
             stream_options:
               T.nilable(OpenAI::Chat::ChatCompletionStreamOptions::OrHash),
@@ -687,7 +692,7 @@ module OpenAI
                     OpenAI::Chat::ChatCompletionFunctionMessageParam
                   )
                 ],
-              model: T.any(String, OpenAI::ChatModel::OrSymbol),
+              model: OpenAI::Chat::CompletionCreateParams::Model::Variants,
               audio: T.nilable(OpenAI::Chat::ChatCompletionAudioParam),
               frequency_penalty: T.nilable(Float),
               function_call:
@@ -725,7 +730,8 @@ module OpenAI
                 T.nilable(
                   OpenAI::Chat::CompletionCreateParams::ServiceTier::OrSymbol
                 ),
-              stop: T.nilable(T.any(String, T::Array[String])),
+              stop:
+                T.nilable(OpenAI::Chat::CompletionCreateParams::Stop::Variants),
               store: T.nilable(T::Boolean),
               stream_options:
                 T.nilable(OpenAI::Chat::ChatCompletionStreamOptions),

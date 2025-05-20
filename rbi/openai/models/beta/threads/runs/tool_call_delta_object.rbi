@@ -24,13 +24,7 @@ module OpenAI
             sig do
               returns(
                 T.nilable(
-                  T::Array[
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
-                      OpenAI::Beta::Threads::Runs::FunctionToolCallDelta
-                    )
-                  ]
+                  T::Array[OpenAI::Beta::Threads::Runs::ToolCallDelta::Variants]
                 )
               )
             end
@@ -80,11 +74,7 @@ module OpenAI
                   type: Symbol,
                   tool_calls:
                     T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCallDelta,
-                        OpenAI::Beta::Threads::Runs::FunctionToolCallDelta
-                      )
+                      OpenAI::Beta::Threads::Runs::ToolCallDelta::Variants
                     ]
                 }
               )

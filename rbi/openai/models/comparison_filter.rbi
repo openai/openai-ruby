@@ -25,7 +25,7 @@ module OpenAI
 
       # The value to compare against the attribute key; supports string, number, or
       # boolean types.
-      sig { returns(T.any(String, Float, T::Boolean)) }
+      sig { returns(OpenAI::ComparisonFilter::Value::Variants) }
       attr_accessor :value
 
       # A filter used to compare a specified attribute key to a given value using a
@@ -34,7 +34,7 @@ module OpenAI
         params(
           key: String,
           type: OpenAI::ComparisonFilter::Type::OrSymbol,
-          value: T.any(String, Float, T::Boolean)
+          value: OpenAI::ComparisonFilter::Value::Variants
         ).returns(T.attached_class)
       end
       def self.new(
@@ -60,7 +60,7 @@ module OpenAI
           {
             key: String,
             type: OpenAI::ComparisonFilter::Type::OrSymbol,
-            value: T.any(String, Float, T::Boolean)
+            value: OpenAI::ComparisonFilter::Value::Variants
           }
         )
       end

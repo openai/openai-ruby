@@ -20,10 +20,7 @@ module OpenAI
             sig do
               returns(
                 T.nilable(
-                  T.any(
-                    OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                    OpenAI::Beta::Threads::Runs::ToolCallDeltaObject
-                  )
+                  OpenAI::Beta::Threads::Runs::RunStepDelta::StepDetails::Variants
                 )
               )
             end
@@ -60,10 +57,7 @@ module OpenAI
               override.returns(
                 {
                   step_details:
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta,
-                      OpenAI::Beta::Threads::Runs::ToolCallDeltaObject
-                    )
+                    OpenAI::Beta::Threads::Runs::RunStepDelta::StepDetails::Variants
                 }
               )
             end
