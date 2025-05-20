@@ -242,7 +242,7 @@ response = client.request(
 
 ### Concurrency & connection pooling
 
-The `OpenAI::Client` instances are threadsafe, but only are fork-safe when there are no in-flight HTTP requests.
+The `OpenAI::Client` instances are threadsafe, but are only fork-safe when there are no in-flight HTTP requests.
 
 Each instance of `OpenAI::Client` has its own HTTP connection pool with a default size of 99. As such, we recommend instantiating the client once per application in most settings.
 
@@ -252,7 +252,7 @@ Unless otherwise specified, other classes in the SDK do not have locks protectin
 
 ## Sorbet
 
-This library provides comprehensive [RBI](https://sorbet.org/docs/rbi) definitions, and has no dependency on sorbet-runtime.
+This library provides comprehensive [RBI](https://sorbet.org/docs/rbi) definitions and has no dependency on sorbet-runtime.
 
 You can provide typesafe request parameters like so:
 
@@ -301,7 +301,7 @@ openai.chat.completions.create(
   # …
 )
 
-# Literal values is also permissible:
+# Literal values are also permissible:
 openai.chat.completions.create(
   reasoning_effort: :low,
   # …
