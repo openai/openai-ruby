@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_mcp_list_tools_in_progress_event =
+        { type: :"response.mcp_list_tools.in_progress" }
+
+      class ResponseMcpListToolsInProgressEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"response.mcp_list_tools.in_progress"
+
+        def initialize: (?type: :"response.mcp_list_tools.in_progress") -> void
+      end
+    end
+  end
+end

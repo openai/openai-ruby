@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_reasoning_summary_done_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          summary_index: Integer,
+          text: String,
+          type: :"response.reasoning_summary.done"
+        }
+
+      class ResponseReasoningSummaryDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor summary_index: Integer
+
+        attr_accessor text: String
+
+        attr_accessor type: :"response.reasoning_summary.done"
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          summary_index: Integer,
+          text: String,
+          ?type: :"response.reasoning_summary.done"
+        ) -> void
+      end
+    end
+  end
+end

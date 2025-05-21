@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_image_gen_call_in_progress_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.image_generation_call.in_progress"
+        }
+
+      class ResponseImageGenCallInProgressEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.image_generation_call.in_progress"
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.image_generation_call.in_progress"
+        ) -> void
+      end
+    end
+  end
+end

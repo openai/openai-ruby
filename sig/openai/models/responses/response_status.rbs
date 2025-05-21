@@ -1,7 +1,8 @@
 module OpenAI
   module Models
     module Responses
-      type response_status = :completed | :failed | :in_progress | :incomplete
+      type response_status =
+        :completed | :failed | :in_progress | :cancelled | :queued | :incomplete
 
       module ResponseStatus
         extend OpenAI::Internal::Type::Enum
@@ -9,6 +10,8 @@ module OpenAI
         COMPLETED: :completed
         FAILED: :failed
         IN_PROGRESS: :in_progress
+        CANCELLED: :cancelled
+        QUEUED: :queued
         INCOMPLETE: :incomplete
 
         def self?.values: -> ::Array[OpenAI::Models::Responses::response_status]

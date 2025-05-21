@@ -21,7 +21,7 @@ module OpenAI
         #   - [Conversation state](https://platform.openai.com/docs/guides/conversation-state)
         #   - [Function calling](https://platform.openai.com/docs/guides/function-calling)
         #
-        #   @return [String, Array<OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ItemReference>]
+        #   @return [String, Array<OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseInputItem::LocalShellCall, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Responses::ResponseInputItem::McpListTools, OpenAI::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Responses::ResponseInputItem::McpCall, OpenAI::Responses::ResponseInputItem::ItemReference>]
         required :input, union: -> { OpenAI::Responses::ResponseCreateParams::Input }
 
         # @!attribute model
@@ -33,6 +33,13 @@ module OpenAI
         #
         #   @return [String, Symbol, OpenAI::ChatModel, OpenAI::ResponsesModel::ResponsesOnlyModel]
         required :model, union: -> { OpenAI::ResponsesModel }
+
+        # @!attribute background
+        #   Whether to run the model response in the background.
+        #   [Learn more](https://platform.openai.com/docs/guides/background).
+        #
+        #   @return [Boolean, nil]
+        optional :background, OpenAI::Internal::Type::Boolean, nil?: true
 
         # @!attribute include
         #   Specify additional output data to include in the model response. Currently
@@ -178,7 +185,7 @@ module OpenAI
         #     the model to call your own code. Learn more about
         #     [function calling](https://platform.openai.com/docs/guides/function-calling).
         #
-        #   @return [Array<OpenAI::Responses::FileSearchTool, OpenAI::Responses::FunctionTool, OpenAI::Responses::ComputerTool, OpenAI::Responses::WebSearchTool>, nil]
+        #   @return [Array<OpenAI::Responses::FunctionTool, OpenAI::Responses::FileSearchTool, OpenAI::Responses::ComputerTool, OpenAI::Responses::Tool::Mcp, OpenAI::Responses::Tool::CodeInterpreter, OpenAI::Responses::Tool::ImageGeneration, OpenAI::Responses::Tool::LocalShell, OpenAI::Responses::WebSearchTool>, nil]
         optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::Tool] }
 
         # @!attribute top_p
@@ -211,13 +218,15 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(input:, model:, include: nil, instructions: nil, max_output_tokens: nil, metadata: nil, parallel_tool_calls: nil, previous_response_id: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!method initialize(input:, model:, background: nil, include: nil, instructions: nil, max_output_tokens: nil, metadata: nil, parallel_tool_calls: nil, previous_response_id: nil, reasoning: nil, service_tier: nil, store: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Models::Responses::ResponseCreateParams} for more details.
         #
-        #   @param input [String, Array<OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ItemReference>] Text, image, or file inputs to the model, used to generate a response.
+        #   @param input [String, Array<OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseInputItem::LocalShellCall, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Responses::ResponseInputItem::McpListTools, OpenAI::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Responses::ResponseInputItem::McpCall, OpenAI::Responses::ResponseInputItem::ItemReference>] Text, image, or file inputs to the model, used to generate a response.
         #
         #   @param model [String, Symbol, OpenAI::ChatModel, OpenAI::ResponsesModel::ResponsesOnlyModel] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        #
+        #   @param background [Boolean, nil] Whether to run the model response in the background.
         #
         #   @param include [Array<Symbol, OpenAI::Responses::ResponseIncludable>, nil] Specify additional output data to include in the model response. Currently
         #
@@ -243,7 +252,7 @@ module OpenAI
         #
         #   @param tool_choice [Symbol, OpenAI::Responses::ToolChoiceOptions, OpenAI::Responses::ToolChoiceTypes, OpenAI::Responses::ToolChoiceFunction] How the model should select which tool (or tools) to use when generating
         #
-        #   @param tools [Array<OpenAI::Responses::FileSearchTool, OpenAI::Responses::FunctionTool, OpenAI::Responses::ComputerTool, OpenAI::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
+        #   @param tools [Array<OpenAI::Responses::FunctionTool, OpenAI::Responses::FileSearchTool, OpenAI::Responses::ComputerTool, OpenAI::Responses::Tool::Mcp, OpenAI::Responses::Tool::CodeInterpreter, OpenAI::Responses::Tool::ImageGeneration, OpenAI::Responses::Tool::LocalShell, OpenAI::Responses::WebSearchTool>] An array of tools the model may call while generating a response. You
         #
         #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
         #
@@ -274,7 +283,7 @@ module OpenAI
           variant -> { OpenAI::Responses::ResponseInput }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ItemReference>)]
+          #   @return [Array(String, Array<OpenAI::Responses::EasyInputMessage, OpenAI::Responses::ResponseInputItem::Message, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseInputItem::LocalShellCall, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Responses::ResponseInputItem::McpListTools, OpenAI::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Responses::ResponseInputItem::McpCall, OpenAI::Responses::ResponseInputItem::ItemReference>)]
         end
 
         # Specifies the latency tier to use for processing the request. This parameter is

@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_queued_event =
+        { response: OpenAI::Responses::Response, type: :"response.queued" }
+
+      class ResponseQueuedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor response: OpenAI::Responses::Response
+
+        attr_accessor type: :"response.queued"
+
+        def initialize: (
+          response: OpenAI::Responses::Response,
+          ?type: :"response.queued"
+        ) -> void
+      end
+    end
+  end
+end

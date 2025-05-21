@@ -13,6 +13,9 @@ module OpenAI
         #   - `file_search`
         #   - `web_search_preview`
         #   - `computer_use_preview`
+        #   - `code_interpreter`
+        #   - `mcp`
+        #   - `image_generation`
         #
         #   @return [Symbol, OpenAI::Responses::ToolChoiceTypes::Type]
         required :type, enum: -> { OpenAI::Responses::ToolChoiceTypes::Type }
@@ -34,6 +37,9 @@ module OpenAI
         # - `file_search`
         # - `web_search_preview`
         # - `computer_use_preview`
+        # - `code_interpreter`
+        # - `mcp`
+        # - `image_generation`
         #
         # @see OpenAI::Responses::ToolChoiceTypes#type
         module Type
@@ -43,6 +49,9 @@ module OpenAI
           WEB_SEARCH_PREVIEW = :web_search_preview
           COMPUTER_USE_PREVIEW = :computer_use_preview
           WEB_SEARCH_PREVIEW_2025_03_11 = :web_search_preview_2025_03_11
+          IMAGE_GENERATION = :image_generation
+          CODE_INTERPRETER = :code_interpreter
+          MCP = :mcp
 
           # @!method self.values
           #   @return [Array<Symbol>]

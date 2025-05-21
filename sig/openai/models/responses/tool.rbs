@@ -2,13 +2,358 @@ module OpenAI
   module Models
     module Responses
       type tool =
-        OpenAI::Responses::FileSearchTool
-        | OpenAI::Responses::FunctionTool
+        OpenAI::Responses::FunctionTool
+        | OpenAI::Responses::FileSearchTool
         | OpenAI::Responses::ComputerTool
+        | OpenAI::Responses::Tool::Mcp
+        | OpenAI::Responses::Tool::CodeInterpreter
+        | OpenAI::Responses::Tool::ImageGeneration
+        | OpenAI::Responses::Tool::LocalShell
         | OpenAI::Responses::WebSearchTool
 
       module Tool
         extend OpenAI::Internal::Type::Union
+
+        type mcp =
+          {
+            server_label: String,
+            server_url: String,
+            type: :mcp,
+            allowed_tools: OpenAI::Responses::Tool::Mcp::allowed_tools?,
+            headers: ::Hash[Symbol, String]?,
+            require_approval: OpenAI::Responses::Tool::Mcp::require_approval?
+          }
+
+        class Mcp < OpenAI::Internal::Type::BaseModel
+          attr_accessor server_label: String
+
+          attr_accessor server_url: String
+
+          attr_accessor type: :mcp
+
+          attr_accessor allowed_tools: OpenAI::Responses::Tool::Mcp::allowed_tools?
+
+          attr_accessor headers: ::Hash[Symbol, String]?
+
+          attr_accessor require_approval: OpenAI::Responses::Tool::Mcp::require_approval?
+
+          def initialize: (
+            server_label: String,
+            server_url: String,
+            ?allowed_tools: OpenAI::Responses::Tool::Mcp::allowed_tools?,
+            ?headers: ::Hash[Symbol, String]?,
+            ?require_approval: OpenAI::Responses::Tool::Mcp::require_approval?,
+            ?type: :mcp
+          ) -> void
+
+          type allowed_tools =
+            ::Array[String]
+            | OpenAI::Responses::Tool::Mcp::AllowedTools::McpAllowedToolsFilter
+
+          module AllowedTools
+            extend OpenAI::Internal::Type::Union
+
+            type mcp_allowed_tools_filter = { tool_names: ::Array[String] }
+
+            class McpAllowedToolsFilter < OpenAI::Internal::Type::BaseModel
+              attr_reader tool_names: ::Array[String]?
+
+              def tool_names=: (::Array[String]) -> ::Array[String]
+
+              def initialize: (?tool_names: ::Array[String]) -> void
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Responses::Tool::Mcp::allowed_tools]
+
+            StringArray: OpenAI::Internal::Type::Converter
+          end
+
+          type require_approval =
+            OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter
+            | OpenAI::Responses::Tool::Mcp::RequireApproval::mcp_tool_approval_setting
+
+          module RequireApproval
+            extend OpenAI::Internal::Type::Union
+
+            type mcp_tool_approval_filter =
+              {
+                always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
+                tool_names: ::Array[String]
+              }
+
+            class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+              attr_reader always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always?
+
+              def always=: (
+                OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always
+              ) -> OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always
+
+              attr_reader never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never?
+
+              def never=: (
+                OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+              ) -> OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+
+              attr_reader tool_names: ::Array[String]?
+
+              def tool_names=: (::Array[String]) -> ::Array[String]
+
+              def initialize: (
+                ?always: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                ?never: OpenAI::Responses::Tool::Mcp::RequireApproval::McpToolApprovalFilter::Never,
+                ?tool_names: ::Array[String]
+              ) -> void
+
+              type always = { tool_names: ::Array[String] }
+
+              class Always < OpenAI::Internal::Type::BaseModel
+                attr_reader tool_names: ::Array[String]?
+
+                def tool_names=: (::Array[String]) -> ::Array[String]
+
+                def initialize: (?tool_names: ::Array[String]) -> void
+              end
+
+              type never = { tool_names: ::Array[String] }
+
+              class Never < OpenAI::Internal::Type::BaseModel
+                attr_reader tool_names: ::Array[String]?
+
+                def tool_names=: (::Array[String]) -> ::Array[String]
+
+                def initialize: (?tool_names: ::Array[String]) -> void
+              end
+            end
+
+            type mcp_tool_approval_setting = :always | :never
+
+            module McpToolApprovalSetting
+              extend OpenAI::Internal::Type::Enum
+
+              ALWAYS: :always
+              NEVER: :never
+
+              def self?.values: -> ::Array[OpenAI::Responses::Tool::Mcp::RequireApproval::mcp_tool_approval_setting]
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Responses::Tool::Mcp::require_approval]
+          end
+        end
+
+        type code_interpreter =
+          {
+            container: OpenAI::Responses::Tool::CodeInterpreter::container,
+            type: :code_interpreter
+          }
+
+        class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+          attr_accessor container: OpenAI::Responses::Tool::CodeInterpreter::container
+
+          attr_accessor type: :code_interpreter
+
+          def initialize: (
+            container: OpenAI::Responses::Tool::CodeInterpreter::container,
+            ?type: :code_interpreter
+          ) -> void
+
+          type container =
+            String
+            | OpenAI::Responses::Tool::CodeInterpreter::Container::CodeInterpreterToolAuto
+
+          module Container
+            extend OpenAI::Internal::Type::Union
+
+            type code_interpreter_tool_auto =
+              { type: :auto, file_ids: ::Array[String] }
+
+            class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :auto
+
+              attr_reader file_ids: ::Array[String]?
+
+              def file_ids=: (::Array[String]) -> ::Array[String]
+
+              def initialize: (?file_ids: ::Array[String], ?type: :auto) -> void
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Responses::Tool::CodeInterpreter::container]
+          end
+        end
+
+        type image_generation =
+          {
+            type: :image_generation,
+            background: OpenAI::Responses::Tool::ImageGeneration::background,
+            input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
+            model: OpenAI::Responses::Tool::ImageGeneration::model,
+            moderation: OpenAI::Responses::Tool::ImageGeneration::moderation,
+            output_compression: Integer,
+            output_format: OpenAI::Responses::Tool::ImageGeneration::output_format,
+            partial_images: Integer,
+            quality: OpenAI::Responses::Tool::ImageGeneration::quality,
+            size: OpenAI::Responses::Tool::ImageGeneration::size
+          }
+
+        class ImageGeneration < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :image_generation
+
+          attr_reader background: OpenAI::Responses::Tool::ImageGeneration::background?
+
+          def background=: (
+            OpenAI::Responses::Tool::ImageGeneration::background
+          ) -> OpenAI::Responses::Tool::ImageGeneration::background
+
+          attr_reader input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask?
+
+          def input_image_mask=: (
+            OpenAI::Responses::Tool::ImageGeneration::InputImageMask
+          ) -> OpenAI::Responses::Tool::ImageGeneration::InputImageMask
+
+          attr_reader model: OpenAI::Responses::Tool::ImageGeneration::model?
+
+          def model=: (
+            OpenAI::Responses::Tool::ImageGeneration::model
+          ) -> OpenAI::Responses::Tool::ImageGeneration::model
+
+          attr_reader moderation: OpenAI::Responses::Tool::ImageGeneration::moderation?
+
+          def moderation=: (
+            OpenAI::Responses::Tool::ImageGeneration::moderation
+          ) -> OpenAI::Responses::Tool::ImageGeneration::moderation
+
+          attr_reader output_compression: Integer?
+
+          def output_compression=: (Integer) -> Integer
+
+          attr_reader output_format: OpenAI::Responses::Tool::ImageGeneration::output_format?
+
+          def output_format=: (
+            OpenAI::Responses::Tool::ImageGeneration::output_format
+          ) -> OpenAI::Responses::Tool::ImageGeneration::output_format
+
+          attr_reader partial_images: Integer?
+
+          def partial_images=: (Integer) -> Integer
+
+          attr_reader quality: OpenAI::Responses::Tool::ImageGeneration::quality?
+
+          def quality=: (
+            OpenAI::Responses::Tool::ImageGeneration::quality
+          ) -> OpenAI::Responses::Tool::ImageGeneration::quality
+
+          attr_reader size: OpenAI::Responses::Tool::ImageGeneration::size?
+
+          def size=: (
+            OpenAI::Responses::Tool::ImageGeneration::size
+          ) -> OpenAI::Responses::Tool::ImageGeneration::size
+
+          def initialize: (
+            ?background: OpenAI::Responses::Tool::ImageGeneration::background,
+            ?input_image_mask: OpenAI::Responses::Tool::ImageGeneration::InputImageMask,
+            ?model: OpenAI::Responses::Tool::ImageGeneration::model,
+            ?moderation: OpenAI::Responses::Tool::ImageGeneration::moderation,
+            ?output_compression: Integer,
+            ?output_format: OpenAI::Responses::Tool::ImageGeneration::output_format,
+            ?partial_images: Integer,
+            ?quality: OpenAI::Responses::Tool::ImageGeneration::quality,
+            ?size: OpenAI::Responses::Tool::ImageGeneration::size,
+            ?type: :image_generation
+          ) -> void
+
+          type background = :transparent | :opaque | :auto
+
+          module Background
+            extend OpenAI::Internal::Type::Enum
+
+            TRANSPARENT: :transparent
+            OPAQUE: :opaque
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Responses::Tool::ImageGeneration::background]
+          end
+
+          type input_image_mask = { file_id: String, image_url: String }
+
+          class InputImageMask < OpenAI::Internal::Type::BaseModel
+            attr_reader file_id: String?
+
+            def file_id=: (String) -> String
+
+            attr_reader image_url: String?
+
+            def image_url=: (String) -> String
+
+            def initialize: (?file_id: String, ?image_url: String) -> void
+          end
+
+          type model = :"gpt-image-1"
+
+          module Model
+            extend OpenAI::Internal::Type::Enum
+
+            GPT_IMAGE_1: :"gpt-image-1"
+
+            def self?.values: -> ::Array[OpenAI::Responses::Tool::ImageGeneration::model]
+          end
+
+          type moderation = :auto | :low
+
+          module Moderation
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            LOW: :low
+
+            def self?.values: -> ::Array[OpenAI::Responses::Tool::ImageGeneration::moderation]
+          end
+
+          type output_format = :png | :webp | :jpeg
+
+          module OutputFormat
+            extend OpenAI::Internal::Type::Enum
+
+            PNG: :png
+            WEBP: :webp
+            JPEG: :jpeg
+
+            def self?.values: -> ::Array[OpenAI::Responses::Tool::ImageGeneration::output_format]
+          end
+
+          type quality = :low | :medium | :high | :auto
+
+          module Quality
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Responses::Tool::ImageGeneration::quality]
+          end
+
+          type size = :"1024x1024" | :"1024x1536" | :"1536x1024" | :auto
+
+          module Size
+            extend OpenAI::Internal::Type::Enum
+
+            SIZE_1024X1024: :"1024x1024"
+            SIZE_1024X1536: :"1024x1536"
+            SIZE_1536X1024: :"1536x1024"
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Responses::Tool::ImageGeneration::size]
+          end
+        end
+
+        type local_shell = { type: :local_shell }
+
+        class LocalShell < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :local_shell
+
+          def initialize: (?type: :local_shell) -> void
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::Responses::tool]
       end
