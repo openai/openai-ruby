@@ -468,6 +468,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
             seed: T.nilable(Integer),

@@ -294,7 +294,7 @@ module OpenAI
         #   @return [Array<OpenAI::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter>, nil]
         optional :tools,
                  -> {
-                   OpenAI::Internal::Type::ArrayOf[OpenAI::StructuredOutput::UnionOf[
+                   OpenAI::Internal::Type::ArrayOf[union: OpenAI::StructuredOutput::UnionOf[
                      OpenAI::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter
                    ]]
                  }

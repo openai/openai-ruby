@@ -108,7 +108,7 @@ module OpenAI
           model = nil
           tool_models = {}
           case parsed
-          in {response_format: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter => model}
+          in {response_format: OpenAI::StructuredOutput::JsonSchemaConverter => model}
             parsed.update(
               response_format: {
                 type: :json_schema,
@@ -119,12 +119,12 @@ module OpenAI
                 }
               }
             )
-          in {response_format: {type: :json_schema, json_schema: {schema: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter => model}}}
+          in {response_format: {type: :json_schema, json_schema: {schema: OpenAI::StructuredOutput::JsonSchemaConverter => model}}}
             parsed.dig(:response_format, :json_schema).store(:schema, model.to_json_schema)
           in {tools: Array => tools}
             mapped = tools.map do |tool|
               case tool
-              in OpenAI::Helpers::StructuredOutput::JsonSchemaConverter
+              in OpenAI::StructuredOutput::JsonSchemaConverter
                 name = tool.name.split("::").last
                 tool_models.store(name, tool)
                 {
@@ -135,7 +135,7 @@ module OpenAI
                     parameters: tool.to_json_schema
                   }
                 }
-              in {function: {parameters: OpenAI::Helpers::StructuredOutput::JsonSchemaConverter => params}}
+              in {function: {parameters: OpenAI::StructuredOutput::JsonSchemaConverter => params}}
                 func = tool.fetch(:function)
                 name = func[:name] ||= params.name.split("::").last
                 tool_models.store(name, params)
@@ -148,7 +148,7 @@ module OpenAI
           end
 
           unwrap = ->(raw) do
-            if model.is_a?(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter)
+            if model.is_a?(OpenAI::StructuredOutput::JsonSchemaConverter)
               raw[:choices]&.each do |choice|
                 message = choice.fetch(:message)
                 parsed = JSON.parse(message.fetch(:content), symbolize_names: true)

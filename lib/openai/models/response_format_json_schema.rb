@@ -48,7 +48,13 @@ module OpenAI
         #   to build JSON schemas [here](https://json-schema.org/).
         #
         #   @return [Hash{Symbol=>Object}, nil]
-        optional :schema, OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
+        optional :schema,
+                 union: -> {
+                   OpenAI::StructuredOutput::UnionOf[
+                     OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown],
+                     OpenAI::StructuredOutput::JsonSchemaConverter
+                   ]
+                 }
 
         # @!attribute strict
         #   Whether to enable strict schema adherence when generating the output. If set to
@@ -70,7 +76,7 @@ module OpenAI
         #
         #   @param description [String] A description of what the response format is for, used by the model to
         #
-        #   @param schema [Hash{Symbol=>Object}] The schema for the response format, described as a JSON Schema object.
+        #   @param schema [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter] The schema for the response format, described as a JSON Schema object.
         #
         #   @param strict [Boolean, nil] Whether to enable strict schema adherence when generating the output.
       end

@@ -49,9 +49,13 @@ module OpenAI
           case variants
           in [Symbol => d, Hash => vs]
             discriminator(d)
-            vs.each { variant(_1, _2) }
+            vs.each do |k, v|
+              v.is_a?(Proc) ? variant(k, v) : variant(k, -> { v })
+            end
           else
-            variants.each { variant(_1) }
+            variants.each do |v|
+              v.is_a?(Proc) ? variant(v) : variant(-> { v })
+            end
           end
         end
       end

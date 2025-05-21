@@ -29,7 +29,7 @@ class CalendarEvent < OpenAI::BaseModel
            doc: "Event location"
 end
 
-# # gets API Key from environment variable `OPENAI_API_KEY`
+# gets API Key from environment variable `OPENAI_API_KEY`
 client = OpenAI::Client.new
 
 chat_completion = client.chat.completions.create(
