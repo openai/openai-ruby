@@ -34,7 +34,13 @@ module OpenAI
                 OpenAI::Responses::ResponseFunctionToolCall::OrHash,
                 OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                 OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                OpenAI::Responses::ResponseReasoningItem::OrHash
+                OpenAI::Responses::ResponseReasoningItem::OrHash,
+                OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
+                OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash
               ),
             output_index: Integer,
             type: Symbol

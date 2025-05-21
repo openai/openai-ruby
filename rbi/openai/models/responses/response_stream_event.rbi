@@ -45,7 +45,25 @@ module OpenAI
               OpenAI::Responses::ResponseTextDoneEvent,
               OpenAI::Responses::ResponseWebSearchCallCompletedEvent,
               OpenAI::Responses::ResponseWebSearchCallInProgressEvent,
-              OpenAI::Responses::ResponseWebSearchCallSearchingEvent
+              OpenAI::Responses::ResponseWebSearchCallSearchingEvent,
+              OpenAI::Responses::ResponseImageGenCallCompletedEvent,
+              OpenAI::Responses::ResponseImageGenCallGeneratingEvent,
+              OpenAI::Responses::ResponseImageGenCallInProgressEvent,
+              OpenAI::Responses::ResponseImageGenCallPartialImageEvent,
+              OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent,
+              OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent,
+              OpenAI::Responses::ResponseMcpCallCompletedEvent,
+              OpenAI::Responses::ResponseMcpCallFailedEvent,
+              OpenAI::Responses::ResponseMcpCallInProgressEvent,
+              OpenAI::Responses::ResponseMcpListToolsCompletedEvent,
+              OpenAI::Responses::ResponseMcpListToolsFailedEvent,
+              OpenAI::Responses::ResponseMcpListToolsInProgressEvent,
+              OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent,
+              OpenAI::Responses::ResponseQueuedEvent,
+              OpenAI::Responses::ResponseReasoningDeltaEvent,
+              OpenAI::Responses::ResponseReasoningDoneEvent,
+              OpenAI::Responses::ResponseReasoningSummaryDeltaEvent,
+              OpenAI::Responses::ResponseReasoningSummaryDoneEvent
             )
           end
 

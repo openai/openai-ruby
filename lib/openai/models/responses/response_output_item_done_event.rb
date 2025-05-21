@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute item
         #   The output item that was marked done.
         #
-        #   @return [OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseReasoningItem]
+        #   @return [OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseOutputItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseOutputItem::LocalShellCall, OpenAI::Responses::ResponseOutputItem::McpCall, OpenAI::Responses::ResponseOutputItem::McpListTools, OpenAI::Responses::ResponseOutputItem::McpApprovalRequest]
         required :item, union: -> { OpenAI::Responses::ResponseOutputItem }
 
         # @!attribute output_index
@@ -28,7 +28,7 @@ module OpenAI
         #
         #   Emitted when an output item is marked done.
         #
-        #   @param item [OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseReasoningItem] The output item that was marked done.
+        #   @param item [OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseFunctionToolCall, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseReasoningItem, OpenAI::Responses::ResponseOutputItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseOutputItem::LocalShellCall, OpenAI::Responses::ResponseOutputItem::McpCall, OpenAI::Responses::ResponseOutputItem::McpListTools, OpenAI::Responses::ResponseOutputItem::McpApprovalRequest] The output item that was marked done.
         #
         #   @param output_index [Integer] The index of the output item that was marked done.
         #

@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_mcp_list_tools_completed_event =
+        { type: :"response.mcp_list_tools.completed" }
+
+      class ResponseMcpListToolsCompletedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"response.mcp_list_tools.completed"
+
+        def initialize: (?type: :"response.mcp_list_tools.completed") -> void
+      end
+    end
+  end
+end

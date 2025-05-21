@@ -126,6 +126,11 @@ module OpenAI
         sig { returns(T.nilable(Float)) }
         attr_accessor :top_p
 
+        # Whether to run the model response in the background.
+        # [Learn more](https://platform.openai.com/docs/guides/background).
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_accessor :background
+
         # An upper bound for the number of tokens that can be generated for a response,
         # including visible output tokens and
         # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
@@ -173,7 +178,7 @@ module OpenAI
         attr_accessor :service_tier
 
         # The status of the response generation. One of `completed`, `failed`,
-        # `in_progress`, or `incomplete`.
+        # `in_progress`, `cancelled`, `queued`, or `incomplete`.
         sig do
           returns(T.nilable(OpenAI::Responses::ResponseStatus::TaggedSymbol))
         end
@@ -247,7 +252,13 @@ module OpenAI
                   OpenAI::Responses::ResponseFunctionToolCall::OrHash,
                   OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                   OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash
+                  OpenAI::Responses::ResponseReasoningItem::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
+                  OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
+                  OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash
                 )
               ],
             parallel_tool_calls: T::Boolean,
@@ -261,13 +272,18 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ],
             top_p: T.nilable(Float),
+            background: T.nilable(T::Boolean),
             max_output_tokens: T.nilable(Integer),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
@@ -351,6 +367,9 @@ module OpenAI
           #
           # We generally recommend altering this or `temperature` but not both.
           top_p:,
+          # Whether to run the model response in the background.
+          # [Learn more](https://platform.openai.com/docs/guides/background).
+          background: nil,
           # An upper bound for the number of tokens that can be generated for a response,
           # including visible output tokens and
           # [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
@@ -383,7 +402,7 @@ module OpenAI
           # utilized.
           service_tier: nil,
           # The status of the response generation. One of `completed`, `failed`,
-          # `in_progress`, or `incomplete`.
+          # `in_progress`, `cancelled`, `queued`, or `incomplete`.
           status: nil,
           # Configuration options for a text response from the model. Can be plain text or
           # structured JSON data. Learn more:
@@ -429,6 +448,7 @@ module OpenAI
               tool_choice: OpenAI::Responses::Response::ToolChoice::Variants,
               tools: T::Array[OpenAI::Responses::Tool::Variants],
               top_p: T.nilable(Float),
+              background: T.nilable(T::Boolean),
               max_output_tokens: T.nilable(Integer),
               previous_response_id: T.nilable(String),
               reasoning: T.nilable(OpenAI::Reasoning),

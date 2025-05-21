@@ -7,7 +7,8 @@ module OpenAI
           code: String,
           results: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::result],
           status: OpenAI::Responses::ResponseCodeInterpreterToolCall::status,
-          type: :code_interpreter_call
+          type: :code_interpreter_call,
+          container_id: String
         }
 
       class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
@@ -21,11 +22,16 @@ module OpenAI
 
         attr_accessor type: :code_interpreter_call
 
+        attr_reader container_id: String?
+
+        def container_id=: (String) -> String
+
         def initialize: (
           id: String,
           code: String,
           results: ::Array[OpenAI::Responses::ResponseCodeInterpreterToolCall::result],
           status: OpenAI::Responses::ResponseCodeInterpreterToolCall::status,
+          ?container_id: String,
           ?type: :code_interpreter_call
         ) -> void
 

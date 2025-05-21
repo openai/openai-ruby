@@ -25,7 +25,7 @@ module OpenAI
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
-        # @return [OpenAI::Internal::CursorPage<OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem>]
+        # @return [OpenAI::Internal::CursorPage<OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Responses::ResponseItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseItem::LocalShellCall, OpenAI::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Responses::ResponseItem::McpListTools, OpenAI::Responses::ResponseItem::McpApprovalRequest, OpenAI::Responses::ResponseItem::McpApprovalResponse, OpenAI::Responses::ResponseItem::McpCall>]
         #
         # @see OpenAI::Models::Responses::InputItemListParams
         def list(response_id, params = {})

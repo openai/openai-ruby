@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_reasoning_delta_event =
+        {
+          content_index: Integer,
+          delta: top,
+          item_id: String,
+          output_index: Integer,
+          type: :"response.reasoning.delta"
+        }
+
+      class ResponseReasoningDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor delta: top
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor type: :"response.reasoning.delta"
+
+        def initialize: (
+          content_index: Integer,
+          delta: top,
+          item_id: String,
+          output_index: Integer,
+          ?type: :"response.reasoning.delta"
+        ) -> void
+      end
+    end
+  end
+end

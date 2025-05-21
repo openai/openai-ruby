@@ -45,6 +45,11 @@ module OpenAI
         end
         attr_accessor :model
 
+        # Whether to run the model response in the background.
+        # [Learn more](https://platform.openai.com/docs/guides/background).
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_accessor :background
+
         # Specify additional output data to include in the model response. Currently
         # supported values are:
         #
@@ -204,9 +209,13 @@ module OpenAI
             T.nilable(
               T::Array[
                 T.any(
-                  OpenAI::Responses::FileSearchTool,
                   OpenAI::Responses::FunctionTool,
+                  OpenAI::Responses::FileSearchTool,
                   OpenAI::Responses::ComputerTool,
+                  OpenAI::Responses::Tool::Mcp,
+                  OpenAI::Responses::Tool::CodeInterpreter,
+                  OpenAI::Responses::Tool::ImageGeneration,
+                  OpenAI::Responses::Tool::LocalShell,
                   OpenAI::Responses::WebSearchTool
                 )
               ]
@@ -220,9 +229,13 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ]
@@ -272,6 +285,7 @@ module OpenAI
                 OpenAI::ChatModel::OrSymbol,
                 OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
               ),
+            background: T.nilable(T::Boolean),
             include:
               T.nilable(
                 T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -298,9 +312,13 @@ module OpenAI
             tools:
               T::Array[
                 T.any(
-                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
                   OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
                   OpenAI::Responses::WebSearchTool::OrHash
                 )
               ],
@@ -330,6 +348,9 @@ module OpenAI
           # [model guide](https://platform.openai.com/docs/models) to browse and compare
           # available models.
           model:,
+          # Whether to run the model response in the background.
+          # [Learn more](https://platform.openai.com/docs/guides/background).
+          background: nil,
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -455,6 +476,7 @@ module OpenAI
                   OpenAI::ChatModel::OrSymbol,
                   OpenAI::ResponsesModel::ResponsesOnlyModel::OrSymbol
                 ),
+              background: T.nilable(T::Boolean),
               include:
                 T.nilable(
                   T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
@@ -481,9 +503,13 @@ module OpenAI
               tools:
                 T::Array[
                   T.any(
-                    OpenAI::Responses::FileSearchTool,
                     OpenAI::Responses::FunctionTool,
+                    OpenAI::Responses::FileSearchTool,
                     OpenAI::Responses::ComputerTool,
+                    OpenAI::Responses::Tool::Mcp,
+                    OpenAI::Responses::Tool::CodeInterpreter,
+                    OpenAI::Responses::Tool::ImageGeneration,
+                    OpenAI::Responses::Tool::LocalShell,
                     OpenAI::Responses::WebSearchTool
                   )
                 ],

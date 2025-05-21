@@ -7,7 +7,7 @@ module OpenAI
         # @!attribute data
         #   A list of items used to generate this response.
         #
-        #   @return [Array<OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem>]
+        #   @return [Array<OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Responses::ResponseItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseItem::LocalShellCall, OpenAI::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Responses::ResponseItem::McpListTools, OpenAI::Responses::ResponseItem::McpApprovalRequest, OpenAI::Responses::ResponseItem::McpApprovalResponse, OpenAI::Responses::ResponseItem::McpCall>]
         required :data, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseItem] }
 
         # @!attribute first_id
@@ -37,7 +37,7 @@ module OpenAI
         # @!method initialize(data:, first_id:, has_more:, last_id:, object: :list)
         #   A list of Response items.
         #
-        #   @param data [Array<OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem>] A list of items used to generate this response.
+        #   @param data [Array<OpenAI::Responses::ResponseInputMessageItem, OpenAI::Responses::ResponseOutputMessage, OpenAI::Responses::ResponseFileSearchToolCall, OpenAI::Responses::ResponseComputerToolCall, OpenAI::Responses::ResponseComputerToolCallOutputItem, OpenAI::Responses::ResponseFunctionWebSearch, OpenAI::Responses::ResponseFunctionToolCallItem, OpenAI::Responses::ResponseFunctionToolCallOutputItem, OpenAI::Responses::ResponseItem::ImageGenerationCall, OpenAI::Responses::ResponseCodeInterpreterToolCall, OpenAI::Responses::ResponseItem::LocalShellCall, OpenAI::Responses::ResponseItem::LocalShellCallOutput, OpenAI::Responses::ResponseItem::McpListTools, OpenAI::Responses::ResponseItem::McpApprovalRequest, OpenAI::Responses::ResponseItem::McpApprovalResponse, OpenAI::Responses::ResponseItem::McpCall>] A list of items used to generate this response.
         #
         #   @param first_id [String] The ID of the first item in the list.
         #

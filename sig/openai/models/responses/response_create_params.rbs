@@ -5,6 +5,7 @@ module OpenAI
         {
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
           model: OpenAI::Models::responses_model,
+          background: bool?,
           include: ::Array[OpenAI::Models::Responses::response_includable]?,
           instructions: String?,
           max_output_tokens: Integer?,
@@ -31,6 +32,8 @@ module OpenAI
         attr_accessor input: OpenAI::Models::Responses::ResponseCreateParams::input
 
         attr_accessor model: OpenAI::Models::responses_model
+
+        attr_accessor background: bool?
 
         attr_accessor include: ::Array[OpenAI::Models::Responses::response_includable]?
 
@@ -81,6 +84,7 @@ module OpenAI
         def initialize: (
           input: OpenAI::Models::Responses::ResponseCreateParams::input,
           model: OpenAI::Models::responses_model,
+          ?background: bool?,
           ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
           ?instructions: String?,
           ?max_output_tokens: Integer?,

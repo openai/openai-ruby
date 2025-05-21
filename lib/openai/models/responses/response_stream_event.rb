@@ -138,8 +138,83 @@ module OpenAI
         variant :"response.web_search_call.searching",
                 -> { OpenAI::Responses::ResponseWebSearchCallSearchingEvent }
 
+        # Emitted when an image generation tool call has completed and the final image is available.
+        variant :"response.image_generation_call.completed",
+                -> { OpenAI::Responses::ResponseImageGenCallCompletedEvent }
+
+        # Emitted when an image generation tool call is actively generating an image (intermediate state).
+        variant :"response.image_generation_call.generating",
+                -> { OpenAI::Responses::ResponseImageGenCallGeneratingEvent }
+
+        # Emitted when an image generation tool call is in progress.
+        variant :"response.image_generation_call.in_progress",
+                -> { OpenAI::Responses::ResponseImageGenCallInProgressEvent }
+
+        # Emitted when a partial image is available during image generation streaming.
+        variant :"response.image_generation_call.partial_image",
+                -> { OpenAI::Responses::ResponseImageGenCallPartialImageEvent }
+
+        # Emitted when there is a delta (partial update) to the arguments of an MCP tool call.
+        variant :"response.mcp_call.arguments_delta",
+                -> {
+                  OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent
+                }
+
+        # Emitted when the arguments for an MCP tool call are finalized.
+        variant :"response.mcp_call.arguments_done",
+                -> {
+                  OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent
+                }
+
+        # Emitted when an MCP  tool call has completed successfully.
+        variant :"response.mcp_call.completed", -> { OpenAI::Responses::ResponseMcpCallCompletedEvent }
+
+        # Emitted when an MCP  tool call has failed.
+        variant :"response.mcp_call.failed", -> { OpenAI::Responses::ResponseMcpCallFailedEvent }
+
+        # Emitted when an MCP  tool call is in progress.
+        variant :"response.mcp_call.in_progress", -> { OpenAI::Responses::ResponseMcpCallInProgressEvent }
+
+        # Emitted when the list of available MCP tools has been successfully retrieved.
+        variant :"response.mcp_list_tools.completed",
+                -> {
+                  OpenAI::Responses::ResponseMcpListToolsCompletedEvent
+                }
+
+        # Emitted when the attempt to list available MCP tools has failed.
+        variant :"response.mcp_list_tools.failed", -> { OpenAI::Responses::ResponseMcpListToolsFailedEvent }
+
+        # Emitted when the system is in the process of retrieving the list of available MCP tools.
+        variant :"response.mcp_list_tools.in_progress",
+                -> { OpenAI::Responses::ResponseMcpListToolsInProgressEvent }
+
+        # Emitted when an annotation is added to output text content.
+        variant :"response.output_text_annotation.added",
+                -> { OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent }
+
+        # Emitted when a response is queued and waiting to be processed.
+        variant :"response.queued", -> { OpenAI::Responses::ResponseQueuedEvent }
+
+        # Emitted when there is a delta (partial update) to the reasoning content.
+        variant :"response.reasoning.delta", -> { OpenAI::Responses::ResponseReasoningDeltaEvent }
+
+        # Emitted when the reasoning content is finalized for an item.
+        variant :"response.reasoning.done", -> { OpenAI::Responses::ResponseReasoningDoneEvent }
+
+        # Emitted when there is a delta (partial update) to the reasoning summary content.
+        variant :"response.reasoning_summary.delta",
+                -> {
+                  OpenAI::Responses::ResponseReasoningSummaryDeltaEvent
+                }
+
+        # Emitted when the reasoning summary content is finalized for an item.
+        variant :"response.reasoning_summary.done",
+                -> {
+                  OpenAI::Responses::ResponseReasoningSummaryDoneEvent
+                }
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Responses::ResponseAudioDeltaEvent, OpenAI::Responses::ResponseAudioDoneEvent, OpenAI::Responses::ResponseAudioTranscriptDeltaEvent, OpenAI::Responses::ResponseAudioTranscriptDoneEvent, OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent, OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent, OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent, OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent, OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent, OpenAI::Responses::ResponseCompletedEvent, OpenAI::Responses::ResponseContentPartAddedEvent, OpenAI::Responses::ResponseContentPartDoneEvent, OpenAI::Responses::ResponseCreatedEvent, OpenAI::Responses::ResponseErrorEvent, OpenAI::Responses::ResponseFileSearchCallCompletedEvent, OpenAI::Responses::ResponseFileSearchCallInProgressEvent, OpenAI::Responses::ResponseFileSearchCallSearchingEvent, OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Responses::ResponseInProgressEvent, OpenAI::Responses::ResponseFailedEvent, OpenAI::Responses::ResponseIncompleteEvent, OpenAI::Responses::ResponseOutputItemAddedEvent, OpenAI::Responses::ResponseOutputItemDoneEvent, OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent, OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent, OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent, OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent, OpenAI::Responses::ResponseRefusalDeltaEvent, OpenAI::Responses::ResponseRefusalDoneEvent, OpenAI::Responses::ResponseTextAnnotationDeltaEvent, OpenAI::Responses::ResponseTextDeltaEvent, OpenAI::Responses::ResponseTextDoneEvent, OpenAI::Responses::ResponseWebSearchCallCompletedEvent, OpenAI::Responses::ResponseWebSearchCallInProgressEvent, OpenAI::Responses::ResponseWebSearchCallSearchingEvent)]
+        #   @return [Array(OpenAI::Responses::ResponseAudioDeltaEvent, OpenAI::Responses::ResponseAudioDoneEvent, OpenAI::Responses::ResponseAudioTranscriptDeltaEvent, OpenAI::Responses::ResponseAudioTranscriptDoneEvent, OpenAI::Responses::ResponseCodeInterpreterCallCodeDeltaEvent, OpenAI::Responses::ResponseCodeInterpreterCallCodeDoneEvent, OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent, OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent, OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent, OpenAI::Responses::ResponseCompletedEvent, OpenAI::Responses::ResponseContentPartAddedEvent, OpenAI::Responses::ResponseContentPartDoneEvent, OpenAI::Responses::ResponseCreatedEvent, OpenAI::Responses::ResponseErrorEvent, OpenAI::Responses::ResponseFileSearchCallCompletedEvent, OpenAI::Responses::ResponseFileSearchCallInProgressEvent, OpenAI::Responses::ResponseFileSearchCallSearchingEvent, OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent, OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent, OpenAI::Responses::ResponseInProgressEvent, OpenAI::Responses::ResponseFailedEvent, OpenAI::Responses::ResponseIncompleteEvent, OpenAI::Responses::ResponseOutputItemAddedEvent, OpenAI::Responses::ResponseOutputItemDoneEvent, OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent, OpenAI::Responses::ResponseReasoningSummaryPartDoneEvent, OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent, OpenAI::Responses::ResponseReasoningSummaryTextDoneEvent, OpenAI::Responses::ResponseRefusalDeltaEvent, OpenAI::Responses::ResponseRefusalDoneEvent, OpenAI::Responses::ResponseTextAnnotationDeltaEvent, OpenAI::Responses::ResponseTextDeltaEvent, OpenAI::Responses::ResponseTextDoneEvent, OpenAI::Responses::ResponseWebSearchCallCompletedEvent, OpenAI::Responses::ResponseWebSearchCallInProgressEvent, OpenAI::Responses::ResponseWebSearchCallSearchingEvent, OpenAI::Responses::ResponseImageGenCallCompletedEvent, OpenAI::Responses::ResponseImageGenCallGeneratingEvent, OpenAI::Responses::ResponseImageGenCallInProgressEvent, OpenAI::Responses::ResponseImageGenCallPartialImageEvent, OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent, OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent, OpenAI::Responses::ResponseMcpCallCompletedEvent, OpenAI::Responses::ResponseMcpCallFailedEvent, OpenAI::Responses::ResponseMcpCallInProgressEvent, OpenAI::Responses::ResponseMcpListToolsCompletedEvent, OpenAI::Responses::ResponseMcpListToolsFailedEvent, OpenAI::Responses::ResponseMcpListToolsInProgressEvent, OpenAI::Responses::ResponseOutputTextAnnotationAddedEvent, OpenAI::Responses::ResponseQueuedEvent, OpenAI::Responses::ResponseReasoningDeltaEvent, OpenAI::Responses::ResponseReasoningDoneEvent, OpenAI::Responses::ResponseReasoningSummaryDeltaEvent, OpenAI::Responses::ResponseReasoningSummaryDoneEvent)]
       end
     end
   end

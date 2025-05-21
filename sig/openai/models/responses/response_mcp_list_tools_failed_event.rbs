@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_mcp_list_tools_failed_event =
+        { type: :"response.mcp_list_tools.failed" }
+
+      class ResponseMcpListToolsFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"response.mcp_list_tools.failed"
+
+        def initialize: (?type: :"response.mcp_list_tools.failed") -> void
+      end
+    end
+  end
+end

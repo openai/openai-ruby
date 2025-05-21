@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_mcp_call_completed_event =
+        { type: :"response.mcp_call.completed" }
+
+      class ResponseMcpCallCompletedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"response.mcp_call.completed"
+
+        def initialize: (?type: :"response.mcp_call.completed") -> void
+      end
+    end
+  end
+end

@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_mcp_call_failed_event =
+        { type: :"response.mcp_call.failed" }
+
+      class ResponseMcpCallFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :"response.mcp_call.failed"
+
+        def initialize: (?type: :"response.mcp_call.failed") -> void
+      end
+    end
+  end
+end
