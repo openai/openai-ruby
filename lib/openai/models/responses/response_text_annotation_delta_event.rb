@@ -34,13 +34,19 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always `response.output_text.annotation.added`.
         #
         #   @return [Symbol, :"response.output_text.annotation.added"]
         required :type, const: :"response.output_text.annotation.added"
 
-        # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, type: :"response.output_text.annotation.added")
+        # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, sequence_number:, type: :"response.output_text.annotation.added")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Responses::ResponseTextAnnotationDeltaEvent} for more details.
         #
@@ -55,6 +61,8 @@ module OpenAI
         #   @param item_id [String] The ID of the output item that the text annotation was added to.
         #
         #   @param output_index [Integer] The index of the output item that the text annotation was added to.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.output_text.annotation.added"] The type of the event. Always `response.output_text.annotation.added`.
 

@@ -2,15 +2,22 @@ module OpenAI
   module Models
     module Responses
       type response_created_event =
-        { response: OpenAI::Responses::Response, type: :"response.created" }
+        {
+          response: OpenAI::Responses::Response,
+          sequence_number: Integer,
+          type: :"response.created"
+        }
 
       class ResponseCreatedEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor response: OpenAI::Responses::Response
+
+        attr_accessor sequence_number: Integer
 
         attr_accessor type: :"response.created"
 
         def initialize: (
           response: OpenAI::Responses::Response,
+          sequence_number: Integer,
           ?type: :"response.created"
         ) -> void
       end

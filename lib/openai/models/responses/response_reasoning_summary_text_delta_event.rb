@@ -22,6 +22,12 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute summary_index
         #   The index of the summary part within the reasoning summary.
         #
@@ -34,7 +40,7 @@ module OpenAI
         #   @return [Symbol, :"response.reasoning_summary_text.delta"]
         required :type, const: :"response.reasoning_summary_text.delta"
 
-        # @!method initialize(delta:, item_id:, output_index:, summary_index:, type: :"response.reasoning_summary_text.delta")
+        # @!method initialize(delta:, item_id:, output_index:, sequence_number:, summary_index:, type: :"response.reasoning_summary_text.delta")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Responses::ResponseReasoningSummaryTextDeltaEvent} for more details.
         #
@@ -45,6 +51,8 @@ module OpenAI
         #   @param item_id [String] The ID of the item this summary text delta is associated with.
         #
         #   @param output_index [Integer] The index of the output item this summary text delta is associated with.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param summary_index [Integer] The index of the summary part within the reasoning summary.
         #

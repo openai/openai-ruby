@@ -7,6 +7,7 @@ module OpenAI
           delta: String,
           item_id: String,
           output_index: Integer,
+          sequence_number: Integer,
           type: :"response.output_text.delta"
         }
 
@@ -19,6 +20,8 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
+        attr_accessor sequence_number: Integer
+
         attr_accessor type: :"response.output_text.delta"
 
         def initialize: (
@@ -26,6 +29,7 @@ module OpenAI
           delta: String,
           item_id: String,
           output_index: Integer,
+          sequence_number: Integer,
           ?type: :"response.output_text.delta"
         ) -> void
       end

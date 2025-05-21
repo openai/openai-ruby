@@ -2,7 +2,13 @@ module OpenAI
   module Models
     module Responses
       type response_error_event =
-        { code: String?, message: String, param: String?, type: :error }
+        {
+          code: String?,
+          message: String,
+          param: String?,
+          sequence_number: Integer,
+          type: :error
+        }
 
       class ResponseErrorEvent < OpenAI::Internal::Type::BaseModel
         attr_accessor code: String?
@@ -11,12 +17,15 @@ module OpenAI
 
         attr_accessor param: String?
 
+        attr_accessor sequence_number: Integer
+
         attr_accessor type: :error
 
         def initialize: (
           code: String?,
           message: String,
           param: String?,
+          sequence_number: Integer,
           ?type: :error
         ) -> void
       end

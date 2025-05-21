@@ -24,6 +24,10 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The finalized reasoning text.
         sig { returns(String) }
         attr_accessor :text
@@ -38,6 +42,7 @@ module OpenAI
             content_index: Integer,
             item_id: String,
             output_index: Integer,
+            sequence_number: Integer,
             text: String,
             type: Symbol
           ).returns(T.attached_class)
@@ -49,6 +54,8 @@ module OpenAI
           item_id:,
           # The index of the output item in the response's output array.
           output_index:,
+          # The sequence number of this event.
+          sequence_number:,
           # The finalized reasoning text.
           text:,
           # The type of the event. Always 'response.reasoning.done'.
@@ -62,6 +69,7 @@ module OpenAI
               content_index: Integer,
               item_id: String,
               output_index: Integer,
+              sequence_number: Integer,
               text: String,
               type: Symbol
             }

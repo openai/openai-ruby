@@ -84,4 +84,12 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
       response => nil
     end
   end
+
+  def test_cancel
+    response = @openai.responses.cancel("resp_677efb5139a88190b512bc3fef8e535d")
+
+    assert_pattern do
+      response => nil
+    end
+  end
 end

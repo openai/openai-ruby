@@ -34,13 +34,19 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always 'response.output_text_annotation.added'.
         #
         #   @return [Symbol, :"response.output_text_annotation.added"]
         required :type, const: :"response.output_text_annotation.added"
 
-        # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, type: :"response.output_text_annotation.added")
+        # @!method initialize(annotation:, annotation_index:, content_index:, item_id:, output_index:, sequence_number:, type: :"response.output_text_annotation.added")
         #   Emitted when an annotation is added to output text content.
         #
         #   @param annotation [Object] The annotation object being added. (See annotation schema for details.)
@@ -52,6 +58,8 @@ module OpenAI
         #   @param item_id [String] The unique identifier of the item to which the annotation is being added.
         #
         #   @param output_index [Integer] The index of the output item in the response's output array.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.output_text_annotation.added"] The type of the event. Always 'response.output_text_annotation.added'.
       end

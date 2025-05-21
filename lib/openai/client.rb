@@ -72,6 +72,9 @@ module OpenAI
     # @return [OpenAI::Resources::Evals]
     attr_reader :evals
 
+    # @return [OpenAI::Resources::Containers]
+    attr_reader :containers
+
     # @api private
     #
     # @return [Hash{String=>String}]
@@ -147,6 +150,7 @@ module OpenAI
       @uploads = OpenAI::Resources::Uploads.new(client: self)
       @responses = OpenAI::Resources::Responses.new(client: self)
       @evals = OpenAI::Resources::Evals.new(client: self)
+      @containers = OpenAI::Resources::Containers.new(client: self)
     end
   end
 end

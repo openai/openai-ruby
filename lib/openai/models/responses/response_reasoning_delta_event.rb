@@ -28,13 +28,19 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always 'response.reasoning.delta'.
         #
         #   @return [Symbol, :"response.reasoning.delta"]
         required :type, const: :"response.reasoning.delta"
 
-        # @!method initialize(content_index:, delta:, item_id:, output_index:, type: :"response.reasoning.delta")
+        # @!method initialize(content_index:, delta:, item_id:, output_index:, sequence_number:, type: :"response.reasoning.delta")
         #   Emitted when there is a delta (partial update) to the reasoning content.
         #
         #   @param content_index [Integer] The index of the reasoning content part within the output item.
@@ -44,6 +50,8 @@ module OpenAI
         #   @param item_id [String] The unique identifier of the item for which reasoning is being updated.
         #
         #   @param output_index [Integer] The index of the output item in the response's output array.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.reasoning.delta"] The type of the event. Always 'response.reasoning.delta'.
       end

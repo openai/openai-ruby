@@ -28,13 +28,19 @@ module OpenAI
         #   @return [String]
         required :refusal, String
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always `response.refusal.done`.
         #
         #   @return [Symbol, :"response.refusal.done"]
         required :type, const: :"response.refusal.done"
 
-        # @!method initialize(content_index:, item_id:, output_index:, refusal:, type: :"response.refusal.done")
+        # @!method initialize(content_index:, item_id:, output_index:, refusal:, sequence_number:, type: :"response.refusal.done")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Responses::ResponseRefusalDoneEvent} for more details.
         #
@@ -47,6 +53,8 @@ module OpenAI
         #   @param output_index [Integer] The index of the output item that the refusal text is finalized.
         #
         #   @param refusal [String] The refusal text that is finalized.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.refusal.done"] The type of the event. Always `response.refusal.done`.
       end

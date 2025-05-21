@@ -28,6 +28,10 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :refusal
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The type of the event. Always `response.refusal.done`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -39,6 +43,7 @@ module OpenAI
             item_id: String,
             output_index: Integer,
             refusal: String,
+            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -51,6 +56,8 @@ module OpenAI
           output_index:,
           # The refusal text that is finalized.
           refusal:,
+          # The sequence number of this event.
+          sequence_number:,
           # The type of the event. Always `response.refusal.done`.
           type: :"response.refusal.done"
         )
@@ -63,6 +70,7 @@ module OpenAI
               item_id: String,
               output_index: Integer,
               refusal: String,
+              sequence_number: Integer,
               type: Symbol
             }
           )

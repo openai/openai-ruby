@@ -36,6 +36,10 @@ module OpenAI
         end
         attr_writer :part
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The index of the summary part within the reasoning summary.
         sig { returns(Integer) }
         attr_accessor :summary_index
@@ -51,6 +55,7 @@ module OpenAI
             output_index: Integer,
             part:
               OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part::OrHash,
+            sequence_number: Integer,
             summary_index: Integer,
             type: Symbol
           ).returns(T.attached_class)
@@ -62,6 +67,8 @@ module OpenAI
           output_index:,
           # The summary part that was added.
           part:,
+          # The sequence number of this event.
+          sequence_number:,
           # The index of the summary part within the reasoning summary.
           summary_index:,
           # The type of the event. Always `response.reasoning_summary_part.added`.
@@ -76,6 +83,7 @@ module OpenAI
               output_index: Integer,
               part:
                 OpenAI::Responses::ResponseReasoningSummaryPartAddedEvent::Part,
+              sequence_number: Integer,
               summary_index: Integer,
               type: Symbol
             }

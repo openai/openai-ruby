@@ -28,6 +28,10 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The type of the event. Always `response.code_interpreter_call.completed`.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -38,6 +42,7 @@ module OpenAI
             code_interpreter_call:
               OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
             output_index: Integer,
+            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -46,6 +51,8 @@ module OpenAI
           code_interpreter_call:,
           # The index of the output item that the code interpreter call is in progress.
           output_index:,
+          # The sequence number of this event.
+          sequence_number:,
           # The type of the event. Always `response.code_interpreter_call.completed`.
           type: :"response.code_interpreter_call.completed"
         )
@@ -57,6 +64,7 @@ module OpenAI
               code_interpreter_call:
                 OpenAI::Responses::ResponseCodeInterpreterToolCall,
               output_index: Integer,
+              sequence_number: Integer,
               type: Symbol
             }
           )
