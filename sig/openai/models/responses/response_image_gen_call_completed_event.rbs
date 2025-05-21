@@ -5,6 +5,7 @@ module OpenAI
         {
           item_id: String,
           output_index: Integer,
+          sequence_number: Integer,
           type: :"response.image_generation_call.completed"
         }
 
@@ -13,11 +14,14 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
+        attr_accessor sequence_number: Integer
+
         attr_accessor type: :"response.image_generation_call.completed"
 
         def initialize: (
           item_id: String,
           output_index: Integer,
+          sequence_number: Integer,
           ?type: :"response.image_generation_call.completed"
         ) -> void
       end

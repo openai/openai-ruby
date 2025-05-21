@@ -22,6 +22,12 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute text
         #   The finalized reasoning text.
         #
@@ -34,7 +40,7 @@ module OpenAI
         #   @return [Symbol, :"response.reasoning.done"]
         required :type, const: :"response.reasoning.done"
 
-        # @!method initialize(content_index:, item_id:, output_index:, text:, type: :"response.reasoning.done")
+        # @!method initialize(content_index:, item_id:, output_index:, sequence_number:, text:, type: :"response.reasoning.done")
         #   Emitted when the reasoning content is finalized for an item.
         #
         #   @param content_index [Integer] The index of the reasoning content part within the output item.
@@ -42,6 +48,8 @@ module OpenAI
         #   @param item_id [String] The unique identifier of the item for which reasoning is finalized.
         #
         #   @param output_index [Integer] The index of the output item in the response's output array.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param text [String] The finalized reasoning text.
         #

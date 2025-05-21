@@ -210,6 +210,28 @@ module OpenAI
         )
       end
 
+      # Cancels a model response with the given ID. Only responses created with the
+      # `background` parameter set to `true` can be cancelled.
+      # [Learn more](https://platform.openai.com/docs/guides/background).
+      #
+      # @overload cancel(response_id, request_options: {})
+      #
+      # @param response_id [String] The ID of the response to cancel.
+      #
+      # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+      #
+      # @return [nil]
+      #
+      # @see OpenAI::Models::Responses::ResponseCancelParams
+      def cancel(response_id, params = {})
+        @client.request(
+          method: :post,
+          path: ["responses/%1$s/cancel", response_id],
+          model: NilClass,
+          options: params[:request_options]
+        )
+      end
+
       # @api private
       #
       # @param client [OpenAI::Client]

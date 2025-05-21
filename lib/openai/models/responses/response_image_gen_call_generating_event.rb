@@ -16,19 +16,19 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of the image generation item being processed.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always 'response.image_generation_call.generating'.
         #
         #   @return [Symbol, :"response.image_generation_call.generating"]
         required :type, const: :"response.image_generation_call.generating"
 
-        # @!attribute sequence_number
-        #   The sequence number of the image generation item being processed.
-        #
-        #   @return [Integer, nil]
-        optional :sequence_number, Integer
-
-        # @!method initialize(item_id:, output_index:, sequence_number: nil, type: :"response.image_generation_call.generating")
+        # @!method initialize(item_id:, output_index:, sequence_number:, type: :"response.image_generation_call.generating")
         #   Emitted when an image generation tool call is actively generating an image
         #   (intermediate state).
         #

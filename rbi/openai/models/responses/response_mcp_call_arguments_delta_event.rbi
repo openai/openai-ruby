@@ -24,6 +24,10 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The type of the event. Always 'response.mcp_call.arguments_delta'.
         sig { returns(Symbol) }
         attr_accessor :type
@@ -35,6 +39,7 @@ module OpenAI
             delta: T.anything,
             item_id: String,
             output_index: Integer,
+            sequence_number: Integer,
             type: Symbol
           ).returns(T.attached_class)
         end
@@ -45,6 +50,8 @@ module OpenAI
           item_id:,
           # The index of the output item in the response's output array.
           output_index:,
+          # The sequence number of this event.
+          sequence_number:,
           # The type of the event. Always 'response.mcp_call.arguments_delta'.
           type: :"response.mcp_call.arguments_delta"
         )
@@ -56,6 +63,7 @@ module OpenAI
               delta: T.anything,
               item_id: String,
               output_index: Integer,
+              sequence_number: Integer,
               type: Symbol
             }
           )

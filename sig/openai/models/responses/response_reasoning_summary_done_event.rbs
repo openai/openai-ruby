@@ -5,6 +5,7 @@ module OpenAI
         {
           item_id: String,
           output_index: Integer,
+          sequence_number: Integer,
           summary_index: Integer,
           text: String,
           type: :"response.reasoning_summary.done"
@@ -15,6 +16,8 @@ module OpenAI
 
         attr_accessor output_index: Integer
 
+        attr_accessor sequence_number: Integer
+
         attr_accessor summary_index: Integer
 
         attr_accessor text: String
@@ -24,6 +27,7 @@ module OpenAI
         def initialize: (
           item_id: String,
           output_index: Integer,
+          sequence_number: Integer,
           summary_index: Integer,
           text: String,
           ?type: :"response.reasoning_summary.done"

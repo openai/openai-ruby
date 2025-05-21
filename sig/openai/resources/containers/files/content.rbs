@@ -1,0 +1,17 @@
+module OpenAI
+  module Resources
+    class Containers
+      class Files
+        class Content
+          def retrieve: (
+            String file_id,
+            container_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> nil
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

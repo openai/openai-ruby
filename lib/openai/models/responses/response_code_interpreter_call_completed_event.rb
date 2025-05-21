@@ -16,13 +16,19 @@ module OpenAI
         #   @return [Integer]
         required :output_index, Integer
 
+        # @!attribute sequence_number
+        #   The sequence number of this event.
+        #
+        #   @return [Integer]
+        required :sequence_number, Integer
+
         # @!attribute type
         #   The type of the event. Always `response.code_interpreter_call.completed`.
         #
         #   @return [Symbol, :"response.code_interpreter_call.completed"]
         required :type, const: :"response.code_interpreter_call.completed"
 
-        # @!method initialize(code_interpreter_call:, output_index:, type: :"response.code_interpreter_call.completed")
+        # @!method initialize(code_interpreter_call:, output_index:, sequence_number:, type: :"response.code_interpreter_call.completed")
         #   Some parameter documentations has been truncated, see
         #   {OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent} for more details.
         #
@@ -31,6 +37,8 @@ module OpenAI
         #   @param code_interpreter_call [OpenAI::Responses::ResponseCodeInterpreterToolCall] A tool call to run code.
         #
         #   @param output_index [Integer] The index of the output item that the code interpreter call is in progress.
+        #
+        #   @param sequence_number [Integer] The sequence number of this event.
         #
         #   @param type [Symbol, :"response.code_interpreter_call.completed"] The type of the event. Always `response.code_interpreter_call.completed`.
       end

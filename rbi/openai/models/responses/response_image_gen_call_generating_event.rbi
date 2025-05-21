@@ -20,16 +20,13 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
+        # The sequence number of the image generation item being processed.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The type of the event. Always 'response.image_generation_call.generating'.
         sig { returns(Symbol) }
         attr_accessor :type
-
-        # The sequence number of the image generation item being processed.
-        sig { returns(T.nilable(Integer)) }
-        attr_reader :sequence_number
-
-        sig { params(sequence_number: Integer).void }
-        attr_writer :sequence_number
 
         # Emitted when an image generation tool call is actively generating an image
         # (intermediate state).
@@ -47,7 +44,7 @@ module OpenAI
           # The index of the output item in the response's output array.
           output_index:,
           # The sequence number of the image generation item being processed.
-          sequence_number: nil,
+          sequence_number:,
           # The type of the event. Always 'response.image_generation_call.generating'.
           type: :"response.image_generation_call.generating"
         )
@@ -58,8 +55,8 @@ module OpenAI
             {
               item_id: String,
               output_index: Integer,
-              type: Symbol,
-              sequence_number: Integer
+              sequence_number: Integer,
+              type: Symbol
             }
           )
         end

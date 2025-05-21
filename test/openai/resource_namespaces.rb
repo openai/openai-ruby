@@ -27,9 +27,17 @@ module OpenAI
       module Completions
       end
 
+      module Containers
+        module Files
+        end
+      end
+
       module Evals
         module Runs
         end
+      end
+
+      module Files
       end
 
       module FineTuning

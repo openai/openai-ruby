@@ -25,6 +25,10 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :output_index
 
+        # The sequence number of this event.
+        sig { returns(Integer) }
+        attr_accessor :sequence_number
+
         # The index of the summary part within the output item.
         sig { returns(Integer) }
         attr_accessor :summary_index
@@ -39,6 +43,7 @@ module OpenAI
             delta: T.anything,
             item_id: String,
             output_index: Integer,
+            sequence_number: Integer,
             summary_index: Integer,
             type: Symbol
           ).returns(T.attached_class)
@@ -51,6 +56,8 @@ module OpenAI
           item_id:,
           # The index of the output item in the response's output array.
           output_index:,
+          # The sequence number of this event.
+          sequence_number:,
           # The index of the summary part within the output item.
           summary_index:,
           # The type of the event. Always 'response.reasoning_summary.delta'.
@@ -64,6 +71,7 @@ module OpenAI
               delta: T.anything,
               item_id: String,
               output_index: Integer,
+              sequence_number: Integer,
               summary_index: Integer,
               type: Symbol
             }

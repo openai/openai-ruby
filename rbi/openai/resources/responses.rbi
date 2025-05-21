@@ -456,6 +456,22 @@ module OpenAI
       )
       end
 
+      # Cancels a model response with the given ID. Only responses created with the
+      # `background` parameter set to `true` can be cancelled.
+      # [Learn more](https://platform.openai.com/docs/guides/background).
+      sig do
+        params(
+          response_id: String,
+          request_options: OpenAI::RequestOptions::OrHash
+        ).void
+      end
+      def cancel(
+        # The ID of the response to cancel.
+        response_id,
+        request_options: {}
+      )
+      end
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:)

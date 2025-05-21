@@ -41,6 +41,16 @@ module OpenAI
 
   class CompoundFilter = OpenAI::Models::CompoundFilter
 
+  class ContainerCreateParams = OpenAI::Models::ContainerCreateParams
+
+  class ContainerDeleteParams = OpenAI::Models::ContainerDeleteParams
+
+  class ContainerListParams = OpenAI::Models::ContainerListParams
+
+  class ContainerRetrieveParams = OpenAI::Models::ContainerRetrieveParams
+
+  module Containers = OpenAI::Models::Containers
+
   class CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
 
   class Embedding = OpenAI::Models::Embedding
