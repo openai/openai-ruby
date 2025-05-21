@@ -220,7 +220,7 @@ puts(chat_completion[:my_undocumented_property])
 
 #### Undocumented request params
 
-If you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` under the `request_options:` parameter when making a request as seen in examples above.
+If you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` under the `request_options:` parameter when making a request, as seen in the examples above.
 
 #### Undocumented endpoints
 
@@ -238,7 +238,7 @@ response = client.request(
 
 ### Concurrency & connection pooling
 
-The `OpenAI::Client` instances are threadsafe, but only are fork-safe when there are no in-flight HTTP requests.
+The `OpenAI::Client` instances are threadsafe, but are only are fork-safe when there are no in-flight HTTP requests.
 
 Each instance of `OpenAI::Client` has its own HTTP connection pool with a default size of 99. As such, we recommend instantiating the client once per application in most settings.
 
@@ -297,7 +297,7 @@ openai.chat.completions.create(
   # …
 )
 
-# Literal values is also permissible:
+# Literal values are also permissible:
 openai.chat.completions.create(
   reasoning_effort: :low,
   # …
