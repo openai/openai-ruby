@@ -241,6 +241,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText,
                 OpenAI::ResponseFormatJSONSchema,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject
               )
             )
@@ -254,6 +255,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               )
           ).void
@@ -369,7 +371,15 @@ module OpenAI
         attr_reader :tools
 
         sig do
-          params(tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash]).void
+          params(
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionTool::OrHash,
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ]
+          ).void
         end
         attr_writer :tools
 
@@ -476,7 +486,13 @@ module OpenAI
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
                 OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
               ),
-            tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash],
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionTool::OrHash,
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,
@@ -741,7 +757,13 @@ module OpenAI
                   OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
                   OpenAI::Chat::ChatCompletionNamedToolChoice
                 ),
-              tools: T::Array[OpenAI::Chat::ChatCompletionTool],
+              tools:
+                T::Array[
+                  T.any(
+                    OpenAI::Chat::ChatCompletionTool,
+                    OpenAI::StructuredOutput::JsonSchemaConverter
+                  )
+                ],
               top_logprobs: T.nilable(Integer),
               top_p: T.nilable(Float),
               user: String,
@@ -969,6 +991,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText,
                 OpenAI::ResponseFormatJSONSchema,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject
               )
             end

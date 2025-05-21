@@ -122,7 +122,7 @@ directory(examples)
 
 desc("Typecheck `*.rbi`")
 multitask("typecheck:sorbet": examples) do
-  sh(*%w[srb typecheck])
+  sh(*%w[srb typecheck --dir], examples)
 end
 
 directory(tapioca) do

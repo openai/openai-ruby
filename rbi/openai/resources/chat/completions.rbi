@@ -70,6 +70,7 @@ module OpenAI
               T.any(
                 OpenAI::ResponseFormatText::OrHash,
                 OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::StructuredOutput::JsonSchemaConverter,
                 OpenAI::ResponseFormatJSONObject::OrHash
               ),
             seed: T.nilable(Integer),
@@ -88,7 +89,13 @@ module OpenAI
                 OpenAI::Chat::ChatCompletionToolChoiceOption::Auto::OrSymbol,
                 OpenAI::Chat::ChatCompletionNamedToolChoice::OrHash
               ),
-            tools: T::Array[OpenAI::Chat::ChatCompletionTool::OrHash],
+            tools:
+              T::Array[
+                T.any(
+                  OpenAI::Chat::ChatCompletionTool::OrHash,
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
             user: String,

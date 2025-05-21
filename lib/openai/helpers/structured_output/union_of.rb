@@ -26,7 +26,10 @@ module OpenAI
             mergeable_keys = {[:anyOf] => 0, [:type] => 0}
             schemas = variants.to_enum.with_index.map do
               new_state = {**state, path: [*path, "?.#{_2}"]}
-              OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(_1, state: new_state)
+              OpenAI::Helpers::StructuredOutput::JsonSchemaConverter.to_json_schema_inner(
+                _1,
+                state: new_state
+              )
             end
 
             schemas.each do |schema|
